@@ -6,6 +6,7 @@ use oxc_ast::{
 use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::GetSpan;
+use oxc_str::Ident;
 
 // TODO: Make use of the same pattern in oxc_ast for ast node types
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -31,39 +32,7 @@ impl Ty {
             TSType::TSParenthesizedType(parenthesized) => {
                 Self::from_ts_type(&parenthesized.type_annotation)
             }
-            TSType::TSAnyKeyword(tsany_keyword) => todo!(),
-            TSType::TSBigIntKeyword(tsbig_int_keyword) => todo!(),
-            TSType::TSIntrinsicKeyword(tsintrinsic_keyword) => todo!(),
-            TSType::TSNeverKeyword(tsnever_keyword) => todo!(),
-            TSType::TSNullKeyword(tsnull_keyword) => todo!(),
-            TSType::TSObjectKeyword(tsobject_keyword) => todo!(),
-            TSType::TSSymbolKeyword(tssymbol_keyword) => todo!(),
-            TSType::TSUndefinedKeyword(tsundefined_keyword) => todo!(),
-            TSType::TSUnknownKeyword(tsunknown_keyword) => todo!(),
-            TSType::TSVoidKeyword(tsvoid_keyword) => todo!(),
-            TSType::TSArrayType(tsarray_type) => todo!(),
-            TSType::TSConditionalType(tsconditional_type) => todo!(),
-            TSType::TSConstructorType(tsconstructor_type) => todo!(),
-            TSType::TSFunctionType(tsfunction_type) => todo!(),
-            TSType::TSImportType(tsimport_type) => todo!(),
-            TSType::TSIndexedAccessType(tsindexed_access_type) => todo!(),
-            TSType::TSInferType(tsinfer_type) => todo!(),
-            TSType::TSIntersectionType(tsintersection_type) => todo!(),
-            TSType::TSLiteralType(tsliteral_type) => todo!(),
-            TSType::TSMappedType(tsmapped_type) => todo!(),
-            TSType::TSNamedTupleMember(tsnamed_tuple_member) => todo!(),
-            TSType::TSTemplateLiteralType(tstemplate_literal_type) => todo!(),
-            TSType::TSThisType(tsthis_type) => todo!(),
-            TSType::TSTupleType(tstuple_type) => todo!(),
-            TSType::TSTypeLiteral(tstype_literal) => todo!(),
-            TSType::TSTypeOperatorType(tstype_operator) => todo!(),
-            TSType::TSTypePredicate(tstype_predicate) => todo!(),
-            TSType::TSTypeQuery(tstype_query) => todo!(),
-            TSType::TSTypeReference(tstype_reference) => todo!(),
-            TSType::TSUnionType(tsunion_type) => todo!(),
-            TSType::JSDocNullableType(jsdoc_nullable_type) => todo!(),
-            TSType::JSDocNonNullableType(jsdoc_non_nullable_type) => todo!(),
-            TSType::JSDocUnknownType(jsdoc_unknown_type) => todo!(),
+            _ => Self::None,
         }
     }
 }
@@ -296,17 +265,24 @@ mod test {
     use oxc_allocator::Allocator;
     use oxc_ast::ast::Statement;
     use oxc_parser::Parser;
+    use oxc_semantic::SemanticBuilderReturn;
     use oxc_span::SourceType;
+    use oxc_str::Ident;
 
-    #[test]
-    fn it_works() {
-        let allocator = Allocator::default();
-        let source_text = "const a: number = 1;";
-        let parser = Parser::new(&allocator, source_text, SourceType::ts());
+    struct ParseAndCheck<'a> {
+        program: &'a Program<'a>,
+        checker: CheckerReturn<'a>,
+    }
+
+    fn parse_and_check_source<'a>(
+        allocator: &'a Allocator,
+        source_text: &'a str,
+    ) -> ParseAndCheck<'a> {
+        let parser = Parser::new(allocator, source_text, SourceType::ts());
         let ret = parser.parse();
         assert!(ret.errors.is_empty());
 
-        let program = &ret.program;
+        let program = allocator.alloc(ret.program);
         let semantic_ret = SemanticBuilder::new().build(program);
         assert!(semantic_ret.errors.is_empty());
 
@@ -317,14 +293,31 @@ mod test {
             checker_ret.semantic().nodes().program().source_text,
             source_text
         );
-        let Statement::VariableDeclaration(var_decl) = &program.body[0] else {
-            return;
-        };
-        let symbol_id = var_decl.declarations[0]
-            .id
-            .get_binding_identifier()
-            .unwrap()
-            .symbol_id();
-        assert_eq!(checker_ret.get_type_of_symbol(symbol_id), Ty::Number);
+
+        ParseAndCheck {
+            program,
+            checker: checker_ret,
+        }
+    }
+
+    #[test]
+    fn it_works() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const a: number = 1;
+        const b: string = 'hello';
+        const c: boolean = true;
+        ",
+        );
+
+        let scoping = ret.checker.semantic().scoping();
+        let a = scoping.get_root_binding(Ident::from("a")).unwrap();
+        let b = scoping.get_root_binding(Ident::from("b")).unwrap();
+        let c = scoping.get_root_binding(Ident::from("c")).unwrap();
+        assert_eq!(ret.checker.get_type_of_symbol(a), Ty::Number);
+        assert_eq!(ret.checker.get_type_of_symbol(b), Ty::String);
+        assert_eq!(ret.checker.get_type_of_symbol(c), Ty::Boolean);
     }
 }
