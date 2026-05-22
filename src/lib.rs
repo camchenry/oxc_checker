@@ -1,7 +1,10 @@
 #![allow(dead_code, unused_imports)]
-use oxc_ast::ast::Program;
+use oxc_ast::{
+    AstKind,
+    ast::{Program, TSType, TSTypeAnnotation},
+};
 use oxc_index::nonmax::NonMaxU32;
-use oxc_semantic::{AstNode, NodeId, SemanticBuilder, SymbolId};
+use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::GetSpan;
 
 // TODO: Make use of the same pattern in oxc_ast for ast node types
@@ -11,6 +14,58 @@ enum Ty {
     Number,
     String,
     Boolean,
+}
+
+impl Ty {
+    fn from_ts_type_annotation(type_annotation: Option<&TSTypeAnnotation<'_>>) -> Self {
+        type_annotation.map_or(Self::None, |type_annotation| {
+            Self::from_ts_type(&type_annotation.type_annotation)
+        })
+    }
+
+    fn from_ts_type(t: &TSType<'_>) -> Self {
+        match t {
+            TSType::TSNumberKeyword(_) => Self::Number,
+            TSType::TSStringKeyword(_) => Self::String,
+            TSType::TSBooleanKeyword(_) => Self::Boolean,
+            TSType::TSParenthesizedType(parenthesized) => {
+                Self::from_ts_type(&parenthesized.type_annotation)
+            }
+            TSType::TSAnyKeyword(tsany_keyword) => todo!(),
+            TSType::TSBigIntKeyword(tsbig_int_keyword) => todo!(),
+            TSType::TSIntrinsicKeyword(tsintrinsic_keyword) => todo!(),
+            TSType::TSNeverKeyword(tsnever_keyword) => todo!(),
+            TSType::TSNullKeyword(tsnull_keyword) => todo!(),
+            TSType::TSObjectKeyword(tsobject_keyword) => todo!(),
+            TSType::TSSymbolKeyword(tssymbol_keyword) => todo!(),
+            TSType::TSUndefinedKeyword(tsundefined_keyword) => todo!(),
+            TSType::TSUnknownKeyword(tsunknown_keyword) => todo!(),
+            TSType::TSVoidKeyword(tsvoid_keyword) => todo!(),
+            TSType::TSArrayType(tsarray_type) => todo!(),
+            TSType::TSConditionalType(tsconditional_type) => todo!(),
+            TSType::TSConstructorType(tsconstructor_type) => todo!(),
+            TSType::TSFunctionType(tsfunction_type) => todo!(),
+            TSType::TSImportType(tsimport_type) => todo!(),
+            TSType::TSIndexedAccessType(tsindexed_access_type) => todo!(),
+            TSType::TSInferType(tsinfer_type) => todo!(),
+            TSType::TSIntersectionType(tsintersection_type) => todo!(),
+            TSType::TSLiteralType(tsliteral_type) => todo!(),
+            TSType::TSMappedType(tsmapped_type) => todo!(),
+            TSType::TSNamedTupleMember(tsnamed_tuple_member) => todo!(),
+            TSType::TSTemplateLiteralType(tstemplate_literal_type) => todo!(),
+            TSType::TSThisType(tsthis_type) => todo!(),
+            TSType::TSTupleType(tstuple_type) => todo!(),
+            TSType::TSTypeLiteral(tstype_literal) => todo!(),
+            TSType::TSTypeOperatorType(tstype_operator) => todo!(),
+            TSType::TSTypePredicate(tstype_predicate) => todo!(),
+            TSType::TSTypeQuery(tstype_query) => todo!(),
+            TSType::TSTypeReference(tstype_reference) => todo!(),
+            TSType::TSUnionType(tsunion_type) => todo!(),
+            TSType::JSDocNullableType(jsdoc_nullable_type) => todo!(),
+            TSType::JSDocNonNullableType(jsdoc_non_nullable_type) => todo!(),
+            TSType::JSDocUnknownType(jsdoc_unknown_type) => todo!(),
+        }
+    }
 }
 
 /*
@@ -85,29 +140,84 @@ impl CheckerBuilder {
         Self {}
     }
 
-    fn build(&self, _program: &Program) -> CheckerReturn {
-        CheckerReturn {}
+    fn build<'a>(&self, program: &'a Program<'a>, semantic: Semantic<'a>) -> CheckerReturn<'a> {
+        CheckerReturn { program, semantic }
     }
 }
 
-struct CheckerReturn {}
+struct CheckerReturn<'a> {
+    program: &'a Program<'a>,
+    semantic: Semantic<'a>,
+}
 
-impl CheckerReturn {}
-
-impl Checker for CheckerReturn {
-    fn get_symbol_at_location(&self, _node: NodeId) -> Option<SymbolId> {
-        None
+impl<'a> CheckerReturn<'a> {
+    #[inline]
+    fn program(&self) -> &'a Program<'a> {
+        self.program
     }
 
-    fn get_type_at_location(&self, _node: NodeId) -> Ty {
-        Ty::None
+    #[inline]
+    fn semantic(&self) -> &Semantic<'a> {
+        &self.semantic
     }
 
-    fn get_declared_type_of_symbol(&self, _sym: SymbolId) -> Ty {
-        Ty::None
+    #[inline]
+    fn nodes(&self) -> &AstNodes<'a> {
+        self.semantic.nodes()
     }
 
-    fn get_type_of_symbol(&self, _sym: SymbolId) -> Ty {
+    #[inline]
+    fn node_kind(&self, node: NodeId) -> AstKind<'a> {
+        self.nodes().kind(node)
+    }
+}
+
+impl Checker for CheckerReturn<'_> {
+    fn get_symbol_at_location(&self, node: NodeId) -> Option<SymbolId> {
+        match self.node_kind(node) {
+            AstKind::BindingIdentifier(identifier) => identifier.symbol_id.get(),
+            AstKind::IdentifierReference(identifier) => {
+                identifier.reference_id.get().and_then(|reference_id| {
+                    self.semantic
+                        .scoping()
+                        .get_reference(reference_id)
+                        .symbol_id()
+                })
+            }
+            _ => None,
+        }
+    }
+
+    fn get_type_at_location(&self, node: NodeId) -> Ty {
+        self.get_symbol_at_location(node)
+            .map_or(Ty::None, |sym| self.get_type_of_symbol(sym))
+    }
+
+    fn get_declared_type_of_symbol(&self, sym: SymbolId) -> Ty {
+        match self.semantic().symbol_declaration(sym).kind() {
+            AstKind::VariableDeclarator(declarator) => {
+                Ty::from_ts_type_annotation(declarator.type_annotation.as_deref())
+            }
+            AstKind::FormalParameter(parameter) => {
+                Ty::from_ts_type_annotation(parameter.type_annotation.as_deref())
+            }
+            AstKind::FormalParameterRest(parameter) => {
+                Ty::from_ts_type_annotation(parameter.type_annotation.as_deref())
+            }
+            AstKind::CatchParameter(parameter) => {
+                Ty::from_ts_type_annotation(parameter.type_annotation.as_deref())
+            }
+            AstKind::PropertyDefinition(property) => {
+                Ty::from_ts_type_annotation(property.type_annotation.as_deref())
+            }
+            AstKind::AccessorProperty(property) => {
+                Ty::from_ts_type_annotation(property.type_annotation.as_deref())
+            }
+            _ => Ty::None,
+        }
+    }
+
+    fn get_type_of_symbol(&self, sym: SymbolId) -> Ty {
         /*
         if symbol.CheckFlags&ast.CheckFlagsDeferredType != 0 {
             return c.getTypeOfSymbolWithDeferredType(symbol)
@@ -138,11 +248,11 @@ impl Checker for CheckerReturn {
         }
         return c.errorType
             */
-        Ty::None
+        self.get_declared_type_of_symbol(sym)
     }
 
-    fn get_type_of_symbol_at_location(&self, _node: NodeId) -> Ty {
-        Ty::None
+    fn get_type_of_symbol_at_location(&self, node: NodeId) -> Ty {
+        self.get_type_at_location(node)
     }
 
     fn get_properties_of_type(&self, _t: Ty) -> Vec<SymbolId> {
@@ -165,12 +275,18 @@ impl Checker for CheckerReturn {
         false
     }
 
-    fn type_to_string(&self, _t: Ty, _location: NodeId) -> String {
-        String::new()
+    fn type_to_string(&self, t: Ty, _location: NodeId) -> String {
+        match t {
+            Ty::None => "none",
+            Ty::Number => "number",
+            Ty::String => "string",
+            Ty::Boolean => "boolean",
+        }
+        .to_string()
     }
 
-    fn symbol_to_string(&self, _s: SymbolId, _location: NodeId) -> String {
-        String::new()
+    fn symbol_to_string(&self, s: SymbolId, _location: NodeId) -> String {
+        self.semantic().scoping().symbol_name(s).to_string()
     }
 }
 
@@ -190,12 +306,17 @@ mod test {
         let ret = parser.parse();
         assert!(ret.errors.is_empty());
 
-        let semantic = SemanticBuilder::new();
         let program = &ret.program;
-        let semantic_ret = semantic.build(program);
+        let semantic_ret = SemanticBuilder::new().build(program);
+        assert!(semantic_ret.errors.is_empty());
 
         let checker = CheckerBuilder::new();
-        let checker_ret = checker.build(program);
+        let checker_ret = checker.build(program, semantic_ret.semantic);
+        assert!(std::ptr::eq(checker_ret.program(), program));
+        assert_eq!(
+            checker_ret.semantic().nodes().program().source_text,
+            source_text
+        );
         let Statement::VariableDeclaration(var_decl) = &program.body[0] else {
             return;
         };
