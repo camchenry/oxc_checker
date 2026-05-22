@@ -15,20 +15,33 @@ enum Ty {
     Number,
     String,
     Boolean,
+    Bigint,
+    Undefined,
+    Null,
+    Any,
+    Unknown,
 }
 
 impl Ty {
+    /// Take a type annotation like `: number` and return the corresponding type. Returns no
+    /// type if there is no type annotation.
     fn from_ts_type_annotation(type_annotation: Option<&TSTypeAnnotation<'_>>) -> Self {
         type_annotation.map_or(Self::None, |type_annotation| {
             Self::from_ts_type(&type_annotation.type_annotation)
         })
     }
 
+    /// Turns a declared type in the AST and turns it into an actual type.
     fn from_ts_type(t: &TSType<'_>) -> Self {
         match t {
             TSType::TSNumberKeyword(_) => Self::Number,
             TSType::TSStringKeyword(_) => Self::String,
             TSType::TSBooleanKeyword(_) => Self::Boolean,
+            TSType::TSBigIntKeyword(_) => Self::Bigint,
+            TSType::TSUndefinedKeyword(_) => Self::Undefined,
+            TSType::TSNullKeyword(_) => Self::Null,
+            TSType::TSAnyKeyword(_) => Self::Any,
+            TSType::TSUnknownKeyword(_) => Self::Unknown,
             TSType::TSParenthesizedType(parenthesized) => {
                 Self::from_ts_type(&parenthesized.type_annotation)
             }
@@ -250,6 +263,11 @@ impl Checker for CheckerReturn<'_> {
             Ty::Number => "number",
             Ty::String => "string",
             Ty::Boolean => "boolean",
+            Ty::Bigint => "bigint",
+            Ty::Undefined => "undefined",
+            Ty::Null => "null",
+            Ty::Any => "any",
+            Ty::Unknown => "unknown",
         }
         .to_string()
     }
@@ -309,6 +327,11 @@ mod test {
         const a: number = 1;
         const b: string = 'hello';
         const c: boolean = true;
+        const d: bigint = 1n;
+        const e: undefined = undefined;
+        const f: null = null;
+        const g: any = 1;
+        const h: unknown = 1;
         ",
         );
 
@@ -316,8 +339,18 @@ mod test {
         let a = scoping.get_root_binding(Ident::from("a")).unwrap();
         let b = scoping.get_root_binding(Ident::from("b")).unwrap();
         let c = scoping.get_root_binding(Ident::from("c")).unwrap();
+        let d = scoping.get_root_binding(Ident::from("d")).unwrap();
+        let e = scoping.get_root_binding(Ident::from("e")).unwrap();
+        let f = scoping.get_root_binding(Ident::from("f")).unwrap();
+        let g = scoping.get_root_binding(Ident::from("g")).unwrap();
+        let h = scoping.get_root_binding(Ident::from("h")).unwrap();
         assert_eq!(ret.checker.get_type_of_symbol(a), Ty::Number);
         assert_eq!(ret.checker.get_type_of_symbol(b), Ty::String);
         assert_eq!(ret.checker.get_type_of_symbol(c), Ty::Boolean);
+        assert_eq!(ret.checker.get_type_of_symbol(d), Ty::Bigint);
+        assert_eq!(ret.checker.get_type_of_symbol(e), Ty::Undefined);
+        assert_eq!(ret.checker.get_type_of_symbol(f), Ty::Null);
+        assert_eq!(ret.checker.get_type_of_symbol(g), Ty::Any);
+        assert_eq!(ret.checker.get_type_of_symbol(h), Ty::Unknown);
     }
 }
