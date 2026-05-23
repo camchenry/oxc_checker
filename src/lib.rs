@@ -241,7 +241,19 @@ impl Checker for CheckerReturn<'_> {
         }
         return c.errorType
             */
-        self.get_declared_type_of_symbol(sym)
+        match self.semantic().symbol_declaration(sym).kind() {
+            AstKind::VariableDeclarator(declarator) => {
+                if declarator.type_annotation.is_some() {
+                    Ty::from_ts_type_annotation(declarator.type_annotation.as_deref())
+                } else {
+                    declarator
+                        .init
+                        .as_ref()
+                        .map_or(Ty::Any, Ty::from_expression)
+                }
+            }
+            _ => self.get_declared_type_of_symbol(sym),
+        }
     }
 
     fn get_type_of_symbol_at_location(&self, node: NodeId) -> Ty {
@@ -386,6 +398,32 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret.checker, "f"), Ty::Null);
         assert_eq!(get_global_symbol_type(&ret.checker, "g"), Ty::Any);
         assert_eq!(get_global_symbol_type(&ret.checker, "h"), Ty::Unknown);
+    }
+
+    #[test]
+    fn simple_inferred_variable_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        let l7 = false;
+        let n = 23;
+        let s = 'hello';
+        let b = 1n;
+        let a;
+        let annotated: string = 23;
+        ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret.checker, "l7"), Ty::Boolean);
+        assert_eq!(get_global_symbol_type(&ret.checker, "n"), Ty::Number);
+        assert_eq!(get_global_symbol_type(&ret.checker, "s"), Ty::String);
+        assert_eq!(get_global_symbol_type(&ret.checker, "b"), Ty::Bigint);
+        assert_eq!(get_global_symbol_type(&ret.checker, "a"), Ty::Any);
+        assert_eq!(
+            get_global_symbol_type(&ret.checker, "annotated"),
+            Ty::String
+        );
     }
 
     #[test]
