@@ -4,13 +4,13 @@ use std::{
     any::Any,
     collections::{BTreeMap, BTreeSet, HashMap},
     fmt,
-    path::{Path, PathBuf},
+    path::{Component, Path, PathBuf},
     process::Command,
 };
 
 use oxc_allocator::Allocator;
-use oxc_parser::Parser;
-use oxc_span::{GetSpan, SourceType};
+use oxc_ast::AstKind;
+use oxc_span::GetSpan;
 
 use super::*;
 
@@ -157,45 +157,83 @@ impl ComparisonStats {
 
 struct ParsedFixture<'a> {
     store: program::ProgramStore<'a>,
-    program_id: program::ProgramId,
 }
 
 struct FixtureProgramHost {
-    path: PathBuf,
-    source_text: String,
+    files: HashMap<PathBuf, String>,
 }
 
 impl FixtureProgramHost {
-    fn new(path: impl Into<PathBuf>, source_text: &str) -> Self {
-        Self {
-            path: path.into(),
-            source_text: source_text.to_string(),
+    fn new(files: &[CompilerTestFile]) -> Self {
+        let files = files
+            .iter()
+            .map(|file| {
+                (
+                    normalize_fixture_path(Path::new(&file.name)),
+                    file.source_text.clone(),
+                )
+            })
+            .collect();
+
+        Self { files }
+    }
+
+    fn resolve_relative(
+        &self,
+        containing_file: &Path,
+        specifier: &str,
+    ) -> program::HostModuleResolution {
+        if !(specifier.starts_with('.') || specifier.starts_with('/')) {
+            return program::HostModuleResolution::External(specifier.to_string());
         }
+
+        let containing_dir = containing_file.parent().unwrap_or_else(|| Path::new(""));
+        let base = normalize_fixture_path(&containing_dir.join(specifier));
+        if self.files.contains_key(&base) {
+            return program::HostModuleResolution::Path(base);
+        }
+
+        for extension in ["ts", "tsx", "d.ts", "js", "jsx", "json"] {
+            let mut candidate = base.clone();
+            candidate.set_extension(extension);
+            if self.files.contains_key(&candidate) {
+                return program::HostModuleResolution::Path(candidate);
+            }
+        }
+
+        for extension in ["ts", "tsx", "d.ts", "js", "jsx", "json"] {
+            let candidate = base.join(format!("index.{extension}"));
+            if self.files.contains_key(&candidate) {
+                return program::HostModuleResolution::Path(candidate);
+            }
+        }
+
+        program::HostModuleResolution::Missing(specifier.to_string())
     }
 }
 
 impl program::ProgramHost for FixtureProgramHost {
     fn read_source(&self, path: &Path) -> program::ProgramStoreResult<String> {
-        if path == self.path {
-            Ok(self.source_text.clone())
-        } else {
-            Err(program::ProgramStoreError::ReadSource {
-                path: path.to_path_buf(),
+        let path = self.canonicalize_path(path);
+        self.files
+            .get(&path)
+            .cloned()
+            .ok_or_else(|| program::ProgramStoreError::ReadSource {
+                path,
                 message: "file not found".to_string(),
             })
-        }
     }
 
     fn canonicalize_path(&self, path: &Path) -> PathBuf {
-        path.to_path_buf()
+        normalize_fixture_path(path)
     }
 
     fn resolve_module(
         &self,
-        _containing_file: &Path,
+        containing_file: &Path,
         specifier: &str,
     ) -> program::HostModuleResolution {
-        program::HostModuleResolution::Missing(specifier.to_string())
+        self.resolve_relative(containing_file, specifier)
     }
 }
 
@@ -397,17 +435,22 @@ fn collect_oxc_records(cases_root: &Path) -> Vec<TypeRecord> {
         };
         let compiler_case = parse_compiler_test_case(&source_text, &relative_path);
         let _settings = &compiler_case.settings;
+        let allocator = Allocator::default();
+        let parsed = match parse_fixture_program(&allocator, &compiler_case) {
+            Ok(parsed) => parsed,
+            Err(_) => continue,
+        };
         for source_file in &compiler_case.files {
             let _file_settings = &source_file.settings;
-            let allocator = Allocator::default();
-            let parsed =
-                match parse_fixture(&allocator, &source_file.source_text, &source_file.name) {
-                    Ok(parsed) => parsed,
-                    Err(_) => continue,
-                };
-            records.extend(actual_symbol_records(
+            let Some(program_id) = parsed
+                .store
+                .id_for_path(&normalize_fixture_path(Path::new(&source_file.name)))
+            else {
+                continue;
+            };
+            records.extend(actual_identifier_records(
                 &parsed.store,
-                parsed.program_id,
+                program_id,
                 &record_path(
                     &relative_path,
                     source_file,
@@ -505,6 +548,22 @@ fn normalize_test_file_name(name: &str) -> String {
     name.replace('\\', "/")
 }
 
+fn normalize_fixture_path(path: &Path) -> PathBuf {
+    let mut normalized = PathBuf::new();
+    for component in path.components() {
+        match component {
+            Component::CurDir => {}
+            Component::ParentDir => {
+                normalized.pop();
+            }
+            Component::Prefix(prefix) => normalized.push(prefix.as_os_str()),
+            Component::RootDir => normalized.push(component.as_os_str()),
+            Component::Normal(part) => normalized.push(part),
+        }
+    }
+    normalized
+}
+
 fn record_path(
     fixture_path: &str,
     source_file: &CompilerTestFile,
@@ -517,48 +576,110 @@ fn record_path(
     }
 }
 
-fn parse_fixture<'a>(
+fn parse_fixture_program<'a>(
     allocator: &'a Allocator,
-    source_text: &str,
-    fixture_path: &str,
+    compiler_case: &CompilerTestCase,
 ) -> Result<ParsedFixture<'a>, String> {
-    let path = PathBuf::from(fixture_path);
-    let host = FixtureProgramHost::new(path.clone(), source_text);
-    let store = program::ProgramStoreBuilder::new(allocator, host)
-        .add_root_file(path.clone())
-        .build()
-        .map_err(|err| err.to_string())?;
-    let program_id = store.id_for_path(&path).ok_or_else(|| {
-        format!("parsed fixture was not added to the program store: {fixture_path}")
-    })?;
+    let host = FixtureProgramHost::new(&compiler_case.files);
+    let mut builder = program::ProgramStoreBuilder::new(allocator, host);
+    for source_file in &compiler_case.files {
+        builder = builder.add_root_file(normalize_fixture_path(Path::new(&source_file.name)));
+    }
+    let store = builder.build().map_err(|err| err.to_string())?;
 
-    Ok(ParsedFixture { store, program_id })
+    Ok(ParsedFixture { store })
 }
 
-fn actual_symbol_records(
+fn actual_identifier_records(
     store: &program::ProgramStore<'_>,
     program_id: program::ProgramId,
     path: &str,
 ) -> Vec<TypeRecord> {
     let checker = CheckerBuilder::new().build(store);
-    let scoping = store.entry(program_id).unwrap().semantic().scoping();
-    scoping
-        .symbol_ids()
-        .map(|symbol_id| {
-            let span = scoping.symbol_span(symbol_id);
-            let symbol = SymbolRef::new(program_id, symbol_id);
-            TypeRecord {
-                path: path.to_string(),
-                start: span.start,
-                end: span.end,
-                text: sanitize(scoping.symbol_name(symbol_id)),
-                ty: sanitize(&checker.type_to_string(
-                    checker.get_type_of_symbol(symbol),
-                    NodeRef::new(program_id, NodeId::ROOT),
-                )),
-            }
+    store
+        .entry(program_id)
+        .unwrap()
+        .semantic()
+        .nodes()
+        .iter_enumerated()
+        .filter_map(|(node_id, node)| {
+            actual_identifier_record(&checker, program_id, path, node_id, node.kind())
         })
         .collect()
+}
+
+fn actual_identifier_record(
+    checker: &CheckerReturn<'_, '_>,
+    program_id: program::ProgramId,
+    path: &str,
+    node_id: NodeId,
+    kind: AstKind<'_>,
+) -> Option<TypeRecord> {
+    let node_ref = NodeRef::new(program_id, node_id);
+    let (span, text, ty) = match kind {
+        AstKind::BindingIdentifier(identifier) => {
+            let symbol_id = identifier.symbol_id.get()?;
+            let symbol = SymbolRef::new(program_id, symbol_id);
+            (
+                identifier.span,
+                identifier.name.to_string(),
+                checker.get_type_of_symbol(symbol),
+            )
+        }
+        AstKind::IdentifierReference(identifier) => {
+            checker.get_symbol_at_location(node_ref)?;
+            (
+                identifier.span,
+                identifier.name.to_string(),
+                checker.get_type_at_location(node_ref),
+            )
+        }
+        AstKind::IdentifierName(identifier) => {
+            let ty = checker.get_type_at_location(node_ref);
+            if ty == Ty::None {
+                return None;
+            }
+            (identifier.span, identifier.name.to_string(), ty)
+        }
+        AstKind::TSPropertySignature(property) => {
+            let span = property_key_span(&property.key)?;
+            let text = property_key_name(&property.key)?;
+            (span, text, checker.get_type_at_location(node_ref))
+        }
+        AstKind::ObjectProperty(property) => {
+            let span = property_key_span(&property.key)?;
+            let text = property_key_name(&property.key)?;
+            (span, text, checker.get_type_at_location(node_ref))
+        }
+        AstKind::StaticMemberExpression(member) => (
+            member.property.span,
+            member.property.name.to_string(),
+            checker.get_type_at_location(node_ref),
+        ),
+        AstKind::MethodDefinition(method) => {
+            let span = property_key_span(&method.key)?;
+            let text = property_key_name(&method.key)?;
+            (span, text, checker.get_type_at_location(node_ref))
+        }
+        AstKind::PropertyDefinition(property) => {
+            let span = property_key_span(&property.key)?;
+            let text = property_key_name(&property.key)?;
+            (span, text, checker.get_type_at_location(node_ref))
+        }
+        _ => return None,
+    };
+
+    if ty == Ty::None {
+        return None;
+    }
+
+    Some(TypeRecord {
+        path: path.to_string(),
+        start: span.start,
+        end: span.end,
+        text: sanitize(&text),
+        ty: sanitize(&checker.type_to_string(ty, node_ref)),
+    })
 }
 
 fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Vec<FileResult> {

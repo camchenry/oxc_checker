@@ -220,8 +220,10 @@ function canonicalFileName(ts, fileName, useCaseSensitive) {
 function createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive) {
   const defaultHost = ts.createCompilerHost(options, true);
   const filesByName = new Map();
+  const directories = new Set();
   for (const file of virtualFiles) {
     filesByName.set(canonicalFileName(ts, file.fileName, useCaseSensitive), file);
+    addAncestorDirectories(ts, directories, file.fileName, useCaseSensitive);
   }
 
   return {
@@ -230,6 +232,8 @@ function createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive) 
     getCanonicalFileName: (fileName) => canonicalFileName(ts, fileName, useCaseSensitive),
     getCurrentDirectory: () => normalizeSlashes(process.cwd()),
     fileExists: (fileName) => filesByName.has(canonicalFileName(ts, fileName, useCaseSensitive)) || defaultHost.fileExists(fileName),
+    directoryExists: (dirName) => directories.has(canonicalFileName(ts, dirName, useCaseSensitive))
+      || (defaultHost.directoryExists ? defaultHost.directoryExists(dirName) : true),
     readFile: (fileName) => {
       const file = filesByName.get(canonicalFileName(ts, fileName, useCaseSensitive));
       return file ? file.content : defaultHost.readFile(fileName);
@@ -242,6 +246,18 @@ function createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive) 
       return defaultHost.getSourceFile(fileName, languageVersion, onError, shouldCreateNewSourceFile);
     },
   };
+}
+
+function addAncestorDirectories(ts, directories, fileName, useCaseSensitive) {
+  let current = normalizeSlashes(path.dirname(fileName));
+  while (current && current !== ".") {
+    directories.add(canonicalFileName(ts, current, useCaseSensitive));
+    const parent = normalizeSlashes(path.dirname(current));
+    if (parent === current) {
+      break;
+    }
+    current = parent;
+  }
 }
 
 function isCompilableRootFile(fileName) {

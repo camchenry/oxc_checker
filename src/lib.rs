@@ -1,11 +1,16 @@
 #![allow(dead_code, unused_imports)]
 use oxc_ast::{
     AstKind,
-    ast::{Expression, Program, TSType, TSTypeAnnotation, VariableDeclarator},
+    ast::{
+        BindingPattern, CallExpression, Class, ClassElement, Expression, Function, NewExpression,
+        ObjectExpression, ObjectPropertyKind, Program, PropertyKey, Statement,
+        StaticMemberExpression, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
+        VariableDeclarator,
+    },
 };
 use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
-use oxc_span::GetSpan;
+use oxc_span::{GetSpan, Span};
 use oxc_str::Ident;
 use std::cell::RefCell;
 
@@ -23,6 +28,9 @@ enum Ty {
     Null,
     Any,
     Unknown,
+    Object(Vec<(String, Ty)>),
+    Function(Vec<(String, Ty)>, Box<Ty>),
+    Type(String),
 }
 
 impl Ty {
@@ -45,6 +53,27 @@ impl Ty {
             TSType::TSNullKeyword(_) => Self::Null,
             TSType::TSAnyKeyword(_) => Self::Any,
             TSType::TSUnknownKeyword(_) => Self::Unknown,
+            TSType::TSTypeLiteral(type_literal) => Self::Object(
+                type_literal
+                    .members
+                    .iter()
+                    .filter_map(|member| {
+                        let TSSignature::TSPropertySignature(property) = member else {
+                            return None;
+                        };
+                        let name = property_key_name(&property.key)?;
+                        let ty = Self::from_ts_type_annotation(property.type_annotation.as_deref());
+                        Some((name.to_string(), ty))
+                    })
+                    .collect(),
+            ),
+            TSType::TSArrayType(array) => Self::Type(format!(
+                "{}[]",
+                Self::from_ts_type(&array.element_type).to_type_string()
+            )),
+            TSType::TSTypeReference(reference) => {
+                Self::Type(ts_type_name_to_string(&reference.type_name))
+            }
             TSType::TSParenthesizedType(parenthesized) => {
                 Self::from_ts_type(&parenthesized.type_annotation)
             }
@@ -61,6 +90,85 @@ impl Ty {
             Expression::NullLiteral(_) => Self::Any,
             _ => Self::Any,
         }
+    }
+
+    fn property_type(&self, name: &str) -> Option<Self> {
+        match self {
+            Self::Object(properties) => properties
+                .iter()
+                .find_map(|(property_name, ty)| (property_name == name).then(|| ty.clone())),
+            _ => None,
+        }
+    }
+
+    fn to_type_string(&self) -> String {
+        match self {
+            Self::None => "none".to_string(),
+            Self::Number => "number".to_string(),
+            Self::String => "string".to_string(),
+            Self::Boolean => "boolean".to_string(),
+            Self::Bigint => "bigint".to_string(),
+            Self::Undefined => "undefined".to_string(),
+            Self::Null => "null".to_string(),
+            Self::Any => "any".to_string(),
+            Self::Unknown => "unknown".to_string(),
+            Self::Object(properties) => {
+                if properties.is_empty() {
+                    return "{}".to_string();
+                }
+
+                let properties = properties
+                    .iter()
+                    .map(|(name, ty)| format!("{name}: {};", ty.to_type_string()))
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                format!("{{ {properties} }}")
+            }
+            Self::Function(parameters, return_type) => {
+                let parameters = parameters
+                    .iter()
+                    .map(|(name, ty)| format!("{name}: {}", ty.to_type_string()))
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                format!("({parameters}) => {}", return_type.to_type_string())
+            }
+            Self::Type(ty) => ty.clone(),
+        }
+    }
+}
+
+fn property_key_name(key: &PropertyKey<'_>) -> Option<String> {
+    match key {
+        PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.to_string()),
+        _ => None,
+    }
+}
+
+fn property_key_span(key: &PropertyKey<'_>) -> Option<Span> {
+    match key {
+        PropertyKey::StaticIdentifier(identifier) => Some(identifier.span),
+        _ => None,
+    }
+}
+
+fn ts_type_name_to_string(name: &TSTypeName<'_>) -> String {
+    match name {
+        TSTypeName::IdentifierReference(identifier) => identifier.name.to_string(),
+        TSTypeName::QualifiedName(qualified) => {
+            format!(
+                "{}.{}",
+                ts_type_name_to_string(&qualified.left),
+                qualified.right.name
+            )
+        }
+        TSTypeName::ThisExpression(_) => "this".to_string(),
+    }
+}
+
+fn binding_pattern_name(pattern: &BindingPattern<'_>) -> Option<String> {
+    match pattern {
+        BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.to_string()),
+        _ => None,
     }
 }
 
@@ -223,11 +331,251 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .map_or(Ty::Any, |symbol_id| {
                     self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id))
                 }),
+            Expression::ObjectExpression(object) => {
+                self.get_type_of_object_expression(program_id, object)
+            }
+            Expression::NewExpression(new_expression) => {
+                self.get_type_of_new_expression(program_id, new_expression)
+            }
+            Expression::CallExpression(call_expression) => {
+                self.get_type_of_call_expression(program_id, call_expression)
+            }
+            Expression::StaticMemberExpression(member) => {
+                self.get_type_of_static_member_expression(program_id, member)
+            }
             _ => Ty::from_expression(expression),
         }
     }
 
-    fn get_type_of_import_symbol(&self, symbol: SymbolRef) -> Option<Ty> {
+    fn get_type_of_object_expression(
+        &self,
+        program_id: program::ProgramId,
+        object: &ObjectExpression<'_>,
+    ) -> Ty {
+        Ty::Object(
+            object
+                .properties
+                .iter()
+                .filter_map(|property| {
+                    let ObjectPropertyKind::ObjectProperty(property) = property else {
+                        return None;
+                    };
+                    let name = property_key_name(&property.key)?;
+                    let ty = self.get_type_of_expression(program_id, &property.value);
+                    Some((name, ty))
+                })
+                .collect(),
+        )
+    }
+
+    fn get_type_of_static_member_expression(
+        &self,
+        program_id: program::ProgramId,
+        member: &StaticMemberExpression<'_>,
+    ) -> Ty {
+        let object_type = self.get_type_of_expression(program_id, &member.object);
+        object_type
+            .property_type(member.property.name.as_str())
+            .or_else(|| {
+                self.get_property_type_of_named_type(
+                    program_id,
+                    &object_type,
+                    member.property.name.as_str(),
+                )
+            })
+            .unwrap_or(Ty::Any)
+    }
+
+    fn get_type_of_call_expression(
+        &self,
+        program_id: program::ProgramId,
+        call_expression: &CallExpression<'_>,
+    ) -> Ty {
+        match self.get_type_of_expression(program_id, &call_expression.callee) {
+            Ty::Function(_, return_type) => *return_type,
+            _ => Ty::Any,
+        }
+    }
+
+    fn get_type_of_new_expression(
+        &self,
+        program_id: program::ProgramId,
+        new_expression: &NewExpression<'_>,
+    ) -> Ty {
+        let Expression::Identifier(identifier) = &new_expression.callee else {
+            return Ty::Any;
+        };
+
+        let constructor_type = identifier
+            .reference_id
+            .get()
+            .and_then(|reference_id| {
+                self.semantic(program_id)
+                    .scoping()
+                    .get_reference(reference_id)
+                    .symbol_id()
+            })
+            .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)));
+
+        if let Some(Ty::Type(type_name)) = constructor_type
+            && let Some(instance_name) = type_name.strip_prefix("typeof ")
+        {
+            return Ty::Type(instance_name.to_string());
+        }
+
+        Ty::Type(identifier.name.to_string())
+    }
+
+    fn get_property_type_of_named_type(
+        &self,
+        program_id: program::ProgramId,
+        object_type: &Ty,
+        property_name: &str,
+    ) -> Option<Ty> {
+        let Ty::Type(type_name) = object_type else {
+            return None;
+        };
+        let is_static = type_name.starts_with("typeof ");
+        let class_name = type_name.strip_prefix("typeof ").unwrap_or(type_name);
+        let class_symbol = self.get_class_symbol_for_type(program_id, class_name)?;
+        let class = self.get_class_for_symbol(class_symbol)?;
+        self.get_class_member_type(class_symbol.program_id, class, property_name, is_static)
+    }
+
+    fn get_class_symbol_for_type(
+        &self,
+        program_id: program::ProgramId,
+        class_name: &str,
+    ) -> Option<SymbolRef> {
+        self.get_root_symbol(program_id, class_name)
+            .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+            .or_else(|| {
+                self.store.entries().iter().find_map(|entry| {
+                    self.get_root_symbol(entry.id(), class_name)
+                        .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+                })
+            })
+    }
+
+    fn get_root_symbol(&self, program_id: program::ProgramId, name: &str) -> Option<SymbolRef> {
+        self.semantic(program_id)
+            .scoping()
+            .get_root_binding(Ident::from(name))
+            .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+    }
+
+    fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<&Class<'_>> {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        match self.nodes(symbol.program_id).kind(declaration) {
+            AstKind::Class(class) => Some(class),
+            AstKind::BindingIdentifier(_) => {
+                if let AstKind::Class(class) =
+                    self.nodes(symbol.program_id).parent_kind(declaration)
+                {
+                    Some(class)
+                } else {
+                    None
+                }
+            }
+            _ => None,
+        }
+    }
+
+    fn get_class_member_type(
+        &self,
+        program_id: program::ProgramId,
+        class: &Class<'_>,
+        property_name: &str,
+        is_static: bool,
+    ) -> Option<Ty> {
+        class.body.body.iter().find_map(|element| match element {
+            ClassElement::MethodDefinition(method)
+                if method.r#static == is_static
+                    && property_key_name(&method.key).as_deref() == Some(property_name) =>
+            {
+                Some(self.get_type_of_function_signature(program_id, &method.value))
+            }
+            ClassElement::PropertyDefinition(property)
+                if property.r#static == is_static
+                    && property_key_name(&property.key).as_deref() == Some(property_name) =>
+            {
+                property.type_annotation.as_deref().map_or_else(
+                    || {
+                        property
+                            .value
+                            .as_ref()
+                            .map(|value| self.get_type_of_expression(program_id, value))
+                    },
+                    |annotation| Some(Ty::from_ts_type_annotation(Some(annotation))),
+                )
+            }
+            _ => None,
+        })
+    }
+
+    fn get_type_of_function_signature(
+        &self,
+        program_id: program::ProgramId,
+        function: &Function<'_>,
+    ) -> Ty {
+        let parameters = function
+            .params
+            .items
+            .iter()
+            .map(|parameter| {
+                let name =
+                    binding_pattern_name(&parameter.pattern).unwrap_or_else(|| "_".to_string());
+                let ty = Ty::from_ts_type_annotation(parameter.type_annotation.as_deref());
+                (name, ty)
+            })
+            .collect::<Vec<_>>();
+        let return_type = function.return_type.as_deref().map_or_else(
+            || self.infer_function_return_type(program_id, function),
+            |annotation| Ty::from_ts_type_annotation(Some(annotation)),
+        );
+
+        Ty::Function(parameters, Box::new(return_type))
+    }
+
+    fn infer_function_return_type(
+        &self,
+        program_id: program::ProgramId,
+        function: &Function<'_>,
+    ) -> Ty {
+        let Some(body) = &function.body else {
+            return Ty::Any;
+        };
+        body.statements
+            .iter()
+            .find_map(|statement| {
+                let Statement::ReturnStatement(statement) = statement else {
+                    return None;
+                };
+                statement
+                    .argument
+                    .as_ref()
+                    .map(|argument| self.get_return_expression_type(program_id, argument))
+            })
+            .unwrap_or(Ty::Undefined)
+    }
+
+    fn get_return_expression_type(
+        &self,
+        program_id: program::ProgramId,
+        expression: &Expression<'_>,
+    ) -> Ty {
+        match expression {
+            Expression::NewExpression(new_expression) => {
+                self.get_type_of_new_expression(program_id, new_expression)
+            }
+            _ => self.get_type_of_expression(program_id, expression),
+        }
+    }
+
+    fn get_imported_symbol(&self, symbol: SymbolRef) -> Option<SymbolRef> {
         let declaration = self
             .semantic(symbol.program_id)
             .scoping()
@@ -251,7 +599,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .scoping()
             .get_root_binding(Ident::from(imported_name.as_str()))?;
 
-        Some(self.get_type_of_symbol(SymbolRef::new(imported_program_id, imported_symbol_id)))
+        Some(SymbolRef::new(imported_program_id, imported_symbol_id))
+    }
+
+    fn get_type_of_import_symbol(&self, symbol: SymbolRef) -> Option<Ty> {
+        self.get_imported_symbol(symbol)
+            .map(|imported_symbol| self.get_type_of_symbol(imported_symbol))
     }
 }
 
@@ -276,16 +629,41 @@ impl Checker for CheckerReturn<'_, '_> {
     }
 
     fn get_type_at_location(&self, node: NodeRef) -> Ty {
-        self.get_symbol_at_location(node)
-            .map_or(Ty::None, |sym| self.get_type_of_symbol(sym))
+        match self.node_kind(node) {
+            AstKind::TSPropertySignature(property) => {
+                Ty::from_ts_type_annotation(property.type_annotation.as_deref())
+            }
+            AstKind::ObjectProperty(property) => {
+                self.get_type_of_expression(node.program_id, &property.value)
+            }
+            AstKind::StaticMemberExpression(member) => {
+                self.get_type_of_static_member_expression(node.program_id, member)
+            }
+            AstKind::MethodDefinition(method) => {
+                self.get_type_of_function_signature(node.program_id, &method.value)
+            }
+            AstKind::PropertyDefinition(property) => {
+                property.type_annotation.as_deref().map_or_else(
+                    || {
+                        property.value.as_ref().map_or(Ty::Any, |value| {
+                            self.get_type_of_expression(node.program_id, value)
+                        })
+                    },
+                    |annotation| Ty::from_ts_type_annotation(Some(annotation)),
+                )
+            }
+            _ => self
+                .get_symbol_at_location(node)
+                .map_or(Ty::None, |sym| self.get_type_of_symbol(sym)),
+        }
     }
 
     fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty {
-        match self
+        let declaration = self
             .semantic(sym.program_id)
-            .symbol_declaration(sym.symbol_id)
-            .kind()
-        {
+            .scoping()
+            .symbol_declaration(sym.symbol_id);
+        match self.nodes(sym.program_id).kind(declaration) {
             AstKind::VariableDeclarator(declarator) => {
                 Ty::from_ts_type_annotation(declarator.type_annotation.as_deref())
             }
@@ -304,6 +682,15 @@ impl Checker for CheckerReturn<'_, '_> {
             AstKind::AccessorProperty(property) => {
                 Ty::from_ts_type_annotation(property.type_annotation.as_deref())
             }
+            AstKind::BindingIdentifier(identifier) => {
+                match self.nodes(sym.program_id).parent_kind(declaration) {
+                    AstKind::Class(_) => Ty::Type(format!("typeof {}", identifier.name)),
+                    _ => Ty::None,
+                }
+            }
+            AstKind::Class(class) => class.id.as_ref().map_or(Ty::Any, |identifier| {
+                Ty::Type(format!("typeof {}", identifier.name))
+            }),
             _ => Ty::None,
         }
     }
@@ -367,18 +754,7 @@ impl Checker for CheckerReturn<'_, '_> {
     }
 
     fn type_to_string(&self, t: Ty, _location: NodeRef) -> String {
-        match t {
-            Ty::None => "none",
-            Ty::Number => "number",
-            Ty::String => "string",
-            Ty::Boolean => "boolean",
-            Ty::Bigint => "bigint",
-            Ty::Undefined => "undefined",
-            Ty::Null => "null",
-            Ty::Any => "any",
-            Ty::Unknown => "unknown",
-        }
-        .to_string()
+        t.to_type_string()
     }
 
     fn symbol_to_string(&self, s: SymbolRef, _location: NodeRef) -> String {
@@ -561,6 +937,32 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "b"), Ty::Bigint);
         assert_eq!(get_global_symbol_type(&ret, "a"), Ty::Any);
         assert_eq!(get_global_symbol_type(&ret, "annotated"), Ty::String);
+    }
+
+    #[test]
+    fn new_expression_infers_class_instance_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        class Foo {
+            doThing(x: {a: number}) {
+                return {b: x.a};
+            }
+        }
+        const c = new Foo();
+        const x = c.doThing({a: 12});
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "c"),
+            Ty::Type("Foo".to_string())
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "x"),
+            Ty::Object(vec![("b".to_string(), Ty::Number)])
+        );
     }
 
     #[test]
