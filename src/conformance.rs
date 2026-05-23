@@ -2,7 +2,7 @@
 // writing the conformance testing code myself yet.
 use std::{
     any::Any,
-    collections::{BTreeMap, BTreeSet},
+    collections::{BTreeMap, BTreeSet, HashMap},
     fmt,
     path::{Path, PathBuf},
     process::Command,
@@ -157,6 +157,18 @@ impl ComparisonStats {
 
 struct ParsedFixture<'a> {
     checker: CheckerReturn<'a>,
+}
+
+struct CompilerTestCase {
+    settings: HashMap<String, String>,
+    files: Vec<CompilerTestFile>,
+    has_explicit_files: bool,
+}
+
+struct CompilerTestFile {
+    name: String,
+    source_text: String,
+    settings: HashMap<String, String>,
 }
 
 struct ConformanceError(String);
@@ -343,15 +355,125 @@ fn collect_oxc_records(cases_root: &Path) -> Vec<TypeRecord> {
             Ok(source_text) => source_text,
             Err(_) => continue,
         };
-        let allocator = Allocator::default();
-        let parsed = match parse_fixture(&allocator, &source_text, &relative_path) {
-            Ok(parsed) => parsed,
-            Err(_) => continue,
-        };
-        records.extend(actual_symbol_records(&parsed.checker, &relative_path));
+        let compiler_case = parse_compiler_test_case(&source_text, &relative_path);
+        let _settings = &compiler_case.settings;
+        for source_file in &compiler_case.files {
+            let _file_settings = &source_file.settings;
+            let allocator = Allocator::default();
+            let parsed =
+                match parse_fixture(&allocator, &source_file.source_text, &source_file.name) {
+                    Ok(parsed) => parsed,
+                    Err(_) => continue,
+                };
+            records.extend(actual_symbol_records(
+                &parsed.checker,
+                &record_path(
+                    &relative_path,
+                    source_file,
+                    compiler_case.has_explicit_files,
+                ),
+            ));
+        }
     }
     records.sort();
     records
+}
+
+fn parse_compiler_test_case(source_text: &str, fixture_path: &str) -> CompilerTestCase {
+    let mut settings = HashMap::new();
+    let mut files = Vec::new();
+    let mut current_file_name = None;
+    let mut current_file_settings = HashMap::new();
+    let mut current_file_lines = Vec::new();
+    let mut has_explicit_files = false;
+
+    for line in source_text.lines() {
+        if let Some((key, value)) = parse_compiler_directive(line) {
+            if key == "filename" {
+                has_explicit_files = true;
+                if let Some(name) = current_file_name.replace(value) {
+                    push_compiler_test_file(
+                        &mut files,
+                        name,
+                        &mut current_file_lines,
+                        std::mem::take(&mut current_file_settings),
+                    );
+                } else {
+                    current_file_lines.clear();
+                }
+            } else if current_file_name.is_some() {
+                current_file_settings.insert(key, value);
+            } else {
+                settings.insert(key, value);
+            }
+            continue;
+        }
+
+        current_file_lines.push(line.to_string());
+    }
+
+    let fallback_name = Path::new(fixture_path)
+        .file_name()
+        .and_then(|file_name| file_name.to_str())
+        .unwrap_or(fixture_path)
+        .to_string();
+    push_compiler_test_file(
+        &mut files,
+        current_file_name.unwrap_or(fallback_name),
+        &mut current_file_lines,
+        current_file_settings,
+    );
+
+    CompilerTestCase {
+        settings,
+        files,
+        has_explicit_files,
+    }
+}
+
+fn parse_compiler_directive(line: &str) -> Option<(String, String)> {
+    let comment = line.trim_start().strip_prefix("//")?.trim_start();
+    let directive = comment.strip_prefix('@')?;
+    let (key, value) = directive.split_once(':')?;
+    let key = key.trim();
+    if key.is_empty()
+        || !key
+            .chars()
+            .all(|ch| ch == '_' || ch.is_ascii_alphanumeric())
+    {
+        return None;
+    }
+
+    Some((key.to_ascii_lowercase(), value.trim().to_string()))
+}
+
+fn push_compiler_test_file(
+    files: &mut Vec<CompilerTestFile>,
+    name: String,
+    lines: &mut Vec<String>,
+    settings: HashMap<String, String>,
+) {
+    files.push(CompilerTestFile {
+        name: normalize_test_file_name(&name),
+        source_text: std::mem::take(lines).join("\n"),
+        settings,
+    });
+}
+
+fn normalize_test_file_name(name: &str) -> String {
+    name.replace('\\', "/")
+}
+
+fn record_path(
+    fixture_path: &str,
+    source_file: &CompilerTestFile,
+    has_explicit_files: bool,
+) -> String {
+    if has_explicit_files {
+        format!("{fixture_path}::{}", source_file.name)
+    } else {
+        fixture_path.to_string()
+    }
 }
 
 fn parse_fixture<'a>(
@@ -588,8 +710,23 @@ fn line_number_for_offset(path: &str, line_starts: &mut Option<Vec<u32>>, offset
 }
 
 fn source_line_starts(path: &str) -> Vec<u32> {
-    let source_path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(case_snapshot_path(path));
+    let (fixture_path, source_file_name) = path
+        .split_once("::")
+        .map_or((path, None), |(fixture_path, source_file_name)| {
+            (fixture_path, Some(source_file_name))
+        });
+    let source_path =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(case_snapshot_path(fixture_path));
     let Ok(source_text) = std::fs::read_to_string(source_path) else {
+        return vec![0];
+    };
+    let compiler_case = parse_compiler_test_case(&source_text, fixture_path);
+    let Some(source_text) = compiler_case
+        .files
+        .iter()
+        .find(|file| source_file_name.is_none_or(|name| file.name == name))
+        .map(|file| file.source_text.as_str())
+    else {
         return vec![0];
     };
 
@@ -652,5 +789,44 @@ fn write_snapshot_error(
             snapshot.push_str("      expected: <missing>\n");
             snapshot.push_str(&format!("      actual:   {actual}\n"));
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn compiler_test_case_parser_collects_directives() {
+        let parsed = parse_compiler_test_case(
+            "// @target: es6\n// @module: commonjs\nlet value = false;",
+            "compiler/example.ts",
+        );
+
+        assert_eq!(parsed.settings.get("target").unwrap(), "es6");
+        assert_eq!(parsed.settings.get("module").unwrap(), "commonjs");
+        assert!(!parsed.has_explicit_files);
+        assert_eq!(parsed.files.len(), 1);
+        assert_eq!(parsed.files[0].name, "example.ts");
+        assert_eq!(parsed.files[0].source_text, "let value = false;");
+    }
+
+    #[test]
+    fn compiler_test_case_parser_splits_filename_units() {
+        let parsed = parse_compiler_test_case(
+            "// @target: es2015\n// @filename: C:/foo/bar/Baz/src/utils.ts\nexport function exist() {}\n// @filename: C:/foo/bar/Baz/src/sample.ts\nimport { exit } from \"./utils.js\";\n\nexit()",
+            "compiler/missingMemberErrorHasShortPath.ts",
+        );
+
+        assert_eq!(parsed.settings.get("target").unwrap(), "es2015");
+        assert!(parsed.has_explicit_files);
+        assert_eq!(parsed.files.len(), 2);
+        assert_eq!(parsed.files[0].name, "C:/foo/bar/Baz/src/utils.ts");
+        assert_eq!(parsed.files[0].source_text, "export function exist() {}");
+        assert_eq!(parsed.files[1].name, "C:/foo/bar/Baz/src/sample.ts");
+        assert_eq!(
+            parsed.files[1].source_text,
+            "import { exit } from \"./utils.js\";\n\nexit()"
+        );
     }
 }
