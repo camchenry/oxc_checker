@@ -1,7 +1,7 @@
 #![allow(dead_code, unused_imports)]
 use oxc_ast::{
     AstKind,
-    ast::{Program, TSType, TSTypeAnnotation},
+    ast::{Expression, Program, TSType, TSTypeAnnotation, VariableDeclarator},
 };
 use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
@@ -46,6 +46,17 @@ impl Ty {
                 Self::from_ts_type(&parenthesized.type_annotation)
             }
             _ => Self::None,
+        }
+    }
+
+    fn from_expression(expression: &Expression<'_>) -> Self {
+        match expression {
+            Expression::BooleanLiteral(_) => Self::Boolean,
+            Expression::NumericLiteral(_) => Self::Number,
+            Expression::BigIntLiteral(_) => Self::Bigint,
+            Expression::StringLiteral(_) => Self::String,
+            Expression::NullLiteral(_) => Self::Any,
+            _ => Self::Any,
         }
     }
 }
@@ -276,6 +287,9 @@ impl Checker for CheckerReturn<'_> {
         self.semantic().scoping().symbol_name(s).to_string()
     }
 }
+
+#[cfg(all(test, any(feature = "conformance", feature = "conformance-tsc")))]
+mod conformance;
 
 #[cfg(test)]
 mod test {

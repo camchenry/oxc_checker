@@ -3,6 +3,11 @@ name = "oxc_checker"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+default = []
+conformance = []
+conformance-tsc = []
+
 [dependencies]
 oxc_ast = "0.132.0"
 oxc_allocator =  "0.132.0"

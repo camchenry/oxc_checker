@@ -1,0 +1,3 @@
+[alias]
+conformance = "test --features conformance conformance::typescript_compiler_type_records -- --exact"
+conformance-tsc = "test --features conformance-tsc conformance::typescript_compiler_type_extractor -- --exact --nocapture"
