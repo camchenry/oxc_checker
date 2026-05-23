@@ -26,7 +26,7 @@ impl Ty {
     /// Take a type annotation like `: number` and return the corresponding type. Returns no
     /// type if there is no type annotation.
     fn from_ts_type_annotation(type_annotation: Option<&TSTypeAnnotation<'_>>) -> Self {
-        type_annotation.map_or(Self::None, |type_annotation| {
+        type_annotation.map_or(Self::Any, |type_annotation| {
             Self::from_ts_type(&type_annotation.type_annotation)
         })
     }
