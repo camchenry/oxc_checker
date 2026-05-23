@@ -318,8 +318,37 @@ mod test {
         }
     }
 
+    fn get_global_symbol_type(checker: &CheckerReturn, name: &str) -> Ty {
+        let scoping = checker.semantic().scoping();
+        let symbol = scoping.get_root_binding(Ident::from(name)).unwrap();
+        checker.get_type_of_symbol(symbol)
+    }
+
+    fn get_symbol_type_in_function(
+        checker: &CheckerReturn,
+        func_name: &str,
+        param_name: &str,
+    ) -> Ty {
+        let scoping = checker.semantic().scoping();
+        // get scope for the function
+        let func = scoping
+            .scope_descendants_from_root()
+            .find(|s| {
+                if let AstKind::Function(func) =
+                    checker.semantic().nodes().kind(scoping.get_node_id(*s))
+                {
+                    func.name() == Some(Ident::from(func_name))
+                } else {
+                    false
+                }
+            })
+            .unwrap();
+        let symbol = scoping.get_binding(func, Ident::from(param_name)).unwrap();
+        checker.get_type_of_symbol(symbol)
+    }
+
     #[test]
-    fn it_works() {
+    fn simple_declared_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
             &allocator,
@@ -335,22 +364,35 @@ mod test {
         ",
         );
 
-        let scoping = ret.checker.semantic().scoping();
-        let a = scoping.get_root_binding(Ident::from("a")).unwrap();
-        let b = scoping.get_root_binding(Ident::from("b")).unwrap();
-        let c = scoping.get_root_binding(Ident::from("c")).unwrap();
-        let d = scoping.get_root_binding(Ident::from("d")).unwrap();
-        let e = scoping.get_root_binding(Ident::from("e")).unwrap();
-        let f = scoping.get_root_binding(Ident::from("f")).unwrap();
-        let g = scoping.get_root_binding(Ident::from("g")).unwrap();
-        let h = scoping.get_root_binding(Ident::from("h")).unwrap();
-        assert_eq!(ret.checker.get_type_of_symbol(a), Ty::Number);
-        assert_eq!(ret.checker.get_type_of_symbol(b), Ty::String);
-        assert_eq!(ret.checker.get_type_of_symbol(c), Ty::Boolean);
-        assert_eq!(ret.checker.get_type_of_symbol(d), Ty::Bigint);
-        assert_eq!(ret.checker.get_type_of_symbol(e), Ty::Undefined);
-        assert_eq!(ret.checker.get_type_of_symbol(f), Ty::Null);
-        assert_eq!(ret.checker.get_type_of_symbol(g), Ty::Any);
-        assert_eq!(ret.checker.get_type_of_symbol(h), Ty::Unknown);
+        assert_eq!(get_global_symbol_type(&ret.checker, "a"), Ty::Number);
+        assert_eq!(get_global_symbol_type(&ret.checker, "b"), Ty::String);
+        assert_eq!(get_global_symbol_type(&ret.checker, "c"), Ty::Boolean);
+        assert_eq!(get_global_symbol_type(&ret.checker, "d"), Ty::Bigint);
+        assert_eq!(get_global_symbol_type(&ret.checker, "e"), Ty::Undefined);
+        assert_eq!(get_global_symbol_type(&ret.checker, "f"), Ty::Null);
+        assert_eq!(get_global_symbol_type(&ret.checker, "g"), Ty::Any);
+        assert_eq!(get_global_symbol_type(&ret.checker, "h"), Ty::Unknown);
+    }
+
+    #[test]
+    fn function_parameter_declared_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "function foo(a: number, b: string, c: boolean) {}",
+        );
+
+        assert_eq!(
+            get_symbol_type_in_function(&ret.checker, "foo", "a"),
+            Ty::Number
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret.checker, "foo", "b"),
+            Ty::String
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret.checker, "foo", "c"),
+            Ty::Boolean
+        );
     }
 }
