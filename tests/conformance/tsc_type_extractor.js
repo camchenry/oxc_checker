@@ -109,7 +109,7 @@ function main() {
     module: ts.ModuleKind.CommonJS,
     noEmit: true,
     skipLibCheck: true,
-    strict: false,
+    strict: true,
     target: ts.ScriptTarget.Latest,
   };
 
