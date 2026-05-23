@@ -82,12 +82,76 @@ type TypeRecordMap = BTreeMap<TypeRecordKey, String>;
 
 struct FileResult {
     path: String,
+    matched_types: usize,
     errors: Vec<ComparisonError>,
 }
 
 impl FileResult {
     fn passed(&self) -> bool {
         self.errors.is_empty()
+    }
+
+    fn mismatched_types(&self) -> usize {
+        self.errors.len()
+    }
+
+    fn total_types(&self) -> usize {
+        self.matched_types + self.mismatched_types()
+    }
+
+    fn type_match_percentage(&self) -> f64 {
+        percentage(self.matched_types, self.total_types())
+    }
+}
+
+struct ComparisonStats {
+    passed_files: usize,
+    failed_files: usize,
+    total_files: usize,
+    matched_types: usize,
+    mismatched_types: usize,
+    total_types: usize,
+}
+
+impl ComparisonStats {
+    fn from_results(results: &[FileResult]) -> Self {
+        let total_files = results.len();
+        let failed_files = results.iter().filter(|result| !result.passed()).count();
+        let passed_files = total_files - failed_files;
+        let matched_types = results.iter().map(|result| result.matched_types).sum();
+        let mismatched_types = results.iter().map(FileResult::mismatched_types).sum();
+        let total_types = matched_types + mismatched_types;
+
+        Self {
+            passed_files,
+            failed_files,
+            total_files,
+            matched_types,
+            mismatched_types,
+            total_types,
+        }
+    }
+
+    fn file_pass_percentage(&self) -> f64 {
+        percentage(self.passed_files, self.total_files)
+    }
+
+    fn type_match_percentage(&self) -> f64 {
+        percentage(self.matched_types, self.total_types)
+    }
+
+    fn summary(&self) -> String {
+        format!(
+            "files: {} passed, {} failed, {} total ({:.2}%)\ntypes: {} matched, {} mismatched, {} total ({:.2}%)",
+            self.passed_files,
+            self.failed_files,
+            self.total_files,
+            self.file_pass_percentage(),
+            self.matched_types,
+            self.mismatched_types,
+            self.total_types,
+            self.type_match_percentage()
+        )
     }
 }
 
@@ -192,19 +256,12 @@ fn run_typescript_compiler_type_records() -> ConformanceResult {
 
     let tsc_records = read_records(&tsc_types_path);
     let results = compare_records(&tsc_records, &oxc_records);
-    let total = results.len();
-    let failed = results.iter().filter(|result| !result.passed()).count();
-    let passed = total - failed;
-    let percentage = if total > 0 {
-        (passed as f64 / total as f64) * 100.0
-    } else {
-        0.0
-    };
-    write_snapshot(&snapshot_path, passed, failed, total, &results);
+    let stats = ComparisonStats::from_results(&results);
+    write_snapshot(&snapshot_path, &stats, &results);
 
-    let summary = format!("{passed} passed, {failed} failed, {total} total ({percentage:.2}%)\n",);
+    let summary = stats.summary();
 
-    if failed == 0 {
+    if stats.failed_files == 0 {
         eprintln!("TypeScript compiler case type-record conformance passed:\n{summary}");
         Ok(())
     } else {
@@ -356,13 +413,14 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
         .into_iter()
         .map(|path| {
             let mut errors = Vec::new();
+            let mut matched_types = 0;
             let empty = TypeRecordMap::new();
             let tsc_by_key = tsc_by_file.get(&path).unwrap_or(&empty);
             let oxc_by_key = oxc_by_file.get(&path).unwrap_or(&empty);
 
             for (key, tsc_type) in tsc_by_key {
                 match oxc_by_key.get(key) {
-                    Some(oxc_type) if oxc_type == tsc_type => {}
+                    Some(oxc_type) if oxc_type == tsc_type => matched_types += 1,
                     Some(oxc_type) => errors.push(ComparisonError::TypeMismatch {
                         start: key.start,
                         end: key.end,
@@ -390,7 +448,11 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                 }
             }
 
-            FileResult { path, errors }
+            FileResult {
+                path,
+                matched_types,
+                errors,
+            }
         })
         .collect()
 }
@@ -449,28 +511,43 @@ fn sanitize(value: &str) -> String {
     value.replace(['\t', '\r', '\n'], " ").trim().to_string()
 }
 
-fn write_snapshot(
-    snapshot_path: &Path,
-    passed: usize,
-    failed: usize,
-    total: usize,
-    results: &[FileResult],
-) {
-    let mut snapshot = String::new();
-    let pass_percentage = if total == 0 {
+fn percentage(numerator: usize, denominator: usize) -> f64 {
+    if denominator == 0 {
         0.0
     } else {
-        (passed as f64 / total as f64) * 100.0
-    };
+        (numerator as f64 / denominator as f64) * 100.0
+    }
+}
+
+fn write_snapshot(snapshot_path: &Path, stats: &ComparisonStats, results: &[FileResult]) {
+    let mut snapshot = String::new();
     snapshot.push_str("# TypeScript compiler case type-record conformance snapshot\n");
     snapshot.push_str("# Generated by `cargo conformance`.\n");
     snapshot.push_str(&format!(
-        "summary: passed={passed} failed={failed} total={total} pass_percentage={pass_percentage:.2}%\n\n"
+        "files: passed={} failed={} total={} pass_percentage={:.2}%\n",
+        stats.passed_files,
+        stats.failed_files,
+        stats.total_files,
+        stats.file_pass_percentage()
+    ));
+    snapshot.push_str(&format!(
+        "types: matched={} mismatched={} total={} match_percentage={:.2}%\n\n",
+        stats.matched_types,
+        stats.mismatched_types,
+        stats.total_types,
+        stats.type_match_percentage()
     ));
 
     for result in results {
         let status = if result.passed() { "PASS" } else { "FAIL" };
-        snapshot.push_str(&format!("{status} {}\n", case_snapshot_path(&result.path)));
+        snapshot.push_str(&format!(
+            "{status} {} matched_types={} mismatched_types={} total_types={} match_percentage={:.2}%\n",
+            case_snapshot_path(&result.path),
+            result.matched_types,
+            result.mismatched_types(),
+            result.total_types(),
+            result.type_match_percentage()
+        ));
         let mut line_starts = None;
         for error in &result.errors {
             write_snapshot_error(&mut snapshot, &result.path, &mut line_starts, error);
