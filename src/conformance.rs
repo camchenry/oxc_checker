@@ -156,7 +156,47 @@ impl ComparisonStats {
 }
 
 struct ParsedFixture<'a> {
-    checker: CheckerReturn<'a>,
+    store: program::ProgramStore<'a>,
+    program_id: program::ProgramId,
+}
+
+struct FixtureProgramHost {
+    path: PathBuf,
+    source_text: String,
+}
+
+impl FixtureProgramHost {
+    fn new(path: impl Into<PathBuf>, source_text: &str) -> Self {
+        Self {
+            path: path.into(),
+            source_text: source_text.to_string(),
+        }
+    }
+}
+
+impl program::ProgramHost for FixtureProgramHost {
+    fn read_source(&self, path: &Path) -> program::ProgramStoreResult<String> {
+        if path == self.path {
+            Ok(self.source_text.clone())
+        } else {
+            Err(program::ProgramStoreError::ReadSource {
+                path: path.to_path_buf(),
+                message: "file not found".to_string(),
+            })
+        }
+    }
+
+    fn canonicalize_path(&self, path: &Path) -> PathBuf {
+        path.to_path_buf()
+    }
+
+    fn resolve_module(
+        &self,
+        _containing_file: &Path,
+        specifier: &str,
+    ) -> program::HostModuleResolution {
+        program::HostModuleResolution::Missing(specifier.to_string())
+    }
 }
 
 struct CompilerTestCase {
@@ -366,7 +406,8 @@ fn collect_oxc_records(cases_root: &Path) -> Vec<TypeRecord> {
                     Err(_) => continue,
                 };
             records.extend(actual_symbol_records(
-                &parsed.checker,
+                &parsed.store,
+                parsed.program_id,
                 &record_path(
                     &relative_path,
                     source_file,
@@ -478,46 +519,43 @@ fn record_path(
 
 fn parse_fixture<'a>(
     allocator: &'a Allocator,
-    source_text: &'a str,
+    source_text: &str,
     fixture_path: &str,
 ) -> Result<ParsedFixture<'a>, String> {
-    let source_type = SourceType::from_path(fixture_path).unwrap_or_else(|_| SourceType::ts());
-    let parser = Parser::new(allocator, source_text, source_type);
-    let ret = parser.parse();
-    if !ret.errors.is_empty() {
-        return Err(format!(
-            "parse errors in TypeScript fixture {fixture_path}: {:?}",
-            ret.errors
-        ));
-    }
+    let path = PathBuf::from(fixture_path);
+    let host = FixtureProgramHost::new(path.clone(), source_text);
+    let store = program::ProgramStoreBuilder::new(allocator, host)
+        .add_root_file(path.clone())
+        .build()
+        .map_err(|err| err.to_string())?;
+    let program_id = store.id_for_path(&path).ok_or_else(|| {
+        format!("parsed fixture was not added to the program store: {fixture_path}")
+    })?;
 
-    let program = allocator.alloc(ret.program);
-    let semantic_ret = SemanticBuilder::new().build(program);
-    if !semantic_ret.errors.is_empty() {
-        return Err(format!(
-            "semantic errors in TypeScript fixture {fixture_path}: {:?}",
-            semantic_ret.errors
-        ));
-    }
-
-    let checker = CheckerBuilder::new().build(program, semantic_ret.semantic);
-    Ok(ParsedFixture { checker })
+    Ok(ParsedFixture { store, program_id })
 }
 
-fn actual_symbol_records(checker: &CheckerReturn<'_>, path: &str) -> Vec<TypeRecord> {
-    let scoping = checker.semantic().scoping();
+fn actual_symbol_records(
+    store: &program::ProgramStore<'_>,
+    program_id: program::ProgramId,
+    path: &str,
+) -> Vec<TypeRecord> {
+    let checker = CheckerBuilder::new().build(store);
+    let scoping = store.entry(program_id).unwrap().semantic().scoping();
     scoping
         .symbol_ids()
-        .map(|symbol| {
-            let span = scoping.symbol_span(symbol);
+        .map(|symbol_id| {
+            let span = scoping.symbol_span(symbol_id);
+            let symbol = SymbolRef::new(program_id, symbol_id);
             TypeRecord {
                 path: path.to_string(),
                 start: span.start,
                 end: span.end,
-                text: sanitize(scoping.symbol_name(symbol)),
-                ty: sanitize(
-                    &checker.type_to_string(checker.get_type_of_symbol(symbol), NodeId::ROOT),
-                ),
+                text: sanitize(scoping.symbol_name(symbol_id)),
+                ty: sanitize(&checker.type_to_string(
+                    checker.get_type_of_symbol(symbol),
+                    NodeRef::new(program_id, NodeId::ROOT),
+                )),
             }
         })
         .collect()
