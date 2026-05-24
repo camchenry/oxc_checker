@@ -769,9 +769,11 @@ fn actual_identifier_record(
             let text = property_key_name(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
-        AstKind::TSTypeAliasDeclaration(alias) => {
-            (alias.id.span, alias.id.name.to_string(), Ty::Any)
-        }
+        AstKind::TSTypeAliasDeclaration(alias) => (
+            alias.id.span,
+            alias.id.name.to_string(),
+            type_of_type_alias(alias),
+        ),
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
             parameter.name.name.to_string(),
@@ -795,6 +797,25 @@ fn actual_identifier_record(
         text: sanitize(&text),
         ty: sanitize(&checker.type_to_string(ty, node_ref)),
     })
+}
+
+fn type_of_type_alias(alias: &oxc_ast::ast::TSTypeAliasDeclaration<'_>) -> Ty {
+    if let Some(type_parameters) = &alias.type_parameters {
+        return Ty::TypeReference {
+            name: alias.id.name.to_string(),
+            type_arguments: type_parameters
+                .params
+                .iter()
+                .map(|parameter| Ty::TypeReference {
+                    name: parameter.name.name.to_string(),
+                    type_arguments: Vec::new(),
+                })
+                .collect(),
+        };
+    }
+
+    let ty = Ty::from_ts_type(&alias.type_annotation);
+    if ty == Ty::None { Ty::Any } else { ty }
 }
 
 fn ts_type_name_span_and_text(name: &TSTypeName<'_>) -> Option<(Span, String)> {

@@ -397,9 +397,16 @@ function recordForNode(ts, checker, sourceFile, relativePath, node) {
   const start = node.getStart(sourceFile, false);
   const end = node.getEnd();
   const text = sanitize(node.getText(sourceFile));
-  const type = checker.getTypeOfSymbolAtLocation(symbol, node);
+  const type = typeForIdentifier(ts, checker, symbol, node);
   const typeText = sanitize(checker.typeToString(type, node));
   return `${relativePath}\t${start}\t${end}\t${text}\t${typeText}`;
+}
+
+function typeForIdentifier(ts, checker, symbol, node) {
+  if (ts.isTypeAliasDeclaration(node.parent) && node.parent.name === node) {
+    return checker.getDeclaredTypeOfSymbol(symbol);
+  }
+  return checker.getTypeOfSymbolAtLocation(symbol, node);
 }
 
 function collectRecords(ts, checker, sourceFile, relativePath) {
