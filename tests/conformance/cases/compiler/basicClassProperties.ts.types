@@ -1,0 +1,140 @@
+class ClassPropertyItem {
+>     ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem
+
+  name: string = "item";
+> ^^^^-: string
+
+class ClassPropertyExample {
+>     ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+
+  ready: boolean = false;
+> ^^^^^-: boolean
+
+  count = 1;
+> ^^^^^-: number
+
+  item: ClassPropertyItem = new ClassPropertyItem();
+> ^^^^-: ClassPropertyItem
+
+  item: ClassPropertyItem = new ClassPropertyItem();
+>       ^^^^^^^^^^^^^^^^^-: any
+
+  item: ClassPropertyItem = new ClassPropertyItem();
+>       ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem
+
+  item: ClassPropertyItem = new ClassPropertyItem();
+>                               ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem
+
+  static enabled: boolean = true;
+>        ^^^^^^^-: boolean
+
+  getReady() {
+> ^^^^^^^^-: () => boolean
+
+    return this.ready;
+>               ^^^^^-: boolean
+
+  getCount() {
+> ^^^^^^^^-: () => number
+
+    return this.count;
+>               ^^^^^-: number
+
+  getItemName() {
+> ^^^^^^^^^^^-: () => string
+
+    return this.item.name;
+>               ^^^^-: ClassPropertyItem
+
+    return this.item.name;
+>                    ^^^^-: string
+
+  static getEnabled() {
+>        ^^^^^^^^^^-: () => boolean
+
+    return ClassPropertyExample.enabled;
+>          ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+
+    return ClassPropertyExample.enabled;
+>                               ^^^^^^^-: boolean
+
+const _classPropertyInstance = new ClassPropertyExample();
+>     ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+
+const _classPropertyInstance = new ClassPropertyExample();
+>                                  ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+
+const _classPropertyReady = _classPropertyInstance.ready;
+>     ^^^^^^^^^^^^^^^^^^^-: boolean
+
+const _classPropertyReady = _classPropertyInstance.ready;
+>                           ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+
+const _classPropertyReady = _classPropertyInstance.ready;
+>                                                  ^^^^^-: boolean
+
+const _classPropertyCount = _classPropertyInstance.count;
+>     ^^^^^^^^^^^^^^^^^^^-: number
+
+const _classPropertyCount = _classPropertyInstance.count;
+>                           ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+
+const _classPropertyCount = _classPropertyInstance.count;
+>                                                  ^^^^^-: number
+
+const _classPropertyItemName = _classPropertyInstance.item.name;
+>     ^^^^^^^^^^^^^^^^^^^^^^-: string
+
+const _classPropertyItemName = _classPropertyInstance.item.name;
+>                              ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+
+const _classPropertyItemName = _classPropertyInstance.item.name;
+>                                                     ^^^^-: ClassPropertyItem
+
+const _classPropertyItemName = _classPropertyInstance.item.name;
+>                                                          ^^^^-: string
+
+const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^-: boolean
+
+const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
+>                                   ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+
+const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
+>                                                          ^^^^^^^^-: () => boolean
+
+const _classPropertyCountFromThis = _classPropertyInstance.getCount();
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^-: number
+
+const _classPropertyCountFromThis = _classPropertyInstance.getCount();
+>                                   ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+
+const _classPropertyCountFromThis = _classPropertyInstance.getCount();
+>                                                          ^^^^^^^^-: () => number
+
+const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^-: string
+
+const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
+>                                  ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+
+const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
+>                                                         ^^^^^^^^^^^-: () => string
+
+const _classPropertyEnabled = ClassPropertyExample.enabled;
+>     ^^^^^^^^^^^^^^^^^^^^^-: boolean
+
+const _classPropertyEnabled = ClassPropertyExample.enabled;
+>                             ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+
+const _classPropertyEnabled = ClassPropertyExample.enabled;
+>                                                  ^^^^^^^-: boolean
+
+const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-: boolean
+
+const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
+>                                       ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+
+const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
+>                                                            ^^^^^^^^^^-: () => boolean

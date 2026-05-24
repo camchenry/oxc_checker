@@ -3,10 +3,10 @@ use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::{
     AstKind,
     ast::{
-        BindingPattern, CallExpression, Class, ClassElement, Expression, Function, NewExpression,
-        ObjectExpression, ObjectPropertyKind, Program, PropertyKey, Statement,
-        StaticMemberExpression, TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
-        VariableDeclarator,
+        BindingPattern, CallExpression, Class, ClassElement, Expression, FormalParameter, Function,
+        NewExpression, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
+        PropertyKey, Statement, StaticMemberExpression, TSSignature, TSType, TSTypeAnnotation,
+        TSTypeName, TSTypeReference, VariableDeclarator,
     },
 };
 use oxc_index::nonmax::NonMaxU32;
@@ -589,6 +589,7 @@ impl CheckerBuilder {
             store,
             arena: CheckerArena::new(store.allocator()),
             resolving_symbols: RefCell::new(Vec::new()),
+            resolving_class_members: RefCell::new(Vec::new()),
         }
     }
 }
@@ -627,6 +628,15 @@ struct CheckerReturn<'a, 'store> {
     store: &'store program::ProgramStore<'a>,
     arena: CheckerArena<'a>,
     resolving_symbols: RefCell<Vec<SymbolRef>>,
+    resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ClassMemberResolution {
+    program_id: program::ProgramId,
+    class_name: String,
+    property_name: String,
+    is_static: bool,
 }
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
@@ -662,6 +672,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         expression: &Expression<'a>,
     ) -> Ty<'a> {
+        let node_id = self.node_id_for_span(program_id, expression.span());
+        self.get_type_of_expression_with_node(program_id, expression, node_id)
+    }
+
+    /// Resolve an expression type with its node id when ancestor context is needed.
+    /// This keeps `this` and member expressions tied to the class or call site they appear in.
+    fn get_type_of_expression_with_node(
+        &self,
+        program_id: program::ProgramId,
+        expression: &Expression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
         match expression {
             Expression::Identifier(identifier) => identifier
                 .reference_id
@@ -685,10 +707,42 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_call_expression(program_id, call_expression)
             }
             Expression::StaticMemberExpression(member) => {
-                self.get_type_of_static_member_expression(program_id, member)
+                self.get_type_of_static_member_expression(program_id, member, node_id)
+            }
+            Expression::ThisExpression(_) => node_id
+                .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
+                .unwrap_or_else(Ty::any),
+            Expression::FunctionExpression(function) => {
+                self.get_type_of_function_signature(program_id, function)
             }
             _ => Ty::from_expression(expression),
         }
+    }
+
+    /// Find the semantic node id for an AST value by span.
+    /// Expression typing often starts from AST references, while contextual typing needs ancestors.
+    fn node_id_for_span(&self, program_id: program::ProgramId, span: Span) -> Option<NodeId> {
+        self.nodes(program_id)
+            .iter_enumerated()
+            .find_map(|(node_id, node)| (node.kind().span() == span).then_some(node_id))
+    }
+
+    /// Return the instance type for the nearest enclosing class.
+    /// This provides a class-backed type for `this` inside methods and field initializers.
+    fn get_enclosing_class_instance_type(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+    ) -> Option<Ty<'a>> {
+        self.nodes(program_id)
+            .ancestors(node_id)
+            .find_map(|node| match node.kind() {
+                AstKind::Class(class) => class
+                    .id
+                    .as_ref()
+                    .map(|identifier| Ty::type_(self.arena(), identifier.name.as_str())),
+                _ => None,
+            })
     }
 
     fn get_type_of_object_expression(
@@ -713,10 +767,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         member: &StaticMemberExpression<'a>,
+        node_id: Option<NodeId>,
     ) -> Ty<'a> {
         let object_type = self.get_type_of_expression(program_id, &member.object);
         object_type
             .property_type(member.property.name.as_str())
+            .or_else(|| self.get_array_property_type(&object_type, member.property.name.as_str()))
             .or_else(|| {
                 self.get_property_type_of_named_type(
                     program_id,
@@ -724,7 +780,80 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     member.property.name.as_str(),
                 )
             })
+            .or_else(|| {
+                if matches!(member.object, Expression::ThisExpression(_)) {
+                    node_id
+                        .and_then(|node_id| {
+                            self.get_enclosing_class_instance_type(program_id, node_id)
+                        })
+                        .and_then(|this_type| {
+                            self.get_property_type_of_named_type(
+                                program_id,
+                                &this_type,
+                                member.property.name.as_str(),
+                            )
+                        })
+                } else {
+                    None
+                }
+            })
             .unwrap_or_else(Ty::any)
+    }
+
+    /// Resolve known properties on array-like types without loading TypeScript library declarations.
+    /// These signatures provide enough structure for method calls to contextually type callbacks.
+    fn get_array_property_type(&self, object_type: &Ty<'a>, property_name: &str) -> Option<Ty<'a>> {
+        let element_type = self.get_array_element_type(object_type)?;
+        match property_name {
+            "every" => {
+                let predicate = Ty::function(
+                    self.arena(),
+                    [],
+                    [
+                        Ty::parameter("value", element_type),
+                        Ty::parameter("index", Ty::number()),
+                        Ty::parameter("array", *object_type),
+                    ],
+                    Ty::unknown(),
+                );
+                Some(Ty::function(
+                    self.arena(),
+                    [],
+                    [
+                        Ty::parameter("predicate", predicate),
+                        Ty::parameter("thisArg", Ty::any()),
+                    ],
+                    Ty::boolean(),
+                ))
+            }
+            _ => None,
+        }
+    }
+
+    /// Extract the element type from the current string-backed `T[]` array representation.
+    /// Array method signatures need this to expose callback parameter and array argument types.
+    fn get_array_element_type(&self, object_type: &Ty<'a>) -> Option<Ty<'a>> {
+        let Ty::Type(ty) = object_type else {
+            return None;
+        };
+        let element_type = ty.name.strip_suffix("[]")?;
+        Some(self.type_from_name(element_type))
+    }
+
+    /// Convert a simple type name back into a `Ty`.
+    /// This bridges array element names produced by `to_type_string` back into checker types.
+    fn type_from_name(&self, name: &'a str) -> Ty<'a> {
+        match name {
+            "number" => Ty::number(),
+            "string" => Ty::string(),
+            "boolean" => Ty::boolean(),
+            "bigint" => Ty::bigint(),
+            "undefined" => Ty::undefined(),
+            "null" => Ty::null(),
+            "any" => Ty::any(),
+            "unknown" => Ty::unknown(),
+            _ => Ty::type_(self.arena(), name),
+        }
     }
 
     fn get_type_of_call_expression(
@@ -883,7 +1012,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
         is_static: bool,
     ) -> Option<Ty<'a>> {
-        class.body.body.iter().find_map(|element| match element {
+        let resolution = ClassMemberResolution {
+            program_id,
+            class_name: class.id.as_ref().map_or_else(
+                || "<anonymous>".to_string(),
+                |identifier| identifier.name.to_string(),
+            ),
+            property_name: property_name.to_string(),
+            is_static,
+        };
+        {
+            let mut resolving_class_members = self.resolving_class_members.borrow_mut();
+            if resolving_class_members.contains(&resolution) {
+                return Some(Ty::any());
+            }
+            resolving_class_members.push(resolution);
+        }
+
+        let ty = class.body.body.iter().find_map(|element| match element {
             ClassElement::MethodDefinition(method)
                 if method.r#static == is_static
                     && property_key_name(&method.key).as_deref() == Some(property_name) =>
@@ -894,18 +1040,83 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if property.r#static == is_static
                     && property_key_name(&property.key).as_deref() == Some(property_name) =>
             {
-                property.type_annotation.as_deref().map_or_else(
-                    || {
-                        property
-                            .value
-                            .as_ref()
-                            .map(|value| self.get_type_of_expression(program_id, value))
-                    },
-                    |annotation| Some(Ty::from_ts_type_annotation(self.arena(), Some(annotation))),
-                )
+                Some(self.get_type_of_property_definition(program_id, property))
             }
             _ => None,
-        })
+        });
+
+        self.resolving_class_members.borrow_mut().pop();
+        ty
+    }
+
+    /// Resolve a class field's declared or inferred type.
+    /// Class member lookups and declaration records use this to agree on annotation-first behavior.
+    fn get_type_of_property_definition(
+        &self,
+        program_id: program::ProgramId,
+        property: &PropertyDefinition<'a>,
+    ) -> Ty<'a> {
+        property.type_annotation.as_deref().map_or_else(
+            || {
+                property.value.as_ref().map_or_else(Ty::any, |value| {
+                    self.get_type_of_expression(program_id, value)
+                })
+            },
+            |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
+        )
+    }
+
+    /// Infer an unannotated formal parameter from the callback type expected by its call site.
+    /// This lets callback bodies use parameter property types before broader inference exists.
+    fn get_contextual_type_of_formal_parameter(
+        &self,
+        program_id: program::ProgramId,
+        parameter_node_id: NodeId,
+        parameter: &FormalParameter<'a>,
+    ) -> Option<Ty<'a>> {
+        let nodes = self.nodes(program_id);
+        let (function_span, parameter_index) =
+            nodes
+                .ancestors(parameter_node_id)
+                .find_map(|node| match node.kind() {
+                    AstKind::Function(function) => function
+                        .params
+                        .items
+                        .iter()
+                        .position(|item| item.span == parameter.span)
+                        .map(|index| (function.span, index)),
+                    _ => None,
+                })?;
+
+        let call_expression =
+            nodes
+                .ancestors(parameter_node_id)
+                .find_map(|node| match node.kind() {
+                    AstKind::CallExpression(call_expression) => Some(call_expression),
+                    _ => None,
+                })?;
+        let argument_index = call_expression.arguments.iter().position(|argument| {
+            argument
+                .as_expression()
+                .is_some_and(|expression| expression.span() == function_span)
+        })?;
+
+        let Ty::Function(callee_function) =
+            self.get_type_of_expression(program_id, &call_expression.callee)
+        else {
+            return None;
+        };
+        let Ty::Function(callback_function) = callee_function
+            .parameters
+            .get(argument_index)
+            .map(|parameter| parameter.ty)?
+        else {
+            return None;
+        };
+        callback_function
+            .parameters
+            .get(parameter_index)
+            .map(|parameter| parameter.ty)
     }
 
     fn get_type_of_function_signature(
@@ -1038,21 +1249,16 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::ObjectProperty(property) => {
                 self.get_type_of_expression(node.program_id, &property.value)
             }
-            AstKind::StaticMemberExpression(member) => {
-                self.get_type_of_static_member_expression(node.program_id, member)
-            }
+            AstKind::StaticMemberExpression(member) => self.get_type_of_static_member_expression(
+                node.program_id,
+                member,
+                Some(node.node_id),
+            ),
             AstKind::MethodDefinition(method) => {
                 self.get_type_of_function_signature(node.program_id, &method.value)
             }
             AstKind::PropertyDefinition(property) => {
-                property.type_annotation.as_deref().map_or_else(
-                    || {
-                        property.value.as_ref().map_or_else(Ty::any, |value| {
-                            self.get_type_of_expression(node.program_id, value)
-                        })
-                    },
-                    |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
-                )
+                self.get_type_of_property_definition(node.program_id, property)
             }
             _ => self
                 .get_symbol_at_location(node)
@@ -1070,7 +1276,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 Ty::from_ts_type_annotation(self.arena(), declarator.type_annotation.as_deref())
             }
             AstKind::FormalParameter(parameter) => {
-                Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
+                parameter.type_annotation.as_deref().map_or_else(
+                    || {
+                        self.get_contextual_type_of_formal_parameter(
+                            sym.program_id,
+                            declaration,
+                            parameter,
+                        )
+                        .unwrap_or_else(Ty::any)
+                    },
+                    |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
+                )
             }
             AstKind::FormalParameterRest(parameter) => {
                 Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
@@ -1079,7 +1295,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
             }
             AstKind::PropertyDefinition(property) => {
-                Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
+                self.get_type_of_property_definition(sym.program_id, property)
             }
             AstKind::Function(function) => {
                 self.get_type_of_function_signature(sym.program_id, function)
@@ -1312,6 +1528,17 @@ mod test {
         checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
     }
 
+    fn get_first_symbol_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let scoping = semantic.scoping();
+        let symbol_id = scoping
+            .scope_descendants_from_root()
+            .find_map(|scope_id| scoping.get_binding(scope_id, Ident::from(name)))
+            .unwrap();
+        checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
+    }
+
     fn arena<'a>(ret: &ParseAndCheck<'a>) -> CheckerArena<'a> {
         CheckerArena::new(ret.store.allocator())
     }
@@ -1492,6 +1719,96 @@ mod test {
             get_global_symbol_type(&ret, "x"),
             Ty::object(arena(&ret), [Ty::property("b", Ty::number())])
         );
+    }
+
+    #[test]
+    fn class_properties_are_available_on_instances_statics_and_this() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        class Item {
+            name: string = "item";
+        }
+
+        class Example {
+            ready: boolean = false;
+            count = 1;
+            item: Item = new Item();
+            static enabled: boolean = true;
+
+            getReady() {
+                return this.ready;
+            }
+
+            getCount() {
+                return this.count;
+            }
+
+            getItemName() {
+                return this.item.name;
+            }
+
+            static getEnabled() {
+                return Example.enabled;
+            }
+        }
+
+        const instance = new Example();
+        const ready = instance.ready;
+        const count = instance.count;
+        const itemName = instance.item.name;
+        const readyFromThis = instance.getReady();
+        const countFromThis = instance.getCount();
+        const nameFromThis = instance.getItemName();
+        const enabled = Example.enabled;
+        const enabledFromMethod = Example.getEnabled();
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "ready"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "count"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "itemName"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "readyFromThis"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "countFromThis"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "nameFromThis"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "enabled"), Ty::boolean());
+        assert_eq!(
+            get_global_symbol_type(&ret, "enabledFromMethod"),
+            Ty::boolean()
+        );
+    }
+
+    #[test]
+    fn array_every_contextually_types_callback_parameters() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        class Ship {
+            isSunk: boolean = false;
+        }
+
+        class Board {
+            ships: Ship[] = [];
+
+            allShipsSunk() {
+                return this.ships.every(function (val) {
+                    return val.isSunk;
+                });
+            }
+        }
+
+        const board = new Board();
+        const sunk = board.allShipsSunk();
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "val"),
+            Ty::type_(arena(&ret), "Ship")
+        );
+        assert_eq!(get_global_symbol_type(&ret, "sunk"), Ty::boolean());
     }
 
     #[test]
