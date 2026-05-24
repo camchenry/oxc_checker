@@ -1,5 +1,5 @@
 #![allow(dead_code, unused_imports)]
-use oxc_allocator::{Allocator, Vec as ArenaVec};
+use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
@@ -16,371 +16,10 @@ use oxc_str::Ident;
 use std::{cell::RefCell, collections::HashMap};
 
 pub mod program;
+mod relations;
+mod types;
 
-#[derive(Clone, Copy)]
-struct CheckerArena<'a> {
-    allocator: &'a Allocator,
-}
-
-impl<'a> CheckerArena<'a> {
-    fn new(allocator: &'a Allocator) -> Self {
-        Self { allocator }
-    }
-
-    fn alloc<T>(&self, value: T) -> &'a T {
-        self.allocator.alloc(value)
-    }
-
-    fn str(&self, value: &str) -> &'a str {
-        self.allocator.alloc_str(value)
-    }
-
-    fn concat_strs_array<const N: usize>(&self, strings: [&str; N]) -> &'a str {
-        self.allocator.alloc_concat_strs_array(strings)
-    }
-
-    fn vec_from_iter<T>(&self, iter: impl IntoIterator<Item = T>) -> ArenaVec<'a, T> {
-        ArenaVec::from_iter_in(iter, self.allocator)
-    }
-}
-
-#[repr(C, u8)]
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-enum Ty<'a> {
-    None,
-    Number,
-    String,
-    Boolean,
-    Bigint,
-    Undefined,
-    Null,
-    Any,
-    Unknown,
-    Object(&'a TyObject<'a>),
-    Function(&'a TyFunction<'a>),
-    TypeReference(&'a TyTypeReference<'a>),
-    Type(&'a TyType<'a>),
-}
-
-#[derive(Debug, PartialEq, Eq)]
-struct TyObject<'a> {
-    properties: ArenaVec<'a, TyProperty<'a>>,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-struct TyProperty<'a> {
-    name: &'a str,
-    ty: Ty<'a>,
-}
-
-#[derive(Debug, PartialEq, Eq)]
-struct TyFunction<'a> {
-    type_parameters: ArenaVec<'a, &'a str>,
-    parameters: ArenaVec<'a, TyParameter<'a>>,
-    return_type: Ty<'a>,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-struct TyParameter<'a> {
-    name: &'a str,
-    ty: Ty<'a>,
-}
-
-#[derive(Debug, PartialEq, Eq)]
-struct TyTypeReference<'a> {
-    name: &'a str,
-    type_arguments: ArenaVec<'a, Ty<'a>>,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-struct TyType<'a> {
-    name: &'a str,
-}
-
-impl<'a> Ty<'a> {
-    fn none() -> Self {
-        Self::None
-    }
-
-    fn number() -> Self {
-        Self::Number
-    }
-
-    fn string() -> Self {
-        Self::String
-    }
-
-    fn boolean() -> Self {
-        Self::Boolean
-    }
-
-    fn bigint() -> Self {
-        Self::Bigint
-    }
-
-    fn undefined() -> Self {
-        Self::Undefined
-    }
-
-    fn null() -> Self {
-        Self::Null
-    }
-
-    fn any() -> Self {
-        Self::Any
-    }
-
-    fn unknown() -> Self {
-        Self::Unknown
-    }
-
-    fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
-        TyProperty { name, ty }
-    }
-
-    fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
-        TyParameter { name, ty }
-    }
-
-    fn object(
-        arena: CheckerArena<'a>,
-        properties: impl IntoIterator<Item = TyProperty<'a>>,
-    ) -> Self {
-        Self::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(properties),
-        }))
-    }
-
-    fn function(
-        arena: CheckerArena<'a>,
-        type_parameters: impl IntoIterator<Item = &'a str>,
-        parameters: impl IntoIterator<Item = TyParameter<'a>>,
-        return_type: Ty<'a>,
-    ) -> Self {
-        Self::Function(arena.alloc(TyFunction {
-            type_parameters: arena.vec_from_iter(type_parameters),
-            parameters: arena.vec_from_iter(parameters),
-            return_type,
-        }))
-    }
-
-    fn type_reference(
-        arena: CheckerArena<'a>,
-        name: &'a str,
-        type_arguments: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
-        Self::TypeReference(arena.alloc(TyTypeReference {
-            name,
-            type_arguments: arena.vec_from_iter(type_arguments),
-        }))
-    }
-
-    fn type_(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        Self::Type(arena.alloc(TyType { name }))
-    }
-
-    fn is_none(&self) -> bool {
-        matches!(self, Self::None)
-    }
-
-    /// Take a type annotation like `: number` and return the corresponding type. Returns no
-    /// type if there is no type annotation.
-    fn from_ts_type_annotation(
-        arena: CheckerArena<'a>,
-        type_annotation: Option<&TSTypeAnnotation<'a>>,
-    ) -> Self {
-        type_annotation.map_or_else(Self::any, |type_annotation| {
-            Self::from_ts_type(arena, &type_annotation.type_annotation)
-        })
-    }
-
-    /// Turns a declared type in the AST and turns it into an actual type.
-    fn from_ts_type(arena: CheckerArena<'a>, t: &TSType<'a>) -> Self {
-        match t {
-            TSType::TSNumberKeyword(_) => Self::number(),
-            TSType::TSStringKeyword(_) => Self::string(),
-            TSType::TSBooleanKeyword(_) => Self::boolean(),
-            TSType::TSBigIntKeyword(_) => Self::bigint(),
-            TSType::TSUndefinedKeyword(_) => Self::undefined(),
-            TSType::TSNullKeyword(_) => Self::null(),
-            TSType::TSAnyKeyword(_) => Self::any(),
-            TSType::TSUnknownKeyword(_) => Self::unknown(),
-            TSType::TSTypeLiteral(type_literal) => Self::object(
-                arena,
-                type_literal.members.iter().filter_map(|member| {
-                    let TSSignature::TSPropertySignature(property) = member else {
-                        return None;
-                    };
-                    let name = property_key_name_str(&property.key)?;
-                    let ty =
-                        Self::from_ts_type_annotation(arena, property.type_annotation.as_deref());
-                    Some(Self::property(name, ty))
-                }),
-            ),
-            TSType::TSArrayType(array) => {
-                let element_type = Self::from_ts_type(arena, &array.element_type).to_type_string();
-                let array_type = arena.concat_strs_array([element_type.as_str(), "[]"]);
-                Self::type_(arena, array_type)
-            }
-            TSType::TSTypeReference(reference) => Self::from_ts_type_reference(arena, reference),
-            TSType::TSParenthesizedType(parenthesized) => {
-                Self::from_ts_type(arena, &parenthesized.type_annotation)
-            }
-            _ => Self::none(),
-        }
-    }
-
-    fn from_ts_type_reference(arena: CheckerArena<'a>, reference: &TSTypeReference<'a>) -> Self {
-        Self::type_reference(
-            arena,
-            ts_type_name_to_str(arena, &reference.type_name),
-            reference
-                .type_arguments
-                .as_ref()
-                .into_iter()
-                .flat_map(|args| args.params.iter().map(|ty| Self::from_ts_type(arena, ty))),
-        )
-    }
-
-    fn from_expression(expression: &Expression<'_>) -> Self {
-        match expression {
-            Expression::BooleanLiteral(_) => Self::boolean(),
-            Expression::NumericLiteral(_) => Self::number(),
-            Expression::BigIntLiteral(_) => Self::bigint(),
-            Expression::StringLiteral(_) => Self::string(),
-            Expression::NullLiteral(_) => Self::any(),
-            _ => Self::any(),
-        }
-    }
-
-    fn property_type(&self, name: &str) -> Option<Self> {
-        match self {
-            Self::Object(object) => object
-                .properties
-                .iter()
-                .find_map(|property| (property.name == name).then_some(property.ty)),
-            _ => None,
-        }
-    }
-
-    fn substitute_type_parameters(
-        &self,
-        arena: CheckerArena<'a>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
-    ) -> Self {
-        match self {
-            Self::Object(object) => Self::object(
-                arena,
-                object.properties.iter().map(|property| {
-                    Self::property(
-                        property.name,
-                        property.ty.substitute_type_parameters(arena, substitutions),
-                    )
-                }),
-            ),
-            Self::Function(function) => {
-                let substitutions = substitutions
-                    .iter()
-                    .filter(|(name, _)| !function.type_parameters.contains(name))
-                    .map(|(name, ty)| (*name, *ty))
-                    .collect::<HashMap<_, _>>();
-                Self::function(
-                    arena,
-                    function.type_parameters.iter().copied(),
-                    function.parameters.iter().map(|parameter| {
-                        Self::parameter(
-                            parameter.name,
-                            parameter
-                                .ty
-                                .substitute_type_parameters(arena, &substitutions),
-                        )
-                    }),
-                    function
-                        .return_type
-                        .substitute_type_parameters(arena, &substitutions),
-                )
-            }
-            Self::Type(ty) => substitutions.get(ty.name).copied().unwrap_or(*self),
-            Self::TypeReference(reference) => {
-                if reference.type_arguments.is_empty()
-                    && let Some(substitution) = substitutions.get(reference.name)
-                {
-                    *substitution
-                } else {
-                    Self::type_reference(
-                        arena,
-                        reference.name,
-                        reference
-                            .type_arguments
-                            .iter()
-                            .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
-                    )
-                }
-            }
-            _ => *self,
-        }
-    }
-
-    fn to_type_string(self) -> String {
-        match self {
-            Self::None => "none".to_string(),
-            Self::Number => "number".to_string(),
-            Self::String => "string".to_string(),
-            Self::Boolean => "boolean".to_string(),
-            Self::Bigint => "bigint".to_string(),
-            Self::Undefined => "undefined".to_string(),
-            Self::Null => "null".to_string(),
-            Self::Any => "any".to_string(),
-            Self::Unknown => "unknown".to_string(),
-            Self::Object(object) => {
-                if object.properties.is_empty() {
-                    return "{}".to_string();
-                }
-
-                let properties = object
-                    .properties
-                    .iter()
-                    .map(|property| format!("{}: {};", property.name, property.ty.to_type_string()))
-                    .collect::<Vec<_>>()
-                    .join(" ");
-                format!("{{ {properties} }}")
-            }
-            Self::Function(function) => {
-                let type_parameters = if function.type_parameters.is_empty() {
-                    String::new()
-                } else {
-                    format!("<{}>", function.type_parameters.join(", "))
-                };
-                let parameters = function
-                    .parameters
-                    .iter()
-                    .map(|parameter| {
-                        format!("{}: {}", parameter.name, parameter.ty.to_type_string())
-                    })
-                    .collect::<Vec<_>>()
-                    .join(", ");
-                format!(
-                    "{type_parameters}({parameters}) => {}",
-                    function.return_type.to_type_string()
-                )
-            }
-            Self::TypeReference(reference) => {
-                if reference.type_arguments.is_empty() {
-                    reference.name.to_string()
-                } else {
-                    let type_arguments = reference
-                        .type_arguments
-                        .iter()
-                        .map(|ty| ty.to_type_string())
-                        .collect::<Vec<_>>()
-                        .join(", ");
-                    format!("{}<{type_arguments}>", reference.name)
-                }
-            }
-            Self::Type(ty) => ty.name.to_string(),
-        }
-    }
-}
+use types::*;
 
 fn infer_type_parameter_from_types<'a>(
     parameter_type: &Ty<'a>,
@@ -550,13 +189,6 @@ type Checker interface {
 }
 
 */
-
-enum SignatureKind {
-    Call,
-    Construct,
-}
-struct Signature {}
-struct IndexInfo {}
 
 trait Checker<'a> {
     fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef>;
@@ -1384,8 +1016,8 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         Vec::new()
     }
 
-    fn is_assignable_to(&self, _source: Ty<'a>, _target: Ty<'a>) -> bool {
-        false
+    fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
+        relations::is_assignable_to(source, target)
     }
 
     fn type_to_string(&self, t: Ty<'a>, _location: NodeRef) -> String {
@@ -1553,6 +1185,29 @@ mod test {
     #[test]
     fn type_enum_is_pointer_sized_payload_plus_discriminant() {
         assert_eq!(std::mem::size_of::<Ty>(), 8);
+    }
+
+    #[test]
+    fn assignability_handles_basic_and_structural_types() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+
+        assert!(relations::is_assignable_to(Ty::number(), Ty::number()));
+        assert!(relations::is_assignable_to(Ty::number(), Ty::any()));
+        assert!(relations::is_assignable_to(Ty::string(), Ty::unknown()));
+        assert!(!relations::is_assignable_to(Ty::number(), Ty::string()));
+
+        let source = Ty::object(
+            arena,
+            [
+                Ty::property("x", Ty::number()),
+                Ty::property("y", Ty::string()),
+            ],
+        );
+        let target = Ty::object(arena, [Ty::property("x", Ty::number())]);
+
+        assert!(relations::is_assignable_to(source, target));
+        assert!(!relations::is_assignable_to(target, source));
     }
 
     #[test]

@@ -32,6 +32,25 @@ What `oxc_checker` can learn from it:
 - Use conformance-style tests that compare diagnostics, locations, messages, and printed types against TypeScript behavior.
 - Keep the public API intentionally conservative until the internal checker model stabilizes.
 
+Local architecture map:
+
+| TypeScript-Go concept | TypeScript-Go reference | `oxc_checker` analogue | Notes |
+| --- | --- | --- | --- |
+| Program construction and file graph | `internal/compiler/program.go` | `src/program.rs` `ProgramStore`, `ProgramStoreBuilder`, `ProgramHost` | Local code keeps parsing, Oxc semantic data, source text, and module edges together. It does not yet model tsconfig options, project references, diagnostics orchestration, emit, or incremental updates. |
+| Checker state and query API | `internal/checker/checker.go`, `internal/checker/services.go` | `CheckerReturn`, `Checker` trait | Local checker state is still compact and store-backed. The goal is to keep query names close to TypeScript-Go so behavior comparisons have obvious entry points. |
+| Type representation | `internal/checker/types.go` | `src/types.rs` `Ty`, `TyFunction`, `TyObject`, `Signature`, `IndexInfo` | Local types are arena-backed enum values today rather than `TypeId` plus `TypeFlags`/`ObjectFlags`. Keep this simpler representation until richer structural behavior needs a flag/id model. |
+| Type relations and assignability | `internal/checker/relater.go` | planned `src/checker/relations.rs`; current `Checker::is_assignable_to` hook | This should become a first-class subsystem before broad checking diagnostics are added. Start with small, explicit relation rules and keep diagnostics separate. |
+| Type inference | `internal/checker/inference.go` | current generic substitution and call inference helpers; planned `src/checker/inference.rs` | Current support is deliberately narrow. Use TypeScript-Go terminology such as inference context and type mapper when the implementation grows. |
+| Flow-sensitive narrowing | `internal/checker/flow.go` | planned `src/checker/flow.rs` | No full local flow model exists yet. Add the module as a boundary only when real narrowing behavior lands. |
+| Conformance baselines | `testdata/baselines`, test tasks in `Herebyfile.mjs` | `src/conformance.rs`, `tests/conformance/tsc_type_extractor.js`, snapshot files | Local harness compares identifier type strings from TypeScript's compiler API against OXC records. This is closer to a type-query oracle than tsgo's full diagnostic and emit baselines. |
+
+Intentional differences:
+
+- Oxc provides parsing and semantic binding; do not port TypeScript-Go's binder wholesale.
+- This crate is an API-oriented type information layer, not a replacement CLI, emitter, language service, or watch/build system.
+- Full TypeScript compiler options, library loading, project references, JavaScript/JSDoc semantics, JSX semantics, and incremental checking are outside the initial alignment pass.
+- Prefer small behavior-preserving module boundaries first; use TypeScript-Go as vocabulary and behavioral reference rather than source to copy.
+
 ## `mohsen1/tsz`
 
 Repository: <https://github.com/mohsen1/tsz>
