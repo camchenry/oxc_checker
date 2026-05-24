@@ -12,7 +12,7 @@ use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::Ident;
-use std::cell::RefCell;
+use std::{cell::RefCell, collections::HashMap};
 
 pub mod program;
 
@@ -29,7 +29,11 @@ enum Ty {
     Any,
     Unknown,
     Object(Vec<(String, Ty)>),
-    Function(Vec<(String, Ty)>, Box<Ty>),
+    Function {
+        type_parameters: Vec<String>,
+        parameters: Vec<(String, Ty)>,
+        return_type: Box<Ty>,
+    },
     Type(String),
 }
 
@@ -101,6 +105,43 @@ impl Ty {
         }
     }
 
+    fn substitute_type_parameters(&self, substitutions: &HashMap<String, Ty>) -> Self {
+        match self {
+            Self::Object(properties) => Self::Object(
+                properties
+                    .iter()
+                    .map(|(name, ty)| (name.clone(), ty.substitute_type_parameters(substitutions)))
+                    .collect(),
+            ),
+            Self::Function {
+                type_parameters,
+                parameters,
+                return_type,
+            } => {
+                let substitutions = substitutions
+                    .iter()
+                    .filter(|(name, _)| !type_parameters.contains(name))
+                    .map(|(name, ty)| (name.clone(), ty.clone()))
+                    .collect::<HashMap<_, _>>();
+                Self::Function {
+                    type_parameters: type_parameters.clone(),
+                    parameters: parameters
+                        .iter()
+                        .map(|(name, ty)| {
+                            (name.clone(), ty.substitute_type_parameters(&substitutions))
+                        })
+                        .collect(),
+                    return_type: Box::new(return_type.substitute_type_parameters(&substitutions)),
+                }
+            }
+            Self::Type(name) => substitutions
+                .get(name)
+                .cloned()
+                .unwrap_or_else(|| self.clone()),
+            _ => self.clone(),
+        }
+    }
+
     fn to_type_string(&self) -> String {
         match self {
             Self::None => "none".to_string(),
@@ -124,16 +165,63 @@ impl Ty {
                     .join(" ");
                 format!("{{ {properties} }}")
             }
-            Self::Function(parameters, return_type) => {
+            Self::Function {
+                type_parameters,
+                parameters,
+                return_type,
+            } => {
+                let type_parameters = if type_parameters.is_empty() {
+                    String::new()
+                } else {
+                    format!("<{}>", type_parameters.join(", "))
+                };
                 let parameters = parameters
                     .iter()
                     .map(|(name, ty)| format!("{name}: {}", ty.to_type_string()))
                     .collect::<Vec<_>>()
                     .join(", ");
-                format!("({parameters}) => {}", return_type.to_type_string())
+                format!(
+                    "{type_parameters}({parameters}) => {}",
+                    return_type.to_type_string()
+                )
             }
             Self::Type(ty) => ty.clone(),
         }
+    }
+}
+
+fn infer_type_parameter_from_types(
+    parameter_type: &Ty,
+    argument_type: &Ty,
+    type_parameters: &[String],
+    substitutions: &mut HashMap<String, Ty>,
+) {
+    match (parameter_type, argument_type) {
+        (Ty::Type(name), _) if type_parameters.contains(name) => match substitutions.get(name) {
+            Some(existing) if existing != argument_type => {
+                substitutions.insert(name.clone(), Ty::Any);
+            }
+            Some(_) => {}
+            None => {
+                substitutions.insert(name.clone(), argument_type.clone());
+            }
+        },
+        (Ty::Object(parameter_properties), Ty::Object(argument_properties)) => {
+            for (property_name, parameter_property_type) in parameter_properties {
+                if let Some((_, argument_property_type)) = argument_properties
+                    .iter()
+                    .find(|(argument_property_name, _)| argument_property_name == property_name)
+                {
+                    infer_type_parameter_from_types(
+                        parameter_property_type,
+                        argument_property_type,
+                        type_parameters,
+                        substitutions,
+                    );
+                }
+            }
+        }
+        _ => {}
     }
 }
 
@@ -392,7 +480,51 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &CallExpression<'_>,
     ) -> Ty {
         match self.get_type_of_expression(program_id, &call_expression.callee) {
-            Ty::Function(_, return_type) => *return_type,
+            Ty::Function {
+                type_parameters,
+                parameters,
+                return_type,
+            } => {
+                if type_parameters.is_empty() {
+                    return *return_type;
+                }
+
+                let mut substitutions = HashMap::new();
+                let mut explicit_type_parameters = Vec::new();
+
+                if let Some(type_arguments) = &call_expression.type_arguments {
+                    for (type_parameter, type_argument) in
+                        type_parameters.iter().zip(type_arguments.params.iter())
+                    {
+                        substitutions
+                            .insert(type_parameter.clone(), Ty::from_ts_type(type_argument));
+                        explicit_type_parameters.push(type_parameter.clone());
+                    }
+                }
+
+                let inferable_type_parameters = type_parameters
+                    .iter()
+                    .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
+                    .cloned()
+                    .collect::<Vec<_>>();
+
+                for (argument, (_, parameter_type)) in
+                    call_expression.arguments.iter().zip(parameters.iter())
+                {
+                    let Some(argument) = argument.as_expression() else {
+                        continue;
+                    };
+                    let argument_type = self.get_type_of_expression(program_id, argument);
+                    infer_type_parameter_from_types(
+                        parameter_type,
+                        &argument_type,
+                        &inferable_type_parameters,
+                        &mut substitutions,
+                    );
+                }
+
+                return_type.substitute_type_parameters(&substitutions)
+            }
             _ => Ty::Any,
         }
     }
@@ -521,6 +653,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         function: &Function<'_>,
     ) -> Ty {
+        let type_parameters = function
+            .type_parameters
+            .as_ref()
+            .map_or_else(Vec::new, |params| {
+                params
+                    .params
+                    .iter()
+                    .map(|parameter| parameter.name.to_string())
+                    .collect()
+            });
         let parameters = function
             .params
             .items
@@ -537,7 +679,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             |annotation| Ty::from_ts_type_annotation(Some(annotation)),
         );
 
-        Ty::Function(parameters, Box::new(return_type))
+        Ty::Function {
+            type_parameters,
+            parameters,
+            return_type: Box::new(return_type),
+        }
     }
 
     fn infer_function_return_type(
@@ -679,12 +825,18 @@ impl Checker for CheckerReturn<'_, '_> {
             AstKind::PropertyDefinition(property) => {
                 Ty::from_ts_type_annotation(property.type_annotation.as_deref())
             }
+            AstKind::Function(function) => {
+                self.get_type_of_function_signature(sym.program_id, function)
+            }
             AstKind::AccessorProperty(property) => {
                 Ty::from_ts_type_annotation(property.type_annotation.as_deref())
             }
             AstKind::BindingIdentifier(identifier) => {
                 match self.nodes(sym.program_id).parent_kind(declaration) {
                     AstKind::Class(_) => Ty::Type(format!("typeof {}", identifier.name)),
+                    AstKind::Function(function) => {
+                        self.get_type_of_function_signature(sym.program_id, function)
+                    }
                     _ => Ty::None,
                 }
             }
@@ -937,6 +1089,64 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "b"), Ty::Bigint);
         assert_eq!(get_global_symbol_type(&ret, "a"), Ty::Any);
         assert_eq!(get_global_symbol_type(&ret, "annotated"), Ty::String);
+    }
+
+    #[test]
+    fn generic_function_infers_type_parameters_from_arguments() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function foo<T>(x: T) {
+            return x;
+        }
+
+        const x = foo(123);
+        const y = foo("test");
+        const z = foo(true);
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "x"), Ty::Number);
+        assert_eq!(get_global_symbol_type(&ret, "y"), Ty::String);
+        assert_eq!(get_global_symbol_type(&ret, "z"), Ty::Boolean);
+    }
+
+    #[test]
+    fn generic_function_uses_explicit_type_arguments() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function foo<T>(x: T) {
+            return x;
+        }
+
+        const x = foo<string>("test");
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "x"), Ty::String);
+    }
+
+    #[test]
+    fn generic_function_substitutes_object_return_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function box<T>(x: T) {
+            return {value: x};
+        }
+
+        const x = box(123);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "x"),
+            Ty::Object(vec![("value".to_string(), Ty::Number)])
+        );
     }
 
     #[test]
