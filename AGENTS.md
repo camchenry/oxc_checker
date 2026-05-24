@@ -1,4 +1,6 @@
-read the README, it's important
+- read the README, it's important
+- run `cargo conformance` for full verification
+- architecture-wise, aim to be similar to `typescript-go` codebase
 
 ## TypeScript conformance tests
 
