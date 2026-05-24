@@ -2,7 +2,7 @@ read the README, it's important
 
 ## TypeScript conformance tests
 
-This repository includes a minimal, opt-in conformance harness that compares TypeScript compiler API type records against `oxc_checker` type records for upstream TypeScript compiler cases. The upstream suite is tracked as a git submodule at `vendor/TypeScript`. There are also additional tests under `tests/conformance/compiler/cases`.
+This repository includes a minimal, opt-in conformance harness that compares TypeScript compiler API type records against `oxc_checker` type records for upstream TypeScript compiler cases. The upstream suite is tracked as a git submodule at `vendor/TypeScript`. There are also additional tests under `tests/conformance/cases`.
 
 Initialize the submodule before running the conformance test:
 
@@ -22,18 +22,12 @@ The conformance extractor needs the TypeScript compiler API. Install it into the
 npm --prefix target/conformance install typescript
 ```
 
-Regenerate the TypeScript compiler API record cache explicitly with:
-
-```sh
-cargo conformance-tsc
-```
-
-Run the compiler-case type record comparison with:
+Regenerate the TypeScript compiler API record cache and run the type record comparison with:
 
 ```sh
 cargo conformance
 ```
 
-The TypeScript extractor iterates over every `*.ts` and `*.tsx` file under `vendor/TypeScript/tests/cases/compiler` and writes `target/conformance/tsc_types.tsv`. The Rust harness reuses that cached file, writes `target/conformance/oxc_types.tsv`, compares the two files by source location and identifier text, and prints a compact pass/fail summary.
+The TypeScript extractor iterates over every `*.ts` and `*.tsx` file under `vendor/TypeScript/tests/cases/compiler` and `tests/conformance/cases`. It writes `target/conformance/tsc_types.tsv` for upstream cases and `target/conformance/cases_tsc_types.tsv` for local cases. The Rust harness writes matching OXC record files, compares the files by source location and identifier text, and prints compact pass/fail summaries for both suites.
 
-Each run writes `tests/conformance/types_snapshot.txt`, which records every compiler case file, whether it passed or failed, and any errors or mismatches for that file. Commit that snapshot to track conformance progress over time.
+Each run writes `tests/conformance/types_snapshot.txt` and `tests/conformance/cases_snapshot.txt`, which record every case file, whether it passed or failed, and any errors or mismatches for that file. Commit those snapshots to track conformance progress over time.

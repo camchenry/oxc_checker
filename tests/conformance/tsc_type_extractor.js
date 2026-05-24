@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 const fs = require("fs");
 const path = require("path");
+const { Worker, isMainThread, parentPort, workerData } = require("worker_threads");
+
+const DEFAULT_WORKERS = 8;
 
 function parseArgs(argv) {
   const args = new Map();
@@ -8,7 +11,7 @@ function parseArgs(argv) {
     const key = argv[i];
     const value = argv[i + 1];
     if (!key || !key.startsWith("--") || value === undefined) {
-      throw new Error("usage: tsc_type_extractor.js --cases-root DIR --out FILE [--repo-root DIR] [--case-discovery compiler|all]");
+      throw new Error("usage: tsc_type_extractor.js --cases-root DIR --out FILE [--repo-root DIR] [--case-discovery compiler|all] [--workers N]");
     }
     args.set(key.slice(2), value);
   }
@@ -20,6 +23,18 @@ function parseCaseDiscovery(value) {
     return value || "compiler";
   }
   throw new Error("--case-discovery must be either compiler or all");
+}
+
+function parseWorkerCount(value) {
+  if (value === undefined) {
+    return DEFAULT_WORKERS;
+  }
+
+  const count = Number(value);
+  if (!Number.isInteger(count) || count < 1) {
+    throw new Error("--workers must be a positive integer");
+  }
+  return count;
 }
 
 function loadTypeScript(repoRoot) {
@@ -154,7 +169,15 @@ function optionEntries(settings) {
   return Array.from(settings, ([key, value]) => ({ key, value }));
 }
 
-function createCompilerOptions(ts, compilerCase, repoRoot) {
+function compilerOptionNameMap(ts) {
+  return new Map(ts.optionDeclarations.map((option) => [option.name.toLowerCase(), option.name]));
+}
+
+function compilerSettingsKey(settings) {
+  return JSON.stringify(Array.from(settings).sort(([left], [right]) => left.localeCompare(right)));
+}
+
+function createCompilerOptions(ts, compilerCase, repoRoot, optionNameMap) {
   const baseOptions = {
     allowJs: true,
     checkJs: true,
@@ -165,7 +188,6 @@ function createCompilerOptions(ts, compilerCase, repoRoot) {
     strict: true,
     target: ts.ScriptTarget.Latest,
   };
-  const optionNameMap = new Map(ts.optionDeclarations.map((option) => [option.name.toLowerCase(), option.name]));
   const jsonOptions = {};
 
   for (const { key, value } of optionEntries(compilerCase.settings)) {
@@ -182,6 +204,20 @@ function createCompilerOptions(ts, compilerCase, repoRoot) {
 
   const converted = ts.convertCompilerOptionsFromJson(jsonOptions, repoRoot);
   return { ...baseOptions, ...converted.options, noEmit: true, skipLibCheck: true };
+}
+
+function createCompilerOptionsCache(ts, repoRoot) {
+  const optionNameMap = compilerOptionNameMap(ts);
+  const cache = new Map();
+  return (compilerCase) => {
+    const key = compilerSettingsKey(compilerCase.settings);
+    let options = cache.get(key);
+    if (!options) {
+      options = createCompilerOptions(ts, compilerCase, repoRoot, optionNameMap);
+      cache.set(key, options);
+    }
+    return options;
+  };
 }
 
 function parseCompilerOptionValue(key, value) {
@@ -321,15 +357,27 @@ function collectProgramRecords(ts, options, virtualFiles, useCaseSensitive, reco
   }
 }
 
-function prepareCompilerCase(ts, compilerCase, repoRoot, namespaceExplicitFiles = false) {
-  const options = createCompilerOptions(ts, compilerCase, repoRoot);
+function prepareCompilerCase(ts, compilerCase, compilerOptionsForCase, namespaceExplicitFiles = false) {
+  const options = compilerOptionsForCase(compilerCase);
   const useCaseSensitive = useCaseSensitiveFileNames(ts, compilerCase);
   const virtualFiles = compilerCase.files.map((sourceFile) => ({
-    ...sourceFile,
+    content: sourceFile.content,
     fileName: virtualFileName(ts, compilerCase, sourceFile, namespaceExplicitFiles),
     recordPath: recordPathForFile(compilerCase, sourceFile),
   }));
   return { compilerCase, options, useCaseSensitive, virtualFiles };
+}
+
+function compilerTaskFromPrepared(prepared) {
+  return {
+    options: prepared.options,
+    useCaseSensitive: prepared.useCaseSensitive,
+    virtualFiles: prepared.virtualFiles,
+  };
+}
+
+function taskWeight(task) {
+  return task.virtualFiles.length;
 }
 
 function sanitize(value) {
@@ -374,25 +422,25 @@ function collectRecords(ts, checker, sourceFile, relativePath) {
   return records;
 }
 
-function main() {
-  const args = parseArgs(process.argv);
-  const repoRoot = path.resolve(args.get("repo-root") || process.cwd());
-  const casesRoot = path.resolve(args.get("cases-root"));
-  const outPath = path.resolve(args.get("out"));
-  const caseDiscovery = parseCaseDiscovery(args.get("case-discovery"));
-  const ts = loadTypeScript(repoRoot);
-  const files = discoverCompilerCases(casesRoot, caseDiscovery);
+function collectTaskRecords(ts, task) {
   const records = [];
+  collectProgramRecords(ts, task.options, task.virtualFiles, task.useCaseSensitive, records);
+  return records;
+}
+
+function buildCompilerTasks(ts, repoRoot, casesRoot, files) {
+  const tasks = [];
   const singleFileGroups = new Map();
   const explicitFileGroups = new Map();
+  const compilerOptionsForCase = createCompilerOptionsCache(ts, repoRoot);
 
   for (const file of files) {
     const compilerCase = parseCompilerCase(file, casesRoot);
     if (compilerCase.hasExplicitFiles) {
       const shouldBatch = canBatchExplicitCase(compilerCase);
-      const prepared = prepareCompilerCase(ts, compilerCase, repoRoot, shouldBatch);
+      const prepared = prepareCompilerCase(ts, compilerCase, compilerOptionsForCase, shouldBatch);
       if (!shouldBatch) {
-        collectProgramRecords(ts, prepared.options, prepared.virtualFiles, prepared.useCaseSensitive, records);
+        tasks.push(compilerTaskFromPrepared(prepared));
         continue;
       }
 
@@ -410,7 +458,7 @@ function main() {
       continue;
     }
 
-    const prepared = prepareCompilerCase(ts, compilerCase, repoRoot);
+    const prepared = prepareCompilerCase(ts, compilerCase, compilerOptionsForCase);
     const groupKey = stableOptionsKey(prepared.options, prepared.useCaseSensitive);
     let group = singleFileGroups.get(groupKey);
     if (!group) {
@@ -424,22 +472,103 @@ function main() {
     group.virtualFiles.push(...prepared.virtualFiles);
   }
 
-  for (const group of singleFileGroups.values()) {
-    collectProgramRecords(ts, group.options, group.virtualFiles, group.useCaseSensitive, records);
+  tasks.push(...singleFileGroups.values());
+  tasks.push(...explicitFileGroups.values());
+  return tasks;
+}
+
+function taskChunks(tasks, workerCount) {
+  const chunkCount = Math.min(workerCount, tasks.length);
+  const chunks = Array.from({ length: chunkCount }, () => ({ weight: 0, tasks: [] }));
+  const sortedTasks = [...tasks].sort((left, right) => taskWeight(right) - taskWeight(left));
+
+  for (const task of sortedTasks) {
+    let target = chunks[0];
+    for (const chunk of chunks) {
+      if (chunk.weight < target.weight) {
+        target = chunk;
+      }
+    }
+    target.tasks.push(task);
+    target.weight += taskWeight(task);
   }
 
-  for (const group of explicitFileGroups.values()) {
-    collectProgramRecords(ts, group.options, group.virtualFiles, group.useCaseSensitive, records);
+  return chunks.map((chunk) => chunk.tasks).filter((chunk) => chunk.length > 0);
+}
+
+function runWorker(repoRoot, tasks) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(__filename, {
+      workerData: { repoRoot, tasks },
+    });
+    let settled = false;
+
+    worker.on("message", (message) => {
+      settled = true;
+      if (message.error) {
+        reject(new Error(message.error));
+      } else {
+        resolve(message.records);
+      }
+    });
+    worker.on("error", (error) => {
+      settled = true;
+      reject(error);
+    });
+    worker.on("exit", (code) => {
+      if (!settled && code !== 0) {
+        reject(new Error(`worker stopped with exit code ${code}`));
+      }
+    });
+  });
+}
+
+async function collectRecordsFromTasks(ts, repoRoot, tasks, workerCount) {
+  if (tasks.length === 0) {
+    return [];
   }
+
+  if (workerCount === 1 || tasks.length === 1) {
+    return tasks.flatMap((task) => collectTaskRecords(ts, task));
+  }
+
+  const chunks = taskChunks(tasks, workerCount);
+  const results = await Promise.all(chunks.map((chunk) => runWorker(repoRoot, chunk)));
+  return results.flat();
+}
+
+function workerMain() {
+  try {
+    const ts = loadTypeScript(workerData.repoRoot);
+    const records = workerData.tasks.flatMap((task) => collectTaskRecords(ts, task));
+    parentPort.postMessage({ records });
+  } catch (error) {
+    parentPort.postMessage({ error: error && error.stack ? error.stack : String(error) });
+  }
+}
+
+async function main() {
+  const args = parseArgs(process.argv);
+  const repoRoot = path.resolve(args.get("repo-root") || process.cwd());
+  const casesRoot = path.resolve(args.get("cases-root"));
+  const outPath = path.resolve(args.get("out"));
+  const caseDiscovery = parseCaseDiscovery(args.get("case-discovery"));
+  const workerCount = parseWorkerCount(args.get("workers"));
+  const ts = loadTypeScript(repoRoot);
+  const files = discoverCompilerCases(casesRoot, caseDiscovery);
+  const tasks = buildCompilerTasks(ts, repoRoot, casesRoot, files);
+  const records = await collectRecordsFromTasks(ts, repoRoot, tasks, workerCount);
 
   records.sort();
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, `${records.join("\n")}\n`);
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(error && error.stack ? error.stack : String(error));
-  process.exit(1);
+if (isMainThread) {
+  main().catch((error) => {
+    console.error(error && error.stack ? error.stack : String(error));
+    process.exit(1);
+  });
+} else {
+  workerMain();
 }

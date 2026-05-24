@@ -1,3 +1,2 @@
 [alias]
-conformance = "test --features conformance conformance:: -- --nocapture"
-conformance-tsc = "test --features conformance-tsc conformance:: -- --nocapture"
+conformance = "test --features conformance,conformance-tsc conformance::full_conformance -- --exact --nocapture"

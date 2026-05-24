@@ -14,16 +14,6 @@ use oxc_span::GetSpan;
 
 use super::*;
 
-const TYPESCRIPT_CASES_ROOT: &str = "vendor/TypeScript/tests/cases";
-const CASES_ROOT: &str = "tests/conformance/cases";
-const TYPESCRIPT_SNAPSHOT_PATH: &str = "tests/conformance/types_snapshot.txt";
-const TYPESCRIPT_TSC_TYPES_PATH: &str = "target/conformance/tsc_types.tsv";
-const TYPESCRIPT_OXC_TYPES_PATH: &str = "target/conformance/oxc_types.tsv";
-const CASES_SNAPSHOT_PATH: &str = "tests/conformance/cases_snapshot.txt";
-const CASES_TSC_TYPES_PATH: &str = "target/conformance/cases_tsc_types.tsv";
-const CASES_OXC_TYPES_PATH: &str = "target/conformance/cases_oxc_types.tsv";
-const TSC_EXTRACTOR_PATH: &str = "tests/conformance/tsc_type_extractor.js";
-
 struct ConformanceSuite {
     name: &'static str,
     cases_root: &'static str,
@@ -31,30 +21,24 @@ struct ConformanceSuite {
     tsc_types_path: &'static str,
     oxc_types_path: &'static str,
     compiler_cases_only: bool,
-    missing_cases_root_hint: &'static str,
-    missing_tsc_types_hint: &'static str,
 }
 
 const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     name: "TypeScript compiler case",
-    cases_root: TYPESCRIPT_CASES_ROOT,
-    snapshot_path: TYPESCRIPT_SNAPSHOT_PATH,
-    tsc_types_path: TYPESCRIPT_TSC_TYPES_PATH,
-    oxc_types_path: TYPESCRIPT_OXC_TYPES_PATH,
+    cases_root: "vendor/TypeScript/tests/cases",
+    snapshot_path: "tests/conformance/types_snapshot.txt",
+    tsc_types_path: "target/conformance/tsc_types.tsv",
+    oxc_types_path: "target/conformance/oxc_types.tsv",
     compiler_cases_only: true,
-    missing_cases_root_hint: "Run `git submodule update --init vendor/TypeScript`.",
-    missing_tsc_types_hint: "Run `cargo conformance-tsc` first.",
 };
 
 const CASES_SUITE: ConformanceSuite = ConformanceSuite {
     name: "local conformance case",
-    cases_root: CASES_ROOT,
-    snapshot_path: CASES_SNAPSHOT_PATH,
-    tsc_types_path: CASES_TSC_TYPES_PATH,
-    oxc_types_path: CASES_OXC_TYPES_PATH,
+    cases_root: "tests/conformance/cases",
+    snapshot_path: "tests/conformance/cases_snapshot.txt",
+    tsc_types_path: "target/conformance/cases_tsc_types.tsv",
+    oxc_types_path: "target/conformance/cases_oxc_types.tsv",
     compiler_cases_only: false,
-    missing_cases_root_hint: "Create `tests/conformance/cases` and add `.ts` or `.tsx` cases.",
-    missing_tsc_types_hint: "Run `cargo conformance-tsc` first.",
 };
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -294,6 +278,10 @@ impl ConformanceError {
     fn new(message: impl Into<String>) -> Self {
         Self(message.into())
     }
+
+    fn into_message(self) -> String {
+        self.0
+    }
 }
 
 impl fmt::Debug for ConformanceError {
@@ -348,6 +336,41 @@ fn custom_case_type_records() -> ConformanceResult {
     run_type_record_conformance_on_thread("custom_case_type_records", &CASES_SUITE)
 }
 
+#[cfg(all(feature = "conformance", feature = "conformance-tsc"))]
+#[test]
+fn full_conformance() -> ConformanceResult {
+    let mut failures = Vec::new();
+
+    for suite in [&CASES_SUITE, &TYPESCRIPT_SUITE] {
+        if let Err(err) = extract_tsc_type_records(suite) {
+            failures.push(format!(
+                "{} TypeScript record extraction failed:\n{}",
+                suite.name,
+                err.into_message()
+            ));
+            continue;
+        }
+
+        if let Err(err) = run_type_record_conformance_on_thread("full_conformance", suite) {
+            failures.push(format!(
+                "{} type-record comparison failed:\n{}",
+                suite.name,
+                err.into_message()
+            ));
+        }
+    }
+
+    if failures.is_empty() {
+        Ok(())
+    } else {
+        Err(ConformanceError::new(format!(
+            "conformance failed across {} suite(s):\n\n{}",
+            failures.len(),
+            failures.join("\n\n")
+        )))
+    }
+}
+
 fn run_type_record_conformance_on_thread(
     test_name: &'static str,
     suite: &'static ConformanceSuite,
@@ -370,7 +393,6 @@ fn extract_tsc_type_records(suite: &ConformanceSuite) -> ConformanceResult {
 
     ensure_cases_root(suite, &cases_root)?;
     run_tsc_extractor(&repo_root, suite, &cases_root, &tsc_types_path)?;
-    eprintln!("{} TSC records: {}", suite.name, tsc_types_path.display());
     Ok(())
 }
 
@@ -382,15 +404,6 @@ fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
     let snapshot_path = repo_root.join(suite.snapshot_path);
 
     ensure_cases_root(suite, &cases_root)?;
-
-    if !tsc_types_path.exists() {
-        return Err(ConformanceError::new(format!(
-            "{} TypeScript record cache not found at {}. {}",
-            suite.name,
-            tsc_types_path.display(),
-            suite.missing_tsc_types_hint
-        )));
-    }
 
     let oxc_records = collect_oxc_records(suite, &cases_root);
     write_records(&oxc_types_path, &oxc_records);
@@ -419,10 +432,9 @@ fn ensure_cases_root(suite: &ConformanceSuite, cases_root: &Path) -> Conformance
     }
 
     Err(ConformanceError::new(format!(
-        "{} root not found at {}. {}",
+        "{} root not found at {}",
         suite.name,
-        cases_root.display(),
-        suite.missing_cases_root_hint
+        cases_root.display()
     )))
 }
 
@@ -441,7 +453,7 @@ fn run_tsc_extractor(
     cases_root: &Path,
     out_path: &Path,
 ) -> ConformanceResult {
-    let extractor_path = repo_root.join(TSC_EXTRACTOR_PATH);
+    let extractor_path = repo_root.join("tests/conformance/tsc_type_extractor.js");
     let case_discovery = if suite.compiler_cases_only {
         "compiler"
     } else {
