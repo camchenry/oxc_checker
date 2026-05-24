@@ -1,23 +1,23 @@
 const x1 = 5;
->     ^^-: number
+>     ^^-: 5
 
 const x2 = 1 + 2;
->     ^^-: any
+>     ^^-: number
 
 const x3 = "";
->     ^^-: string
+>     ^^-: ""
 
 const x4 = "foo" + "bar";
->     ^^-: any
+>     ^^-: string
 
 const x5 = 1 + "";
->     ^^-: any
+>     ^^-: string
 
 const x6 = "" + 1;
->     ^^-: any
+>     ^^-: string
 
 const x7 = -5;
->     ^^-: any
+>     ^^-: -5
 
 const x8 = false;
->     ^^-: boolean
+>     ^^-: false

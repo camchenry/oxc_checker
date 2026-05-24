@@ -3,16 +3,18 @@ use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
-        BindingPattern, CallExpression, Class, ClassElement, Expression, FormalParameter, Function,
-        NewExpression, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
-        PropertyKey, Statement, StaticMemberExpression, TSSignature, TSType, TSTypeAnnotation,
-        TSTypeName, TSTypeReference, VariableDeclarator,
+        BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
+        Expression, FormalParameter, Function, NewExpression, NumericLiteral, ObjectExpression,
+        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, Statement,
+        StaticMemberExpression, StringLiteral, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::Ident;
+use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
 use std::{cell::RefCell, collections::HashMap};
 
 pub mod program;
@@ -340,6 +342,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ObjectExpression(object) => {
                 self.get_type_of_object_expression(program_id, object, node_id)
             }
+            Expression::BinaryExpression(binary_expression) => {
+                self.get_type_of_binary_expression(program_id, binary_expression, node_id)
+            }
+            Expression::UnaryExpression(unary_expression) => {
+                self.get_type_of_unary_expression(program_id, unary_expression, node_id)
+            }
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
             }
@@ -357,6 +365,141 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             _ => Ty::from_expression(expression),
         }
+    }
+
+    fn get_type_of_const_initializer(
+        &self,
+        program_id: program::ProgramId,
+        expression: &Expression<'a>,
+        node_id: NodeId,
+    ) -> Ty<'a> {
+        match expression {
+            Expression::NumericLiteral(literal) => self.get_type_of_numeric_literal(literal),
+            Expression::StringLiteral(literal) => self.get_type_of_string_literal(literal),
+            Expression::BooleanLiteral(literal) => self.get_type_of_boolean_literal(literal),
+            Expression::UnaryExpression(unary_expression)
+                if unary_expression.operator == UnaryOperator::UnaryNegation =>
+            {
+                match &unary_expression.argument {
+                    Expression::NumericLiteral(literal) => {
+                        let name = self
+                            .arena()
+                            .str(&format!("-{}", self.numeric_literal_name(literal)));
+                        Ty::type_(self.arena(), name)
+                    }
+                    _ => self.get_type_of_unary_expression(
+                        program_id,
+                        unary_expression,
+                        Some(node_id),
+                    ),
+                }
+            }
+            _ => self.get_type_of_expression_at_node(program_id, expression, node_id),
+        }
+    }
+
+    fn is_in_exported_declaration(&self, program_id: program::ProgramId, node_id: NodeId) -> bool {
+        self.nodes(program_id).ancestor_kinds(node_id).any(|kind| {
+            matches!(
+                kind,
+                AstKind::ExportNamedDeclaration(_)
+                    | AstKind::ExportDefaultDeclaration(_)
+                    | AstKind::ExportAllDeclaration(_)
+            )
+        })
+    }
+
+    fn get_type_of_numeric_literal(&self, literal: &NumericLiteral<'a>) -> Ty<'a> {
+        let name = self.numeric_literal_name(literal);
+        Ty::type_(self.arena(), name)
+    }
+
+    fn numeric_literal_name(&self, literal: &NumericLiteral<'a>) -> &'a str {
+        literal.raw.as_ref().map_or_else(
+            || self.arena().str(&literal.value.to_string()),
+            |raw| raw.as_str(),
+        )
+    }
+
+    fn get_type_of_string_literal(&self, literal: &StringLiteral<'a>) -> Ty<'a> {
+        let name = literal.raw.as_ref().map_or_else(
+            || self.arena().str(&format!("{:?}", literal.value.as_str())),
+            |raw| raw.as_str(),
+        );
+        Ty::type_(self.arena(), name)
+    }
+
+    fn get_type_of_boolean_literal(&self, literal: &BooleanLiteral) -> Ty<'a> {
+        Ty::type_(self.arena(), if literal.value { "true" } else { "false" })
+    }
+
+    fn get_type_of_binary_expression(
+        &self,
+        program_id: program::ProgramId,
+        binary_expression: &BinaryExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let left =
+            self.get_type_of_expression_with_node(program_id, &binary_expression.left, node_id);
+        let right =
+            self.get_type_of_expression_with_node(program_id, &binary_expression.right, node_id);
+
+        match binary_expression.operator {
+            BinaryOperator::Addition
+                if self.is_string_like_for_addition(left)
+                    || self.is_string_like_for_addition(right) =>
+            {
+                Ty::string()
+            }
+            BinaryOperator::Addition
+                if self.is_number_like_for_arithmetic(left)
+                    && self.is_number_like_for_arithmetic(right) =>
+            {
+                Ty::number()
+            }
+            BinaryOperator::Subtraction
+            | BinaryOperator::Multiplication
+            | BinaryOperator::Division
+            | BinaryOperator::Remainder
+            | BinaryOperator::Exponential
+                if self.is_number_like_for_arithmetic(left)
+                    && self.is_number_like_for_arithmetic(right) =>
+            {
+                Ty::number()
+            }
+            _ => Ty::any(),
+        }
+    }
+
+    fn get_type_of_unary_expression(
+        &self,
+        program_id: program::ProgramId,
+        unary_expression: &UnaryExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let argument =
+            self.get_type_of_expression_with_node(program_id, &unary_expression.argument, node_id);
+        match unary_expression.operator {
+            UnaryOperator::UnaryPlus | UnaryOperator::UnaryNegation | UnaryOperator::BitwiseNot
+                if self.is_number_like_for_arithmetic(argument) =>
+            {
+                Ty::number()
+            }
+            UnaryOperator::LogicalNot => Ty::boolean(),
+            UnaryOperator::Typeof => Ty::string(),
+            UnaryOperator::Void => Ty::undefined(),
+            _ => Ty::any(),
+        }
+    }
+
+    fn is_number_like_for_arithmetic(&self, ty: Ty<'a>) -> bool {
+        matches!(ty, Ty::Number)
+            || matches!(ty, Ty::Type(literal) if literal.name.parse::<f64>().is_ok())
+    }
+
+    fn is_string_like_for_addition(&self, ty: Ty<'a>) -> bool {
+        matches!(ty, Ty::String)
+            || matches!(ty, Ty::Type(literal) if literal.name.starts_with(['\'', '"', '`']))
     }
 
     /// Return the instance type for the nearest enclosing class.
@@ -1030,13 +1173,25 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         )
                     } else {
                         declarator.init.as_ref().map_or_else(Ty::any, |expression| {
-                            self.get_type_of_expression_at_node(
-                                sym.program_id,
-                                expression,
-                                self.semantic(sym.program_id)
-                                    .scoping()
-                                    .symbol_declaration(sym.symbol_id),
-                            )
+                            let declaration = self
+                                .semantic(sym.program_id)
+                                .scoping()
+                                .symbol_declaration(sym.symbol_id);
+                            if declarator.kind == VariableDeclarationKind::Const
+                                && !self.is_in_exported_declaration(sym.program_id, declaration)
+                            {
+                                self.get_type_of_const_initializer(
+                                    sym.program_id,
+                                    expression,
+                                    declaration,
+                                )
+                            } else {
+                                self.get_type_of_expression_at_node(
+                                    sym.program_id,
+                                    expression,
+                                    declaration,
+                                )
+                            }
                         })
                     }
                 }
