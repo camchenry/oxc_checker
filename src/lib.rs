@@ -304,11 +304,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         expression: &Expression<'a>,
     ) -> Ty<'a> {
-        let node_id = self.node_id_for_span(program_id, expression.span());
-        self.get_type_of_expression_with_node(program_id, expression, node_id)
+        self.get_type_of_expression_with_node(program_id, expression, None)
     }
 
-    /// Resolve an expression type with its node id when ancestor context is needed.
+    fn get_type_of_expression_at_node(
+        &self,
+        program_id: program::ProgramId,
+        expression: &Expression<'a>,
+        node_id: NodeId,
+    ) -> Ty<'a> {
+        self.get_type_of_expression_with_node(program_id, expression, Some(node_id))
+    }
+
+    /// Resolve an expression type with a semantic context node when ancestor context is needed.
     /// This keeps `this` and member expressions tied to the class or call site they appear in.
     fn get_type_of_expression_with_node(
         &self,
@@ -330,13 +338,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id))
                 }),
             Expression::ObjectExpression(object) => {
-                self.get_type_of_object_expression(program_id, object)
+                self.get_type_of_object_expression(program_id, object, node_id)
             }
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
             }
             Expression::CallExpression(call_expression) => {
-                self.get_type_of_call_expression(program_id, call_expression)
+                self.get_type_of_call_expression(program_id, call_expression, node_id)
             }
             Expression::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id)
@@ -345,18 +353,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
                 .unwrap_or_else(Ty::any),
             Expression::FunctionExpression(function) => {
-                self.get_type_of_function_signature(program_id, function)
+                self.get_type_of_function_signature_with_node(program_id, function, node_id)
             }
             _ => Ty::from_expression(expression),
         }
-    }
-
-    /// Find the semantic node id for an AST value by span.
-    /// Expression typing often starts from AST references, while contextual typing needs ancestors.
-    fn node_id_for_span(&self, program_id: program::ProgramId, span: Span) -> Option<NodeId> {
-        self.nodes(program_id)
-            .iter_enumerated()
-            .find_map(|(node_id, node)| (node.kind().span() == span).then_some(node_id))
     }
 
     /// Return the instance type for the nearest enclosing class.
@@ -366,6 +366,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         node_id: NodeId,
     ) -> Option<Ty<'a>> {
+        if let AstKind::Class(class) = self.node_kind(NodeRef::new(program_id, node_id)) {
+            return class
+                .id
+                .as_ref()
+                .map(|identifier| Ty::type_(self.arena(), identifier.name.as_str()));
+        }
+
         self.nodes(program_id)
             .ancestors(node_id)
             .find_map(|node| match node.kind() {
@@ -381,6 +388,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         object: &ObjectExpression<'a>,
+        node_id: Option<NodeId>,
     ) -> Ty<'a> {
         Ty::object(
             self.arena(),
@@ -389,7 +397,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     return None;
                 };
                 let name = property_key_name_str(&property.key)?;
-                let ty = self.get_type_of_expression(program_id, &property.value);
+                let ty =
+                    self.get_type_of_expression_with_node(program_id, &property.value, node_id);
                 Some(Ty::property(name, ty))
             }),
         )
@@ -401,7 +410,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         member: &StaticMemberExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let object_type = self.get_type_of_expression(program_id, &member.object);
+        let object_type =
+            self.get_type_of_expression_with_node(program_id, &member.object, node_id);
         object_type
             .property_type(member.property.name.as_str())
             .or_else(|| self.get_array_property_type(&object_type, member.property.name.as_str()))
@@ -492,8 +502,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         call_expression: &CallExpression<'a>,
+        node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        match self.get_type_of_expression(program_id, &call_expression.callee) {
+        match self.get_type_of_expression_with_node(program_id, &call_expression.callee, node_id) {
             Ty::Function(function) => {
                 if function.type_parameters.is_empty() {
                     return function.return_type;
@@ -531,7 +542,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     let Some(argument) = argument.as_expression() else {
                         continue;
                     };
-                    let argument_type = self.get_type_of_expression(program_id, argument);
+                    let argument_type =
+                        self.get_type_of_expression_with_node(program_id, argument, node_id);
                     infer_type_parameter_from_types(
                         &parameter.ty,
                         &argument_type,
@@ -591,8 +603,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let is_static = type_name.starts_with("typeof ");
         let class_name = type_name.strip_prefix("typeof ").unwrap_or(type_name);
         let class_symbol = self.get_class_symbol_for_type(program_id, class_name)?;
-        let class = self.get_class_for_symbol(class_symbol)?;
-        self.get_class_member_type(class_symbol.program_id, class, property_name, is_static)
+        let (class_node_id, class) = self.get_class_for_symbol(class_symbol)?;
+        self.get_class_member_type(
+            class_symbol.program_id,
+            class_node_id,
+            class,
+            property_name,
+            is_static,
+        )
     }
 
     fn get_class_symbol_for_type(
@@ -617,18 +635,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
     }
 
-    fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<&'a Class<'a>> {
+    fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<(NodeId, &'a Class<'a>)> {
         let declaration = self
             .semantic(symbol.program_id)
             .scoping()
             .symbol_declaration(symbol.symbol_id);
         match self.nodes(symbol.program_id).kind(declaration) {
-            AstKind::Class(class) => Some(class),
+            AstKind::Class(class) => Some((declaration, class)),
             AstKind::BindingIdentifier(_) => {
-                if let AstKind::Class(class) =
-                    self.nodes(symbol.program_id).parent_kind(declaration)
-                {
-                    Some(class)
+                let parent_id = self.nodes(symbol.program_id).parent_id(declaration);
+                if let AstKind::Class(class) = self.nodes(symbol.program_id).kind(parent_id) {
+                    Some((parent_id, class))
                 } else {
                     None
                 }
@@ -640,6 +657,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_class_member_type(
         &self,
         program_id: program::ProgramId,
+        class_node_id: NodeId,
         class: &'a Class<'a>,
         property_name: &str,
         is_static: bool,
@@ -666,13 +684,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if method.r#static == is_static
                     && property_key_name(&method.key).as_deref() == Some(property_name) =>
             {
-                Some(self.get_type_of_function_signature(program_id, &method.value))
+                Some(self.get_type_of_function_signature_with_node(
+                    program_id,
+                    &method.value,
+                    Some(class_node_id),
+                ))
             }
             ClassElement::PropertyDefinition(property)
                 if property.r#static == is_static
                     && property_key_name(&property.key).as_deref() == Some(property_name) =>
             {
-                Some(self.get_type_of_property_definition(program_id, property))
+                Some(self.get_type_of_property_definition(
+                    program_id,
+                    property,
+                    Some(class_node_id),
+                ))
             }
             _ => None,
         });
@@ -687,11 +713,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         property: &PropertyDefinition<'a>,
+        node_id: Option<NodeId>,
     ) -> Ty<'a> {
         property.type_annotation.as_deref().map_or_else(
             || {
                 property.value.as_ref().map_or_else(Ty::any, |value| {
-                    self.get_type_of_expression(program_id, value)
+                    self.get_type_of_expression_with_node(program_id, value, node_id)
                 })
             },
             |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
@@ -733,9 +760,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .is_some_and(|expression| expression.span() == function_span)
         })?;
 
-        let Ty::Function(callee_function) =
-            self.get_type_of_expression(program_id, &call_expression.callee)
-        else {
+        let Ty::Function(callee_function) = self.get_type_of_expression_with_node(
+            program_id,
+            &call_expression.callee,
+            Some(parameter_node_id),
+        ) else {
             return None;
         };
         let Ty::Function(callback_function) = callee_function
@@ -755,6 +784,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         function: &Function<'a>,
+    ) -> Ty<'a> {
+        self.get_type_of_function_signature_with_node(program_id, function, None)
+    }
+
+    fn get_type_of_function_signature_with_node(
+        &self,
+        program_id: program::ProgramId,
+        function: &Function<'a>,
+        node_id: Option<NodeId>,
     ) -> Ty<'a> {
         let type_parameters = function
             .type_parameters
@@ -778,7 +816,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .collect::<Vec<_>>();
         let return_type = function.return_type.as_deref().map_or_else(
-            || self.infer_function_return_type(program_id, function),
+            || self.infer_function_return_type(program_id, function, node_id),
             |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
         );
 
@@ -789,6 +827,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         function: &Function<'a>,
+        node_id: Option<NodeId>,
     ) -> Ty<'a> {
         let Some(body) = &function.body else {
             return Ty::any();
@@ -802,7 +841,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 statement
                     .argument
                     .as_ref()
-                    .map(|argument| self.get_return_expression_type(program_id, argument))
+                    .map(|argument| self.get_return_expression_type(program_id, argument, node_id))
             })
             .unwrap_or_else(Ty::undefined)
     }
@@ -811,12 +850,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         expression: &Expression<'a>,
+        node_id: Option<NodeId>,
     ) -> Ty<'a> {
         match expression {
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
             }
-            _ => self.get_type_of_expression(program_id, expression),
+            _ => self.get_type_of_expression_with_node(program_id, expression, node_id),
         }
     }
 
@@ -879,18 +919,20 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
             AstKind::ObjectProperty(property) => {
-                self.get_type_of_expression(node.program_id, &property.value)
+                self.get_type_of_expression_at_node(node.program_id, &property.value, node.node_id)
             }
             AstKind::StaticMemberExpression(member) => self.get_type_of_static_member_expression(
                 node.program_id,
                 member,
                 Some(node.node_id),
             ),
-            AstKind::MethodDefinition(method) => {
-                self.get_type_of_function_signature(node.program_id, &method.value)
-            }
+            AstKind::MethodDefinition(method) => self.get_type_of_function_signature_with_node(
+                node.program_id,
+                &method.value,
+                Some(node.node_id),
+            ),
             AstKind::PropertyDefinition(property) => {
-                self.get_type_of_property_definition(node.program_id, property)
+                self.get_type_of_property_definition(node.program_id, property, Some(node.node_id))
             }
             _ => self
                 .get_symbol_at_location(node)
@@ -927,11 +969,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
             }
             AstKind::PropertyDefinition(property) => {
-                self.get_type_of_property_definition(sym.program_id, property)
+                self.get_type_of_property_definition(sym.program_id, property, Some(declaration))
             }
-            AstKind::Function(function) => {
-                self.get_type_of_function_signature(sym.program_id, function)
-            }
+            AstKind::Function(function) => self.get_type_of_function_signature_with_node(
+                sym.program_id,
+                function,
+                Some(declaration),
+            ),
             AstKind::AccessorProperty(property) => {
                 Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
@@ -943,9 +987,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             .concat_strs_array(["typeof ", identifier.name.as_str()]);
                         Ty::type_(self.arena(), name)
                     }
-                    AstKind::Function(function) => {
-                        self.get_type_of_function_signature(sym.program_id, function)
-                    }
+                    AstKind::Function(function) => self.get_type_of_function_signature_with_node(
+                        sym.program_id,
+                        function,
+                        Some(declaration),
+                    ),
                     _ => Ty::none(),
                 }
             }
@@ -984,7 +1030,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         )
                     } else {
                         declarator.init.as_ref().map_or_else(Ty::any, |expression| {
-                            self.get_type_of_expression(sym.program_id, expression)
+                            self.get_type_of_expression_at_node(
+                                sym.program_id,
+                                expression,
+                                self.semantic(sym.program_id)
+                                    .scoping()
+                                    .symbol_declaration(sym.symbol_id),
+                            )
                         })
                     }
                 }
