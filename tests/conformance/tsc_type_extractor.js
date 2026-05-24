@@ -8,11 +8,18 @@ function parseArgs(argv) {
     const key = argv[i];
     const value = argv[i + 1];
     if (!key || !key.startsWith("--") || value === undefined) {
-      throw new Error("usage: tsc_type_extractor.js --cases-root DIR --out FILE [--repo-root DIR]");
+      throw new Error("usage: tsc_type_extractor.js --cases-root DIR --out FILE [--repo-root DIR] [--case-discovery compiler|all]");
     }
     args.set(key.slice(2), value);
   }
   return args;
+}
+
+function parseCaseDiscovery(value) {
+  if (value === undefined || value === "compiler" || value === "all") {
+    return value || "compiler";
+  }
+  throw new Error("--case-discovery must be either compiler or all");
 }
 
 function loadTypeScript(repoRoot) {
@@ -44,13 +51,24 @@ function loadTypeScript(repoRoot) {
   }
 }
 
-function discoverCompilerCases(casesRoot) {
-  const compilerRoot = path.join(casesRoot, "compiler");
-  return fs
-    .readdirSync(compilerRoot, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && (/\.tsx?$/.test(entry.name)))
-    .map((entry) => path.join(compilerRoot, entry.name))
-    .sort();
+function discoverCompilerCases(casesRoot, caseDiscovery) {
+  const searchRoot = caseDiscovery === "compiler"
+    ? path.join(casesRoot, "compiler")
+    : casesRoot;
+  const files = [];
+  discoverCaseFiles(searchRoot, files);
+  return files.sort();
+}
+
+function discoverCaseFiles(root, files) {
+  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+    const file = path.join(root, entry.name);
+    if (entry.isDirectory()) {
+      discoverCaseFiles(file, files);
+    } else if (entry.isFile() && (/\.tsx?$/.test(entry.name))) {
+      files.push(file);
+    }
+  }
 }
 
 function parseCompilerDirective(line) {
@@ -361,8 +379,9 @@ function main() {
   const repoRoot = path.resolve(args.get("repo-root") || process.cwd());
   const casesRoot = path.resolve(args.get("cases-root"));
   const outPath = path.resolve(args.get("out"));
+  const caseDiscovery = parseCaseDiscovery(args.get("case-discovery"));
   const ts = loadTypeScript(repoRoot);
-  const files = discoverCompilerCases(casesRoot);
+  const files = discoverCompilerCases(casesRoot, caseDiscovery);
   const records = [];
   const singleFileGroups = new Map();
   const explicitFileGroups = new Map();

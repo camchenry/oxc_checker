@@ -15,10 +15,47 @@ use oxc_span::GetSpan;
 use super::*;
 
 const TYPESCRIPT_CASES_ROOT: &str = "vendor/TypeScript/tests/cases";
-const SNAPSHOT_PATH: &str = "tests/conformance/types_snapshot.txt";
-const TSC_TYPES_PATH: &str = "target/conformance/tsc_types.tsv";
-const OXC_TYPES_PATH: &str = "target/conformance/oxc_types.tsv";
+const CASES_ROOT: &str = "tests/conformance/cases";
+const TYPESCRIPT_SNAPSHOT_PATH: &str = "tests/conformance/types_snapshot.txt";
+const TYPESCRIPT_TSC_TYPES_PATH: &str = "target/conformance/tsc_types.tsv";
+const TYPESCRIPT_OXC_TYPES_PATH: &str = "target/conformance/oxc_types.tsv";
+const CASES_SNAPSHOT_PATH: &str = "tests/conformance/cases_snapshot.txt";
+const CASES_TSC_TYPES_PATH: &str = "target/conformance/cases_tsc_types.tsv";
+const CASES_OXC_TYPES_PATH: &str = "target/conformance/cases_oxc_types.tsv";
 const TSC_EXTRACTOR_PATH: &str = "tests/conformance/tsc_type_extractor.js";
+
+struct ConformanceSuite {
+    name: &'static str,
+    cases_root: &'static str,
+    snapshot_path: &'static str,
+    tsc_types_path: &'static str,
+    oxc_types_path: &'static str,
+    compiler_cases_only: bool,
+    missing_cases_root_hint: &'static str,
+    missing_tsc_types_hint: &'static str,
+}
+
+const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
+    name: "TypeScript compiler case",
+    cases_root: TYPESCRIPT_CASES_ROOT,
+    snapshot_path: TYPESCRIPT_SNAPSHOT_PATH,
+    tsc_types_path: TYPESCRIPT_TSC_TYPES_PATH,
+    oxc_types_path: TYPESCRIPT_OXC_TYPES_PATH,
+    compiler_cases_only: true,
+    missing_cases_root_hint: "Run `git submodule update --init vendor/TypeScript`.",
+    missing_tsc_types_hint: "Run `cargo conformance-tsc` first.",
+};
+
+const CASES_SUITE: ConformanceSuite = ConformanceSuite {
+    name: "local conformance case",
+    cases_root: CASES_ROOT,
+    snapshot_path: CASES_SNAPSHOT_PATH,
+    tsc_types_path: CASES_TSC_TYPES_PATH,
+    oxc_types_path: CASES_OXC_TYPES_PATH,
+    compiler_cases_only: false,
+    missing_cases_root_hint: "Create `tests/conformance/cases` and add `.ts` or `.tsx` cases.",
+    missing_tsc_types_hint: "Run `cargo conformance-tsc` first.",
+};
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct TypeRecord {
@@ -290,29 +327,35 @@ enum ComparisonError {
 #[cfg(feature = "conformance-tsc")]
 #[test]
 fn typescript_compiler_type_extractor() -> ConformanceResult {
-    let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    let cases_root = repo_root.join(TYPESCRIPT_CASES_ROOT);
-    let tsc_types_path = repo_root.join(TSC_TYPES_PATH);
+    extract_tsc_type_records(&TYPESCRIPT_SUITE)
+}
 
-    if !cases_root.exists() {
-        return Err(ConformanceError::new(format!(
-            "TypeScript test suite not found at {}. Run `git submodule update --init vendor/TypeScript`.",
-            cases_root.display()
-        )));
-    }
-
-    run_tsc_extractor(&repo_root, &cases_root, &tsc_types_path)?;
-    eprintln!("TSC records: {}", tsc_types_path.display());
-    Ok(())
+#[cfg(feature = "conformance-tsc")]
+#[test]
+fn custom_case_type_extractor() -> ConformanceResult {
+    extract_tsc_type_records(&CASES_SUITE)
 }
 
 #[cfg(feature = "conformance")]
 #[test]
 fn typescript_compiler_type_records() -> ConformanceResult {
+    run_type_record_conformance_on_thread("typescript_compiler_type_records", &TYPESCRIPT_SUITE)
+}
+
+#[cfg(feature = "conformance")]
+#[test]
+fn custom_case_type_records() -> ConformanceResult {
+    run_type_record_conformance_on_thread("custom_case_type_records", &CASES_SUITE)
+}
+
+fn run_type_record_conformance_on_thread(
+    test_name: &'static str,
+    suite: &'static ConformanceSuite,
+) -> ConformanceResult {
     std::thread::Builder::new()
-        .name("typescript_compiler_type_records".to_string())
+        .name(test_name.to_string())
         .stack_size(256 * 1024 * 1024)
-        .spawn(run_typescript_compiler_type_records)
+        .spawn(move || run_type_record_conformance(suite))
         .map_err(|err| {
             ConformanceError::new(format!("failed to spawn conformance test thread: {err}"))
         })?
@@ -320,45 +363,67 @@ fn typescript_compiler_type_records() -> ConformanceResult {
         .map_err(thread_panic_error)?
 }
 
-fn run_typescript_compiler_type_records() -> ConformanceResult {
+fn extract_tsc_type_records(suite: &ConformanceSuite) -> ConformanceResult {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    let cases_root = repo_root.join(TYPESCRIPT_CASES_ROOT);
-    let tsc_types_path = repo_root.join(TSC_TYPES_PATH);
-    let oxc_types_path = repo_root.join(OXC_TYPES_PATH);
-    let snapshot_path = repo_root.join(SNAPSHOT_PATH);
+    let cases_root = repo_root.join(suite.cases_root);
+    let tsc_types_path = repo_root.join(suite.tsc_types_path);
 
-    if !cases_root.exists() {
-        return Err(ConformanceError::new(format!(
-            "TypeScript test suite not found at {}. Run `git submodule update --init vendor/TypeScript`.",
-            cases_root.display()
-        )));
-    }
+    ensure_cases_root(suite, &cases_root)?;
+    run_tsc_extractor(&repo_root, suite, &cases_root, &tsc_types_path)?;
+    eprintln!("{} TSC records: {}", suite.name, tsc_types_path.display());
+    Ok(())
+}
+
+fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
+    let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let cases_root = repo_root.join(suite.cases_root);
+    let tsc_types_path = repo_root.join(suite.tsc_types_path);
+    let oxc_types_path = repo_root.join(suite.oxc_types_path);
+    let snapshot_path = repo_root.join(suite.snapshot_path);
+
+    ensure_cases_root(suite, &cases_root)?;
 
     if !tsc_types_path.exists() {
         return Err(ConformanceError::new(format!(
-            "TypeScript record cache not found at {}. Run `cargo conformance-tsc` first.",
-            tsc_types_path.display()
+            "{} TypeScript record cache not found at {}. {}",
+            suite.name,
+            tsc_types_path.display(),
+            suite.missing_tsc_types_hint
         )));
     }
 
-    let oxc_records = collect_oxc_records(&cases_root);
+    let oxc_records = collect_oxc_records(suite, &cases_root);
     write_records(&oxc_types_path, &oxc_records);
 
     let tsc_records = read_records(&tsc_types_path);
     let results = compare_records(&tsc_records, &oxc_records);
     let stats = ComparisonStats::from_results(&results);
-    write_snapshot(&snapshot_path, &stats, &results);
+    write_snapshot(&snapshot_path, suite, &stats, &results);
 
     let summary = stats.summary();
 
     if stats.failed_files == 0 {
-        eprintln!("TypeScript compiler case type-record conformance passed:\n{summary}");
+        eprintln!("{} type-record conformance passed:\n{summary}", suite.name);
         Ok(())
     } else {
         Err(ConformanceError::new(format!(
-            "TypeScript compiler case type-record conformance failed:\n{summary}"
+            "{} type-record conformance failed:\n{summary}",
+            suite.name
         )))
     }
+}
+
+fn ensure_cases_root(suite: &ConformanceSuite, cases_root: &Path) -> ConformanceResult {
+    if cases_root.exists() {
+        return Ok(());
+    }
+
+    Err(ConformanceError::new(format!(
+        "{} root not found at {}. {}",
+        suite.name,
+        cases_root.display(),
+        suite.missing_cases_root_hint
+    )))
 }
 
 fn thread_panic_error(payload: Box<dyn Any + Send>) -> ConformanceError {
@@ -370,14 +435,26 @@ fn thread_panic_error(payload: Box<dyn Any + Send>) -> ConformanceError {
     ConformanceError::new(format!("conformance test thread panicked: {message}"))
 }
 
-fn run_tsc_extractor(repo_root: &Path, cases_root: &Path, out_path: &Path) -> ConformanceResult {
+fn run_tsc_extractor(
+    repo_root: &Path,
+    suite: &ConformanceSuite,
+    cases_root: &Path,
+    out_path: &Path,
+) -> ConformanceResult {
     let extractor_path = repo_root.join(TSC_EXTRACTOR_PATH);
+    let case_discovery = if suite.compiler_cases_only {
+        "compiler"
+    } else {
+        "all"
+    };
     let output = Command::new("node")
         .arg(&extractor_path)
         .arg("--repo-root")
         .arg(repo_root)
         .arg("--cases-root")
         .arg(cases_root)
+        .arg("--case-discovery")
+        .arg(case_discovery)
         .arg("--out")
         .arg(out_path)
         .output()
@@ -397,37 +474,51 @@ fn run_tsc_extractor(repo_root: &Path, cases_root: &Path, out_path: &Path) -> Co
     Ok(())
 }
 
-fn discover_compiler_cases(cases_root: &Path) -> Vec<PathBuf> {
-    let compiler_root = cases_root.join("compiler");
-    let mut paths = std::fs::read_dir(&compiler_root)
+fn discover_compiler_cases(suite: &ConformanceSuite, cases_root: &Path) -> Vec<PathBuf> {
+    let search_root = if suite.compiler_cases_only {
+        cases_root.join("compiler")
+    } else {
+        cases_root.to_path_buf()
+    };
+    let mut paths = Vec::new();
+    discover_case_files(&search_root, &mut paths);
+    paths.sort();
+    paths
+}
+
+fn discover_case_files(root: &Path, paths: &mut Vec<PathBuf>) {
+    for path in std::fs::read_dir(root)
         .unwrap_or_else(|err| {
             panic!(
-                "failed to read TypeScript compiler cases directory {}: {err}",
-                compiler_root.display()
+                "failed to read conformance cases directory {}: {err}",
+                root.display()
             )
         })
         .map(|entry| {
             entry
                 .unwrap_or_else(|err| {
                     panic!(
-                        "failed to read TypeScript compiler cases directory entry in {}: {err}",
-                        compiler_root.display()
+                        "failed to read conformance cases directory entry in {}: {err}",
+                        root.display()
                     )
                 })
                 .path()
         })
-        .filter(|path| {
-            path.extension()
-                .is_some_and(|extension| extension == "ts" || extension == "tsx")
-        })
-        .collect::<Vec<_>>();
-    paths.sort();
-    paths
+    {
+        if path.is_dir() {
+            discover_case_files(&path, paths);
+        } else if path
+            .extension()
+            .is_some_and(|extension| extension == "ts" || extension == "tsx")
+        {
+            paths.push(path);
+        }
+    }
 }
 
-fn collect_oxc_records(cases_root: &Path) -> Vec<TypeRecord> {
+fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeRecord> {
     let mut records = Vec::new();
-    for path in discover_compiler_cases(cases_root) {
+    for path in discover_compiler_cases(suite, cases_root) {
         let relative_path = relative_path(cases_root, &path);
         let source_text = match std::fs::read_to_string(&path) {
             Ok(source_text) => source_text,
@@ -800,10 +891,19 @@ fn percentage(numerator: usize, denominator: usize) -> f64 {
     }
 }
 
-fn write_snapshot(snapshot_path: &Path, stats: &ComparisonStats, results: &[FileResult]) {
+fn write_snapshot(
+    snapshot_path: &Path,
+    suite: &ConformanceSuite,
+    stats: &ComparisonStats,
+    results: &[FileResult],
+) {
     let mut snapshot = String::new();
-    snapshot.push_str("# TypeScript compiler case type-record conformance snapshot\n");
+    snapshot.push_str(&format!(
+        "# {} type-record conformance snapshot\n",
+        suite.name
+    ));
     snapshot.push_str("# Generated by `cargo conformance`.\n");
+    snapshot.push_str(&format!("# Cases root: {}\n", suite.cases_root));
     snapshot.push_str(&format!(
         "files: passed={} failed={} total={} pass_percentage={:.2}%\n",
         stats.passed_files,
@@ -823,7 +923,7 @@ fn write_snapshot(snapshot_path: &Path, stats: &ComparisonStats, results: &[File
         let status = if result.passed() { "PASS" } else { "FAIL" };
         snapshot.push_str(&format!(
             "{status} {} matched_types={} mismatched_types={} total_types={} match_percentage={:.2}%\n",
-            case_snapshot_path(&result.path),
+            case_snapshot_path(suite, &result.path),
             result.matched_types,
             result.mismatched_types(),
             result.total_types(),
@@ -831,7 +931,7 @@ fn write_snapshot(snapshot_path: &Path, stats: &ComparisonStats, results: &[File
         ));
         let mut line_starts = None;
         for error in &result.errors {
-            write_snapshot_error(&mut snapshot, &result.path, &mut line_starts, error);
+            write_snapshot_error(&mut snapshot, suite, &result.path, &mut line_starts, error);
         }
     }
 
@@ -851,31 +951,41 @@ fn write_snapshot(snapshot_path: &Path, stats: &ComparisonStats, results: &[File
     });
 }
 
-fn case_snapshot_path(path: &str) -> String {
-    format!("{TYPESCRIPT_CASES_ROOT}/{path}")
+fn case_snapshot_path(suite: &ConformanceSuite, path: &str) -> String {
+    format!("{}/{path}", suite.cases_root)
 }
 
-fn case_snapshot_location(path: &str, line_starts: &mut Option<Vec<u32>>, start: u32) -> String {
-    let line = line_number_for_offset(path, line_starts, start);
-    format!("{}:{}", case_snapshot_path(path), line)
+fn case_snapshot_location(
+    suite: &ConformanceSuite,
+    path: &str,
+    line_starts: &mut Option<Vec<u32>>,
+    start: u32,
+) -> String {
+    let line = line_number_for_offset(suite, path, line_starts, start);
+    format!("{}:{}", case_snapshot_path(suite, path), line)
 }
 
-fn line_number_for_offset(path: &str, line_starts: &mut Option<Vec<u32>>, offset: u32) -> usize {
-    let line_starts = line_starts.get_or_insert_with(|| source_line_starts(path));
+fn line_number_for_offset(
+    suite: &ConformanceSuite,
+    path: &str,
+    line_starts: &mut Option<Vec<u32>>,
+    offset: u32,
+) -> usize {
+    let line_starts = line_starts.get_or_insert_with(|| source_line_starts(suite, path));
     match line_starts.binary_search(&offset) {
         Ok(index) => index + 1,
         Err(index) => index,
     }
 }
 
-fn source_line_starts(path: &str) -> Vec<u32> {
+fn source_line_starts(suite: &ConformanceSuite, path: &str) -> Vec<u32> {
     let (fixture_path, source_file_name) = path
         .split_once("::")
         .map_or((path, None), |(fixture_path, source_file_name)| {
             (fixture_path, Some(source_file_name))
         });
     let source_path =
-        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(case_snapshot_path(fixture_path));
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(case_snapshot_path(suite, fixture_path));
     let Ok(source_text) = std::fs::read_to_string(source_path) else {
         return vec![0];
     };
@@ -900,6 +1010,7 @@ fn source_line_starts(path: &str) -> Vec<u32> {
 
 fn write_snapshot_error(
     snapshot: &mut String,
+    suite: &ConformanceSuite,
     path: &str,
     line_starts: &mut Option<Vec<u32>>,
     error: &ComparisonError,
@@ -914,7 +1025,7 @@ fn write_snapshot_error(
         } => {
             snapshot.push_str(&format!(
                 "  - {} `{}` type mismatch\n",
-                case_snapshot_location(path, line_starts, *start),
+                case_snapshot_location(suite, path, line_starts, *start),
                 text
             ));
             snapshot.push_str(&format!("      expected: {expected}\n"));
@@ -928,7 +1039,7 @@ fn write_snapshot_error(
         } => {
             snapshot.push_str(&format!(
                 "  - {} `{}` missing from oxc output\n",
-                case_snapshot_location(path, line_starts, *start),
+                case_snapshot_location(suite, path, line_starts, *start),
                 text
             ));
             snapshot.push_str(&format!("      expected: {expected}\n"));
@@ -942,7 +1053,7 @@ fn write_snapshot_error(
         } => {
             snapshot.push_str(&format!(
                 "  - {} `{}` extra in oxc output\n",
-                case_snapshot_location(path, line_starts, *start),
+                case_snapshot_location(suite, path, line_starts, *start),
                 text
             ));
             snapshot.push_str("      expected: <missing>\n");
