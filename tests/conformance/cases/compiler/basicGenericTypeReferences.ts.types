@@ -1,0 +1,56 @@
+type Box<T> = { value: T };
+>    ^^^-: Box<T>
+
+type Box<T> = { value: T };
+>        ^-: any
+
+type Box<T> = { value: T };
+>               ^^^^^-: T
+
+type Box<T> = { value: T };
+>                      ^-: any
+
+function box<T>(x: T): Box<T> {
+>        ^^^-: <T>(x: T) => Box<T>
+
+function box<T>(x: T): Box<T> {
+>            ^-: any
+
+function box<T>(x: T): Box<T> {
+>               ^-: T
+
+function box<T>(x: T): Box<T> {
+>                  ^-: any
+
+function box<T>(x: T): Box<T> {
+>                      ^^^-: any
+
+function box<T>(x: T): Box<T> {
+>                          ^-: any
+
+  return { value: x };
+>          ^^^^^-: T
+
+  return { value: x };
+>                 ^-: T
+
+const explicit: Box<string> = { value: "test" };
+>     ^^^^^^^^-: Box<string>
+
+const explicit: Box<string> = { value: "test" };
+>               ^^^-: any
+
+const explicit: Box<string> = { value: "test" };
+>                               ^^^^^-: string
+
+const inferred = box(123);
+>     ^^^^^^^^-: Box<number>
+
+const inferred = box(123);
+>                ^^^-: <T>(x: T) => Box<T>
+
+const fromExplicitCall = box<string>("test");
+>     ^^^^^^^^^^^^^^^^-: Box<string>
+
+const fromExplicitCall = box<string>("test");
+>                        ^^^-: <T>(x: T) => Box<T>

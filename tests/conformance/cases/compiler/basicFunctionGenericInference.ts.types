@@ -1,0 +1,92 @@
+function foo<T>(x: T) {
+>        ^^^-: <T>(x: T) => T
+
+function foo<T>(x: T) {
+>            ^-: any
+
+function foo<T>(x: T) {
+>               ^-: T
+
+function foo<T>(x: T) {
+>                  ^-: any
+
+  return x;
+>        ^-: T
+
+const x: string = "hello"
+>     ^-: string
+
+const x1 = foo(x);
+>     ^^-: string
+
+const x1 = foo(x);
+>          ^^^-: <T>(x: T) => T
+
+const x1 = foo(x);
+>              ^-: string
+
+const x2 = foo(x1);
+>     ^^-: string
+
+const x2 = foo(x1);
+>          ^^^-: <T>(x: T) => T
+
+const x2 = foo(x1);
+>              ^^-: string
+
+function foo2<T, U>(x: T, y: U) {
+>        ^^^^-: <T, U>(x: T, y: U) => { x: T; y: U; }
+
+function foo2<T, U>(x: T, y: U) {
+>             ^-: any
+
+function foo2<T, U>(x: T, y: U) {
+>                ^-: any
+
+function foo2<T, U>(x: T, y: U) {
+>                   ^-: T
+
+function foo2<T, U>(x: T, y: U) {
+>                      ^-: any
+
+function foo2<T, U>(x: T, y: U) {
+>                         ^-: U
+
+function foo2<T, U>(x: T, y: U) {
+>                            ^-: any
+
+  return { x, y };
+>          ^-: T
+
+  return { x, y };
+>          ^-: T
+
+  return { x, y };
+>             ^-: U
+
+  return { x, y };
+>             ^-: U
+
+const y = foo2("hello", 123);
+>     ^-: { x: string; y: number; }
+
+const y = foo2("hello", 123);
+>         ^^^^-: <T, U>(x: T, y: U) => { x: T; y: U; }
+
+const y2 = foo2(y.x, y.y);
+>     ^^-: { x: string; y: number; }
+
+const y2 = foo2(y.x, y.y);
+>          ^^^^-: <T, U>(x: T, y: U) => { x: T; y: U; }
+
+const y2 = foo2(y.x, y.y);
+>               ^-: { x: string; y: number; }
+
+const y2 = foo2(y.x, y.y);
+>                 ^-: string
+
+const y2 = foo2(y.x, y.y);
+>                    ^-: { x: string; y: number; }
+
+const y2 = foo2(y.x, y.y);
+>                      ^-: number

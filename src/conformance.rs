@@ -21,6 +21,7 @@ struct ConformanceSuite {
     tsc_types_path: &'static str,
     oxc_types_path: &'static str,
     compiler_cases_only: bool,
+    write_type_outputs: bool,
 }
 
 const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
@@ -30,6 +31,7 @@ const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     tsc_types_path: "target/conformance/tsc_types.tsv",
     oxc_types_path: "target/conformance/oxc_types.tsv",
     compiler_cases_only: true,
+    write_type_outputs: false,
 };
 
 const CASES_SUITE: ConformanceSuite = ConformanceSuite {
@@ -39,6 +41,7 @@ const CASES_SUITE: ConformanceSuite = ConformanceSuite {
     tsc_types_path: "target/conformance/cases_tsc_types.tsv",
     oxc_types_path: "target/conformance/cases_oxc_types.tsv",
     compiler_cases_only: false,
+    write_type_outputs: true,
 };
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -407,6 +410,7 @@ fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
 
     let oxc_records = collect_oxc_records(suite, &cases_root);
     write_records(&oxc_types_path, &oxc_records);
+    write_type_outputs(suite, &cases_root, &oxc_records);
 
     let tsc_records = read_records(&tsc_types_path);
     let results = compare_records(&tsc_records, &oxc_records);
@@ -929,6 +933,112 @@ fn write_records(path: &Path, records: &[TypeRecord]) {
         .unwrap_or_else(|err| panic!("failed to write type records {}: {err}", path.display()));
 }
 
+fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[TypeRecord]) {
+    if !suite.write_type_outputs {
+        return;
+    }
+
+    let mut records_by_path = BTreeMap::new();
+    for record in records {
+        records_by_path
+            .entry(record.path.as_str())
+            .or_insert_with(Vec::new)
+            .push(record);
+    }
+
+    for path in discover_compiler_cases(suite, cases_root) {
+        let relative_path = relative_path(cases_root, &path);
+        let source_text = match std::fs::read_to_string(&path) {
+            Ok(source_text) => source_text,
+            Err(_) => continue,
+        };
+        let compiler_case = parse_compiler_test_case(&source_text, &relative_path);
+        let mut output = String::new();
+
+        for source_file in &compiler_case.files {
+            let record_path = record_path(
+                &relative_path,
+                source_file,
+                compiler_case.has_explicit_files,
+            );
+            let Some(source_records) = records_by_path.get(record_path.as_str()) else {
+                continue;
+            };
+            write_type_output_for_source_file(
+                &mut output,
+                &source_file.source_text,
+                source_records,
+            );
+        }
+
+        let output_path = type_output_path(&path);
+        std::fs::write(&output_path, output).unwrap_or_else(|err| {
+            panic!(
+                "failed to write type output {}: {err}",
+                output_path.display()
+            )
+        });
+    }
+}
+
+fn type_output_path(path: &Path) -> PathBuf {
+    let file_name = path
+        .file_name()
+        .and_then(|file_name| file_name.to_str())
+        .unwrap_or_else(|| panic!("invalid conformance case path {}", path.display()));
+    path.with_file_name(format!("{file_name}.types"))
+}
+
+fn write_type_output_for_source_file(
+    output: &mut String,
+    source_text: &str,
+    records: &[&TypeRecord],
+) {
+    let line_starts = line_starts_for_text(source_text);
+    for record in records {
+        if !output.is_empty() {
+            output.push('\n');
+        }
+
+        let line_index = line_index_for_offset(&line_starts, record.start);
+        let line_start = line_starts[line_index] as usize;
+        let line_end = line_end_for_index(source_text, &line_starts, line_index);
+        let span_start = (record.start as usize).clamp(line_start, line_end);
+        let span_end = (record.end as usize).clamp(span_start, line_end);
+        let start_column = display_column(source_text, line_start, span_start);
+        let end_column = display_column(source_text, line_start, span_end);
+        let marker_column = start_column.saturating_sub(1);
+        let caret_count = (end_column.saturating_sub(start_column)).max(1);
+
+        output.push_str(&source_text[line_start..line_end]);
+        output.push('\n');
+        output.push('>');
+        output.extend(std::iter::repeat_n(' ', marker_column));
+        output.extend(std::iter::repeat_n('^', caret_count));
+        output.push_str("-: ");
+        output.push_str(&record.ty);
+        output.push('\n');
+    }
+}
+
+fn line_index_for_offset(line_starts: &[u32], offset: u32) -> usize {
+    match line_starts.binary_search(&offset) {
+        Ok(index) => index,
+        Err(0) => 0,
+        Err(index) => index - 1,
+    }
+}
+
+fn line_end_for_index(source_text: &str, line_starts: &[u32], line_index: usize) -> usize {
+    line_starts
+        .get(line_index + 1)
+        .map_or(source_text.len(), |line_start| (*line_start as usize) - 1)
+}
+
+fn display_column(source_text: &str, line_start: usize, offset: usize) -> usize {
+    source_text[line_start..offset].chars().count()
+}
+
 fn relative_path(root: &Path, path: &Path) -> String {
     path.strip_prefix(root)
         .unwrap_or(path)
@@ -1056,6 +1166,10 @@ fn source_line_starts(suite: &ConformanceSuite, path: &str) -> Vec<u32> {
         return vec![0];
     };
 
+    line_starts_for_text(source_text)
+}
+
+fn line_starts_for_text(source_text: &str) -> Vec<u32> {
     let mut starts = vec![0];
     for (index, byte) in source_text.bytes().enumerate() {
         if byte == b'\n' {
@@ -1154,6 +1268,34 @@ mod tests {
         assert_eq!(
             parsed.files[1].source_text,
             "import { exit } from \"./utils.js\";\n\nexit()"
+        );
+    }
+
+    #[test]
+    fn type_output_renders_line_span_and_type() {
+        let source_text = "let count: number = 1;\nlet label: string = \"ready\";";
+        let record = TypeRecord {
+            path: "compiler/basicPrimitives.ts".to_string(),
+            start: 27,
+            end: 32,
+            text: "label".to_string(),
+            ty: "string".to_string(),
+        };
+        let mut output = String::new();
+
+        write_type_output_for_source_file(&mut output, source_text, &[&record]);
+
+        assert_eq!(
+            output,
+            "let label: string = \"ready\";\n>   ^^^^^-: string\n"
+        );
+    }
+
+    #[test]
+    fn type_output_path_appends_types_extension() {
+        assert_eq!(
+            type_output_path(Path::new("tests/conformance/cases/compiler/example.ts")),
+            PathBuf::from("tests/conformance/cases/compiler/example.ts.types")
         );
     }
 }
