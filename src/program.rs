@@ -204,7 +204,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     }
 
     pub fn build(self) -> ProgramStoreResult<ProgramStore<'a>> {
-        let mut store = ProgramStore::new();
+        let mut store = ProgramStore::new(self.allocator);
         for root_file in &self.root_files {
             let root_file = self.host.canonicalize_path(root_file);
             self.ensure_program(&mut store, &root_file)?;
@@ -290,6 +290,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
 }
 
 pub struct ProgramStore<'a> {
+    allocator: &'a Allocator,
     entries: Vec<ProgramEntry<'a>>,
     paths: HashMap<PathBuf, ProgramId>,
     edges: Vec<ModuleEdge>,
@@ -297,12 +298,18 @@ pub struct ProgramStore<'a> {
 
 impl<'a> ProgramStore<'a> {
     #[must_use]
-    pub fn new() -> Self {
+    pub fn new(allocator: &'a Allocator) -> Self {
         Self {
+            allocator,
             entries: Vec::new(),
             paths: HashMap::new(),
             edges: Vec::new(),
         }
+    }
+
+    #[inline]
+    pub const fn allocator(&self) -> &'a Allocator {
+        self.allocator
     }
 
     #[inline]
@@ -369,12 +376,6 @@ impl<'a> ProgramStore<'a> {
             }
         }
         requests
-    }
-}
-
-impl Default for ProgramStore<'_> {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

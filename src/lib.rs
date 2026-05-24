@@ -1,4 +1,5 @@
 #![allow(dead_code, unused_imports)]
+use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::{
     AstKind,
     ast::{
@@ -16,9 +17,36 @@ use std::{cell::RefCell, collections::HashMap};
 
 pub mod program;
 
+#[derive(Clone, Copy)]
+struct CheckerArena<'a> {
+    allocator: &'a Allocator,
+}
+
+impl<'a> CheckerArena<'a> {
+    fn new(allocator: &'a Allocator) -> Self {
+        Self { allocator }
+    }
+
+    fn alloc<T>(&self, value: T) -> &'a T {
+        self.allocator.alloc(value)
+    }
+
+    fn str(&self, value: &str) -> &'a str {
+        self.allocator.alloc_str(value)
+    }
+
+    fn concat_strs_array<const N: usize>(&self, strings: [&str; N]) -> &'a str {
+        self.allocator.alloc_concat_strs_array(strings)
+    }
+
+    fn vec_from_iter<T>(&self, iter: impl IntoIterator<Item = T>) -> ArenaVec<'a, T> {
+        ArenaVec::from_iter_in(iter, self.allocator)
+    }
+}
+
 #[repr(C, u8)]
-#[derive(Debug, PartialEq, Eq, Clone)]
-enum Ty {
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+enum Ty<'a> {
     None,
     Number,
     String,
@@ -28,36 +56,48 @@ enum Ty {
     Null,
     Any,
     Unknown,
-    Object(Box<TyObject>),
-    Function(Box<TyFunction>),
-    TypeReference(Box<TyTypeReference>),
-    Type(Box<TyType>),
+    Object(&'a TyObject<'a>),
+    Function(&'a TyFunction<'a>),
+    TypeReference(&'a TyTypeReference<'a>),
+    Type(&'a TyType<'a>),
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
-struct TyObject {
-    properties: Vec<(String, Ty)>,
+#[derive(Debug, PartialEq, Eq)]
+struct TyObject<'a> {
+    properties: ArenaVec<'a, TyProperty<'a>>,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
-struct TyFunction {
-    type_parameters: Vec<String>,
-    parameters: Vec<(String, Ty)>,
-    return_type: Ty,
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+struct TyProperty<'a> {
+    name: &'a str,
+    ty: Ty<'a>,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
-struct TyTypeReference {
-    name: String,
-    type_arguments: Vec<Ty>,
+#[derive(Debug, PartialEq, Eq)]
+struct TyFunction<'a> {
+    type_parameters: ArenaVec<'a, &'a str>,
+    parameters: ArenaVec<'a, TyParameter<'a>>,
+    return_type: Ty<'a>,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
-struct TyType {
-    name: String,
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+struct TyParameter<'a> {
+    name: &'a str,
+    ty: Ty<'a>,
 }
 
-impl Ty {
+#[derive(Debug, PartialEq, Eq)]
+struct TyTypeReference<'a> {
+    name: &'a str,
+    type_arguments: ArenaVec<'a, Ty<'a>>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+struct TyType<'a> {
+    name: &'a str,
+}
+
+impl<'a> Ty<'a> {
     fn none() -> Self {
         Self::None
     }
@@ -94,31 +134,49 @@ impl Ty {
         Self::Unknown
     }
 
-    fn object(properties: Vec<(String, Ty)>) -> Self {
-        Self::Object(Box::new(TyObject { properties }))
+    fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
+        TyProperty { name, ty }
+    }
+
+    fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+        TyParameter { name, ty }
+    }
+
+    fn object(
+        arena: CheckerArena<'a>,
+        properties: impl IntoIterator<Item = TyProperty<'a>>,
+    ) -> Self {
+        Self::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter(properties),
+        }))
     }
 
     fn function(
-        type_parameters: Vec<String>,
-        parameters: Vec<(String, Ty)>,
-        return_type: Ty,
+        arena: CheckerArena<'a>,
+        type_parameters: impl IntoIterator<Item = &'a str>,
+        parameters: impl IntoIterator<Item = TyParameter<'a>>,
+        return_type: Ty<'a>,
     ) -> Self {
-        Self::Function(Box::new(TyFunction {
-            type_parameters,
-            parameters,
+        Self::Function(arena.alloc(TyFunction {
+            type_parameters: arena.vec_from_iter(type_parameters),
+            parameters: arena.vec_from_iter(parameters),
             return_type,
         }))
     }
 
-    fn type_reference(name: impl Into<String>, type_arguments: Vec<Ty>) -> Self {
-        Self::TypeReference(Box::new(TyTypeReference {
-            name: name.into(),
-            type_arguments,
+    fn type_reference(
+        arena: CheckerArena<'a>,
+        name: &'a str,
+        type_arguments: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Self {
+        Self::TypeReference(arena.alloc(TyTypeReference {
+            name,
+            type_arguments: arena.vec_from_iter(type_arguments),
         }))
     }
 
-    fn type_(name: impl Into<String>) -> Self {
-        Self::Type(Box::new(TyType { name: name.into() }))
+    fn type_(arena: CheckerArena<'a>, name: &'a str) -> Self {
+        Self::Type(arena.alloc(TyType { name }))
     }
 
     fn is_none(&self) -> bool {
@@ -127,14 +185,17 @@ impl Ty {
 
     /// Take a type annotation like `: number` and return the corresponding type. Returns no
     /// type if there is no type annotation.
-    fn from_ts_type_annotation(type_annotation: Option<&TSTypeAnnotation<'_>>) -> Self {
+    fn from_ts_type_annotation(
+        arena: CheckerArena<'a>,
+        type_annotation: Option<&TSTypeAnnotation<'a>>,
+    ) -> Self {
         type_annotation.map_or_else(Self::any, |type_annotation| {
-            Self::from_ts_type(&type_annotation.type_annotation)
+            Self::from_ts_type(arena, &type_annotation.type_annotation)
         })
     }
 
     /// Turns a declared type in the AST and turns it into an actual type.
-    fn from_ts_type(t: &TSType<'_>) -> Self {
+    fn from_ts_type(arena: CheckerArena<'a>, t: &TSType<'a>) -> Self {
         match t {
             TSType::TSNumberKeyword(_) => Self::number(),
             TSType::TSStringKeyword(_) => Self::string(),
@@ -145,40 +206,39 @@ impl Ty {
             TSType::TSAnyKeyword(_) => Self::any(),
             TSType::TSUnknownKeyword(_) => Self::unknown(),
             TSType::TSTypeLiteral(type_literal) => Self::object(
-                type_literal
-                    .members
-                    .iter()
-                    .filter_map(|member| {
-                        let TSSignature::TSPropertySignature(property) = member else {
-                            return None;
-                        };
-                        let name = property_key_name(&property.key)?;
-                        let ty = Self::from_ts_type_annotation(property.type_annotation.as_deref());
-                        Some((name.to_string(), ty))
-                    })
-                    .collect(),
+                arena,
+                type_literal.members.iter().filter_map(|member| {
+                    let TSSignature::TSPropertySignature(property) = member else {
+                        return None;
+                    };
+                    let name = property_key_name_str(&property.key)?;
+                    let ty =
+                        Self::from_ts_type_annotation(arena, property.type_annotation.as_deref());
+                    Some(Self::property(name, ty))
+                }),
             ),
-            TSType::TSArrayType(array) => Self::type_(format!(
-                "{}[]",
-                Self::from_ts_type(&array.element_type).to_type_string()
-            )),
-            TSType::TSTypeReference(reference) => Self::from_ts_type_reference(reference),
+            TSType::TSArrayType(array) => {
+                let element_type = Self::from_ts_type(arena, &array.element_type).to_type_string();
+                let array_type = arena.concat_strs_array([element_type.as_str(), "[]"]);
+                Self::type_(arena, array_type)
+            }
+            TSType::TSTypeReference(reference) => Self::from_ts_type_reference(arena, reference),
             TSType::TSParenthesizedType(parenthesized) => {
-                Self::from_ts_type(&parenthesized.type_annotation)
+                Self::from_ts_type(arena, &parenthesized.type_annotation)
             }
             _ => Self::none(),
         }
     }
 
-    fn from_ts_type_reference(reference: &TSTypeReference<'_>) -> Self {
+    fn from_ts_type_reference(arena: CheckerArena<'a>, reference: &TSTypeReference<'a>) -> Self {
         Self::type_reference(
-            ts_type_name_to_string(&reference.type_name),
+            arena,
+            ts_type_name_to_str(arena, &reference.type_name),
             reference
                 .type_arguments
                 .as_ref()
-                .map_or_else(Vec::new, |args| {
-                    args.params.iter().map(Self::from_ts_type).collect()
-                }),
+                .into_iter()
+                .flat_map(|args| args.params.iter().map(|ty| Self::from_ts_type(arena, ty))),
         )
     }
 
@@ -198,65 +258,70 @@ impl Ty {
             Self::Object(object) => object
                 .properties
                 .iter()
-                .find_map(|(property_name, ty)| (property_name == name).then(|| ty.clone())),
+                .find_map(|property| (property.name == name).then_some(property.ty)),
             _ => None,
         }
     }
 
-    fn substitute_type_parameters(&self, substitutions: &HashMap<String, Ty>) -> Self {
+    fn substitute_type_parameters(
+        &self,
+        arena: CheckerArena<'a>,
+        substitutions: &HashMap<&'a str, Ty<'a>>,
+    ) -> Self {
         match self {
             Self::Object(object) => Self::object(
-                object
-                    .properties
-                    .iter()
-                    .map(|(name, ty)| (name.clone(), ty.substitute_type_parameters(substitutions)))
-                    .collect(),
+                arena,
+                object.properties.iter().map(|property| {
+                    Self::property(
+                        property.name,
+                        property.ty.substitute_type_parameters(arena, substitutions),
+                    )
+                }),
             ),
             Self::Function(function) => {
                 let substitutions = substitutions
                     .iter()
                     .filter(|(name, _)| !function.type_parameters.contains(name))
-                    .map(|(name, ty)| (name.clone(), ty.clone()))
+                    .map(|(name, ty)| (*name, *ty))
                     .collect::<HashMap<_, _>>();
                 Self::function(
-                    function.type_parameters.clone(),
-                    function
-                        .parameters
-                        .iter()
-                        .map(|(name, ty)| {
-                            (name.clone(), ty.substitute_type_parameters(&substitutions))
-                        })
-                        .collect(),
+                    arena,
+                    function.type_parameters.iter().copied(),
+                    function.parameters.iter().map(|parameter| {
+                        Self::parameter(
+                            parameter.name,
+                            parameter
+                                .ty
+                                .substitute_type_parameters(arena, &substitutions),
+                        )
+                    }),
                     function
                         .return_type
-                        .substitute_type_parameters(&substitutions),
+                        .substitute_type_parameters(arena, &substitutions),
                 )
             }
-            Self::Type(ty) => substitutions
-                .get(&ty.name)
-                .cloned()
-                .unwrap_or_else(|| self.clone()),
+            Self::Type(ty) => substitutions.get(ty.name).copied().unwrap_or(*self),
             Self::TypeReference(reference) => {
                 if reference.type_arguments.is_empty()
-                    && let Some(substitution) = substitutions.get(&reference.name)
+                    && let Some(substitution) = substitutions.get(reference.name)
                 {
-                    substitution.clone()
+                    *substitution
                 } else {
                     Self::type_reference(
-                        reference.name.clone(),
+                        arena,
+                        reference.name,
                         reference
                             .type_arguments
                             .iter()
-                            .map(|ty| ty.substitute_type_parameters(substitutions))
-                            .collect(),
+                            .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
                     )
                 }
             }
-            _ => self.clone(),
+            _ => *self,
         }
     }
 
-    fn to_type_string(&self) -> String {
+    fn to_type_string(self) -> String {
         match self {
             Self::None => "none".to_string(),
             Self::Number => "number".to_string(),
@@ -275,7 +340,7 @@ impl Ty {
                 let properties = object
                     .properties
                     .iter()
-                    .map(|(name, ty)| format!("{name}: {};", ty.to_type_string()))
+                    .map(|property| format!("{}: {};", property.name, property.ty.to_type_string()))
                     .collect::<Vec<_>>()
                     .join(" ");
                 format!("{{ {properties} }}")
@@ -289,7 +354,9 @@ impl Ty {
                 let parameters = function
                     .parameters
                     .iter()
-                    .map(|(name, ty)| format!("{name}: {}", ty.to_type_string()))
+                    .map(|parameter| {
+                        format!("{}: {}", parameter.name, parameter.ty.to_type_string())
+                    })
                     .collect::<Vec<_>>()
                     .join(", ");
                 format!(
@@ -299,50 +366,50 @@ impl Ty {
             }
             Self::TypeReference(reference) => {
                 if reference.type_arguments.is_empty() {
-                    reference.name.clone()
+                    reference.name.to_string()
                 } else {
                     let type_arguments = reference
                         .type_arguments
                         .iter()
-                        .map(Self::to_type_string)
+                        .map(|ty| ty.to_type_string())
                         .collect::<Vec<_>>()
                         .join(", ");
                     format!("{}<{type_arguments}>", reference.name)
                 }
             }
-            Self::Type(ty) => ty.name.clone(),
+            Self::Type(ty) => ty.name.to_string(),
         }
     }
 }
 
-fn infer_type_parameter_from_types(
-    parameter_type: &Ty,
-    argument_type: &Ty,
-    type_parameters: &[String],
-    substitutions: &mut HashMap<String, Ty>,
+fn infer_type_parameter_from_types<'a>(
+    parameter_type: &Ty<'a>,
+    argument_type: &Ty<'a>,
+    type_parameters: &[&'a str],
+    substitutions: &mut HashMap<&'a str, Ty<'a>>,
 ) {
     match (parameter_type, argument_type) {
         (Ty::Type(ty), _) if type_parameters.contains(&ty.name) => {
-            match substitutions.get(&ty.name) {
+            match substitutions.get(ty.name) {
                 Some(existing) if existing != argument_type => {
-                    substitutions.insert(ty.name.clone(), Ty::any());
+                    substitutions.insert(ty.name, Ty::any());
                 }
                 Some(_) => {}
                 None => {
-                    substitutions.insert(ty.name.clone(), argument_type.clone());
+                    substitutions.insert(ty.name, *argument_type);
                 }
             }
         }
         (Ty::TypeReference(reference), _)
             if reference.type_arguments.is_empty() && type_parameters.contains(&reference.name) =>
         {
-            match substitutions.get(&reference.name) {
+            match substitutions.get(reference.name) {
                 Some(existing) if existing != argument_type => {
-                    substitutions.insert(reference.name.clone(), Ty::any());
+                    substitutions.insert(reference.name, Ty::any());
                 }
                 Some(_) => {}
                 None => {
-                    substitutions.insert(reference.name.clone(), argument_type.clone());
+                    substitutions.insert(reference.name, *argument_type);
                 }
             }
         }
@@ -363,15 +430,15 @@ fn infer_type_parameter_from_types(
             }
         }
         (Ty::Object(parameter_object), Ty::Object(argument_object)) => {
-            for (property_name, parameter_property_type) in &parameter_object.properties {
-                if let Some((_, argument_property_type)) = argument_object
+            for parameter_property in &parameter_object.properties {
+                if let Some(argument_property) = argument_object
                     .properties
                     .iter()
-                    .find(|(argument_property_name, _)| argument_property_name == property_name)
+                    .find(|argument_property| argument_property.name == parameter_property.name)
                 {
                     infer_type_parameter_from_types(
-                        parameter_property_type,
-                        argument_property_type,
+                        &parameter_property.ty,
+                        &argument_property.ty,
                         type_parameters,
                         substitutions,
                     );
@@ -385,6 +452,13 @@ fn infer_type_parameter_from_types(
 fn property_key_name(key: &PropertyKey<'_>) -> Option<String> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.to_string()),
+        _ => None,
+    }
+}
+
+fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
+    match key {
+        PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
         _ => None,
     }
 }
@@ -410,9 +484,27 @@ fn ts_type_name_to_string(name: &TSTypeName<'_>) -> String {
     }
 }
 
+fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'a str {
+    match name {
+        TSTypeName::IdentifierReference(identifier) => identifier.name.as_str(),
+        TSTypeName::QualifiedName(qualified) => {
+            let left = ts_type_name_to_str(arena, &qualified.left);
+            arena.str(&format!("{}.{}", left, qualified.right.name))
+        }
+        TSTypeName::ThisExpression(_) => "this",
+    }
+}
+
 fn binding_pattern_name(pattern: &BindingPattern<'_>) -> Option<String> {
     match pattern {
         BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.to_string()),
+        _ => None,
+    }
+}
+
+fn binding_pattern_name_str<'a>(pattern: &BindingPattern<'a>) -> Option<&'a str> {
+    match pattern {
+        BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.as_str()),
         _ => None,
     }
 }
@@ -466,19 +558,19 @@ enum SignatureKind {
 struct Signature {}
 struct IndexInfo {}
 
-trait Checker {
+trait Checker<'a> {
     fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef>;
-    fn get_type_at_location(&self, node: NodeRef) -> Ty;
-    // fn get_type_from_type_node(&self, type_node: NodeRef) -> Ty;
-    fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty;
-    fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty;
-    fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty;
-    fn get_properties_of_type(&self, t: Ty) -> Vec<SymbolRef>;
-    fn get_property_of_type(&self, t: Ty, name: &str) -> Option<SymbolRef>;
-    fn get_signatures_of_type(&self, t: Ty, kind: SignatureKind) -> Vec<Signature>;
-    fn get_index_infos_of_type(&self, t: Ty) -> Vec<IndexInfo>;
-    fn is_assignable_to(&self, source: Ty, target: Ty) -> bool;
-    fn type_to_string(&self, t: Ty, location: NodeRef) -> String;
+    fn get_type_at_location(&self, node: NodeRef) -> Ty<'a>;
+    // fn get_type_from_type_node(&self, type_node: NodeRef) -> Ty<'a>;
+    fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a>;
+    fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a>;
+    fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty<'a>;
+    fn get_properties_of_type(&self, t: Ty<'a>) -> Vec<SymbolRef>;
+    fn get_property_of_type(&self, t: Ty<'a>, name: &str) -> Option<SymbolRef>;
+    fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature>;
+    fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo>;
+    fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool;
+    fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String;
     fn symbol_to_string(&self, s: SymbolRef, location: NodeRef) -> String;
 }
 
@@ -495,6 +587,7 @@ impl CheckerBuilder {
     ) -> CheckerReturn<'a, 'store> {
         CheckerReturn {
             store,
+            arena: CheckerArena::new(store.allocator()),
             resolving_symbols: RefCell::new(Vec::new()),
         }
     }
@@ -532,6 +625,7 @@ impl SymbolRef {
 
 struct CheckerReturn<'a, 'store> {
     store: &'store program::ProgramStore<'a>,
+    arena: CheckerArena<'a>,
     resolving_symbols: RefCell<Vec<SymbolRef>>,
 }
 
@@ -558,11 +652,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.nodes(node.program_id).kind(node.node_id)
     }
 
+    #[inline]
+    fn arena(&self) -> CheckerArena<'a> {
+        self.arena
+    }
+
     fn get_type_of_expression(
         &self,
         program_id: program::ProgramId,
-        expression: &Expression<'_>,
-    ) -> Ty {
+        expression: &Expression<'a>,
+    ) -> Ty<'a> {
         match expression {
             Expression::Identifier(identifier) => identifier
                 .reference_id
@@ -595,29 +694,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_object_expression(
         &self,
         program_id: program::ProgramId,
-        object: &ObjectExpression<'_>,
-    ) -> Ty {
+        object: &ObjectExpression<'a>,
+    ) -> Ty<'a> {
         Ty::object(
-            object
-                .properties
-                .iter()
-                .filter_map(|property| {
-                    let ObjectPropertyKind::ObjectProperty(property) = property else {
-                        return None;
-                    };
-                    let name = property_key_name(&property.key)?;
-                    let ty = self.get_type_of_expression(program_id, &property.value);
-                    Some((name, ty))
-                })
-                .collect(),
+            self.arena(),
+            object.properties.iter().filter_map(|property| {
+                let ObjectPropertyKind::ObjectProperty(property) = property else {
+                    return None;
+                };
+                let name = property_key_name_str(&property.key)?;
+                let ty = self.get_type_of_expression(program_id, &property.value);
+                Some(Ty::property(name, ty))
+            }),
         )
     }
 
     fn get_type_of_static_member_expression(
         &self,
         program_id: program::ProgramId,
-        member: &StaticMemberExpression<'_>,
-    ) -> Ty {
+        member: &StaticMemberExpression<'a>,
+    ) -> Ty<'a> {
         let object_type = self.get_type_of_expression(program_id, &member.object);
         object_type
             .property_type(member.property.name.as_str())
@@ -634,55 +730,58 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_call_expression(
         &self,
         program_id: program::ProgramId,
-        call_expression: &CallExpression<'_>,
-    ) -> Ty {
+        call_expression: &CallExpression<'a>,
+    ) -> Ty<'a> {
         match self.get_type_of_expression(program_id, &call_expression.callee) {
             Ty::Function(function) => {
-                let TyFunction {
-                    type_parameters,
-                    parameters,
-                    return_type,
-                } = *function;
-
-                if type_parameters.is_empty() {
-                    return return_type;
+                if function.type_parameters.is_empty() {
+                    return function.return_type;
                 }
 
                 let mut substitutions = HashMap::new();
                 let mut explicit_type_parameters = Vec::new();
 
                 if let Some(type_arguments) = &call_expression.type_arguments {
-                    for (type_parameter, type_argument) in
-                        type_parameters.iter().zip(type_arguments.params.iter())
+                    for (type_parameter, type_argument) in function
+                        .type_parameters
+                        .iter()
+                        .zip(type_arguments.params.iter())
                     {
-                        substitutions
-                            .insert(type_parameter.clone(), Ty::from_ts_type(type_argument));
-                        explicit_type_parameters.push(type_parameter.clone());
+                        substitutions.insert(
+                            *type_parameter,
+                            Ty::from_ts_type(self.arena(), type_argument),
+                        );
+                        explicit_type_parameters.push(*type_parameter);
                     }
                 }
 
-                let inferable_type_parameters = type_parameters
+                let inferable_type_parameters = function
+                    .type_parameters
                     .iter()
                     .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
                     .cloned()
                     .collect::<Vec<_>>();
 
-                for (argument, (_, parameter_type)) in
-                    call_expression.arguments.iter().zip(parameters.iter())
+                for (argument, parameter) in call_expression
+                    .arguments
+                    .iter()
+                    .zip(function.parameters.iter())
                 {
                     let Some(argument) = argument.as_expression() else {
                         continue;
                     };
                     let argument_type = self.get_type_of_expression(program_id, argument);
                     infer_type_parameter_from_types(
-                        parameter_type,
+                        &parameter.ty,
                         &argument_type,
                         &inferable_type_parameters,
                         &mut substitutions,
                     );
                 }
 
-                return_type.substitute_type_parameters(&substitutions)
+                function
+                    .return_type
+                    .substitute_type_parameters(self.arena(), &substitutions)
             }
             _ => Ty::any(),
         }
@@ -691,8 +790,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_new_expression(
         &self,
         program_id: program::ProgramId,
-        new_expression: &NewExpression<'_>,
-    ) -> Ty {
+        new_expression: &NewExpression<'a>,
+    ) -> Ty<'a> {
         let Expression::Identifier(identifier) = &new_expression.callee else {
             return Ty::any();
         };
@@ -711,21 +810,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if let Some(Ty::Type(ty)) = constructor_type
             && let Some(instance_name) = ty.name.strip_prefix("typeof ")
         {
-            return Ty::type_(instance_name.to_string());
+            return Ty::type_(self.arena(), self.arena().str(instance_name));
         }
 
-        Ty::type_(identifier.name.to_string())
+        Ty::type_(self.arena(), identifier.name.as_str())
     }
 
     fn get_property_type_of_named_type(
         &self,
         program_id: program::ProgramId,
-        object_type: &Ty,
+        object_type: &Ty<'a>,
         property_name: &str,
-    ) -> Option<Ty> {
+    ) -> Option<Ty<'a>> {
         let type_name = match object_type {
-            Ty::Type(ty) => ty.name.as_str(),
-            Ty::TypeReference(reference) => reference.name.as_str(),
+            Ty::Type(ty) => ty.name,
+            Ty::TypeReference(reference) => reference.name,
             _ => return None,
         };
         let is_static = type_name.starts_with("typeof ");
@@ -757,7 +856,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
     }
 
-    fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<&Class<'_>> {
+    fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<&'a Class<'a>> {
         let declaration = self
             .semantic(symbol.program_id)
             .scoping()
@@ -780,10 +879,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_class_member_type(
         &self,
         program_id: program::ProgramId,
-        class: &Class<'_>,
+        class: &'a Class<'a>,
         property_name: &str,
         is_static: bool,
-    ) -> Option<Ty> {
+    ) -> Option<Ty<'a>> {
         class.body.body.iter().find_map(|element| match element {
             ClassElement::MethodDefinition(method)
                 if method.r#static == is_static
@@ -802,7 +901,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             .as_ref()
                             .map(|value| self.get_type_of_expression(program_id, value))
                     },
-                    |annotation| Some(Ty::from_ts_type_annotation(Some(annotation))),
+                    |annotation| Some(Ty::from_ts_type_annotation(self.arena(), Some(annotation))),
                 )
             }
             _ => None,
@@ -812,8 +911,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_function_signature(
         &self,
         program_id: program::ProgramId,
-        function: &Function<'_>,
-    ) -> Ty {
+        function: &Function<'a>,
+    ) -> Ty<'a> {
         let type_parameters = function
             .type_parameters
             .as_ref()
@@ -821,7 +920,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 params
                     .params
                     .iter()
-                    .map(|parameter| parameter.name.to_string())
+                    .map(|parameter| parameter.name.name.as_str())
                     .collect()
             });
         let parameters = function
@@ -829,25 +928,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .items
             .iter()
             .map(|parameter| {
-                let name =
-                    binding_pattern_name(&parameter.pattern).unwrap_or_else(|| "_".to_string());
-                let ty = Ty::from_ts_type_annotation(parameter.type_annotation.as_deref());
-                (name, ty)
+                let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
+                let ty =
+                    Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref());
+                Ty::parameter(name, ty)
             })
             .collect::<Vec<_>>();
         let return_type = function.return_type.as_deref().map_or_else(
             || self.infer_function_return_type(program_id, function),
-            |annotation| Ty::from_ts_type_annotation(Some(annotation)),
+            |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
         );
 
-        Ty::function(type_parameters, parameters, return_type)
+        Ty::function(self.arena(), type_parameters, parameters, return_type)
     }
 
     fn infer_function_return_type(
         &self,
         program_id: program::ProgramId,
-        function: &Function<'_>,
-    ) -> Ty {
+        function: &Function<'a>,
+    ) -> Ty<'a> {
         let Some(body) = &function.body else {
             return Ty::any();
         };
@@ -868,8 +967,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_return_expression_type(
         &self,
         program_id: program::ProgramId,
-        expression: &Expression<'_>,
-    ) -> Ty {
+        expression: &Expression<'a>,
+    ) -> Ty<'a> {
         match expression {
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
@@ -905,13 +1004,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Some(SymbolRef::new(imported_program_id, imported_symbol_id))
     }
 
-    fn get_type_of_import_symbol(&self, symbol: SymbolRef) -> Option<Ty> {
+    fn get_type_of_import_symbol(&self, symbol: SymbolRef) -> Option<Ty<'a>> {
         self.get_imported_symbol(symbol)
             .map(|imported_symbol| self.get_type_of_symbol(imported_symbol))
     }
 }
 
-impl Checker for CheckerReturn<'_, '_> {
+impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef> {
         match self.node_kind(node) {
             AstKind::BindingIdentifier(identifier) => identifier
@@ -931,10 +1030,10 @@ impl Checker for CheckerReturn<'_, '_> {
         }
     }
 
-    fn get_type_at_location(&self, node: NodeRef) -> Ty {
+    fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         match self.node_kind(node) {
             AstKind::TSPropertySignature(property) => {
-                Ty::from_ts_type_annotation(property.type_annotation.as_deref())
+                Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
             AstKind::ObjectProperty(property) => {
                 self.get_type_of_expression(node.program_id, &property.value)
@@ -952,7 +1051,7 @@ impl Checker for CheckerReturn<'_, '_> {
                             self.get_type_of_expression(node.program_id, value)
                         })
                     },
-                    |annotation| Ty::from_ts_type_annotation(Some(annotation)),
+                    |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
                 )
             }
             _ => self
@@ -961,36 +1060,41 @@ impl Checker for CheckerReturn<'_, '_> {
         }
     }
 
-    fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty {
+    fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
         let declaration = self
             .semantic(sym.program_id)
             .scoping()
             .symbol_declaration(sym.symbol_id);
         match self.nodes(sym.program_id).kind(declaration) {
             AstKind::VariableDeclarator(declarator) => {
-                Ty::from_ts_type_annotation(declarator.type_annotation.as_deref())
+                Ty::from_ts_type_annotation(self.arena(), declarator.type_annotation.as_deref())
             }
             AstKind::FormalParameter(parameter) => {
-                Ty::from_ts_type_annotation(parameter.type_annotation.as_deref())
+                Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
             }
             AstKind::FormalParameterRest(parameter) => {
-                Ty::from_ts_type_annotation(parameter.type_annotation.as_deref())
+                Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
             }
             AstKind::CatchParameter(parameter) => {
-                Ty::from_ts_type_annotation(parameter.type_annotation.as_deref())
+                Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
             }
             AstKind::PropertyDefinition(property) => {
-                Ty::from_ts_type_annotation(property.type_annotation.as_deref())
+                Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
             AstKind::Function(function) => {
                 self.get_type_of_function_signature(sym.program_id, function)
             }
             AstKind::AccessorProperty(property) => {
-                Ty::from_ts_type_annotation(property.type_annotation.as_deref())
+                Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
             AstKind::BindingIdentifier(identifier) => {
                 match self.nodes(sym.program_id).parent_kind(declaration) {
-                    AstKind::Class(_) => Ty::type_(format!("typeof {}", identifier.name)),
+                    AstKind::Class(_) => {
+                        let name = self
+                            .arena()
+                            .concat_strs_array(["typeof ", identifier.name.as_str()]);
+                        Ty::type_(self.arena(), name)
+                    }
                     AstKind::Function(function) => {
                         self.get_type_of_function_signature(sym.program_id, function)
                     }
@@ -998,13 +1102,16 @@ impl Checker for CheckerReturn<'_, '_> {
                 }
             }
             AstKind::Class(class) => class.id.as_ref().map_or_else(Ty::any, |identifier| {
-                Ty::type_(format!("typeof {}", identifier.name))
+                let name = self
+                    .arena()
+                    .concat_strs_array(["typeof ", identifier.name.as_str()]);
+                Ty::type_(self.arena(), name)
             }),
             _ => Ty::none(),
         }
     }
 
-    fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty {
+    fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
         {
             let mut resolving_symbols = self.resolving_symbols.borrow_mut();
             if resolving_symbols.contains(&sym) {
@@ -1023,7 +1130,10 @@ impl Checker for CheckerReturn<'_, '_> {
             {
                 AstKind::VariableDeclarator(declarator) => {
                     if declarator.type_annotation.is_some() {
-                        Ty::from_ts_type_annotation(declarator.type_annotation.as_deref())
+                        Ty::from_ts_type_annotation(
+                            self.arena(),
+                            declarator.type_annotation.as_deref(),
+                        )
                     } else {
                         declarator.init.as_ref().map_or_else(Ty::any, |expression| {
                             self.get_type_of_expression(sym.program_id, expression)
@@ -1038,31 +1148,31 @@ impl Checker for CheckerReturn<'_, '_> {
         ty
     }
 
-    fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty {
+    fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty<'a> {
         self.get_type_at_location(node)
     }
 
-    fn get_properties_of_type(&self, _t: Ty) -> Vec<SymbolRef> {
+    fn get_properties_of_type(&self, _t: Ty<'a>) -> Vec<SymbolRef> {
         Vec::new()
     }
 
-    fn get_property_of_type(&self, _t: Ty, _name: &str) -> Option<SymbolRef> {
+    fn get_property_of_type(&self, _t: Ty<'a>, _name: &str) -> Option<SymbolRef> {
         None
     }
 
-    fn get_signatures_of_type(&self, _t: Ty, _kind: SignatureKind) -> Vec<Signature> {
+    fn get_signatures_of_type(&self, _t: Ty<'a>, _kind: SignatureKind) -> Vec<Signature> {
         Vec::new()
     }
 
-    fn get_index_infos_of_type(&self, _t: Ty) -> Vec<IndexInfo> {
+    fn get_index_infos_of_type(&self, _t: Ty<'a>) -> Vec<IndexInfo> {
         Vec::new()
     }
 
-    fn is_assignable_to(&self, _source: Ty, _target: Ty) -> bool {
+    fn is_assignable_to(&self, _source: Ty<'a>, _target: Ty<'a>) -> bool {
         false
     }
 
-    fn type_to_string(&self, t: Ty, _location: NodeRef) -> String {
+    fn type_to_string(&self, t: Ty<'a>, _location: NodeRef) -> String {
         t.to_type_string()
     }
 
@@ -1166,7 +1276,7 @@ mod test {
         ParseAndCheck { store, program_id }
     }
 
-    fn get_global_symbol_type(ret: &ParseAndCheck, name: &str) -> Ty {
+    fn get_global_symbol_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
         let checker = CheckerBuilder::new().build(&ret.store);
         let scoping = ret
             .store
@@ -1178,7 +1288,11 @@ mod test {
         checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
     }
 
-    fn get_symbol_type_in_function(ret: &ParseAndCheck, func_name: &str, param_name: &str) -> Ty {
+    fn get_symbol_type_in_function<'a>(
+        ret: &ParseAndCheck<'a>,
+        func_name: &str,
+        param_name: &str,
+    ) -> Ty<'a> {
         let checker = CheckerBuilder::new().build(&ret.store);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         let scoping = semantic.scoping();
@@ -1196,6 +1310,10 @@ mod test {
             .unwrap();
         let symbol_id = scoping.get_binding(func, Ident::from(param_name)).unwrap();
         checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
+    }
+
+    fn arena<'a>(ret: &ParseAndCheck<'a>) -> CheckerArena<'a> {
+        CheckerArena::new(ret.store.allocator())
     }
 
     #[cfg(target_pointer_width = "64")]
@@ -1314,7 +1432,7 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "x"),
-            Ty::object(vec![("value".to_string(), Ty::number())])
+            Ty::object(arena(&ret), [Ty::property("value", Ty::number())])
         );
     }
 
@@ -1338,15 +1456,15 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "explicit"),
-            Ty::type_reference("Box", vec![Ty::string()])
+            Ty::type_reference(arena(&ret), "Box", [Ty::string()])
         );
         assert_eq!(
             get_global_symbol_type(&ret, "inferred"),
-            Ty::type_reference("Box", vec![Ty::number()])
+            Ty::type_reference(arena(&ret), "Box", [Ty::number()])
         );
         assert_eq!(
             get_global_symbol_type(&ret, "fromExplicitCall"),
-            Ty::type_reference("Box", vec![Ty::string()])
+            Ty::type_reference(arena(&ret), "Box", [Ty::string()])
         );
     }
 
@@ -1366,10 +1484,13 @@ mod test {
         ",
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "c"), Ty::type_("Foo"));
+        assert_eq!(
+            get_global_symbol_type(&ret, "c"),
+            Ty::type_(arena(&ret), "Foo")
+        );
         assert_eq!(
             get_global_symbol_type(&ret, "x"),
-            Ty::object(vec![("b".to_string(), Ty::number())])
+            Ty::object(arena(&ret), [Ty::property("b", Ty::number())])
         );
     }
 

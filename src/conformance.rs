@@ -697,8 +697,8 @@ fn parse_fixture_program<'a>(
     Ok(ParsedFixture { store })
 }
 
-fn actual_identifier_records(
-    store: &program::ProgramStore<'_>,
+fn actual_identifier_records<'a>(
+    store: &program::ProgramStore<'a>,
     program_id: program::ProgramId,
     path: &str,
 ) -> Vec<TypeRecord> {
@@ -715,12 +715,12 @@ fn actual_identifier_records(
         .collect()
 }
 
-fn actual_identifier_record(
-    checker: &CheckerReturn<'_, '_>,
+fn actual_identifier_record<'a>(
+    checker: &CheckerReturn<'a, '_>,
     program_id: program::ProgramId,
     path: &str,
     node_id: NodeId,
-    kind: AstKind<'_>,
+    kind: AstKind<'a>,
 ) -> Option<TypeRecord> {
     let node_ref = NodeRef::new(program_id, node_id);
     let (span, text, ty) = match kind {
@@ -776,7 +776,7 @@ fn actual_identifier_record(
         AstKind::TSTypeAliasDeclaration(alias) => (
             alias.id.span,
             alias.id.name.to_string(),
-            type_of_type_alias(alias),
+            type_of_type_alias(checker.arena(), alias),
         ),
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
@@ -803,19 +803,21 @@ fn actual_identifier_record(
     })
 }
 
-fn type_of_type_alias(alias: &oxc_ast::ast::TSTypeAliasDeclaration<'_>) -> Ty {
+fn type_of_type_alias<'a>(
+    arena: CheckerArena<'a>,
+    alias: &oxc_ast::ast::TSTypeAliasDeclaration<'a>,
+) -> Ty<'a> {
     if let Some(type_parameters) = &alias.type_parameters {
         return Ty::type_reference(
-            alias.id.name.to_string(),
-            type_parameters
-                .params
-                .iter()
-                .map(|parameter| Ty::type_reference(parameter.name.name.to_string(), Vec::new()))
-                .collect(),
+            arena,
+            alias.id.name.as_str(),
+            type_parameters.params.iter().map(|parameter| {
+                Ty::type_reference(arena, parameter.name.name.as_str(), std::iter::empty())
+            }),
         );
     }
 
-    let ty = Ty::from_ts_type(&alias.type_annotation);
+    let ty = Ty::from_ts_type(arena, &alias.type_annotation);
     if ty.is_none() { Ty::any() } else { ty }
 }
 
