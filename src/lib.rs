@@ -4,7 +4,7 @@ use oxc_ast::{
     ast::{
         BindingPattern, CallExpression, Class, ClassElement, Expression, Function, NewExpression,
         ObjectExpression, ObjectPropertyKind, Program, PropertyKey, Statement,
-        StaticMemberExpression, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
+        StaticMemberExpression, TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
         VariableDeclarator,
     },
 };
@@ -33,6 +33,10 @@ enum Ty {
         type_parameters: Vec<String>,
         parameters: Vec<(String, Ty)>,
         return_type: Box<Ty>,
+    },
+    TypeReference {
+        name: String,
+        type_arguments: Vec<Ty>,
     },
     Type(String),
 }
@@ -75,13 +79,23 @@ impl Ty {
                 "{}[]",
                 Self::from_ts_type(&array.element_type).to_type_string()
             )),
-            TSType::TSTypeReference(reference) => {
-                Self::Type(ts_type_name_to_string(&reference.type_name))
-            }
+            TSType::TSTypeReference(reference) => Self::from_ts_type_reference(reference),
             TSType::TSParenthesizedType(parenthesized) => {
                 Self::from_ts_type(&parenthesized.type_annotation)
             }
             _ => Self::None,
+        }
+    }
+
+    fn from_ts_type_reference(reference: &TSTypeReference<'_>) -> Self {
+        Self::TypeReference {
+            name: ts_type_name_to_string(&reference.type_name),
+            type_arguments: reference
+                .type_arguments
+                .as_ref()
+                .map_or_else(Vec::new, |args| {
+                    args.params.iter().map(Self::from_ts_type).collect()
+                }),
         }
     }
 
@@ -138,6 +152,24 @@ impl Ty {
                 .get(name)
                 .cloned()
                 .unwrap_or_else(|| self.clone()),
+            Self::TypeReference {
+                name,
+                type_arguments,
+            } => {
+                if type_arguments.is_empty()
+                    && let Some(substitution) = substitutions.get(name)
+                {
+                    substitution.clone()
+                } else {
+                    Self::TypeReference {
+                        name: name.clone(),
+                        type_arguments: type_arguments
+                            .iter()
+                            .map(|ty| ty.substitute_type_parameters(substitutions))
+                            .collect(),
+                    }
+                }
+            }
             _ => self.clone(),
         }
     }
@@ -185,6 +217,21 @@ impl Ty {
                     return_type.to_type_string()
                 )
             }
+            Self::TypeReference {
+                name,
+                type_arguments,
+            } => {
+                if type_arguments.is_empty() {
+                    name.clone()
+                } else {
+                    let type_arguments = type_arguments
+                        .iter()
+                        .map(Self::to_type_string)
+                        .collect::<Vec<_>>()
+                        .join(", ");
+                    format!("{name}<{type_arguments}>")
+                }
+            }
             Self::Type(ty) => ty.clone(),
         }
     }
@@ -206,6 +253,45 @@ fn infer_type_parameter_from_types(
                 substitutions.insert(name.clone(), argument_type.clone());
             }
         },
+        (
+            Ty::TypeReference {
+                name,
+                type_arguments,
+            },
+            _,
+        ) if type_arguments.is_empty() && type_parameters.contains(name) => {
+            match substitutions.get(name) {
+                Some(existing) if existing != argument_type => {
+                    substitutions.insert(name.clone(), Ty::Any);
+                }
+                Some(_) => {}
+                None => {
+                    substitutions.insert(name.clone(), argument_type.clone());
+                }
+            }
+        }
+        (
+            Ty::TypeReference {
+                name: parameter_name,
+                type_arguments: parameter_type_arguments,
+            },
+            Ty::TypeReference {
+                name: argument_name,
+                type_arguments: argument_type_arguments,
+            },
+        ) if parameter_name == argument_name => {
+            for (parameter_type, argument_type) in parameter_type_arguments
+                .iter()
+                .zip(argument_type_arguments.iter())
+            {
+                infer_type_parameter_from_types(
+                    parameter_type,
+                    argument_type,
+                    type_parameters,
+                    substitutions,
+                );
+            }
+        }
         (Ty::Object(parameter_properties), Ty::Object(argument_properties)) => {
             for (property_name, parameter_property_type) in parameter_properties {
                 if let Some((_, argument_property_type)) = argument_properties
@@ -564,8 +650,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object_type: &Ty,
         property_name: &str,
     ) -> Option<Ty> {
-        let Ty::Type(type_name) = object_type else {
-            return None;
+        let type_name = match object_type {
+            Ty::Type(type_name) => type_name.as_str(),
+            Ty::TypeReference { name, .. } => name.as_str(),
+            _ => return None,
         };
         let is_static = type_name.starts_with("typeof ");
         let class_name = type_name.strip_prefix("typeof ").unwrap_or(type_name);
@@ -1146,6 +1234,47 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "x"),
             Ty::Object(vec![("value".to_string(), Ty::Number)])
+        );
+    }
+
+    #[test]
+    fn generic_type_references_preserve_type_arguments() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type Box<T> = { value: T };
+
+        function box<T>(x: T): Box<T> {
+            return {value: x};
+        }
+
+        const explicit: Box<string> = {value: "test"};
+        const inferred = box(123);
+        const fromExplicitCall = box<string>("test");
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "explicit"),
+            Ty::TypeReference {
+                name: "Box".to_string(),
+                type_arguments: vec![Ty::String],
+            }
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "inferred"),
+            Ty::TypeReference {
+                name: "Box".to_string(),
+                type_arguments: vec![Ty::Number],
+            }
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "fromExplicitCall"),
+            Ty::TypeReference {
+                name: "Box".to_string(),
+                type_arguments: vec![Ty::String],
+            }
         );
     }
 

@@ -769,6 +769,18 @@ fn actual_identifier_record(
             let text = property_key_name(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
+        AstKind::TSTypeAliasDeclaration(alias) => {
+            (alias.id.span, alias.id.name.to_string(), Ty::Any)
+        }
+        AstKind::TSTypeParameter(parameter) => (
+            parameter.name.span,
+            parameter.name.name.to_string(),
+            Ty::Any,
+        ),
+        AstKind::TSTypeReference(reference) => {
+            let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
+            (span, text, Ty::Any)
+        }
         _ => return None,
     };
 
@@ -783,6 +795,18 @@ fn actual_identifier_record(
         text: sanitize(&text),
         ty: sanitize(&checker.type_to_string(ty, node_ref)),
     })
+}
+
+fn ts_type_name_span_and_text(name: &TSTypeName<'_>) -> Option<(Span, String)> {
+    match name {
+        TSTypeName::IdentifierReference(identifier) => {
+            Some((identifier.span, identifier.name.to_string()))
+        }
+        TSTypeName::QualifiedName(qualified) => {
+            Some((qualified.span, ts_type_name_to_string(name)))
+        }
+        TSTypeName::ThisExpression(_) => None,
+    }
 }
 
 fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Vec<FileResult> {
