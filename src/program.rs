@@ -672,6 +672,6 @@ mod tests {
             .unwrap();
         let symbol = crate::SymbolRef::new(program_id, symbol_id);
 
-        assert_eq!(checker.get_type_of_symbol(symbol), crate::Ty::String);
+        assert_eq!(checker.get_type_of_symbol(symbol), crate::Ty::string());
     }
 }

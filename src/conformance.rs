@@ -743,7 +743,7 @@ fn actual_identifier_record(
         }
         AstKind::IdentifierName(identifier) => {
             let ty = checker.get_type_at_location(node_ref);
-            if ty == Ty::None {
+            if ty.is_none() {
                 return None;
             }
             (identifier.span, identifier.name.to_string(), ty)
@@ -781,16 +781,16 @@ fn actual_identifier_record(
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
             parameter.name.name.to_string(),
-            Ty::Any,
+            Ty::any(),
         ),
         AstKind::TSTypeReference(reference) => {
             let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
-            (span, text, Ty::Any)
+            (span, text, Ty::any())
         }
         _ => return None,
     };
 
-    if ty == Ty::None {
+    if ty.is_none() {
         return None;
     }
 
@@ -805,21 +805,18 @@ fn actual_identifier_record(
 
 fn type_of_type_alias(alias: &oxc_ast::ast::TSTypeAliasDeclaration<'_>) -> Ty {
     if let Some(type_parameters) = &alias.type_parameters {
-        return Ty::TypeReference {
-            name: alias.id.name.to_string(),
-            type_arguments: type_parameters
+        return Ty::type_reference(
+            alias.id.name.to_string(),
+            type_parameters
                 .params
                 .iter()
-                .map(|parameter| Ty::TypeReference {
-                    name: parameter.name.name.to_string(),
-                    type_arguments: Vec::new(),
-                })
+                .map(|parameter| Ty::type_reference(parameter.name.name.to_string(), Vec::new()))
                 .collect(),
-        };
+        );
     }
 
     let ty = Ty::from_ts_type(&alias.type_annotation);
-    if ty == Ty::None { Ty::Any } else { ty }
+    if ty.is_none() { Ty::any() } else { ty }
 }
 
 fn ts_type_name_span_and_text(name: &TSTypeName<'_>) -> Option<(Span, String)> {

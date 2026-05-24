@@ -16,7 +16,7 @@ use std::{cell::RefCell, collections::HashMap};
 
 pub mod program;
 
-// TODO: Make use of the same pattern in oxc_ast for ast node types
+#[repr(C, u8)]
 #[derive(Debug, PartialEq, Eq, Clone)]
 enum Ty {
     None,
@@ -28,24 +28,107 @@ enum Ty {
     Null,
     Any,
     Unknown,
-    Object(Vec<(String, Ty)>),
-    Function {
-        type_parameters: Vec<String>,
-        parameters: Vec<(String, Ty)>,
-        return_type: Box<Ty>,
-    },
-    TypeReference {
-        name: String,
-        type_arguments: Vec<Ty>,
-    },
-    Type(String),
+    Object(Box<TyObject>),
+    Function(Box<TyFunction>),
+    TypeReference(Box<TyTypeReference>),
+    Type(Box<TyType>),
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct TyObject {
+    properties: Vec<(String, Ty)>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct TyFunction {
+    type_parameters: Vec<String>,
+    parameters: Vec<(String, Ty)>,
+    return_type: Ty,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct TyTypeReference {
+    name: String,
+    type_arguments: Vec<Ty>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct TyType {
+    name: String,
 }
 
 impl Ty {
+    fn none() -> Self {
+        Self::None
+    }
+
+    fn number() -> Self {
+        Self::Number
+    }
+
+    fn string() -> Self {
+        Self::String
+    }
+
+    fn boolean() -> Self {
+        Self::Boolean
+    }
+
+    fn bigint() -> Self {
+        Self::Bigint
+    }
+
+    fn undefined() -> Self {
+        Self::Undefined
+    }
+
+    fn null() -> Self {
+        Self::Null
+    }
+
+    fn any() -> Self {
+        Self::Any
+    }
+
+    fn unknown() -> Self {
+        Self::Unknown
+    }
+
+    fn object(properties: Vec<(String, Ty)>) -> Self {
+        Self::Object(Box::new(TyObject { properties }))
+    }
+
+    fn function(
+        type_parameters: Vec<String>,
+        parameters: Vec<(String, Ty)>,
+        return_type: Ty,
+    ) -> Self {
+        Self::Function(Box::new(TyFunction {
+            type_parameters,
+            parameters,
+            return_type,
+        }))
+    }
+
+    fn type_reference(name: impl Into<String>, type_arguments: Vec<Ty>) -> Self {
+        Self::TypeReference(Box::new(TyTypeReference {
+            name: name.into(),
+            type_arguments,
+        }))
+    }
+
+    fn type_(name: impl Into<String>) -> Self {
+        Self::Type(Box::new(TyType { name: name.into() }))
+    }
+
+    fn is_none(&self) -> bool {
+        matches!(self, Self::None)
+    }
+
     /// Take a type annotation like `: number` and return the corresponding type. Returns no
     /// type if there is no type annotation.
     fn from_ts_type_annotation(type_annotation: Option<&TSTypeAnnotation<'_>>) -> Self {
-        type_annotation.map_or(Self::Any, |type_annotation| {
+        type_annotation.map_or_else(Self::any, |type_annotation| {
             Self::from_ts_type(&type_annotation.type_annotation)
         })
     }
@@ -53,15 +136,15 @@ impl Ty {
     /// Turns a declared type in the AST and turns it into an actual type.
     fn from_ts_type(t: &TSType<'_>) -> Self {
         match t {
-            TSType::TSNumberKeyword(_) => Self::Number,
-            TSType::TSStringKeyword(_) => Self::String,
-            TSType::TSBooleanKeyword(_) => Self::Boolean,
-            TSType::TSBigIntKeyword(_) => Self::Bigint,
-            TSType::TSUndefinedKeyword(_) => Self::Undefined,
-            TSType::TSNullKeyword(_) => Self::Null,
-            TSType::TSAnyKeyword(_) => Self::Any,
-            TSType::TSUnknownKeyword(_) => Self::Unknown,
-            TSType::TSTypeLiteral(type_literal) => Self::Object(
+            TSType::TSNumberKeyword(_) => Self::number(),
+            TSType::TSStringKeyword(_) => Self::string(),
+            TSType::TSBooleanKeyword(_) => Self::boolean(),
+            TSType::TSBigIntKeyword(_) => Self::bigint(),
+            TSType::TSUndefinedKeyword(_) => Self::undefined(),
+            TSType::TSNullKeyword(_) => Self::null(),
+            TSType::TSAnyKeyword(_) => Self::any(),
+            TSType::TSUnknownKeyword(_) => Self::unknown(),
+            TSType::TSTypeLiteral(type_literal) => Self::object(
                 type_literal
                     .members
                     .iter()
@@ -75,7 +158,7 @@ impl Ty {
                     })
                     .collect(),
             ),
-            TSType::TSArrayType(array) => Self::Type(format!(
+            TSType::TSArrayType(array) => Self::type_(format!(
                 "{}[]",
                 Self::from_ts_type(&array.element_type).to_type_string()
             )),
@@ -83,36 +166,37 @@ impl Ty {
             TSType::TSParenthesizedType(parenthesized) => {
                 Self::from_ts_type(&parenthesized.type_annotation)
             }
-            _ => Self::None,
+            _ => Self::none(),
         }
     }
 
     fn from_ts_type_reference(reference: &TSTypeReference<'_>) -> Self {
-        Self::TypeReference {
-            name: ts_type_name_to_string(&reference.type_name),
-            type_arguments: reference
+        Self::type_reference(
+            ts_type_name_to_string(&reference.type_name),
+            reference
                 .type_arguments
                 .as_ref()
                 .map_or_else(Vec::new, |args| {
                     args.params.iter().map(Self::from_ts_type).collect()
                 }),
-        }
+        )
     }
 
     fn from_expression(expression: &Expression<'_>) -> Self {
         match expression {
-            Expression::BooleanLiteral(_) => Self::Boolean,
-            Expression::NumericLiteral(_) => Self::Number,
-            Expression::BigIntLiteral(_) => Self::Bigint,
-            Expression::StringLiteral(_) => Self::String,
-            Expression::NullLiteral(_) => Self::Any,
-            _ => Self::Any,
+            Expression::BooleanLiteral(_) => Self::boolean(),
+            Expression::NumericLiteral(_) => Self::number(),
+            Expression::BigIntLiteral(_) => Self::bigint(),
+            Expression::StringLiteral(_) => Self::string(),
+            Expression::NullLiteral(_) => Self::any(),
+            _ => Self::any(),
         }
     }
 
     fn property_type(&self, name: &str) -> Option<Self> {
         match self {
-            Self::Object(properties) => properties
+            Self::Object(object) => object
+                .properties
                 .iter()
                 .find_map(|(property_name, ty)| (property_name == name).then(|| ty.clone())),
             _ => None,
@@ -121,53 +205,51 @@ impl Ty {
 
     fn substitute_type_parameters(&self, substitutions: &HashMap<String, Ty>) -> Self {
         match self {
-            Self::Object(properties) => Self::Object(
-                properties
+            Self::Object(object) => Self::object(
+                object
+                    .properties
                     .iter()
                     .map(|(name, ty)| (name.clone(), ty.substitute_type_parameters(substitutions)))
                     .collect(),
             ),
-            Self::Function {
-                type_parameters,
-                parameters,
-                return_type,
-            } => {
+            Self::Function(function) => {
                 let substitutions = substitutions
                     .iter()
-                    .filter(|(name, _)| !type_parameters.contains(name))
+                    .filter(|(name, _)| !function.type_parameters.contains(name))
                     .map(|(name, ty)| (name.clone(), ty.clone()))
                     .collect::<HashMap<_, _>>();
-                Self::Function {
-                    type_parameters: type_parameters.clone(),
-                    parameters: parameters
+                Self::function(
+                    function.type_parameters.clone(),
+                    function
+                        .parameters
                         .iter()
                         .map(|(name, ty)| {
                             (name.clone(), ty.substitute_type_parameters(&substitutions))
                         })
                         .collect(),
-                    return_type: Box::new(return_type.substitute_type_parameters(&substitutions)),
-                }
+                    function
+                        .return_type
+                        .substitute_type_parameters(&substitutions),
+                )
             }
-            Self::Type(name) => substitutions
-                .get(name)
+            Self::Type(ty) => substitutions
+                .get(&ty.name)
                 .cloned()
                 .unwrap_or_else(|| self.clone()),
-            Self::TypeReference {
-                name,
-                type_arguments,
-            } => {
-                if type_arguments.is_empty()
-                    && let Some(substitution) = substitutions.get(name)
+            Self::TypeReference(reference) => {
+                if reference.type_arguments.is_empty()
+                    && let Some(substitution) = substitutions.get(&reference.name)
                 {
                     substitution.clone()
                 } else {
-                    Self::TypeReference {
-                        name: name.clone(),
-                        type_arguments: type_arguments
+                    Self::type_reference(
+                        reference.name.clone(),
+                        reference
+                            .type_arguments
                             .iter()
                             .map(|ty| ty.substitute_type_parameters(substitutions))
                             .collect(),
-                    }
+                    )
                 }
             }
             _ => self.clone(),
@@ -185,54 +267,50 @@ impl Ty {
             Self::Null => "null".to_string(),
             Self::Any => "any".to_string(),
             Self::Unknown => "unknown".to_string(),
-            Self::Object(properties) => {
-                if properties.is_empty() {
+            Self::Object(object) => {
+                if object.properties.is_empty() {
                     return "{}".to_string();
                 }
 
-                let properties = properties
+                let properties = object
+                    .properties
                     .iter()
                     .map(|(name, ty)| format!("{name}: {};", ty.to_type_string()))
                     .collect::<Vec<_>>()
                     .join(" ");
                 format!("{{ {properties} }}")
             }
-            Self::Function {
-                type_parameters,
-                parameters,
-                return_type,
-            } => {
-                let type_parameters = if type_parameters.is_empty() {
+            Self::Function(function) => {
+                let type_parameters = if function.type_parameters.is_empty() {
                     String::new()
                 } else {
-                    format!("<{}>", type_parameters.join(", "))
+                    format!("<{}>", function.type_parameters.join(", "))
                 };
-                let parameters = parameters
+                let parameters = function
+                    .parameters
                     .iter()
                     .map(|(name, ty)| format!("{name}: {}", ty.to_type_string()))
                     .collect::<Vec<_>>()
                     .join(", ");
                 format!(
                     "{type_parameters}({parameters}) => {}",
-                    return_type.to_type_string()
+                    function.return_type.to_type_string()
                 )
             }
-            Self::TypeReference {
-                name,
-                type_arguments,
-            } => {
-                if type_arguments.is_empty() {
-                    name.clone()
+            Self::TypeReference(reference) => {
+                if reference.type_arguments.is_empty() {
+                    reference.name.clone()
                 } else {
-                    let type_arguments = type_arguments
+                    let type_arguments = reference
+                        .type_arguments
                         .iter()
                         .map(Self::to_type_string)
                         .collect::<Vec<_>>()
                         .join(", ");
-                    format!("{name}<{type_arguments}>")
+                    format!("{}<{type_arguments}>", reference.name)
                 }
             }
-            Self::Type(ty) => ty.clone(),
+            Self::Type(ty) => ty.name.clone(),
         }
     }
 }
@@ -244,45 +322,37 @@ fn infer_type_parameter_from_types(
     substitutions: &mut HashMap<String, Ty>,
 ) {
     match (parameter_type, argument_type) {
-        (Ty::Type(name), _) if type_parameters.contains(name) => match substitutions.get(name) {
-            Some(existing) if existing != argument_type => {
-                substitutions.insert(name.clone(), Ty::Any);
-            }
-            Some(_) => {}
-            None => {
-                substitutions.insert(name.clone(), argument_type.clone());
-            }
-        },
-        (
-            Ty::TypeReference {
-                name,
-                type_arguments,
-            },
-            _,
-        ) if type_arguments.is_empty() && type_parameters.contains(name) => {
-            match substitutions.get(name) {
+        (Ty::Type(ty), _) if type_parameters.contains(&ty.name) => {
+            match substitutions.get(&ty.name) {
                 Some(existing) if existing != argument_type => {
-                    substitutions.insert(name.clone(), Ty::Any);
+                    substitutions.insert(ty.name.clone(), Ty::any());
                 }
                 Some(_) => {}
                 None => {
-                    substitutions.insert(name.clone(), argument_type.clone());
+                    substitutions.insert(ty.name.clone(), argument_type.clone());
                 }
             }
         }
-        (
-            Ty::TypeReference {
-                name: parameter_name,
-                type_arguments: parameter_type_arguments,
-            },
-            Ty::TypeReference {
-                name: argument_name,
-                type_arguments: argument_type_arguments,
-            },
-        ) if parameter_name == argument_name => {
-            for (parameter_type, argument_type) in parameter_type_arguments
+        (Ty::TypeReference(reference), _)
+            if reference.type_arguments.is_empty() && type_parameters.contains(&reference.name) =>
+        {
+            match substitutions.get(&reference.name) {
+                Some(existing) if existing != argument_type => {
+                    substitutions.insert(reference.name.clone(), Ty::any());
+                }
+                Some(_) => {}
+                None => {
+                    substitutions.insert(reference.name.clone(), argument_type.clone());
+                }
+            }
+        }
+        (Ty::TypeReference(parameter_reference), Ty::TypeReference(argument_reference))
+            if parameter_reference.name == argument_reference.name =>
+        {
+            for (parameter_type, argument_type) in parameter_reference
+                .type_arguments
                 .iter()
-                .zip(argument_type_arguments.iter())
+                .zip(argument_reference.type_arguments.iter())
             {
                 infer_type_parameter_from_types(
                     parameter_type,
@@ -292,9 +362,10 @@ fn infer_type_parameter_from_types(
                 );
             }
         }
-        (Ty::Object(parameter_properties), Ty::Object(argument_properties)) => {
-            for (property_name, parameter_property_type) in parameter_properties {
-                if let Some((_, argument_property_type)) = argument_properties
+        (Ty::Object(parameter_object), Ty::Object(argument_object)) => {
+            for (property_name, parameter_property_type) in &parameter_object.properties {
+                if let Some((_, argument_property_type)) = argument_object
+                    .properties
                     .iter()
                     .find(|(argument_property_name, _)| argument_property_name == property_name)
                 {
@@ -502,7 +573,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         .get_reference(reference_id)
                         .symbol_id()
                 })
-                .map_or(Ty::Any, |symbol_id| {
+                .map_or_else(Ty::any, |symbol_id| {
                     self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id))
                 }),
             Expression::ObjectExpression(object) => {
@@ -526,7 +597,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         object: &ObjectExpression<'_>,
     ) -> Ty {
-        Ty::Object(
+        Ty::object(
             object
                 .properties
                 .iter()
@@ -557,7 +628,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     member.property.name.as_str(),
                 )
             })
-            .unwrap_or(Ty::Any)
+            .unwrap_or_else(Ty::any)
     }
 
     fn get_type_of_call_expression(
@@ -566,13 +637,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &CallExpression<'_>,
     ) -> Ty {
         match self.get_type_of_expression(program_id, &call_expression.callee) {
-            Ty::Function {
-                type_parameters,
-                parameters,
-                return_type,
-            } => {
+            Ty::Function(function) => {
+                let TyFunction {
+                    type_parameters,
+                    parameters,
+                    return_type,
+                } = *function;
+
                 if type_parameters.is_empty() {
-                    return *return_type;
+                    return return_type;
                 }
 
                 let mut substitutions = HashMap::new();
@@ -611,7 +684,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
                 return_type.substitute_type_parameters(&substitutions)
             }
-            _ => Ty::Any,
+            _ => Ty::any(),
         }
     }
 
@@ -621,7 +694,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         new_expression: &NewExpression<'_>,
     ) -> Ty {
         let Expression::Identifier(identifier) = &new_expression.callee else {
-            return Ty::Any;
+            return Ty::any();
         };
 
         let constructor_type = identifier
@@ -635,13 +708,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)));
 
-        if let Some(Ty::Type(type_name)) = constructor_type
-            && let Some(instance_name) = type_name.strip_prefix("typeof ")
+        if let Some(Ty::Type(ty)) = constructor_type
+            && let Some(instance_name) = ty.name.strip_prefix("typeof ")
         {
-            return Ty::Type(instance_name.to_string());
+            return Ty::type_(instance_name.to_string());
         }
 
-        Ty::Type(identifier.name.to_string())
+        Ty::type_(identifier.name.to_string())
     }
 
     fn get_property_type_of_named_type(
@@ -651,8 +724,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty> {
         let type_name = match object_type {
-            Ty::Type(type_name) => type_name.as_str(),
-            Ty::TypeReference { name, .. } => name.as_str(),
+            Ty::Type(ty) => ty.name.as_str(),
+            Ty::TypeReference(reference) => reference.name.as_str(),
             _ => return None,
         };
         let is_static = type_name.starts_with("typeof ");
@@ -767,11 +840,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             |annotation| Ty::from_ts_type_annotation(Some(annotation)),
         );
 
-        Ty::Function {
-            type_parameters,
-            parameters,
-            return_type: Box::new(return_type),
-        }
+        Ty::function(type_parameters, parameters, return_type)
     }
 
     fn infer_function_return_type(
@@ -780,7 +849,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &Function<'_>,
     ) -> Ty {
         let Some(body) = &function.body else {
-            return Ty::Any;
+            return Ty::any();
         };
         body.statements
             .iter()
@@ -793,7 +862,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .as_ref()
                     .map(|argument| self.get_return_expression_type(program_id, argument))
             })
-            .unwrap_or(Ty::Undefined)
+            .unwrap_or_else(Ty::undefined)
     }
 
     fn get_return_expression_type(
@@ -879,7 +948,7 @@ impl Checker for CheckerReturn<'_, '_> {
             AstKind::PropertyDefinition(property) => {
                 property.type_annotation.as_deref().map_or_else(
                     || {
-                        property.value.as_ref().map_or(Ty::Any, |value| {
+                        property.value.as_ref().map_or_else(Ty::any, |value| {
                             self.get_type_of_expression(node.program_id, value)
                         })
                     },
@@ -888,7 +957,7 @@ impl Checker for CheckerReturn<'_, '_> {
             }
             _ => self
                 .get_symbol_at_location(node)
-                .map_or(Ty::None, |sym| self.get_type_of_symbol(sym)),
+                .map_or_else(Ty::none, |sym| self.get_type_of_symbol(sym)),
         }
     }
 
@@ -921,17 +990,17 @@ impl Checker for CheckerReturn<'_, '_> {
             }
             AstKind::BindingIdentifier(identifier) => {
                 match self.nodes(sym.program_id).parent_kind(declaration) {
-                    AstKind::Class(_) => Ty::Type(format!("typeof {}", identifier.name)),
+                    AstKind::Class(_) => Ty::type_(format!("typeof {}", identifier.name)),
                     AstKind::Function(function) => {
                         self.get_type_of_function_signature(sym.program_id, function)
                     }
-                    _ => Ty::None,
+                    _ => Ty::none(),
                 }
             }
-            AstKind::Class(class) => class.id.as_ref().map_or(Ty::Any, |identifier| {
-                Ty::Type(format!("typeof {}", identifier.name))
+            AstKind::Class(class) => class.id.as_ref().map_or_else(Ty::any, |identifier| {
+                Ty::type_(format!("typeof {}", identifier.name))
             }),
-            _ => Ty::None,
+            _ => Ty::none(),
         }
     }
 
@@ -939,7 +1008,7 @@ impl Checker for CheckerReturn<'_, '_> {
         {
             let mut resolving_symbols = self.resolving_symbols.borrow_mut();
             if resolving_symbols.contains(&sym) {
-                return Ty::Any;
+                return Ty::any();
             }
             resolving_symbols.push(sym);
         }
@@ -956,7 +1025,7 @@ impl Checker for CheckerReturn<'_, '_> {
                     if declarator.type_annotation.is_some() {
                         Ty::from_ts_type_annotation(declarator.type_annotation.as_deref())
                     } else {
-                        declarator.init.as_ref().map_or(Ty::Any, |expression| {
+                        declarator.init.as_ref().map_or_else(Ty::any, |expression| {
                             self.get_type_of_expression(sym.program_id, expression)
                         })
                     }
@@ -1129,6 +1198,18 @@ mod test {
         checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
     }
 
+    #[cfg(target_pointer_width = "64")]
+    #[test]
+    fn type_enum_is_pointer_sized_payload_plus_discriminant() {
+        assert_eq!(std::mem::size_of::<Ty>(), 16);
+    }
+
+    #[cfg(target_pointer_width = "32")]
+    #[test]
+    fn type_enum_is_pointer_sized_payload_plus_discriminant() {
+        assert_eq!(std::mem::size_of::<Ty>(), 8);
+    }
+
     #[test]
     fn simple_declared_types() {
         let allocator = Allocator::default();
@@ -1146,14 +1227,14 @@ mod test {
         ",
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "a"), Ty::Number);
-        assert_eq!(get_global_symbol_type(&ret, "b"), Ty::String);
-        assert_eq!(get_global_symbol_type(&ret, "c"), Ty::Boolean);
-        assert_eq!(get_global_symbol_type(&ret, "d"), Ty::Bigint);
-        assert_eq!(get_global_symbol_type(&ret, "e"), Ty::Undefined);
-        assert_eq!(get_global_symbol_type(&ret, "f"), Ty::Null);
-        assert_eq!(get_global_symbol_type(&ret, "g"), Ty::Any);
-        assert_eq!(get_global_symbol_type(&ret, "h"), Ty::Unknown);
+        assert_eq!(get_global_symbol_type(&ret, "a"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "b"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "c"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "d"), Ty::bigint());
+        assert_eq!(get_global_symbol_type(&ret, "e"), Ty::undefined());
+        assert_eq!(get_global_symbol_type(&ret, "f"), Ty::null());
+        assert_eq!(get_global_symbol_type(&ret, "g"), Ty::any());
+        assert_eq!(get_global_symbol_type(&ret, "h"), Ty::unknown());
     }
 
     #[test]
@@ -1171,12 +1252,12 @@ mod test {
         ",
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "l7"), Ty::Boolean);
-        assert_eq!(get_global_symbol_type(&ret, "n"), Ty::Number);
-        assert_eq!(get_global_symbol_type(&ret, "s"), Ty::String);
-        assert_eq!(get_global_symbol_type(&ret, "b"), Ty::Bigint);
-        assert_eq!(get_global_symbol_type(&ret, "a"), Ty::Any);
-        assert_eq!(get_global_symbol_type(&ret, "annotated"), Ty::String);
+        assert_eq!(get_global_symbol_type(&ret, "l7"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "n"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "s"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "b"), Ty::bigint());
+        assert_eq!(get_global_symbol_type(&ret, "a"), Ty::any());
+        assert_eq!(get_global_symbol_type(&ret, "annotated"), Ty::string());
     }
 
     #[test]
@@ -1195,9 +1276,9 @@ mod test {
         "#,
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "x"), Ty::Number);
-        assert_eq!(get_global_symbol_type(&ret, "y"), Ty::String);
-        assert_eq!(get_global_symbol_type(&ret, "z"), Ty::Boolean);
+        assert_eq!(get_global_symbol_type(&ret, "x"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "y"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean());
     }
 
     #[test]
@@ -1214,7 +1295,7 @@ mod test {
         "#,
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "x"), Ty::String);
+        assert_eq!(get_global_symbol_type(&ret, "x"), Ty::string());
     }
 
     #[test]
@@ -1233,7 +1314,7 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "x"),
-            Ty::Object(vec![("value".to_string(), Ty::Number)])
+            Ty::object(vec![("value".to_string(), Ty::number())])
         );
     }
 
@@ -1257,24 +1338,15 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "explicit"),
-            Ty::TypeReference {
-                name: "Box".to_string(),
-                type_arguments: vec![Ty::String],
-            }
+            Ty::type_reference("Box", vec![Ty::string()])
         );
         assert_eq!(
             get_global_symbol_type(&ret, "inferred"),
-            Ty::TypeReference {
-                name: "Box".to_string(),
-                type_arguments: vec![Ty::Number],
-            }
+            Ty::type_reference("Box", vec![Ty::number()])
         );
         assert_eq!(
             get_global_symbol_type(&ret, "fromExplicitCall"),
-            Ty::TypeReference {
-                name: "Box".to_string(),
-                type_arguments: vec![Ty::String],
-            }
+            Ty::type_reference("Box", vec![Ty::string()])
         );
     }
 
@@ -1294,13 +1366,10 @@ mod test {
         ",
         );
 
-        assert_eq!(
-            get_global_symbol_type(&ret, "c"),
-            Ty::Type("Foo".to_string())
-        );
+        assert_eq!(get_global_symbol_type(&ret, "c"), Ty::type_("Foo"));
         assert_eq!(
             get_global_symbol_type(&ret, "x"),
-            Ty::Object(vec![("b".to_string(), Ty::Number)])
+            Ty::object(vec![("b".to_string(), Ty::number())])
         );
     }
 
@@ -1312,8 +1381,8 @@ mod test {
             "function foo(a: number, b: string, c: boolean) {}",
         );
 
-        assert_eq!(get_symbol_type_in_function(&ret, "foo", "a"), Ty::Number);
-        assert_eq!(get_symbol_type_in_function(&ret, "foo", "b"), Ty::String);
-        assert_eq!(get_symbol_type_in_function(&ret, "foo", "c"), Ty::Boolean);
+        assert_eq!(get_symbol_type_in_function(&ret, "foo", "a"), Ty::number());
+        assert_eq!(get_symbol_type_in_function(&ret, "foo", "b"), Ty::string());
+        assert_eq!(get_symbol_type_in_function(&ret, "foo", "c"), Ty::boolean());
     }
 }
