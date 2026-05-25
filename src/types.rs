@@ -1,6 +1,7 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
-    Expression, PropertyKey, TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
+    BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSSignature,
+    TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
 };
 use std::collections::HashMap;
 
@@ -285,6 +286,21 @@ impl<'a> Ty<'a> {
                 arena,
                 r#union.types.iter().map(|ty| Self::from_ts_type(arena, ty)),
             ),
+            TSType::TSFunctionType(function) => Self::function(
+                arena,
+                function
+                    .type_parameters
+                    .as_ref()
+                    .map_or_else(Vec::new, |params| {
+                        params
+                            .params
+                            .iter()
+                            .map(|parameter| parameter.name.name.as_str())
+                            .collect()
+                    }),
+                function_type_parameters(arena, function.params.as_ref()),
+                Self::from_ts_type_annotation(arena, Some(&function.return_type)),
+            ),
             _ => Self::none(),
         }
     }
@@ -482,6 +498,57 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
         _ => None,
     }
+}
+
+fn binding_pattern_name_str<'a>(pattern: &BindingPattern<'a>) -> Option<&'a str> {
+    match pattern {
+        BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.as_str()),
+        _ => None,
+    }
+}
+
+fn function_type_parameters<'a>(
+    arena: CheckerArena<'a>,
+    params: &oxc_ast::ast::FormalParameters<'a>,
+) -> Vec<TyParameter<'a>> {
+    params
+        .items
+        .iter()
+        .map(|parameter| function_type_parameter(arena, parameter))
+        .chain(
+            params
+                .rest
+                .iter()
+                .map(|parameter| function_type_rest_parameter(arena, parameter)),
+        )
+        .collect()
+}
+
+fn function_type_parameter<'a>(
+    arena: CheckerArena<'a>,
+    parameter: &FormalParameter<'a>,
+) -> TyParameter<'a> {
+    let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
+    let name = if parameter.optional {
+        arena.concat_strs_array([name, "?"])
+    } else {
+        name
+    };
+    Ty::parameter(
+        name,
+        Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
+    )
+}
+
+fn function_type_rest_parameter<'a>(
+    arena: CheckerArena<'a>,
+    parameter: &FormalParameterRest<'a>,
+) -> TyParameter<'a> {
+    let name = binding_pattern_name_str(&parameter.rest.argument).unwrap_or("_");
+    Ty::parameter(
+        arena.concat_strs_array(["...", name]),
+        Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
+    )
 }
 
 fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'a str {

@@ -1833,4 +1833,27 @@ mod test {
         assert_eq!(get_symbol_type_in_function(&ret, "foo", "b"), Ty::string());
         assert_eq!(get_symbol_type_in_function(&ret, "foo", "c"), Ty::boolean());
     }
+
+    #[test]
+    fn function_type_annotations_resolve_to_function_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "declare function pipe<A extends any[], B>(ab: (...args: A) => B): B;",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "ab"),
+            Ty::function(
+                arena,
+                [],
+                [Ty::parameter(
+                    arena.str("...args"),
+                    Ty::type_reference(arena, arena.str("A"), []),
+                )],
+                Ty::type_reference(arena, arena.str("B"), []),
+            )
+        );
+    }
 }
