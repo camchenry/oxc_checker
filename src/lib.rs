@@ -14,7 +14,7 @@ use oxc_ast::{
 use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::{GetSpan, Span};
-use oxc_str::Ident;
+use oxc_str::{Ident, static_ident};
 use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
 use std::{cell::RefCell, collections::HashMap};
 
@@ -23,6 +23,8 @@ mod relations;
 mod types;
 
 use types::*;
+
+const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 
 fn infer_type_parameter_from_types<'a>(
     parameter_type: &Ty<'a>,
@@ -317,18 +319,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         match expression {
-            Expression::Identifier(identifier) => identifier
-                .reference_id
-                .get()
-                .and_then(|reference_id| {
-                    self.semantic(program_id)
-                        .scoping()
-                        .get_reference(reference_id)
-                        .symbol_id()
-                })
-                .map_or_else(Ty::any, |symbol_id| {
-                    self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id))
-                }),
+            Expression::Identifier(identifier) => {
+                // TODO: I think we actually need to check if this is the *global* `undefined` reference,
+                // but for now we'll just assume it's always the global one.
+                if identifier.name == UNDEFINED_IDENT {
+                    return Ty::undefined();
+                }
+                identifier
+                    .reference_id
+                    .get()
+                    .and_then(|reference_id| {
+                        self.semantic(program_id)
+                            .scoping()
+                            .get_reference(reference_id)
+                            .symbol_id()
+                    })
+                    .map_or_else(Ty::any, |symbol_id| {
+                        self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id))
+                    })
+            }
             Expression::ObjectExpression(object) => {
                 self.get_type_of_object_expression(program_id, object, node_id)
             }

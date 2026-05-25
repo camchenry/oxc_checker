@@ -11,7 +11,7 @@ const a4 = [null];
 >     ^^-: null[] (TyArray)
 
 const a5 = [undefined];
->     ^^-: any[] (TyArray)
+>     ^^-: undefined[] (TyArray)
 
 const a6 = [""];
 >     ^^-: string[] (TyArray)
