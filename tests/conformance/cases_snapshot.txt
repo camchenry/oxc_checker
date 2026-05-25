@@ -10,10 +10,10 @@ FAIL tests/conformance/cases/compiler/arrayTypes.ts matched_types=8 mismatched_t
       actual:   <missing>
   - tests/conformance/cases/compiler/arrayTypes.ts:9 `a8` type mismatch
       expected: (number | number[])[]
-      actual:   number[]
+      actual:   number | number[][]
   - tests/conformance/cases/compiler/arrayTypes.ts:10 `a9` type mismatch
       expected: (number | (string | { bar: number; }[])[])[]
-      actual:   number[]
+      actual:   number | string | { bar: number; }[][][]
 PASS tests/conformance/cases/compiler/basicClassProperties.ts matched_types=46 mismatched_types=0 total_types=46 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/basicFunctionGenericInference.ts matched_types=29 mismatched_types=0 total_types=29 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/basicGenericTypeReferences.ts matched_types=19 mismatched_types=0 total_types=19 match_percentage=100.00%

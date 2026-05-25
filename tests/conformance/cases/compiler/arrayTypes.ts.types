@@ -20,10 +20,10 @@ const a7 = ["test", "foo"];
 >     ^^: string[]   (TyArray)
 
 const a8 = [1, [2]];
->     ^^: number[]   (TyArray)
+>     ^^: number | number[][]   (TyArray)
 
 const a9 = [1, ["foo", [{ bar: 1 }]]]
->     ^^: number[]   (TyArray)
+>     ^^: number | string | { bar: number; }[][][]   (TyArray)
 
 const a9 = [1, ["foo", [{ bar: 1 }]]]
 >                         ^^^: number   (TyNumber)

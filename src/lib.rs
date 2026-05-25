@@ -16,7 +16,10 @@ use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolI
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
 use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
-use std::{cell::RefCell, collections::HashMap};
+use std::{
+    cell::RefCell,
+    collections::{HashMap, HashSet},
+};
 
 pub mod program;
 mod relations;
@@ -1044,9 +1047,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         match array_expression.elements.len() {
             // For 0 elements: infer `any[]`
             0 => Ty::array(self.arena, Ty::any()),
-            // For 1+ elements: infer the type of the first element
-            // TODO: For 2+ elements, we should create a union type
-            _ => {
+            // For 1 element: infer the type of the first element
+            1 => {
                 let first_element = &array_expression.elements[0];
                 let element_type = match first_element {
                     ArrayExpressionElement::SpreadElement(_)
@@ -1058,6 +1060,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     ),
                 };
                 Ty::array(self.arena, element_type)
+            }
+            // For 2+ elements: try to create a union type if there are mixed types
+            _ => {
+                // TODO(perf): avoid allocating here somehow?
+                let mut element_types = Vec::default();
+                for element in &array_expression.elements {
+                    let element_type = match element {
+                        ArrayExpressionElement::SpreadElement(_)
+                        | ArrayExpressionElement::Elision(_) => Ty::any(),
+                        _ => self.get_type_of_expression_with_node(
+                            program_id,
+                            element.to_expression(),
+                            node_id,
+                        ),
+                    };
+                    // TODO(perf): avoid re-iterating elements? use a hash set?
+                    if !element_types.contains(&element_type) {
+                        element_types.push(element_type);
+                    }
+                }
+                Ty::array(self.arena, Ty::union(self.arena, element_types))
             }
         }
     }
