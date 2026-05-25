@@ -1,0 +1,47 @@
+function unionized(x: string | number | boolean) {
+>        ^^^^^^^^^-: (x: string | number | boolean) => string | number | boolean (TyFunction)
+
+function unionized(x: string | number | boolean) {
+>                  ^-: string | number | boolean (TyUnion)
+
+  return x
+>        ^-: string | number | boolean (TyUnion)
+
+const unionReturn = unionized("hello");
+>     ^^^^^^^^^^^-: string | number | boolean (TyUnion)
+
+const unionReturn = unionized("hello");
+>                   ^^^^^^^^^-: (x: string | number | boolean) => string | number | boolean (TyFunction)
+
+function padLeft(value: string, padding: string | number) {
+>        ^^^^^^^-: (value: string, padding: string | number) => string (TyFunction)
+
+function padLeft(value: string, padding: string | number) {
+>                ^^^^^-: string (TyString)
+
+function padLeft(value: string, padding: string | number) {
+>                               ^^^^^^^-: string | number (TyUnion)
+
+  return value
+>        ^^^^^-: string (TyString)
+
+let indentedString = padLeft("Hello world", true);
+>   ^^^^^^^^^^^^^^-: string (TyString)
+
+let indentedString = padLeft("Hello world", true);
+>                    ^^^^^^^-: (value: string, padding: string | number) => string (TyFunction)
+
+export type Expression = BooleanLogicExpression | 'true' | 'false';
+>           ^^^^^^^^^^-: BooleanLogicExpression | none | none (TyUnion)
+
+export type Expression = BooleanLogicExpression | 'true' | 'false';
+>                        ^^^^^^^^^^^^^^^^^^^^^^-: any (TyAny)
+
+export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
+>           ^^^^^^^^^^^^^^^^^^^^^^-: none | none (TyUnion)
+
+export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
+>                                               ^^^^^^^^^^-: any (TyAny)
+
+export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
+>                                                                       ^^^^^^^^^^-: any (TyAny)

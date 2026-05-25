@@ -48,6 +48,7 @@ pub(crate) enum Ty<'a> {
     TypeReference(&'a TyTypeReference<'a>),
     Literal(&'a TyLiteral<'a>),
     Array(&'a TyArray<'a>),
+    Union(&'a TyUnion<'a>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -96,6 +97,12 @@ pub(crate) enum TyLiteralPrimitiveType {
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyArray<'a> {
     pub(crate) element_type: Ty<'a>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyUnion<'a> {
+    pub(crate) types: ArenaVec<'a, Ty<'a>>,
+    // TODO: Add flags
 }
 
 impl<'a> Ty<'a> {
@@ -200,6 +207,15 @@ impl<'a> Ty<'a> {
         Self::Array(arena.alloc(TyArray { element_type }))
     }
 
+    pub(crate) fn r#union(
+        arena: CheckerArena<'a>,
+        types: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Self {
+        Self::Union(arena.alloc(TyUnion {
+            types: arena.vec_from_iter(types),
+        }))
+    }
+
     pub(crate) fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
@@ -220,6 +236,7 @@ impl<'a> Ty<'a> {
             Self::TypeReference(_) => "TyTypeReference",
             Self::Literal(_) => "TyLiteral",
             Self::Array(_) => "TyArray",
+            Self::Union(_) => "TyUnion",
         }
     }
 
@@ -264,6 +281,10 @@ impl<'a> Ty<'a> {
             TSType::TSParenthesizedType(parenthesized) => {
                 Self::from_ts_type(arena, &parenthesized.type_annotation)
             }
+            TSType::TSUnionType(r#union) => Self::r#union(
+                arena,
+                r#union.types.iter().map(|ty| Self::from_ts_type(arena, ty)),
+            ),
             _ => Self::none(),
         }
     }
@@ -432,6 +453,12 @@ impl<'a> Ty<'a> {
                     format!("{element_type}[]")
                 }
             }
+            Self::Union(union) => union
+                .types
+                .iter()
+                .map(|ty| ty.to_type_string())
+                .collect::<Vec<_>>()
+                .join(" | "),
         }
     }
 }
