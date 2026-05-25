@@ -1080,7 +1080,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         element_types.push(element_type);
                     }
                 }
-                Ty::array(self.arena, Ty::union(self.arena, element_types))
+                let element_type = if element_types.len() == 1 {
+                    element_types[0]
+                } else {
+                    Ty::union(self.arena, element_types)
+                };
+                Ty::array(self.arena, element_type)
             }
         }
     }

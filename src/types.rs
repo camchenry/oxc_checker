@@ -447,7 +447,7 @@ impl<'a> Ty<'a> {
             Self::Literal(literal) => literal.name.to_string(),
             Self::Array(array) => {
                 let element_type = array.element_type.to_type_string();
-                if matches!(array.element_type, Self::Function(_)) {
+                if array.element_type.display_needs_parentheses() {
                     format!("({element_type})[]")
                 } else {
                     format!("{element_type}[]")
@@ -460,6 +460,11 @@ impl<'a> Ty<'a> {
                 .collect::<Vec<_>>()
                 .join(" | "),
         }
+    }
+
+    /// Whether this type needs parentheses when printed
+    fn display_needs_parentheses(&self) -> bool {
+        matches!(self, Self::Function(_) | Self::Union(_))
     }
 }
 
