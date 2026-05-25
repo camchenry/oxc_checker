@@ -356,6 +356,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::FunctionExpression(function) => {
                 self.get_type_of_function_signature_with_node(program_id, function, node_id)
             }
+            Expression::NullLiteral(_) => Ty::null(),
             _ => Ty::from_expression(expression),
         }
     }

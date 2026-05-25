@@ -8,13 +8,22 @@ const a3 = [];
 >     ^^-: any[] (TyArray)
 
 const a4 = [null];
+>     ^^-: null[] (TyArray)
+
+const a5 = [undefined];
 >     ^^-: any[] (TyArray)
 
-const a5 = [1, [2]];
+const a6 = [""];
+>     ^^-: string[] (TyArray)
+
+const a7 = ["test", "foo"];
+>     ^^-: string[] (TyArray)
+
+const a8 = [1, [2]];
 >     ^^-: number[] (TyArray)
 
-const a6 = [1, ["foo", [{ bar: 1 }]]]
+const a9 = [1, ["foo", [{ bar: 1 }]]]
 >     ^^-: number[] (TyArray)
 
-const a6 = [1, ["foo", [{ bar: 1 }]]]
+const a9 = [1, ["foo", [{ bar: 1 }]]]
 >                         ^^^-: number (TyNumber)
