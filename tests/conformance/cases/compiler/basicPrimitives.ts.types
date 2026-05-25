@@ -1,20 +1,20 @@
 let count: number = 1;
->   ^^^^^-: number (TyNumber)
+>   ^^^^^: number   (TyNumber)
 
 let label: string = "ready";
->   ^^^^^-: string (TyString)
+>   ^^^^^: string   (TyString)
 
 let big: bigint = 1n;
->   ^^^-: bigint (TyBigint)
+>   ^^^: bigint   (TyBigint)
 
 let _null: null = null;
->   ^^^^^-: null (TyNull)
+>   ^^^^^: null   (TyNull)
 
 let _undefined: undefined;
->   ^^^^^^^^^^-: undefined (TyUndefined)
+>   ^^^^^^^^^^: undefined   (TyUndefined)
 
 let _unknown: unknown;
->   ^^^^^^^^-: unknown (TyUnknown)
+>   ^^^^^^^^: unknown   (TyUnknown)
 
 let _any: any;
->   ^^^^-: any (TyAny)
+>   ^^^^: any   (TyAny)

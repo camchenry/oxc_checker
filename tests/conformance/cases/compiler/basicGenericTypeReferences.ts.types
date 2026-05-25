@@ -1,56 +1,56 @@
 type Box<T> = { value: T };
->    ^^^-: Box<T> (TyTypeReference)
+>    ^^^: Box<T>   (TyTypeReference)
 
 type Box<T> = { value: T };
->        ^-: any (TyAny)
+>        ^: any   (TyAny)
 
 type Box<T> = { value: T };
->               ^^^^^-: T (TyTypeReference)
+>               ^^^^^: T   (TyTypeReference)
 
 type Box<T> = { value: T };
->                      ^-: any (TyAny)
+>                      ^: any   (TyAny)
 
 function box<T>(x: T): Box<T> {
->        ^^^-: <T>(x: T) => Box<T> (TyFunction)
+>        ^^^: <T>(x: T) => Box<T>   (TyFunction)
 
 function box<T>(x: T): Box<T> {
->            ^-: any (TyAny)
+>            ^: any   (TyAny)
 
 function box<T>(x: T): Box<T> {
->               ^-: T (TyTypeReference)
+>               ^: T   (TyTypeReference)
 
 function box<T>(x: T): Box<T> {
->                  ^-: any (TyAny)
+>                  ^: any   (TyAny)
 
 function box<T>(x: T): Box<T> {
->                      ^^^-: any (TyAny)
+>                      ^^^: any   (TyAny)
 
 function box<T>(x: T): Box<T> {
->                          ^-: any (TyAny)
+>                          ^: any   (TyAny)
 
   return { value: x };
->          ^^^^^-: T (TyTypeReference)
+>          ^^^^^: T   (TyTypeReference)
 
   return { value: x };
->                 ^-: T (TyTypeReference)
+>                 ^: T   (TyTypeReference)
 
 const explicit: Box<string> = { value: "test" };
->     ^^^^^^^^-: Box<string> (TyTypeReference)
+>     ^^^^^^^^: Box<string>   (TyTypeReference)
 
 const explicit: Box<string> = { value: "test" };
->               ^^^-: any (TyAny)
+>               ^^^: any   (TyAny)
 
 const explicit: Box<string> = { value: "test" };
->                               ^^^^^-: string (TyString)
+>                               ^^^^^: string   (TyString)
 
 const inferred = box(123);
->     ^^^^^^^^-: Box<number> (TyTypeReference)
+>     ^^^^^^^^: Box<number>   (TyTypeReference)
 
 const inferred = box(123);
->                ^^^-: <T>(x: T) => Box<T> (TyFunction)
+>                ^^^: <T>(x: T) => Box<T>   (TyFunction)
 
 const fromExplicitCall = box<string>("test");
->     ^^^^^^^^^^^^^^^^-: Box<string> (TyTypeReference)
+>     ^^^^^^^^^^^^^^^^: Box<string>   (TyTypeReference)
 
 const fromExplicitCall = box<string>("test");
->                        ^^^-: <T>(x: T) => Box<T> (TyFunction)
+>                        ^^^: <T>(x: T) => Box<T>   (TyFunction)

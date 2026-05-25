@@ -1,92 +1,92 @@
 function foo<T>(x: T) {
->        ^^^-: <T>(x: T) => T (TyFunction)
+>        ^^^: <T>(x: T) => T   (TyFunction)
 
 function foo<T>(x: T) {
->            ^-: any (TyAny)
+>            ^: any   (TyAny)
 
 function foo<T>(x: T) {
->               ^-: T (TyTypeReference)
+>               ^: T   (TyTypeReference)
 
 function foo<T>(x: T) {
->                  ^-: any (TyAny)
+>                  ^: any   (TyAny)
 
   return x;
->        ^-: T (TyTypeReference)
+>        ^: T   (TyTypeReference)
 
 const x: string = "hello"
->     ^-: string (TyString)
+>     ^: string   (TyString)
 
 const x1 = foo(x);
->     ^^-: string (TyString)
+>     ^^: string   (TyString)
 
 const x1 = foo(x);
->          ^^^-: <T>(x: T) => T (TyFunction)
+>          ^^^: <T>(x: T) => T   (TyFunction)
 
 const x1 = foo(x);
->              ^-: string (TyString)
+>              ^: string   (TyString)
 
 const x2 = foo(x1);
->     ^^-: string (TyString)
+>     ^^: string   (TyString)
 
 const x2 = foo(x1);
->          ^^^-: <T>(x: T) => T (TyFunction)
+>          ^^^: <T>(x: T) => T   (TyFunction)
 
 const x2 = foo(x1);
->              ^^-: string (TyString)
+>              ^^: string   (TyString)
 
 function foo2<T, U>(x: T, y: U) {
->        ^^^^-: <T, U>(x: T, y: U) => { x: T; y: U; } (TyFunction)
+>        ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction)
 
 function foo2<T, U>(x: T, y: U) {
->             ^-: any (TyAny)
+>             ^: any   (TyAny)
 
 function foo2<T, U>(x: T, y: U) {
->                ^-: any (TyAny)
+>                ^: any   (TyAny)
 
 function foo2<T, U>(x: T, y: U) {
->                   ^-: T (TyTypeReference)
+>                   ^: T   (TyTypeReference)
 
 function foo2<T, U>(x: T, y: U) {
->                      ^-: any (TyAny)
+>                      ^: any   (TyAny)
 
 function foo2<T, U>(x: T, y: U) {
->                         ^-: U (TyTypeReference)
+>                         ^: U   (TyTypeReference)
 
 function foo2<T, U>(x: T, y: U) {
->                            ^-: any (TyAny)
+>                            ^: any   (TyAny)
 
   return { x, y };
->          ^-: T (TyTypeReference)
+>          ^: T   (TyTypeReference)
 
   return { x, y };
->          ^-: T (TyTypeReference)
+>          ^: T   (TyTypeReference)
 
   return { x, y };
->             ^-: U (TyTypeReference)
+>             ^: U   (TyTypeReference)
 
   return { x, y };
->             ^-: U (TyTypeReference)
+>             ^: U   (TyTypeReference)
 
 const y = foo2("hello", 123);
->     ^-: { x: string; y: number; } (TyObject)
+>     ^: { x: string; y: number; }   (TyObject)
 
 const y = foo2("hello", 123);
->         ^^^^-: <T, U>(x: T, y: U) => { x: T; y: U; } (TyFunction)
+>         ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction)
 
 const y2 = foo2(y.x, y.y);
->     ^^-: { x: string; y: number; } (TyObject)
+>     ^^: { x: string; y: number; }   (TyObject)
 
 const y2 = foo2(y.x, y.y);
->          ^^^^-: <T, U>(x: T, y: U) => { x: T; y: U; } (TyFunction)
+>          ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction)
 
 const y2 = foo2(y.x, y.y);
->               ^-: { x: string; y: number; } (TyObject)
+>               ^: { x: string; y: number; }   (TyObject)
 
 const y2 = foo2(y.x, y.y);
->                 ^-: string (TyString)
+>                 ^: string   (TyString)
 
 const y2 = foo2(y.x, y.y);
->                    ^-: { x: string; y: number; } (TyObject)
+>                    ^: { x: string; y: number; }   (TyObject)
 
 const y2 = foo2(y.x, y.y);
->                      ^-: number (TyNumber)
+>                      ^: number   (TyNumber)

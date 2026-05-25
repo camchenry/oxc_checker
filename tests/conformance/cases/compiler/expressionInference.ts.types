@@ -1,23 +1,23 @@
 const x1 = 5;
->     ^^-: 5 (TyLiteral)
+>     ^^: 5   (TyLiteral)
 
 const x2 = 1 + 2;
->     ^^-: number (TyNumber)
+>     ^^: number   (TyNumber)
 
 const x3 = "";
->     ^^-: "" (TyLiteral)
+>     ^^: ""   (TyLiteral)
 
 const x4 = "foo" + "bar";
->     ^^-: string (TyString)
+>     ^^: string   (TyString)
 
 const x5 = 1 + "";
->     ^^-: string (TyString)
+>     ^^: string   (TyString)
 
 const x6 = "" + 1;
->     ^^-: string (TyString)
+>     ^^: string   (TyString)
 
 const x7 = -5;
->     ^^-: -5 (TyLiteral)
+>     ^^: -5   (TyLiteral)
 
 const x8 = false;
->     ^^-: false (TyLiteral)
+>     ^^: false   (TyLiteral)

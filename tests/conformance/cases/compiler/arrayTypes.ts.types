@@ -1,29 +1,29 @@
 const a1: number[] = [1, 2, 3];
->     ^^-: number[] (TyArray)
+>     ^^: number[]   (TyArray)
 
 const a2 = [1, 2, 3];
->     ^^-: number[] (TyArray)
+>     ^^: number[]   (TyArray)
 
 const a3 = [];
->     ^^-: any[] (TyArray)
+>     ^^: any[]   (TyArray)
 
 const a4 = [null];
->     ^^-: null[] (TyArray)
+>     ^^: null[]   (TyArray)
 
 const a5 = [undefined];
->     ^^-: undefined[] (TyArray)
+>     ^^: undefined[]   (TyArray)
 
 const a6 = [""];
->     ^^-: string[] (TyArray)
+>     ^^: string[]   (TyArray)
 
 const a7 = ["test", "foo"];
->     ^^-: string[] (TyArray)
+>     ^^: string[]   (TyArray)
 
 const a8 = [1, [2]];
->     ^^-: number[] (TyArray)
+>     ^^: number[]   (TyArray)
 
 const a9 = [1, ["foo", [{ bar: 1 }]]]
->     ^^-: number[] (TyArray)
+>     ^^: number[]   (TyArray)
 
 const a9 = [1, ["foo", [{ bar: 1 }]]]
->                         ^^^-: number (TyNumber)
+>                         ^^^: number   (TyNumber)

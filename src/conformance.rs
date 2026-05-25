@@ -993,10 +993,10 @@ fn write_type_output_for_source_file(
         output.push('>');
         output.extend(std::iter::repeat_n(' ', marker_column));
         output.extend(std::iter::repeat_n('^', caret_count));
-        output.push_str("-: ");
+        output.push_str(": ");
         output.push_str(&record.ty_repr);
         if let Some(ty_variant) = record.ty_variant {
-            output.push_str(" (");
+            output.push_str("   (");
             output.push_str(ty_variant);
             output.push(')');
         }
@@ -1271,7 +1271,7 @@ mod tests {
 
         assert_eq!(
             output,
-            "let label: string = \"ready\";\n>   ^^^^^-: string (TyString)\n"
+            "let label: string = \"ready\";\n>   ^^^^^: string   (TyString)\n"
         );
     }
 
