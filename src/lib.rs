@@ -1113,6 +1113,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 
     fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         match self.node_kind(node) {
+            AstKind::IdentifierReference(identifier) if identifier.name == UNDEFINED_IDENT => {
+                Ty::undefined()
+            }
             AstKind::TSPropertySignature(property) => {
                 Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
@@ -1505,6 +1508,29 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "f"), Ty::null());
         assert_eq!(get_global_symbol_type(&ret, "g"), Ty::any());
         assert_eq!(get_global_symbol_type(&ret, "h"), Ty::unknown());
+    }
+
+    #[test]
+    fn global_undefined_reference_has_type_at_location() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "const value = [undefined];");
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let (node_id, _) = semantic
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| match node.kind() {
+                AstKind::IdentifierReference(identifier) if identifier.name == UNDEFINED_IDENT => {
+                    Some((node_id, identifier))
+                }
+                _ => None,
+            })
+            .unwrap();
+
+        assert_eq!(
+            checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)),
+            Ty::undefined()
+        );
     }
 
     #[test]

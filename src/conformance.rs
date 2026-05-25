@@ -730,14 +730,11 @@ fn actual_identifier_record<'a>(
                 checker.get_type_of_symbol(symbol),
             )
         }
-        AstKind::IdentifierReference(identifier) => {
-            checker.get_symbol_at_location(node_ref)?;
-            (
-                identifier.span,
-                identifier.name.to_string(),
-                checker.get_type_at_location(node_ref),
-            )
-        }
+        AstKind::IdentifierReference(identifier) => (
+            identifier.span,
+            identifier.name.to_string(),
+            checker.get_type_at_location(node_ref),
+        ),
         AstKind::IdentifierName(identifier) => {
             let ty = checker.get_type_at_location(node_ref);
             if ty.is_none() {

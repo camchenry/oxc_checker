@@ -13,6 +13,9 @@ const a4 = [null];
 const a5 = [undefined];
 >     ^^: undefined[]   (TyArray)
 
+const a5 = [undefined];
+>           ^^^^^^^^^: undefined   (TyUndefined)
+
 const a6 = [""];
 >     ^^: string[]   (TyArray)
 
