@@ -3,11 +3,12 @@ use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
-        BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
-        Expression, FormalParameter, Function, NewExpression, NumericLiteral, ObjectExpression,
-        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, Statement,
-        StaticMemberExpression, StringLiteral, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        ArrayExpression, ArrayExpressionElement, BinaryExpression, BindingPattern, BooleanLiteral,
+        CallExpression, Class, ClassElement, Expression, FormalParameter, Function, NewExpression,
+        NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
+        PropertyKey, Statement, StaticMemberExpression, StringLiteral, TSSignature, TSType,
+        TSTypeAnnotation, TSTypeName, TSTypeReference, UnaryExpression, VariableDeclarationKind,
+        VariableDeclarator,
     },
 };
 use oxc_index::nonmax::NonMaxU32;
@@ -342,6 +343,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             Expression::CallExpression(call_expression) => {
                 self.get_type_of_call_expression(program_id, call_expression, node_id)
+            }
+            Expression::ArrayExpression(array_expression) => {
+                self.get_type_of_array_expression(program_id, array_expression, node_id)
             }
             Expression::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id)
@@ -1019,6 +1023,33 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_import_symbol(&self, symbol: SymbolRef) -> Option<Ty<'a>> {
         self.get_imported_symbol(symbol)
             .map(|imported_symbol| self.get_type_of_symbol(imported_symbol))
+    }
+
+    fn get_type_of_array_expression(
+        &self,
+        program_id: program::ProgramId,
+        array_expression: &ArrayExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        match array_expression.elements.len() {
+            // For 0 elements: infer `any[]`
+            0 => Ty::array(self.arena, Ty::any()),
+            // For 1+ elements: infer the type of the first element
+            // TODO: For 2+ elements, we should create a union type
+            _ => {
+                let first_element = &array_expression.elements[0];
+                let element_type = match first_element {
+                    ArrayExpressionElement::SpreadElement(_)
+                    | ArrayExpressionElement::Elision(_) => Ty::any(),
+                    _ => self.get_type_of_expression_with_node(
+                        program_id,
+                        first_element.to_expression(),
+                        node_id,
+                    ),
+                };
+                Ty::array(self.arena, element_type)
+            }
+        }
     }
 }
 

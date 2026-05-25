@@ -2,19 +2,19 @@ const a1: number[] = [1, 2, 3];
 >     ^^-: number[] (TyArray)
 
 const a2 = [1, 2, 3];
->     ^^-: any (TyAny)
+>     ^^-: number[] (TyArray)
 
 const a3 = [];
->     ^^-: any (TyAny)
+>     ^^-: any[] (TyArray)
 
 const a4 = [null];
->     ^^-: any (TyAny)
+>     ^^-: any[] (TyArray)
 
 const a5 = [1, [2]];
->     ^^-: any (TyAny)
+>     ^^-: number[] (TyArray)
 
 const a6 = [1, ["foo", [{ bar: 1 }]]]
->     ^^-: any (TyAny)
+>     ^^-: number[] (TyArray)
 
 const a6 = [1, ["foo", [{ bar: 1 }]]]
 >                         ^^^-: number (TyNumber)
