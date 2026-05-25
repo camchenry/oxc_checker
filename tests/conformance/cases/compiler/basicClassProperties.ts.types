@@ -1,140 +1,140 @@
 class ClassPropertyItem {
->     ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem
+>     ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem (TyType)
 
   name: string = "item";
-> ^^^^-: string
+> ^^^^-: string (TyString)
 
 class ClassPropertyExample {
->     ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+>     ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample (TyType)
 
   ready: boolean = false;
-> ^^^^^-: boolean
+> ^^^^^-: boolean (TyBoolean)
 
   count = 1;
-> ^^^^^-: number
+> ^^^^^-: number (TyNumber)
 
   item: ClassPropertyItem = new ClassPropertyItem();
-> ^^^^-: ClassPropertyItem
+> ^^^^-: ClassPropertyItem (TyTypeReference)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^-: any
+>       ^^^^^^^^^^^^^^^^^-: any (TyAny)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem
+>       ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem (TyType)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->                               ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem
+>                               ^^^^^^^^^^^^^^^^^-: typeof ClassPropertyItem (TyType)
 
   static enabled: boolean = true;
->        ^^^^^^^-: boolean
+>        ^^^^^^^-: boolean (TyBoolean)
 
   getReady() {
-> ^^^^^^^^-: () => boolean
+> ^^^^^^^^-: () => boolean (TyFunction)
 
     return this.ready;
->               ^^^^^-: boolean
+>               ^^^^^-: boolean (TyBoolean)
 
   getCount() {
-> ^^^^^^^^-: () => number
+> ^^^^^^^^-: () => number (TyFunction)
 
     return this.count;
->               ^^^^^-: number
+>               ^^^^^-: number (TyNumber)
 
   getItemName() {
-> ^^^^^^^^^^^-: () => string
+> ^^^^^^^^^^^-: () => string (TyFunction)
 
     return this.item.name;
->               ^^^^-: ClassPropertyItem
+>               ^^^^-: ClassPropertyItem (TyTypeReference)
 
     return this.item.name;
->                    ^^^^-: string
+>                    ^^^^-: string (TyString)
 
   static getEnabled() {
->        ^^^^^^^^^^-: () => boolean
+>        ^^^^^^^^^^-: () => boolean (TyFunction)
 
     return ClassPropertyExample.enabled;
->          ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+>          ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample (TyType)
 
     return ClassPropertyExample.enabled;
->                               ^^^^^^^-: boolean
+>                               ^^^^^^^-: boolean (TyBoolean)
 
 const _classPropertyInstance = new ClassPropertyExample();
->     ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+>     ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample (TyType)
 
 const _classPropertyInstance = new ClassPropertyExample();
->                                  ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+>                                  ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample (TyType)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->     ^^^^^^^^^^^^^^^^^^^-: boolean
+>     ^^^^^^^^^^^^^^^^^^^-: boolean (TyBoolean)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->                           ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+>                           ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample (TyType)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->                                                  ^^^^^-: boolean
+>                                                  ^^^^^-: boolean (TyBoolean)
 
 const _classPropertyCount = _classPropertyInstance.count;
->     ^^^^^^^^^^^^^^^^^^^-: number
+>     ^^^^^^^^^^^^^^^^^^^-: number (TyNumber)
 
 const _classPropertyCount = _classPropertyInstance.count;
->                           ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+>                           ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample (TyType)
 
 const _classPropertyCount = _classPropertyInstance.count;
->                                                  ^^^^^-: number
+>                                                  ^^^^^-: number (TyNumber)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->     ^^^^^^^^^^^^^^^^^^^^^^-: string
+>     ^^^^^^^^^^^^^^^^^^^^^^-: string (TyString)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                              ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+>                              ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample (TyType)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                                                     ^^^^-: ClassPropertyItem
+>                                                     ^^^^-: ClassPropertyItem (TyTypeReference)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                                                          ^^^^-: string
+>                                                          ^^^^-: string (TyString)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^-: boolean
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^-: boolean (TyBoolean)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->                                   ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+>                                   ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample (TyType)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->                                                          ^^^^^^^^-: () => boolean
+>                                                          ^^^^^^^^-: () => boolean (TyFunction)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^-: number
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^-: number (TyNumber)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->                                   ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+>                                   ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample (TyType)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->                                                          ^^^^^^^^-: () => number
+>                                                          ^^^^^^^^-: () => number (TyFunction)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^-: string
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^-: string (TyString)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->                                  ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample
+>                                  ^^^^^^^^^^^^^^^^^^^^^^-: ClassPropertyExample (TyType)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->                                                         ^^^^^^^^^^^-: () => string
+>                                                         ^^^^^^^^^^^-: () => string (TyFunction)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->     ^^^^^^^^^^^^^^^^^^^^^-: boolean
+>     ^^^^^^^^^^^^^^^^^^^^^-: boolean (TyBoolean)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->                             ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+>                             ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample (TyType)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->                                                  ^^^^^^^-: boolean
+>                                                  ^^^^^^^-: boolean (TyBoolean)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-: boolean
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-: boolean (TyBoolean)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->                                       ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample
+>                                       ^^^^^^^^^^^^^^^^^^^^-: typeof ClassPropertyExample (TyType)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->                                                            ^^^^^^^^^^-: () => boolean
+>                                                            ^^^^^^^^^^-: () => boolean (TyFunction)

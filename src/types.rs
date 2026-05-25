@@ -176,6 +176,25 @@ impl<'a> Ty<'a> {
         matches!(self, Self::None)
     }
 
+    pub(crate) fn enum_variant_name(self) -> &'static str {
+        match self {
+            Self::None => "TyNone",
+            Self::Number => "TyNumber",
+            Self::String => "TyString",
+            Self::Boolean => "TyBoolean",
+            Self::Bigint => "TyBigint",
+            Self::Undefined => "TyUndefined",
+            Self::Null => "TyNull",
+            Self::Any => "TyAny",
+            Self::Unknown => "TyUnknown",
+            Self::Object(_) => "TyObject",
+            Self::Function(_) => "TyFunction",
+            Self::TypeReference(_) => "TyTypeReference",
+            Self::Type(_) => "TyType",
+            Self::Array(_) => "TyArray",
+        }
+    }
+
     /// Take a type annotation like `: number` and return the corresponding type. Returns no
     /// type if there is no type annotation.
     pub(crate) fn from_ts_type_annotation(

@@ -1,20 +1,20 @@
 const a1: number[] = [1, 2, 3];
->     ^^-: number[]
+>     ^^-: number[] (TyType)
 
 const a2 = [1, 2, 3];
->     ^^-: any
+>     ^^-: any (TyAny)
 
 const a3 = [];
->     ^^-: any
+>     ^^-: any (TyAny)
 
 const a4 = [null];
->     ^^-: any
+>     ^^-: any (TyAny)
 
 const a5 = [1, [2]];
->     ^^-: any
+>     ^^-: any (TyAny)
 
 const a6 = [1, ["foo", [{ bar: 1 }]]]
->     ^^-: any
+>     ^^-: any (TyAny)
 
 const a6 = [1, ["foo", [{ bar: 1 }]]]
->                         ^^^-: number
+>                         ^^^-: number (TyNumber)

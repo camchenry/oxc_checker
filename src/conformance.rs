@@ -19,7 +19,6 @@ struct ConformanceSuite {
     cases_root: &'static str,
     snapshot_path: &'static str,
     tsc_types_path: &'static str,
-    oxc_types_path: &'static str,
     compiler_cases_only: bool,
     write_type_outputs: bool,
 }
@@ -29,7 +28,6 @@ const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     cases_root: "vendor/TypeScript/tests/cases",
     snapshot_path: "tests/conformance/types_snapshot.txt",
     tsc_types_path: "target/conformance/tsc_types.tsv",
-    oxc_types_path: "target/conformance/oxc_types.tsv",
     compiler_cases_only: true,
     write_type_outputs: false,
 };
@@ -39,18 +37,18 @@ const CASES_SUITE: ConformanceSuite = ConformanceSuite {
     cases_root: "tests/conformance/cases",
     snapshot_path: "tests/conformance/cases_snapshot.txt",
     tsc_types_path: "target/conformance/cases_tsc_types.tsv",
-    oxc_types_path: "target/conformance/cases_oxc_types.tsv",
     compiler_cases_only: false,
     write_type_outputs: true,
 };
 
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct TypeRecord {
     path: String,
     start: u32,
     end: u32,
     text: String,
-    ty: String,
+    ty_variant: Option<&'static str>,
+    ty_repr: String,
 }
 
 impl TypeRecord {
@@ -60,13 +58,6 @@ impl TypeRecord {
             end: self.end,
             text: self.text.clone(),
         }
-    }
-
-    fn to_tsv(&self) -> String {
-        format!(
-            "{}\t{}\t{}\t{}\t{}",
-            self.path, self.start, self.end, self.text, self.ty
-        )
     }
 
     fn from_tsv(line: &str) -> Result<Self, String> {
@@ -90,7 +81,8 @@ impl TypeRecord {
             start,
             end,
             text,
-            ty,
+            ty_variant: None,
+            ty_repr: ty,
         })
     }
 }
@@ -403,13 +395,11 @@ fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let cases_root = repo_root.join(suite.cases_root);
     let tsc_types_path = repo_root.join(suite.tsc_types_path);
-    let oxc_types_path = repo_root.join(suite.oxc_types_path);
     let snapshot_path = repo_root.join(suite.snapshot_path);
 
     ensure_cases_root(suite, &cases_root)?;
 
     let oxc_records = collect_oxc_records(suite, &cases_root);
-    write_records(&oxc_types_path, &oxc_records);
     write_type_outputs(suite, &cases_root, &oxc_records);
 
     let tsc_records = read_records(&tsc_types_path);
@@ -566,7 +556,14 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
             ));
         }
     }
-    records.sort();
+    records.sort_by(|left, right| {
+        left.path
+            .cmp(&right.path)
+            .then_with(|| left.start.cmp(&right.start))
+            .then_with(|| left.end.cmp(&right.end))
+            .then_with(|| left.text.cmp(&right.text))
+            .then_with(|| left.ty_repr.cmp(&right.ty_repr))
+    });
     records
 }
 
@@ -799,7 +796,8 @@ fn actual_identifier_record<'a>(
         start: span.start,
         end: span.end,
         text: sanitize(&text),
-        ty: sanitize(&checker.type_to_string(ty, node_ref)),
+        ty_variant: Some(ty.enum_variant_name()),
+        ty_repr: sanitize(&checker.type_to_string(ty, node_ref)),
     })
 }
 
@@ -895,7 +893,7 @@ fn records_by_file(records: &[TypeRecord]) -> BTreeMap<String, TypeRecordMap> {
         by_file
             .entry(record.path.clone())
             .or_insert_with(TypeRecordMap::new)
-            .insert(record.key(), record.ty.clone());
+            .insert(record.key(), record.ty_repr.clone());
     }
     by_file
 }
@@ -911,25 +909,6 @@ fn read_records(path: &Path) -> Vec<TypeRecord> {
             })
         })
         .collect()
-}
-
-fn write_records(path: &Path, records: &[TypeRecord]) {
-    if let Some(parent) = path.parent() {
-        std::fs::create_dir_all(parent).unwrap_or_else(|err| {
-            panic!(
-                "failed to create type record directory {}: {err}",
-                parent.display()
-            )
-        });
-    }
-
-    let mut text = String::new();
-    for record in records {
-        text.push_str(&record.to_tsv());
-        text.push('\n');
-    }
-    std::fs::write(path, text)
-        .unwrap_or_else(|err| panic!("failed to write type records {}: {err}", path.display()));
 }
 
 fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[TypeRecord]) {
@@ -1015,7 +994,12 @@ fn write_type_output_for_source_file(
         output.extend(std::iter::repeat_n(' ', marker_column));
         output.extend(std::iter::repeat_n('^', caret_count));
         output.push_str("-: ");
-        output.push_str(&record.ty);
+        output.push_str(&record.ty_repr);
+        if let Some(ty_variant) = record.ty_variant {
+            output.push_str(" (");
+            output.push_str(ty_variant);
+            output.push(')');
+        }
         output.push('\n');
     }
 }
@@ -1278,7 +1262,8 @@ mod tests {
             start: 27,
             end: 32,
             text: "label".to_string(),
-            ty: "string".to_string(),
+            ty_variant: Some("TyString"),
+            ty_repr: "string".to_string(),
         };
         let mut output = String::new();
 
@@ -1286,7 +1271,7 @@ mod tests {
 
         assert_eq!(
             output,
-            "let label: string = \"ready\";\n>   ^^^^^-: string\n"
+            "let label: string = \"ready\";\n>   ^^^^^-: string (TyString)\n"
         );
     }
 

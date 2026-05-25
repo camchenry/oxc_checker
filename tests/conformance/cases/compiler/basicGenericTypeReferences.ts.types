@@ -1,56 +1,56 @@
 type Box<T> = { value: T };
->    ^^^-: Box<T>
+>    ^^^-: Box<T> (TyTypeReference)
 
 type Box<T> = { value: T };
->        ^-: any
+>        ^-: any (TyAny)
 
 type Box<T> = { value: T };
->               ^^^^^-: T
+>               ^^^^^-: T (TyTypeReference)
 
 type Box<T> = { value: T };
->                      ^-: any
+>                      ^-: any (TyAny)
 
 function box<T>(x: T): Box<T> {
->        ^^^-: <T>(x: T) => Box<T>
+>        ^^^-: <T>(x: T) => Box<T> (TyFunction)
 
 function box<T>(x: T): Box<T> {
->            ^-: any
+>            ^-: any (TyAny)
 
 function box<T>(x: T): Box<T> {
->               ^-: T
+>               ^-: T (TyTypeReference)
 
 function box<T>(x: T): Box<T> {
->                  ^-: any
+>                  ^-: any (TyAny)
 
 function box<T>(x: T): Box<T> {
->                      ^^^-: any
+>                      ^^^-: any (TyAny)
 
 function box<T>(x: T): Box<T> {
->                          ^-: any
+>                          ^-: any (TyAny)
 
   return { value: x };
->          ^^^^^-: T
+>          ^^^^^-: T (TyTypeReference)
 
   return { value: x };
->                 ^-: T
+>                 ^-: T (TyTypeReference)
 
 const explicit: Box<string> = { value: "test" };
->     ^^^^^^^^-: Box<string>
+>     ^^^^^^^^-: Box<string> (TyTypeReference)
 
 const explicit: Box<string> = { value: "test" };
->               ^^^-: any
+>               ^^^-: any (TyAny)
 
 const explicit: Box<string> = { value: "test" };
->                               ^^^^^-: string
+>                               ^^^^^-: string (TyString)
 
 const inferred = box(123);
->     ^^^^^^^^-: Box<number>
+>     ^^^^^^^^-: Box<number> (TyTypeReference)
 
 const inferred = box(123);
->                ^^^-: <T>(x: T) => Box<T>
+>                ^^^-: <T>(x: T) => Box<T> (TyFunction)
 
 const fromExplicitCall = box<string>("test");
->     ^^^^^^^^^^^^^^^^-: Box<string>
+>     ^^^^^^^^^^^^^^^^-: Box<string> (TyTypeReference)
 
 const fromExplicitCall = box<string>("test");
->                        ^^^-: <T>(x: T) => Box<T>
+>                        ^^^-: <T>(x: T) => Box<T> (TyFunction)
