@@ -1,0 +1,20 @@
+const a1: number[] = [1, 2, 3];
+>     ^^-: number[]
+
+const a2 = [1, 2, 3];
+>     ^^-: any
+
+const a3 = [];
+>     ^^-: any
+
+const a4 = [null];
+>     ^^-: any
+
+const a5 = [1, [2]];
+>     ^^-: any
+
+const a6 = [1, ["foo", [{ bar: 1 }]]]
+>     ^^-: any
+
+const a6 = [1, ["foo", [{ bar: 1 }]]]
+>                         ^^^-: number

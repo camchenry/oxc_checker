@@ -47,6 +47,7 @@ pub(crate) enum Ty<'a> {
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
     Type(&'a TyType<'a>),
+    Array(&'a TyArray<'a>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -82,6 +83,11 @@ pub(crate) struct TyTypeReference<'a> {
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) struct TyType<'a> {
     pub(crate) name: &'a str,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyArray<'a> {
+    pub(crate) element_type: Ty<'a>,
 }
 
 impl<'a> Ty<'a> {
@@ -368,6 +374,9 @@ impl<'a> Ty<'a> {
                 }
             }
             Self::Type(ty) => ty.name.to_string(),
+            Self::Array(array) => {
+                format!("({})[]", array.element_type.to_type_string())
+            }
         }
     }
 }
