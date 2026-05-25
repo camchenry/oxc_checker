@@ -772,6 +772,9 @@ fn actual_identifier_record<'a>(
             alias.id.name.to_string(),
             type_of_type_alias(checker.arena(), alias),
         ),
+        AstKind::TSInterfaceDeclaration(interface) => {
+            (interface.id.span, interface.id.name.to_string(), Ty::any())
+        }
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
             parameter.name.name.to_string(),
