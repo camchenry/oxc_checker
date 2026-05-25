@@ -1,5 +1,5 @@
 const a1: number[] = [1, 2, 3];
->     ^^-: number[] (TyType)
+>     ^^-: number[] (TyArray)
 
 const a2 = [1, 2, 3];
 >     ^^-: any (TyAny)

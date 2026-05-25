@@ -30,17 +30,6 @@ fn infer_type_parameter_from_types<'a>(
     substitutions: &mut HashMap<&'a str, Ty<'a>>,
 ) {
     match (parameter_type, argument_type) {
-        (Ty::Type(ty), _) if type_parameters.contains(&ty.name) => {
-            match substitutions.get(ty.name) {
-                Some(existing) if existing != argument_type => {
-                    substitutions.insert(ty.name, Ty::any());
-                }
-                Some(_) => {}
-                None => {
-                    substitutions.insert(ty.name, *argument_type);
-                }
-            }
-        }
         (Ty::TypeReference(reference), _)
             if reference.type_arguments.is_empty() && type_parameters.contains(&reference.name) =>
         {
@@ -385,7 +374,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         let name = self
                             .arena()
                             .str(&format!("-{}", self.numeric_literal_name(literal)));
-                        Ty::type_(self.arena(), name)
+                        Ty::number_literal(self.arena(), name)
                     }
                     _ => self.get_type_of_unary_expression(
                         program_id,
@@ -411,7 +400,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_type_of_numeric_literal(&self, literal: &NumericLiteral<'a>) -> Ty<'a> {
         let name = self.numeric_literal_name(literal);
-        Ty::type_(self.arena(), name)
+        Ty::number_literal(self.arena(), name)
     }
 
     fn numeric_literal_name(&self, literal: &NumericLiteral<'a>) -> &'a str {
@@ -426,11 +415,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             || self.arena().str(&format!("{:?}", literal.value.as_str())),
             |raw| raw.as_str(),
         );
-        Ty::type_(self.arena(), name)
+        Ty::string_literal(self.arena(), name)
     }
 
     fn get_type_of_boolean_literal(&self, literal: &BooleanLiteral) -> Ty<'a> {
-        Ty::type_(self.arena(), if literal.value { "true" } else { "false" })
+        Ty::boolean_literal(self.arena(), if literal.value { "true" } else { "false" })
     }
 
     fn get_type_of_binary_expression(
@@ -493,13 +482,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn is_number_like_for_arithmetic(&self, ty: Ty<'a>) -> bool {
-        matches!(ty, Ty::Number)
-            || matches!(ty, Ty::Type(literal) if literal.name.parse::<f64>().is_ok())
+        matches!(
+            ty,
+            Ty::Number
+                | Ty::Literal(types::TyLiteral {
+                    primitive: types::TyLiteralPrimitiveType::Number,
+                    ..
+                })
+        )
     }
 
     fn is_string_like_for_addition(&self, ty: Ty<'a>) -> bool {
-        matches!(ty, Ty::String)
-            || matches!(ty, Ty::Type(literal) if literal.name.starts_with(['\'', '"', '`']))
+        matches!(
+            ty,
+            Ty::String
+                | Ty::Literal(types::TyLiteral {
+                    primitive: types::TyLiteralPrimitiveType::String,
+                    ..
+                })
+        )
     }
 
     /// Return the instance type for the nearest enclosing class.
@@ -510,19 +511,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: NodeId,
     ) -> Option<Ty<'a>> {
         if let AstKind::Class(class) = self.node_kind(NodeRef::new(program_id, node_id)) {
-            return class
-                .id
-                .as_ref()
-                .map(|identifier| Ty::type_(self.arena(), identifier.name.as_str()));
+            return class.id.as_ref().map(|identifier| {
+                Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
+            });
         }
 
         self.nodes(program_id)
             .ancestors(node_id)
             .find_map(|node| match node.kind() {
-                AstKind::Class(class) => class
-                    .id
-                    .as_ref()
-                    .map(|identifier| Ty::type_(self.arena(), identifier.name.as_str())),
+                AstKind::Class(class) => class.id.as_ref().map(|identifier| {
+                    Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
+                }),
                 _ => None,
             })
     }
@@ -615,30 +614,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    /// Extract the element type from the current string-backed `T[]` array representation.
+    /// Extract the element type from an array type.
     /// Array method signatures need this to expose callback parameter and array argument types.
     fn get_array_element_type(&self, object_type: &Ty<'a>) -> Option<Ty<'a>> {
-        let Ty::Type(ty) = object_type else {
+        let Ty::Array(array) = object_type else {
             return None;
         };
-        let element_type = ty.name.strip_suffix("[]")?;
-        Some(self.type_from_name(element_type))
-    }
-
-    /// Convert a simple type name back into a `Ty`.
-    /// This bridges array element names produced by `to_type_string` back into checker types.
-    fn type_from_name(&self, name: &'a str) -> Ty<'a> {
-        match name {
-            "number" => Ty::number(),
-            "string" => Ty::string(),
-            "boolean" => Ty::boolean(),
-            "bigint" => Ty::bigint(),
-            "undefined" => Ty::undefined(),
-            "null" => Ty::null(),
-            "any" => Ty::any(),
-            "unknown" => Ty::unknown(),
-            _ => Ty::type_(self.arena(), name),
-        }
+        Some(array.element_type)
     }
 
     fn get_type_of_call_expression(
@@ -723,13 +705,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)));
 
-        if let Some(Ty::Type(ty)) = constructor_type
-            && let Some(instance_name) = ty.name.strip_prefix("typeof ")
+        if let Some(Ty::TypeReference(reference)) = constructor_type
+            && reference.type_arguments.is_empty()
+            && let Some(instance_name) = reference.name.strip_prefix("typeof ")
         {
-            return Ty::type_(self.arena(), self.arena().str(instance_name));
+            return Ty::type_reference(
+                self.arena(),
+                self.arena().str(instance_name),
+                std::iter::empty(),
+            );
         }
 
-        Ty::type_(self.arena(), identifier.name.as_str())
+        Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
     }
 
     fn get_property_type_of_named_type(
@@ -739,7 +726,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty<'a>> {
         let type_name = match object_type {
-            Ty::Type(ty) => ty.name,
             Ty::TypeReference(reference) => reference.name,
             _ => return None,
         };
@@ -1128,7 +1114,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         let name = self
                             .arena()
                             .concat_strs_array(["typeof ", identifier.name.as_str()]);
-                        Ty::type_(self.arena(), name)
+                        Ty::type_reference(self.arena(), name, std::iter::empty())
                     }
                     AstKind::Function(function) => self.get_type_of_function_signature_with_node(
                         sym.program_id,
@@ -1142,7 +1128,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 let name = self
                     .arena()
                     .concat_strs_array(["typeof ", identifier.name.as_str()]);
-                Ty::type_(self.arena(), name)
+                Ty::type_reference(self.arena(), name, std::iter::empty())
             }),
             _ => Ty::none(),
         }
@@ -1403,6 +1389,14 @@ mod test {
         assert!(relations::is_assignable_to(Ty::number(), Ty::any()));
         assert!(relations::is_assignable_to(Ty::string(), Ty::unknown()));
         assert!(!relations::is_assignable_to(Ty::number(), Ty::string()));
+        assert!(relations::is_assignable_to(
+            Ty::number_literal(arena, "1"),
+            Ty::number()
+        ));
+        assert!(relations::is_assignable_to(
+            Ty::array(arena, Ty::number()),
+            Ty::array(arena, Ty::number())
+        ));
 
         let source = Ty::object(
             arena,
@@ -1442,6 +1436,65 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "f"), Ty::null());
         assert_eq!(get_global_symbol_type(&ret, "g"), Ty::any());
         assert_eq!(get_global_symbol_type(&ret, "h"), Ty::unknown());
+    }
+
+    #[test]
+    fn declared_array_types_use_array_variant() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const values: number[] = [1, 2, 3];
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "values"),
+            Ty::array(arena(&ret), Ty::number())
+        );
+    }
+
+    #[test]
+    fn const_initializers_use_literal_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        const count = 1;
+        const label = "ready";
+        const enabled = true;
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "count"),
+            Ty::number_literal(arena(&ret), "1")
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "label"),
+            Ty::string_literal(arena(&ret), "\"ready\"")
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "enabled"),
+            Ty::boolean_literal(arena(&ret), "true")
+        );
+    }
+
+    #[test]
+    fn literal_types_participate_in_widening_expressions() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        const count = 1;
+        const sum = count + 2;
+        const label = "ready";
+        const message = label + "!";
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "sum"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "message"), Ty::string());
     }
 
     #[test]
@@ -1575,7 +1628,7 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "c"),
-            Ty::type_(arena(&ret), "Foo")
+            Ty::type_reference(arena(&ret), "Foo", std::iter::empty())
         );
         assert_eq!(
             get_global_symbol_type(&ret, "x"),
@@ -1668,7 +1721,7 @@ mod test {
 
         assert_eq!(
             get_first_symbol_type(&ret, "val"),
-            Ty::type_(arena(&ret), "Ship")
+            Ty::type_reference(arena(&ret), "Ship", std::iter::empty())
         );
         assert_eq!(get_global_symbol_type(&ret, "sunk"), Ty::boolean());
     }

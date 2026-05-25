@@ -46,7 +46,7 @@ pub(crate) enum Ty<'a> {
     Object(&'a TyObject<'a>),
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
-    Type(&'a TyType<'a>),
+    Literal(&'a TyLiteral<'a>),
     Array(&'a TyArray<'a>),
 }
 
@@ -81,8 +81,16 @@ pub(crate) struct TyTypeReference<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyType<'a> {
+pub(crate) struct TyLiteral<'a> {
     pub(crate) name: &'a str,
+    pub(crate) primitive: TyLiteralPrimitiveType,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) enum TyLiteralPrimitiveType {
+    Number,
+    String,
+    Boolean,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -168,8 +176,28 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn type_(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        Self::Type(arena.alloc(TyType { name }))
+    pub(crate) fn literal(
+        arena: CheckerArena<'a>,
+        primitive: TyLiteralPrimitiveType,
+        name: &'a str,
+    ) -> Self {
+        Self::Literal(arena.alloc(TyLiteral { name, primitive }))
+    }
+
+    pub(crate) fn number_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::Number, name)
+    }
+
+    pub(crate) fn string_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::String, name)
+    }
+
+    pub(crate) fn boolean_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::Boolean, name)
+    }
+
+    pub(crate) fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
+        Self::Array(arena.alloc(TyArray { element_type }))
     }
 
     pub(crate) fn is_none(&self) -> bool {
@@ -190,7 +218,7 @@ impl<'a> Ty<'a> {
             Self::Object(_) => "TyObject",
             Self::Function(_) => "TyFunction",
             Self::TypeReference(_) => "TyTypeReference",
-            Self::Type(_) => "TyType",
+            Self::Literal(_) => "TyLiteral",
             Self::Array(_) => "TyArray",
         }
     }
@@ -230,9 +258,7 @@ impl<'a> Ty<'a> {
                 }),
             ),
             TSType::TSArrayType(array) => {
-                let element_type = Self::from_ts_type(arena, &array.element_type).to_type_string();
-                let array_type = arena.concat_strs_array([element_type.as_str(), "[]"]);
-                Self::type_(arena, array_type)
+                Self::array(arena, Self::from_ts_type(arena, &array.element_type))
             }
             TSType::TSTypeReference(reference) => Self::from_ts_type_reference(arena, reference),
             TSType::TSParenthesizedType(parenthesized) => {
@@ -315,7 +341,6 @@ impl<'a> Ty<'a> {
                         .substitute_type_parameters(arena, &substitutions),
                 )
             }
-            Self::Type(ty) => substitutions.get(ty.name).copied().unwrap_or(*self),
             Self::TypeReference(reference) => {
                 if reference.type_arguments.is_empty()
                     && let Some(substitution) = substitutions.get(reference.name)
@@ -332,6 +357,12 @@ impl<'a> Ty<'a> {
                     )
                 }
             }
+            Self::Array(array) => Self::array(
+                arena,
+                array
+                    .element_type
+                    .substitute_type_parameters(arena, substitutions),
+            ),
             _ => *self,
         }
     }
@@ -392,9 +423,14 @@ impl<'a> Ty<'a> {
                     format!("{}<{type_arguments}>", reference.name)
                 }
             }
-            Self::Type(ty) => ty.name.to_string(),
+            Self::Literal(literal) => literal.name.to_string(),
             Self::Array(array) => {
-                format!("({})[]", array.element_type.to_type_string())
+                let element_type = array.element_type.to_type_string();
+                if matches!(array.element_type, Self::Function(_)) {
+                    format!("({element_type})[]")
+                } else {
+                    format!("{element_type}[]")
+                }
             }
         }
     }

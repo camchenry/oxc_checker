@@ -1,11 +1,11 @@
 const x1 = 5;
->     ^^-: 5 (TyType)
+>     ^^-: 5 (TyLiteral)
 
 const x2 = 1 + 2;
 >     ^^-: number (TyNumber)
 
 const x3 = "";
->     ^^-: "" (TyType)
+>     ^^-: "" (TyLiteral)
 
 const x4 = "foo" + "bar";
 >     ^^-: string (TyString)
@@ -17,7 +17,7 @@ const x6 = "" + 1;
 >     ^^-: string (TyString)
 
 const x7 = -5;
->     ^^-: -5 (TyType)
+>     ^^-: -5 (TyLiteral)
 
 const x8 = false;
->     ^^-: false (TyType)
+>     ^^-: false (TyLiteral)
