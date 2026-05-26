@@ -406,15 +406,15 @@ function recordForNode(ts, checker, sourceFile, relativePath, node) {
   }
 
   const symbol = checker.getSymbolAtLocation(node);
-  if (!symbol) {
+  const typeText = typeTextForIdentifier(ts, checker, symbol, node);
+  if (!typeText) {
     return undefined;
   }
 
   const start = node.getStart(sourceFile, false);
   const end = node.getEnd();
   const text = sanitize(node.getText(sourceFile));
-  const typeText = sanitize(typeTextForIdentifier(ts, checker, symbol, node));
-  return `${relativePath}\t${start}\t${end}\t${text}\t${typeText}`;
+  return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
 }
 
 function typeTextForIdentifier(ts, checker, symbol, node) {
@@ -425,7 +425,13 @@ function typeTextForIdentifier(ts, checker, symbol, node) {
       ts.TypeFormatFlags.InTypeAlias,
     );
   }
-  return checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, node), node);
+  if (symbol) {
+    return checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, node), node);
+  }
+  if (ts.isPropertyAccessExpression(node.parent) && node.parent.name === node) {
+    return checker.typeToString(checker.getTypeAtLocation(node), node);
+  }
+  return undefined;
 }
 
 function collectRecords(ts, checker, sourceFile, relativePath) {
