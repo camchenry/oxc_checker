@@ -94,6 +94,7 @@ pub(crate) enum TyLiteralPrimitiveType {
     Number,
     String,
     Boolean,
+    BigInt,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -150,6 +151,10 @@ impl<'a> Ty<'a> {
 
     pub(crate) fn bigint() -> Self {
         Self::Bigint
+    }
+
+    pub(crate) fn bigint_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::BigInt, name)
     }
 
     pub(crate) fn undefined() -> Self {
@@ -342,7 +347,9 @@ impl<'a> Ty<'a> {
                 TSLiteral::StringLiteral(string_literal) => {
                     Self::string_literal(arena, string_literal.value.as_str())
                 }
-                TSLiteral::BigIntLiteral(_) => Ty::none(),
+                TSLiteral::BigIntLiteral(bigint_literal) => {
+                    Self::bigint_literal(arena, bigint_literal.value.as_str())
+                }
                 TSLiteral::TemplateLiteral(_) => Ty::none(),
                 TSLiteral::UnaryExpression(_) => Ty::none(),
             },
@@ -603,6 +610,7 @@ fn literal_to_type_string(literal: &TyLiteral<'_>) -> String {
         TyLiteralPrimitiveType::Number | TyLiteralPrimitiveType::Boolean => {
             literal.name.to_string()
         }
+        TyLiteralPrimitiveType::BigInt => format!("{}n", literal.name),
     }
 }
 

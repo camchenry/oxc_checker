@@ -20,4 +20,4 @@ FAIL tests/conformance/cases/compiler/unionTypes.ts matched_types=14 mismatched_
       actual:   none | none
   - tests/conformance/cases/compiler/unionTypes.ts:17 `AllLiterals` type mismatch
       expected: AllLiterals
-      actual:   "string" | false | 123 | none | none | none
+      actual:   "string" | false | 123 | 123n | none | none
