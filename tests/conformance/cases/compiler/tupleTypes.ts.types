@@ -20,7 +20,7 @@ const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: 
 >                  ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
->                                                                          ^^^: boolean   (TyBoolean)
+>                                                                          ^^^: true   (TyBooleanLiteral)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
 >     ^^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
@@ -29,7 +29,7 @@ const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: f
 >                   ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
->                                                                         ^^^: boolean   (TyBoolean)
+>                                                                         ^^^: false   (TyBooleanLiteral)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
 >     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
@@ -38,4 +38,4 @@ const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true
 >                  ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
->                                                                      ^^^: boolean   (TyBoolean)
+>                                                                      ^^^: true   (TyBooleanLiteral)

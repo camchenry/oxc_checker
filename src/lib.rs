@@ -659,6 +659,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Some(array.element_type)
     }
 
+    fn is_in_contextually_typed_initializer(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+    ) -> bool {
+        self.nodes(program_id)
+            .ancestors(node_id)
+            .any(|node| match node.kind() {
+                AstKind::VariableDeclarator(declarator) => declarator.type_annotation.is_some(),
+                AstKind::PropertyDefinition(property) => property.type_annotation.is_some(),
+                _ => false,
+            })
+    }
+
     fn get_type_of_call_expression(
         &self,
         program_id: program::ProgramId,
@@ -1254,7 +1268,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
             AstKind::ObjectProperty(property) => {
-                self.get_type_of_expression_at_node(node.program_id, &property.value, node.node_id)
+                if self.is_in_contextually_typed_initializer(node.program_id, node.node_id)
+                    && let Expression::BooleanLiteral(literal) = &property.value
+                {
+                    self.get_type_of_boolean_literal(literal)
+                } else {
+                    self.get_type_of_expression_at_node(
+                        node.program_id,
+                        &property.value,
+                        node.node_id,
+                    )
+                }
             }
             AstKind::StaticMemberExpression(member) => self.get_type_of_static_member_expression(
                 node.program_id,
@@ -1594,6 +1618,23 @@ mod test {
         checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
     }
 
+    fn get_object_property_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        semantic
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| match node.kind() {
+                AstKind::ObjectProperty(property)
+                    if property_key_name_str(&property.key) == Some(name) =>
+                {
+                    Some(checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)))
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
     fn arena<'a>(ret: &ParseAndCheck<'a>) -> CheckerArena<'a> {
         CheckerArena::new(ret.store.allocator())
     }
@@ -1744,6 +1785,30 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "t0"), Ty::number());
         assert_eq!(get_global_symbol_type(&ret, "t1"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "t2"), Ty::undefined());
+    }
+
+    #[test]
+    fn contextually_typed_boolean_object_properties_keep_literal_location_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const plain = { huh: true };
+        const annotated: { huh: boolean } = { huh: true };
+        type StringsThenConfig = [...string[], { huh: boolean }];
+        const tupleContext: StringsThenConfig = ['value', { huh: false }];
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_object_property_types(&ret, "huh"),
+            vec![
+                Ty::boolean(),
+                Ty::boolean_true(arena),
+                Ty::boolean_false(arena),
+            ]
+        );
     }
 
     #[test]
