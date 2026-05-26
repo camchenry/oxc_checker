@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const { Worker, isMainThread, parentPort, workerData } = require("worker_threads");
 
-const DEFAULT_WORKERS = 1;
+const DEFAULT_WORKERS = Math.max(
+  1,
+  Math.min(8, os.availableParallelism ? os.availableParallelism() : os.cpus().length || 1),
+);
 
 function parseArgs(argv) {
   const args = new Map();
@@ -257,27 +261,11 @@ function useCaseSensitiveFileNames(ts, compilerCase) {
   return /^true$/i.test(setting[1].trim());
 }
 
-function isRootedTestPath(fileName) {
-  return /^[a-zA-Z]:\//.test(fileName) || fileName.startsWith("/");
-}
-
-function canBatchExplicitCase(compilerCase) {
-  return compilerCase.hasExplicitFiles && compilerCase.files.every((sourceFile) => !isRootedTestPath(sourceFile.name));
-}
-
-function virtualCaseDirectory(compilerCase) {
-  const caseDirectory = normalizeSlashes(path.dirname(compilerCase.physicalPath));
-  const caseName = path.basename(compilerCase.physicalPath).replace(/\.[^.]+$/, "");
-  return `${caseDirectory}/.conformance-virtual/${caseName}`;
-}
-
-function virtualFileName(ts, compilerCase, sourceFile, namespaceExplicitFiles) {
+function virtualFileName(ts, compilerCase, sourceFile) {
   if (!compilerCase.hasExplicitFiles) {
     return normalizeSlashes(path.resolve(compilerCase.physicalPath));
   }
-  const caseDirectory = namespaceExplicitFiles
-    ? virtualCaseDirectory(compilerCase)
-    : normalizeSlashes(path.dirname(compilerCase.physicalPath));
+  const caseDirectory = normalizeSlashes(path.dirname(compilerCase.physicalPath));
   return normalizeSlashes(ts.getNormalizedAbsolutePath(sourceFile.name, caseDirectory));
 }
 
@@ -334,13 +322,6 @@ function isCompilableRootFile(fileName) {
   return /\.(d\.ts|tsx?|jsx?|mjs|cjs|mts|cts)$/i.test(fileName);
 }
 
-function stableOptionsKey(options, useCaseSensitive) {
-  const optionEntries = Object.keys(options)
-    .sort()
-    .map((key) => [key, options[key]]);
-  return JSON.stringify({ useCaseSensitive, options: optionEntries });
-}
-
 function collectProgramRecords(ts, options, virtualFiles, useCaseSensitive, records) {
   const host = createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive);
   const rootNames = virtualFiles
@@ -373,12 +354,12 @@ function collectProgramRecords(ts, options, virtualFiles, useCaseSensitive, reco
   }
 }
 
-function prepareCompilerCase(ts, compilerCase, compilerOptionsForCase, namespaceExplicitFiles = false) {
+function prepareCompilerCase(ts, compilerCase, compilerOptionsForCase) {
   const options = compilerOptionsForCase(compilerCase);
   const useCaseSensitive = useCaseSensitiveFileNames(ts, compilerCase);
   const virtualFiles = compilerCase.files.map((sourceFile) => ({
     content: sourceFile.content,
-    fileName: virtualFileName(ts, compilerCase, sourceFile, namespaceExplicitFiles),
+    fileName: virtualFileName(ts, compilerCase, sourceFile),
     recordPath: recordPathForFile(compilerCase, sourceFile),
   }));
   return { compilerCase, options, useCaseSensitive, virtualFiles };
@@ -462,50 +443,14 @@ function collectTaskRecords(ts, task) {
 
 function buildCompilerTasks(ts, repoRoot, casesRoot, files) {
   const tasks = [];
-  const singleFileGroups = new Map();
-  const explicitFileGroups = new Map();
   const compilerOptionsForCase = createCompilerOptionsCache(ts, repoRoot);
 
   for (const file of files) {
     const compilerCase = parseCompilerCase(file, casesRoot);
-    if (compilerCase.hasExplicitFiles) {
-      const shouldBatch = canBatchExplicitCase(compilerCase);
-      const prepared = prepareCompilerCase(ts, compilerCase, compilerOptionsForCase, shouldBatch);
-      if (!shouldBatch) {
-        tasks.push(compilerTaskFromPrepared(prepared));
-        continue;
-      }
-
-      const groupKey = stableOptionsKey(prepared.options, prepared.useCaseSensitive);
-      let group = explicitFileGroups.get(groupKey);
-      if (!group) {
-        group = {
-          options: prepared.options,
-          useCaseSensitive: prepared.useCaseSensitive,
-          virtualFiles: [],
-        };
-        explicitFileGroups.set(groupKey, group);
-      }
-      group.virtualFiles.push(...prepared.virtualFiles);
-      continue;
-    }
-
     const prepared = prepareCompilerCase(ts, compilerCase, compilerOptionsForCase);
-    const groupKey = stableOptionsKey(prepared.options, prepared.useCaseSensitive);
-    let group = singleFileGroups.get(groupKey);
-    if (!group) {
-      group = {
-        options: prepared.options,
-        useCaseSensitive: prepared.useCaseSensitive,
-        virtualFiles: [],
-      };
-      singleFileGroups.set(groupKey, group);
-    }
-    group.virtualFiles.push(...prepared.virtualFiles);
+    tasks.push(compilerTaskFromPrepared(prepared));
   }
 
-  tasks.push(...singleFileGroups.values());
-  tasks.push(...explicitFileGroups.values());
   return tasks;
 }
 

@@ -1656,7 +1656,7 @@ mod test {
         );
         assert_eq!(
             get_global_symbol_type(&ret, "optional").to_type_string(),
-            "[number?]"
+            "[(number | undefined)?]"
         );
     }
 

@@ -460,9 +460,15 @@ impl<'a> Ty<'a> {
                         TSTupleElement::TSRestType(rest) => {
                             TupleElement::Rest(Self::from_ts_type(arena, &rest.type_annotation))
                         }
-                        TSTupleElement::TSOptionalType(optional) => TupleElement::Optional(
-                            Self::from_ts_type(arena, &optional.type_annotation),
-                        ),
+                        TSTupleElement::TSOptionalType(optional) => {
+                            TupleElement::Optional(Self::r#union(
+                                arena,
+                                [
+                                    Self::from_ts_type(arena, &optional.type_annotation),
+                                    Self::undefined(),
+                                ],
+                            ))
+                        }
                         _ => TupleElement::Regular(match ty.as_ts_type() {
                             Some(ts_type) => Self::from_ts_type(arena, ts_type),
                             None => Self::none(),
@@ -568,6 +574,31 @@ impl<'a> Ty<'a> {
                 array
                     .element_type
                     .substitute_type_parameters(arena, substitutions),
+            ),
+            Self::Tuple(tuple) => Self::tuple(
+                arena,
+                tuple
+                    .elements
+                    .iter()
+                    .map(|element| match element {
+                        TupleElement::Regular(ty) => TupleElement::Regular(
+                            ty.substitute_type_parameters(arena, substitutions),
+                        ),
+                        TupleElement::Rest(ty) => {
+                            TupleElement::Rest(ty.substitute_type_parameters(arena, substitutions))
+                        }
+                        TupleElement::Optional(ty) => TupleElement::Optional(
+                            ty.substitute_type_parameters(arena, substitutions),
+                        ),
+                    })
+                    .collect(),
+            ),
+            Self::Union(union) => Self::r#union(
+                arena,
+                union
+                    .types
+                    .iter()
+                    .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
             ),
             _ => *self,
         }
@@ -689,7 +720,14 @@ impl<'a> Ty<'a> {
                     .map(|element| match element {
                         TupleElement::Regular(ty) => ty.to_type_string(),
                         TupleElement::Rest(ty) => format!("...{}", ty.to_type_string()),
-                        TupleElement::Optional(ty) => format!("{}?", ty.to_type_string()),
+                        TupleElement::Optional(ty) => {
+                            let ty = ty.to_type_string();
+                            if element_type_needs_parentheses(element) {
+                                format!("({ty})?")
+                            } else {
+                                format!("{ty}?")
+                            }
+                        }
                     })
                     .collect::<Vec<_>>()
                     .join(", ");
@@ -707,6 +745,14 @@ impl<'a> Ty<'a> {
     /// Whether this type needs parentheses when printed
     fn display_needs_parentheses(&self) -> bool {
         matches!(self, Self::Function(_) | Self::Union(_))
+    }
+}
+
+fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
+    match element {
+        TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
+            ty.display_needs_parentheses()
+        }
     }
 }
 
