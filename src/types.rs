@@ -1,8 +1,9 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
-    TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
+    TSSignature, TSTemplateLiteralType, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
 };
+use oxc_index::serde::de::value;
 use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
@@ -48,7 +49,11 @@ pub(crate) enum Ty<'a> {
     Object(&'a TyObject<'a>),
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
-    Literal(&'a TyLiteral<'a>),
+    StringLiteral(&'a TyStringLiteral<'a>),
+    NumberLiteral(&'a TyNumberLiteral<'a>),
+    BooleanLiteral(&'a TyBooleanLiteral),
+    BigIntLiteral(&'a TyBigIntLiteral<'a>),
+    TemplateLiteral(&'a TyTemplateLiteral<'a>),
     Array(&'a TyArray<'a>),
     Union(&'a TyUnion<'a>),
 }
@@ -84,9 +89,36 @@ pub(crate) struct TyTypeReference<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyLiteral<'a> {
-    pub(crate) name: &'a str,
-    pub(crate) primitive: TyLiteralPrimitiveType,
+pub(crate) struct TyStringLiteral<'a> {
+    pub(crate) value: &'a str,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct TyNumberLiteral<'a> {
+    // TODO(ast): use a number type?
+    pub(crate) value: &'a str,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct TyBooleanLiteral {
+    pub(crate) value: bool,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct TyBigIntLiteral<'a> {
+    // TODO(ast): use a number type?
+    pub(crate) value: &'a str,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyTemplateLiteral<'a> {
+    pub(crate) quasis: ArenaVec<'a, TemplateLiteralElement<'a>>,
+    pub(crate) expressions: ArenaVec<'a, Ty<'a>>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct TemplateLiteralElement<'a> {
+    pub(crate) value: &'a str,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -119,7 +151,7 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn number_literal(arena: CheckerArena<'a>, num: &'a str) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::Number, num)
+        Self::NumberLiteral(arena.alloc(TyNumberLiteral { value: num }))
     }
 
     pub(crate) fn string() -> Self {
@@ -142,12 +174,12 @@ impl<'a> Ty<'a> {
 
     /// Literal `true` type (subtype of `boolean`)
     pub(crate) fn boolean_true(arena: CheckerArena<'a>) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::Boolean, "true")
+        Self::BooleanLiteral(arena.alloc(TyBooleanLiteral { value: true }))
     }
 
     /// Literal `false` type (subtype of `boolean`)
     pub(crate) fn boolean_false(arena: CheckerArena<'a>) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::Boolean, "false")
+        Self::BooleanLiteral(arena.alloc(TyBooleanLiteral { value: false }))
     }
 
     pub(crate) fn bigint() -> Self {
@@ -155,7 +187,49 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn bigint_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::BigInt, name)
+        Self::BigIntLiteral(arena.alloc(TyBigIntLiteral { value: name }))
+    }
+
+    pub(crate) fn template_literal(
+        arena: CheckerArena<'a>,
+        template: &oxc_ast::ast::TemplateLiteral<'a>,
+    ) -> Self {
+        Self::TemplateLiteral(
+            arena.alloc(TyTemplateLiteral {
+                quasis: arena.vec_from_iter(template.quasis.iter().map(|q| {
+                    TemplateLiteralElement {
+                        value: q.value.raw.as_str(),
+                    }
+                })),
+                expressions: arena.vec_from_iter(
+                    template
+                        .expressions
+                        .iter()
+                        .map(|expression| Self::from_expression(expression)),
+                ),
+            }),
+        )
+    }
+
+    pub(crate) fn ts_template_literal(
+        arena: CheckerArena<'a>,
+        template: &TSTemplateLiteralType<'a>,
+    ) -> Self {
+        Self::TemplateLiteral(
+            arena.alloc(TyTemplateLiteral {
+                quasis: arena.vec_from_iter(template.quasis.iter().map(|q| {
+                    TemplateLiteralElement {
+                        value: q.value.raw.as_str(),
+                    }
+                })),
+                expressions: arena.vec_from_iter(
+                    template
+                        .types
+                        .iter()
+                        .map(|ty| Self::from_ts_type(arena, ty)),
+                ),
+            }),
+        )
     }
 
     pub(crate) fn undefined() -> Self {
@@ -219,20 +293,8 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn literal(
-        arena: CheckerArena<'a>,
-        primitive: TyLiteralPrimitiveType,
-        name: &'a str,
-    ) -> Self {
-        Self::Literal(arena.alloc(TyLiteral { name, primitive }))
-    }
-
-    pub(crate) fn string_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::String, name)
-    }
-
-    pub(crate) fn template_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::Template, name)
+    pub(crate) fn string_literal(arena: CheckerArena<'a>, value: &'a str) -> Self {
+        Self::StringLiteral(arena.alloc(TyStringLiteral { value }))
     }
 
     pub(crate) fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
@@ -267,7 +329,11 @@ impl<'a> Ty<'a> {
             Self::Object(_) => "TyObject",
             Self::Function(_) => "TyFunction",
             Self::TypeReference(_) => "TyTypeReference",
-            Self::Literal(_) => "TyLiteral",
+            Self::StringLiteral(_) => "TyStringLiteral",
+            Self::NumberLiteral(_) => "TyNumberLiteral",
+            Self::BooleanLiteral(_) => "TyBooleanLiteral",
+            Self::BigIntLiteral(_) => "TyBigIntLiteral",
+            Self::TemplateLiteral(_) => "TyTemplateLiteral",
             Self::Array(_) => "TyArray",
             Self::Union(_) => "TyUnion",
         }
@@ -315,6 +381,9 @@ impl<'a> Ty<'a> {
             TSType::TSParenthesizedType(parenthesized) => {
                 Self::from_ts_type(arena, &parenthesized.type_annotation)
             }
+            TSType::TSTemplateLiteralType(template_literal) => {
+                Self::ts_template_literal(arena, template_literal)
+            }
             TSType::TSUnionType(r#union) => Self::r#union(
                 arena,
                 r#union.types.iter().map(|ty| Self::from_ts_type(arena, ty)),
@@ -355,12 +424,9 @@ impl<'a> Ty<'a> {
                 TSLiteral::BigIntLiteral(bigint_literal) => {
                     Self::bigint_literal(arena, bigint_literal.value.as_str())
                 }
-                // TODO: This isn't the correct way to handle template literals, but we'll revisit
-                // this and handle cooked, quasis, etc.
-                TSLiteral::TemplateLiteral(template_literal) => Self::template_literal(
-                    arena,
-                    template_literal.quasis.first().unwrap().value.raw.as_str(),
-                ),
+                TSLiteral::TemplateLiteral(template_literal) => {
+                    Self::template_literal(arena, template_literal.as_ref())
+                }
                 TSLiteral::UnaryExpression(_) => Ty::none(),
             },
             _ => Self::none(),
@@ -523,7 +589,50 @@ impl<'a> Ty<'a> {
                     format!("{}<{type_arguments}>", reference.name)
                 }
             }
-            Self::Literal(literal) => literal_to_type_string(literal),
+            Self::StringLiteral(string_literal) => {
+                let content = string_literal
+                    .value
+                    .strip_prefix('\'')
+                    .and_then(|name| name.strip_suffix('\''))
+                    .or_else(|| {
+                        string_literal
+                            .value
+                            .strip_prefix('"')
+                            .and_then(|name| name.strip_suffix('"'))
+                    })
+                    .unwrap_or(string_literal.value);
+                format!("{content:?}")
+            }
+            Self::NumberLiteral(number_literal) => number_literal.value.to_string(),
+            Self::BooleanLiteral(boolean_literal) => boolean_literal.value.to_string(),
+            Self::BigIntLiteral(big_int_literal) => format!("{}n", big_int_literal.value),
+            Self::TemplateLiteral(template_literal) => {
+                let mut repr = String::from("`");
+
+                for (index, quasi) in template_literal.quasis.iter().enumerate() {
+                    repr.push_str(quasi.value);
+                    if let Some(expression) = template_literal.expressions.get(index) {
+                        repr.push_str("${");
+                        repr.push_str(&expression.to_type_string());
+                        repr.push('}');
+                    }
+                }
+
+                if template_literal.expressions.len() > template_literal.quasis.len() {
+                    for expression in template_literal
+                        .expressions
+                        .iter()
+                        .skip(template_literal.quasis.len())
+                    {
+                        repr.push_str("${");
+                        repr.push_str(&expression.to_type_string());
+                        repr.push('}');
+                    }
+                }
+
+                repr.push('`');
+                repr
+            }
             Self::Array(array) => {
                 let element_type = array.element_type.to_type_string();
                 if array.element_type.display_needs_parentheses() {
@@ -612,29 +721,6 @@ fn function_type_rest_parameter<'a>(
         arena.concat_strs_array(["...", name]),
         Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
     )
-}
-
-fn literal_to_type_string(literal: &TyLiteral<'_>) -> String {
-    match literal.primitive {
-        TyLiteralPrimitiveType::String => string_literal_to_type_string(literal.name),
-        TyLiteralPrimitiveType::Number | TyLiteralPrimitiveType::Boolean => {
-            literal.name.to_string()
-        }
-        TyLiteralPrimitiveType::BigInt => format!("{}n", literal.name),
-        TyLiteralPrimitiveType::Template => format!("`{}`", literal.name),
-    }
-}
-
-fn string_literal_to_type_string(name: &str) -> String {
-    let content = name
-        .strip_prefix('\'')
-        .and_then(|name| name.strip_suffix('\''))
-        .or_else(|| {
-            name.strip_prefix('"')
-                .and_then(|name| name.strip_suffix('"'))
-        })
-        .unwrap_or(name);
-    format!("{content:?}")
 }
 
 fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'a str {

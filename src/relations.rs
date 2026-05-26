@@ -41,24 +41,9 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::Array(source), Ty::Array(target)) => {
             is_assignable_to(source.element_type, target.element_type)
         }
-        (Ty::Literal(source), Ty::Number) => {
-            matches!(
-                source.primitive,
-                crate::types::TyLiteralPrimitiveType::Number
-            )
-        }
-        (Ty::Literal(source), Ty::String) => {
-            matches!(
-                source.primitive,
-                crate::types::TyLiteralPrimitiveType::String
-            )
-        }
-        (Ty::Literal(source), Ty::Boolean) => {
-            matches!(
-                source.primitive,
-                crate::types::TyLiteralPrimitiveType::Boolean
-            )
-        }
+        (Ty::NumberLiteral(_), Ty::Number) => true,
+        (Ty::StringLiteral(_), Ty::String) => true,
+        (Ty::BooleanLiteral(_), Ty::Boolean) => true,
         _ => false,
     }
 }

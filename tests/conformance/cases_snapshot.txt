@@ -17,4 +17,4 @@ FAIL tests/conformance/cases/compiler/unionTypes.ts matched_types=15 mismatched_
       actual:   none | none
   - tests/conformance/cases/compiler/unionTypes.ts:17 `AllLiterals` type mismatch
       expected: false | "string" | 123 | 123n | `test${string}`
-      actual:   "string" | false | 123 | 123n | `test` | none
+      actual:   "string" | false | 123 | 123n | `test` | `test${string}`

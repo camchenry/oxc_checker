@@ -499,25 +499,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn is_number_like_for_arithmetic(&self, ty: Ty<'a>) -> bool {
-        matches!(
-            ty,
-            Ty::Number
-                | Ty::Literal(types::TyLiteral {
-                    primitive: types::TyLiteralPrimitiveType::Number,
-                    ..
-                })
-        )
+        matches!(ty, Ty::Number | Ty::NumberLiteral(_))
     }
 
     fn is_string_like_for_addition(&self, ty: Ty<'a>) -> bool {
-        matches!(
-            ty,
-            Ty::String
-                | Ty::Literal(types::TyLiteral {
-                    primitive: types::TyLiteralPrimitiveType::String,
-                    ..
-                })
-        )
+        matches!(ty, Ty::String | Ty::StringLiteral(_))
     }
 
     /// Return the instance type for the nearest enclosing class.
