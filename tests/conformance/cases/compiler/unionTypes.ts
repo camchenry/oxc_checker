@@ -14,3 +14,5 @@ let indentedString = padLeft("Hello world", true);
 
 export type Expression = BooleanLogicExpression | 'true' | 'false';
 export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
+
+type AllLiterals = 'string' | false | 123 | 123n | `test` | `test${string}`

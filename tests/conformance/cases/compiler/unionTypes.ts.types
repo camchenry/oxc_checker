@@ -45,3 +45,6 @@ export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expressi
 
 export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
 >                                                                       ^^^^^^^^^^: any   (TyAny)
+
+type AllLiterals = 'string' | false | 123 | 123n | `test` | `test${string}`
+>    ^^^^^^^^^^^: "string" | false | 123 | none | none | none   (TyUnion)
