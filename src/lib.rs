@@ -4,12 +4,12 @@ use oxc_ast::{
     AstKind,
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, BinaryExpression,
-        BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement, Expression,
-        FormalParameter, Function, MethodDefinition, MethodDefinitionKind, NewExpression,
-        NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
-        PropertyKey, Statement, StaticMemberExpression, StringLiteral, TSSignature, TSType,
-        TSTypeAnnotation, TSTypeName, TSTypeReference, UnaryExpression, VariableDeclarationKind,
-        VariableDeclarator,
+        BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
+        ComputedMemberExpression, Expression, FormalParameter, Function, MethodDefinition,
+        MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind,
+        Program, PropertyDefinition, PropertyKey, Statement, StaticMemberExpression, StringLiteral,
+        TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference, UnaryExpression,
+        VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_index::nonmax::NonMaxU32;
@@ -366,6 +366,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ArrayExpression(array_expression) => {
                 self.get_type_of_array_expression(program_id, array_expression, node_id)
             }
+            Expression::ComputedMemberExpression(member) => {
+                self.get_type_of_computed_member_expression(program_id, member, node_id)
+            }
             Expression::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id)
             }
@@ -601,6 +604,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             })
             .unwrap_or_else(Ty::any)
+    }
+
+    fn get_type_of_computed_member_expression(
+        &self,
+        program_id: program::ProgramId,
+        member: &'a ComputedMemberExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let object_type =
+            self.get_type_of_expression_with_node(program_id, &member.object, node_id);
+        let Some(index) = tuple_index_from_expression(&member.expression) else {
+            return Ty::any();
+        };
+        tuple_element_type_at_index(&object_type, index).unwrap_or_else(Ty::any)
     }
 
     /// Resolve known properties on array-like types without loading TypeScript library declarations.
@@ -1163,6 +1180,51 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 }
 
+fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
+    let Expression::NumericLiteral(literal) = expression else {
+        return None;
+    };
+    if !literal.value.is_finite() || literal.value < 0.0 || literal.value.fract() != 0.0 {
+        return None;
+    }
+    if literal.value > usize::MAX as f64 {
+        return None;
+    }
+    Some(literal.value as usize)
+}
+
+fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option<Ty<'a>> {
+    let Ty::Tuple(tuple) = object_type else {
+        return None;
+    };
+
+    let mut current_index = 0;
+    for element in &tuple.elements {
+        match element {
+            TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
+                if current_index == index {
+                    return Some(*ty);
+                }
+                current_index += 1;
+            }
+            TupleElement::Rest(ty) => {
+                if index >= current_index {
+                    return Some(array_element_type(*ty).unwrap_or(*ty));
+                }
+            }
+        }
+    }
+
+    Some(Ty::undefined())
+}
+
+fn array_element_type<'a>(ty: Ty<'a>) -> Option<Ty<'a>> {
+    let Ty::Array(array) = ty else {
+        return None;
+    };
+    Some(array.element_type)
+}
+
 impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef> {
         match self.node_kind(node) {
@@ -1199,6 +1261,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 member,
                 Some(node.node_id),
             ),
+            AstKind::ComputedMemberExpression(member) => self
+                .get_type_of_computed_member_expression(
+                    node.program_id,
+                    member,
+                    Some(node.node_id),
+                ),
             AstKind::MethodDefinition(method) => {
                 let class = self
                     .nodes(node.program_id)
@@ -1658,6 +1726,24 @@ mod test {
             get_global_symbol_type(&ret, "optional").to_type_string(),
             "[(number | undefined)?]"
         );
+    }
+
+    #[test]
+    fn tuple_numeric_index_access_resolves_element_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        let t: [number, string];
+        let t0 = t[0];
+        let t1 = t[1];
+        let t2 = t[2];
+        ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "t0"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "t1"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "t2"), Ty::undefined());
     }
 
     #[test]
