@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { Worker, isMainThread, parentPort, workerData } = require("worker_threads");
 
-const DEFAULT_WORKERS = 8;
+const DEFAULT_WORKERS = 1;
 
 function parseArgs(argv) {
   const args = new Map();
@@ -285,6 +285,7 @@ function createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive) 
     useCaseSensitiveFileNames: () => useCaseSensitive,
     getCanonicalFileName: (fileName) => canonicalFileName(ts, fileName, useCaseSensitive),
     getCurrentDirectory: () => normalizeSlashes(process.cwd()),
+    trace: () => {},
     fileExists: (fileName) => filesByName.has(canonicalFileName(ts, fileName, useCaseSensitive)) || defaultHost.fileExists(fileName),
     directoryExists: (dirName) => directories.has(canonicalFileName(ts, dirName, useCaseSensitive))
       || (defaultHost.directoryExists ? defaultHost.directoryExists(dirName) : true),
@@ -397,16 +398,19 @@ function recordForNode(ts, checker, sourceFile, relativePath, node) {
   const start = node.getStart(sourceFile, false);
   const end = node.getEnd();
   const text = sanitize(node.getText(sourceFile));
-  const type = typeForIdentifier(ts, checker, symbol, node);
-  const typeText = sanitize(checker.typeToString(type, node));
+  const typeText = sanitize(typeTextForIdentifier(ts, checker, symbol, node));
   return `${relativePath}\t${start}\t${end}\t${text}\t${typeText}`;
 }
 
-function typeForIdentifier(ts, checker, symbol, node) {
+function typeTextForIdentifier(ts, checker, symbol, node) {
   if (ts.isTypeAliasDeclaration(node.parent) && node.parent.name === node) {
-    return checker.getDeclaredTypeOfSymbol(symbol);
+    return checker.typeToString(
+      checker.getTypeFromTypeNode(node.parent.type),
+      node,
+      ts.TypeFormatFlags.InTypeAlias,
+    );
   }
-  return checker.getTypeOfSymbolAtLocation(symbol, node);
+  return checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, node), node);
 }
 
 function collectRecords(ts, checker, sourceFile, relativePath) {
