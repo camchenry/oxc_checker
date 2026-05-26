@@ -11,7 +11,7 @@ function parseArgs(argv) {
     const key = argv[i];
     const value = argv[i + 1];
     if (!key || !key.startsWith("--") || value === undefined) {
-      throw new Error("usage: tsc_type_extractor.js --cases-root DIR --out FILE [--repo-root DIR] [--case-discovery compiler|all] [--workers N]");
+      throw new Error("usage: tsc_type_extractor.js --cases-root DIR --out FILE|- [--repo-root DIR] [--case FILE] [--case-discovery compiler|all] [--workers N]");
     }
     args.set(key.slice(2), value);
   }
@@ -73,6 +73,21 @@ function discoverCompilerCases(casesRoot, caseDiscovery) {
   const files = [];
   discoverCaseFiles(searchRoot, files);
   return files.sort();
+}
+
+function resolveSingleCase(casesRoot, caseDiscovery, casePath) {
+  const file = path.resolve(casePath);
+  const relative = normalizeSlashes(path.relative(casesRoot, file));
+  if (relative.startsWith("../") || relative === ".." || path.isAbsolute(relative)) {
+    throw new Error(`--case must be inside --cases-root: ${casePath}`);
+  }
+  if (caseDiscovery === "compiler" && relative !== "compiler" && !relative.startsWith("compiler/")) {
+    throw new Error(`--case must be inside the compiler cases directory: ${casePath}`);
+  }
+  if (!/\.tsx?$/.test(file) || !fs.statSync(file, { throwIfNoEntry: false })?.isFile()) {
+    throw new Error(`--case must be an existing .ts or .tsx file: ${casePath}`);
+  }
+  return file;
 }
 
 function discoverCaseFiles(root, files) {
@@ -562,15 +577,23 @@ async function main() {
   const args = parseArgs(process.argv);
   const repoRoot = path.resolve(args.get("repo-root") || process.cwd());
   const casesRoot = path.resolve(args.get("cases-root"));
-  const outPath = path.resolve(args.get("out"));
+  const outArg = args.get("out");
+  const outPath = outArg === "-" ? undefined : path.resolve(outArg);
   const caseDiscovery = parseCaseDiscovery(args.get("case-discovery"));
   const workerCount = parseWorkerCount(args.get("workers"));
   const ts = loadTypeScript(repoRoot);
-  const files = discoverCompilerCases(casesRoot, caseDiscovery);
+  const casePath = args.get("case");
+  const files = casePath
+    ? [resolveSingleCase(casesRoot, caseDiscovery, casePath)]
+    : discoverCompilerCases(casesRoot, caseDiscovery);
   const tasks = buildCompilerTasks(ts, repoRoot, casesRoot, files);
   const records = await collectRecordsFromTasks(ts, repoRoot, tasks, workerCount);
 
   records.sort();
+  if (outArg === "-") {
+    process.stdout.write(`${records.join("\n")}\n`);
+    return;
+  }
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, `${records.join("\n")}\n`);
 }
