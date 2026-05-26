@@ -339,7 +339,9 @@ impl<'a> Ty<'a> {
                     );
                     Self::number_literal(arena, name)
                 }
-                TSLiteral::StringLiteral(_) => Ty::none(),
+                TSLiteral::StringLiteral(string_literal) => {
+                    Self::string_literal(arena, string_literal.value.as_str())
+                }
                 TSLiteral::BigIntLiteral(_) => Ty::none(),
                 TSLiteral::TemplateLiteral(_) => Ty::none(),
                 TSLiteral::UnaryExpression(_) => Ty::none(),
@@ -504,7 +506,7 @@ impl<'a> Ty<'a> {
                     format!("{}<{type_arguments}>", reference.name)
                 }
             }
-            Self::Literal(literal) => literal.name.to_string(),
+            Self::Literal(literal) => literal_to_type_string(literal),
             Self::Array(array) => {
                 let element_type = array.element_type.to_type_string();
                 if array.element_type.display_needs_parentheses() {
@@ -593,6 +595,27 @@ fn function_type_rest_parameter<'a>(
         arena.concat_strs_array(["...", name]),
         Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
     )
+}
+
+fn literal_to_type_string(literal: &TyLiteral<'_>) -> String {
+    match literal.primitive {
+        TyLiteralPrimitiveType::String => string_literal_to_type_string(literal.name),
+        TyLiteralPrimitiveType::Number | TyLiteralPrimitiveType::Boolean => {
+            literal.name.to_string()
+        }
+    }
+}
+
+fn string_literal_to_type_string(name: &str) -> String {
+    let content = name
+        .strip_prefix('\'')
+        .and_then(|name| name.strip_suffix('\''))
+        .or_else(|| {
+            name.strip_prefix('"')
+                .and_then(|name| name.strip_suffix('"'))
+        })
+        .unwrap_or(name);
+    format!("{content:?}")
 }
 
 fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'a str {

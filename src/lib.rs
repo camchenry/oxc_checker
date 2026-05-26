@@ -1611,6 +1611,17 @@ mod test {
     }
 
     #[test]
+    fn type_strings_render_string_literals_with_double_quotes() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+
+        assert_eq!(
+            Ty::string_literal(arena, "expects a string literal").to_type_string(),
+            "\"expects a string literal\""
+        );
+    }
+
+    #[test]
     fn literal_types_participate_in_widening_expressions() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

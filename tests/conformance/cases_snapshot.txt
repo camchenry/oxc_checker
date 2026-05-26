@@ -14,7 +14,7 @@ PASS tests/conformance/cases/compiler/functionReturnTypes.ts matched_types=4 mis
 FAIL tests/conformance/cases/compiler/unionTypes.ts matched_types=14 mismatched_types=2 total_types=16 match_percentage=87.50%
   - tests/conformance/cases/compiler/unionTypes.ts:14 `Expression` type mismatch
       expected: Expression
-      actual:   BooleanLogicExpression | any | any
+      actual:   BooleanLogicExpression | "true" | "false"
   - tests/conformance/cases/compiler/unionTypes.ts:15 `BooleanLogicExpression` type mismatch
       expected: BooleanLogicExpression
       actual:   none | none

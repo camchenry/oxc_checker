@@ -32,7 +32,7 @@ let indentedString = padLeft("Hello world", true);
 >                    ^^^^^^^: (value: string, padding: string | number) => string   (TyFunction)
 
 export type Expression = BooleanLogicExpression | 'true' | 'false';
->           ^^^^^^^^^^: BooleanLogicExpression | any | any   (TyUnion)
+>           ^^^^^^^^^^: BooleanLogicExpression | "true" | "false"   (TyUnion)
 
 export type Expression = BooleanLogicExpression | 'true' | 'false';
 >                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
