@@ -3,12 +3,13 @@ use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrayExpression, ArrayExpressionElement, BinaryExpression, BindingPattern, BooleanLiteral,
-        CallExpression, Class, ClassElement, Expression, FormalParameter, Function,
-        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
-        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, Statement,
-        StaticMemberExpression, StringLiteral, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, BinaryExpression,
+        BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement, Expression,
+        FormalParameter, Function, MethodDefinition, MethodDefinitionKind, NewExpression,
+        NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
+        PropertyKey, Statement, StaticMemberExpression, StringLiteral, TSSignature, TSType,
+        TSTypeAnnotation, TSTypeName, TSTypeReference, UnaryExpression, VariableDeclarationKind,
+        VariableDeclarator,
     },
 };
 use oxc_index::nonmax::NonMaxU32;
@@ -28,6 +29,12 @@ mod types;
 use types::*;
 
 const UNDEFINED_IDENT: Ident = static_ident!("undefined");
+
+#[derive(Debug, Clone, Copy)]
+enum FunctionKind<'a> {
+    Function(&'a Function<'a>),
+    ArrowFunction(&'a ArrowFunctionExpression<'a>),
+}
 
 fn infer_type_parameter_from_types<'a>(
     parameter_type: &Ty<'a>,
@@ -299,7 +306,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_expression(
         &self,
         program_id: program::ProgramId,
-        expression: &Expression<'a>,
+        expression: &'a Expression<'a>,
     ) -> Ty<'a> {
         self.get_type_of_expression_with_node(program_id, expression, None)
     }
@@ -307,7 +314,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_expression_at_node(
         &self,
         program_id: program::ProgramId,
-        expression: &Expression<'a>,
+        expression: &'a Expression<'a>,
         node_id: NodeId,
     ) -> Ty<'a> {
         self.get_type_of_expression_with_node(program_id, expression, Some(node_id))
@@ -318,7 +325,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_expression_with_node(
         &self,
         program_id: program::ProgramId,
-        expression: &Expression<'a>,
+        expression: &'a Expression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         match expression {
@@ -365,9 +372,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ThisExpression(_) => node_id
                 .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
                 .unwrap_or_else(Ty::any),
-            Expression::FunctionExpression(function) => {
-                self.get_type_of_function_signature_with_node(program_id, function, node_id)
-            }
+            Expression::FunctionExpression(function) => self
+                .get_type_of_function_signature_with_node(
+                    program_id,
+                    FunctionKind::Function(function),
+                    node_id,
+                ),
+            Expression::ArrowFunctionExpression(arrow_function) => self
+                .get_type_of_function_signature_with_node(
+                    program_id,
+                    FunctionKind::ArrowFunction(arrow_function),
+                    node_id,
+                ),
             Expression::NullLiteral(_) => Ty::null(),
             _ => Ty::from_expression(expression),
         }
@@ -376,7 +392,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_const_initializer(
         &self,
         program_id: program::ProgramId,
-        expression: &Expression<'a>,
+        expression: &'a Expression<'a>,
         node_id: NodeId,
     ) -> Ty<'a> {
         match expression {
@@ -532,7 +548,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_object_expression(
         &self,
         program_id: program::ProgramId,
-        object: &ObjectExpression<'a>,
+        object: &'a ObjectExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         Ty::object(
@@ -552,7 +568,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_static_member_expression(
         &self,
         program_id: program::ProgramId,
-        member: &StaticMemberExpression<'a>,
+        member: &'a StaticMemberExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         let object_type =
@@ -629,7 +645,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_call_expression(
         &self,
         program_id: program::ProgramId,
-        call_expression: &CallExpression<'a>,
+        call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         match self.get_type_of_expression_with_node(program_id, &call_expression.callee, node_id) {
@@ -839,7 +855,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_method_definition(
         &self,
         program_id: program::ProgramId,
-        method: &MethodDefinition<'a>,
+        method: &'a MethodDefinition<'a>,
         class_node_id: NodeId,
     ) -> Ty<'a> {
         debug_assert!(matches!(
@@ -849,7 +865,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let inferred_method_type = self.get_type_of_function_signature_with_node(
             program_id,
-            &method.value,
+            FunctionKind::Function(&method.value),
             Some(class_node_id),
         );
 
@@ -869,7 +885,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_property_definition(
         &self,
         program_id: program::ProgramId,
-        property: &PropertyDefinition<'a>,
+        property: &'a PropertyDefinition<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         property.type_annotation.as_deref().map_or_else(
@@ -940,42 +956,79 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_function_signature(
         &self,
         program_id: program::ProgramId,
-        function: &Function<'a>,
+        function: &'a Function<'a>,
     ) -> Ty<'a> {
-        self.get_type_of_function_signature_with_node(program_id, function, None)
+        self.get_type_of_function_signature_with_node(
+            program_id,
+            FunctionKind::Function(function),
+            None,
+        )
     }
 
     fn get_type_of_function_signature_with_node(
         &self,
         program_id: program::ProgramId,
-        function: &Function<'a>,
+        function: FunctionKind<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let type_parameters = function
-            .type_parameters
-            .as_ref()
-            .map_or_else(Vec::new, |params| {
-                params
-                    .params
-                    .iter()
-                    .map(|parameter| parameter.name.name.as_str())
-                    .collect()
-            });
-        let parameters = function
-            .params
-            .items
-            .iter()
-            .map(|parameter| {
-                let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
-                let ty =
-                    Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref());
-                Ty::parameter(name, ty)
-            })
-            .collect::<Vec<_>>();
-        let return_type = function.return_type.as_deref().map_or_else(
-            || self.infer_function_return_type(program_id, function, node_id),
-            |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
-        );
+        let type_parameters = match function {
+            FunctionKind::Function(f) => {
+                f.type_parameters.as_ref().map_or_else(Vec::new, |params| {
+                    params
+                        .params
+                        .iter()
+                        .map(|parameter| parameter.name.name.as_str())
+                        .collect()
+                })
+            }
+            FunctionKind::ArrowFunction(f) => {
+                f.type_parameters.as_ref().map_or_else(Vec::new, |params| {
+                    params
+                        .params
+                        .iter()
+                        .map(|parameter| parameter.name.name.as_str())
+                        .collect()
+                })
+            }
+        };
+        let parameters = match function {
+            FunctionKind::Function(f) => f
+                .params
+                .items
+                .iter()
+                .map(|parameter| {
+                    let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
+                    let ty = Ty::from_ts_type_annotation(
+                        self.arena(),
+                        parameter.type_annotation.as_deref(),
+                    );
+                    Ty::parameter(name, ty)
+                })
+                .collect::<Vec<_>>(),
+            FunctionKind::ArrowFunction(f) => f
+                .params
+                .items
+                .iter()
+                .map(|parameter| {
+                    let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
+                    let ty = Ty::from_ts_type_annotation(
+                        self.arena(),
+                        parameter.type_annotation.as_deref(),
+                    );
+                    Ty::parameter(name, ty)
+                })
+                .collect::<Vec<_>>(),
+        };
+        let return_type = match function {
+            FunctionKind::Function(f) => f.return_type.as_deref().map_or_else(
+                || self.infer_function_return_type(program_id, function, node_id),
+                |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
+            ),
+            FunctionKind::ArrowFunction(f) => f.return_type.as_deref().map_or_else(
+                || self.infer_function_return_type(program_id, function, node_id),
+                |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
+            ),
+        };
 
         Ty::function(self.arena(), type_parameters, parameters, return_type)
     }
@@ -983,10 +1036,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn infer_function_return_type(
         &self,
         program_id: program::ProgramId,
-        function: &Function<'a>,
+        function: FunctionKind<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let Some(body) = &function.body else {
+        let body = match function {
+            FunctionKind::Function(f) => f.body.as_deref(),
+            FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
+        };
+        let Some(body) = body else {
             return Ty::any();
         };
         // `function() { }` implies void return type
@@ -1010,7 +1067,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_return_expression_type(
         &self,
         program_id: program::ProgramId,
-        expression: &Expression<'a>,
+        expression: &'a Expression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         match expression {
@@ -1056,7 +1113,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_array_expression(
         &self,
         program_id: program::ProgramId,
-        array_expression: &ArrayExpression<'a>,
+        array_expression: &'a ArrayExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         match array_expression.elements.len() {
@@ -1195,9 +1252,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
             AstKind::Function(function) => self.get_type_of_function_signature_with_node(
                 sym.program_id,
-                function,
+                FunctionKind::Function(function),
                 Some(declaration),
             ),
+            AstKind::ArrowFunctionExpression(arrow_func_expr) => self
+                .get_type_of_function_signature_with_node(
+                    sym.program_id,
+                    FunctionKind::ArrowFunction(arrow_func_expr),
+                    Some(declaration),
+                ),
             AstKind::AccessorProperty(property) => {
                 Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
             }
@@ -1211,9 +1274,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     }
                     AstKind::Function(function) => self.get_type_of_function_signature_with_node(
                         sym.program_id,
-                        function,
+                        FunctionKind::Function(function),
                         Some(declaration),
                     ),
+                    AstKind::ArrowFunctionExpression(arrow_func_expr) => self
+                        .get_type_of_function_signature_with_node(
+                            sym.program_id,
+                            FunctionKind::ArrowFunction(arrow_func_expr),
+                            Some(declaration),
+                        ),
                     _ => Ty::none(),
                 }
             }
