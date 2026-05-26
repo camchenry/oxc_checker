@@ -95,6 +95,7 @@ pub(crate) enum TyLiteralPrimitiveType {
     String,
     Boolean,
     BigInt,
+    Template,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -230,6 +231,10 @@ impl<'a> Ty<'a> {
         Self::literal(arena, TyLiteralPrimitiveType::String, name)
     }
 
+    pub(crate) fn template_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::Template, name)
+    }
+
     pub(crate) fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
         Self::Array(arena.alloc(TyArray { element_type }))
     }
@@ -350,7 +355,12 @@ impl<'a> Ty<'a> {
                 TSLiteral::BigIntLiteral(bigint_literal) => {
                     Self::bigint_literal(arena, bigint_literal.value.as_str())
                 }
-                TSLiteral::TemplateLiteral(_) => Ty::none(),
+                // TODO: This isn't the correct way to handle template literals, but we'll revisit
+                // this and handle cooked, quasis, etc.
+                TSLiteral::TemplateLiteral(template_literal) => Self::template_literal(
+                    arena,
+                    template_literal.quasis.first().unwrap().value.raw.as_str(),
+                ),
                 TSLiteral::UnaryExpression(_) => Ty::none(),
             },
             _ => Self::none(),
@@ -611,6 +621,7 @@ fn literal_to_type_string(literal: &TyLiteral<'_>) -> String {
             literal.name.to_string()
         }
         TyLiteralPrimitiveType::BigInt => format!("{}n", literal.name),
+        TyLiteralPrimitiveType::Template => format!("`{}`", literal.name),
     }
 }
 
