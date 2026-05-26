@@ -44,6 +44,7 @@ pub(crate) enum Ty<'a> {
     Null,
     Any,
     Unknown,
+    Void,
     Object(&'a TyObject<'a>),
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
@@ -143,6 +144,10 @@ impl<'a> Ty<'a> {
         Self::Unknown
     }
 
+    pub(crate) fn void() -> Self {
+        Self::Void
+    }
+
     pub(crate) fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty { name, ty }
     }
@@ -232,6 +237,7 @@ impl<'a> Ty<'a> {
             Self::Null => "TyNull",
             Self::Any => "TyAny",
             Self::Unknown => "TyUnknown",
+            Self::Void => "TyVoid",
             Self::Object(_) => "TyObject",
             Self::Function(_) => "TyFunction",
             Self::TypeReference(_) => "TyTypeReference",
@@ -301,6 +307,7 @@ impl<'a> Ty<'a> {
                 function_type_parameters(arena, function.params.as_ref()),
                 Self::from_ts_type_annotation(arena, Some(&function.return_type)),
             ),
+            TSType::TSVoidKeyword(_) => Self::void(),
             _ => Self::none(),
         }
     }
@@ -415,6 +422,7 @@ impl<'a> Ty<'a> {
             Self::Null => "null".to_string(),
             Self::Any => "any".to_string(),
             Self::Unknown => "unknown".to_string(),
+            Self::Void => "void".to_string(),
             Self::Object(object) => {
                 if object.properties.is_empty() {
                     return "{}".to_string();

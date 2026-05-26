@@ -978,6 +978,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let Some(body) = &function.body else {
             return Ty::any();
         };
+        // `function() { }` implies void return type
+        if body.statements.is_empty() {
+            return Ty::void();
+        }
         body.statements
             .iter()
             .find_map(|statement| {

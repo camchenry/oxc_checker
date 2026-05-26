@@ -1,0 +1,11 @@
+function empty() {
+>        ^^^^^: () => void   (TyFunction)
+
+function emptyVoid(): void {
+>        ^^^^^^^^^: () => void   (TyFunction)
+
+class EmptyGetter {
+>     ^^^^^^^^^^^: typeof EmptyGetter   (TyTypeReference)
+
+  public get x() {
+>            ^: () => void   (TyFunction)
