@@ -8,4 +8,4 @@ class EmptyGetter {
 >     ^^^^^^^^^^^: typeof EmptyGetter   (TyTypeReference)
 
   public get x() {
->            ^: () => void   (TyFunction)
+>            ^: void   (TyVoid)

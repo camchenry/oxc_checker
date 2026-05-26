@@ -4,11 +4,11 @@ use oxc_ast::{
     AstKind,
     ast::{
         ArrayExpression, ArrayExpressionElement, BinaryExpression, BindingPattern, BooleanLiteral,
-        CallExpression, Class, ClassElement, Expression, FormalParameter, Function, NewExpression,
-        NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
-        PropertyKey, Statement, StaticMemberExpression, StringLiteral, TSSignature, TSType,
-        TSTypeAnnotation, TSTypeName, TSTypeReference, UnaryExpression, VariableDeclarationKind,
-        VariableDeclarator,
+        CallExpression, Class, ClassElement, Expression, FormalParameter, Function,
+        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
+        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, Statement,
+        StaticMemberExpression, StringLiteral, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_index::nonmax::NonMaxU32;
@@ -827,14 +827,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let ty = class.body.body.iter().find_map(|element| match element {
             ClassElement::MethodDefinition(method)
-                if method.r#static == is_static
-                    && property_key_name(&method.key).as_deref() == Some(property_name) =>
+                if property_key_name(&method.key).as_deref() == Some(property_name) =>
             {
-                Some(self.get_type_of_function_signature_with_node(
-                    program_id,
-                    &method.value,
-                    Some(class_node_id),
-                ))
+                Some(self.get_type_of_method_definition(program_id, method, class_node_id))
             }
             ClassElement::PropertyDefinition(property)
                 if property.r#static == is_static
@@ -851,6 +846,36 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         self.resolving_class_members.borrow_mut().pop();
         ty
+    }
+
+    /// Resolve the type of a method definition on a class.
+    /// Getters can turn into non-function types, but generally this returns a function type.
+    fn get_type_of_method_definition(
+        &self,
+        program_id: program::ProgramId,
+        method: &MethodDefinition<'a>,
+        class_node_id: NodeId,
+    ) -> Ty<'a> {
+        debug_assert!(matches!(
+            self.semantic(program_id).nodes().kind(class_node_id),
+            AstKind::Class(_),
+        ));
+
+        let inferred_method_type = self.get_type_of_function_signature_with_node(
+            program_id,
+            &method.value,
+            Some(class_node_id),
+        );
+
+        // For getters, the function type like `() => X` should just collapse into `X` to hide the fact that it's
+        // actually a functional call (since it's just accessed like a property)
+        if matches!(method.kind, MethodDefinitionKind::Get)
+            && let Ty::Function(func) = inferred_method_type
+        {
+            return func.return_type;
+        }
+
+        inferred_method_type
     }
 
     /// Resolve a class field's declared or inferred type.
@@ -1131,11 +1156,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 member,
                 Some(node.node_id),
             ),
-            AstKind::MethodDefinition(method) => self.get_type_of_function_signature_with_node(
-                node.program_id,
-                &method.value,
-                Some(node.node_id),
-            ),
+            AstKind::MethodDefinition(method) => {
+                let class = self
+                    .nodes(node.program_id)
+                    .ancestor_kinds(method.node_id())
+                    .find(|kind| matches!(kind, AstKind::Class(_)));
+                if let Some(AstKind::Class(class)) = class {
+                    self.get_type_of_method_definition(node.program_id, method, class.node_id())
+                } else {
+                    Ty::none()
+                }
+            }
             AstKind::PropertyDefinition(property) => {
                 self.get_type_of_property_definition(node.program_id, property, Some(node.node_id))
             }
