@@ -239,16 +239,8 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
 
         let program = self.allocator.alloc(parser_return.program);
         let semantic_return = SemanticBuilder::new().build(program);
-        if !semantic_return.errors.is_empty() {
-            return Err(ProgramStoreError::Semantic {
-                path,
-                messages: semantic_return
-                    .errors
-                    .iter()
-                    .map(ToString::to_string)
-                    .collect(),
-            });
-        }
+        // Keep building even when semantic analysis reports recoverable errors so downstream
+        // consumers (like conformance extraction) can still inspect partial symbol/type data.
 
         let id = store.push_entry(ProgramEntry {
             id: ProgramId(store.entries.len()),

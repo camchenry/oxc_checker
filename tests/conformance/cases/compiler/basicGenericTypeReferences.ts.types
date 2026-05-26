@@ -1,5 +1,5 @@
 type Box<T> = { value: T };
->    ^^^: Box<T>   (TyTypeReference)
+>    ^^^: { value: T; }   (TyObject)
 
 type Box<T> = { value: T };
 >        ^: any   (TyAny)

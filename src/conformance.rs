@@ -533,12 +533,34 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
         let compiler_case = parse_compiler_test_case(&source_text, &relative_path);
         let _settings = &compiler_case.settings;
         let allocator = Allocator::default();
-        let parsed = match parse_fixture_program(&allocator, &compiler_case) {
-            Ok(parsed) => parsed,
-            Err(_) => continue,
-        };
+        if let Ok(parsed) = parse_fixture_program(&allocator, &compiler_case) {
+            for source_file in &compiler_case.files {
+                let _file_settings = &source_file.settings;
+                let Some(program_id) = parsed
+                    .store
+                    .id_for_path(&normalize_fixture_path(Path::new(&source_file.name)))
+                else {
+                    continue;
+                };
+                records.extend(actual_identifier_records(
+                    &parsed.store,
+                    program_id,
+                    &record_path(
+                        &relative_path,
+                        source_file,
+                        compiler_case.has_explicit_files,
+                    ),
+                ));
+            }
+            continue;
+        }
+
+        // Some conformance fixtures are intentionally broken or use unsupported syntax/features.
+        // Fall back to per-file extraction so we still emit records for parsable files.
         for source_file in &compiler_case.files {
-            let _file_settings = &source_file.settings;
+            let Some(parsed) = parse_single_fixture_program(&allocator, source_file) else {
+                continue;
+            };
             let Some(program_id) = parsed
                 .store
                 .id_for_path(&normalize_fixture_path(Path::new(&source_file.name)))
@@ -694,6 +716,22 @@ fn parse_fixture_program<'a>(
     Ok(ParsedFixture { store })
 }
 
+fn parse_single_fixture_program<'a>(
+    allocator: &'a Allocator,
+    source_file: &CompilerTestFile,
+) -> Option<ParsedFixture<'a>> {
+    let compiler_case = CompilerTestCase {
+        settings: HashMap::new(),
+        files: vec![CompilerTestFile {
+            name: source_file.name.clone(),
+            source_text: source_file.source_text.clone(),
+            settings: source_file.settings.clone(),
+        }],
+        has_explicit_files: false,
+    };
+    parse_fixture_program(allocator, &compiler_case).ok()
+}
+
 fn actual_identifier_records<'a>(
     store: &program::ProgramStore<'a>,
     program_id: program::ProgramId,
@@ -805,16 +843,6 @@ fn type_of_type_alias<'a>(
     arena: CheckerArena<'a>,
     alias: &oxc_ast::ast::TSTypeAliasDeclaration<'a>,
 ) -> Ty<'a> {
-    if let Some(type_parameters) = &alias.type_parameters {
-        return Ty::type_reference(
-            arena,
-            alias.id.name.as_str(),
-            type_parameters.params.iter().map(|parameter| {
-                Ty::type_reference(arena, parameter.name.name.as_str(), std::iter::empty())
-            }),
-        );
-    }
-
     let ty = Ty::from_ts_type(arena, &alias.type_annotation);
     if ty.is_none() { Ty::any() } else { ty }
 }
