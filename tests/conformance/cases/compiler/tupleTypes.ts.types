@@ -8,7 +8,7 @@ const stringNumberTuple: [string, number] = ["Weeks from shore", 2];
 >     ^^^^^^^^^^^^^^^^^: [string, number]   (TyTuple)
 
 type StringsThenConfig = [...string[], { huh: boolean }];
->    ^^^^^^^^^^^^^^^^^: [...none, { huh: boolean; }]   (TyTuple)
+>    ^^^^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (TyTuple)
 
 type StringsThenConfig = [...string[], { huh: boolean }];
 >                                        ^^^: boolean   (TyBoolean)

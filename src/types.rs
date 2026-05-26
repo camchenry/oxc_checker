@@ -457,8 +457,12 @@ impl<'a> Ty<'a> {
                     .element_types
                     .iter()
                     .map(|ty| match ty {
-                        TSTupleElement::TSRestType(_) => TupleElement::Rest(Self::none()),
-                        TSTupleElement::TSOptionalType(_) => TupleElement::Optional(Self::none()),
+                        TSTupleElement::TSRestType(rest) => {
+                            TupleElement::Rest(Self::from_ts_type(arena, &rest.type_annotation))
+                        }
+                        TSTupleElement::TSOptionalType(optional) => TupleElement::Optional(
+                            Self::from_ts_type(arena, &optional.type_annotation),
+                        ),
                         _ => TupleElement::Regular(match ty.as_ts_type() {
                             Some(ts_type) => Self::from_ts_type(arena, ts_type),
                             None => Self::none(),

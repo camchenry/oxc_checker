@@ -1640,6 +1640,27 @@ mod test {
     }
 
     #[test]
+    fn declared_tuple_types_preserve_rest_and_optional_element_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const variadic: [...string[], { huh: boolean }] = ['value', { huh: true }];
+        const optional: [number?] = [];
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "variadic").to_type_string(),
+            "[...string[], { huh: boolean; }]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "optional").to_type_string(),
+            "[number?]"
+        );
+    }
+
+    #[test]
     fn const_initializers_use_literal_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
