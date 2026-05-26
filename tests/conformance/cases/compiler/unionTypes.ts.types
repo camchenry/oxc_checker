@@ -38,7 +38,7 @@ export type Expression = BooleanLogicExpression | 'true' | 'false';
 >                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
->           ^^^^^^^^^^^^^^^^^^^^^^: none | none   (TyUnion)
+>           ^^^^^^^^^^^^^^^^^^^^^^: ["and", ...none] | ["not", Expression]   (TyUnion)
 
 export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
 >                                               ^^^^^^^^^^: any   (TyAny)

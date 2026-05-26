@@ -1,0 +1,41 @@
+const stringArray: string[] = ["sugar", "tea", "rum"];
+>     ^^^^^^^^^^^: string[]   (TyArray)
+
+const singleStringTuple: [string] = ["sugar", "tea", "rum"];
+>     ^^^^^^^^^^^^^^^^^: [string]   (TyTuple)
+
+const stringNumberTuple: [string, number] = ["Weeks from shore", 2];
+>     ^^^^^^^^^^^^^^^^^: [string, number]   (TyTuple)
+
+type StringsThenConfig = [...string[], { huh: boolean }];
+>    ^^^^^^^^^^^^^^^^^: [...none, { huh: boolean; }]   (TyTuple)
+
+type StringsThenConfig = [...string[], { huh: boolean }];
+>                                        ^^^: boolean   (TyBoolean)
+
+const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
+>     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
+
+const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
+>                  ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
+>                                                                          ^^^: boolean   (TyBoolean)
+
+const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
+>     ^^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
+
+const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
+>                                                                         ^^^: boolean   (TyBoolean)
+
+const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
+>     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
+
+const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
+>                  ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
+>                                                                      ^^^: boolean   (TyBoolean)

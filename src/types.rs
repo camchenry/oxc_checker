@@ -1,7 +1,8 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
-    TSSignature, TSTemplateLiteralType, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
+    TSSignature, TSTemplateLiteralType, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+    TSTypeReference,
 };
 use oxc_index::serde::de::value;
 use std::collections::HashMap;
@@ -55,6 +56,7 @@ pub(crate) enum Ty<'a> {
     BigIntLiteral(&'a TyBigIntLiteral<'a>),
     TemplateLiteral(&'a TyTemplateLiteral<'a>),
     Array(&'a TyArray<'a>),
+    Tuple(&'a TyTuple<'a>),
     Union(&'a TyUnion<'a>),
 }
 
@@ -133,6 +135,19 @@ pub(crate) enum TyLiteralPrimitiveType {
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyArray<'a> {
     pub(crate) element_type: Ty<'a>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyTuple<'a> {
+    pub(crate) elements: ArenaVec<'a, TupleElement<'a>>,
+}
+
+/// A tuple element is either: a regular type [`Ty`], a rest type, or an optional type.
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) enum TupleElement<'a> {
+    Regular(Ty<'a>),
+    Rest(Ty<'a>),
+    Optional(Ty<'a>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -301,6 +316,12 @@ impl<'a> Ty<'a> {
         Self::Array(arena.alloc(TyArray { element_type }))
     }
 
+    pub(crate) fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
+        Self::Tuple(arena.alloc(TyTuple {
+            elements: arena.vec_from_iter(elements),
+        }))
+    }
+
     pub(crate) fn r#union(
         arena: CheckerArena<'a>,
         types: impl IntoIterator<Item = Ty<'a>>,
@@ -335,6 +356,7 @@ impl<'a> Ty<'a> {
             Self::BigIntLiteral(_) => "TyBigIntLiteral",
             Self::TemplateLiteral(_) => "TyTemplateLiteral",
             Self::Array(_) => "TyArray",
+            Self::Tuple(_) => "TyTuple",
             Self::Union(_) => "TyUnion",
         }
     }
@@ -429,6 +451,21 @@ impl<'a> Ty<'a> {
                 }
                 TSLiteral::UnaryExpression(_) => Ty::none(),
             },
+            TSType::TSTupleType(tuple_type) => Self::tuple(
+                arena,
+                tuple_type
+                    .element_types
+                    .iter()
+                    .map(|ty| match ty {
+                        TSTupleElement::TSRestType(_) => TupleElement::Rest(Self::none()),
+                        TSTupleElement::TSOptionalType(_) => TupleElement::Optional(Self::none()),
+                        _ => TupleElement::Regular(match ty.as_ts_type() {
+                            Some(ts_type) => Self::from_ts_type(arena, ts_type),
+                            None => Self::none(),
+                        }),
+                    })
+                    .collect(),
+            ),
             _ => Self::none(),
         }
     }
@@ -640,6 +677,19 @@ impl<'a> Ty<'a> {
                 } else {
                     format!("{element_type}[]")
                 }
+            }
+            Self::Tuple(tuple) => {
+                let elements = tuple
+                    .elements
+                    .iter()
+                    .map(|element| match element {
+                        TupleElement::Regular(ty) => ty.to_type_string(),
+                        TupleElement::Rest(ty) => format!("...{}", ty.to_type_string()),
+                        TupleElement::Optional(ty) => format!("{}?", ty.to_type_string()),
+                    })
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                format!("[{elements}]")
             }
             Self::Union(union) => union
                 .types
