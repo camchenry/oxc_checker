@@ -1,7 +1,7 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
-    BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSSignature,
-    TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
+    BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
+    TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference,
 };
 use std::collections::HashMap;
 
@@ -116,12 +116,36 @@ impl<'a> Ty<'a> {
         Self::Number
     }
 
+    pub(crate) fn number_literal(arena: CheckerArena<'a>, num: &'a str) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::Number, num)
+    }
+
     pub(crate) fn string() -> Self {
         Self::String
     }
 
+    /// General `boolean` type (true or false)
     pub(crate) fn boolean() -> Self {
         Self::Boolean
+    }
+
+    /// Literal `boolean` type (`true` or `false`), subtype of `boolean`
+    pub(crate) fn boolean_literal(arena: CheckerArena<'a>, value: bool) -> Self {
+        if value {
+            Self::boolean_true(arena)
+        } else {
+            Self::boolean_false(arena)
+        }
+    }
+
+    /// Literal `true` type (subtype of `boolean`)
+    pub(crate) fn boolean_true(arena: CheckerArena<'a>) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::Boolean, "true")
+    }
+
+    /// Literal `false` type (subtype of `boolean`)
+    pub(crate) fn boolean_false(arena: CheckerArena<'a>) -> Self {
+        Self::literal(arena, TyLiteralPrimitiveType::Boolean, "false")
     }
 
     pub(crate) fn bigint() -> Self {
@@ -197,16 +221,8 @@ impl<'a> Ty<'a> {
         Self::Literal(arena.alloc(TyLiteral { name, primitive }))
     }
 
-    pub(crate) fn number_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::Number, name)
-    }
-
     pub(crate) fn string_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
         Self::literal(arena, TyLiteralPrimitiveType::String, name)
-    }
-
-    pub(crate) fn boolean_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        Self::literal(arena, TyLiteralPrimitiveType::Boolean, name)
     }
 
     pub(crate) fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
@@ -269,6 +285,7 @@ impl<'a> Ty<'a> {
             TSType::TSNullKeyword(_) => Self::null(),
             TSType::TSAnyKeyword(_) => Self::any(),
             TSType::TSUnknownKeyword(_) => Self::unknown(),
+            TSType::TSVoidKeyword(_) => Self::void(),
             TSType::TSTypeLiteral(type_literal) => Self::object(
                 arena,
                 type_literal.members.iter().filter_map(|member| {
@@ -307,7 +324,26 @@ impl<'a> Ty<'a> {
                 function_type_parameters(arena, function.params.as_ref()),
                 Self::from_ts_type_annotation(arena, Some(&function.return_type)),
             ),
-            TSType::TSVoidKeyword(_) => Self::void(),
+            TSType::TSLiteralType(literal) => match &literal.literal {
+                TSLiteral::BooleanLiteral(boolean_literal) => {
+                    if boolean_literal.value {
+                        Self::boolean_true(arena)
+                    } else {
+                        Self::boolean_false(arena)
+                    }
+                }
+                TSLiteral::NumericLiteral(numeric_literal) => {
+                    let name = numeric_literal.raw.as_ref().map_or_else(
+                        || arena.str(&numeric_literal.value.to_string()),
+                        |raw| raw.as_str(),
+                    );
+                    Self::number_literal(arena, name)
+                }
+                TSLiteral::StringLiteral(_) => Ty::none(),
+                TSLiteral::BigIntLiteral(_) => Ty::none(),
+                TSLiteral::TemplateLiteral(_) => Ty::none(),
+                TSLiteral::UnaryExpression(_) => Ty::none(),
+            },
             _ => Self::none(),
         }
     }

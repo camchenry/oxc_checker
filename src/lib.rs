@@ -436,7 +436,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn get_type_of_boolean_literal(&self, literal: &BooleanLiteral) -> Ty<'a> {
-        Ty::boolean_literal(self.arena(), if literal.value { "true" } else { "false" })
+        Ty::boolean_literal(self.arena(), literal.value)
     }
 
     fn get_type_of_binary_expression(
@@ -1606,7 +1606,7 @@ mod test {
         );
         assert_eq!(
             get_global_symbol_type(&ret, "enabled"),
-            Ty::boolean_literal(arena(&ret), "true")
+            Ty::boolean_true(arena(&ret))
         );
     }
 
