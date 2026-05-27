@@ -1,0 +1,47 @@
+declare const x: any;
+>             ^: any   (TyAny)
+
+const xs = <string>x;
+>     ^^: string   (TyString)
+
+const xs = <string>x;
+>                  ^: any   (TyAny)
+
+const xu = <unknown>x;
+>     ^^: unknown   (TyUnknown)
+
+const xu = <unknown>x;
+>                   ^: any   (TyAny)
+
+const xn = <number>x;
+>     ^^: number   (TyNumber)
+
+const xn = <number>x;
+>                  ^: any   (TyAny)
+
+const xa = <any>x;``
+>     ^^: any   (TyAny)
+
+const xa = <any>x;``
+>               ^: any   (TyAny)
+
+interface i00<T = number> { a: T; }
+>         ^^^: any   (TyAny)
+
+interface i00<T = number> { a: T; }
+>             ^: any   (TyAny)
+
+interface i00<T = number> { a: T; }
+>                           ^: T   (TyTypeReference)
+
+interface i00<T = number> { a: T; }
+>                              ^: any   (TyAny)
+
+const i00c00 = (<i00>x)
+>     ^^^^^^: i00<number>   (TyTypeReference)
+
+const i00c00 = (<i00>x)
+>                ^^^: any   (TyAny)
+
+const i00c00 = (<i00>x)
+>                    ^: any   (TyAny)

@@ -372,6 +372,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id)
             }
+            Expression::ParenthesizedExpression(parenthesized) => self
+                .get_type_of_expression_with_node(program_id, &parenthesized.expression, node_id),
+            Expression::TSTypeAssertion(assertion) => {
+                self.get_type_from_ts_type(program_id, &assertion.type_annotation)
+            }
+            Expression::TSAsExpression(assertion) => {
+                self.get_type_from_ts_type(program_id, &assertion.type_annotation)
+            }
             Expression::ThisExpression(_) => node_id
                 .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
                 .unwrap_or_else(Ty::any),
@@ -523,6 +531,66 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn is_string_like_for_addition(&self, ty: Ty<'a>) -> bool {
         matches!(ty, Ty::String | Ty::StringLiteral(_))
+    }
+
+    fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &TSType<'a>) -> Ty<'a> {
+        match ty {
+            TSType::TSTypeReference(reference) => {
+                self.get_type_from_ts_type_reference(program_id, reference)
+            }
+            _ => Ty::from_ts_type(self.arena(), ty),
+        }
+    }
+
+    fn get_type_from_ts_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TSTypeReference<'a>,
+    ) -> Ty<'a> {
+        let name = ts_type_name_to_str(self.arena(), &reference.type_name);
+        let mut type_arguments = reference
+            .type_arguments
+            .as_ref()
+            .into_iter()
+            .flat_map(|args| {
+                args.params
+                    .iter()
+                    .map(|ty| self.get_type_from_ts_type(program_id, ty))
+            })
+            .collect::<Vec<_>>();
+
+        self.fill_default_type_arguments(program_id, name, &mut type_arguments);
+
+        Ty::type_reference(self.arena(), name, type_arguments)
+    }
+
+    fn fill_default_type_arguments(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+        type_arguments: &mut Vec<Ty<'a>>,
+    ) {
+        let Some(type_parameters) = self.get_type_parameters_for_type(program_id, type_name) else {
+            return;
+        };
+        if type_arguments.len() >= type_parameters.len() {
+            return;
+        }
+
+        let mut substitutions = HashMap::new();
+        for (type_parameter, type_argument) in type_parameters.iter().zip(type_arguments.iter()) {
+            substitutions.insert(type_parameter.name, *type_argument);
+        }
+
+        for type_parameter in type_parameters.iter().skip(type_arguments.len()) {
+            let Some(default_type) = type_parameter.default_type else {
+                break;
+            };
+            let default_type =
+                default_type.substitute_type_parameters(self.arena(), &substitutions);
+            substitutions.insert(type_parameter.name, default_type);
+            type_arguments.push(default_type);
+        }
     }
 
     /// Return the instance type for the nearest enclosing class.
@@ -827,6 +895,60 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .scoping()
             .get_root_binding(Ident::from(name))
             .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+    }
+
+    fn get_type_symbol_for_name(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+    ) -> Option<SymbolRef> {
+        self.get_root_symbol(program_id, type_name)
+            .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+            .or_else(|| {
+                self.store.entries().iter().find_map(|entry| {
+                    self.get_root_symbol(entry.id(), type_name)
+                        .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+                })
+            })
+    }
+
+    fn get_type_parameters_for_type(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+    ) -> Option<Vec<TyTypeParameter<'a>>> {
+        let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_type_parameters_for_declaration(symbol.program_id, declaration)
+    }
+
+    fn get_type_parameters_for_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+    ) -> Option<Vec<TyTypeParameter<'a>>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSInterfaceDeclaration(interface) => Some(type_parameters_from_declaration(
+                self.arena(),
+                interface.type_parameters.as_deref(),
+            )),
+            AstKind::TSTypeAliasDeclaration(alias) => Some(type_parameters_from_declaration(
+                self.arena(),
+                alias.type_parameters.as_deref(),
+            )),
+            AstKind::Class(class) => Some(type_parameters_from_declaration(
+                self.arena(),
+                class.type_parameters.as_deref(),
+            )),
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_type_parameters_for_declaration(program_id, parent_id)
+            }
+            _ => None,
+        }
     }
 
     fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<(NodeId, &'a Class<'a>)> {
@@ -1906,6 +2028,33 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "b"), Ty::bigint());
         assert_eq!(get_global_symbol_type(&ret, "a"), Ty::any());
         assert_eq!(get_global_symbol_type(&ret, "annotated"), Ty::string());
+    }
+
+    #[test]
+    fn angle_bracket_type_assertions_use_asserted_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const x: any;
+        interface Box<T = number> { value: T; }
+
+        const xs = <string>x;
+        const xu = <unknown>x;
+        const xn = <number>x;
+        const xa = <any>x;
+        const boxed = (<Box>x);
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "xs"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "xu"), Ty::unknown());
+        assert_eq!(get_global_symbol_type(&ret, "xn"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "xa"), Ty::any());
+        assert_eq!(
+            get_global_symbol_type(&ret, "boxed"),
+            Ty::type_reference(arena(&ret), "Box", [Ty::number()])
+        );
     }
 
     #[test]
