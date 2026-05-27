@@ -731,10 +731,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     if substitutions.contains_key(type_parameter.name) {
                         continue;
                     }
-                    if let Some(default_type) = type_parameter.default_type {
+                    if let Some(fallback_type) = type_parameter
+                        .default_type
+                        .or(type_parameter.constraint_type)
+                    {
                         substitutions.insert(
                             type_parameter.name,
-                            default_type.substitute_type_parameters(self.arena(), &substitutions),
+                            fallback_type.substitute_type_parameters(self.arena(), &substitutions),
                         );
                     }
                 }
@@ -2026,6 +2029,40 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "fromInference"),
             Ty::type_reference(arena(&ret), "A", std::iter::empty())
+        );
+    }
+
+    #[test]
+    fn generic_function_constraints_render_and_apply_when_not_inferred() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface A { a: number; }
+        declare const a: A;
+        declare const fn: <T extends A>(x: T) => T;
+        declare function foo<T extends A, U extends T = T>(x?: T, y?: U): [T, U];
+
+        const fromConstraint = foo();
+        const fromInference = foo(a);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "fn").to_type_string(),
+            "<T extends A>(x: T) => T"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "foo").to_type_string(),
+            "<T extends A, U extends T = T>(x?: T, y?: U) => [T, U]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "fromConstraint").to_type_string(),
+            "[A, A]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "fromInference").to_type_string(),
+            "[A, A]"
         );
     }
 

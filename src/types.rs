@@ -81,6 +81,8 @@ pub(crate) struct TyFunction<'a> {
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) struct TyTypeParameter<'a> {
     pub(crate) name: &'a str,
+    /// constraint type (e.g., `U` in `T extends U`)
+    pub(crate) constraint_type: Option<Ty<'a>>,
     pub(crate) default_type: Option<Ty<'a>>,
 }
 
@@ -296,9 +298,14 @@ impl<'a> Ty<'a> {
 
     pub(crate) fn type_parameter(
         name: &'a str,
+        constraint_type: Option<Ty<'a>>,
         default_type: Option<Ty<'a>>,
     ) -> TyTypeParameter<'a> {
-        TyTypeParameter { name, default_type }
+        TyTypeParameter {
+            name,
+            constraint_type,
+            default_type,
+        }
     }
 
     pub(crate) fn object(
@@ -566,6 +573,9 @@ impl<'a> Ty<'a> {
                     function.type_parameters.iter().map(|type_parameter| {
                         Self::type_parameter(
                             type_parameter.name,
+                            type_parameter.constraint_type.map(|constraint_type| {
+                                constraint_type.substitute_type_parameters(arena, &substitutions)
+                            }),
                             type_parameter.default_type.map(|default_type| {
                                 default_type.substitute_type_parameters(arena, &substitutions)
                             }),
@@ -669,16 +679,7 @@ impl<'a> Ty<'a> {
                     let type_parameters = function
                         .type_parameters
                         .iter()
-                        .map(|type_parameter| match type_parameter.default_type {
-                            Some(default_type) => {
-                                format!(
-                                    "{} = {}",
-                                    type_parameter.name,
-                                    default_type.to_type_string()
-                                )
-                            }
-                            None => type_parameter.name.to_string(),
-                        })
+                        .map(type_parameter_to_type_string)
                         .collect::<Vec<_>>()
                         .join(", ");
                     format!("<{type_parameters}>")
@@ -860,6 +861,19 @@ fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
     }
 }
 
+fn type_parameter_to_type_string(type_parameter: &TyTypeParameter<'_>) -> String {
+    let mut type_string = type_parameter.name.to_string();
+    if let Some(constraint_type) = type_parameter.constraint_type {
+        type_string.push_str(" extends ");
+        type_string.push_str(&constraint_type.to_type_string());
+    }
+    if let Some(default_type) = type_parameter.default_type {
+        type_string.push_str(" = ");
+        type_string.push_str(&default_type.to_type_string());
+    }
+    type_string
+}
+
 pub(crate) enum SignatureKind {
     Call,
     Construct,
@@ -894,6 +908,10 @@ pub(crate) fn type_parameters_from_declaration<'a>(
             .map(|parameter| {
                 Ty::type_parameter(
                     parameter.name.name.as_str(),
+                    parameter
+                        .constraint
+                        .as_ref()
+                        .map(|constraint_type| Ty::from_ts_type(arena, constraint_type)),
                     parameter
                         .default
                         .as_ref()
