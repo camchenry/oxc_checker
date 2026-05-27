@@ -695,18 +695,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         .zip(type_arguments.params.iter())
                     {
                         substitutions.insert(
-                            *type_parameter,
+                            type_parameter.name,
                             Ty::from_ts_type(self.arena(), type_argument),
                         );
-                        explicit_type_parameters.push(*type_parameter);
+                        explicit_type_parameters.push(type_parameter.name);
                     }
                 }
 
                 let inferable_type_parameters = function
                     .type_parameters
                     .iter()
+                    .map(|type_parameter| type_parameter.name)
                     .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
-                    .cloned()
                     .collect::<Vec<_>>();
 
                 for (argument, parameter) in call_expression
@@ -725,6 +725,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         &inferable_type_parameters,
                         &mut substitutions,
                     );
+                }
+
+                for type_parameter in &function.type_parameters {
+                    if substitutions.contains_key(type_parameter.name) {
+                        continue;
+                    }
+                    if let Some(default_type) = type_parameter.default_type {
+                        substitutions.insert(
+                            type_parameter.name,
+                            default_type.substitute_type_parameters(self.arena(), &substitutions),
+                        );
+                    }
                 }
 
                 function
@@ -1004,22 +1016,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let type_parameters = match function {
             FunctionKind::Function(f) => {
-                f.type_parameters.as_ref().map_or_else(Vec::new, |params| {
-                    params
-                        .params
-                        .iter()
-                        .map(|parameter| parameter.name.name.as_str())
-                        .collect()
-                })
+                type_parameters_from_declaration(self.arena(), f.type_parameters.as_deref())
             }
             FunctionKind::ArrowFunction(f) => {
-                f.type_parameters.as_ref().map_or_else(Vec::new, |params| {
-                    params
-                        .params
-                        .iter()
-                        .map(|parameter| parameter.name.name.as_str())
-                        .collect()
-                })
+                type_parameters_from_declaration(self.arena(), f.type_parameters.as_deref())
             }
         };
         let parameters = match function {
@@ -1992,6 +1992,40 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "fromExplicitCall"),
             Ty::type_reference(arena(&ret), "Box", [Ty::string()])
+        );
+    }
+
+    #[test]
+    fn generic_function_defaults_render_and_apply_when_not_inferred() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface A { a: number; }
+        declare const a: A;
+        declare const fn: <T = A>(x: T) => T;
+        declare function foo<T = A>(x?: T): T;
+
+        const fromDefault = foo();
+        const fromInference = foo(a);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "fn").to_type_string(),
+            "<T = A>(x: T) => T"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "foo").to_type_string(),
+            "<T = A>(x?: T) => T"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "fromDefault"),
+            Ty::type_reference(arena(&ret), "A", std::iter::empty())
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "fromInference"),
+            Ty::type_reference(arena(&ret), "A", std::iter::empty())
         );
     }
 

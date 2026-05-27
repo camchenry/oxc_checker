@@ -2,7 +2,7 @@ use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
     TSSignature, TSTemplateLiteralType, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-    TSTypeReference,
+    TSTypeParameterDeclaration, TSTypeReference,
 };
 use oxc_index::serde::de::value;
 use std::collections::HashMap;
@@ -73,9 +73,15 @@ pub(crate) struct TyProperty<'a> {
 
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyFunction<'a> {
-    pub(crate) type_parameters: ArenaVec<'a, &'a str>,
+    pub(crate) type_parameters: ArenaVec<'a, TyTypeParameter<'a>>,
     pub(crate) parameters: ArenaVec<'a, TyParameter<'a>>,
     pub(crate) return_type: Ty<'a>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct TyTypeParameter<'a> {
+    pub(crate) name: &'a str,
+    pub(crate) default_type: Option<Ty<'a>>,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -288,6 +294,13 @@ impl<'a> Ty<'a> {
         }
     }
 
+    pub(crate) fn type_parameter(
+        name: &'a str,
+        default_type: Option<Ty<'a>>,
+    ) -> TyTypeParameter<'a> {
+        TyTypeParameter { name, default_type }
+    }
+
     pub(crate) fn object(
         arena: CheckerArena<'a>,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
@@ -299,7 +312,7 @@ impl<'a> Ty<'a> {
 
     pub(crate) fn function(
         arena: CheckerArena<'a>,
-        type_parameters: impl IntoIterator<Item = &'a str>,
+        type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         parameters: impl IntoIterator<Item = TyParameter<'a>>,
         return_type: Ty<'a>,
     ) -> Self {
@@ -427,16 +440,7 @@ impl<'a> Ty<'a> {
             ),
             TSType::TSFunctionType(function) => Self::function(
                 arena,
-                function
-                    .type_parameters
-                    .as_ref()
-                    .map_or_else(Vec::new, |params| {
-                        params
-                            .params
-                            .iter()
-                            .map(|parameter| parameter.name.name.as_str())
-                            .collect()
-                    }),
+                type_parameters_from_declaration(arena, function.type_parameters.as_deref()),
                 function_type_parameters(arena, function.params.as_ref()),
                 Self::from_ts_type_annotation(arena, Some(&function.return_type)),
             ),
@@ -549,12 +553,24 @@ impl<'a> Ty<'a> {
             Self::Function(function) => {
                 let substitutions = substitutions
                     .iter()
-                    .filter(|(name, _)| !function.type_parameters.contains(name))
+                    .filter(|(name, _)| {
+                        !function
+                            .type_parameters
+                            .iter()
+                            .any(|type_parameter| type_parameter.name == **name)
+                    })
                     .map(|(name, ty)| (*name, *ty))
                     .collect::<HashMap<_, _>>();
                 Self::function(
                     arena,
-                    function.type_parameters.iter().copied(),
+                    function.type_parameters.iter().map(|type_parameter| {
+                        Self::type_parameter(
+                            type_parameter.name,
+                            type_parameter.default_type.map(|default_type| {
+                                default_type.substitute_type_parameters(arena, &substitutions)
+                            }),
+                        )
+                    }),
                     function.parameters.iter().map(|parameter| {
                         let ty = parameter
                             .ty
@@ -650,7 +666,22 @@ impl<'a> Ty<'a> {
                 let type_parameters = if function.type_parameters.is_empty() {
                     String::new()
                 } else {
-                    format!("<{}>", function.type_parameters.join(", "))
+                    let type_parameters = function
+                        .type_parameters
+                        .iter()
+                        .map(|type_parameter| match type_parameter.default_type {
+                            Some(default_type) => {
+                                format!(
+                                    "{} = {}",
+                                    type_parameter.name,
+                                    default_type.to_type_string()
+                                )
+                            }
+                            None => type_parameter.name.to_string(),
+                        })
+                        .collect::<Vec<_>>()
+                        .join(", ");
+                    format!("<{type_parameters}>")
                 };
                 let parameters = function
                     .parameters
@@ -850,6 +881,27 @@ fn binding_pattern_name_str<'a>(pattern: &BindingPattern<'a>) -> Option<&'a str>
         BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.as_str()),
         _ => None,
     }
+}
+
+pub(crate) fn type_parameters_from_declaration<'a>(
+    arena: CheckerArena<'a>,
+    declaration: Option<&TSTypeParameterDeclaration<'a>>,
+) -> Vec<TyTypeParameter<'a>> {
+    declaration.map_or_else(Vec::new, |declaration| {
+        declaration
+            .params
+            .iter()
+            .map(|parameter| {
+                Ty::type_parameter(
+                    parameter.name.name.as_str(),
+                    parameter
+                        .default
+                        .as_ref()
+                        .map(|default_type| Ty::from_ts_type(arena, default_type)),
+                )
+            })
+            .collect()
+    })
 }
 
 fn function_type_parameters<'a>(
