@@ -82,6 +82,7 @@ pub(crate) struct TyFunction<'a> {
 pub(crate) struct TyParameter<'a> {
     pub(crate) name: &'a str,
     pub(crate) ty: Ty<'a>,
+    pub(crate) optional: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -272,7 +273,19 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
-        TyParameter { name, ty }
+        TyParameter {
+            name,
+            ty,
+            optional: false,
+        }
+    }
+
+    pub(crate) fn optional_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+        TyParameter {
+            name,
+            ty,
+            optional: true,
+        }
     }
 
     pub(crate) fn object(
@@ -543,12 +556,14 @@ impl<'a> Ty<'a> {
                     arena,
                     function.type_parameters.iter().copied(),
                     function.parameters.iter().map(|parameter| {
-                        Self::parameter(
-                            parameter.name,
-                            parameter
-                                .ty
-                                .substitute_type_parameters(arena, &substitutions),
-                        )
+                        let ty = parameter
+                            .ty
+                            .substitute_type_parameters(arena, &substitutions);
+                        if parameter.optional {
+                            Self::optional_parameter(parameter.name, ty)
+                        } else {
+                            Self::parameter(parameter.name, ty)
+                        }
                     }),
                     function
                         .return_type
@@ -641,7 +656,11 @@ impl<'a> Ty<'a> {
                     .parameters
                     .iter()
                     .map(|parameter| {
-                        format!("{}: {}", parameter.name, parameter.ty.to_type_string())
+                        if parameter.optional {
+                            format!("{}?: {}", parameter.name, parameter.ty.to_type_string())
+                        } else {
+                            format!("{}: {}", parameter.name, parameter.ty.to_type_string())
+                        }
                     })
                     .collect::<Vec<_>>()
                     .join(", ");
@@ -855,15 +874,12 @@ fn function_type_parameter<'a>(
     parameter: &FormalParameter<'a>,
 ) -> TyParameter<'a> {
     let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
-    let name = if parameter.optional {
-        arena.concat_strs_array([name, "?"])
+    let ty = Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref());
+    if parameter.optional {
+        Ty::optional_parameter(name, ty)
     } else {
-        name
-    };
-    Ty::parameter(
-        name,
-        Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
-    )
+        Ty::parameter(name, ty)
+    }
 }
 
 fn function_type_rest_parameter<'a>(

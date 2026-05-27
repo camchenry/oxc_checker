@@ -1033,7 +1033,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         self.arena(),
                         parameter.type_annotation.as_deref(),
                     );
-                    Ty::parameter(name, ty)
+                    if parameter.optional {
+                        Ty::optional_parameter(name, ty)
+                    } else {
+                        Ty::parameter(name, ty)
+                    }
                 })
                 .collect::<Vec<_>>(),
             FunctionKind::ArrowFunction(f) => f
@@ -1046,7 +1050,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         self.arena(),
                         parameter.type_annotation.as_deref(),
                     );
-                    Ty::parameter(name, ty)
+                    if parameter.optional {
+                        Ty::optional_parameter(name, ty)
+                    } else {
+                        Ty::parameter(name, ty)
+                    }
                 })
                 .collect::<Vec<_>>(),
         };
@@ -2114,6 +2122,21 @@ mod test {
         assert_eq!(get_symbol_type_in_function(&ret, "foo", "a"), Ty::number());
         assert_eq!(get_symbol_type_in_function(&ret, "foo", "b"), Ty::string());
         assert_eq!(get_symbol_type_in_function(&ret, "foo", "c"), Ty::boolean());
+    }
+
+    #[test]
+    fn optional_function_parameters_render_optional_in_signatures() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "declare function foo(a?: number): number;");
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "foo").to_type_string(),
+            "(a?: number) => number"
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret, "foo", "a"),
+            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()])
+        );
     }
 
     #[test]
