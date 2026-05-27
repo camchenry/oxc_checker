@@ -58,6 +58,7 @@ pub(crate) enum Ty<'a> {
     Array(&'a TyArray<'a>),
     Tuple(&'a TyTuple<'a>),
     Union(&'a TyUnion<'a>),
+    Intersection(&'a TyIntersection<'a>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -161,6 +162,12 @@ pub(crate) enum TupleElement<'a> {
 
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyUnion<'a> {
+    pub(crate) types: ArenaVec<'a, Ty<'a>>,
+    // TODO: Add flags
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyIntersection<'a> {
     pub(crate) types: ArenaVec<'a, Ty<'a>>,
     // TODO: Add flags
 }
@@ -362,6 +369,15 @@ impl<'a> Ty<'a> {
         reduce_union_type(arena, types)
     }
 
+    pub(crate) fn intersection(
+        arena: CheckerArena<'a>,
+        types: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Self {
+        Self::Intersection(arena.alloc(TyIntersection {
+            types: arena.vec_from_iter(types),
+        }))
+    }
+
     pub(crate) fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
@@ -393,6 +409,7 @@ impl<'a> Ty<'a> {
             Self::Array(_) => "TyArray",
             Self::Tuple(_) => "TyTuple",
             Self::Union(_) => "TyUnion",
+            Self::Intersection(_) => "TyIntersection",
         }
     }
 
@@ -501,6 +518,13 @@ impl<'a> Ty<'a> {
                         }),
                     })
                     .collect(),
+            ),
+            TSType::TSIntersectionType(intersection_type) => Self::intersection(
+                arena,
+                intersection_type
+                    .types
+                    .iter()
+                    .map(|ty| Self::from_ts_type(arena, ty)),
             ),
             _ => Self::none(),
         }
@@ -792,6 +816,12 @@ impl<'a> Ty<'a> {
                 .map(|ty| ty.to_type_string())
                 .collect::<Vec<_>>()
                 .join(" | "),
+            Self::Intersection(intersection) => intersection
+                .types
+                .iter()
+                .map(|ty| ty.to_type_string())
+                .collect::<Vec<_>>()
+                .join(" & "),
         }
     }
 
