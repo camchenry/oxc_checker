@@ -1090,7 +1090,9 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
 
             for (key, tsc_type) in tsc_by_key {
                 match oxc_by_key.get(key) {
-                    Some(oxc_type) if oxc_type == tsc_type => matched_types += 1,
+                    Some(oxc_type) if type_reprs_are_equivalent(tsc_type, oxc_type) => {
+                        matched_types += 1;
+                    }
                     Some(oxc_type) => errors.push(ComparisonError::TypeMismatch {
                         start: key.start,
                         end: key.end,
@@ -1125,6 +1127,309 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
             }
         })
         .collect()
+}
+
+fn type_reprs_are_equivalent(expected: &str, actual: &str) -> bool {
+    expected == actual
+        || normalize_union_order_for_comparison(expected)
+            == normalize_union_order_for_comparison(actual)
+}
+
+fn normalize_union_order_for_comparison(type_repr: &str) -> String {
+    let nested = normalize_nested_type_contexts(type_repr);
+    normalize_top_level_union_chains(&nested)
+}
+
+fn normalize_nested_type_contexts(type_repr: &str) -> String {
+    let mut normalized = String::new();
+    let mut index = 0;
+
+    while index < type_repr.len() {
+        let (character, next_index) = char_at(type_repr, index);
+        if matches!(character, '\'' | '"' | '`') {
+            let quoted_end = quoted_type_part_end(type_repr, index);
+            normalized.push_str(&type_repr[index..quoted_end]);
+            index = quoted_end;
+        } else if is_open_type_delimiter(character) {
+            if let Some(close_index) = matching_type_delimiter_index(type_repr, index) {
+                normalized.push(character);
+                normalized.push_str(&normalize_union_order_for_comparison(
+                    &type_repr[next_index..close_index],
+                ));
+                let (close, close_next_index) = char_at(type_repr, close_index);
+                normalized.push(close);
+                index = close_next_index;
+            } else {
+                normalized.push(character);
+                index = next_index;
+            }
+        } else {
+            normalized.push(character);
+            index = next_index;
+        }
+    }
+
+    normalized
+}
+
+fn normalize_top_level_union_chains(type_repr: &str) -> String {
+    let mut normalized = String::new();
+    let mut cursor = 0;
+
+    while let Some(pipe_index) = top_level_pipe_index(type_repr, cursor) {
+        let start = union_chain_start(type_repr, pipe_index);
+        let end = union_chain_end(type_repr, pipe_index);
+        if start < cursor {
+            cursor = pipe_index + 1;
+            continue;
+        }
+
+        normalized.push_str(&type_repr[cursor..start]);
+        normalized.push_str(&normalize_union_chain(&type_repr[start..end]));
+        cursor = end;
+    }
+
+    normalized.push_str(&type_repr[cursor..]);
+    normalized
+}
+
+fn normalize_union_chain(union_chain: &str) -> String {
+    let mut types = split_top_level_union_types(union_chain)
+        .into_iter()
+        .map(|ty| ty.trim().to_string())
+        .collect::<Vec<_>>();
+    if types.len() < 2 {
+        return union_chain.to_string();
+    }
+
+    types.sort();
+    types.join(" | ")
+}
+
+fn split_top_level_union_types(union_chain: &str) -> Vec<&str> {
+    let mut types = Vec::new();
+    let mut start = 0;
+    let mut index = 0;
+    let mut closing_delimiters = Vec::new();
+
+    while index < union_chain.len() {
+        let (character, next_index) = char_at(union_chain, index);
+        if matches!(character, '\'' | '"' | '`') {
+            index = quoted_type_part_end(union_chain, index);
+            continue;
+        }
+
+        if is_open_type_delimiter(character) {
+            closing_delimiters.push(close_type_delimiter(character));
+        } else if closing_delimiters.last().copied() == Some(character)
+            && !is_arrow_greater_than(union_chain, index, character)
+        {
+            closing_delimiters.pop();
+        } else if character == '|' && closing_delimiters.is_empty() {
+            types.push(&union_chain[start..index]);
+            start = next_index;
+        }
+
+        index = next_index;
+    }
+
+    types.push(&union_chain[start..]);
+    types
+}
+
+fn top_level_pipe_index(type_repr: &str, start: usize) -> Option<usize> {
+    let mut index = start;
+    let mut closing_delimiters = Vec::new();
+
+    while index < type_repr.len() {
+        let (character, next_index) = char_at(type_repr, index);
+        if matches!(character, '\'' | '"' | '`') {
+            index = quoted_type_part_end(type_repr, index);
+            continue;
+        }
+
+        if is_open_type_delimiter(character) {
+            closing_delimiters.push(close_type_delimiter(character));
+        } else if closing_delimiters.last().copied() == Some(character)
+            && !is_arrow_greater_than(type_repr, index, character)
+        {
+            closing_delimiters.pop();
+        } else if character == '|' && closing_delimiters.is_empty() {
+            return Some(index);
+        }
+
+        index = next_index;
+    }
+
+    None
+}
+
+fn union_chain_start(type_repr: &str, pipe_index: usize) -> usize {
+    let mut index = 0;
+    let mut start = 0;
+    let mut closing_delimiters = Vec::new();
+
+    while index < pipe_index {
+        let (character, next_index) = char_at(type_repr, index);
+        if matches!(character, '\'' | '"' | '`') {
+            index = quoted_type_part_end(type_repr, index);
+            continue;
+        }
+
+        if is_open_type_delimiter(character) {
+            closing_delimiters.push(close_type_delimiter(character));
+        } else if closing_delimiters.last().copied() == Some(character)
+            && !is_arrow_greater_than(type_repr, index, character)
+        {
+            closing_delimiters.pop();
+        } else if closing_delimiters.is_empty() {
+            if matches!(character, ',' | ':' | ';') {
+                start = next_index;
+            } else if character == '=' {
+                start = if type_repr[next_index..].starts_with('>') {
+                    next_index + 1
+                } else {
+                    next_index
+                };
+            } else if type_repr[index..].starts_with(" extends ") {
+                start = index + " extends ".len();
+            }
+        }
+
+        index = next_index;
+    }
+
+    skip_whitespace(type_repr, start, pipe_index)
+}
+
+fn union_chain_end(type_repr: &str, pipe_index: usize) -> usize {
+    let mut index = pipe_index + 1;
+    let mut closing_delimiters = Vec::new();
+
+    while index < type_repr.len() {
+        let (character, next_index) = char_at(type_repr, index);
+        if matches!(character, '\'' | '"' | '`') {
+            index = quoted_type_part_end(type_repr, index);
+            continue;
+        }
+
+        if is_open_type_delimiter(character) {
+            closing_delimiters.push(close_type_delimiter(character));
+        } else if closing_delimiters.last().copied() == Some(character)
+            && !is_arrow_greater_than(type_repr, index, character)
+        {
+            closing_delimiters.pop();
+        } else if closing_delimiters.is_empty()
+            && (matches!(character, ',' | ';')
+                || (character == '=' && !type_repr[next_index..].starts_with('>')))
+        {
+            return trim_end_whitespace(type_repr, index, pipe_index + 1);
+        }
+
+        index = next_index;
+    }
+
+    trim_end_whitespace(type_repr, type_repr.len(), pipe_index + 1)
+}
+
+fn skip_whitespace(type_repr: &str, mut index: usize, end: usize) -> usize {
+    while index < end {
+        let (character, next_index) = char_at(type_repr, index);
+        if !character.is_whitespace() {
+            break;
+        }
+        index = next_index;
+    }
+    index
+}
+
+fn trim_end_whitespace(type_repr: &str, mut index: usize, start: usize) -> usize {
+    while index > start {
+        let Some((previous_index, character)) = type_repr[..index].char_indices().next_back()
+        else {
+            break;
+        };
+        if !character.is_whitespace() {
+            break;
+        }
+        index = previous_index;
+    }
+    index
+}
+
+fn matching_type_delimiter_index(type_repr: &str, open_index: usize) -> Option<usize> {
+    let (open, mut index) = char_at(type_repr, open_index);
+    let mut closing_delimiters = vec![close_type_delimiter(open)];
+
+    while index < type_repr.len() {
+        let (character, next_index) = char_at(type_repr, index);
+        if matches!(character, '\'' | '"' | '`') {
+            index = quoted_type_part_end(type_repr, index);
+            continue;
+        }
+
+        if is_open_type_delimiter(character) {
+            closing_delimiters.push(close_type_delimiter(character));
+        } else if closing_delimiters.last().copied() == Some(character)
+            && !is_arrow_greater_than(type_repr, index, character)
+        {
+            closing_delimiters.pop();
+            if closing_delimiters.is_empty() {
+                return Some(index);
+            }
+        }
+
+        index = next_index;
+    }
+
+    None
+}
+
+fn quoted_type_part_end(type_repr: &str, quote_index: usize) -> usize {
+    let (quote, mut index) = char_at(type_repr, quote_index);
+
+    while index < type_repr.len() {
+        let (character, next_index) = char_at(type_repr, index);
+        if character == '\\' {
+            index = next_index;
+            if index < type_repr.len() {
+                index = char_at(type_repr, index).1;
+            }
+            continue;
+        }
+        if character == quote {
+            return next_index;
+        }
+        index = next_index;
+    }
+
+    type_repr.len()
+}
+
+fn char_at(text: &str, index: usize) -> (char, usize) {
+    let character = text[index..]
+        .chars()
+        .next()
+        .expect("index must be at a char boundary");
+    (character, index + character.len_utf8())
+}
+
+fn is_arrow_greater_than(text: &str, index: usize, character: char) -> bool {
+    character == '>' && text[..index].ends_with('=')
+}
+
+fn is_open_type_delimiter(character: char) -> bool {
+    matches!(character, '(' | '[' | '{' | '<')
+}
+
+fn close_type_delimiter(character: char) -> char {
+    match character {
+        '(' => ')',
+        '[' => ']',
+        '{' => '}',
+        '<' => '>',
+        _ => unreachable!("expected an opening delimiter"),
+    }
 }
 
 fn records_by_file(records: &[TypeRecord]) -> BTreeMap<String, TypeRecordMap> {
@@ -1534,5 +1839,41 @@ mod tests {
             type_output_path(Path::new("tests/conformance/cases/compiler/example.ts")),
             PathBuf::from("tests/conformance/cases/compiler/example.ts.types")
         );
+    }
+
+    #[test]
+    fn type_repr_equivalence_ignores_union_order() {
+        assert!(type_reprs_are_equivalent("A | B", "B | A"));
+        assert!(type_reprs_are_equivalent(
+            "<T, U = B | T>(value: A | B) => [B | A, C]",
+            "<T, U = T | B>(value: B | A) => [A | B, C]",
+        ));
+        assert!(type_reprs_are_equivalent(
+            "Box<() => A | B>",
+            "Box<() => B | A>",
+        ));
+        assert!(!type_reprs_are_equivalent("A | B", "A | C"));
+    }
+
+    #[test]
+    fn compare_records_counts_union_order_only_differences_as_matches() {
+        let expected = TypeRecord {
+            path: "compiler/unionOrder.ts".to_string(),
+            start: 0,
+            end: 5,
+            text: "value".to_string(),
+            ty_variant: None,
+            ty_repr: "<T, U = B | T>(value: A | B) => B | A".to_string(),
+        };
+        let actual = TypeRecord {
+            ty_repr: "<T, U = T | B>(value: B | A) => A | B".to_string(),
+            ..expected.clone()
+        };
+
+        let results = compare_records(&[expected], &[actual]);
+
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].matched_types, 1);
+        assert!(results[0].errors.is_empty());
     }
 }
