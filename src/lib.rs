@@ -5,18 +5,22 @@ use oxc_ast::{
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, BinaryExpression,
         BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
-        ComputedMemberExpression, Expression, FormalParameter, Function, MethodDefinition,
-        MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind,
-        Program, PropertyDefinition, PropertyKey, Statement, StaticMemberExpression, StringLiteral,
-        TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeReference, UnaryExpression,
-        VariableDeclarationKind, VariableDeclarator,
+        ComputedMemberExpression, Expression, FormalParameter, Function, FunctionBody,
+        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
+        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, ReturnStatement,
+        StaticMemberExpression, StringLiteral, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
+use oxc_ast_visit::{Visit, walk};
 use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
-use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
+use oxc_syntax::{
+    operator::{BinaryOperator, UnaryOperator},
+    scope::ScopeFlags,
+};
 use std::{
     cell::RefCell,
     collections::{HashMap, HashSet},
@@ -34,6 +38,45 @@ const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 enum FunctionKind<'a> {
     Function(&'a Function<'a>),
     ArrowFunction(&'a ArrowFunctionExpression<'a>),
+}
+
+struct ReturnExpressionVisitor<'a> {
+    expression: Option<&'a Expression<'a>>,
+    nested_function_depth: usize,
+}
+
+impl<'a> ReturnExpressionVisitor<'a> {
+    fn first_in_body(body: &'a FunctionBody<'a>) -> Option<&'a Expression<'a>> {
+        let mut visitor = Self {
+            expression: None,
+            nested_function_depth: 0,
+        };
+        visitor.visit_function_body(body);
+        visitor.expression
+    }
+}
+
+impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
+    fn visit_return_statement(&mut self, statement: &ReturnStatement<'a>) {
+        if self.nested_function_depth == 0 && self.expression.is_none() {
+            self.expression = statement
+                .argument
+                .as_ref()
+                .map(|argument| self.alloc(argument));
+        }
+    }
+
+    fn visit_function(&mut self, function: &Function<'a>, flags: ScopeFlags) {
+        self.nested_function_depth += 1;
+        walk::walk_function(self, function, flags);
+        self.nested_function_depth -= 1;
+    }
+
+    fn visit_arrow_function_expression(&mut self, function: &ArrowFunctionExpression<'a>) {
+        self.nested_function_depth += 1;
+        walk::walk_arrow_function_expression(self, function);
+        self.nested_function_depth -= 1;
+    }
 }
 
 fn infer_type_parameter_from_types<'a>(
@@ -1329,22 +1372,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let Some(body) = body else {
             return Ty::any();
         };
-        // `function() { }` implies void return type
-        if body.statements.is_empty() {
-            return Ty::void();
-        }
-        body.statements
-            .iter()
-            .find_map(|statement| {
-                let Statement::ReturnStatement(statement) = statement else {
-                    return None;
-                };
-                statement
-                    .argument
-                    .as_ref()
-                    .map(|argument| self.get_return_expression_type(program_id, argument, node_id))
-            })
-            .unwrap_or_else(Ty::undefined)
+        ReturnExpressionVisitor::first_in_body(body)
+            .map(|argument| self.get_return_expression_type(program_id, argument, node_id))
+            .unwrap_or_else(Ty::void)
     }
 
     fn get_return_expression_type(
@@ -2205,6 +2235,62 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "x"), Ty::number());
         assert_eq!(get_global_symbol_type(&ret, "y"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean());
+    }
+
+    #[test]
+    fn function_return_inference_visits_body_statements() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function empty() {
+        }
+
+        function onlyBareReturns(flag: boolean) {
+            if (flag) {
+                return;
+            }
+            return;
+        }
+
+        function nestedReturnExpression(flag: boolean) {
+            if (flag) {
+                return 1;
+            }
+        }
+
+        function bareReturnBeforeExpression(flag: boolean) {
+            if (flag) {
+                return;
+            }
+            return "ready";
+        }
+
+        function ignoresNestedFunctionReturn() {
+            function inner() {
+                return true;
+            }
+        }
+
+        const emptyResult = empty();
+        const bareResult = onlyBareReturns(true);
+        const nestedResult = nestedReturnExpression(true);
+        const afterBareResult = bareReturnBeforeExpression(false);
+        const nestedFunctionResult = ignoresNestedFunctionReturn();
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "emptyResult"), Ty::void());
+        assert_eq!(get_global_symbol_type(&ret, "bareResult"), Ty::void());
+        assert_eq!(get_global_symbol_type(&ret, "nestedResult"), Ty::number());
+        assert_eq!(
+            get_global_symbol_type(&ret, "afterBareResult"),
+            Ty::string()
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "nestedFunctionResult"),
+            Ty::void()
+        );
     }
 
     #[test]
