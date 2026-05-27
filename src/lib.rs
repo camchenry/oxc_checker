@@ -12,7 +12,7 @@ use oxc_ast::{
         TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
-use oxc_ast_visit::{Visit, walk};
+use oxc_ast_visit::Visit;
 use oxc_index::nonmax::NonMaxU32;
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::{GetSpan, Span};
@@ -41,42 +41,29 @@ enum FunctionKind<'a> {
 }
 
 struct ReturnExpressionVisitor<'a> {
-    expression: Option<&'a Expression<'a>>,
-    nested_function_depth: usize,
+    expressions: Vec<&'a Expression<'a>>,
 }
 
 impl<'a> ReturnExpressionVisitor<'a> {
-    fn first_in_body(body: &'a FunctionBody<'a>) -> Option<&'a Expression<'a>> {
+    fn expressions_in_body(body: &'a FunctionBody<'a>) -> Vec<&'a Expression<'a>> {
         let mut visitor = Self {
-            expression: None,
-            nested_function_depth: 0,
+            expressions: Vec::new(),
         };
         visitor.visit_function_body(body);
-        visitor.expression
+        visitor.expressions
     }
 }
 
 impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
     fn visit_return_statement(&mut self, statement: &ReturnStatement<'a>) {
-        if self.nested_function_depth == 0 && self.expression.is_none() {
-            self.expression = statement
-                .argument
-                .as_ref()
-                .map(|argument| self.alloc(argument));
+        if let Some(argument) = statement.argument.as_ref() {
+            self.expressions.push(self.alloc(argument));
         }
     }
 
-    fn visit_function(&mut self, function: &Function<'a>, flags: ScopeFlags) {
-        self.nested_function_depth += 1;
-        walk::walk_function(self, function, flags);
-        self.nested_function_depth -= 1;
-    }
+    fn visit_function(&mut self, _function: &Function<'a>, _flags: ScopeFlags) {}
 
-    fn visit_arrow_function_expression(&mut self, function: &ArrowFunctionExpression<'a>) {
-        self.nested_function_depth += 1;
-        walk::walk_arrow_function_expression(self, function);
-        self.nested_function_depth -= 1;
-    }
+    fn visit_arrow_function_expression(&mut self, _function: &ArrowFunctionExpression<'a>) {}
 }
 
 fn infer_type_parameter_from_types<'a>(
@@ -1372,9 +1359,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let Some(body) = body else {
             return Ty::any();
         };
-        ReturnExpressionVisitor::first_in_body(body)
-            .map(|argument| self.get_return_expression_type(program_id, argument, node_id))
-            .unwrap_or_else(Ty::void)
+        let return_expressions = ReturnExpressionVisitor::expressions_in_body(body);
+        if return_expressions.is_empty() {
+            return Ty::void();
+        }
+
+        let preserve_literal_returns = return_expressions.len() > 1;
+        Ty::union(
+            self.arena(),
+            return_expressions.into_iter().map(|argument| {
+                self.get_return_expression_type(
+                    program_id,
+                    argument,
+                    node_id,
+                    preserve_literal_returns,
+                )
+            }),
+        )
     }
 
     fn get_return_expression_type(
@@ -1382,7 +1383,33 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         expression: &'a Expression<'a>,
         node_id: Option<NodeId>,
+        preserve_literals: bool,
     ) -> Ty<'a> {
+        if preserve_literals {
+            match expression {
+                Expression::NumericLiteral(literal) => {
+                    return self.get_type_of_numeric_literal(literal);
+                }
+                Expression::StringLiteral(literal) => {
+                    return self.get_type_of_string_literal(literal);
+                }
+                Expression::BooleanLiteral(literal) => {
+                    return self.get_type_of_boolean_literal(literal);
+                }
+                Expression::UnaryExpression(unary_expression)
+                    if unary_expression.operator == UnaryOperator::UnaryNegation =>
+                {
+                    if let Expression::NumericLiteral(literal) = &unary_expression.argument {
+                        let name = self
+                            .arena()
+                            .str(&format!("-{}", self.numeric_literal_name(literal)));
+                        return Ty::number_literal(self.arena(), name);
+                    }
+                }
+                _ => {}
+            }
+        }
+
         match expression {
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
@@ -2266,6 +2293,13 @@ mod test {
             return "ready";
         }
 
+        function literalUnion() {
+            if (Math.random() > 0.5) {
+                return 2;
+            }
+            return 1;
+        }
+
         function ignoresNestedFunctionReturn() {
             function inner() {
                 return true;
@@ -2276,9 +2310,11 @@ mod test {
         const bareResult = onlyBareReturns(true);
         const nestedResult = nestedReturnExpression(true);
         const afterBareResult = bareReturnBeforeExpression(false);
+        const literalUnionResult = literalUnion();
         const nestedFunctionResult = ignoresNestedFunctionReturn();
         "#,
         );
+        let arena = arena(&ret);
 
         assert_eq!(get_global_symbol_type(&ret, "emptyResult"), Ty::void());
         assert_eq!(get_global_symbol_type(&ret, "bareResult"), Ty::void());
@@ -2286,6 +2322,16 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "afterBareResult"),
             Ty::string()
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "literalUnionResult"),
+            Ty::union(
+                arena,
+                [
+                    Ty::number_literal(arena, "2"),
+                    Ty::number_literal(arena, "1"),
+                ],
+            )
         );
         assert_eq!(
             get_global_symbol_type(&ret, "nestedFunctionResult"),
