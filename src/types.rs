@@ -47,6 +47,9 @@ pub(crate) enum Ty<'a> {
     Any,
     Unknown,
     Void,
+    Never,
+    /// Primitive `object` keyword (not to be confused with `{}`)
+    PrimitiveObject,
     Object(&'a TyObject<'a>),
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
@@ -283,6 +286,14 @@ impl<'a> Ty<'a> {
         Self::Void
     }
 
+    pub(crate) fn never() -> Self {
+        Self::Never
+    }
+
+    pub(crate) fn primitive_object() -> Self {
+        Self::PrimitiveObject
+    }
+
     pub(crate) fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty { name, ty }
     }
@@ -398,7 +409,9 @@ impl<'a> Ty<'a> {
             Self::Any => "TyAny",
             Self::Unknown => "TyUnknown",
             Self::Void => "TyVoid",
+            Self::Never => "TyNever",
             Self::Object(_) => "TyObject",
+            Self::PrimitiveObject => "TyPrimitiveObject",
             Self::Function(_) => "TyFunction",
             Self::TypeReference(_) => "TyTypeReference",
             Self::StringLiteral(_) => "TyStringLiteral",
@@ -436,6 +449,8 @@ impl<'a> Ty<'a> {
             TSType::TSAnyKeyword(_) => Self::any(),
             TSType::TSUnknownKeyword(_) => Self::unknown(),
             TSType::TSVoidKeyword(_) => Self::void(),
+            TSType::TSNeverKeyword(_) => Self::never(),
+            TSType::TSObjectKeyword(_) => Self::primitive_object(),
             TSType::TSTypeLiteral(type_literal) => Self::object(
                 arena,
                 type_literal.members.iter().filter_map(|member| {
@@ -683,6 +698,8 @@ impl<'a> Ty<'a> {
             Self::Any => "any".to_string(),
             Self::Unknown => "unknown".to_string(),
             Self::Void => "void".to_string(),
+            Self::Never => "never".to_string(),
+            Self::PrimitiveObject => "object".to_string(),
             Self::Object(object) => {
                 if object.properties.is_empty() {
                     return "{}".to_string();
