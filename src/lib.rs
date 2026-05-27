@@ -586,8 +586,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(default_type) = type_parameter.default_type else {
                 break;
             };
-            let default_type =
-                default_type.substitute_type_parameters(self.arena(), &substitutions);
+            let default_type = default_type.substitute_type_parameters(
+                self.arena(),
+                &self.substitutions_with_unresolved_type_parameters_as_any(
+                    &type_parameters,
+                    &substitutions,
+                ),
+            );
             substitutions.insert(type_parameter.name, default_type);
             type_arguments.push(default_type);
         }
@@ -858,10 +863,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object_type: &Ty<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        let type_name = match object_type {
-            Ty::TypeReference(reference) => reference.name,
+        let reference = match object_type {
+            Ty::TypeReference(reference) => *reference,
             _ => return None,
         };
+        if let Some(ty) =
+            self.get_property_type_of_interface_type(program_id, reference, property_name)
+        {
+            return Some(ty);
+        }
+
+        let type_name = reference.name;
         let is_static = type_name.starts_with("typeof ");
         let class_name = type_name.strip_prefix("typeof ").unwrap_or(type_name);
         let class_symbol = self.get_class_symbol_for_type(program_id, class_name)?;
@@ -873,6 +885,113 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             property_name,
             is_static,
         )
+    }
+
+    fn get_property_type_of_interface_type(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_property_type_of_interface_declaration(
+            symbol.program_id,
+            declaration,
+            reference,
+            property_name,
+        )
+    }
+
+    fn get_property_type_of_interface_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        reference: &TyTypeReference<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSInterfaceDeclaration(interface) => {
+                let property = interface.body.body.iter().find_map(|signature| {
+                    let TSSignature::TSPropertySignature(property) = signature else {
+                        return None;
+                    };
+                    (property_key_name_str(&property.key) == Some(property_name))
+                        .then_some(property)
+                })?;
+                let ty = property
+                    .type_annotation
+                    .as_deref()
+                    .map_or_else(Ty::any, |annotation| {
+                        self.get_type_from_ts_type(program_id, &annotation.type_annotation)
+                    });
+                Some(ty.substitute_type_parameters(
+                    self.arena(),
+                    &self.type_parameter_substitutions_for_reference(
+                        interface.type_parameters.as_deref(),
+                        reference,
+                    ),
+                ))
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_property_type_of_interface_declaration(
+                    program_id,
+                    parent_id,
+                    reference,
+                    property_name,
+                )
+            }
+            _ => None,
+        }
+    }
+
+    fn type_parameter_substitutions_for_reference(
+        &self,
+        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        reference: &TyTypeReference<'a>,
+    ) -> HashMap<&'a str, Ty<'a>> {
+        let type_parameters = type_parameters_from_declaration(self.arena(), type_parameters);
+        let mut substitutions = HashMap::new();
+
+        for (type_parameter, type_argument) in
+            type_parameters.iter().zip(reference.type_arguments.iter())
+        {
+            substitutions.insert(type_parameter.name, *type_argument);
+        }
+
+        for type_parameter in type_parameters.iter().skip(reference.type_arguments.len()) {
+            let Some(default_type) = type_parameter.default_type else {
+                break;
+            };
+            let default_type = default_type.substitute_type_parameters(
+                self.arena(),
+                &self.substitutions_with_unresolved_type_parameters_as_any(
+                    &type_parameters,
+                    &substitutions,
+                ),
+            );
+            substitutions.insert(type_parameter.name, default_type);
+        }
+
+        substitutions
+    }
+
+    fn substitutions_with_unresolved_type_parameters_as_any(
+        &self,
+        type_parameters: &[TyTypeParameter<'a>],
+        substitutions: &HashMap<&'a str, Ty<'a>>,
+    ) -> HashMap<&'a str, Ty<'a>> {
+        let mut substitutions = substitutions.clone();
+        for type_parameter in type_parameters {
+            substitutions
+                .entry(type_parameter.name)
+                .or_insert_with(Ty::any);
+        }
+        substitutions
     }
 
     fn get_class_symbol_for_type(
@@ -2038,12 +2157,16 @@ mod test {
             r#"
         declare const x: any;
         interface Box<T = number> { value: T; }
+        interface SelfDefault<T = T> { value: T; }
 
         const xs = <string>x;
         const xu = <unknown>x;
         const xn = <number>x;
         const xa = <any>x;
         const boxed = (<Box>x);
+        const boxedValue = (<Box>x).value;
+        const explicitBoxedValue = (<Box<string>>x).value;
+        const selfDefaultValue = (<SelfDefault>x).value;
         "#,
         );
 
@@ -2055,6 +2178,12 @@ mod test {
             get_global_symbol_type(&ret, "boxed"),
             Ty::type_reference(arena(&ret), "Box", [Ty::number()])
         );
+        assert_eq!(get_global_symbol_type(&ret, "boxedValue"), Ty::number());
+        assert_eq!(
+            get_global_symbol_type(&ret, "explicitBoxedValue"),
+            Ty::string()
+        );
+        assert_eq!(get_global_symbol_type(&ret, "selfDefaultValue"), Ty::any());
     }
 
     #[test]
