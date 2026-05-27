@@ -1192,6 +1192,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
     }
+
+    fn get_declared_type_of_formal_parameter(
+        &self,
+        parameter: &FormalParameter<'a>,
+        annotation: &TSTypeAnnotation<'a>,
+    ) -> Ty<'a> {
+        let annotated_type = Ty::from_ts_type_annotation(self.arena(), Some(annotation));
+
+        if parameter.optional {
+            return Ty::union(self.arena(), [annotated_type, Ty::undefined()]);
+        }
+
+        annotated_type
+    }
 }
 
 fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
@@ -1320,19 +1334,14 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::VariableDeclarator(declarator) => {
                 Ty::from_ts_type_annotation(self.arena(), declarator.type_annotation.as_deref())
             }
-            AstKind::FormalParameter(parameter) => {
-                parameter.type_annotation.as_deref().map_or_else(
-                    || {
-                        self.get_contextual_type_of_formal_parameter(
-                            sym.program_id,
-                            declaration,
-                            parameter,
-                        )
-                        .unwrap_or_else(Ty::any)
-                    },
-                    |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
-                )
-            }
+            AstKind::FormalParameter(parameter) => match parameter.type_annotation.as_deref() {
+                Some(annotation) => {
+                    self.get_declared_type_of_formal_parameter(parameter, annotation)
+                }
+                None => self
+                    .get_contextual_type_of_formal_parameter(sym.program_id, declaration, parameter)
+                    .unwrap_or_else(Ty::any),
+            },
             AstKind::FormalParameterRest(parameter) => {
                 Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
             }

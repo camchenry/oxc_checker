@@ -326,13 +326,15 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         types: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
-        Self::Union(arena.alloc(TyUnion {
-            types: arena.vec_from_iter(types),
-        }))
+        reduce_union_type(arena, types)
     }
 
     pub(crate) fn is_none(&self) -> bool {
         matches!(self, Self::None)
+    }
+
+    pub(crate) fn is_any(&self) -> bool {
+        matches!(self, Self::Any)
     }
 
     pub(crate) fn enum_variant_name(self) -> &'static str {
@@ -748,6 +750,58 @@ impl<'a> Ty<'a> {
     }
 }
 
+pub(crate) fn reduce_union_type<'a>(
+    arena: CheckerArena<'a>,
+    types: impl IntoIterator<Item = Ty<'a>>,
+) -> Ty<'a> {
+    let mut type_set = Vec::new();
+    for ty in types {
+        add_type_to_union(&mut type_set, ty);
+    }
+
+    if type_set.iter().any(|ty| matches!(ty, Ty::Any)) {
+        return Ty::any();
+    }
+    if type_set.iter().any(|ty| matches!(ty, Ty::Unknown)) {
+        return Ty::unknown();
+    }
+
+    remove_redundant_literal_types(&mut type_set);
+
+    if type_set.len() == 1 {
+        return type_set[0];
+    }
+
+    Ty::Union(arena.alloc(TyUnion {
+        types: arena.vec_from_iter(type_set),
+    }))
+}
+
+fn add_type_to_union<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
+    if let Ty::Union(union) = ty {
+        for ty in &union.types {
+            add_type_to_union(type_set, *ty);
+        }
+    } else if !type_set.contains(&ty) {
+        type_set.push(ty);
+    }
+}
+
+fn remove_redundant_literal_types(type_set: &mut Vec<Ty<'_>>) {
+    let has_string = type_set.iter().any(|ty| matches!(ty, Ty::String));
+    let has_number = type_set.iter().any(|ty| matches!(ty, Ty::Number));
+    let has_boolean = type_set.iter().any(|ty| matches!(ty, Ty::Boolean));
+    let has_bigint = type_set.iter().any(|ty| matches!(ty, Ty::Bigint));
+
+    type_set.retain(|ty| match ty {
+        Ty::StringLiteral(_) | Ty::TemplateLiteral(_) => !has_string,
+        Ty::NumberLiteral(_) => !has_number,
+        Ty::BooleanLiteral(_) => !has_boolean,
+        Ty::BigIntLiteral(_) => !has_bigint,
+        _ => true,
+    });
+}
+
 fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
     match element {
         TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
@@ -831,5 +885,82 @@ fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'
             arena.str(&format!("{}.{}", left, qualified.right.name))
         }
         TSTypeName::ThisExpression(_) => "this",
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use oxc_allocator::Allocator;
+
+    fn arena(allocator: &Allocator) -> CheckerArena<'_> {
+        CheckerArena::new(allocator)
+    }
+
+    #[test]
+    fn union_reduction_absorbs_any_and_unknown() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+
+        assert_eq!(Ty::r#union(arena, [Ty::any(), Ty::undefined()]), Ty::any());
+        assert_eq!(
+            Ty::r#union(arena, [Ty::unknown(), Ty::undefined(), Ty::string()]),
+            Ty::unknown()
+        );
+        assert_eq!(Ty::r#union(arena, [Ty::unknown(), Ty::any()]), Ty::any());
+    }
+
+    #[test]
+    fn union_reduction_collapses_literals_to_primitive_types() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+
+        assert_eq!(
+            Ty::r#union(arena, [Ty::number_literal(arena, "1"), Ty::number()]),
+            Ty::number()
+        );
+        assert_eq!(
+            Ty::r#union(arena, [Ty::string_literal(arena, "ready"), Ty::string()]),
+            Ty::string()
+        );
+        assert_eq!(
+            Ty::r#union(arena, [Ty::boolean_true(arena), Ty::boolean()]),
+            Ty::boolean()
+        );
+        assert_eq!(
+            Ty::r#union(arena, [Ty::bigint_literal(arena, "1"), Ty::bigint()]),
+            Ty::bigint()
+        );
+    }
+
+    #[test]
+    fn union_reduction_flattens_deduplicates_and_returns_singletons() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let nested = Ty::r#union(arena, [Ty::number(), Ty::string()]);
+
+        assert_eq!(
+            Ty::r#union(arena, [nested, Ty::number(), Ty::string()]),
+            nested
+        );
+        assert_eq!(
+            Ty::r#union(arena, [Ty::number(), Ty::number()]),
+            Ty::number()
+        );
+    }
+
+    #[test]
+    fn union_reduction_preserves_distinct_non_redundant_types() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+
+        assert_eq!(
+            Ty::r#union(arena, [Ty::number(), Ty::undefined()]).to_type_string(),
+            "number | undefined"
+        );
+        assert_eq!(
+            Ty::r#union(arena, [Ty::void(), Ty::undefined()]).to_type_string(),
+            "void | undefined"
+        );
     }
 }
