@@ -253,7 +253,7 @@ trait Checker<'a> {
     fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty<'a>;
     fn get_properties_of_type(&self, t: Ty<'a>) -> Vec<SymbolRef>;
     fn get_property_of_type(&self, t: Ty<'a>, name: &str) -> Option<SymbolRef>;
-    fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature>;
+    fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>>;
     fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo>;
     fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool;
     fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String;
@@ -1043,74 +1043,329 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        match self.get_type_of_expression_with_node(program_id, &call_expression.callee, node_id) {
-            Ty::Function(function) => {
-                if function.type_parameters.is_empty() {
-                    return function.return_type;
-                }
+        let callee_type =
+            self.get_type_of_expression_with_node(program_id, &call_expression.callee, node_id);
+        let candidates =
+            self.get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call);
+        if candidates.is_empty() {
+            return Ty::any();
+        }
 
-                let mut substitutions = HashMap::new();
-                let mut explicit_type_parameters = Vec::new();
+        // TODO(overloads): TypeScript Go's `checker.go` ranks candidates with a more nuanced
+        // specificity pass. This first pass preserves declaration order and picks the first
+        // arity/assignability-compatible signature.
+        candidates
+            .iter()
+            .find_map(|signature| {
+                self.resolve_call_signature_return_type(
+                    program_id,
+                    *signature,
+                    call_expression,
+                    node_id,
+                    true,
+                )
+            })
+            .or_else(|| {
+                // TODO(overloads): mirror TypeScript Go's overload failure candidate diagnostics
+                // instead of falling back to the first signature return type.
+                candidates.first().and_then(|signature| {
+                    self.resolve_call_signature_return_type(
+                        program_id,
+                        *signature,
+                        call_expression,
+                        node_id,
+                        false,
+                    )
+                })
+            })
+            .unwrap_or_else(Ty::any)
+    }
 
-                if let Some(type_arguments) = &call_expression.type_arguments {
-                    for (type_parameter, type_argument) in function
-                        .type_parameters
-                        .iter()
-                        .zip(type_arguments.params.iter())
-                    {
-                        substitutions.insert(
-                            type_parameter.name,
-                            self.get_type_from_ts_type(program_id, type_argument),
-                        );
-                        explicit_type_parameters.push(type_parameter.name);
-                    }
-                }
+    fn get_signatures_of_type_in_program(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        kind: SignatureKind,
+    ) -> Vec<Signature<'a>> {
+        let signatures = self.get_signatures_of_type(ty, kind);
+        if !signatures.is_empty() {
+            return signatures;
+        }
 
-                let inferable_type_parameters = function
-                    .type_parameters
+        let Ty::TypeReference(reference) = ty else {
+            return signatures;
+        };
+        self.get_signatures_of_type_reference(program_id, reference, kind)
+    }
+
+    fn get_signatures_of_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+        kind: SignatureKind,
+    ) -> Vec<Signature<'a>> {
+        let Some(symbol) = self.get_type_symbol_for_name(program_id, reference.name) else {
+            return Vec::new();
+        };
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_signatures_of_type_declaration(symbol.program_id, declaration, reference, kind)
+    }
+
+    fn get_signatures_of_type_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        reference: &TyTypeReference<'a>,
+        kind: SignatureKind,
+    ) -> Vec<Signature<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSInterfaceDeclaration(interface) => {
+                let substitutions = self.type_parameter_substitutions_for_reference(
+                    interface.type_parameters.as_deref(),
+                    reference,
+                );
+                interface
+                    .body
+                    .body
                     .iter()
-                    .map(|type_parameter| type_parameter.name)
-                    .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
-                    .collect::<Vec<_>>();
-
-                for (argument, parameter) in call_expression
-                    .arguments
-                    .iter()
-                    .zip(function.parameters.iter())
-                {
-                    let Some(argument) = argument.as_expression() else {
-                        continue;
-                    };
-                    let argument_type =
-                        self.get_type_of_expression_with_node(program_id, argument, node_id);
-                    infer_type_parameter_from_types(
-                        &parameter.ty,
-                        &argument_type,
-                        &inferable_type_parameters,
-                        &mut substitutions,
-                    );
-                }
-
-                for type_parameter in &function.type_parameters {
-                    if substitutions.contains_key(type_parameter.name) {
-                        continue;
-                    }
-                    if let Some(fallback_type) = type_parameter
-                        .default_type
-                        .or(type_parameter.constraint_type)
-                    {
-                        substitutions.insert(
-                            type_parameter.name,
-                            fallback_type.substitute_type_parameters(self.arena(), &substitutions),
-                        );
-                    }
-                }
-
-                function
-                    .return_type
-                    .substitute_type_parameters(self.arena(), &substitutions)
+                    .filter_map(|signature| {
+                        self.signature_from_ts_signature(program_id, signature, kind)
+                    })
+                    .map(|signature| {
+                        signature.substitute_type_parameters(self.arena(), &substitutions)
+                    })
+                    .collect()
             }
-            _ => Ty::any(),
+            AstKind::TSTypeAliasDeclaration(alias) => self.get_signatures_of_type(
+                self.get_type_from_ts_type(program_id, &alias.type_annotation)
+                    .substitute_type_parameters(
+                        self.arena(),
+                        &self.type_parameter_substitutions_for_reference(
+                            alias.type_parameters.as_deref(),
+                            reference,
+                        ),
+                    ),
+                kind,
+            ),
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_signatures_of_type_declaration(program_id, parent_id, reference, kind)
+            }
+            _ => Vec::new(),
+        }
+    }
+
+    fn signature_from_ts_signature(
+        &self,
+        program_id: program::ProgramId,
+        signature: &TSSignature<'a>,
+        expected_kind: SignatureKind,
+    ) -> Option<Signature<'a>> {
+        let signature = match signature {
+            TSSignature::TSCallSignatureDeclaration(signature)
+                if expected_kind == SignatureKind::Call =>
+            {
+                self.signature_from_function_parts(
+                    program_id,
+                    SignatureKind::Call,
+                    signature.type_parameters.as_deref(),
+                    signature.params.as_ref(),
+                    signature.return_type.as_deref(),
+                )
+            }
+            TSSignature::TSConstructSignatureDeclaration(signature)
+                if expected_kind == SignatureKind::Construct =>
+            {
+                self.signature_from_function_parts(
+                    program_id,
+                    SignatureKind::Construct,
+                    signature.type_parameters.as_deref(),
+                    signature.params.as_ref(),
+                    signature.return_type.as_deref(),
+                )
+            }
+            _ => return None,
+        };
+        Some(signature)
+    }
+
+    fn signature_from_function_parts(
+        &self,
+        program_id: program::ProgramId,
+        kind: SignatureKind,
+        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        parameters: &FormalParameters<'a>,
+        return_type: Option<&TSTypeAnnotation<'a>>,
+    ) -> Signature<'a> {
+        let Ty::Function(function) = Ty::function(
+            self.arena(),
+            type_parameters_from_declaration(self.arena(), type_parameters),
+            self.function_signature_parameters(program_id, parameters),
+            self.get_type_from_ts_type_annotation(program_id, return_type),
+        ) else {
+            unreachable!("signature construction always creates a function type")
+        };
+        Signature::new(kind, function)
+    }
+
+    fn resolve_call_signature_return_type(
+        &self,
+        program_id: program::ProgramId,
+        signature: Signature<'a>,
+        call_expression: &'a CallExpression<'a>,
+        node_id: Option<NodeId>,
+        require_applicable: bool,
+    ) -> Option<Ty<'a>> {
+        let substitutions = self.infer_call_type_parameter_substitutions(
+            program_id,
+            signature.function,
+            call_expression,
+            node_id,
+        );
+        let instantiated = signature
+            .function
+            .return_type
+            .substitute_type_parameters(self.arena(), &substitutions);
+
+        if require_applicable
+            && !self.is_call_signature_applicable(
+                program_id,
+                signature.function,
+                call_expression,
+                node_id,
+                &substitutions,
+            )
+        {
+            return None;
+        }
+
+        Some(instantiated)
+    }
+
+    fn infer_call_type_parameter_substitutions(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        call_expression: &'a CallExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> HashMap<&'a str, Ty<'a>> {
+        let mut substitutions = HashMap::new();
+        let mut explicit_type_parameters = Vec::new();
+
+        if let Some(type_arguments) = &call_expression.type_arguments {
+            for (type_parameter, type_argument) in function
+                .type_parameters
+                .iter()
+                .zip(type_arguments.params.iter())
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    self.get_type_from_ts_type(program_id, type_argument),
+                );
+                explicit_type_parameters.push(type_parameter.name);
+            }
+        }
+
+        let inferable_type_parameters = function
+            .type_parameters
+            .iter()
+            .map(|type_parameter| type_parameter.name)
+            .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
+            .collect::<Vec<_>>();
+
+        for (argument, parameter) in call_expression
+            .arguments
+            .iter()
+            .zip(function.parameters.iter())
+        {
+            let Some(argument) = argument.as_expression() else {
+                continue;
+            };
+            let argument_type =
+                self.get_type_of_expression_with_node(program_id, argument, node_id);
+            infer_type_parameter_from_types(
+                &parameter.ty,
+                &argument_type,
+                &inferable_type_parameters,
+                &mut substitutions,
+            );
+        }
+
+        for type_parameter in &function.type_parameters {
+            if substitutions.contains_key(type_parameter.name) {
+                continue;
+            }
+            if let Some(fallback_type) = type_parameter
+                .default_type
+                .or(type_parameter.constraint_type)
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
+                );
+            }
+        }
+
+        substitutions
+    }
+
+    fn is_call_signature_applicable(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        call_expression: &'a CallExpression<'a>,
+        node_id: Option<NodeId>,
+        substitutions: &HashMap<&'a str, Ty<'a>>,
+    ) -> bool {
+        let argument_count = call_expression.arguments.len();
+        let minimum_argument_count = function
+            .parameters
+            .iter()
+            .filter(|parameter| !parameter.optional && !parameter.rest)
+            .count();
+        let has_rest_parameter = function.parameters.iter().any(|parameter| parameter.rest);
+        if argument_count < minimum_argument_count {
+            return false;
+        }
+        if !has_rest_parameter && argument_count > function.parameters.len() {
+            return false;
+        }
+
+        for (index, argument) in call_expression.arguments.iter().enumerate() {
+            let Some(argument) = argument.as_expression() else {
+                continue;
+            };
+            let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
+                return false;
+            };
+            let parameter_type =
+                parameter_type.substitute_type_parameters(self.arena(), substitutions);
+            let argument_type =
+                self.get_type_of_expression_with_node(program_id, argument, node_id);
+            if !self.is_assignable_to(argument_type, parameter_type) {
+                return false;
+            }
+        }
+
+        true
+    }
+
+    fn get_call_parameter_type_at(
+        &self,
+        function: &TyFunction<'a>,
+        index: usize,
+    ) -> Option<Ty<'a>> {
+        let parameter = function
+            .parameters
+            .get(index)
+            .or_else(|| function.parameters.iter().find(|parameter| parameter.rest))?;
+        if parameter.rest {
+            Some(array_element_type(parameter.ty).unwrap_or(parameter.ty))
+        } else {
+            Some(parameter.ty)
         }
     }
 
@@ -1206,26 +1461,61 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         match self.nodes(program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(interface) => {
-                let property = interface.body.body.iter().find_map(|signature| {
+                let substitutions = self.type_parameter_substitutions_for_reference(
+                    interface.type_parameters.as_deref(),
+                    reference,
+                );
+                if let Some(property) = interface.body.body.iter().find_map(|signature| {
                     let TSSignature::TSPropertySignature(property) = signature else {
                         return None;
                     };
                     (property_key_name_str(&property.key) == Some(property_name))
                         .then_some(property)
-                })?;
-                let ty = property
-                    .type_annotation
-                    .as_deref()
-                    .map_or_else(Ty::any, |annotation| {
-                        self.get_type_from_ts_type(program_id, &annotation.type_annotation)
-                    });
-                Some(ty.substitute_type_parameters(
-                    self.arena(),
-                    &self.type_parameter_substitutions_for_reference(
-                        interface.type_parameters.as_deref(),
-                        reference,
-                    ),
-                ))
+                }) {
+                    let ty =
+                        property
+                            .type_annotation
+                            .as_deref()
+                            .map_or_else(Ty::any, |annotation| {
+                                self.get_type_from_ts_type(program_id, &annotation.type_annotation)
+                            });
+                    return Some(ty.substitute_type_parameters(self.arena(), &substitutions));
+                }
+
+                let method_signatures = interface
+                    .body
+                    .body
+                    .iter()
+                    .filter_map(|signature| {
+                        let TSSignature::TSMethodSignature(method) = signature else {
+                            return None;
+                        };
+                        (property_key_name_str(&method.key) == Some(property_name)).then(|| {
+                            self.signature_from_function_parts(
+                                program_id,
+                                SignatureKind::Call,
+                                method.type_parameters.as_deref(),
+                                method.params.as_ref(),
+                                method.return_type.as_deref(),
+                            )
+                            .substitute_type_parameters(self.arena(), &substitutions)
+                        })
+                    })
+                    .collect::<Vec<_>>();
+                match method_signatures.as_slice() {
+                    [] => None,
+                    [signature] => Some(Ty::Function(signature.function)),
+                    _ => {
+                        // TODO(overloads): model overloaded methods as structured callable members
+                        // with TypeScript Go's full signature-list metadata, not an empty object
+                        // carrying call signatures only.
+                        Some(Ty::object_with_signatures(
+                            self.arena(),
+                            [],
+                            method_signatures,
+                        ))
+                    }
+                }
             }
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
@@ -1511,17 +1801,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .is_some_and(|expression| expression.span() == function_span)
         })?;
 
-        let Ty::Function(callee_function) = self.get_type_of_expression_with_node(
+        let callee_type = self.get_type_of_expression_with_node(
             program_id,
             &call_expression.callee,
             Some(parameter_node_id),
-        ) else {
-            return None;
-        };
-        let Ty::Function(callback_function) = callee_function
-            .parameters
-            .get(argument_index)
-            .map(|parameter| parameter.ty)?
+        );
+        let callee_signature = self
+            .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
+            .into_iter()
+            .next()?;
+        let Ty::Function(callback_function) =
+            self.get_call_parameter_type_at(callee_signature.function, argument_index)?
         else {
             return None;
         };
@@ -1856,6 +2146,91 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_type_of_function_declaration_group(
+        &self,
+        program_id: program::ProgramId,
+        function: &'a Function<'a>,
+        node_id: NodeId,
+    ) -> Ty<'a> {
+        let Some(function_name) = function
+            .id
+            .as_ref()
+            .map(|identifier| identifier.name.as_str())
+        else {
+            return self.get_type_of_function_signature_with_node(
+                program_id,
+                FunctionKind::Function(function),
+                Some(node_id),
+            );
+        };
+
+        // TODO(overloads): TypeScript Go groups overloads by symbol identity and declaration
+        // order. OXC exposes enough symbol data to tighten this later; this first pass uses
+        // same-program function declarations with the same name.
+        let function_declarations = self
+            .nodes(program_id)
+            .iter_enumerated()
+            .filter_map(|(declaration_id, node)| match node.kind() {
+                AstKind::Function(candidate)
+                    if candidate
+                        .id
+                        .as_ref()
+                        .is_some_and(|identifier| identifier.name == function_name) =>
+                {
+                    Some((declaration_id, candidate))
+                }
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+
+        let overload_declarations = function_declarations
+            .iter()
+            .copied()
+            .filter(|(_, candidate)| candidate.body.is_none())
+            .collect::<Vec<_>>();
+        let callable_declarations = if overload_declarations.is_empty() {
+            function_declarations
+        } else {
+            overload_declarations
+        };
+
+        if callable_declarations.len() <= 1 {
+            return self.get_type_of_function_signature_with_node(
+                program_id,
+                FunctionKind::Function(function),
+                Some(node_id),
+            );
+        }
+
+        if self.has_class_declaration_named(program_id, function_name) {
+            // TODO(overloads): TypeScript Go resolves class/function declaration conflicts through
+            // binder symbol merging. Keep the class-side type for now instead of treating invalid
+            // class/function collisions as callable overload groups.
+            let name = self.arena().concat_strs_array(["typeof ", function_name]);
+            return Ty::type_reference(self.arena(), name, std::iter::empty());
+        }
+
+        let signatures = callable_declarations
+            .into_iter()
+            .map(|(declaration_id, declaration)| {
+                let Ty::Function(function) = self.get_type_of_function_signature_with_node(
+                    program_id,
+                    FunctionKind::Function(declaration),
+                    Some(declaration_id),
+                ) else {
+                    unreachable!("function declarations resolve to function types")
+                };
+                Signature::new(SignatureKind::Call, function)
+            });
+        Ty::object_with_signatures(self.arena(), [], signatures)
+    }
+
+    fn has_class_declaration_named(&self, program_id: program::ProgramId, name: &str) -> bool {
+        self.nodes(program_id)
+            .iter()
+            .any(|node| matches!(node.kind(), AstKind::Class(class) if class.id.as_ref().is_some_and(|identifier| identifier.name == name)))
+    }
+
     fn get_declared_type_of_formal_parameter(
         &self,
         program_id: program::ProgramId,
@@ -2028,11 +2403,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::PropertyDefinition(property) => {
                 self.get_type_of_property_definition(sym.program_id, property, Some(declaration))
             }
-            AstKind::Function(function) => self.get_type_of_function_signature_with_node(
-                sym.program_id,
-                FunctionKind::Function(function),
-                Some(declaration),
-            ),
+            AstKind::Function(function) => {
+                self.get_type_of_function_declaration_group(sym.program_id, function, declaration)
+            }
             AstKind::ArrowFunctionExpression(arrow_func_expr) => self
                 .get_type_of_function_signature_with_node(
                     sym.program_id,
@@ -2051,10 +2424,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             .concat_strs_array(["typeof ", identifier.name.as_str()]);
                         Ty::type_reference(self.arena(), name, std::iter::empty())
                     }
-                    AstKind::Function(function) => self.get_type_of_function_signature_with_node(
+                    AstKind::Function(function) => self.get_type_of_function_declaration_group(
                         sym.program_id,
-                        FunctionKind::Function(function),
-                        Some(declaration),
+                        function,
+                        self.nodes(sym.program_id).parent_id(declaration),
                     ),
                     AstKind::ArrowFunctionExpression(arrow_func_expr) => self
                         .get_type_of_function_signature_with_node(
@@ -2147,8 +2520,38 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         None
     }
 
-    fn get_signatures_of_type(&self, _t: Ty<'a>, _kind: SignatureKind) -> Vec<Signature> {
-        Vec::new()
+    fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>> {
+        match t {
+            Ty::Function(function) if kind == SignatureKind::Call => {
+                vec![Signature::new(SignatureKind::Call, function)]
+            }
+            Ty::Object(object) => object
+                .signatures
+                .iter()
+                .copied()
+                .filter(|signature| signature.kind == kind)
+                .collect(),
+            Ty::Intersection(intersection) => {
+                // TODO(overloads): TypeScript Go combines intersection signatures with
+                // `CompositeSignature` metadata. Concatenation is conservative enough for
+                // first-pass call resolution but loses combined type predicate/diagnostic data.
+                intersection
+                    .types
+                    .iter()
+                    .flat_map(|ty| self.get_signatures_of_type(*ty, kind))
+                    .collect()
+            }
+            Ty::Union(union) => {
+                // TODO(overloads): union call signatures need TypeScript Go's matching-signature
+                // synthesis. Returning all candidates can over-accept some invalid union calls.
+                union
+                    .types
+                    .iter()
+                    .flat_map(|ty| self.get_signatures_of_type(*ty, kind))
+                    .collect()
+            }
+            _ => Vec::new(),
+        }
     }
 
     fn get_index_infos_of_type(&self, _t: Ty<'a>) -> Vec<IndexInfo> {
@@ -2751,6 +3154,48 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "x"), Ty::number());
         assert_eq!(get_global_symbol_type(&ret, "y"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean());
+    }
+
+    #[test]
+    fn function_overloads_select_matching_signature() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function pick(x: string): string;
+        function pick(x: number): number;
+        function pick(x: string | number): string | number {
+            return x;
+        }
+
+        const fromString = pick("ready");
+        const fromNumber = pick(123);
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "fromString"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "fromNumber"), Ty::number());
+    }
+
+    #[test]
+    fn interface_method_overloads_select_matching_signature() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface Picker {
+            pick(x: string): string;
+            pick(x: number): number;
+        }
+
+        declare const picker: Picker;
+        const fromString = picker.pick("ready");
+        const fromNumber = picker.pick(123);
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "fromString"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "fromNumber"), Ty::number());
     }
 
     #[test]

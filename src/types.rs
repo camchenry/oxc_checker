@@ -4,7 +4,6 @@ use oxc_ast::ast::{
     TSSignature, TSTemplateLiteralType, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
     TSTypeParameterDeclaration, TSTypeReference,
 };
-use oxc_index::serde::de::value;
 use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
@@ -68,6 +67,7 @@ pub(crate) enum Ty<'a> {
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyObject<'a> {
     pub(crate) properties: ArenaVec<'a, TyProperty<'a>>,
+    pub(crate) signatures: ArenaVec<'a, Signature<'a>>,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -351,6 +351,18 @@ impl<'a> Ty<'a> {
     ) -> Self {
         Self::Object(arena.alloc(TyObject {
             properties: arena.vec_from_iter(properties),
+            signatures: arena.vec_from_iter(std::iter::empty()),
+        }))
+    }
+
+    pub(crate) fn object_with_signatures(
+        arena: CheckerArena<'a>,
+        properties: impl IntoIterator<Item = TyProperty<'a>>,
+        signatures: impl IntoIterator<Item = Signature<'a>>,
+    ) -> Self {
+        Self::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter(properties),
+            signatures: arena.vec_from_iter(signatures),
         }))
     }
 
@@ -482,17 +494,44 @@ impl<'a> Ty<'a> {
             TSType::TSVoidKeyword(_) => Self::void(),
             TSType::TSNeverKeyword(_) => Self::never(),
             TSType::TSObjectKeyword(_) => Self::primitive_object(),
-            TSType::TSTypeLiteral(type_literal) => Self::object(
+            TSType::TSTypeLiteral(type_literal) => Self::object_with_signatures(
                 arena,
-                type_literal.members.iter().filter_map(|member| {
-                    let TSSignature::TSPropertySignature(property) = member else {
-                        return None;
-                    };
-                    let name = property_key_name_str(&property.key)?;
-                    let ty =
-                        Self::from_ts_type_annotation(arena, property.type_annotation.as_deref());
-                    Some(Self::property(name, ty))
-                }),
+                type_literal
+                    .members
+                    .iter()
+                    .filter_map(|member| match member {
+                        TSSignature::TSPropertySignature(property) => {
+                            let name = property_key_name_str(&property.key)?;
+                            let ty = Self::from_ts_type_annotation(
+                                arena,
+                                property.type_annotation.as_deref(),
+                            );
+                            Some(Self::property(name, ty))
+                        }
+                        TSSignature::TSMethodSignature(method) => {
+                            let name = property_key_name_str(&method.key)?;
+                            Some(Self::property(
+                                name,
+                                Self::function(
+                                    arena,
+                                    type_parameters_from_declaration(
+                                        arena,
+                                        method.type_parameters.as_deref(),
+                                    ),
+                                    function_type_parameters(arena, method.params.as_ref()),
+                                    Self::from_ts_type_annotation(
+                                        arena,
+                                        method.return_type.as_deref(),
+                                    ),
+                                ),
+                            ))
+                        }
+                        _ => None,
+                    }),
+                type_literal
+                    .members
+                    .iter()
+                    .filter_map(|member| signature_from_ts_signature(arena, member)),
             ),
             TSType::TSArrayType(array) => {
                 Self::array(arena, Self::from_ts_type(arena, &array.element_type))
@@ -630,6 +669,13 @@ impl<'a> Ty<'a> {
                         property.ty.substitute_type_parameters(arena, substitutions),
                     )
                 }),
+            )
+            .with_signatures(
+                arena,
+                object
+                    .signatures
+                    .iter()
+                    .map(|signature| signature.substitute_type_parameters(arena, substitutions)),
             ),
             Self::ModuleNamespace(namespace) => Self::module_namespace(
                 arena,
@@ -755,50 +801,23 @@ impl<'a> Ty<'a> {
             Self::Never => "never".to_string(),
             Self::PrimitiveObject => "object".to_string(),
             Self::Object(object) => {
-                if object.properties.is_empty() {
+                if object.properties.is_empty() && object.signatures.is_empty() {
                     return "{}".to_string();
                 }
 
-                let properties = object
-                    .properties
+                let members = object
+                    .signatures
                     .iter()
-                    .map(|property| format!("{}: {};", property.name, property.ty.to_type_string()))
+                    .map(|signature| signature.to_type_string())
+                    .chain(object.properties.iter().map(|property| {
+                        format!("{}: {};", property.name, property.ty.to_type_string())
+                    }))
                     .collect::<Vec<_>>()
                     .join(" ");
-                format!("{{ {properties} }}")
+                format!("{{ {members} }}")
             }
             Self::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
-            Self::Function(function) => {
-                let type_parameters = if function.type_parameters.is_empty() {
-                    String::new()
-                } else {
-                    let type_parameters = function
-                        .type_parameters
-                        .iter()
-                        .map(type_parameter_to_type_string)
-                        .collect::<Vec<_>>()
-                        .join(", ");
-                    format!("<{type_parameters}>")
-                };
-                let parameters = function
-                    .parameters
-                    .iter()
-                    .map(|parameter| {
-                        if parameter.rest {
-                            format!("...{}: {}", parameter.name, parameter.ty.to_type_string())
-                        } else if parameter.optional {
-                            format!("{}?: {}", parameter.name, parameter.ty.to_type_string())
-                        } else {
-                            format!("{}: {}", parameter.name, parameter.ty.to_type_string())
-                        }
-                    })
-                    .collect::<Vec<_>>()
-                    .join(", ");
-                format!(
-                    "{type_parameters}({parameters}) => {}",
-                    function.return_type.to_type_string()
-                )
-            }
+            Self::Function(function) => function_type_to_string(function),
             Self::TypeReference(reference) => {
                 if reference.type_arguments.is_empty() {
                     reference.name.to_string()
@@ -917,6 +936,17 @@ impl<'a> Ty<'a> {
     fn display_needs_parentheses(&self) -> bool {
         matches!(self, Self::Function(_) | Self::Union(_))
     }
+
+    fn with_signatures(
+        self,
+        arena: CheckerArena<'a>,
+        signatures: impl IntoIterator<Item = Signature<'a>>,
+    ) -> Self {
+        let Self::Object(object) = self else {
+            return self;
+        };
+        Self::object_with_signatures(arena, object.properties.iter().copied(), signatures)
+    }
 }
 
 pub(crate) fn reduce_union_type<'a>(
@@ -992,14 +1022,124 @@ fn type_parameter_to_type_string(type_parameter: &TyTypeParameter<'_>) -> String
     type_string
 }
 
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) enum SignatureKind {
     Call,
     Construct,
 }
 
-pub(crate) struct Signature {}
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct Signature<'a> {
+    pub(crate) kind: SignatureKind,
+    pub(crate) function: &'a TyFunction<'a>,
+}
+
+impl<'a> Signature<'a> {
+    pub(crate) fn new(kind: SignatureKind, function: &'a TyFunction<'a>) -> Self {
+        Self { kind, function }
+    }
+
+    pub(crate) fn substitute_type_parameters(
+        self,
+        arena: CheckerArena<'a>,
+        substitutions: &HashMap<&'a str, Ty<'a>>,
+    ) -> Self {
+        let Ty::Function(function) =
+            Ty::Function(self.function).substitute_type_parameters(arena, substitutions)
+        else {
+            unreachable!("signature substitution preserves function type")
+        };
+        Self::new(self.kind, function)
+    }
+
+    pub(crate) fn to_type_string(self) -> String {
+        match self.kind {
+            SignatureKind::Call => format!("{};", signature_to_type_string(self.function)),
+            SignatureKind::Construct => {
+                format!("new {};", signature_to_type_string(self.function))
+            }
+        }
+    }
+}
 
 pub(crate) struct IndexInfo {}
+
+fn function_type_to_string(function: &TyFunction<'_>) -> String {
+    let (type_parameters, parameters) = function_type_head_to_string(function);
+    format!(
+        "{type_parameters}({parameters}) => {}",
+        function.return_type.to_type_string()
+    )
+}
+
+fn signature_to_type_string(function: &TyFunction<'_>) -> String {
+    let (type_parameters, parameters) = function_type_head_to_string(function);
+    format!(
+        "{type_parameters}({parameters}): {}",
+        function.return_type.to_type_string()
+    )
+}
+
+fn function_type_head_to_string(function: &TyFunction<'_>) -> (String, String) {
+    let type_parameters = if function.type_parameters.is_empty() {
+        String::new()
+    } else {
+        let type_parameters = function
+            .type_parameters
+            .iter()
+            .map(type_parameter_to_type_string)
+            .collect::<Vec<_>>()
+            .join(", ");
+        format!("<{type_parameters}>")
+    };
+    let parameters = function
+        .parameters
+        .iter()
+        .map(|parameter| {
+            if parameter.rest {
+                format!("...{}: {}", parameter.name, parameter.ty.to_type_string())
+            } else if parameter.optional {
+                format!("{}?: {}", parameter.name, parameter.ty.to_type_string())
+            } else {
+                format!("{}: {}", parameter.name, parameter.ty.to_type_string())
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(", ");
+    (type_parameters, parameters)
+}
+
+fn signature_from_ts_signature<'a>(
+    arena: CheckerArena<'a>,
+    signature: &TSSignature<'a>,
+) -> Option<Signature<'a>> {
+    let (kind, type_parameters, parameters, return_type) = match signature {
+        TSSignature::TSCallSignatureDeclaration(signature) => (
+            SignatureKind::Call,
+            signature.type_parameters.as_deref(),
+            signature.params.as_ref(),
+            signature.return_type.as_deref(),
+        ),
+        TSSignature::TSConstructSignatureDeclaration(signature) => (
+            SignatureKind::Construct,
+            signature.type_parameters.as_deref(),
+            signature.params.as_ref(),
+            signature.return_type.as_deref(),
+        ),
+        _ => return None,
+    };
+    let Ty::Function(function) = Ty::function(
+        arena,
+        type_parameters_from_declaration(arena, type_parameters),
+        function_type_parameters(arena, parameters),
+        return_type.map_or_else(Ty::any, |return_type| {
+            Ty::from_ts_type_annotation(arena, Some(return_type))
+        }),
+    ) else {
+        unreachable!("signature construction always creates a function type")
+    };
+    Some(Signature::new(kind, function))
+}
 
 fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {
