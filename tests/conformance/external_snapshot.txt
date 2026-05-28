@@ -245,10 +245,10 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
 FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts matched_types=97 mismatched_types=36 total_types=133 match_percentage=72.93%
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:5 `QueryKey` type mismatch
       expected: readonly unknown[]
-      actual:   any
-  - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:6 `queryKey` missing from oxc output
+      actual:   Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>
+  - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:6 `queryKey` type mismatch
       expected: TQueryKey
-      actual:   <missing>
+      actual:   infer TQueryKey
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:10 `Array` type mismatch
       expected: ArrayConstructor
       actual:   any
@@ -290,7 +290,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
       actual:   <missing>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:27 `DataTag` type mismatch
       expected: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }
-      actual:   any
+      actual:   TType extends AnyDataTag ? TType : TType & {}
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:30 `dataTagSymbol` missing from oxc output
       expected: unique symbol
       actual:   <missing>
@@ -299,7 +299,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
       actual:   <missing>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:34 `InferDataFromTag` type mismatch
       expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
-      actual:   any
+      actual:   TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:40 `getQueryData` missing from oxc output
       expected: <TData>(queryKey: QueryKey) => TData | undefined
       actual:   <missing>
@@ -314,13 +314,13 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
       actual:   QueryKey
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:47 `QueryMeta` type mismatch
       expected: { [x: string]: unknown; }
-      actual:   any
-  - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:48 `queryMeta` missing from oxc output
+      actual:   Register extends { queryMeta: infer TQueryMeta; } ? TQueryMeta extends Record<string, unknown> ? TQueryMeta : Record<string, unknown> : Record<string, unknown>
+  - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:48 `queryMeta` type mismatch
       expected: TQueryMeta
-      actual:   <missing>
+      actual:   infer TQueryMeta
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:57 `QueryFunctionContext` type mismatch
       expected: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { ...; }
-      actual:   any
+      actual:   [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:64 `AbortSignal` type mismatch
       expected: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }
       actual:   any
@@ -460,7 +460,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tes
 FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Any/Equals.ts matched_types=8 mismatched_types=1 total_types=9 match_percentage=88.89%
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Any/Equals.ts:1 `Equals` type mismatch
       expected: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0
-      actual:   any
+      actual:   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0
 PASS tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Any/Key.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00%
 FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Optional.ts matched_types=30 mismatched_types=19 total_types=49 match_percentage=61.22%
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Optional.ts:1 `Pick` missing from oxc output

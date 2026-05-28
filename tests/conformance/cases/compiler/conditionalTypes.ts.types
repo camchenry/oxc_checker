@@ -1,0 +1,26 @@
+type ConcreteTrue = number extends number ? boolean : string;
+>    ^^^^^^^^^^^^: boolean   (TyBoolean)
+
+type ConcreteFalse = number extends string ? boolean : string;
+>    ^^^^^^^^^^^^^: string   (TyString)
+
+declare const concreteTrue: number extends number ? boolean : string;
+>             ^^^^^^^^^^^^: boolean   (TyBoolean)
+
+declare const concreteFalse: number extends string ? boolean : string;
+>             ^^^^^^^^^^^^^: string   (TyString)
+
+declare function choose<T>(): T extends string ? boolean : number;
+>                ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction)
+
+declare function choose<T>(): T extends string ? boolean : number;
+>                       ^: any   (TyAny)
+
+declare function choose<T>(): T extends string ? boolean : number;
+>                             ^: any   (TyAny)
+
+const distributed = choose<string | number>();
+>     ^^^^^^^^^^^: boolean | number   (TyUnion)
+
+const distributed = choose<string | number>();
+>                   ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction)

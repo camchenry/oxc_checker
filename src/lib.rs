@@ -615,6 +615,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.get_type_from_ts_type(program_id, ty)),
             ),
+            TSType::TSConditionalType(conditional) => Ty::conditional(
+                self.arena(),
+                self.get_type_from_ts_type(program_id, &conditional.check_type),
+                self.get_type_from_ts_type(program_id, &conditional.extends_type),
+                self.get_type_from_ts_type(program_id, &conditional.true_type),
+                self.get_type_from_ts_type(program_id, &conditional.false_type),
+                matches!(
+                    conditional.check_type,
+                    TSType::TSTypeReference(ref reference) if reference.type_arguments.is_none()
+                ),
+            ),
+            TSType::TSInferType(infer) => Ty::infer(
+                self.arena(),
+                type_parameter_from_ts_type_parameter(self.arena(), &infer.type_parameter),
+            ),
             _ => Ty::from_ts_type(self.arena(), ty),
         }
     }
@@ -2982,6 +2997,83 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "optional").to_type_string(),
             "[(number | undefined)?]"
+        );
+    }
+
+    #[test]
+    fn conditional_types_resolve_concrete_branches() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const yes: number extends number ? boolean : string = true;
+        const no: number extends string ? boolean : string = 'no';
+        ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "yes"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "no"), Ty::string());
+    }
+
+    #[test]
+    fn conditional_types_preserve_unresolved_generic_checks() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const value: T extends string ? number : boolean;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value").to_type_string(),
+            "T extends string ? number : boolean"
+        );
+    }
+
+    #[test]
+    fn infer_types_are_preserved_without_solving() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const value: string extends infer U ? U : never;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value").to_type_string(),
+            "string extends infer U ? U : never"
+        );
+    }
+
+    #[test]
+    fn tuple_wrapped_conditionals_are_not_distributive() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const value: [never] extends [never] ? string : number = 'value';
+        ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "value"), Ty::string());
+    }
+
+    #[test]
+    fn naked_type_parameter_conditionals_distribute_over_substituted_unions() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare function f<T>(): T extends string ? boolean : number;
+        const value = f<string | number>();
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value"),
+            Ty::union(arena(&ret), [Ty::boolean(), Ty::number()])
         );
     }
 

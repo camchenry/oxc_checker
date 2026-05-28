@@ -2,7 +2,8 @@ use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
     TSSignature, TSTemplateLiteralType, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
-    TSTypeName, TSTypeOperatorOperator, TSTypeParameterDeclaration, TSTypeReference,
+    TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+    TSTypeReference,
 };
 use std::collections::HashMap;
 
@@ -65,6 +66,8 @@ pub(crate) enum Ty<'a> {
     Intersection(&'a TyIntersection<'a>),
     Keyof(&'a TyKeyof<'a>),
     IndexedAccess(&'a TyIndexedAccess<'a>),
+    Conditional(&'a TyConditional<'a>),
+    Infer(&'a TyInfer<'a>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -195,6 +198,27 @@ pub(crate) struct TyKeyof<'a> {
 pub(crate) struct TyIndexedAccess<'a> {
     pub(crate) object_type: Ty<'a>,
     pub(crate) index_type: Ty<'a>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyConditional<'a> {
+    /// The type being checked
+    pub(crate) check_type: Ty<'a>,
+    /// The type that the check type extends
+    pub(crate) extends_type: Ty<'a>,
+    /// The type to use if the check is true
+    pub(crate) true_type: Ty<'a>,
+    /// The type to use if the check is false
+    pub(crate) false_type: Ty<'a>,
+    /// Whether the conditional type is distributive
+    ///
+    /// Example: `T extends U ? X : Y` is distributive if `T` is a union type.
+    pub(crate) is_distributive: bool,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyInfer<'a> {
+    pub(crate) type_parameter: TyTypeParameter<'a>,
 }
 
 impl<'a> Ty<'a> {
@@ -464,6 +488,28 @@ impl<'a> Ty<'a> {
         }))
     }
 
+    pub(crate) fn conditional(
+        arena: CheckerArena<'a>,
+        check_type: Ty<'a>,
+        extends_type: Ty<'a>,
+        true_type: Ty<'a>,
+        false_type: Ty<'a>,
+        is_distributive: bool,
+    ) -> Self {
+        simplify_conditional_type(
+            arena,
+            check_type,
+            extends_type,
+            true_type,
+            false_type,
+            is_distributive,
+        )
+    }
+
+    pub(crate) fn infer(arena: CheckerArena<'a>, type_parameter: TyTypeParameter<'a>) -> Self {
+        Self::Infer(arena.alloc(TyInfer { type_parameter }))
+    }
+
     pub(crate) fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
@@ -633,6 +679,18 @@ impl<'a> Ty<'a> {
                 arena,
                 Self::from_ts_type(arena, &indexed_access.object_type),
                 Self::from_ts_type(arena, &indexed_access.index_type),
+            ),
+            TSType::TSConditionalType(conditional) => Self::conditional(
+                arena,
+                Self::from_ts_type(arena, &conditional.check_type),
+                Self::from_ts_type(arena, &conditional.extends_type),
+                Self::from_ts_type(arena, &conditional.true_type),
+                Self::from_ts_type(arena, &conditional.false_type),
+                ts_type_is_naked_type_reference(&conditional.check_type),
+            ),
+            TSType::TSInferType(infer) => Self::infer(
+                arena,
+                type_parameter_from_ts_type_parameter(arena, &infer.type_parameter),
             ),
             _ => Self::none(),
         }
@@ -820,6 +878,68 @@ impl<'a> Ty<'a> {
                     .index_type
                     .substitute_type_parameters(arena, substitutions),
             ),
+            Self::Conditional(conditional) => {
+                if conditional.is_distributive
+                    && let Ty::TypeReference(reference) = conditional.check_type
+                    && reference.type_arguments.is_empty()
+                    && let Some(Ty::Union(union)) = substitutions.get(reference.name)
+                {
+                    return Self::r#union(
+                        arena,
+                        union.types.iter().map(|ty| {
+                            let mut substitutions = substitutions.clone();
+                            substitutions.insert(reference.name, *ty);
+                            Self::conditional(
+                                arena,
+                                *ty,
+                                conditional
+                                    .extends_type
+                                    .substitute_type_parameters(arena, &substitutions),
+                                conditional
+                                    .true_type
+                                    .substitute_type_parameters(arena, &substitutions),
+                                conditional
+                                    .false_type
+                                    .substitute_type_parameters(arena, &substitutions),
+                                false,
+                            )
+                        }),
+                    );
+                }
+
+                Self::conditional(
+                    arena,
+                    conditional
+                        .check_type
+                        .substitute_type_parameters(arena, substitutions),
+                    conditional
+                        .extends_type
+                        .substitute_type_parameters(arena, substitutions),
+                    conditional
+                        .true_type
+                        .substitute_type_parameters(arena, substitutions),
+                    conditional
+                        .false_type
+                        .substitute_type_parameters(arena, substitutions),
+                    conditional.is_distributive,
+                )
+            }
+            Self::Infer(infer) => {
+                // TODO(correctness): Treat `infer` as a scoped binding site for conditional
+                // type matching instead of only preserving its syntax.
+                Self::infer(
+                    arena,
+                    Self::type_parameter(
+                        infer.type_parameter.name,
+                        infer.type_parameter.constraint_type.map(|constraint_type| {
+                            constraint_type.substitute_type_parameters(arena, substitutions)
+                        }),
+                        infer.type_parameter.default_type.map(|default_type| {
+                            default_type.substitute_type_parameters(arena, substitutions)
+                        }),
+                    ),
+                )
+            }
             _ => *self,
         }
     }
@@ -855,6 +975,8 @@ impl<'a> Ty<'a> {
             Self::Intersection(_) => "TyIntersection",
             Self::Keyof(_) => "TyKeyof",
             Self::IndexedAccess(_) => "TyIndexedAccess",
+            Self::Conditional(_) => "TyConditional",
+            Self::Infer(_) => "TyInfer",
         }
     }
 
@@ -1022,25 +1144,61 @@ impl<'a> Ty<'a> {
                     format!("{object_type}[{index_type}]")
                 }
             }
+            Self::Conditional(conditional) => {
+                let check_type = conditional.check_type.to_type_string();
+                let extends_type = conditional.extends_type.to_type_string();
+                let check_type = if conditional.check_type.conditional_type_needs_parentheses() {
+                    format!("({check_type})")
+                } else {
+                    check_type
+                };
+                let extends_type = if conditional
+                    .extends_type
+                    .conditional_type_needs_parentheses()
+                {
+                    format!("({extends_type})")
+                } else {
+                    extends_type
+                };
+                format!(
+                    "{check_type} extends {extends_type} ? {} : {}",
+                    conditional.true_type.to_type_string(),
+                    conditional.false_type.to_type_string()
+                )
+            }
+            Self::Infer(infer) => format!(
+                "infer {}",
+                type_parameter_to_type_string(&infer.type_parameter)
+            ),
         }
     }
 
     /// Whether this type needs parentheses when printed
     fn display_needs_parentheses(&self) -> bool {
-        matches!(self, Self::Function(_) | Self::Union(_))
+        matches!(
+            self,
+            Self::Function(_) | Self::Union(_) | Self::Conditional(_)
+        )
     }
 
     fn type_operator_needs_parentheses(&self) -> bool {
         matches!(
             self,
-            Self::Function(_) | Self::Union(_) | Self::Intersection(_)
+            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
         )
     }
 
     fn indexed_access_needs_parentheses(&self) -> bool {
         matches!(
             self,
-            Self::Function(_) | Self::Union(_) | Self::Intersection(_)
+            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
+        )
+    }
+
+    fn conditional_type_needs_parentheses(&self) -> bool {
+        matches!(
+            self,
+            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
         )
     }
 
@@ -1054,6 +1212,178 @@ impl<'a> Ty<'a> {
         };
         Self::object_with_signatures(arena, object.properties.iter().copied(), signatures)
     }
+}
+
+fn simplify_conditional_type<'a>(
+    arena: CheckerArena<'a>,
+    check_type: Ty<'a>,
+    extends_type: Ty<'a>,
+    true_type: Ty<'a>,
+    false_type: Ty<'a>,
+    is_distributive: bool,
+) -> Ty<'a> {
+    if contains_infer(check_type) || contains_infer(extends_type) {
+        // TODO(correctness): Match `check_type` against `extends_type`, collect `infer`
+        // substitutions, and apply them to the true branch.
+        return Ty::Conditional(arena.alloc(TyConditional {
+            check_type,
+            extends_type,
+            true_type,
+            false_type,
+            is_distributive,
+        }));
+    }
+
+    if contains_unresolved_type_variable(check_type)
+        || contains_unresolved_type_variable(extends_type)
+    {
+        return Ty::Conditional(arena.alloc(TyConditional {
+            check_type,
+            extends_type,
+            true_type,
+            false_type,
+            is_distributive,
+        }));
+    }
+
+    if crate::relations::is_assignable_to(check_type, extends_type) {
+        true_type
+    } else {
+        false_type
+    }
+}
+
+fn contains_unresolved_type_variable(ty: Ty<'_>) -> bool {
+    match ty {
+        Ty::TypeReference(reference) => {
+            reference.type_arguments.is_empty()
+                || reference
+                    .type_arguments
+                    .iter()
+                    .any(|ty| contains_unresolved_type_variable(*ty))
+        }
+        Ty::Object(object) => {
+            object
+                .properties
+                .iter()
+                .any(|property| contains_unresolved_type_variable(property.ty))
+                || object.signatures.iter().any(|signature| {
+                    signature
+                        .function
+                        .parameters
+                        .iter()
+                        .any(|parameter| contains_unresolved_type_variable(parameter.ty))
+                        || contains_unresolved_type_variable(signature.function.return_type)
+                })
+        }
+        Ty::ModuleNamespace(namespace) => namespace
+            .properties
+            .iter()
+            .any(|property| contains_unresolved_type_variable(property.ty)),
+        Ty::Function(function) => {
+            function
+                .parameters
+                .iter()
+                .any(|parameter| contains_unresolved_type_variable(parameter.ty))
+                || contains_unresolved_type_variable(function.return_type)
+        }
+        Ty::TemplateLiteral(template_literal) => template_literal
+            .expressions
+            .iter()
+            .any(|ty| contains_unresolved_type_variable(*ty)),
+        Ty::Array(array) => contains_unresolved_type_variable(array.element_type),
+        Ty::Tuple(tuple) => tuple.elements.iter().any(|element| match element {
+            TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
+                contains_unresolved_type_variable(*ty)
+            }
+        }),
+        Ty::Union(union) => union
+            .types
+            .iter()
+            .any(|ty| contains_unresolved_type_variable(*ty)),
+        Ty::Intersection(intersection) => intersection
+            .types
+            .iter()
+            .any(|ty| contains_unresolved_type_variable(*ty)),
+        Ty::Keyof(keyof) => contains_unresolved_type_variable(keyof.target),
+        Ty::IndexedAccess(indexed_access) => {
+            contains_unresolved_type_variable(indexed_access.object_type)
+                || contains_unresolved_type_variable(indexed_access.index_type)
+        }
+        Ty::Conditional(conditional) => {
+            contains_unresolved_type_variable(conditional.check_type)
+                || contains_unresolved_type_variable(conditional.extends_type)
+                || contains_unresolved_type_variable(conditional.true_type)
+                || contains_unresolved_type_variable(conditional.false_type)
+        }
+        Ty::Infer(_) => true,
+        _ => false,
+    }
+}
+
+fn contains_infer(ty: Ty<'_>) -> bool {
+    match ty {
+        Ty::Infer(_) => true,
+        Ty::Object(object) => {
+            object
+                .properties
+                .iter()
+                .any(|property| contains_infer(property.ty))
+                || object.signatures.iter().any(|signature| {
+                    signature
+                        .function
+                        .parameters
+                        .iter()
+                        .any(|parameter| contains_infer(parameter.ty))
+                        || contains_infer(signature.function.return_type)
+                })
+        }
+        Ty::ModuleNamespace(namespace) => namespace
+            .properties
+            .iter()
+            .any(|property| contains_infer(property.ty)),
+        Ty::Function(function) => {
+            function
+                .parameters
+                .iter()
+                .any(|parameter| contains_infer(parameter.ty))
+                || contains_infer(function.return_type)
+        }
+        Ty::TypeReference(reference) => reference
+            .type_arguments
+            .iter()
+            .any(|ty| contains_infer(*ty)),
+        Ty::TemplateLiteral(template_literal) => template_literal
+            .expressions
+            .iter()
+            .any(|ty| contains_infer(*ty)),
+        Ty::Array(array) => contains_infer(array.element_type),
+        Ty::Tuple(tuple) => tuple.elements.iter().any(|element| match element {
+            TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
+                contains_infer(*ty)
+            }
+        }),
+        Ty::Union(union) => union.types.iter().any(|ty| contains_infer(*ty)),
+        Ty::Intersection(intersection) => intersection.types.iter().any(|ty| contains_infer(*ty)),
+        Ty::Keyof(keyof) => contains_infer(keyof.target),
+        Ty::IndexedAccess(indexed_access) => {
+            contains_infer(indexed_access.object_type) || contains_infer(indexed_access.index_type)
+        }
+        Ty::Conditional(conditional) => {
+            contains_infer(conditional.check_type)
+                || contains_infer(conditional.extends_type)
+                || contains_infer(conditional.true_type)
+                || contains_infer(conditional.false_type)
+        }
+        _ => false,
+    }
+}
+
+fn ts_type_is_naked_type_reference(ty: &TSType<'_>) -> bool {
+    matches!(
+        ty,
+        TSType::TSTypeReference(reference) if reference.type_arguments.is_none()
+    )
 }
 
 pub(crate) fn reduce_union_type<'a>(
@@ -1272,21 +1602,26 @@ pub(crate) fn type_parameters_from_declaration<'a>(
         declaration
             .params
             .iter()
-            .map(|parameter| {
-                Ty::type_parameter(
-                    parameter.name.name.as_str(),
-                    parameter
-                        .constraint
-                        .as_ref()
-                        .map(|constraint_type| Ty::from_ts_type(arena, constraint_type)),
-                    parameter
-                        .default
-                        .as_ref()
-                        .map(|default_type| Ty::from_ts_type(arena, default_type)),
-                )
-            })
+            .map(|parameter| type_parameter_from_ts_type_parameter(arena, parameter))
             .collect()
     })
+}
+
+pub(crate) fn type_parameter_from_ts_type_parameter<'a>(
+    arena: CheckerArena<'a>,
+    parameter: &TSTypeParameter<'a>,
+) -> TyTypeParameter<'a> {
+    Ty::type_parameter(
+        parameter.name.name.as_str(),
+        parameter
+            .constraint
+            .as_ref()
+            .map(|constraint_type| Ty::from_ts_type(arena, constraint_type)),
+        parameter
+            .default
+            .as_ref()
+            .map(|default_type| Ty::from_ts_type(arena, default_type)),
+    )
 }
 
 fn function_type_parameters<'a>(
