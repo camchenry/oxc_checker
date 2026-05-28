@@ -407,6 +407,19 @@ function typeTextForIdentifier(ts, checker, symbol, node) {
     );
   }
   if (symbol) {
+    if (symbol.flags & ts.SymbolFlags.Alias) {
+      const aliased = checker.getAliasedSymbol(symbol);
+      if (aliased && aliased !== symbol) {
+        if (aliased.declarations?.some((declaration) => ts.isTypeAliasDeclaration(declaration))) {
+          return checker.typeToString(
+            checker.getDeclaredTypeOfSymbol(aliased),
+            node,
+            ts.TypeFormatFlags.InTypeAlias,
+          );
+        }
+        return checker.typeToString(checker.getTypeOfSymbolAtLocation(aliased, node), node);
+      }
+    }
     return checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, node), node);
   }
   if (ts.isPropertyAccessExpression(node.parent) && node.parent.name === node) {
