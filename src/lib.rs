@@ -1918,6 +1918,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: FunctionKind<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
+        if let FunctionKind::ArrowFunction(arrow_function) = function
+            && let Some(expression) = arrow_function.get_expression()
+        {
+            return self.get_return_expression_type(program_id, expression, node_id, false);
+        }
+
         let body = match function {
             FunctionKind::Function(f) => f.body.as_deref(),
             FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
@@ -3315,6 +3321,17 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "nestedFunctionResult"),
             Ty::void()
+        );
+    }
+
+    #[test]
+    fn expression_bodied_arrow_function_infers_return_expression() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "var predicate = () => false;");
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "predicate").to_type_string(),
+            "() => boolean"
         );
     }
 
