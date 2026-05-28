@@ -3,13 +3,14 @@
 use std::{
     any::Any,
     collections::{BTreeMap, BTreeSet, HashMap},
-    fmt,
+    fmt, io,
     path::{Component, Path, PathBuf},
     process::Command,
 };
 
 use oxc_allocator::Allocator;
 use oxc_ast::{AstKind, ast::TSModuleDeclarationName};
+use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_span::GetSpan;
 
 use super::*;
@@ -177,54 +178,95 @@ struct ParsedFixture<'a> {
 
 struct FixtureProgramHost {
     files: HashMap<PathBuf, String>,
+    resolver: ResolverGeneric<FixtureResolverFileSystem>,
+    resolver_paths: HashMap<PathBuf, PathBuf>,
+}
+
+#[derive(Default)]
+struct FixtureResolverFileSystem {
+    files: HashMap<PathBuf, Vec<u8>>,
+    directories: BTreeSet<PathBuf>,
 }
 
 impl FixtureProgramHost {
     fn new(files: &[CompilerTestFile]) -> Self {
-        let files = files
-            .iter()
-            .map(|file| {
-                (
-                    normalize_fixture_path(Path::new(&file.name)),
-                    file.source_text.clone(),
-                )
-            })
-            .collect();
+        let mut host_files = HashMap::new();
+        let mut resolver_files = HashMap::new();
+        let mut resolver_paths = HashMap::new();
+        let mut directories = BTreeSet::new();
 
-        Self { files }
+        for file in files {
+            let fixture_path = normalize_fixture_path(Path::new(&file.name));
+            let resolver_path = resolver_path_for_fixture_path(&fixture_path);
+            host_files.insert(fixture_path.clone(), file.source_text.clone());
+            resolver_paths.insert(resolver_path.clone(), fixture_path);
+            resolver_files.insert(resolver_path.clone(), file.source_text.as_bytes().to_vec());
+            add_resolver_parent_directories(&mut directories, &resolver_path);
+        }
+
+        let resolver = ResolverGeneric::new_with_file_system(
+            FixtureResolverFileSystem {
+                files: resolver_files,
+                directories,
+            },
+            fixture_resolve_options(),
+        );
+
+        Self {
+            files: host_files,
+            resolver,
+            resolver_paths,
+        }
+    }
+}
+
+impl FileSystem for FixtureResolverFileSystem {
+    fn new() -> Self {
+        Self::default()
     }
 
-    fn resolve_relative(
-        &self,
-        containing_file: &Path,
-        specifier: &str,
-    ) -> program::HostModuleResolution {
-        if !(specifier.starts_with('.') || specifier.starts_with('/')) {
-            return program::HostModuleResolution::External(specifier.to_string());
-        }
+    fn read(&self, path: &Path) -> io::Result<Vec<u8>> {
+        self.files.get(path).cloned().ok_or_else(|| {
+            io::Error::new(
+                io::ErrorKind::NotFound,
+                format!("file not found: {}", path.display()),
+            )
+        })
+    }
 
-        let containing_dir = containing_file.parent().unwrap_or_else(|| Path::new(""));
-        let base = normalize_fixture_path(&containing_dir.join(specifier));
-        if self.files.contains_key(&base) {
-            return program::HostModuleResolution::Path(base);
-        }
+    fn read_to_string(&self, path: &Path) -> io::Result<String> {
+        String::from_utf8(self.read(path)?)
+            .map_err(|err| io::Error::new(io::ErrorKind::InvalidData, err))
+    }
 
-        for extension in ["ts", "tsx", "d.ts", "js", "jsx", "json"] {
-            let mut candidate = base.clone();
-            candidate.set_extension(extension);
-            if self.files.contains_key(&candidate) {
-                return program::HostModuleResolution::Path(candidate);
-            }
+    fn metadata(&self, path: &Path) -> io::Result<FileMetadata> {
+        if self.files.contains_key(path) {
+            return Ok(FileMetadata::new(true, false, false));
         }
-
-        for extension in ["ts", "tsx", "d.ts", "js", "jsx", "json"] {
-            let candidate = base.join(format!("index.{extension}"));
-            if self.files.contains_key(&candidate) {
-                return program::HostModuleResolution::Path(candidate);
-            }
+        if self.directories.contains(path) {
+            return Ok(FileMetadata::new(false, true, false));
         }
+        Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            format!("path not found: {}", path.display()),
+        ))
+    }
 
-        program::HostModuleResolution::Missing(specifier.to_string())
+    fn symlink_metadata(&self, path: &Path) -> io::Result<FileMetadata> {
+        self.metadata(path)
+    }
+
+    fn read_link(&self, path: &Path) -> Result<PathBuf, ResolveError> {
+        Err(ResolveError::from(io::Error::new(
+            io::ErrorKind::NotFound,
+            format!("not a symlink: {}", path.display()),
+        )))
+    }
+
+    fn canonicalize(&self, path: &Path) -> io::Result<PathBuf> {
+        let path = normalize_fixture_path(path);
+        self.metadata(&path)?;
+        Ok(path)
     }
 }
 
@@ -249,7 +291,25 @@ impl program::ProgramHost for FixtureProgramHost {
         containing_file: &Path,
         specifier: &str,
     ) -> program::HostModuleResolution {
-        self.resolve_relative(containing_file, specifier)
+        let containing_file = resolver_path_for_fixture_path(containing_file);
+        match self.resolver.resolve_file(&containing_file, specifier) {
+            Ok(resolution) => program::HostModuleResolution::Path(
+                self.resolver_paths
+                    .get(resolution.path())
+                    .cloned()
+                    .unwrap_or_else(|| fixture_path_for_resolver_path(resolution.path())),
+            ),
+            Err(ResolveError::Builtin { resolved, .. }) => {
+                program::HostModuleResolution::Builtin(resolved)
+            }
+            Err(ResolveError::NotFound(_)) if is_bare_specifier(specifier) => {
+                program::HostModuleResolution::External(specifier.to_string())
+            }
+            Err(ResolveError::NotFound(_)) => {
+                program::HostModuleResolution::Missing(specifier.to_string())
+            }
+            Err(error) => program::HostModuleResolution::Missing(error.to_string()),
+        }
     }
 }
 
@@ -901,6 +961,67 @@ fn normalize_fixture_path(path: &Path) -> PathBuf {
     normalized
 }
 
+fn is_compilable_fixture_file(path: &Path) -> bool {
+    let file_name = path.file_name().and_then(|file_name| file_name.to_str());
+    let extension = path.extension().and_then(|extension| extension.to_str());
+    file_name.is_some_and(|file_name| file_name.ends_with(".d.ts"))
+        || matches!(
+            extension,
+            Some("ts" | "tsx" | "js" | "jsx" | "mjs" | "cjs" | "mts" | "cts")
+        )
+}
+
+fn fixture_resolve_options() -> ResolveOptions {
+    let mut options = program::ts_resolve_options();
+    options.cwd = Some(fixture_resolver_root());
+    options.main_fields = ["types", "typings", "main"]
+        .into_iter()
+        .map(str::to_string)
+        .collect();
+    options.symlinks = false;
+    options
+}
+
+fn fixture_resolver_root() -> PathBuf {
+    PathBuf::from("/__oxc_checker_fixture__")
+}
+
+fn resolver_path_for_fixture_path(path: &Path) -> PathBuf {
+    let mut resolver_path = fixture_resolver_root();
+    for component in normalize_fixture_path(path).components() {
+        match component {
+            Component::CurDir | Component::RootDir => {}
+            Component::ParentDir => {
+                resolver_path.pop();
+            }
+            Component::Prefix(prefix) => resolver_path.push(prefix.as_os_str()),
+            Component::Normal(part) => resolver_path.push(part),
+        }
+    }
+    resolver_path
+}
+
+fn fixture_path_for_resolver_path(path: &Path) -> PathBuf {
+    path.strip_prefix(fixture_resolver_root())
+        .map_or_else(|_| normalize_fixture_path(path), normalize_fixture_path)
+}
+
+fn add_resolver_parent_directories(directories: &mut BTreeSet<PathBuf>, path: &Path) {
+    let mut current = path.parent();
+    while let Some(directory) = current {
+        directories.insert(normalize_fixture_path(directory));
+        let parent = directory.parent();
+        if parent == current {
+            break;
+        }
+        current = parent;
+    }
+}
+
+fn is_bare_specifier(specifier: &str) -> bool {
+    !(specifier.is_empty() || specifier.starts_with('.') || specifier.starts_with('/'))
+}
+
 fn record_path(
     fixture_path: &str,
     source_file: &CompilerTestFile,
@@ -920,6 +1041,9 @@ fn parse_fixture_program<'a>(
     let host = FixtureProgramHost::new(&compiler_case.files);
     let mut builder = program::ProgramStoreBuilder::new(allocator, host);
     for source_file in &compiler_case.files {
+        if !is_compilable_fixture_file(Path::new(&source_file.name)) {
+            continue;
+        }
         builder = builder.add_root_file(normalize_fixture_path(Path::new(&source_file.name)));
     }
     let store = builder.build().map_err(|err| err.to_string())?;
@@ -1020,6 +1144,11 @@ fn actual_identifier_record<'a>(
             alias.id.span,
             alias.id.name.to_string(),
             type_of_type_alias(checker, program_id, alias),
+        ),
+        AstKind::TSImportEqualsDeclaration(import_equals) => (
+            import_equals.id.span,
+            import_equals.id.name.to_string(),
+            Ty::any(),
         ),
         AstKind::TSInterfaceDeclaration(interface) => {
             (interface.id.span, interface.id.name.to_string(), Ty::any())

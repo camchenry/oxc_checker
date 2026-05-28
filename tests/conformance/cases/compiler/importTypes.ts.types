@@ -1,0 +1,74 @@
+function process<T>(x: T) {
+>        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+function process<T>(x: T) {
+>                ^: any   (TyAny)
+
+function process<T>(x: T) {
+>                   ^: T   (TyTypeReference)
+
+function process<T>(x: T) {
+>                      ^: any   (TyAny)
+
+  if (x) {
+>     ^: T   (TyTypeReference)
+
+  return x;
+>        ^: T   (TyTypeReference)
+
+import { process } from './a.ts'
+>        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+const i1_num = process(5)
+>     ^^^^^^: number   (TyNumber)
+
+const i1_num = process(5)
+>              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+const i1_str = process("foo")
+>     ^^^^^^: 1 | string   (TyUnion)
+
+const i1_str = process("foo")
+>              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+import mod from './a.ts'
+>      ^^^: any   (TyAny)
+
+const i2_num = mod.process(5)
+>     ^^^^^^: any   (TyAny)
+
+const i2_num = mod.process(5)
+>              ^^^: any   (TyAny)
+
+const i2_num = mod.process(5)
+>                  ^^^^^^^: any   (TyAny)
+
+const i2_str = mod.process("foo")
+>     ^^^^^^: any   (TyAny)
+
+const i2_str = mod.process("foo")
+>              ^^^: any   (TyAny)
+
+const i2_str = mod.process("foo")
+>                  ^^^^^^^: any   (TyAny)
+
+import * as mod from './a.ts'
+>           ^^^: any   (TyAny)
+
+const i3_num = mod.process(5)
+>     ^^^^^^: any   (TyAny)
+
+const i3_num = mod.process(5)
+>              ^^^: any   (TyAny)
+
+const i3_num = mod.process(5)
+>                  ^^^^^^^: any   (TyAny)
+
+const i3_str = mod.process("foo")
+>     ^^^^^^: any   (TyAny)
+
+const i3_str = mod.process("foo")
+>              ^^^: any   (TyAny)
+
+const i3_str = mod.process("foo")
+>                  ^^^^^^^: any   (TyAny)

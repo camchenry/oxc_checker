@@ -1992,6 +1992,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     .concat_strs_array(["typeof ", identifier.name.as_str()]);
                 Ty::type_reference(self.arena(), name, std::iter::empty())
             }),
+            // TODO
+            AstKind::ImportSpecifier(_)
+            | AstKind::ImportDefaultSpecifier(_)
+            | AstKind::ImportNamespaceSpecifier(_) => Ty::any(),
+            AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
             _ => Ty::none(),
         }
     }
