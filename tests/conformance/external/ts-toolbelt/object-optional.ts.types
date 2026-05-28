@@ -1,5 +1,5 @@
 export type Key = string | number | symbol
->           ^^^: string | number | none   (TyUnion)
+>           ^^^: string | number | symbol   (TyUnion)
 
 export type Depth = 'flat' | 'deep'
 >           ^^^^^: "flat" | "deep"   (TyUnion)

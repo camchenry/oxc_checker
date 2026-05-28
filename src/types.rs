@@ -41,6 +41,7 @@ pub(crate) enum Ty<'a> {
     String,
     Boolean,
     Bigint,
+    Symbol,
     Undefined,
     Null,
     Any,
@@ -211,6 +212,10 @@ impl<'a> Ty<'a> {
 
     pub(crate) fn string() -> Self {
         Self::String
+    }
+
+    pub(crate) fn symbol() -> Self {
+        Self::Symbol
     }
 
     /// General `boolean` type (true or false)
@@ -467,38 +472,6 @@ impl<'a> Ty<'a> {
         matches!(self, Self::Any)
     }
 
-    pub(crate) fn enum_variant_name(self) -> &'static str {
-        match self {
-            Self::None => "TyNone",
-            Self::Number => "TyNumber",
-            Self::String => "TyString",
-            Self::Boolean => "TyBoolean",
-            Self::Bigint => "TyBigint",
-            Self::Undefined => "TyUndefined",
-            Self::Null => "TyNull",
-            Self::Any => "TyAny",
-            Self::Unknown => "TyUnknown",
-            Self::Void => "TyVoid",
-            Self::Never => "TyNever",
-            Self::Object(_) => "TyObject",
-            Self::ModuleNamespace(_) => "TyModuleNamespace",
-            Self::PrimitiveObject => "TyPrimitiveObject",
-            Self::Function(_) => "TyFunction",
-            Self::TypeReference(_) => "TyTypeReference",
-            Self::StringLiteral(_) => "TyStringLiteral",
-            Self::NumberLiteral(_) => "TyNumberLiteral",
-            Self::BooleanLiteral(_) => "TyBooleanLiteral",
-            Self::BigIntLiteral(_) => "TyBigIntLiteral",
-            Self::TemplateLiteral(_) => "TyTemplateLiteral",
-            Self::Array(_) => "TyArray",
-            Self::Tuple(_) => "TyTuple",
-            Self::Union(_) => "TyUnion",
-            Self::Intersection(_) => "TyIntersection",
-            Self::Keyof(_) => "TyKeyof",
-            Self::IndexedAccess(_) => "TyIndexedAccess",
-        }
-    }
-
     /// Take a type annotation like `: number` and return the corresponding type. Returns no
     /// type if there is no type annotation.
     pub(crate) fn from_ts_type_annotation(
@@ -517,6 +490,7 @@ impl<'a> Ty<'a> {
             TSType::TSStringKeyword(_) => Self::string(),
             TSType::TSBooleanKeyword(_) => Self::boolean(),
             TSType::TSBigIntKeyword(_) => Self::bigint(),
+            TSType::TSSymbolKeyword(_) => Self::symbol(),
             TSType::TSUndefinedKeyword(_) => Self::undefined(),
             TSType::TSNullKeyword(_) => Self::null(),
             TSType::TSAnyKeyword(_) => Self::any(),
@@ -850,6 +824,40 @@ impl<'a> Ty<'a> {
         }
     }
 
+    #[cfg(debug_assertions)]
+    pub(crate) fn enum_variant_name(self) -> &'static str {
+        match self {
+            Self::None => "TyNone",
+            Self::Number => "TyNumber",
+            Self::String => "TyString",
+            Self::Boolean => "TyBoolean",
+            Self::Bigint => "TyBigint",
+            Self::Symbol => "TySymbol",
+            Self::Undefined => "TyUndefined",
+            Self::Null => "TyNull",
+            Self::Any => "TyAny",
+            Self::Unknown => "TyUnknown",
+            Self::Void => "TyVoid",
+            Self::Never => "TyNever",
+            Self::Object(_) => "TyObject",
+            Self::ModuleNamespace(_) => "TyModuleNamespace",
+            Self::PrimitiveObject => "TyPrimitiveObject",
+            Self::Function(_) => "TyFunction",
+            Self::TypeReference(_) => "TyTypeReference",
+            Self::StringLiteral(_) => "TyStringLiteral",
+            Self::NumberLiteral(_) => "TyNumberLiteral",
+            Self::BooleanLiteral(_) => "TyBooleanLiteral",
+            Self::BigIntLiteral(_) => "TyBigIntLiteral",
+            Self::TemplateLiteral(_) => "TyTemplateLiteral",
+            Self::Array(_) => "TyArray",
+            Self::Tuple(_) => "TyTuple",
+            Self::Union(_) => "TyUnion",
+            Self::Intersection(_) => "TyIntersection",
+            Self::Keyof(_) => "TyKeyof",
+            Self::IndexedAccess(_) => "TyIndexedAccess",
+        }
+    }
+
     pub(crate) fn to_type_string(self) -> String {
         match self {
             Self::None => "none".to_string(),
@@ -857,6 +865,7 @@ impl<'a> Ty<'a> {
             Self::String => "string".to_string(),
             Self::Boolean => "boolean".to_string(),
             Self::Bigint => "bigint".to_string(),
+            Self::Symbol => "symbol".to_string(),
             Self::Undefined => "undefined".to_string(),
             Self::Null => "null".to_string(),
             Self::Any => "any".to_string(),
