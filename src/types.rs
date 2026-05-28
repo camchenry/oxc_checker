@@ -1,8 +1,8 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
-    TSSignature, TSTemplateLiteralType, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-    TSTypeParameterDeclaration, TSTypeReference,
+    TSSignature, TSTemplateLiteralType, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
+    TSTypeName, TSTypeOperatorOperator, TSTypeParameterDeclaration, TSTypeReference,
 };
 use std::collections::HashMap;
 
@@ -62,6 +62,8 @@ pub(crate) enum Ty<'a> {
     Tuple(&'a TyTuple<'a>),
     Union(&'a TyUnion<'a>),
     Intersection(&'a TyIntersection<'a>),
+    Keyof(&'a TyKeyof<'a>),
+    IndexedAccess(&'a TyIndexedAccess<'a>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -181,6 +183,17 @@ pub(crate) struct TyUnion<'a> {
 pub(crate) struct TyIntersection<'a> {
     pub(crate) types: ArenaVec<'a, Ty<'a>>,
     // TODO: Add flags
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyKeyof<'a> {
+    pub(crate) target: Ty<'a>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyIndexedAccess<'a> {
+    pub(crate) object_type: Ty<'a>,
+    pub(crate) index_type: Ty<'a>,
 }
 
 impl<'a> Ty<'a> {
@@ -431,6 +444,21 @@ impl<'a> Ty<'a> {
         }))
     }
 
+    pub(crate) fn keyof(arena: CheckerArena<'a>, target: Ty<'a>) -> Self {
+        Self::Keyof(arena.alloc(TyKeyof { target }))
+    }
+
+    pub(crate) fn indexed_access(
+        arena: CheckerArena<'a>,
+        object_type: Ty<'a>,
+        index_type: Ty<'a>,
+    ) -> Self {
+        Self::IndexedAccess(arena.alloc(TyIndexedAccess {
+            object_type,
+            index_type,
+        }))
+    }
+
     pub(crate) fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
@@ -466,6 +494,8 @@ impl<'a> Ty<'a> {
             Self::Tuple(_) => "TyTuple",
             Self::Union(_) => "TyUnion",
             Self::Intersection(_) => "TyIntersection",
+            Self::Keyof(_) => "TyKeyof",
+            Self::IndexedAccess(_) => "TyIndexedAccess",
         }
     }
 
@@ -518,7 +548,11 @@ impl<'a> Ty<'a> {
                                         arena,
                                         method.type_parameters.as_deref(),
                                     ),
-                                    function_type_parameters(arena, method.params.as_ref()),
+                                    function_type_parameters(
+                                        arena,
+                                        method.this_param.as_deref(),
+                                        method.params.as_ref(),
+                                    ),
                                     Self::from_ts_type_annotation(
                                         arena,
                                         method.return_type.as_deref(),
@@ -550,7 +584,11 @@ impl<'a> Ty<'a> {
             TSType::TSFunctionType(function) => Self::function(
                 arena,
                 type_parameters_from_declaration(arena, function.type_parameters.as_deref()),
-                function_type_parameters(arena, function.params.as_ref()),
+                function_type_parameters(
+                    arena,
+                    function.this_param.as_deref(),
+                    function.params.as_ref(),
+                ),
                 Self::from_ts_type_annotation(arena, Some(&function.return_type)),
             ),
             TSType::TSLiteralType(literal) => match &literal.literal {
@@ -610,6 +648,17 @@ impl<'a> Ty<'a> {
                     .types
                     .iter()
                     .map(|ty| Self::from_ts_type(arena, ty)),
+            ),
+            TSType::TSTypeOperatorType(operator) => match operator.operator {
+                TSTypeOperatorOperator::Keyof => {
+                    Self::keyof(arena, Self::from_ts_type(arena, &operator.type_annotation))
+                }
+                TSTypeOperatorOperator::Readonly | TSTypeOperatorOperator::Unique => Self::none(),
+            },
+            TSType::TSIndexedAccessType(indexed_access) => Self::indexed_access(
+                arena,
+                Self::from_ts_type(arena, &indexed_access.object_type),
+                Self::from_ts_type(arena, &indexed_access.index_type),
             ),
             _ => Self::none(),
         }
@@ -782,6 +831,21 @@ impl<'a> Ty<'a> {
                     .iter()
                     .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
             ),
+            Self::Keyof(keyof) => Self::keyof(
+                arena,
+                keyof
+                    .target
+                    .substitute_type_parameters(arena, substitutions),
+            ),
+            Self::IndexedAccess(indexed_access) => Self::indexed_access(
+                arena,
+                indexed_access
+                    .object_type
+                    .substitute_type_parameters(arena, substitutions),
+                indexed_access
+                    .index_type
+                    .substitute_type_parameters(arena, substitutions),
+            ),
             _ => *self,
         }
     }
@@ -929,12 +993,46 @@ impl<'a> Ty<'a> {
                 })
                 .collect::<Vec<_>>()
                 .join(" & "),
+            Self::Keyof(keyof) => {
+                let target = keyof.target.to_type_string();
+                if keyof.target.type_operator_needs_parentheses() {
+                    format!("keyof ({target})")
+                } else {
+                    format!("keyof {target}")
+                }
+            }
+            Self::IndexedAccess(indexed_access) => {
+                let object_type = indexed_access.object_type.to_type_string();
+                let index_type = indexed_access.index_type.to_type_string();
+                if indexed_access
+                    .object_type
+                    .indexed_access_needs_parentheses()
+                {
+                    format!("({object_type})[{index_type}]")
+                } else {
+                    format!("{object_type}[{index_type}]")
+                }
+            }
         }
     }
 
     /// Whether this type needs parentheses when printed
     fn display_needs_parentheses(&self) -> bool {
         matches!(self, Self::Function(_) | Self::Union(_))
+    }
+
+    fn type_operator_needs_parentheses(&self) -> bool {
+        matches!(
+            self,
+            Self::Function(_) | Self::Union(_) | Self::Intersection(_)
+        )
+    }
+
+    fn indexed_access_needs_parentheses(&self) -> bool {
+        matches!(
+            self,
+            Self::Function(_) | Self::Union(_) | Self::Intersection(_)
+        )
     }
 
     fn with_signatures(
@@ -1113,16 +1211,18 @@ fn signature_from_ts_signature<'a>(
     arena: CheckerArena<'a>,
     signature: &TSSignature<'a>,
 ) -> Option<Signature<'a>> {
-    let (kind, type_parameters, parameters, return_type) = match signature {
+    let (kind, type_parameters, this_param, parameters, return_type) = match signature {
         TSSignature::TSCallSignatureDeclaration(signature) => (
             SignatureKind::Call,
             signature.type_parameters.as_deref(),
+            signature.this_param.as_deref(),
             signature.params.as_ref(),
             signature.return_type.as_deref(),
         ),
         TSSignature::TSConstructSignatureDeclaration(signature) => (
             SignatureKind::Construct,
             signature.type_parameters.as_deref(),
+            None,
             signature.params.as_ref(),
             signature.return_type.as_deref(),
         ),
@@ -1131,7 +1231,7 @@ fn signature_from_ts_signature<'a>(
     let Ty::Function(function) = Ty::function(
         arena,
         type_parameters_from_declaration(arena, type_parameters),
-        function_type_parameters(arena, parameters),
+        function_type_parameters(arena, this_param, parameters),
         return_type.map_or_else(Ty::any, |return_type| {
             Ty::from_ts_type_annotation(arena, Some(return_type))
         }),
@@ -1182,12 +1282,18 @@ pub(crate) fn type_parameters_from_declaration<'a>(
 
 fn function_type_parameters<'a>(
     arena: CheckerArena<'a>,
+    this_param: Option<&TSThisParameter<'a>>,
     params: &oxc_ast::ast::FormalParameters<'a>,
 ) -> Vec<TyParameter<'a>> {
-    params
-        .items
+    this_param
         .iter()
-        .map(|parameter| function_type_parameter(arena, parameter))
+        .map(|parameter| function_type_this_parameter(arena, parameter))
+        .chain(
+            params
+                .items
+                .iter()
+                .map(|parameter| function_type_parameter(arena, parameter)),
+        )
         .chain(
             params
                 .rest
@@ -1195,6 +1301,16 @@ fn function_type_parameters<'a>(
                 .map(|parameter| function_type_rest_parameter(arena, parameter)),
         )
         .collect()
+}
+
+fn function_type_this_parameter<'a>(
+    arena: CheckerArena<'a>,
+    parameter: &TSThisParameter<'a>,
+) -> TyParameter<'a> {
+    Ty::parameter(
+        "this",
+        Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
+    )
 }
 
 fn function_type_parameter<'a>(

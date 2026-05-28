@@ -3473,6 +3473,26 @@ mod test {
     }
 
     #[test]
+    fn keyof_constraints_and_indexed_access_types_render() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface Window {}
+        interface WindowEventMap {}
+        declare const source: {
+            <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any): void;
+        };
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "source").to_type_string(),
+            "{ <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any): void; }"
+        );
+    }
+
+    #[test]
     fn new_expression_infers_class_instance_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
