@@ -32,7 +32,7 @@ export type Equals<A1 extends any, A2 extends any> =
 >                                                             ^^: any   (TyAny)
 
 export type Pick<O extends object, K extends Key> = {
->           ^^^^: none & {}   (TyIntersection)
+>           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; } & {}   (TyIntersection)
 
 export type Pick<O extends object, K extends Key> = {
 >                ^: any   (TyAny)
@@ -62,7 +62,7 @@ export type Pick<O extends object, K extends Key> = {
 >                                              ^: any   (TyAny)
 
 export type PatchFlat<O extends object, O1 extends object> = {
->           ^^^^^^^^^: none & {}   (TyIntersection)
+>           ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; } & {}   (TyIntersection)
 
 export type PatchFlat<O extends object, O1 extends object> = {
 >                     ^: any   (TyAny)
@@ -101,7 +101,7 @@ export type PatchFlat<O extends object, O1 extends object> = {
 >          ^: any   (TyAny)
 
 export type OptionalFlat<O> = {
->           ^^^^^^^^^^^^: none & {}   (TyIntersection)
+>           ^^^^^^^^^^^^: { [K in keyof O]?: O[K]; } & {}   (TyIntersection)
 
 export type OptionalFlat<O> = {
 >                        ^: any   (TyAny)
@@ -116,7 +116,7 @@ export type OptionalFlat<O> = {
 >                    ^: any   (TyAny)
 
 export type OptionalDeep<O> = {
->           ^^^^^^^^^^^^: any   (TyAny)
+>           ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]>; }   (TyMapped)
 
 export type OptionalDeep<O> = {
 >                        ^: any   (TyAny)

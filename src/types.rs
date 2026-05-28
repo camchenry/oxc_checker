@@ -1,9 +1,9 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
-    TSSignature, TSTemplateLiteralType, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
-    TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
-    TSTypeReference,
+    TSMappedType, TSMappedTypeModifierOperator, TSSignature, TSTemplateLiteralType,
+    TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
+    TSTypeParameter, TSTypeParameterDeclaration, TSTypeReference,
 };
 use std::collections::HashMap;
 
@@ -71,6 +71,8 @@ pub(crate) enum Ty<'a> {
     IndexedAccess(&'a TyIndexedAccess<'a>),
     Conditional(&'a TyConditional<'a>),
     Infer(&'a TyInfer<'a>),
+    /// Mapped type, e.g. `{ [P in keyof T]: T[P] }` or `{ readonly [P in K as N]?: V }`.
+    Mapped(&'a TyMapped<'a>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -242,6 +244,43 @@ pub(crate) struct TyConditional<'a> {
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyInfer<'a> {
     pub(crate) type_parameter: TyTypeParameter<'a>,
+}
+
+/// Mapped type, mirroring typescript-go's `MappedType` shape.
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyMapped<'a> {
+    /// Name of the key type parameter (the `P` in `[P in K]`).
+    pub(crate) key: &'a str,
+    /// Constraint of the key (the `K` in `[P in K]`).
+    pub(crate) constraint: Ty<'a>,
+    /// Optional `as N` key remapping type.
+    pub(crate) name_type: Option<Ty<'a>>,
+    /// Value type (right-hand side of the index signature).
+    pub(crate) template: Ty<'a>,
+    /// Optional modifier on the value (`?`, `+?`, `-?`).
+    pub(crate) optional: MappedModifier,
+    /// Readonly modifier on the index signature (`readonly`, `+readonly`, `-readonly`).
+    pub(crate) readonly: MappedModifier,
+}
+
+/// Presence/polarity of a `readonly` or `?` modifier on a mapped type.
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) enum MappedModifier {
+    None,
+    True,
+    Plus,
+    Minus,
+}
+
+impl MappedModifier {
+    fn from_ast(op: Option<TSMappedTypeModifierOperator>) -> Self {
+        match op {
+            None => Self::None,
+            Some(TSMappedTypeModifierOperator::True) => Self::True,
+            Some(TSMappedTypeModifierOperator::Plus) => Self::Plus,
+            Some(TSMappedTypeModifierOperator::Minus) => Self::Minus,
+        }
+    }
 }
 
 impl<'a> Ty<'a> {
@@ -580,6 +619,25 @@ impl<'a> Ty<'a> {
         Self::Infer(arena.alloc(TyInfer { type_parameter }))
     }
 
+    pub(crate) fn mapped(
+        arena: CheckerArena<'a>,
+        key: &'a str,
+        constraint: Ty<'a>,
+        name_type: Option<Ty<'a>>,
+        template: Ty<'a>,
+        optional: MappedModifier,
+        readonly: MappedModifier,
+    ) -> Self {
+        Self::Mapped(arena.alloc(TyMapped {
+            key,
+            constraint,
+            name_type,
+            template,
+            optional,
+            readonly,
+        }))
+    }
+
     pub(crate) fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
@@ -782,8 +840,31 @@ impl<'a> Ty<'a> {
                 arena,
                 type_parameter_from_ts_type_parameter(arena, &infer.type_parameter),
             ),
+            TSType::TSMappedType(mapped) => Self::from_ts_mapped_type(arena, mapped),
             _ => Self::none(),
         }
+    }
+
+    /// Build a mapped type from `{ [K in C as N]?: T }` / `{ readonly [K in C]: T }`.
+    fn from_ts_mapped_type(arena: CheckerArena<'a>, mapped: &TSMappedType<'a>) -> Self {
+        let constraint = Self::from_ts_type(arena, &mapped.constraint);
+        let name_type = mapped
+            .name_type
+            .as_ref()
+            .map(|name_ty| Self::from_ts_type(arena, name_ty));
+        let template = mapped
+            .type_annotation
+            .as_ref()
+            .map_or_else(Self::any, |ty| Self::from_ts_type(arena, ty));
+        Self::mapped(
+            arena,
+            arena.str(&mapped.key.name),
+            constraint,
+            name_type,
+            template,
+            MappedModifier::from_ast(mapped.optional),
+            MappedModifier::from_ast(mapped.readonly),
+        )
     }
 
     pub(crate) fn from_ts_type_reference(
@@ -1035,6 +1116,25 @@ impl<'a> Ty<'a> {
                     ),
                 )
             }
+            Self::Mapped(mapped) => {
+                // TODO(correctness): The mapped key `P` shadows outer type parameters; this
+                // does not currently scrub it from `substitutions` when recursing.
+                Self::mapped(
+                    arena,
+                    mapped.key,
+                    mapped
+                        .constraint
+                        .substitute_type_parameters(arena, substitutions),
+                    mapped
+                        .name_type
+                        .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+                    mapped
+                        .template
+                        .substitute_type_parameters(arena, substitutions),
+                    mapped.optional,
+                    mapped.readonly,
+                )
+            }
             _ => *self,
         }
     }
@@ -1074,6 +1174,7 @@ impl<'a> Ty<'a> {
             Self::IndexedAccess(_) => "TyIndexedAccess",
             Self::Conditional(_) => "TyConditional",
             Self::Infer(_) => "TyInfer",
+            Self::Mapped(_) => "TyMapped",
         }
     }
 
@@ -1297,6 +1398,24 @@ impl<'a> Ty<'a> {
                 "infer {}",
                 type_parameter_to_type_string(&infer.type_parameter)
             ),
+            Self::Mapped(mapped) => {
+                let mut s = String::from("{ ");
+                s.push_str(mapped_modifier_prefix(mapped.readonly, "readonly "));
+                s.push('[');
+                s.push_str(mapped.key);
+                s.push_str(" in ");
+                s.push_str(&mapped.constraint.to_type_string());
+                if let Some(name_type) = mapped.name_type {
+                    s.push_str(" as ");
+                    s.push_str(&name_type.to_type_string());
+                }
+                s.push(']');
+                s.push_str(mapped_modifier_suffix(mapped.optional, "?"));
+                s.push_str(": ");
+                s.push_str(&mapped.template.to_type_string());
+                s.push_str("; }");
+                s
+            }
         }
     }
 
@@ -1444,6 +1563,13 @@ fn contains_unresolved_type_variable(ty: Ty<'_>) -> bool {
                 || contains_unresolved_type_variable(conditional.false_type)
         }
         Ty::Infer(_) => true,
+        Ty::Mapped(mapped) => {
+            contains_unresolved_type_variable(mapped.constraint)
+                || mapped
+                    .name_type
+                    .is_some_and(contains_unresolved_type_variable)
+                || contains_unresolved_type_variable(mapped.template)
+        }
         _ => false,
     }
 }
@@ -1501,6 +1627,11 @@ fn contains_infer(ty: Ty<'_>) -> bool {
                 || contains_infer(conditional.extends_type)
                 || contains_infer(conditional.true_type)
                 || contains_infer(conditional.false_type)
+        }
+        Ty::Mapped(mapped) => {
+            contains_infer(mapped.constraint)
+                || mapped.name_type.is_some_and(contains_infer)
+                || contains_infer(mapped.template)
         }
         _ => false,
     }
@@ -1570,6 +1701,29 @@ fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
         TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
             ty.display_needs_parentheses()
         }
+    }
+}
+
+/// Render the `+`/`-`/none polarity for a mapped readonly-style modifier, with a trailing space.
+fn mapped_modifier_prefix(modifier: MappedModifier, keyword: &'static str) -> &'static str {
+    match (modifier, keyword) {
+        (MappedModifier::None, _) => "",
+        (MappedModifier::True, "readonly ") => "readonly ",
+        (MappedModifier::Plus, "readonly ") => "+readonly ",
+        (MappedModifier::Minus, "readonly ") => "-readonly ",
+        // Only `readonly` is rendered as a prefix today.
+        _ => "",
+    }
+}
+
+/// Render the `+`/`-`/none polarity for a mapped optional-style modifier suffix.
+fn mapped_modifier_suffix(modifier: MappedModifier, keyword: &'static str) -> &'static str {
+    match (modifier, keyword) {
+        (MappedModifier::None, _) => "",
+        (MappedModifier::True, "?") => "?",
+        (MappedModifier::Plus, "?") => "+?",
+        (MappedModifier::Minus, "?") => "-?",
+        _ => "",
     }
 }
 

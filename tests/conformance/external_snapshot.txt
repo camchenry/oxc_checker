@@ -438,13 +438,13 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/O
       actual:   <missing>
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Optional.ts:7 `OptionalFlat` type mismatch
       expected: { [K in keyof O]?: O[K] | undefined; }
-      actual:   none & {}
+      actual:   { [K in keyof O]?: O[K]; } & {}
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Optional.ts:8 `K` missing from oxc output
       expected: any
       actual:   <missing>
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Optional.ts:11 `OptionalDeep` type mismatch
       expected: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }
-      actual:   any
+      actual:   { [K in keyof O]?: OptionalDeep<O[K]>; }
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Optional.ts:12 `K` missing from oxc output
       expected: any
       actual:   <missing>
@@ -481,7 +481,7 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/O
 FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Patch.ts matched_types=12 mismatched_types=2 total_types=14 match_percentage=85.71%
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Patch.ts:1 `PatchFlat` type mismatch
       expected: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }
-      actual:   none & {}
+      actual:   { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; } & {}
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Patch.ts:2 `K` missing from oxc output
       expected: any
       actual:   <missing>
@@ -491,7 +491,7 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/P
       actual:   <missing>
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Pick.ts:3 `Pick` type mismatch
       expected: { [P in keyof O as P extends K ? P : never]: O[P]; }
-      actual:   none & {}
+      actual:   { [P in keyof O as P extends K ? P : never]: O[P]; } & {}
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Object/Pick.ts:3 `Key` type mismatch
       expected: string | number | symbol
       actual:   any
