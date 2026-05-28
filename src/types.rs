@@ -56,6 +56,8 @@ pub(crate) enum Ty<'a> {
     ModuleNamespace(&'a TyModuleNamespace<'a>),
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
+    /// `typeof X` / `typeof X<U>` query against a value-side symbol.
+    TypeQuery(&'a TyTypeQuery<'a>),
     StringLiteral(&'a TyStringLiteral<'a>),
     NumberLiteral(&'a TyNumberLiteral<'a>),
     BooleanLiteral(&'a TyBooleanLiteral),
@@ -116,6 +118,16 @@ pub(crate) struct TyParameter<'a> {
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyTypeReference<'a> {
     pub(crate) name: &'a str,
+    pub(crate) type_arguments: ArenaVec<'a, Ty<'a>>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyTypeQuery<'a> {
+    /// Display name of the queried entity (e.g. `"Foo"`, `"Foo.Bar"`, `"this"`).
+    pub(crate) name: &'a str,
+    /// The type of the queried symbol.
+    pub(crate) resolved: Ty<'a>,
+    /// Explicit type arguments on the query (e.g. `<U>` in `typeof Err<U>`).
     pub(crate) type_arguments: ArenaVec<'a, Ty<'a>>,
 }
 
@@ -462,6 +474,19 @@ impl<'a> Ty<'a> {
     ) -> Self {
         Self::TypeReference(arena.alloc(TyTypeReference {
             name,
+            type_arguments: arena.vec_from_iter(type_arguments),
+        }))
+    }
+
+    pub(crate) fn type_query(
+        arena: CheckerArena<'a>,
+        name: &'a str,
+        resolved: Ty<'a>,
+        type_arguments: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Self {
+        Self::TypeQuery(arena.alloc(TyTypeQuery {
+            name,
+            resolved,
             type_arguments: arena.vec_from_iter(type_arguments),
         }))
     }
@@ -852,6 +877,17 @@ impl<'a> Ty<'a> {
                     )
                 }
             }
+            Self::TypeQuery(query) => Self::type_query(
+                arena,
+                query.name,
+                query
+                    .resolved
+                    .substitute_type_parameters(arena, substitutions),
+                query
+                    .type_arguments
+                    .iter()
+                    .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+            ),
             Self::Array(array) => Self::array(
                 arena,
                 array
@@ -992,6 +1028,7 @@ impl<'a> Ty<'a> {
             Self::PrimitiveObject => "TyPrimitiveObject",
             Self::Function(_) => "TyFunction",
             Self::TypeReference(_) => "TyTypeReference",
+            Self::TypeQuery(_) => "TyTypeQuery",
             Self::StringLiteral(_) => "TyStringLiteral",
             Self::NumberLiteral(_) => "TyNumberLiteral",
             Self::BooleanLiteral(_) => "TyBooleanLiteral",
@@ -1060,6 +1097,19 @@ impl<'a> Ty<'a> {
                         .collect::<Vec<_>>()
                         .join(", ");
                     format!("{}<{type_arguments}>", reference.name)
+                }
+            }
+            Self::TypeQuery(query) => {
+                if query.type_arguments.is_empty() {
+                    format!("typeof {}", query.name)
+                } else {
+                    let type_arguments = query
+                        .type_arguments
+                        .iter()
+                        .map(|ty| ty.to_type_string())
+                        .collect::<Vec<_>>()
+                        .join(", ");
+                    format!("typeof {}<{type_arguments}>", query.name)
                 }
             }
             Self::StringLiteral(string_literal) => {

@@ -1228,13 +1228,18 @@ fn actual_identifier_record<'a>(
             let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
                 return None;
             };
-            let name = checker
-                .arena()
-                .concat_strs_array(["typeof ", identifier.name.as_str()]);
+            // TODO(correctness): model namespace value-side as a real module namespace
+            // type instead of a `Ty::any` stub. We keep the `Ty::TypeQuery` wrapper so the
+            // record renders as `typeof Module`.
             (
                 identifier.span,
                 identifier.name.to_string(),
-                Ty::type_reference(checker.arena(), name, std::iter::empty()),
+                Ty::type_query(
+                    checker.arena(),
+                    identifier.name.as_str(),
+                    Ty::any(),
+                    std::iter::empty(),
+                ),
             )
         }
         AstKind::TSTypeParameter(parameter) => (

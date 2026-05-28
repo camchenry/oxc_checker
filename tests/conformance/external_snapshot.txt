@@ -100,7 +100,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
       actual:   any
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts:54 `signalLessContext` type mismatch
       expected: OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">
-      actual:   OmitKeyof<any, "signal", "strictly">
+      actual:   OmitKeyof<typeof context, "signal", "strictly">
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts:54 `OmitKeyof` type mismatch
       expected: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }
       actual:   any
@@ -160,7 +160,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
       actual:   StreamedQueryParams<TQueryFnData, TData, TQueryKey>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts:61 `signalLessContext` type mismatch
       expected: OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">
-      actual:   OmitKeyof<any, "signal", "strictly">
+      actual:   OmitKeyof<typeof context, "signal", "strictly">
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts:61 `QueryFunctionContext` type mismatch
       expected: [TPageParam] extends [never] ? { client: import("./types").QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: import("./types").QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { ...; }
       actual:   any

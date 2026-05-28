@@ -2,10 +2,10 @@ export declare const dataTagSymbol: unique symbol;
 >                    ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->           ^^^^^^^^^^^^^: typeof dataTagSymbol   (TyTypeReference)
+>           ^^^^^^^^^^^^^: typeof dataTagSymbol   (TyTypeQuery)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->           ^^^^^^^^^^^^^: typeof dataTagSymbol   (TyTypeReference)
+>           ^^^^^^^^^^^^^: typeof dataTagSymbol   (TyTypeQuery)
 
 export type dataTagSymbol = typeof dataTagSymbol;
 >                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -14,10 +14,10 @@ export declare const dataTagErrorSymbol: unique symbol;
 >                    ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeReference)
+>           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeQuery)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeReference)
+>           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeQuery)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
 >                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -26,10 +26,10 @@ export declare const unsetMarker: unique symbol;
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type UnsetMarker = typeof unsetMarker;
->           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeReference)
+>           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
 
 export type UnsetMarker = typeof unsetMarker;
->           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeReference)
+>           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
 
 export type UnsetMarker = typeof unsetMarker;
 >                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)

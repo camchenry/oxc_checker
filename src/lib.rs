@@ -636,6 +636,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     /// Resolve `typeof Foo` type queries and apply query type arguments when present.
+    /// Mirrors typescript-go: resolve the entity name as a value-meaning symbol, then
+    /// wrap the resulting type in `Ty::TypeQuery` so display and downstream consumers
+    /// can recover the queried name. When explicit type arguments are present we
+    /// eagerly expand the wrapper into the substituted shape (e.g. a class typeof
+    /// becomes a synthetic constructor object) so generic call/intersection sites work.
     fn get_type_from_ts_type_query(
         &self,
         program_id: program::ProgramId,
@@ -645,7 +650,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::any();
         };
 
-        let base_type = match &query.expr_name {
+        let resolved = match &query.expr_name {
             TSTypeQueryExprName::IdentifierReference(identifier) => identifier
                 .reference_id
                 .get()
@@ -660,14 +665,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_root_symbol(program_id, name)
                         .map(|symbol| self.get_type_of_symbol(symbol))
                 })
-                .unwrap_or_else(|| {
-                    let type_name = self.arena().concat_strs_array(["typeof ", name]);
-                    Ty::type_reference(self.arena(), type_name, std::iter::empty())
-                }),
-            _ => {
-                let type_name = self.arena().concat_strs_array(["typeof ", name]);
-                Ty::type_reference(self.arena(), type_name, std::iter::empty())
-            }
+                .unwrap_or_else(Ty::any),
+            // TODO(correctness): resolve qualified-name and `this` typeof targets to a
+            // real symbol so `resolved` is meaningful instead of `Ty::any`.
+            _ => Ty::any(),
         };
 
         let type_arguments = query
@@ -682,15 +683,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .collect::<Vec<_>>();
 
-        if type_arguments.is_empty()
-            && (base_type.is_none() || matches!(base_type, Ty::UniqueSymbol(_)))
-        {
-            let type_name = self.arena().concat_strs_array(["typeof ", name]);
-            Ty::type_reference(self.arena(), type_name, std::iter::empty())
-        } else if type_arguments.is_empty() {
-            base_type
+        if type_arguments.is_empty() {
+            Ty::type_query(self.arena(), name, resolved, std::iter::empty())
         } else {
-            self.instantiate_type_query_type(program_id, base_type, &type_arguments)
+            self.instantiate_type_query_type(program_id, resolved, &type_arguments)
         }
     }
 
@@ -702,7 +698,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if let TSType::TSTypeQuery(query) = &alias.type_annotation
             && let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name)
         {
-            let type_name = self.arena().concat_strs_array(["typeof ", name]);
             let type_arguments =
                 query
                     .type_arguments
@@ -714,7 +709,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             .iter()
                             .map(|ty| self.get_type_from_ts_type(program_id, ty))
                     });
-            return Ty::type_reference(self.arena(), type_name, type_arguments);
+            return Ty::type_query(self.arena(), name, Ty::any(), type_arguments);
         }
 
         self.get_type_from_ts_type(program_id, &alias.type_annotation)
@@ -736,8 +731,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .map(|ty| self.instantiate_type_query_type(program_id, *ty, type_arguments)),
             ),
             Ty::Function(function) => self.instantiate_function_type(function, type_arguments),
-            Ty::TypeReference(reference) => self
-                .instantiate_typeof_class_type(program_id, reference, type_arguments)
+            Ty::TypeQuery(query) if query.type_arguments.is_empty() => self
+                .instantiate_typeof_class_type(program_id, query, type_arguments)
                 .unwrap_or(ty),
             _ => ty,
         }
@@ -786,13 +781,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn instantiate_typeof_class_type(
         &self,
         program_id: program::ProgramId,
-        reference: &TyTypeReference<'a>,
+        query: &TyTypeQuery<'a>,
         type_arguments: &[Ty<'a>],
     ) -> Option<Ty<'a>> {
-        if !reference.type_arguments.is_empty() {
-            return None;
-        }
-        let class_name = reference.name.strip_prefix("typeof ")?;
+        let class_name = query.name;
         let class_symbol = self.get_class_symbol_for_type(program_id, class_name)?;
         let type_parameters = self
             .get_type_parameters_for_type(class_symbol.program_id, class_name)
@@ -1436,15 +1428,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)));
 
-        if let Some(Ty::TypeReference(reference)) = constructor_type
-            && reference.type_arguments.is_empty()
-            && let Some(instance_name) = reference.name.strip_prefix("typeof ")
+        if let Some(Ty::TypeQuery(query)) = constructor_type
+            && query.type_arguments.is_empty()
         {
-            return Ty::type_reference(
-                self.arena(),
-                self.arena().str(instance_name),
-                std::iter::empty(),
-            );
+            return Ty::type_reference(self.arena(), query.name, std::iter::empty());
         }
 
         Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
@@ -1456,19 +1443,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object_type: &Ty<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        let reference = match object_type {
-            Ty::TypeReference(reference) => *reference,
+        let (class_name, is_static) = match object_type {
+            Ty::TypeReference(reference) => {
+                if let Some(ty) = self.get_property_type_of_interface_type(
+                    program_id,
+                    reference,
+                    property_name,
+                ) {
+                    return Some(ty);
+                }
+                (reference.name, false)
+            }
+            // `typeof Class` value-side property access (statics).
+            Ty::TypeQuery(query) => (query.name, true),
             _ => return None,
         };
-        if let Some(ty) =
-            self.get_property_type_of_interface_type(program_id, reference, property_name)
-        {
-            return Some(ty);
-        }
-
-        let type_name = reference.name;
-        let is_static = type_name.starts_with("typeof ");
-        let class_name = type_name.strip_prefix("typeof ").unwrap_or(type_name);
         let class_symbol = self.get_class_symbol_for_type(program_id, class_name)?;
         let (class_node_id, class) = self.get_class_for_symbol(class_symbol)?;
         self.get_class_member_type(
@@ -2259,8 +2248,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // TODO(overloads): TypeScript Go resolves class/function declaration conflicts through
             // binder symbol merging. Keep the class-side type for now instead of treating invalid
             // class/function collisions as callable overload groups.
-            let name = self.arena().concat_strs_array(["typeof ", function_name]);
-            return Ty::type_reference(self.arena(), name, std::iter::empty());
+            // TODO(correctness): model the class value-side as a real constructor object type
+            // (`{ new(): Foo; prototype: Foo; …static members }`) instead of a `Ty::any` stub.
+            return Ty::type_query(
+                self.arena(),
+                function_name,
+                Ty::any(),
+                std::iter::empty(),
+            );
         }
 
         let signatures = callable_declarations
@@ -2478,10 +2473,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::BindingIdentifier(identifier) => {
                 match self.nodes(sym.program_id).parent_kind(declaration) {
                     AstKind::Class(_) => {
-                        let name = self
-                            .arena()
-                            .concat_strs_array(["typeof ", identifier.name.as_str()]);
-                        Ty::type_reference(self.arena(), name, std::iter::empty())
+                        // TODO(correctness): model the class value-side as a real constructor
+                        // object type instead of a `Ty::any` stub. Today the `Ty::TypeQuery`
+                        // name field is what downstream class-static lookups key off.
+                        Ty::type_query(
+                            self.arena(),
+                            identifier.name.as_str(),
+                            Ty::any(),
+                            std::iter::empty(),
+                        )
                     }
                     AstKind::Function(function) => self.get_type_of_function_declaration_group(
                         sym.program_id,
@@ -2504,10 +2504,14 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 }
             }
             AstKind::Class(class) => class.id.as_ref().map_or_else(Ty::any, |identifier| {
-                let name = self
-                    .arena()
-                    .concat_strs_array(["typeof ", identifier.name.as_str()]);
-                Ty::type_reference(self.arena(), name, std::iter::empty())
+                // TODO(correctness): same as above—replace `Ty::any` stub with a real
+                // constructor object type for the class.
+                Ty::type_query(
+                    self.arena(),
+                    identifier.name.as_str(),
+                    Ty::any(),
+                    std::iter::empty(),
+                )
             }),
             // TODO
             AstKind::ImportSpecifier(_)

@@ -83,6 +83,20 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
                         is_assignable_to(*source_argument, *target_argument)
                     })
         }
+        (Ty::TypeQuery(source), Ty::TypeQuery(target)) => {
+            source.name == target.name
+                && source.type_arguments.len() == target.type_arguments.len()
+                && source
+                    .type_arguments
+                    .iter()
+                    .zip(target.type_arguments.iter())
+                    .all(|(source_argument, target_argument)| {
+                        is_assignable_to(*source_argument, *target_argument)
+                    })
+        }
+        // A `typeof X` query is transparently compatible with whatever the queried symbol's type allows.
+        (Ty::TypeQuery(source), _) => is_assignable_to(source.resolved, target),
+        (_, Ty::TypeQuery(target)) => is_assignable_to(source, target.resolved),
         (Ty::Array(source), Ty::Array(target)) => {
             is_assignable_to(source.element_type, target.element_type)
         }

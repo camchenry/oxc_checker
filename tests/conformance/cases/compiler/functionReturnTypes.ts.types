@@ -5,7 +5,7 @@ function emptyVoid(): void {
 >        ^^^^^^^^^: () => void   (TyFunction)
 
 class EmptyGetter {
->     ^^^^^^^^^^^: typeof EmptyGetter   (TyTypeReference)
+>     ^^^^^^^^^^^: typeof EmptyGetter   (TyTypeQuery)
 
   public get x() {
 >            ^: void   (TyVoid)
