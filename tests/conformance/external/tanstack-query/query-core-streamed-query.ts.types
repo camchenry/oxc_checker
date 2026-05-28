@@ -809,7 +809,7 @@ type Todo = {
 > ^^^^^: string   (TyString)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->    ^^^^^^^^^^^^: DataTag<none, Todo[], Error>   (TyTypeReference)
+>    ^^^^^^^^^^^^: DataTag<readonly ["todos"], Todo[], Error>   (TyTypeReference)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                   ^^^^^^^: any   (TyAny)
@@ -839,7 +839,7 @@ declare const todoStream: AsyncIterable<Todo>
 >                                       ^^^^: any   (TyAny)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->             ^^^^^^^: QueryFunctionContext<none, number>   (TyTypeReference)
+>             ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
 >                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -848,13 +848,13 @@ const pageParam = context.pageParam
 >     ^^^^^^^^^: any   (TyAny)
 
 const pageParam = context.pageParam
->                 ^^^^^^^: QueryFunctionContext<none, number>   (TyTypeReference)
+>                 ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
 
 const pageParam = context.pageParam
 >                         ^^^^^^^^^: any   (TyAny)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->     ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, none, never>   (TyTypeReference)
+>     ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"], never>   (TyTypeReference)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
 >               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
@@ -935,7 +935,7 @@ const queryResult = queryFn(context)
 >     ^^^^^^^^^^^: InfiniteData<Todo, number> | Promise<InfiniteData<Todo, number>>   (TyUnion)
 
 const queryResult = queryFn(context)
->                   ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, none, never>   (TyTypeReference)
+>                   ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"], never>   (TyTypeReference)
 
 const queryResult = queryFn(context)
->                           ^^^^^^^: QueryFunctionContext<none, number>   (TyTypeReference)
+>                           ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)

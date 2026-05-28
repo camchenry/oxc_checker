@@ -327,7 +327,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tes
       actual:   <missing>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:14 `TodoQueryKey` type mismatch
       expected: readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }
-      actual:   DataTag<none, Todo[], Error>
+      actual:   DataTag<readonly ["todos"], Todo[], Error>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:14 `DataTag` type mismatch
       expected: TType extends import("../packages/query-core/src/types").AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }
       actual:   any
@@ -342,7 +342,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tes
       actual:   any
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:18 `context` type mismatch
       expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
-      actual:   QueryFunctionContext<none, number>
+      actual:   QueryFunctionContext<readonly ["todos"], number>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:18 `QueryFunctionContext` type mismatch
       expected: [TPageParam] extends [never] ? { client: import("../packages/query-core/src/types").QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: import("../packages/query-core/src/types").QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { ...; }
       actual:   any
@@ -351,13 +351,13 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tes
       actual:   any
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:20 `context` type mismatch
       expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
-      actual:   QueryFunctionContext<none, number>
+      actual:   QueryFunctionContext<readonly ["todos"], number>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:20 `pageParam` type mismatch
       expected: number
       actual:   any
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:21 `queryFn` type mismatch
       expected: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>
-      actual:   QueryFunction<InfiniteData<Todo, number>, none, never>
+      actual:   QueryFunction<InfiniteData<Todo, number>, readonly ["todos"], never>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:21 `streamedQuery` type mismatch
       expected: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>
       actual:   <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>
@@ -411,10 +411,10 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tes
       actual:   TaggedTodoData
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:32 `queryFn` type mismatch
       expected: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>
-      actual:   QueryFunction<InfiniteData<Todo, number>, none, never>
+      actual:   QueryFunction<InfiniteData<Todo, number>, readonly ["todos"], never>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:32 `context` type mismatch
       expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
-      actual:   QueryFunctionContext<none, number>
+      actual:   QueryFunctionContext<readonly ["todos"], number>
 FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Any/Equals.ts matched_types=8 mismatched_types=1 total_types=9 match_percentage=88.89%
   - tests/conformance/external/ts-toolbelt/object-optional.ts::sources/Any/Equals.ts:1 `Equals` type mismatch
       expected: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0

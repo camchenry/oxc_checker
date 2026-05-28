@@ -181,11 +181,15 @@ pub(crate) enum TyLiteralPrimitiveType {
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyArray<'a> {
     pub(crate) element_type: Ty<'a>,
+    /// `true` when produced from `readonly T[]` or `ReadonlyArray<T>`.
+    pub(crate) readonly: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyTuple<'a> {
     pub(crate) elements: ArenaVec<'a, TupleElement<'a>>,
+    /// `true` when produced from a `readonly` tuple literal.
+    pub(crate) readonly: bool,
 }
 
 /// A tuple element is either: a regular type [`Ty`], a rest type, or an optional type.
@@ -496,12 +500,30 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
-        Self::Array(arena.alloc(TyArray { element_type }))
+        Self::Array(arena.alloc(TyArray {
+            element_type,
+            readonly: false,
+        }))
+    }
+
+    pub(crate) fn readonly_array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
+        Self::Array(arena.alloc(TyArray {
+            element_type,
+            readonly: true,
+        }))
     }
 
     pub(crate) fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
         Self::Tuple(arena.alloc(TyTuple {
             elements: arena.vec_from_iter(elements),
+            readonly: false,
+        }))
+    }
+
+    pub(crate) fn readonly_tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
+        Self::Tuple(arena.alloc(TyTuple {
+            elements: arena.vec_from_iter(elements),
+            readonly: true,
         }))
     }
 
@@ -729,7 +751,19 @@ impl<'a> Ty<'a> {
                 {
                     Self::unique_symbol(arena, None)
                 }
-                TSTypeOperatorOperator::Readonly | TSTypeOperatorOperator::Unique => Self::none(),
+                // `readonly` only applies to array/tuple literals; mark the inner type
+                // as readonly and otherwise pass it through.
+                TSTypeOperatorOperator::Readonly => {
+                    match Self::from_ts_type(arena, &operator.type_annotation) {
+                        Self::Array(array) => Self::readonly_array(arena, array.element_type),
+                        Self::Tuple(tuple) => Self::Tuple(arena.alloc(TyTuple {
+                            elements: arena.vec_from_iter(tuple.elements.iter().copied()),
+                            readonly: true,
+                        })),
+                        inner => inner,
+                    }
+                }
+                TSTypeOperatorOperator::Unique => Self::none(),
             },
             TSType::TSIndexedAccessType(indexed_access) => Self::indexed_access(
                 arena,
@@ -888,30 +922,28 @@ impl<'a> Ty<'a> {
                     .iter()
                     .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
             ),
-            Self::Array(array) => Self::array(
-                arena,
-                array
-                    .element_type
-                    .substitute_type_parameters(arena, substitutions),
+            Self::Array(array) => Self::Array(
+                arena.alloc(TyArray {
+                    element_type: array
+                        .element_type
+                        .substitute_type_parameters(arena, substitutions),
+                    readonly: array.readonly,
+                }),
             ),
-            Self::Tuple(tuple) => Self::tuple(
-                arena,
-                tuple
-                    .elements
-                    .iter()
-                    .map(|element| match element {
-                        TupleElement::Regular(ty) => TupleElement::Regular(
-                            ty.substitute_type_parameters(arena, substitutions),
-                        ),
-                        TupleElement::Rest(ty) => {
-                            TupleElement::Rest(ty.substitute_type_parameters(arena, substitutions))
-                        }
-                        TupleElement::Optional(ty) => TupleElement::Optional(
-                            ty.substitute_type_parameters(arena, substitutions),
-                        ),
-                    })
-                    .collect(),
-            ),
+            Self::Tuple(tuple) => Self::Tuple(arena.alloc(TyTuple {
+                elements: arena.vec_from_iter(tuple.elements.iter().map(|element| match element {
+                    TupleElement::Regular(ty) => {
+                        TupleElement::Regular(ty.substitute_type_parameters(arena, substitutions))
+                    }
+                    TupleElement::Rest(ty) => {
+                        TupleElement::Rest(ty.substitute_type_parameters(arena, substitutions))
+                    }
+                    TupleElement::Optional(ty) => {
+                        TupleElement::Optional(ty.substitute_type_parameters(arena, substitutions))
+                    }
+                })),
+                readonly: tuple.readonly,
+            })),
             Self::Union(union) => Self::r#union(
                 arena,
                 union
@@ -1158,10 +1190,15 @@ impl<'a> Ty<'a> {
             }
             Self::Array(array) => {
                 let element_type = array.element_type.to_type_string();
-                if array.element_type.display_needs_parentheses() {
+                let body = if array.element_type.display_needs_parentheses() {
                     format!("({element_type})[]")
                 } else {
                     format!("{element_type}[]")
+                };
+                if array.readonly {
+                    format!("readonly {body}")
+                } else {
+                    body
                 }
             }
             Self::Tuple(tuple) => {
@@ -1182,7 +1219,11 @@ impl<'a> Ty<'a> {
                     })
                     .collect::<Vec<_>>()
                     .join(", ");
-                format!("[{elements}]")
+                if tuple.readonly {
+                    format!("readonly [{elements}]")
+                } else {
+                    format!("[{elements}]")
+                }
             }
             Self::Union(union) => union
                 .types
