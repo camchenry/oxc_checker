@@ -2043,4 +2043,25 @@ mod tests {
         assert_eq!(results[0].matched_types, 1);
         assert!(results[0].errors.is_empty());
     }
+
+    #[test]
+    fn ambient_namespace_with_statement_emits_namespace_and_export_records() {
+        let source_text = "// @target: es2015\ndeclare namespace M1 {\n    while(true);\n\n    export var v1 = () => false;\n}";
+        let records = collect_oxc_records_from_source(
+            Path::new("vendor/TypeScript/tests/cases"),
+            Path::new("vendor/TypeScript/tests/cases/compiler/ambientStatement1.ts"),
+            source_text,
+        );
+
+        assert!(records.iter().any(|record| {
+            record.path == "compiler/ambientStatement1.ts"
+                && record.text == "M1"
+                && record.ty_repr == "typeof M1"
+        }));
+        assert!(records.iter().any(|record| {
+            record.path == "compiler/ambientStatement1.ts"
+                && record.text == "v1"
+                && record.ty_repr == "() => boolean"
+        }));
+    }
 }
