@@ -1,6 +1,7 @@
 - read the README, it's important
 - run `cargo conformance` for full verification
 - architecture-wise, aim to be similar to `typescript-go` codebase
+- if something should be addressed later, leave a TODO. for example:`TODO(perf)`, `TODO`, `TODO(correctness)`
 
 ## TypeScript conformance tests
 
