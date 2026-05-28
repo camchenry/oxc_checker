@@ -74,7 +74,7 @@ export type UnsetMarker = typeof unsetMarker
 >                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type AnyDataTag = {
->           ^^^^^^^^^^: {}   (TyObject)
+>           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject)
 
   [dataTagSymbol]: any
 >  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -83,7 +83,7 @@ export type AnyDataTag = {
 >  ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->           ^^^^^^^: TType extends AnyDataTag ? TType : TType & {}   (TyConditional)
+>           ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
 >                   ^^^^^: any   (TyAny)

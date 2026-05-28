@@ -12,7 +12,10 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
                 source
                     .properties
                     .iter()
-                    .find(|source_property| source_property.name == target_property.name)
+                    .find(|source_property| {
+                        source_property.name == target_property.name
+                            && source_property.computed == target_property.computed
+                    })
                     .is_some_and(|source_property| {
                         is_assignable_to(source_property.ty, target_property.ty)
                     })
@@ -23,7 +26,10 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
                 source
                     .properties
                     .iter()
-                    .find(|source_property| source_property.name == target_property.name)
+                    .find(|source_property| {
+                        source_property.name == target_property.name
+                            && source_property.computed == target_property.computed
+                    })
                     .is_some_and(|source_property| {
                         is_assignable_to(source_property.ty, target_property.ty)
                     })
@@ -34,7 +40,10 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
                 source
                     .properties
                     .iter()
-                    .find(|source_property| source_property.name == target_property.name)
+                    .find(|source_property| {
+                        source_property.name == target_property.name
+                            && source_property.computed == target_property.computed
+                    })
                     .is_some_and(|source_property| {
                         is_assignable_to(source_property.ty, target_property.ty)
                     })
@@ -45,7 +54,10 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
                 source
                     .properties
                     .iter()
-                    .find(|source_property| source_property.name == target_property.name)
+                    .find(|source_property| {
+                        source_property.name == target_property.name
+                            && source_property.computed == target_property.computed
+                    })
                     .is_some_and(|source_property| {
                         is_assignable_to(source_property.ty, target_property.ty)
                     })

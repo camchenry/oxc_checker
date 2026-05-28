@@ -10,6 +10,18 @@ export type dataTagSymbol = typeof dataTagSymbol;
 export type dataTagSymbol = typeof dataTagSymbol;
 >                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
+export declare const dataTagErrorSymbol: unique symbol;
+>                    ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
+>           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeReference)
+
+export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
+>           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeReference)
+
+export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
+>                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
 export declare const unsetMarker: unique symbol;
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
@@ -21,3 +33,12 @@ export type UnsetMarker = typeof unsetMarker;
 
 export type UnsetMarker = typeof unsetMarker;
 >                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+export type AnyDataTag = {
+>           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject)
+
+	[dataTagSymbol]: any;
+> ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+	[dataTagErrorSymbol]: any;
+> ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)

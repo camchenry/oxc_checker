@@ -108,10 +108,11 @@ fn infer_type_parameter_from_types<'a>(
         }
         (Ty::Object(parameter_object), Ty::Object(argument_object)) => {
             for parameter_property in &parameter_object.properties {
-                if let Some(argument_property) = argument_object
-                    .properties
-                    .iter()
-                    .find(|argument_property| argument_property.name == parameter_property.name)
+                if let Some(argument_property) =
+                    argument_object.properties.iter().find(|argument_property| {
+                        argument_property.name == parameter_property.name
+                            && argument_property.computed == parameter_property.computed
+                    })
                 {
                     infer_type_parameter_from_types(
                         &parameter_property.ty,
@@ -2991,6 +2992,7 @@ mod test {
             "
         declare const dataTagSymbol: unique symbol;
         declare const aliasValue: typeof dataTagSymbol;
+        declare const tagged: { [dataTagSymbol]: any };
         ",
         );
 
@@ -3001,6 +3003,10 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "aliasValue").to_type_string(),
             "typeof dataTagSymbol"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "tagged").to_type_string(),
+            "{ [dataTagSymbol]: any; }"
         );
     }
 

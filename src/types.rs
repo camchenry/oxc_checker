@@ -86,6 +86,7 @@ pub(crate) struct TyModuleNamespace<'a> {
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) struct TyProperty<'a> {
     pub(crate) name: &'a str,
+    pub(crate) computed: bool,
     pub(crate) ty: Ty<'a>,
 }
 
@@ -355,7 +356,19 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
-        TyProperty { name, ty }
+        TyProperty {
+            name,
+            computed: false,
+            ty,
+        }
+    }
+
+    pub(crate) fn computed_property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
+        TyProperty {
+            name,
+            computed: true,
+            ty,
+        }
     }
 
     pub(crate) fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
@@ -561,34 +574,37 @@ impl<'a> Ty<'a> {
                     .iter()
                     .filter_map(|member| match member {
                         TSSignature::TSPropertySignature(property) => {
-                            let name = property_key_name_str(&property.key)?;
+                            let name = property_key_name(&property.key)?;
                             let ty = Self::from_ts_type_annotation(
                                 arena,
                                 property.type_annotation.as_deref(),
                             );
-                            Some(Self::property(name, ty))
+                            Some(if property.computed {
+                                Self::computed_property(name, ty)
+                            } else {
+                                Self::property(name, ty)
+                            })
                         }
                         TSSignature::TSMethodSignature(method) => {
-                            let name = property_key_name_str(&method.key)?;
-                            Some(Self::property(
-                                name,
-                                Self::function(
+                            let name = property_key_name(&method.key)?;
+                            let ty = Self::function(
+                                arena,
+                                type_parameters_from_declaration(
                                     arena,
-                                    type_parameters_from_declaration(
-                                        arena,
-                                        method.type_parameters.as_deref(),
-                                    ),
-                                    function_type_parameters(
-                                        arena,
-                                        method.this_param.as_deref(),
-                                        method.params.as_ref(),
-                                    ),
-                                    Self::from_ts_type_annotation(
-                                        arena,
-                                        method.return_type.as_deref(),
-                                    ),
+                                    method.type_parameters.as_deref(),
                                 ),
-                            ))
+                                function_type_parameters(
+                                    arena,
+                                    method.this_param.as_deref(),
+                                    method.params.as_ref(),
+                                ),
+                                Self::from_ts_type_annotation(arena, method.return_type.as_deref()),
+                            );
+                            Some(if method.computed {
+                                Self::computed_property(name, ty)
+                            } else {
+                                Self::property(name, ty)
+                            })
                         }
                         _ => None,
                     }),
@@ -739,14 +755,12 @@ impl<'a> Ty<'a> {
 
     pub(crate) fn property_type(&self, name: &str) -> Option<Self> {
         match self {
-            Self::Object(object) => object
-                .properties
-                .iter()
-                .find_map(|property| (property.name == name).then_some(property.ty)),
-            Self::ModuleNamespace(namespace) => namespace
-                .properties
-                .iter()
-                .find_map(|property| (property.name == name).then_some(property.ty)),
+            Self::Object(object) => object.properties.iter().find_map(|property| {
+                (property.name == name && !property.computed).then_some(property.ty)
+            }),
+            Self::ModuleNamespace(namespace) => namespace.properties.iter().find_map(|property| {
+                (property.name == name && !property.computed).then_some(property.ty)
+            }),
             _ => None,
         }
     }
@@ -759,11 +773,10 @@ impl<'a> Ty<'a> {
         match self {
             Self::Object(object) => Self::object(
                 arena,
-                object.properties.iter().map(|property| {
-                    Self::property(
-                        property.name,
-                        property.ty.substitute_type_parameters(arena, substitutions),
-                    )
+                object.properties.iter().map(|property| TyProperty {
+                    name: property.name,
+                    computed: property.computed,
+                    ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             )
             .with_signatures(
@@ -776,11 +789,10 @@ impl<'a> Ty<'a> {
             Self::ModuleNamespace(namespace) => Self::module_namespace(
                 arena,
                 namespace.name,
-                namespace.properties.iter().map(|property| {
-                    Self::property(
-                        property.name,
-                        property.ty.substitute_type_parameters(arena, substitutions),
-                    )
+                namespace.properties.iter().map(|property| TyProperty {
+                    name: property.name,
+                    computed: property.computed,
+                    ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             ),
             Self::Function(function) => {
@@ -1025,7 +1037,11 @@ impl<'a> Ty<'a> {
                     .iter()
                     .map(|signature| signature.to_type_string())
                     .chain(object.properties.iter().map(|property| {
-                        format!("{}: {};", property.name, property.ty.to_type_string())
+                        format!(
+                            "{}: {};",
+                            property_name_to_type_string(property),
+                            property.ty.to_type_string()
+                        )
                     }))
                     .collect::<Vec<_>>()
                     .join(" ");
@@ -1600,10 +1616,20 @@ fn signature_from_ts_signature<'a>(
     Some(Signature::new(kind, function))
 }
 
-fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
+fn property_key_name<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
+        PropertyKey::Identifier(identifier) => Some(identifier.name.as_str()),
+        PropertyKey::StringLiteral(literal) => Some(literal.value.as_str()),
         _ => None,
+    }
+}
+
+fn property_name_to_type_string(property: &TyProperty<'_>) -> String {
+    if property.computed {
+        format!("[{}]", property.name)
+    } else {
+        property.name.to_string()
     }
 }
 
