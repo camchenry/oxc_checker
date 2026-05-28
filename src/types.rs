@@ -95,6 +95,7 @@ pub(crate) struct TyParameter<'a> {
     pub(crate) name: &'a str,
     pub(crate) ty: Ty<'a>,
     pub(crate) optional: bool,
+    pub(crate) rest: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -303,6 +304,7 @@ impl<'a> Ty<'a> {
             name,
             ty,
             optional: false,
+            rest: false,
         }
     }
 
@@ -311,6 +313,16 @@ impl<'a> Ty<'a> {
             name,
             ty,
             optional: true,
+            rest: false,
+        }
+    }
+
+    pub(crate) fn rest_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+        TyParameter {
+            name,
+            ty,
+            optional: false,
+            rest: true,
         }
     }
 
@@ -624,7 +636,9 @@ impl<'a> Ty<'a> {
                         let ty = parameter
                             .ty
                             .substitute_type_parameters(arena, &substitutions);
-                        if parameter.optional {
+                        if parameter.rest {
+                            Self::rest_parameter(parameter.name, ty)
+                        } else if parameter.optional {
                             Self::optional_parameter(parameter.name, ty)
                         } else {
                             Self::parameter(parameter.name, ty)
@@ -736,7 +750,9 @@ impl<'a> Ty<'a> {
                     .parameters
                     .iter()
                     .map(|parameter| {
-                        if parameter.optional {
+                        if parameter.rest {
+                            format!("...{}: {}", parameter.name, parameter.ty.to_type_string())
+                        } else if parameter.optional {
                             format!("{}?: {}", parameter.name, parameter.ty.to_type_string())
                         } else {
                             format!("{}: {}", parameter.name, parameter.ty.to_type_string())
@@ -1025,8 +1041,8 @@ fn function_type_rest_parameter<'a>(
     parameter: &FormalParameterRest<'a>,
 ) -> TyParameter<'a> {
     let name = binding_pattern_name_str(&parameter.rest.argument).unwrap_or("_");
-    Ty::parameter(
-        arena.concat_strs_array(["...", name]),
+    Ty::rest_parameter(
+        name,
         Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
     )
 }

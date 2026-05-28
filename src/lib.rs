@@ -5,12 +5,12 @@ use oxc_ast::{
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, BinaryExpression,
         BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
-        ComputedMemberExpression, Expression, FormalParameter, Function, FunctionBody,
-        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
-        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, ReturnStatement,
-        StaticMemberExpression, StringLiteral, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
-        VariableDeclarationKind, VariableDeclarator,
+        ComputedMemberExpression, Expression, FormalParameter, FormalParameterRest,
+        FormalParameters, Function, FunctionBody, MethodDefinition, MethodDefinitionKind,
+        NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind, Program,
+        PropertyDefinition, PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
+        TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeQuery, TSTypeQueryExprName,
+        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
@@ -720,7 +720,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let ty = parameter
                     .ty
                     .substitute_type_parameters(self.arena(), &substitutions);
-                if parameter.optional {
+                if parameter.rest {
+                    Ty::rest_parameter(parameter.name, ty)
+                } else if parameter.optional {
                     Ty::optional_parameter(parameter.name, ty)
                 } else {
                     Ty::parameter(parameter.name, ty)
@@ -1555,40 +1557,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         };
         let parameters = match function {
-            FunctionKind::Function(f) => f
-                .params
-                .items
-                .iter()
-                .map(|parameter| {
-                    let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
-                    let ty = self.get_type_from_ts_type_annotation(
-                        program_id,
-                        parameter.type_annotation.as_deref(),
-                    );
-                    if parameter.optional {
-                        Ty::optional_parameter(name, ty)
-                    } else {
-                        Ty::parameter(name, ty)
-                    }
-                })
-                .collect::<Vec<_>>(),
-            FunctionKind::ArrowFunction(f) => f
-                .params
-                .items
-                .iter()
-                .map(|parameter| {
-                    let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
-                    let ty = self.get_type_from_ts_type_annotation(
-                        program_id,
-                        parameter.type_annotation.as_deref(),
-                    );
-                    if parameter.optional {
-                        Ty::optional_parameter(name, ty)
-                    } else {
-                        Ty::parameter(name, ty)
-                    }
-                })
-                .collect::<Vec<_>>(),
+            FunctionKind::Function(f) => self.function_signature_parameters(program_id, &f.params),
+            FunctionKind::ArrowFunction(f) => {
+                self.function_signature_parameters(program_id, &f.params)
+            }
         };
         let return_type = match function {
             FunctionKind::Function(f) => f.return_type.as_deref().map_or_else(
@@ -1602,6 +1574,51 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         Ty::function(self.arena(), type_parameters, parameters, return_type)
+    }
+
+    fn function_signature_parameters(
+        &self,
+        program_id: program::ProgramId,
+        params: &FormalParameters<'a>,
+    ) -> Vec<TyParameter<'a>> {
+        params
+            .items
+            .iter()
+            .map(|parameter| self.function_signature_parameter(program_id, parameter))
+            .chain(
+                params
+                    .rest
+                    .iter()
+                    .map(|parameter| self.function_signature_rest_parameter(program_id, parameter)),
+            )
+            .collect()
+    }
+
+    fn function_signature_parameter(
+        &self,
+        program_id: program::ProgramId,
+        parameter: &FormalParameter<'a>,
+    ) -> TyParameter<'a> {
+        let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
+        let ty =
+            self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
+        if parameter.optional {
+            Ty::optional_parameter(name, ty)
+        } else {
+            Ty::parameter(name, ty)
+        }
+    }
+
+    fn function_signature_rest_parameter(
+        &self,
+        program_id: program::ProgramId,
+        parameter: &FormalParameterRest<'a>,
+    ) -> TyParameter<'a> {
+        let name = binding_pattern_name_str(&parameter.rest.argument).unwrap_or("_");
+        Ty::rest_parameter(
+            name,
+            self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref()),
+        )
     }
 
     fn infer_function_return_type(
@@ -3054,6 +3071,26 @@ mod test {
     }
 
     #[test]
+    fn rest_function_parameters_render_in_signatures() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "function foo(a: string, b?: string, c?: number, ...d: number[]) {}",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "foo").to_type_string(),
+            "(a: string, b?: string, c?: number, ...d: number[]) => void"
+        );
+        let Ty::Function(function) = get_global_symbol_type(&ret, "foo") else {
+            panic!("expected function type");
+        };
+        let rest_parameter = function.parameters[3];
+        assert_eq!(rest_parameter.name, "d");
+        assert!(rest_parameter.rest);
+    }
+
+    #[test]
     fn function_type_annotations_resolve_to_function_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -3067,8 +3104,8 @@ mod test {
             Ty::function(
                 arena,
                 [],
-                [Ty::parameter(
-                    arena.str("...args"),
+                [Ty::rest_parameter(
+                    arena.str("args"),
                     Ty::type_reference(arena, arena.str("A"), []),
                 )],
                 Ty::type_reference(arena, arena.str("B"), []),
