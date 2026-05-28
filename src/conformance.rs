@@ -9,7 +9,7 @@ use std::{
 };
 
 use oxc_allocator::Allocator;
-use oxc_ast::AstKind;
+use oxc_ast::{AstKind, ast::TSModuleDeclarationName};
 use oxc_span::GetSpan;
 
 use super::*;
@@ -848,7 +848,12 @@ fn parse_compiler_test_case(source_text: &str, fixture_path: &str) -> CompilerTe
 }
 
 fn parse_compiler_directive(line: &str) -> Option<(String, String)> {
-    let comment = line.trim_start().strip_prefix("//")?.trim_start();
+    // Some TS test cases contain byte order marks (BOM) at the beginning of the file.
+    let comment = line
+        .trim_start_matches('\u{feff}')
+        .trim_start()
+        .strip_prefix("//")?
+        .trim_start();
     let directive = comment.strip_prefix('@')?;
     let (key, value) = directive.split_once(':')?;
     let key = key.trim();
@@ -1019,11 +1024,28 @@ fn actual_identifier_record<'a>(
         AstKind::TSInterfaceDeclaration(interface) => {
             (interface.id.span, interface.id.name.to_string(), Ty::any())
         }
+        AstKind::TSModuleDeclaration(module) => {
+            let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
+                return None;
+            };
+            let name = checker
+                .arena()
+                .concat_strs_array(["typeof ", identifier.name.as_str()]);
+            (
+                identifier.span,
+                identifier.name.to_string(),
+                Ty::type_reference(checker.arena(), name, std::iter::empty()),
+            )
+        }
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
             parameter.name.name.to_string(),
             Ty::any(),
         ),
+        AstKind::TSClassImplements(implements) => {
+            let (span, text) = ts_type_name_span_and_text(&implements.expression)?;
+            (span, text, Ty::any())
+        }
         AstKind::TSInterfaceHeritage(heritage) => {
             let Expression::Identifier(identifier) = &heritage.expression else {
                 return None;
@@ -1792,6 +1814,21 @@ mod tests {
         assert_eq!(parsed.files.len(), 1);
         assert_eq!(parsed.files[0].name, "example.ts");
         assert_eq!(parsed.files[0].source_text, "let value = false;");
+    }
+
+    #[test]
+    fn compiler_test_case_parser_collects_bom_prefixed_directive() {
+        let parsed = parse_compiler_test_case(
+            "\u{feff}// @target: es2015\nnamespace EmptyTypes {\n    interface iface { }\n}",
+            "compiler/arrayBestCommonTypes.ts",
+        );
+
+        assert_eq!(parsed.settings.get("target").unwrap(), "es2015");
+        assert_eq!(parsed.files.len(), 1);
+        assert_eq!(
+            parsed.files[0].source_text,
+            "namespace EmptyTypes {\n    interface iface { }\n}"
+        );
     }
 
     #[test]
