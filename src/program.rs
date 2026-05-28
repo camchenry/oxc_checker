@@ -226,7 +226,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         let source_text = self.allocator.alloc_str(&source_text);
         let source_type = SourceType::from_path(&path).unwrap_or_else(|_| SourceType::ts());
         let parser_return = Parser::new(self.allocator, source_text, source_type).parse();
-        if !parser_return.errors.is_empty() {
+        if parser_return.panicked {
             return Err(ProgramStoreError::Parse {
                 path,
                 messages: parser_return
