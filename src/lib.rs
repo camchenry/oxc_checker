@@ -27,6 +27,7 @@ use std::{
     collections::{HashMap, HashSet},
 };
 
+mod flow;
 pub mod program;
 mod relations;
 mod types;
@@ -1845,6 +1846,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::IdentifierReference(identifier) if identifier.name == UNDEFINED_IDENT => {
                 Ty::undefined()
             }
+            AstKind::IdentifierReference(_) => {
+                self.get_symbol_at_location(node)
+                    .map_or_else(Ty::none, |symbol| {
+                        let base_type = self.get_type_of_symbol(symbol);
+                        flow::get_flow_type_of_reference(self, node, symbol, base_type)
+                    })
+            }
             AstKind::TSPropertySignature(property) => self.get_type_from_ts_type_annotation(
                 node.program_id,
                 property.type_annotation.as_deref(),
@@ -2218,8 +2226,123 @@ mod test {
             .collect()
     }
 
+    fn get_identifier_reference_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        semantic
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| match node.kind() {
+                AstKind::IdentifierReference(identifier)
+                    if identifier.name == Ident::from(name) =>
+                {
+                    Some(checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)))
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
     fn arena<'a>(ret: &ParseAndCheck<'a>) -> CheckerArena<'a> {
         CheckerArena::new(ret.store.allocator())
+    }
+
+    #[test]
+    fn semantic_cfg_is_built_for_programs() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "if (value) { value; }");
+
+        assert!(
+            ret.store
+                .entry(ret.program_id)
+                .unwrap()
+                .semantic()
+                .cfg()
+                .is_some()
+        );
+    }
+
+    #[test]
+    fn flow_narrows_truthy_if_branch() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const x: string | undefined;
+        if (x) {
+            x;
+        } else {
+            x;
+        }
+        ",
+        );
+
+        let reference_types = get_identifier_reference_types(&ret, "x");
+        assert_eq!(reference_types.len(), 3);
+        assert_eq!(
+            reference_types[0],
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+        );
+        assert_eq!(reference_types[1], Ty::string());
+        assert_eq!(
+            reference_types[2],
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+        );
+    }
+
+    #[test]
+    fn flow_narrows_typeof_if_branches() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const y: string | number | boolean;
+        if (typeof y === 'string') {
+            y;
+        } else {
+            y;
+        }
+        ",
+        );
+
+        let reference_types = get_identifier_reference_types(&ret, "y");
+        assert_eq!(reference_types.len(), 3);
+        assert_eq!(
+            reference_types[0],
+            Ty::union(arena(&ret), [Ty::string(), Ty::number(), Ty::boolean()])
+        );
+        assert_eq!(reference_types[1], Ty::string());
+        assert_eq!(
+            reference_types[2],
+            Ty::union(arena(&ret), [Ty::number(), Ty::boolean()])
+        );
+    }
+
+    #[test]
+    fn flow_write_invalidates_previous_narrowing() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        let y: string | number;
+        if (typeof y === 'string') {
+            y = 1;
+            y;
+        }
+        ",
+        );
+
+        let reference_types = get_identifier_reference_types(&ret, "y");
+        assert_eq!(reference_types.len(), 3);
+        assert_eq!(
+            reference_types[0],
+            Ty::union(arena(&ret), [Ty::string(), Ty::number()])
+        );
+        assert_eq!(reference_types[1], Ty::string());
+        assert_eq!(
+            reference_types[2],
+            Ty::union(arena(&ret), [Ty::string(), Ty::number()])
+        );
     }
 
     #[cfg(target_pointer_width = "64")]

@@ -238,7 +238,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         }
 
         let program = self.allocator.alloc(parser_return.program);
-        let semantic_return = SemanticBuilder::new().build(program);
+        let semantic_return = SemanticBuilder::new().with_cfg(true).build(program);
         // Keep building even when semantic analysis reports recoverable errors so downstream
         // consumers (like conformance extraction) can still inspect partial symbol/type data.
 

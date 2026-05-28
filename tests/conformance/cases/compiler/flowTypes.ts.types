@@ -1,0 +1,47 @@
+declare const x: string | undefined;
+>             ^: string | undefined   (TyUnion)
+
+if (x) {
+>   ^: string | undefined   (TyUnion)
+
+  console.log(x);
+>         ^^^: any   (TyAny)
+
+  console.log(x);
+>             ^: string   (TyString)
+
+  console.log(x);
+>         ^^^: any   (TyAny)
+
+  console.log(x);
+>             ^: string | undefined   (TyUnion)
+
+declare const y: string | number | boolean;
+>             ^: string | number | boolean   (TyUnion)
+
+const z = typeof y === "string" ? y : undefined;
+>     ^: any   (TyAny)
+
+const z = typeof y === "string" ? y : undefined;
+>                ^: string | number | boolean   (TyUnion)
+
+const z = typeof y === "string" ? y : undefined;
+>                                 ^: string | number | boolean   (TyUnion)
+
+const z = typeof y === "string" ? y : undefined;
+>                                     ^^^^^^^^^: undefined   (TyUndefined)
+
+if (typeof y === "string") {
+>          ^: string | number | boolean   (TyUnion)
+
+  console.log(y);
+>         ^^^: any   (TyAny)
+
+  console.log(y);
+>             ^: string   (TyString)
+
+  console.log(y)
+>         ^^^: any   (TyAny)
+
+  console.log(y)
+>             ^: number | boolean   (TyUnion)

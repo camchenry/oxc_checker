@@ -14,7 +14,7 @@ oxc_ast_visit = "0.132.0"
 oxc_allocator =  "0.132.0"
 oxc_parser =  "0.132.0"
 oxc_resolver = "11.19.1"
-oxc_semantic =  "0.132.0"
+oxc_semantic = { version = "0.132.0", features = ["cfg"] }
 oxc_span =  "0.132.0"
 oxc_syntax = "0.132.0"
 oxc_index = "4.1.0"
