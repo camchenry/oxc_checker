@@ -681,11 +681,42 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .collect::<Vec<_>>();
 
-        if type_arguments.is_empty() {
+        if type_arguments.is_empty()
+            && (base_type.is_none() || matches!(base_type, Ty::UniqueSymbol(_)))
+        {
+            let type_name = self.arena().concat_strs_array(["typeof ", name]);
+            Ty::type_reference(self.arena(), type_name, std::iter::empty())
+        } else if type_arguments.is_empty() {
             base_type
         } else {
             self.instantiate_type_query_type(program_id, base_type, &type_arguments)
         }
+    }
+
+    fn get_type_of_type_alias_declaration(
+        &self,
+        program_id: program::ProgramId,
+        alias: &oxc_ast::ast::TSTypeAliasDeclaration<'a>,
+    ) -> Ty<'a> {
+        if let TSType::TSTypeQuery(query) = &alias.type_annotation
+            && let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name)
+        {
+            let type_name = self.arena().concat_strs_array(["typeof ", name]);
+            let type_arguments =
+                query
+                    .type_arguments
+                    .as_ref()
+                    .into_iter()
+                    .flat_map(|type_arguments| {
+                        type_arguments
+                            .params
+                            .iter()
+                            .map(|ty| self.get_type_from_ts_type(program_id, ty))
+                    });
+            return Ty::type_reference(self.arena(), type_name, type_arguments);
+        }
+
+        self.get_type_from_ts_type(program_id, &alias.type_annotation)
     }
 
     /// Instantiate the pieces of a type-query result that accept explicit type arguments.
@@ -2437,6 +2468,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 sym.program_id,
                 property.type_annotation.as_deref(),
             ),
+            AstKind::TSTypeAliasDeclaration(alias)
+                if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
+            {
+                self.get_type_of_type_alias_declaration(sym.program_id, alias)
+            }
+            AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
             AstKind::BindingIdentifier(identifier) => {
                 match self.nodes(sym.program_id).parent_kind(declaration) {
                     AstKind::Class(_) => {
@@ -2456,6 +2493,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             FunctionKind::ArrowFunction(arrow_func_expr),
                             Some(declaration),
                         ),
+                    AstKind::TSTypeAliasDeclaration(alias)
+                        if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
+                    {
+                        self.get_type_of_type_alias_declaration(sym.program_id, alias)
+                    }
+                    AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
                     _ => Ty::none(),
                 }
             }
@@ -2938,6 +2981,27 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "f"), Ty::null());
         assert_eq!(get_global_symbol_type(&ret, "g"), Ty::any());
         assert_eq!(get_global_symbol_type(&ret, "h"), Ty::unknown());
+    }
+
+    #[test]
+    fn unique_symbol_types_and_type_queries_render() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const dataTagSymbol: unique symbol;
+        declare const aliasValue: typeof dataTagSymbol;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "dataTagSymbol").to_type_string(),
+            "unique symbol"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "aliasValue").to_type_string(),
+            "typeof dataTagSymbol"
+        );
     }
 
     #[test]

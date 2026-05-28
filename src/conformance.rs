@@ -9,7 +9,10 @@ use std::{
 };
 
 use oxc_allocator::Allocator;
-use oxc_ast::{AstKind, ast::TSModuleDeclarationName};
+use oxc_ast::{
+    AstKind,
+    ast::{TSModuleDeclarationName, TSType},
+};
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_span::GetSpan;
 
@@ -1152,13 +1155,24 @@ fn actual_identifier_record<'a>(
     let node_ref = NodeRef::new(program_id, node_id);
     let (span, text, ty) = match kind {
         AstKind::BindingIdentifier(identifier) => {
-            let symbol_id = identifier.symbol_id.get()?;
-            let symbol = SymbolRef::new(program_id, symbol_id);
-            (
-                identifier.span,
-                identifier.name.to_string(),
-                checker.get_type_of_symbol(symbol),
-            )
+            if let AstKind::TSTypeAliasDeclaration(alias) =
+                checker.nodes(program_id).parent_kind(node_id)
+                && matches!(alias.type_annotation, TSType::TSTypeQuery(_))
+            {
+                (
+                    identifier.span,
+                    identifier.name.to_string(),
+                    type_of_type_alias(checker, program_id, alias),
+                )
+            } else {
+                let symbol_id = identifier.symbol_id.get()?;
+                let symbol = SymbolRef::new(program_id, symbol_id);
+                (
+                    identifier.span,
+                    identifier.name.to_string(),
+                    checker.get_type_of_symbol(symbol),
+                )
+            }
         }
         AstKind::IdentifierReference(identifier) => (
             identifier.span,
@@ -1264,7 +1278,7 @@ fn type_of_type_alias<'a>(
     program_id: program::ProgramId,
     alias: &oxc_ast::ast::TSTypeAliasDeclaration<'a>,
 ) -> Ty<'a> {
-    let ty = checker.get_type_from_ts_type(program_id, &alias.type_annotation);
+    let ty = checker.get_type_of_type_alias_declaration(program_id, alias);
     if ty.is_none() { Ty::any() } else { ty }
 }
 

@@ -43,6 +43,7 @@ pub(crate) enum Ty<'a> {
     Boolean,
     Bigint,
     Symbol,
+    UniqueSymbol(&'a TyUniqueSymbol<'a>),
     Undefined,
     Null,
     Any,
@@ -137,6 +138,11 @@ pub(crate) struct TyBooleanLiteral {
 pub(crate) struct TyBigIntLiteral<'a> {
     // TODO(ast): use a number type?
     pub(crate) value: &'a str,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct TyUniqueSymbol<'a> {
+    pub(crate) name: Option<&'a str>,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -240,6 +246,10 @@ impl<'a> Ty<'a> {
 
     pub(crate) fn symbol() -> Self {
         Self::Symbol
+    }
+
+    pub(crate) fn unique_symbol(arena: CheckerArena<'a>, name: Option<&'a str>) -> Self {
+        Self::UniqueSymbol(arena.alloc(TyUniqueSymbol { name }))
     }
 
     /// General `boolean` type (true or false)
@@ -673,6 +683,11 @@ impl<'a> Ty<'a> {
                 TSTypeOperatorOperator::Keyof => {
                     Self::keyof(arena, Self::from_ts_type(arena, &operator.type_annotation))
                 }
+                TSTypeOperatorOperator::Unique
+                    if matches!(operator.type_annotation, TSType::TSSymbolKeyword(_)) =>
+                {
+                    Self::unique_symbol(arena, None)
+                }
                 TSTypeOperatorOperator::Readonly | TSTypeOperatorOperator::Unique => Self::none(),
             },
             TSType::TSIndexedAccessType(indexed_access) => Self::indexed_access(
@@ -953,6 +968,7 @@ impl<'a> Ty<'a> {
             Self::Boolean => "TyBoolean",
             Self::Bigint => "TyBigint",
             Self::Symbol => "TySymbol",
+            Self::UniqueSymbol(_) => "TyUniqueSymbol",
             Self::Undefined => "TyUndefined",
             Self::Null => "TyNull",
             Self::Any => "TyAny",
@@ -988,6 +1004,10 @@ impl<'a> Ty<'a> {
             Self::Boolean => "boolean".to_string(),
             Self::Bigint => "bigint".to_string(),
             Self::Symbol => "symbol".to_string(),
+            Self::UniqueSymbol(unique_symbol) => unique_symbol.name.map_or_else(
+                || "unique symbol".to_string(),
+                |name| format!("typeof {name}"),
+            ),
             Self::Undefined => "undefined".to_string(),
             Self::Null => "null".to_string(),
             Self::Any => "any".to_string(),
