@@ -682,6 +682,13 @@ impl<'a> Ty<'a> {
                     .iter()
                     .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
             ),
+            Self::Intersection(intersection) => Self::intersection(
+                arena,
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+            ),
             _ => *self,
         }
     }
@@ -836,7 +843,14 @@ impl<'a> Ty<'a> {
             Self::Intersection(intersection) => intersection
                 .types
                 .iter()
-                .map(|ty| ty.to_type_string())
+                .map(|ty| {
+                    let type_string = ty.to_type_string();
+                    if matches!(ty, Ty::Function(_)) {
+                        format!("({type_string})")
+                    } else {
+                        type_string
+                    }
+                })
                 .collect::<Vec<_>>()
                 .join(" & "),
         }

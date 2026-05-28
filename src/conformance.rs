@@ -1014,7 +1014,7 @@ fn actual_identifier_record<'a>(
         AstKind::TSTypeAliasDeclaration(alias) => (
             alias.id.span,
             alias.id.name.to_string(),
-            type_of_type_alias(checker.arena(), alias),
+            type_of_type_alias(checker, program_id, alias),
         ),
         AstKind::TSInterfaceDeclaration(interface) => {
             (interface.id.span, interface.id.name.to_string(), Ty::any())
@@ -1052,10 +1052,11 @@ fn actual_identifier_record<'a>(
 }
 
 fn type_of_type_alias<'a>(
-    arena: CheckerArena<'a>,
+    checker: &CheckerReturn<'a, '_>,
+    program_id: program::ProgramId,
     alias: &oxc_ast::ast::TSTypeAliasDeclaration<'a>,
 ) -> Ty<'a> {
-    let ty = Ty::from_ts_type(arena, &alias.type_annotation);
+    let ty = checker.get_type_from_ts_type(program_id, &alias.type_annotation);
     if ty.is_none() { Ty::any() } else { ty }
 }
 

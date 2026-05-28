@@ -9,7 +9,8 @@ use oxc_ast::{
         MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
         ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, ReturnStatement,
         StaticMemberExpression, StringLiteral, TSSignature, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
+        VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
@@ -45,6 +46,7 @@ struct ReturnExpressionVisitor<'a> {
 }
 
 impl<'a> ReturnExpressionVisitor<'a> {
+    /// Collect return expressions from this function body, ignoring nested functions.
     fn expressions_in_body(body: &'a FunctionBody<'a>) -> Vec<&'a Expression<'a>> {
         let mut visitor = Self {
             expressions: Vec::new(),
@@ -165,6 +167,22 @@ fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'
             arena.str(&format!("{}.{}", left, qualified.right.name))
         }
         TSTypeName::ThisExpression(_) => "this",
+    }
+}
+
+/// Convert a `typeof` query target into a lookup key when it can be resolved locally.
+fn ts_type_query_expr_name_to_str<'a>(
+    arena: CheckerArena<'a>,
+    name: &TSTypeQueryExprName<'a>,
+) -> Option<&'a str> {
+    match name {
+        TSTypeQueryExprName::IdentifierReference(identifier) => Some(identifier.name.as_str()),
+        TSTypeQueryExprName::QualifiedName(qualified) => {
+            let left = ts_type_name_to_str(arena, &qualified.left);
+            Some(arena.str(&format!("{}.{}", left, qualified.right.name)))
+        }
+        TSTypeQueryExprName::ThisExpression(_) => Some("this"),
+        TSTypeQueryExprName::TSImportType(_) => None,
     }
 }
 
@@ -563,13 +581,190 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         matches!(ty, Ty::String | Ty::StringLiteral(_))
     }
 
+    /// Resolve a TypeScript type annotation, if any.
+    fn get_type_from_ts_type_annotation(
+        &self,
+        program_id: program::ProgramId,
+        type_annotation: Option<&TSTypeAnnotation<'a>>,
+    ) -> Ty<'a> {
+        type_annotation.map_or_else(Ty::any, |type_annotation| {
+            self.get_type_from_ts_type(program_id, &type_annotation.type_annotation)
+        })
+    }
+
+    /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &TSType<'a>) -> Ty<'a> {
         match ty {
             TSType::TSTypeReference(reference) => {
                 self.get_type_from_ts_type_reference(program_id, reference)
             }
+            TSType::TSTypeQuery(query) => self.get_type_from_ts_type_query(program_id, query),
+            TSType::TSIntersectionType(intersection_type) => Ty::intersection(
+                self.arena(),
+                intersection_type
+                    .types
+                    .iter()
+                    .map(|ty| self.get_type_from_ts_type(program_id, ty)),
+            ),
+            TSType::TSUnionType(union_type) => Ty::union(
+                self.arena(),
+                union_type
+                    .types
+                    .iter()
+                    .map(|ty| self.get_type_from_ts_type(program_id, ty)),
+            ),
             _ => Ty::from_ts_type(self.arena(), ty),
         }
+    }
+
+    /// Resolve `typeof Foo` type queries and apply query type arguments when present.
+    fn get_type_from_ts_type_query(
+        &self,
+        program_id: program::ProgramId,
+        query: &TSTypeQuery<'a>,
+    ) -> Ty<'a> {
+        let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name) else {
+            return Ty::any();
+        };
+
+        let base_type = match &query.expr_name {
+            TSTypeQueryExprName::IdentifierReference(identifier) => identifier
+                .reference_id
+                .get()
+                .and_then(|reference_id| {
+                    self.semantic(program_id)
+                        .scoping()
+                        .get_reference(reference_id)
+                        .symbol_id()
+                })
+                .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)))
+                .or_else(|| {
+                    self.get_root_symbol(program_id, name)
+                        .map(|symbol| self.get_type_of_symbol(symbol))
+                })
+                .unwrap_or_else(|| {
+                    let type_name = self.arena().concat_strs_array(["typeof ", name]);
+                    Ty::type_reference(self.arena(), type_name, std::iter::empty())
+                }),
+            _ => {
+                let type_name = self.arena().concat_strs_array(["typeof ", name]);
+                Ty::type_reference(self.arena(), type_name, std::iter::empty())
+            }
+        };
+
+        let type_arguments = query
+            .type_arguments
+            .as_ref()
+            .into_iter()
+            .flat_map(|type_arguments| {
+                type_arguments
+                    .params
+                    .iter()
+                    .map(|ty| self.get_type_from_ts_type(program_id, ty))
+            })
+            .collect::<Vec<_>>();
+
+        if type_arguments.is_empty() {
+            base_type
+        } else {
+            self.instantiate_type_query_type(program_id, base_type, &type_arguments)
+        }
+    }
+
+    /// Instantiate the pieces of a type-query result that accept explicit type arguments.
+    fn instantiate_type_query_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        type_arguments: &[Ty<'a>],
+    ) -> Ty<'a> {
+        match ty {
+            Ty::Intersection(intersection) => Ty::intersection(
+                self.arena(),
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| self.instantiate_type_query_type(program_id, *ty, type_arguments)),
+            ),
+            Ty::Function(function) => self.instantiate_function_type(function, type_arguments),
+            Ty::TypeReference(reference) => self
+                .instantiate_typeof_class_type(program_id, reference, type_arguments)
+                .unwrap_or(ty),
+            _ => ty,
+        }
+    }
+
+    /// Partially apply explicit type arguments to a function type.
+    fn instantiate_function_type(
+        &self,
+        function: &TyFunction<'a>,
+        type_arguments: &[Ty<'a>],
+    ) -> Ty<'a> {
+        let substitutions = function
+            .type_parameters
+            .iter()
+            .zip(type_arguments.iter())
+            .map(|(type_parameter, type_argument)| (type_parameter.name, *type_argument))
+            .collect::<HashMap<_, _>>();
+        let remaining_type_parameters = function
+            .type_parameters
+            .iter()
+            .skip(type_arguments.len())
+            .copied();
+
+        Ty::function(
+            self.arena(),
+            remaining_type_parameters,
+            function.parameters.iter().map(|parameter| {
+                let ty = parameter
+                    .ty
+                    .substitute_type_parameters(self.arena(), &substitutions);
+                if parameter.optional {
+                    Ty::optional_parameter(parameter.name, ty)
+                } else {
+                    Ty::parameter(parameter.name, ty)
+                }
+            }),
+            function
+                .return_type
+                .substitute_type_parameters(self.arena(), &substitutions),
+        )
+    }
+
+    /// Instantiate `typeof Class<T>` into the constructor/prototype shape TypeScript reports.
+    fn instantiate_typeof_class_type(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+        type_arguments: &[Ty<'a>],
+    ) -> Option<Ty<'a>> {
+        if !reference.type_arguments.is_empty() {
+            return None;
+        }
+        let class_name = reference.name.strip_prefix("typeof ")?;
+        let class_symbol = self.get_class_symbol_for_type(program_id, class_name)?;
+        let type_parameters = self
+            .get_type_parameters_for_type(class_symbol.program_id, class_name)
+            .unwrap_or_default();
+        let instance_type_arguments = type_parameters
+            .iter()
+            .enumerate()
+            .map(|(index, _)| type_arguments.get(index).copied().unwrap_or_else(Ty::any));
+        let prototype_type_arguments = type_parameters.iter().map(|_| Ty::any());
+
+        Some(Ty::object(
+            self.arena(),
+            [
+                Ty::property(
+                    "new ()",
+                    Ty::type_reference(self.arena(), class_name, instance_type_arguments),
+                ),
+                Ty::property(
+                    "prototype",
+                    Ty::type_reference(self.arena(), class_name, prototype_type_arguments),
+                ),
+            ],
+        ))
     }
 
     fn get_type_from_ts_type_reference(
@@ -591,7 +786,69 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
+        if let Some(alias_type) =
+            self.get_expanded_type_query_alias_reference(program_id, name, &type_arguments)
+        {
+            return alias_type;
+        }
+
         Ty::type_reference(self.arena(), name, type_arguments)
+    }
+
+    /// Expand references to aliases whose underlying type is a `typeof` query.
+    fn get_expanded_type_query_alias_reference(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+        type_arguments: &[Ty<'a>],
+    ) -> Option<Ty<'a>> {
+        let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_expanded_type_query_alias_declaration(
+            symbol.program_id,
+            declaration,
+            type_arguments,
+        )
+    }
+
+    /// Resolve a type-query alias declaration and substitute the alias type arguments.
+    fn get_expanded_type_query_alias_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        type_arguments: &[Ty<'a>],
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(alias)
+                if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
+            {
+                let type_parameters = type_parameters_from_declaration(
+                    self.arena(),
+                    alias.type_parameters.as_deref(),
+                );
+                let substitutions = type_parameters
+                    .iter()
+                    .zip(type_arguments.iter())
+                    .map(|(type_parameter, type_argument)| (type_parameter.name, *type_argument))
+                    .collect::<HashMap<_, _>>();
+                Some(
+                    self.get_type_from_ts_type(program_id, &alias.type_annotation)
+                        .substitute_type_parameters(self.arena(), &substitutions),
+                )
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_expanded_type_query_alias_declaration(
+                    program_id,
+                    parent_id,
+                    type_arguments,
+                )
+            }
+            _ => None,
+        }
     }
 
     fn fill_default_type_arguments(
@@ -799,7 +1056,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     {
                         substitutions.insert(
                             type_parameter.name,
-                            Ty::from_ts_type(self.arena(), type_argument),
+                            self.get_type_from_ts_type(program_id, type_argument),
                         );
                         explicit_type_parameters.push(type_parameter.name);
                     }
@@ -1211,7 +1468,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_type_of_expression_with_node(program_id, value, node_id)
                 })
             },
-            |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
+            |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
         )
     }
 
@@ -1303,8 +1560,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .iter()
                 .map(|parameter| {
                     let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
-                    let ty = Ty::from_ts_type_annotation(
-                        self.arena(),
+                    let ty = self.get_type_from_ts_type_annotation(
+                        program_id,
                         parameter.type_annotation.as_deref(),
                     );
                     if parameter.optional {
@@ -1320,8 +1577,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .iter()
                 .map(|parameter| {
                     let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
-                    let ty = Ty::from_ts_type_annotation(
-                        self.arena(),
+                    let ty = self.get_type_from_ts_type_annotation(
+                        program_id,
                         parameter.type_annotation.as_deref(),
                     );
                     if parameter.optional {
@@ -1335,11 +1592,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let return_type = match function {
             FunctionKind::Function(f) => f.return_type.as_deref().map_or_else(
                 || self.infer_function_return_type(program_id, function, node_id),
-                |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
+                |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
             ),
             FunctionKind::ArrowFunction(f) => f.return_type.as_deref().map_or_else(
                 || self.infer_function_return_type(program_id, function, node_id),
-                |annotation| Ty::from_ts_type_annotation(self.arena(), Some(annotation)),
+                |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
             ),
         };
 
@@ -1504,10 +1761,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_declared_type_of_formal_parameter(
         &self,
+        program_id: program::ProgramId,
         parameter: &FormalParameter<'a>,
         annotation: &TSTypeAnnotation<'a>,
     ) -> Ty<'a> {
-        let annotated_type = Ty::from_ts_type_annotation(self.arena(), Some(annotation));
+        let annotated_type = self.get_type_from_ts_type_annotation(program_id, Some(annotation));
 
         if parameter.optional {
             return Ty::union(self.arena(), [annotated_type, Ty::undefined()]);
@@ -1587,9 +1845,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::IdentifierReference(identifier) if identifier.name == UNDEFINED_IDENT => {
                 Ty::undefined()
             }
-            AstKind::TSPropertySignature(property) => {
-                Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
-            }
+            AstKind::TSPropertySignature(property) => self.get_type_from_ts_type_annotation(
+                node.program_id,
+                property.type_annotation.as_deref(),
+            ),
             AstKind::ObjectProperty(property) => {
                 if self.is_in_contextually_typed_initializer(node.program_id, node.node_id)
                     && let Expression::BooleanLiteral(literal) = &property.value
@@ -1640,23 +1899,28 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             .scoping()
             .symbol_declaration(sym.symbol_id);
         match self.nodes(sym.program_id).kind(declaration) {
-            AstKind::VariableDeclarator(declarator) => {
-                Ty::from_ts_type_annotation(self.arena(), declarator.type_annotation.as_deref())
-            }
+            AstKind::VariableDeclarator(declarator) => self.get_type_from_ts_type_annotation(
+                sym.program_id,
+                declarator.type_annotation.as_deref(),
+            ),
             AstKind::FormalParameter(parameter) => match parameter.type_annotation.as_deref() {
-                Some(annotation) => {
-                    self.get_declared_type_of_formal_parameter(parameter, annotation)
-                }
+                Some(annotation) => self.get_declared_type_of_formal_parameter(
+                    sym.program_id,
+                    parameter,
+                    annotation,
+                ),
                 None => self
                     .get_contextual_type_of_formal_parameter(sym.program_id, declaration, parameter)
                     .unwrap_or_else(Ty::any),
             },
-            AstKind::FormalParameterRest(parameter) => {
-                Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
-            }
-            AstKind::CatchParameter(parameter) => {
-                Ty::from_ts_type_annotation(self.arena(), parameter.type_annotation.as_deref())
-            }
+            AstKind::FormalParameterRest(parameter) => self.get_type_from_ts_type_annotation(
+                sym.program_id,
+                parameter.type_annotation.as_deref(),
+            ),
+            AstKind::CatchParameter(parameter) => self.get_type_from_ts_type_annotation(
+                sym.program_id,
+                parameter.type_annotation.as_deref(),
+            ),
             AstKind::PropertyDefinition(property) => {
                 self.get_type_of_property_definition(sym.program_id, property, Some(declaration))
             }
@@ -1671,9 +1935,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     FunctionKind::ArrowFunction(arrow_func_expr),
                     Some(declaration),
                 ),
-            AstKind::AccessorProperty(property) => {
-                Ty::from_ts_type_annotation(self.arena(), property.type_annotation.as_deref())
-            }
+            AstKind::AccessorProperty(property) => self.get_type_from_ts_type_annotation(
+                sym.program_id,
+                property.type_annotation.as_deref(),
+            ),
             AstKind::BindingIdentifier(identifier) => {
                 match self.nodes(sym.program_id).parent_kind(declaration) {
                     AstKind::Class(_) => {
@@ -1725,8 +1990,8 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             {
                 AstKind::VariableDeclarator(declarator) => {
                     if declarator.type_annotation.is_some() {
-                        Ty::from_ts_type_annotation(
-                            self.arena(),
+                        self.get_type_from_ts_type_annotation(
+                            sym.program_id,
                             declarator.type_annotation.as_deref(),
                         )
                     } else {
@@ -2262,6 +2527,51 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "x"), Ty::number());
         assert_eq!(get_global_symbol_type(&ret, "y"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean());
+    }
+
+    #[test]
+    fn type_query_alias_instantiation_resolves_intersections() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        class ErrImpl<E> {
+            e!: E;
+        }
+
+        declare const Err: typeof ErrImpl & (<T>() => T);
+        type ErrAlias<U> = typeof Err<U>;
+        declare const e: ErrAlias<number>;
+        "#,
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "Err").to_type_string(),
+            "typeof ErrImpl & (<T>() => T)"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "e"),
+            Ty::intersection(
+                arena,
+                [
+                    Ty::object(
+                        arena,
+                        [
+                            Ty::property(
+                                "new ()",
+                                Ty::type_reference(arena, "ErrImpl", [Ty::number()]),
+                            ),
+                            Ty::property(
+                                "prototype",
+                                Ty::type_reference(arena, "ErrImpl", [Ty::any()]),
+                            ),
+                        ],
+                    ),
+                    Ty::function(arena, [], [], Ty::number()),
+                ],
+            )
+        );
     }
 
     #[test]
