@@ -30,6 +30,8 @@ Regenerate the TypeScript compiler API record cache and run the type record comp
 cargo conformance
 ```
 
+The full test suite takes like 7-8 minutes to run currently.
+
 Run a single conformance test file for quick iteration:
 
 ```sh
