@@ -19,6 +19,7 @@ use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolI
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
 use oxc_syntax::{
+    module_record::{ExportExportName, ExportLocalName},
     operator::{BinaryOperator, UnaryOperator},
     scope::ScopeFlags,
 };
@@ -1699,30 +1700,108 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .scoping()
             .symbol_declaration(symbol.symbol_id);
         let declaration_ref = NodeRef::new(symbol.program_id, declaration);
-        let AstKind::ImportSpecifier(specifier) = self.node_kind(declaration_ref) else {
-            return None;
+        let imported_name = match self.node_kind(declaration_ref) {
+            AstKind::ImportSpecifier(specifier) => specifier.imported.name().to_string(),
+            AstKind::ImportDefaultSpecifier(_) => "default".to_string(),
+            _ => return None,
         };
         let AstKind::ImportDeclaration(import_declaration) =
             self.nodes(symbol.program_id).parent_kind(declaration)
         else {
             return None;
         };
-        let imported_name = specifier.imported.name();
         let imported_program_id = self
             .store
             .resolved_module(symbol.program_id, import_declaration.source.value.as_str())?;
-        let imported_entry = self.store.entry(imported_program_id)?;
+        self.get_local_exported_symbol(imported_program_id, &imported_name)
+    }
+
+    fn get_local_exported_symbol(
+        &self,
+        program_id: program::ProgramId,
+        export_name: &str,
+    ) -> Option<SymbolRef> {
+        let imported_entry = self.store.entry(program_id)?;
+        let local_name = imported_entry
+            .module_record()
+            .local_export_entries
+            .iter()
+            .find_map(|entry| match &entry.export_name {
+                ExportExportName::Name(name) if name.name == export_name => Some(&entry.local_name),
+                ExportExportName::Default(_) if export_name == "default" => Some(&entry.local_name),
+                _ => None,
+            })?;
+        let local_name = match local_name {
+            ExportLocalName::Name(name) | ExportLocalName::Default(name) => name.name.as_str(),
+            ExportLocalName::Null => return None,
+        };
         let imported_symbol_id = imported_entry
             .semantic()
             .scoping()
-            .get_root_binding(Ident::from(imported_name.as_str()))?;
+            .get_root_binding(Ident::from(local_name))?;
 
-        Some(SymbolRef::new(imported_program_id, imported_symbol_id))
+        Some(SymbolRef::new(program_id, imported_symbol_id))
     }
 
     fn get_type_of_import_symbol(&self, symbol: SymbolRef) -> Option<Ty<'a>> {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        let declaration_ref = NodeRef::new(symbol.program_id, declaration);
+        if matches!(
+            self.node_kind(declaration_ref),
+            AstKind::ImportNamespaceSpecifier(_)
+        ) {
+            let AstKind::ImportDeclaration(import_declaration) =
+                self.nodes(symbol.program_id).parent_kind(declaration)
+            else {
+                return None;
+            };
+            let imported_program_id = self
+                .store
+                .resolved_module(symbol.program_id, import_declaration.source.value.as_str())?;
+            let namespace_name = self
+                .semantic(symbol.program_id)
+                .scoping()
+                .symbol_name(symbol.symbol_id)
+                .to_string();
+            return Some(self.get_module_namespace_type(imported_program_id, &namespace_name));
+        }
+
         self.get_imported_symbol(symbol)
             .map(|imported_symbol| self.get_type_of_symbol(imported_symbol))
+    }
+
+    fn get_module_namespace_type(
+        &self,
+        program_id: program::ProgramId,
+        namespace_name: &str,
+    ) -> Ty<'a> {
+        let Some(entry) = self.store.entry(program_id) else {
+            return Ty::any();
+        };
+        let namespace_name = self.arena().str(namespace_name);
+        let properties = entry
+            .module_record()
+            .local_export_entries
+            .iter()
+            .filter_map(|entry| {
+                let property_name = match &entry.export_name {
+                    ExportExportName::Name(name) => name.name.as_str(),
+                    ExportExportName::Default(_) => "default",
+                    ExportExportName::Null => return None,
+                };
+                let local_name = match &entry.local_name {
+                    ExportLocalName::Name(name) | ExportLocalName::Default(name) => {
+                        name.name.as_str()
+                    }
+                    ExportLocalName::Null => return None,
+                };
+                let symbol = self.get_root_symbol(program_id, local_name)?;
+                Some(Ty::property(property_name, self.get_type_of_symbol(symbol)))
+            });
+        Ty::module_namespace(self.arena(), namespace_name, properties)
     }
 
     fn get_type_of_array_expression(

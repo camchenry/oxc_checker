@@ -1,4 +1,5 @@
 // @target: es2022
+// @allowImportingTsExtensions: true
 
 // @filename: a.ts
 function process<T>(x: T) {
@@ -7,19 +8,25 @@ function process<T>(x: T) {
   }
   return x;
 }
+const mod = { process };
+export { process };
+export default mod;
 
 // @filename: index.ts
 import { process } from './a.ts'
 
-const i1_num = process(5)
-const i1_str = process("foo")
+const num: number = 5
+const str: string = "foo"
 
-import mod from './a.ts'
+const i1_num = process(num)
+const i1_str = process(str)
 
-const i2_num = mod.process(5)
-const i2_str = mod.process("foo")
+import modDefault from './a.ts'
 
-import * as mod from './a.ts'
+const i2_num = modDefault.process(num)
+const i2_str = modDefault.process(str)
 
-const i3_num = mod.process(5)
-const i3_str = mod.process("foo")
+import * as modNamespace from './a.ts'
+
+const i3_num = modNamespace.process(num)
+const i3_str = modNamespace.process(str)

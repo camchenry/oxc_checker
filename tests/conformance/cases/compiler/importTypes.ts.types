@@ -16,59 +16,98 @@ function process<T>(x: T) {
   return x;
 >        ^: T   (TyTypeReference)
 
+const mod = { process };
+>     ^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
+
+const mod = { process };
+>             ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+const mod = { process };
+>             ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+export { process };
+>        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+export default mod;
+>              ^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
+
 import { process } from './a.ts'
 >        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
 
-const i1_num = process(5)
+const num: number = 5
+>     ^^^: number   (TyNumber)
+
+const str: string = "foo"
+>     ^^^: string   (TyString)
+
+const i1_num = process(num)
 >     ^^^^^^: number   (TyNumber)
 
-const i1_num = process(5)
+const i1_num = process(num)
 >              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
 
-const i1_str = process("foo")
+const i1_num = process(num)
+>                      ^^^: number   (TyNumber)
+
+const i1_str = process(str)
 >     ^^^^^^: 1 | string   (TyUnion)
 
-const i1_str = process("foo")
+const i1_str = process(str)
 >              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
 
-import mod from './a.ts'
->      ^^^: any   (TyAny)
+const i1_str = process(str)
+>                      ^^^: string   (TyString)
 
-const i2_num = mod.process(5)
->     ^^^^^^: any   (TyAny)
+import modDefault from './a.ts'
+>      ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
 
-const i2_num = mod.process(5)
->              ^^^: any   (TyAny)
+const i2_num = modDefault.process(num)
+>     ^^^^^^: number   (TyNumber)
 
-const i2_num = mod.process(5)
->                  ^^^^^^^: any   (TyAny)
+const i2_num = modDefault.process(num)
+>              ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
 
-const i2_str = mod.process("foo")
->     ^^^^^^: any   (TyAny)
+const i2_num = modDefault.process(num)
+>                         ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
 
-const i2_str = mod.process("foo")
->              ^^^: any   (TyAny)
+const i2_num = modDefault.process(num)
+>                                 ^^^: number   (TyNumber)
 
-const i2_str = mod.process("foo")
->                  ^^^^^^^: any   (TyAny)
+const i2_str = modDefault.process(str)
+>     ^^^^^^: 1 | string   (TyUnion)
 
-import * as mod from './a.ts'
->           ^^^: any   (TyAny)
+const i2_str = modDefault.process(str)
+>              ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
 
-const i3_num = mod.process(5)
->     ^^^^^^: any   (TyAny)
+const i2_str = modDefault.process(str)
+>                         ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
 
-const i3_num = mod.process(5)
->              ^^^: any   (TyAny)
+const i2_str = modDefault.process(str)
+>                                 ^^^: string   (TyString)
 
-const i3_num = mod.process(5)
->                  ^^^^^^^: any   (TyAny)
+import * as modNamespace from './a.ts'
+>           ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace)
 
-const i3_str = mod.process("foo")
->     ^^^^^^: any   (TyAny)
+const i3_num = modNamespace.process(num)
+>     ^^^^^^: number   (TyNumber)
 
-const i3_str = mod.process("foo")
->              ^^^: any   (TyAny)
+const i3_num = modNamespace.process(num)
+>              ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace)
 
-const i3_str = mod.process("foo")
->                  ^^^^^^^: any   (TyAny)
+const i3_num = modNamespace.process(num)
+>                           ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+const i3_num = modNamespace.process(num)
+>                                   ^^^: number   (TyNumber)
+
+const i3_str = modNamespace.process(str)
+>     ^^^^^^: 1 | string   (TyUnion)
+
+const i3_str = modNamespace.process(str)
+>              ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace)
+
+const i3_str = modNamespace.process(str)
+>                           ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+
+const i3_str = modNamespace.process(str)
+>                                   ^^^: string   (TyString)

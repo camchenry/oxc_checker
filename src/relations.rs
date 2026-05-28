@@ -18,6 +18,39 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
                     })
             })
         }
+        (Ty::ModuleNamespace(source), Ty::Object(target)) => {
+            target.properties.iter().all(|target_property| {
+                source
+                    .properties
+                    .iter()
+                    .find(|source_property| source_property.name == target_property.name)
+                    .is_some_and(|source_property| {
+                        is_assignable_to(source_property.ty, target_property.ty)
+                    })
+            })
+        }
+        (Ty::Object(source), Ty::ModuleNamespace(target)) => {
+            target.properties.iter().all(|target_property| {
+                source
+                    .properties
+                    .iter()
+                    .find(|source_property| source_property.name == target_property.name)
+                    .is_some_and(|source_property| {
+                        is_assignable_to(source_property.ty, target_property.ty)
+                    })
+            })
+        }
+        (Ty::ModuleNamespace(source), Ty::ModuleNamespace(target)) => {
+            target.properties.iter().all(|target_property| {
+                source
+                    .properties
+                    .iter()
+                    .find(|source_property| source_property.name == target_property.name)
+                    .is_some_and(|source_property| {
+                        is_assignable_to(source_property.ty, target_property.ty)
+                    })
+            })
+        }
         (Ty::Function(source), Ty::Function(target)) => {
             source.parameters.len() == target.parameters.len()
                 && source.parameters.iter().zip(target.parameters.iter()).all(

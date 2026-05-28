@@ -51,6 +51,7 @@ pub(crate) enum Ty<'a> {
     /// Primitive `object` keyword (not to be confused with `{}`)
     PrimitiveObject,
     Object(&'a TyObject<'a>),
+    ModuleNamespace(&'a TyModuleNamespace<'a>),
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
     StringLiteral(&'a TyStringLiteral<'a>),
@@ -66,6 +67,12 @@ pub(crate) enum Ty<'a> {
 
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyObject<'a> {
+    pub(crate) properties: ArenaVec<'a, TyProperty<'a>>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct TyModuleNamespace<'a> {
+    pub(crate) name: &'a str,
     pub(crate) properties: ArenaVec<'a, TyProperty<'a>>,
 }
 
@@ -347,6 +354,17 @@ impl<'a> Ty<'a> {
         }))
     }
 
+    pub(crate) fn module_namespace(
+        arena: CheckerArena<'a>,
+        name: &'a str,
+        properties: impl IntoIterator<Item = TyProperty<'a>>,
+    ) -> Self {
+        Self::ModuleNamespace(arena.alloc(TyModuleNamespace {
+            name,
+            properties: arena.vec_from_iter(properties),
+        }))
+    }
+
     pub(crate) fn function(
         arena: CheckerArena<'a>,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
@@ -423,6 +441,7 @@ impl<'a> Ty<'a> {
             Self::Void => "TyVoid",
             Self::Never => "TyNever",
             Self::Object(_) => "TyObject",
+            Self::ModuleNamespace(_) => "TyModuleNamespace",
             Self::PrimitiveObject => "TyPrimitiveObject",
             Self::Function(_) => "TyFunction",
             Self::TypeReference(_) => "TyTypeReference",
@@ -589,6 +608,10 @@ impl<'a> Ty<'a> {
                 .properties
                 .iter()
                 .find_map(|property| (property.name == name).then_some(property.ty)),
+            Self::ModuleNamespace(namespace) => namespace
+                .properties
+                .iter()
+                .find_map(|property| (property.name == name).then_some(property.ty)),
             _ => None,
         }
     }
@@ -602,6 +625,16 @@ impl<'a> Ty<'a> {
             Self::Object(object) => Self::object(
                 arena,
                 object.properties.iter().map(|property| {
+                    Self::property(
+                        property.name,
+                        property.ty.substitute_type_parameters(arena, substitutions),
+                    )
+                }),
+            ),
+            Self::ModuleNamespace(namespace) => Self::module_namespace(
+                arena,
+                namespace.name,
+                namespace.properties.iter().map(|property| {
                     Self::property(
                         property.name,
                         property.ty.substitute_type_parameters(arena, substitutions),
@@ -734,6 +767,7 @@ impl<'a> Ty<'a> {
                     .join(" ");
                 format!("{{ {properties} }}")
             }
+            Self::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
             Self::Function(function) => {
                 let type_parameters = if function.type_parameters.is_empty() {
                     String::new()

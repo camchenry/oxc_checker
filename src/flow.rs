@@ -306,6 +306,7 @@ fn type_matches_typeof(ty: Ty<'_>, witness: TypeofWitness) -> bool {
             Ty::Null
                 | Ty::PrimitiveObject
                 | Ty::Object(_)
+                | Ty::ModuleNamespace(_)
                 | Ty::Array(_)
                 | Ty::Tuple(_)
                 | Ty::TypeReference(_)
