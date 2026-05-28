@@ -1,0 +1,359 @@
+export type Key = string | number | symbol
+>           ^^^: string | number | none   (TyUnion)
+
+export type Depth = 'flat' | 'deep'
+>           ^^^^^: "flat" | "deep"   (TyUnion)
+
+export type Equals<A1 extends any, A2 extends any> =
+>           ^^^^^^: any   (TyAny)
+
+export type Equals<A1 extends any, A2 extends any> =
+>                  ^^: any   (TyAny)
+
+export type Equals<A1 extends any, A2 extends any> =
+>                                  ^^: any   (TyAny)
+
+  (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
+>   ^: any   (TyAny)
+
+  (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
+>           ^: any   (TyAny)
+
+  (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
+>                     ^^: any   (TyAny)
+
+  (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
+>                                           ^: any   (TyAny)
+
+  (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
+>                                                   ^: any   (TyAny)
+
+  (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
+>                                                             ^^: any   (TyAny)
+
+export type Pick<O extends object, K extends Key> = {
+>           ^^^^: none & {}   (TyIntersection)
+
+export type Pick<O extends object, K extends Key> = {
+>                ^: any   (TyAny)
+
+export type Pick<O extends object, K extends Key> = {
+>                                  ^: any   (TyAny)
+
+export type Pick<O extends object, K extends Key> = {
+>                                            ^^^: any   (TyAny)
+
+  [P in keyof O as P extends K ? P : never]: O[P]
+>             ^: any   (TyAny)
+
+  [P in keyof O as P extends K ? P : never]: O[P]
+>                  ^: any   (TyAny)
+
+  [P in keyof O as P extends K ? P : never]: O[P]
+>                            ^: any   (TyAny)
+
+  [P in keyof O as P extends K ? P : never]: O[P]
+>                                ^: any   (TyAny)
+
+  [P in keyof O as P extends K ? P : never]: O[P]
+>                                            ^: any   (TyAny)
+
+  [P in keyof O as P extends K ? P : never]: O[P]
+>                                              ^: any   (TyAny)
+
+export type PatchFlat<O extends object, O1 extends object> = {
+>           ^^^^^^^^^: none & {}   (TyIntersection)
+
+export type PatchFlat<O extends object, O1 extends object> = {
+>                     ^: any   (TyAny)
+
+export type PatchFlat<O extends object, O1 extends object> = {
+>                                       ^^: any   (TyAny)
+
+  [K in keyof (O & O1)]: K extends keyof O
+>              ^: any   (TyAny)
+
+  [K in keyof (O & O1)]: K extends keyof O
+>                  ^^: any   (TyAny)
+
+  [K in keyof (O & O1)]: K extends keyof O
+>                        ^: any   (TyAny)
+
+  [K in keyof (O & O1)]: K extends keyof O
+>                                        ^: any   (TyAny)
+
+    ? O[K]
+>     ^: any   (TyAny)
+
+    ? O[K]
+>       ^: any   (TyAny)
+
+    : K extends keyof O1
+>     ^: any   (TyAny)
+
+    : K extends keyof O1
+>                     ^^: any   (TyAny)
+
+      ? O1[K]
+>       ^^: any   (TyAny)
+
+      ? O1[K]
+>          ^: any   (TyAny)
+
+export type OptionalFlat<O> = {
+>           ^^^^^^^^^^^^: none & {}   (TyIntersection)
+
+export type OptionalFlat<O> = {
+>                        ^: any   (TyAny)
+
+  [K in keyof O]?: O[K]
+>             ^: any   (TyAny)
+
+  [K in keyof O]?: O[K]
+>                  ^: any   (TyAny)
+
+  [K in keyof O]?: O[K]
+>                    ^: any   (TyAny)
+
+export type OptionalDeep<O> = {
+>           ^^^^^^^^^^^^: any   (TyAny)
+
+export type OptionalDeep<O> = {
+>                        ^: any   (TyAny)
+
+  [K in keyof O]?: OptionalDeep<O[K]>
+>             ^: any   (TyAny)
+
+  [K in keyof O]?: OptionalDeep<O[K]>
+>                  ^^^^^^^^^^^^: any   (TyAny)
+
+  [K in keyof O]?: OptionalDeep<O[K]>
+>                               ^: any   (TyAny)
+
+  [K in keyof O]?: OptionalDeep<O[K]>
+>                                 ^: any   (TyAny)
+
+export type OptionalPart<O extends object, depth extends Depth> = {
+>           ^^^^^^^^^^^^: { flat: OptionalFlat<O>; deep: OptionalDeep<O>; }[depth]   (TyIndexedAccess)
+
+export type OptionalPart<O extends object, depth extends Depth> = {
+>                        ^: any   (TyAny)
+
+export type OptionalPart<O extends object, depth extends Depth> = {
+>                                          ^^^^^: any   (TyAny)
+
+export type OptionalPart<O extends object, depth extends Depth> = {
+>                                                        ^^^^^: any   (TyAny)
+
+  flat: OptionalFlat<O>
+> ^^^^: OptionalFlat<O>   (TyTypeReference)
+
+  flat: OptionalFlat<O>
+>       ^^^^^^^^^^^^: any   (TyAny)
+
+  flat: OptionalFlat<O>
+>                    ^: any   (TyAny)
+
+  deep: OptionalDeep<O>
+> ^^^^: OptionalDeep<O>   (TyTypeReference)
+
+  deep: OptionalDeep<O>
+>       ^^^^^^^^^^^^: any   (TyAny)
+
+  deep: OptionalDeep<O>
+>                    ^: any   (TyAny)
+
+}[depth]
+> ^^^^^: any   (TyAny)
+
+export type Optional<
+>           ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
+
+  O extends object,
+> ^: any   (TyAny)
+
+  K extends Key = Key,
+> ^: any   (TyAny)
+
+  K extends Key = Key,
+>           ^^^: any   (TyAny)
+
+  K extends Key = Key,
+>                 ^^^: any   (TyAny)
+
+  depth extends Depth = 'flat',
+> ^^^^^: any   (TyAny)
+
+  depth extends Depth = 'flat',
+>               ^^^^^: any   (TyAny)
+
+  1: OptionalPart<O, depth>
+>    ^^^^^^^^^^^^: any   (TyAny)
+
+  1: OptionalPart<O, depth>
+>                 ^: any   (TyAny)
+
+  1: OptionalPart<O, depth>
+>                    ^^^^^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>    ^^^^^^^^^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>              ^^^^^^^^^^^^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>                           ^^^^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>                                ^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>                                   ^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>                                       ^^^^^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>                                               ^: any   (TyAny)
+
+}[Equals<Key, K>]
+> ^^^^^^: any   (TyAny)
+
+}[Equals<Key, K>]
+>        ^^^: any   (TyAny)
+
+}[Equals<Key, K>]
+>             ^: any   (TyAny)
+
+type User = {
+>    ^^^^: { id: string; name: string; profile: { email: string; address: { city: string; }; }; }   (TyObject)
+
+  id: string
+> ^^: string   (TyString)
+
+  name: string
+> ^^^^: string   (TyString)
+
+  profile: {
+> ^^^^^^^: { email: string; address: { city: string; }; }   (TyObject)
+
+    email: string
+>   ^^^^^: string   (TyString)
+
+    address: {
+>   ^^^^^^^: { city: string; }   (TyObject)
+
+      city: string
+>     ^^^^: string   (TyString)
+
+type OptionalName = Optional<User, 'name'>
+>    ^^^^^^^^^^^^: Optional<User, "name", "flat">   (TyTypeReference)
+
+type OptionalName = Optional<User, 'name'>
+>                   ^^^^^^^^: any   (TyAny)
+
+type OptionalName = Optional<User, 'name'>
+>                            ^^^^: any   (TyAny)
+
+type OptionalEverything = Optional<User>
+>    ^^^^^^^^^^^^^^^^^^: Optional<User, Key, "flat">   (TyTypeReference)
+
+type OptionalEverything = Optional<User>
+>                         ^^^^^^^^: any   (TyAny)
+
+type OptionalEverything = Optional<User>
+>                                  ^^^^: any   (TyAny)
+
+type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
+>    ^^^^^^^^^^^^^^^^^^^: Optional<User, "profile", "deep">   (TyTypeReference)
+
+type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
+>                          ^^^^^^^^: any   (TyAny)
+
+type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
+>                                   ^^^^: any   (TyAny)
+
+type DirectFlat = OptionalFlat<User>
+>    ^^^^^^^^^^: OptionalFlat<User>   (TyTypeReference)
+
+type DirectFlat = OptionalFlat<User>
+>                 ^^^^^^^^^^^^: any   (TyAny)
+
+type DirectFlat = OptionalFlat<User>
+>                              ^^^^: any   (TyAny)
+
+type DirectDeep = OptionalDeep<User>
+>    ^^^^^^^^^^: OptionalDeep<User>   (TyTypeReference)
+
+type DirectDeep = OptionalDeep<User>
+>                 ^^^^^^^^^^^^: any   (TyAny)
+
+type DirectDeep = OptionalDeep<User>
+>                              ^^^^: any   (TyAny)
+
+const optionalName: OptionalName = {
+>     ^^^^^^^^^^^^: OptionalName   (TyTypeReference)
+
+const optionalName: OptionalName = {
+>                   ^^^^^^^^^^^^: any   (TyAny)
+
+  id: 'user-1',
+> ^^: string   (TyString)
+
+  profile: {
+> ^^^^^^^: { email: string; address: { city: string; }; }   (TyObject)
+
+    email: 'user@example.com',
+>   ^^^^^: string   (TyString)
+
+    address: {
+>   ^^^^^^^: { city: string; }   (TyObject)
+
+      city: 'Berlin',
+>     ^^^^: string   (TyString)
+
+const optionalEverything: OptionalEverything = {}
+>     ^^^^^^^^^^^^^^^^^^: OptionalEverything   (TyTypeReference)
+
+const optionalEverything: OptionalEverything = {}
+>                         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const optionalProfileDeep: OptionalProfileDeep = {
+>     ^^^^^^^^^^^^^^^^^^^: OptionalProfileDeep   (TyTypeReference)
+
+const optionalProfileDeep: OptionalProfileDeep = {
+>                          ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  id: 'user-2',
+> ^^: string   (TyString)
+
+  name: 'Ada',
+> ^^^^: string   (TyString)
+
+  profile: {
+> ^^^^^^^: { address: {}; }   (TyObject)
+
+    address: {},
+>   ^^^^^^^: {}   (TyObject)
+
+const directFlat: DirectFlat = {
+>     ^^^^^^^^^^: DirectFlat   (TyTypeReference)
+
+const directFlat: DirectFlat = {
+>                 ^^^^^^^^^^: any   (TyAny)
+
+  id: 'user-3',
+> ^^: string   (TyString)
+
+const directDeep: DirectDeep = {
+>     ^^^^^^^^^^: DirectDeep   (TyTypeReference)
+
+const directDeep: DirectDeep = {
+>                 ^^^^^^^^^^: any   (TyAny)
+
+  profile: {
+> ^^^^^^^: { address: {}; }   (TyObject)
+
+    address: {},
+>   ^^^^^^^: {}   (TyObject)

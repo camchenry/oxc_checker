@@ -42,6 +42,23 @@ const CASES_SUITE: ConformanceSuite = ConformanceSuite {
     write_type_outputs: true,
 };
 
+const EXTERNAL_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
+    name: "external library fixture",
+    cases_root: "tests/conformance/external",
+    snapshot_path: "tests/conformance/external_snapshot.txt",
+    tsc_types_path: "target/conformance/external_tsc_types.tsv",
+    compiler_cases_only: false,
+    write_type_outputs: true,
+};
+
+fn all_conformance_suites() -> [&'static ConformanceSuite; 3] {
+    [&CASES_SUITE, &EXTERNAL_LIBRARY_SUITE, &TYPESCRIPT_SUITE]
+}
+
+fn default_conformance_suites() -> [&'static ConformanceSuite; 2] {
+    [&CASES_SUITE, &EXTERNAL_LIBRARY_SUITE]
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct TypeRecord {
     path: String,
@@ -391,17 +408,24 @@ fn custom_case_type_records() -> ConformanceResult {
     run_type_record_conformance_on_thread("custom_case_type_records", &CASES_SUITE)
 }
 
+#[cfg(feature = "conformance")]
+#[test]
+fn external_library_type_records() -> ConformanceResult {
+    run_type_record_conformance_on_thread("external_library_type_records", &EXTERNAL_LIBRARY_SUITE)
+}
+
 #[cfg(all(feature = "conformance", feature = "conformance-tsc"))]
 #[test]
 fn full_conformance() -> ConformanceResult {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    if let Some(case_path) = conformance_case_argument(&repo_root)? {
+    let target = conformance_target_argument(&repo_root)?;
+    if let Some(case_path) = target.case_path {
         return run_single_file_conformance_on_thread("full_conformance", case_path);
     }
 
     let mut failures = Vec::new();
 
-    for suite in [&CASES_SUITE, &TYPESCRIPT_SUITE] {
+    for suite in target.suites {
         if let Err(err) = extract_tsc_type_records(suite) {
             failures.push(format!(
                 "{} TypeScript record extraction failed:\n{}",
@@ -431,35 +455,67 @@ fn full_conformance() -> ConformanceResult {
     }
 }
 
-fn conformance_case_argument(repo_root: &Path) -> ConformanceResult<Option<PathBuf>> {
+struct ConformanceTarget {
+    case_path: Option<PathBuf>,
+    suites: Vec<&'static ConformanceSuite>,
+}
+
+fn conformance_target_argument(repo_root: &Path) -> ConformanceResult<ConformanceTarget> {
     let mut case_paths = Vec::new();
+    let mut suites = Vec::new();
     for argument in std::env::args_os().skip(1) {
         let path = PathBuf::from(&argument);
-        if !is_supported_case_extension(&path) {
+        if is_supported_case_extension(&path) {
+            let candidate = if path.is_absolute() {
+                path
+            } else {
+                repo_root.join(path)
+            };
+            let case_path = candidate.canonicalize().map_err(|err| {
+                ConformanceError::new(format!(
+                    "failed to resolve conformance case {}: {err}",
+                    candidate.display()
+                ))
+            })?;
+            case_paths.push(case_path);
             continue;
         }
 
-        let candidate = if path.is_absolute() {
-            path
-        } else {
-            repo_root.join(path)
-        };
-        let case_path = candidate.canonicalize().map_err(|err| {
-            ConformanceError::new(format!(
-                "failed to resolve conformance case {}: {err}",
-                candidate.display()
-            ))
-        })?;
-        case_paths.push(case_path);
+        if let Some(argument) = argument.to_str()
+            && let Some(suite) = conformance_suite_for_argument(argument)
+        {
+            suites.push(suite);
+        }
     }
 
-    match case_paths.len() {
-        0 => Ok(None),
-        1 => Ok(case_paths.pop()),
+    let case_path = match case_paths.len() {
+        0 => None,
+        1 => case_paths.pop(),
         _ => Err(ConformanceError::new(format!(
             "expected at most one conformance case path, got {}",
             case_paths.len()
-        ))),
+        )))?,
+    };
+
+    if case_path.is_some() && !suites.is_empty() {
+        return Err(ConformanceError::new(
+            "expected either a conformance case path or a suite name, not both".to_string(),
+        ));
+    }
+
+    if suites.is_empty() {
+        suites.extend(default_conformance_suites());
+    }
+
+    Ok(ConformanceTarget { case_path, suites })
+}
+
+fn conformance_suite_for_argument(argument: &str) -> Option<&'static ConformanceSuite> {
+    match argument {
+        "cases" | "local" => Some(&CASES_SUITE),
+        "external" | "libraries" | "library" => Some(&EXTERNAL_LIBRARY_SUITE),
+        "typescript" | "ts" | "upstream" => Some(&TYPESCRIPT_SUITE),
+        _ => None,
     }
 }
 
@@ -548,7 +604,7 @@ fn suite_for_case_path(
     repo_root: &Path,
     case_path: &Path,
 ) -> ConformanceResult<(&'static ConformanceSuite, PathBuf)> {
-    for suite in [&CASES_SUITE, &TYPESCRIPT_SUITE] {
+    for suite in all_conformance_suites() {
         let cases_root = repo_root
             .join(suite.cases_root)
             .canonicalize()
@@ -571,10 +627,11 @@ fn suite_for_case_path(
         return Ok((suite, cases_root));
     }
 
+    let roots = all_conformance_suites()
+        .map(|suite| suite.cases_root)
+        .join(", ");
     Err(ConformanceError::new(format!(
-        "conformance case must be under {} or {}: {}",
-        TYPESCRIPT_SUITE.cases_root,
-        CASES_SUITE.cases_root,
+        "conformance case must be under one of {roots}: {}",
         case_path.display()
     )))
 }

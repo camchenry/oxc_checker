@@ -1,0 +1,893 @@
+export interface Register {
+>                ^^^^^^^^: any   (TyAny)
+
+export type QueryKey = Register extends {
+>           ^^^^^^^^: any   (TyAny)
+
+export type QueryKey = Register extends {
+>                      ^^^^^^^^: any   (TyAny)
+
+  queryKey: infer TQueryKey
+>                 ^^^^^^^^^: any   (TyAny)
+
+  ? TQueryKey extends ReadonlyArray<unknown>
+>   ^^^^^^^^^: any   (TyAny)
+
+  ? TQueryKey extends ReadonlyArray<unknown>
+>                     ^^^^^^^^^^^^^: any   (TyAny)
+
+    ? TQueryKey
+>     ^^^^^^^^^: any   (TyAny)
+
+    : TQueryKey extends Array<unknown>
+>     ^^^^^^^^^: any   (TyAny)
+
+    : TQueryKey extends Array<unknown>
+>                       ^^^^^: any   (TyAny)
+
+      ? TQueryKey
+>       ^^^^^^^^^: any   (TyAny)
+
+      : ReadonlyArray<unknown>
+>       ^^^^^^^^^^^^^: any   (TyAny)
+
+  : ReadonlyArray<unknown>
+>   ^^^^^^^^^^^^^: any   (TyAny)
+
+export type dataTagSymbol = typeof dataTagSymbol
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+export type dataTagErrorSymbol = typeof dataTagErrorSymbol
+>           ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+export type UnsetMarker = typeof unsetMarker
+>           ^^^^^^^^^^^: any   (TyAny)
+
+export type AnyDataTag = {
+>           ^^^^^^^^^^: {}   (TyObject)
+
+export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
+>           ^^^^^^^: any   (TyAny)
+
+export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
+>                   ^^^^^: any   (TyAny)
+
+export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
+>                          ^^^^^^: any   (TyAny)
+
+export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
+>                                  ^^^^^^: any   (TyAny)
+
+export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
+>                                           ^^^^^^^^^^^: any   (TyAny)
+
+export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
+>                                                          ^^^^^: any   (TyAny)
+
+export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
+>                                                                        ^^^^^^^^^^: any   (TyAny)
+
+  ? TType
+>   ^^^^^: any   (TyAny)
+
+  : TType & {
+>   ^^^^^: any   (TyAny)
+
+      [dataTagSymbol]: TValue
+>                      ^^^^^^: any   (TyAny)
+
+      [dataTagErrorSymbol]: TError
+>                           ^^^^^^: any   (TyAny)
+
+export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
+>           ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
+>                            ^^^^^^^^^^^^: any   (TyAny)
+
+export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+
+export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
+>                                                                  ^^^^^^^^: any   (TyAny)
+
+  TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
+> ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
+>                         ^^^^^^^: any   (TyAny)
+
+  TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
+>                                                ^^^^^^^^^^^: any   (TyAny)
+
+    ? TaggedValue
+>     ^^^^^^^^^^^: any   (TyAny)
+
+    : TQueryFnData
+>     ^^^^^^^^^^^^: any   (TyAny)
+
+export interface QueryClient {
+>                ^^^^^^^^^^^: any   (TyAny)
+
+  getQueryData<TData>(queryKey: QueryKey): TData | undefined
+>              ^^^^^: any   (TyAny)
+
+  getQueryData<TData>(queryKey: QueryKey): TData | undefined
+>                     ^^^^^^^^: QueryKey   (TyTypeReference)
+
+  getQueryData<TData>(queryKey: QueryKey): TData | undefined
+>                               ^^^^^^^^: any   (TyAny)
+
+  getQueryData<TData>(queryKey: QueryKey): TData | undefined
+>                                          ^^^^^: any   (TyAny)
+
+  setQueryData<TData>(
+>              ^^^^^: any   (TyAny)
+
+    queryKey: QueryKey,
+>   ^^^^^^^^: QueryKey   (TyTypeReference)
+
+    queryKey: QueryKey,
+>             ^^^^^^^^: any   (TyAny)
+
+    updater: TData | ((previous: TData | undefined) => TData),
+>   ^^^^^^^: TData | ((previous: TData | undefined) => TData)   (TyUnion)
+
+    updater: TData | ((previous: TData | undefined) => TData),
+>            ^^^^^: any   (TyAny)
+
+    updater: TData | ((previous: TData | undefined) => TData),
+>                      ^^^^^^^^: TData | undefined   (TyUnion)
+
+    updater: TData | ((previous: TData | undefined) => TData),
+>                                ^^^^^: any   (TyAny)
+
+    updater: TData | ((previous: TData | undefined) => TData),
+>                                                      ^^^^^: any   (TyAny)
+
+export type QueryMeta = Register extends {
+>           ^^^^^^^^^: any   (TyAny)
+
+export type QueryMeta = Register extends {
+>                       ^^^^^^^^: any   (TyAny)
+
+  queryMeta: infer TQueryMeta
+>                  ^^^^^^^^^^: any   (TyAny)
+
+  ? TQueryMeta extends Record<string, unknown>
+>   ^^^^^^^^^^: any   (TyAny)
+
+  ? TQueryMeta extends Record<string, unknown>
+>                      ^^^^^^: any   (TyAny)
+
+    ? TQueryMeta
+>     ^^^^^^^^^^: any   (TyAny)
+
+    : Record<string, unknown>
+>     ^^^^^^: any   (TyAny)
+
+  : Record<string, unknown>
+>   ^^^^^^: any   (TyAny)
+
+export type FetchDirection = 'forward' | 'backward'
+>           ^^^^^^^^^^^^^^: "forward" | "backward"   (TyUnion)
+
+export type QueryFunctionContext<
+>           ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+> ^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                   ^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                              ^^^^^^^^: any   (TyAny)
+
+  TPageParam = never,
+> ^^^^^^^^^^: any   (TyAny)
+
+> = [TPageParam] extends [never]
+>    ^^^^^^^^^^: any   (TyAny)
+
+      client: QueryClient
+>     ^^^^^^: QueryClient   (TyTypeReference)
+
+      client: QueryClient
+>             ^^^^^^^^^^^: any   (TyAny)
+
+      queryKey: TQueryKey
+>     ^^^^^^^^: TQueryKey   (TyTypeReference)
+
+      queryKey: TQueryKey
+>               ^^^^^^^^^: any   (TyAny)
+
+      signal: AbortSignal
+>     ^^^^^^: AbortSignal   (TyTypeReference)
+
+      signal: AbortSignal
+>             ^^^^^^^^^^^: any   (TyAny)
+
+      meta: QueryMeta | undefined
+>     ^^^^: QueryMeta | undefined   (TyUnion)
+
+      meta: QueryMeta | undefined
+>           ^^^^^^^^^: any   (TyAny)
+
+      pageParam?: unknown
+>     ^^^^^^^^^: unknown   (TyUnknown)
+
+      direction?: unknown
+>     ^^^^^^^^^: unknown   (TyUnknown)
+
+      client: QueryClient
+>     ^^^^^^: QueryClient   (TyTypeReference)
+
+      client: QueryClient
+>             ^^^^^^^^^^^: any   (TyAny)
+
+      queryKey: TQueryKey
+>     ^^^^^^^^: TQueryKey   (TyTypeReference)
+
+      queryKey: TQueryKey
+>               ^^^^^^^^^: any   (TyAny)
+
+      signal: AbortSignal
+>     ^^^^^^: AbortSignal   (TyTypeReference)
+
+      signal: AbortSignal
+>             ^^^^^^^^^^^: any   (TyAny)
+
+      pageParam: TPageParam
+>     ^^^^^^^^^: TPageParam   (TyTypeReference)
+
+      pageParam: TPageParam
+>                ^^^^^^^^^^: any   (TyAny)
+
+      direction: FetchDirection
+>     ^^^^^^^^^: FetchDirection   (TyTypeReference)
+
+      direction: FetchDirection
+>                ^^^^^^^^^^^^^^: any   (TyAny)
+
+      meta: QueryMeta | undefined
+>     ^^^^: QueryMeta | undefined   (TyUnion)
+
+      meta: QueryMeta | undefined
+>           ^^^^^^^^^: any   (TyAny)
+
+export type QueryFunction<
+>           ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction)
+
+  T = unknown,
+> ^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+> ^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                   ^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                              ^^^^^^^^: any   (TyAny)
+
+  TPageParam = never,
+> ^^^^^^^^^^: any   (TyAny)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>    ^^^^^^^: QueryFunctionContext<TQueryKey, TPageParam>   (TyTypeReference)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>                                  ^^^^^^^^^: any   (TyAny)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>                                             ^^^^^^^^^^: any   (TyAny)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>                                                             ^: any   (TyAny)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>                                                                 ^^^^^^^: any   (TyAny)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>                                                                         ^: any   (TyAny)
+
+export interface InfiniteData<TData, TPageParam = unknown> {
+>                ^^^^^^^^^^^^: any   (TyAny)
+
+export interface InfiniteData<TData, TPageParam = unknown> {
+>                             ^^^^^: any   (TyAny)
+
+export interface InfiniteData<TData, TPageParam = unknown> {
+>                                    ^^^^^^^^^^: any   (TyAny)
+
+  pages: Array<TData>
+> ^^^^^: Array<TData>   (TyTypeReference)
+
+  pages: Array<TData>
+>        ^^^^^: any   (TyAny)
+
+  pages: Array<TData>
+>              ^^^^^: any   (TyAny)
+
+  pageParams: Array<TPageParam>
+> ^^^^^^^^^^: Array<TPageParam>   (TyTypeReference)
+
+  pageParams: Array<TPageParam>
+>             ^^^^^: any   (TyAny)
+
+  pageParams: Array<TPageParam>
+>                   ^^^^^^^^^^: any   (TyAny)
+
+export type OmitKeyof<
+>           ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+
+  TObject,
+> ^^^^^^^: any   (TyAny)
+
+  TKey extends TStrictly extends 'safely'
+> ^^^^: any   (TyAny)
+
+  TKey extends TStrictly extends 'safely'
+>              ^^^^^^^^^: any   (TyAny)
+
+    ? keyof TObject | (string & Record<never, never>)
+>           ^^^^^^^: any   (TyAny)
+
+    ? keyof TObject | (string & Record<never, never>)
+>                               ^^^^^^: any   (TyAny)
+
+    : keyof TObject,
+>           ^^^^^^^: any   (TyAny)
+
+  TStrictly extends 'strictly' | 'safely' = 'strictly',
+> ^^^^^^^^^: any   (TyAny)
+
+> = Omit<TObject, TKey>
+>   ^^^^: any   (TyAny)
+
+> = Omit<TObject, TKey>
+>        ^^^^^^^: any   (TyAny)
+
+> = Omit<TObject, TKey>
+>                 ^^^^: any   (TyAny)
+
+type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
+>    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode: "append" | "reset" | "replace"; }   (TyObject)
+
+type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
+>                            ^^^^^^^^^^^^: any   (TyAny)
+
+type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
+>                                          ^^^^^^^^^: any   (TyAny)
+
+type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
+>                                                            ^^^^^^^^: any   (TyAny)
+
+  streamFn: (
+> ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
+
+    context: QueryFunctionContext<TQueryKey>,
+>   ^^^^^^^: QueryFunctionContext<TQueryKey, never>   (TyTypeReference)
+
+    context: QueryFunctionContext<TQueryKey>,
+>            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    context: QueryFunctionContext<TQueryKey>,
+>                                 ^^^^^^^^^: any   (TyAny)
+
+  ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+>      ^^^^^^^^^^^^^: any   (TyAny)
+
+  ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+  ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+>                                    ^^^^^^^: any   (TyAny)
+
+  ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+>                                            ^^^^^^^^^^^^^: any   (TyAny)
+
+  ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+>                                                          ^^^^^^^^^^^^: any   (TyAny)
+
+  refetchMode?: 'append' | 'reset' | 'replace'
+> ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion)
+
+type SimpleStreamedQueryParams<
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer: never; initialValue: never; }   (TyIntersection)
+
+  TQueryFnData,
+> ^^^^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey,
+> ^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey,
+>                   ^^^^^^^^: any   (TyAny)
+
+> = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+>   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+> = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+>                           ^^^^^^^^^^^^: any   (TyAny)
+
+> = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+>                                         ^^^^^^^^^: any   (TyAny)
+
+  reducer?: never
+> ^^^^^^^: never   (TyNever)
+
+  initialValue?: never
+> ^^^^^^^^^^^^: never   (TyNever)
+
+type ReducibleStreamedQueryParams<
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer: (acc: TData, chunk: TQueryFnData) => TData; initialValue: TData; }   (TyIntersection)
+
+  TQueryFnData,
+> ^^^^^^^^^^^^: any   (TyAny)
+
+  TData,
+> ^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey,
+> ^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey,
+>                   ^^^^^^^^: any   (TyAny)
+
+> = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+>   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+> = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+>                           ^^^^^^^^^^^^: any   (TyAny)
+
+> = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+>                                         ^^^^^^^^^: any   (TyAny)
+
+  reducer: (acc: TData, chunk: TQueryFnData) => TData
+> ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
+
+  reducer: (acc: TData, chunk: TQueryFnData) => TData
+>           ^^^: TData   (TyTypeReference)
+
+  reducer: (acc: TData, chunk: TQueryFnData) => TData
+>                ^^^^^: any   (TyAny)
+
+  reducer: (acc: TData, chunk: TQueryFnData) => TData
+>                       ^^^^^: TQueryFnData   (TyTypeReference)
+
+  reducer: (acc: TData, chunk: TQueryFnData) => TData
+>                              ^^^^^^^^^^^^: any   (TyAny)
+
+  reducer: (acc: TData, chunk: TQueryFnData) => TData
+>                                               ^^^^^: any   (TyAny)
+
+  initialValue: TData
+> ^^^^^^^^^^^^: TData   (TyTypeReference)
+
+  initialValue: TData
+>               ^^^^^: any   (TyAny)
+
+type StreamedQueryParams<
+>    ^^^^^^^^^^^^^^^^^^^: SimpleStreamedQueryParams<TQueryFnData, TQueryKey> | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyUnion)
+
+  TQueryFnData,
+> ^^^^^^^^^^^^: any   (TyAny)
+
+  TData,
+> ^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey,
+> ^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey,
+>                   ^^^^^^^^: any   (TyAny)
+
+  | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
+>                             ^^^^^^^^^^^^: any   (TyAny)
+
+  | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
+>                                           ^^^^^^^^^: any   (TyAny)
+
+  | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+  | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
+>                                              ^^^^^: any   (TyAny)
+
+  | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
+>                                                     ^^^^^^^^^: any   (TyAny)
+
+export function streamedQuery<
+>               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
+
+  TQueryFnData = unknown,
+> ^^^^^^^^^^^^: any   (TyAny)
+
+  TData = Array<TQueryFnData>,
+> ^^^^^: any   (TyAny)
+
+  TData = Array<TQueryFnData>,
+>         ^^^^^: any   (TyAny)
+
+  TData = Array<TQueryFnData>,
+>               ^^^^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+> ^^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                   ^^^^^^^^: any   (TyAny)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                              ^^^^^^^^: any   (TyAny)
+
+  streamFn,
+> ^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+  refetchMode = 'reset',
+> ^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+> ^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>            ^^^^^: any   (TyAny)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>                   ^^^^^: any   (TyAny)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>                                  ^^^^^: any   (TyAny)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>                                           ^^^^^: any   (TyAny)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>                                                 ^^^^^^^^^^^^: any   (TyAny)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>                                                                 ^^^^^: any   (TyAny)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>                                                                           ^^^^^: any   (TyAny)
+
+  initialValue = [] as TData,
+> ^^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+  initialValue = [] as TData,
+>                      ^^^^^: any   (TyAny)
+
+}: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
+>  ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+}: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+}: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
+>                                    ^^^^^: any   (TyAny)
+
+}: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
+>                                           ^^^^^^^^^: any   (TyAny)
+
+}: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
+>                                                        ^^^^^^^^^^^^^: any   (TyAny)
+
+  TData,
+> ^^^^^: any   (TyAny)
+
+  TQueryKey
+> ^^^^^^^^^: any   (TyAny)
+
+  return async (context) => {
+>               ^^^^^^^: any   (TyAny)
+
+    const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
+>         ^^^^^^^^^^^^^^^^^: OmitKeyof<any, "signal", "strictly">   (TyTypeReference)
+
+    const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
+>                            ^^^^^^^^^: any   (TyAny)
+
+    const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
+>                                             ^^^^^^^: any   (TyAny)
+
+      client: context.client,
+>     ^^^^^^: any   (TyAny)
+
+      client: context.client,
+>             ^^^^^^^: any   (TyAny)
+
+      client: context.client,
+>                     ^^^^^^: any   (TyAny)
+
+      meta: context.meta,
+>     ^^^^: any   (TyAny)
+
+      meta: context.meta,
+>           ^^^^^^^: any   (TyAny)
+
+      meta: context.meta,
+>                   ^^^^: any   (TyAny)
+
+      queryKey: context.queryKey,
+>     ^^^^^^^^: any   (TyAny)
+
+      queryKey: context.queryKey,
+>               ^^^^^^^: any   (TyAny)
+
+      queryKey: context.queryKey,
+>                       ^^^^^^^^: any   (TyAny)
+
+      pageParam: context.pageParam,
+>     ^^^^^^^^^: any   (TyAny)
+
+      pageParam: context.pageParam,
+>                ^^^^^^^: any   (TyAny)
+
+      pageParam: context.pageParam,
+>                        ^^^^^^^^^: any   (TyAny)
+
+      direction: context.direction,
+>     ^^^^^^^^^: any   (TyAny)
+
+      direction: context.direction,
+>                ^^^^^^^: any   (TyAny)
+
+      direction: context.direction,
+>                        ^^^^^^^^^: any   (TyAny)
+
+    const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
+>         ^^^^^^: any   (TyAny)
+
+    const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
+>                        ^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+    const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
+>                                 ^^^^^^^^^^^^^^^^^: OmitKeyof<any, "signal", "strictly">   (TyTypeReference)
+
+    const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
+>                                                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
+>                                                                           ^^^^^^^^^: any   (TyAny)
+
+    let result = initialValue
+>       ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+    let result = initialValue
+>                ^^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+    for await (const chunk of stream) {
+>                    ^^^^^: any   (TyAny)
+
+    for await (const chunk of stream) {
+>                             ^^^^^^: any   (TyAny)
+
+      if (refetchMode === 'replace') {
+>         ^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+        result = reducer(result, chunk)
+>       ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+        result = reducer(result, chunk)
+>                ^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+        result = reducer(result, chunk)
+>                        ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+        result = reducer(result, chunk)
+>                                ^^^^^: any   (TyAny)
+
+        context.client.setQueryData<TData>(context.queryKey, (previous) =>
+>       ^^^^^^^: any   (TyAny)
+
+        context.client.setQueryData<TData>(context.queryKey, (previous) =>
+>               ^^^^^^: any   (TyAny)
+
+        context.client.setQueryData<TData>(context.queryKey, (previous) =>
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+        context.client.setQueryData<TData>(context.queryKey, (previous) =>
+>                                   ^^^^^: any   (TyAny)
+
+        context.client.setQueryData<TData>(context.queryKey, (previous) =>
+>                                          ^^^^^^^: any   (TyAny)
+
+        context.client.setQueryData<TData>(context.queryKey, (previous) =>
+>                                                  ^^^^^^^^: any   (TyAny)
+
+        context.client.setQueryData<TData>(context.queryKey, (previous) =>
+>                                                             ^^^^^^^^: any   (TyAny)
+
+          reducer(previous === undefined ? initialValue : previous, chunk),
+>         ^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+          reducer(previous === undefined ? initialValue : previous, chunk),
+>                 ^^^^^^^^: any   (TyAny)
+
+          reducer(previous === undefined ? initialValue : previous, chunk),
+>                              ^^^^^^^^^: undefined   (TyUndefined)
+
+          reducer(previous === undefined ? initialValue : previous, chunk),
+>                                          ^^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+          reducer(previous === undefined ? initialValue : previous, chunk),
+>                                                         ^^^^^^^^: any   (TyAny)
+
+          reducer(previous === undefined ? initialValue : previous, chunk),
+>                                                                   ^^^^^: any   (TyAny)
+
+    return context.client.getQueryData<TData>(context.queryKey) ?? result
+>          ^^^^^^^: any   (TyAny)
+
+    return context.client.getQueryData<TData>(context.queryKey) ?? result
+>                  ^^^^^^: any   (TyAny)
+
+    return context.client.getQueryData<TData>(context.queryKey) ?? result
+>                         ^^^^^^^^^^^^: any   (TyAny)
+
+    return context.client.getQueryData<TData>(context.queryKey) ?? result
+>                                      ^^^^^: any   (TyAny)
+
+    return context.client.getQueryData<TData>(context.queryKey) ?? result
+>                                             ^^^^^^^: any   (TyAny)
+
+    return context.client.getQueryData<TData>(context.queryKey) ?? result
+>                                                     ^^^^^^^^: any   (TyAny)
+
+    return context.client.getQueryData<TData>(context.queryKey) ?? result
+>                                                                  ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+
+import { streamedQuery } from '../packages/query-core/src/streamedQuery'
+>        ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
+
+type Todo = {
+>    ^^^^: { id: number; title: string; }   (TyObject)
+
+  id: number
+> ^^: number   (TyNumber)
+
+  title: string
+> ^^^^^: string   (TyString)
+
+type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
+>    ^^^^^^^^^^^^: DataTag<none, Todo[], Error>   (TyTypeReference)
+
+type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
+>                   ^^^^^^^: any   (TyAny)
+
+type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
+>                                               ^^^^: any   (TyAny)
+
+type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
+>                                                       ^^^^^: any   (TyAny)
+
+type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
+>    ^^^^^^^^^^^^^^: InferDataFromTag<string, TodoQueryKey>   (TyTypeReference)
+
+type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
+>                     ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
+>                                              ^^^^^^^^^^^^: any   (TyAny)
+
+declare const todoStream: AsyncIterable<Todo>
+>             ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
+
+declare const todoStream: AsyncIterable<Todo>
+>                         ^^^^^^^^^^^^^: any   (TyAny)
+
+declare const todoStream: AsyncIterable<Todo>
+>                                       ^^^^: any   (TyAny)
+
+declare const context: QueryFunctionContext<readonly ['todos'], number>
+>             ^^^^^^^: QueryFunctionContext<none, number>   (TyTypeReference)
+
+declare const context: QueryFunctionContext<readonly ['todos'], number>
+>                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const pageParam = context.pageParam
+>     ^^^^^^^^^: any   (TyAny)
+
+const pageParam = context.pageParam
+>                 ^^^^^^^: QueryFunctionContext<none, number>   (TyTypeReference)
+
+const pageParam = context.pageParam
+>                         ^^^^^^^^^: any   (TyAny)
+
+const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
+>     ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, none, never>   (TyTypeReference)
+
+const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
+>               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
+
+const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
+>                             ^^^^: any   (TyAny)
+
+const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
+>                                   ^^^^^^^^^^^^: any   (TyAny)
+
+const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
+>                                                ^^^^: any   (TyAny)
+
+  streamFn: () => todoStream,
+> ^^^^^^^^: () => AsyncIterable<Todo>   (TyFunction)
+
+  streamFn: () => todoStream,
+>                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
+
+  reducer: (data, todo) => ({
+> ^^^^^^^: (data: any, todo: any) => { pages: any[]; pageParams: any[]; }   (TyFunction)
+
+  reducer: (data, todo) => ({
+>           ^^^^: any   (TyAny)
+
+  reducer: (data, todo) => ({
+>                 ^^^^: any   (TyAny)
+
+    pages: [...data.pages, todo],
+>   ^^^^^: any[]   (TyArray)
+
+    pages: [...data.pages, todo],
+>              ^^^^: any   (TyAny)
+
+    pages: [...data.pages, todo],
+>                   ^^^^^: any   (TyAny)
+
+    pages: [...data.pages, todo],
+>                          ^^^^: any   (TyAny)
+
+    pageParams: [...data.pageParams, pageParam],
+>   ^^^^^^^^^^: any[]   (TyArray)
+
+    pageParams: [...data.pageParams, pageParam],
+>                   ^^^^: any   (TyAny)
+
+    pageParams: [...data.pageParams, pageParam],
+>                        ^^^^^^^^^^: any   (TyAny)
+
+    pageParams: [...data.pageParams, pageParam],
+>                                    ^^^^^^^^^: any   (TyAny)
+
+  initialValue: { pages: [], pageParams: [] },
+> ^^^^^^^^^^^^: { pages: any[]; pageParams: any[]; }   (TyObject)
+
+  initialValue: { pages: [], pageParams: [] },
+>                 ^^^^^: any[]   (TyArray)
+
+  initialValue: { pages: [], pageParams: [] },
+>                            ^^^^^^^^^^: any[]   (TyArray)
+
+  refetchMode: 'append',
+> ^^^^^^^^^^^: string   (TyString)
+
+const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
+>     ^^^^^^^^^^: TaggedTodoData   (TyTypeReference)
+
+const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
+>                 ^^^^^^^^^^^^^^: any   (TyAny)
+
+const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
+>                                     ^^: number   (TyNumber)
+
+const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
+>                                            ^^^^^: string   (TyString)
+
+const queryResult = queryFn(context)
+>     ^^^^^^^^^^^: InfiniteData<Todo, number> | Promise<InfiniteData<Todo, number>>   (TyUnion)
+
+const queryResult = queryFn(context)
+>                   ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, none, never>   (TyTypeReference)
+
+const queryResult = queryFn(context)
+>                           ^^^^^^^: QueryFunctionContext<none, number>   (TyTypeReference)
