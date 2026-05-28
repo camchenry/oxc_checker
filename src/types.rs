@@ -837,7 +837,14 @@ impl<'a> Ty<'a> {
             Self::Union(union) => union
                 .types
                 .iter()
-                .map(|ty| ty.to_type_string())
+                .map(|ty| {
+                    let type_string = ty.to_type_string();
+                    if matches!(ty, Ty::Function(_)) {
+                        format!("({type_string})")
+                    } else {
+                        type_string
+                    }
+                })
                 .collect::<Vec<_>>()
                 .join(" | "),
             Self::Intersection(intersection) => intersection
@@ -1108,6 +1115,20 @@ mod tests {
         assert_eq!(
             Ty::r#union(arena, [Ty::void(), Ty::undefined()]).to_type_string(),
             "void | undefined"
+        );
+    }
+
+    #[test]
+    fn union_display_parenthesizes_function_members() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let a1 = Ty::type_reference(arena, "A1", []);
+        let r = Ty::type_reference(arena, "R", []);
+        let function = Ty::function(arena, [], [Ty::parameter("arg1", a1)], r);
+
+        assert_eq!(
+            Ty::r#union(arena, [function, Ty::null(), Ty::undefined()]).to_type_string(),
+            "((arg1: A1) => R) | null | undefined"
         );
     }
 }
