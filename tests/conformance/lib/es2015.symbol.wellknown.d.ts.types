@@ -35,13 +35,19 @@ interface Symbol {
 >         ^^^^^^: any   (TyAny)
 
     [Symbol.toPrimitive](hint: string): symbol;
->           ^^^^^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.toPrimitive](hint: string): symbol;
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.toPrimitive](hint: string): symbol;
 >                        ^^^^: string   (TyString)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Array<T> {
 >         ^^^^^: any   (TyAny)
@@ -50,7 +56,10 @@ interface Array<T> {
 >               ^: any   (TyAny)
 
     readonly [Symbol.unscopables]: {
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.unscopables]: {
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface ReadonlyArray<T> {
 >         ^^^^^^^^^^^^^: any   (TyAny)
@@ -59,31 +68,46 @@ interface ReadonlyArray<T> {
 >                       ^: any   (TyAny)
 
     readonly [Symbol.unscopables]: {
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.unscopables]: {
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Date {
 >         ^^^^: any   (TyAny)
 
     [Symbol.toPrimitive](hint: "default"): string;
->           ^^^^^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.toPrimitive](hint: "default"): string;
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.toPrimitive](hint: "default"): string;
 >                        ^^^^: "default"   (TyStringLiteral)
 
     [Symbol.toPrimitive](hint: "string"): string;
->           ^^^^^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.toPrimitive](hint: "string"): string;
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.toPrimitive](hint: "string"): string;
 >                        ^^^^: "string"   (TyStringLiteral)
 
     [Symbol.toPrimitive](hint: "number"): number;
->           ^^^^^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.toPrimitive](hint: "number"): number;
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.toPrimitive](hint: "number"): number;
 >                        ^^^^: "number"   (TyStringLiteral)
 
     [Symbol.toPrimitive](hint: string): string | number;
->           ^^^^^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.toPrimitive](hint: string): string | number;
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.toPrimitive](hint: string): string | number;
 >                        ^^^^: string   (TyString)
@@ -98,7 +122,10 @@ interface Map<K, V> {
 >                ^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface WeakMap<K extends WeakKey, V> {
 >         ^^^^^^^: any   (TyAny)
@@ -113,7 +140,10 @@ interface WeakMap<K extends WeakKey, V> {
 >                                    ^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Set<T> {
 >         ^^^: any   (TyAny)
@@ -122,7 +152,10 @@ interface Set<T> {
 >             ^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface WeakSet<T extends WeakKey> {
 >         ^^^^^^^: any   (TyAny)
@@ -134,19 +167,28 @@ interface WeakSet<T extends WeakKey> {
 >                           ^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface JSON {
 >         ^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Function {
 >         ^^^^^^^^: any   (TyAny)
 
     [Symbol.hasInstance](value: any): boolean;
->           ^^^^^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.hasInstance](value: any): boolean;
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.hasInstance](value: any): boolean;
 >                        ^^^^^: any   (TyAny)
@@ -155,13 +197,19 @@ interface GeneratorFunction {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Math {
 >         ^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Promise<T> {
 >         ^^^^^^^: any   (TyAny)
@@ -170,13 +218,19 @@ interface Promise<T> {
 >                 ^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface PromiseConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.species]: PromiseConstructor;
->                    ^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.species]: PromiseConstructor;
+>                    ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     readonly [Symbol.species]: PromiseConstructor;
 >                              ^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -185,7 +239,10 @@ interface RegExp {
 >         ^^^^^^: any   (TyAny)
 
     [Symbol.match](string: string): RegExpMatchArray | null;
->           ^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.match](string: string): RegExpMatchArray | null;
+>           ^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.match](string: string): RegExpMatchArray | null;
 >                  ^^^^^^: string   (TyString)
@@ -194,7 +251,10 @@ interface RegExp {
 >                                   ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     [Symbol.replace](string: string, replaceValue: string): string;
->           ^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.replace](string: string, replaceValue: string): string;
+>           ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.replace](string: string, replaceValue: string): string;
 >                    ^^^^^^: string   (TyString)
@@ -203,7 +263,10 @@ interface RegExp {
 >                                    ^^^^^^^^^^^^: string   (TyString)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
->           ^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
+>           ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
 >                    ^^^^^^: string   (TyString)
@@ -218,13 +281,19 @@ interface RegExp {
 >                                                                     ^^^^: any[]   (TyArray)
 
     [Symbol.search](string: string): number;
->           ^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.search](string: string): number;
+>           ^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.search](string: string): number;
 >                   ^^^^^^: string   (TyString)
 
     [Symbol.split](string: string, limit?: number): string[];
->           ^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.split](string: string, limit?: number): string[];
+>           ^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.split](string: string, limit?: number): string[];
 >                  ^^^^^^: string   (TyString)
@@ -236,7 +305,10 @@ interface RegExpConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.species]: RegExpConstructor;
->                    ^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.species]: RegExpConstructor;
+>                    ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     readonly [Symbol.species]: RegExpConstructor;
 >                              ^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -248,7 +320,10 @@ interface String {
 >         ^^^^^^^: {}   (TyObject)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                            ^^^^^: any   (TyAny)
+>                     ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>                            ^^^^^: unique symbol   (TyUniqueSymbol)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
 >                                   ^^^^^^: string   (TyString)
@@ -263,7 +338,10 @@ interface String {
 >           ^^^^^^^^^^^: {}   (TyObject)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->                                  ^^^^^^^: any   (TyAny)
+>                           ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
+>                                  ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
 >                                           ^^^^^^: string   (TyString)
@@ -278,7 +356,10 @@ interface String {
 >           ^^^^^^^^^^^: {}   (TyObject)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                  ^^^^^^^: any   (TyAny)
+>                           ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                  ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
 >                                           ^^^^^^: string   (TyString)
@@ -305,7 +386,10 @@ interface String {
 >          ^^^^^^^^: {}   (TyObject)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->                              ^^^^^^: any   (TyAny)
+>                       ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    search(searcher: { [Symbol.search](string: string): number; }): number;
+>                              ^^^^^^: unique symbol   (TyUniqueSymbol)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
 >                                      ^^^^^^: string   (TyString)
@@ -314,7 +398,10 @@ interface String {
 >         ^^^^^^^^: {}   (TyObject)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->                             ^^^^^: any   (TyAny)
+>                      ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
+>                             ^^^^^: unique symbol   (TyUniqueSymbol)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
 >                                    ^^^^^^: string   (TyString)
@@ -329,7 +416,10 @@ interface ArrayBuffer {
 >         ^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "ArrayBuffer";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "ArrayBuffer";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^: any   (TyAny)
@@ -341,7 +431,10 @@ interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >                                       ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^: any   (TyAny)
@@ -353,7 +446,10 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                        ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Int8Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Int8Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
@@ -365,7 +461,10 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Uint8Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Uint8Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -377,7 +476,10 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                                ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Uint8ClampedArray";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Uint8ClampedArray";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
@@ -389,7 +491,10 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Int16Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Int16Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
@@ -401,7 +506,10 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Uint16Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Uint16Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
@@ -413,7 +521,10 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Int32Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Int32Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
@@ -425,7 +536,10 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Uint32Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Uint32Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
@@ -437,7 +551,10 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Float32Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Float32Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
@@ -449,13 +566,19 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.toStringTag]: "Float64Array";
->                    ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "Float64Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 interface ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.species]: ArrayConstructor;
->                    ^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.species]: ArrayConstructor;
+>                    ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     readonly [Symbol.species]: ArrayConstructor;
 >                              ^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -464,7 +587,10 @@ interface MapConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.species]: MapConstructor;
->                    ^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.species]: MapConstructor;
+>                    ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     readonly [Symbol.species]: MapConstructor;
 >                              ^^^^^^^^^^^^^^: any   (TyAny)
@@ -473,7 +599,10 @@ interface SetConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.species]: SetConstructor;
->                    ^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.species]: SetConstructor;
+>                    ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     readonly [Symbol.species]: SetConstructor;
 >                              ^^^^^^^^^^^^^^: any   (TyAny)
@@ -482,7 +611,10 @@ interface ArrayBufferConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly [Symbol.species]: ArrayBufferConstructor;
->                    ^^^^^^^: any   (TyAny)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.species]: ArrayBufferConstructor;
+>                    ^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     readonly [Symbol.species]: ArrayBufferConstructor;
 >                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

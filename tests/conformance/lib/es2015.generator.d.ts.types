@@ -65,7 +65,10 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                                    ^^^^^^^: any   (TyAny)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
->           ^^^^^^^^: any   (TyAny)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
 >                        ^^^^^^^^^: any   (TyAny)

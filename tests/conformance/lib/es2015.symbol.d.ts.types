@@ -5,6 +5,9 @@ interface SymbolConstructor {
 >            ^^^^^^^^^: Symbol   (TyTypeReference)
 
     readonly prototype: Symbol;
+>                       ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly prototype: Symbol;
 >                       ^^^^^^: any   (TyAny)
 
     (description?: string | number): symbol;

@@ -9,8 +9,9 @@ use oxc_ast::{
         FormalParameters, Function, FunctionBody, MethodDefinition, MethodDefinitionKind,
         NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind, Program,
         PropertyDefinition, PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
-        TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        TSInterfaceDeclaration, TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeQuery,
+        TSTypeQueryExprName, TSTypeReference, UnaryExpression, VariableDeclarationKind,
+        VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
@@ -200,6 +201,13 @@ fn binding_pattern_name(pattern: &BindingPattern<'_>) -> Option<String> {
 fn binding_pattern_name_str<'a>(pattern: &BindingPattern<'a>) -> Option<&'a str> {
     match pattern {
         BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.as_str()),
+        _ => None,
+    }
+}
+
+fn binding_pattern_symbol_id(pattern: &BindingPattern<'_>) -> Option<SymbolId> {
+    match pattern {
+        BindingPattern::BindingIdentifier(identifier) => identifier.symbol_id.get(),
         _ => None,
     }
 }
@@ -396,9 +404,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             .get_reference(reference_id)
                             .symbol_id()
                     })
-                    .map_or_else(Ty::any, |symbol_id| {
-                        self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id))
+                    .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                    .or_else(|| {
+                        self.get_value_symbol_for_name(program_id, identifier.name.as_str())
                     })
+                    .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol))
             }
             Expression::ObjectExpression(object) => {
                 self.get_type_of_object_expression(program_id, object, node_id)
@@ -663,7 +673,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 })
                 .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)))
                 .or_else(|| {
-                    self.get_root_symbol(program_id, name)
+                    self.get_value_symbol_for_name(program_id, name)
                         .map(|symbol| self.get_type_of_symbol(symbol))
                 })
                 .unwrap_or_else(Ty::any),
@@ -1179,6 +1189,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference: &TyTypeReference<'a>,
         kind: SignatureKind,
     ) -> Vec<Signature<'a>> {
+        let interface_signatures = self
+            .interface_declarations_for_name(reference.name)
+            .into_iter()
+            .flat_map(|(program_id, interface)| {
+                self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
+            })
+            .collect::<Vec<_>>();
+        if !interface_signatures.is_empty() {
+            return interface_signatures;
+        }
+
         let Some(symbol) = self.get_type_symbol_for_name(program_id, reference.name) else {
             return Vec::new();
         };
@@ -1187,6 +1208,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .scoping()
             .symbol_declaration(symbol.symbol_id);
         self.get_signatures_of_type_declaration(symbol.program_id, declaration, reference, kind)
+    }
+
+    fn get_signatures_of_interface_declaration(
+        &self,
+        program_id: program::ProgramId,
+        interface: &'a TSInterfaceDeclaration<'a>,
+        reference: &TyTypeReference<'a>,
+        kind: SignatureKind,
+    ) -> Vec<Signature<'a>> {
+        let substitutions = self.type_parameter_substitutions_for_reference(
+            interface.type_parameters.as_deref(),
+            reference,
+        );
+        interface
+            .body
+            .body
+            .iter()
+            .filter_map(|signature| self.signature_from_ts_signature(program_id, signature, kind))
+            .map(|signature| signature.substitute_type_parameters(self.arena(), &substitutions))
+            .collect()
     }
 
     fn get_signatures_of_type_declaration(
@@ -1198,21 +1239,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Vec<Signature<'a>> {
         match self.nodes(program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(interface) => {
-                let substitutions = self.type_parameter_substitutions_for_reference(
-                    interface.type_parameters.as_deref(),
-                    reference,
-                );
-                interface
-                    .body
-                    .body
-                    .iter()
-                    .filter_map(|signature| {
-                        self.signature_from_ts_signature(program_id, signature, kind)
-                    })
-                    .map(|signature| {
-                        signature.substitute_type_parameters(self.arena(), &substitutions)
-                    })
-                    .collect()
+                self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
             }
             AstKind::TSTypeAliasDeclaration(alias) => self.get_signatures_of_type(
                 self.get_type_from_ts_type(program_id, &alias.type_annotation)
@@ -1447,7 +1474,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_new_expression(
         &self,
         program_id: program::ProgramId,
-        new_expression: &NewExpression<'a>,
+        new_expression: &'a NewExpression<'a>,
     ) -> Ty<'a> {
         let Expression::Identifier(identifier) = &new_expression.callee else {
             return Ty::any();
@@ -1462,7 +1489,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .get_reference(reference_id)
                     .symbol_id()
             })
-            .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)));
+            .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+            .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))
+            .map(|symbol| self.get_type_of_symbol(symbol));
 
         if let Some(Ty::TypeQuery(query)) = constructor_type
             && query.type_arguments.is_empty()
@@ -1470,7 +1499,196 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::type_reference(self.arena(), query.name, std::iter::empty());
         }
 
+        if let Some(constructor_type) = constructor_type
+            && let Some(constructed_type) = self.resolve_construct_signature_return_type(
+                program_id,
+                constructor_type,
+                new_expression,
+            )
+        {
+            return constructed_type;
+        }
+
         Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
+    }
+
+    fn resolve_construct_signature_return_type(
+        &self,
+        program_id: program::ProgramId,
+        constructor_type: Ty<'a>,
+        new_expression: &'a NewExpression<'a>,
+    ) -> Option<Ty<'a>> {
+        let candidates = self.get_signatures_of_type_in_program(
+            program_id,
+            constructor_type,
+            SignatureKind::Construct,
+        );
+        candidates
+            .iter()
+            .find_map(|signature| {
+                self.resolve_construct_signature_candidate(
+                    program_id,
+                    *signature,
+                    new_expression,
+                    true,
+                )
+            })
+            .or_else(|| {
+                candidates.first().and_then(|signature| {
+                    self.resolve_construct_signature_candidate(
+                        program_id,
+                        *signature,
+                        new_expression,
+                        false,
+                    )
+                })
+            })
+    }
+
+    fn resolve_construct_signature_candidate(
+        &self,
+        program_id: program::ProgramId,
+        signature: Signature<'a>,
+        new_expression: &'a NewExpression<'a>,
+        require_applicable: bool,
+    ) -> Option<Ty<'a>> {
+        let substitutions = self.infer_construct_type_parameter_substitutions(
+            program_id,
+            signature.function,
+            new_expression,
+        );
+
+        if require_applicable
+            && !self.is_construct_signature_applicable(
+                program_id,
+                signature.function,
+                new_expression,
+                &substitutions,
+            )
+        {
+            return None;
+        }
+
+        Some(
+            signature
+                .function
+                .return_type
+                .substitute_type_parameters(self.arena(), &substitutions),
+        )
+    }
+
+    fn infer_construct_type_parameter_substitutions(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        new_expression: &'a NewExpression<'a>,
+    ) -> HashMap<&'a str, Ty<'a>> {
+        let mut substitutions = HashMap::new();
+        let mut explicit_type_parameters = Vec::new();
+
+        if let Some(type_arguments) = &new_expression.type_arguments {
+            for (type_parameter, type_argument) in function
+                .type_parameters
+                .iter()
+                .zip(type_arguments.params.iter())
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    self.get_type_from_ts_type(program_id, type_argument),
+                );
+                explicit_type_parameters.push(type_parameter.name);
+            }
+        }
+
+        let inferable_type_parameters = function
+            .type_parameters
+            .iter()
+            .map(|type_parameter| type_parameter.name)
+            .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
+            .collect::<Vec<_>>();
+
+        for (argument, parameter) in new_expression
+            .arguments
+            .iter()
+            .zip(function.parameters.iter())
+        {
+            let Some(argument) = argument.as_expression() else {
+                continue;
+            };
+            let argument_type = self.get_type_of_expression(program_id, argument);
+            infer_type_parameter_from_types(
+                &parameter.ty,
+                &argument_type,
+                &inferable_type_parameters,
+                &mut substitutions,
+            );
+        }
+
+        for type_parameter in &function.type_parameters {
+            if substitutions.contains_key(type_parameter.name) {
+                continue;
+            }
+            if let Some(fallback_type) = type_parameter
+                .default_type
+                .or(type_parameter.constraint_type)
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
+                );
+            }
+        }
+
+        substitutions
+    }
+
+    fn is_construct_signature_applicable(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        new_expression: &'a NewExpression<'a>,
+        substitutions: &HashMap<&'a str, Ty<'a>>,
+    ) -> bool {
+        if new_expression
+            .type_arguments
+            .as_ref()
+            .is_some_and(|type_arguments| {
+                type_arguments.params.len() > function.type_parameters.len()
+            })
+        {
+            return false;
+        }
+
+        let argument_count = new_expression.arguments.len();
+        let minimum_argument_count = function
+            .parameters
+            .iter()
+            .filter(|parameter| !parameter.optional && !parameter.rest)
+            .count();
+        let has_rest_parameter = function.parameters.iter().any(|parameter| parameter.rest);
+        if argument_count < minimum_argument_count {
+            return false;
+        }
+        if !has_rest_parameter && argument_count > function.parameters.len() {
+            return false;
+        }
+
+        for (index, argument) in new_expression.arguments.iter().enumerate() {
+            let Some(argument) = argument.as_expression() else {
+                continue;
+            };
+            let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
+                return false;
+            };
+            let parameter_type =
+                parameter_type.substitute_type_parameters(self.arena(), substitutions);
+            let argument_type = self.get_type_of_expression(program_id, argument);
+            if !self.is_assignable_to(argument_type, parameter_type) {
+                return false;
+            }
+        }
+
+        true
     }
 
     fn get_property_type_of_named_type(
@@ -1509,6 +1727,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference: &TyTypeReference<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
+        if let Some(ty) = self.get_property_type_of_merged_interface_type(reference, property_name)
+        {
+            return Some(ty);
+        }
+
         let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
         let declaration = self
             .semantic(symbol.program_id)
@@ -1520,6 +1743,72 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             reference,
             property_name,
         )
+    }
+
+    fn get_property_type_of_merged_interface_type(
+        &self,
+        reference: &TyTypeReference<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        let declarations = self.interface_declarations_for_name(reference.name);
+        if declarations.is_empty() {
+            return None;
+        }
+
+        for (program_id, interface) in &declarations {
+            let substitutions = self.type_parameter_substitutions_for_reference(
+                interface.type_parameters.as_deref(),
+                reference,
+            );
+            if let Some(property) = interface.body.body.iter().find_map(|signature| {
+                let TSSignature::TSPropertySignature(property) = signature else {
+                    return None;
+                };
+                (property_key_name_str(&property.key) == Some(property_name)).then_some(property)
+            }) {
+                let ty = property
+                    .type_annotation
+                    .as_deref()
+                    .map_or_else(Ty::any, |annotation| {
+                        self.get_type_from_ts_type(*program_id, &annotation.type_annotation)
+                    });
+                return Some(ty.substitute_type_parameters(self.arena(), &substitutions));
+            }
+        }
+
+        let method_signatures = declarations
+            .into_iter()
+            .flat_map(|(program_id, interface)| {
+                let substitutions = self.type_parameter_substitutions_for_reference(
+                    interface.type_parameters.as_deref(),
+                    reference,
+                );
+                interface.body.body.iter().filter_map(move |signature| {
+                    let TSSignature::TSMethodSignature(method) = signature else {
+                        return None;
+                    };
+                    (property_key_name_str(&method.key) == Some(property_name)).then(|| {
+                        self.signature_from_function_parts(
+                            program_id,
+                            SignatureKind::Call,
+                            method.type_parameters.as_deref(),
+                            method.params.as_ref(),
+                            method.return_type.as_deref(),
+                        )
+                        .substitute_type_parameters(self.arena(), &substitutions)
+                    })
+                })
+            })
+            .collect::<Vec<_>>();
+        match method_signatures.as_slice() {
+            [] => None,
+            [signature] => Some(Ty::Function(signature.function)),
+            _ => Some(Ty::object_with_signatures(
+                self.arena(),
+                [],
+                method_signatures,
+            )),
+        }
     }
 
     fn get_property_type_of_interface_declaration(
@@ -1672,14 +1961,179 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         type_name: &str,
     ) -> Option<SymbolRef> {
-        self.get_root_symbol(program_id, type_name)
-            .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+        self.get_type_symbol_in_program(program_id, type_name)
             .or_else(|| {
-                self.store.entries().iter().find_map(|entry| {
-                    self.get_root_symbol(entry.id(), type_name)
-                        .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+                self.store
+                    .entries()
+                    .iter()
+                    .find_map(|entry| self.get_type_symbol_in_program(entry.id(), type_name))
+            })
+    }
+
+    fn get_value_symbol_for_name(
+        &self,
+        program_id: program::ProgramId,
+        value_name: &str,
+    ) -> Option<SymbolRef> {
+        self.get_value_symbol_in_program(program_id, value_name)
+            .or_else(|| {
+                self.store
+                    .entries()
+                    .iter()
+                    .find_map(|entry| self.get_value_symbol_in_program(entry.id(), value_name))
+            })
+    }
+
+    fn get_type_symbol_in_program(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+    ) -> Option<SymbolRef> {
+        if let Some(symbol) = self
+            .get_root_symbol(program_id, type_name)
+            .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+            .filter(|symbol| self.symbol_has_type_meaning(*symbol))
+        {
+            return Some(symbol);
+        }
+
+        self.nodes(program_id)
+            .iter()
+            .find_map(|node| match node.kind() {
+                AstKind::TSInterfaceDeclaration(interface) if interface.id.name == type_name => {
+                    interface
+                        .id
+                        .symbol_id
+                        .get()
+                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                }
+                AstKind::TSTypeAliasDeclaration(alias) if alias.id.name == type_name => alias
+                    .id
+                    .symbol_id
+                    .get()
+                    .map(|symbol_id| SymbolRef::new(program_id, symbol_id)),
+                AstKind::Class(class)
+                    if class
+                        .id
+                        .as_ref()
+                        .is_some_and(|identifier| identifier.name == type_name) =>
+                {
+                    class
+                        .id
+                        .as_ref()
+                        .and_then(|identifier| identifier.symbol_id.get())
+                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                }
+                _ => None,
+            })
+    }
+
+    fn get_value_symbol_in_program(
+        &self,
+        program_id: program::ProgramId,
+        value_name: &str,
+    ) -> Option<SymbolRef> {
+        if let Some(symbol) = self
+            .get_root_symbol(program_id, value_name)
+            .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
+            .filter(|symbol| self.symbol_has_value_meaning(*symbol))
+        {
+            return Some(symbol);
+        }
+
+        self.nodes(program_id)
+            .iter()
+            .find_map(|node| match node.kind() {
+                AstKind::VariableDeclarator(declarator)
+                    if binding_pattern_name_str(&declarator.id) == Some(value_name) =>
+                {
+                    binding_pattern_symbol_id(&declarator.id)
+                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                }
+                AstKind::Function(function)
+                    if function
+                        .id
+                        .as_ref()
+                        .is_some_and(|identifier| identifier.name == value_name) =>
+                {
+                    function
+                        .id
+                        .as_ref()
+                        .and_then(|identifier| identifier.symbol_id.get())
+                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                }
+                AstKind::Class(class)
+                    if class
+                        .id
+                        .as_ref()
+                        .is_some_and(|identifier| identifier.name == value_name) =>
+                {
+                    class
+                        .id
+                        .as_ref()
+                        .and_then(|identifier| identifier.symbol_id.get())
+                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                }
+                _ => None,
+            })
+    }
+
+    fn symbol_has_type_meaning(&self, symbol: SymbolRef) -> bool {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        match self.nodes(symbol.program_id).kind(declaration) {
+            AstKind::TSInterfaceDeclaration(_)
+            | AstKind::TSTypeAliasDeclaration(_)
+            | AstKind::Class(_) => true,
+            AstKind::BindingIdentifier(_) => matches!(
+                self.nodes(symbol.program_id).parent_kind(declaration),
+                AstKind::TSInterfaceDeclaration(_)
+                    | AstKind::TSTypeAliasDeclaration(_)
+                    | AstKind::Class(_)
+            ),
+            AstKind::ImportSpecifier(_)
+            | AstKind::ImportDefaultSpecifier(_)
+            | AstKind::ImportNamespaceSpecifier(_) => true,
+            _ => false,
+        }
+    }
+
+    fn symbol_has_value_meaning(&self, symbol: SymbolRef) -> bool {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        match self.nodes(symbol.program_id).kind(declaration) {
+            AstKind::VariableDeclarator(_) | AstKind::Function(_) | AstKind::Class(_) => true,
+            AstKind::BindingIdentifier(_) => matches!(
+                self.nodes(symbol.program_id).parent_kind(declaration),
+                AstKind::VariableDeclarator(_) | AstKind::Function(_) | AstKind::Class(_)
+            ),
+            AstKind::ImportSpecifier(_)
+            | AstKind::ImportDefaultSpecifier(_)
+            | AstKind::ImportNamespaceSpecifier(_) => true,
+            _ => false,
+        }
+    }
+
+    fn interface_declarations_for_name(
+        &self,
+        type_name: &str,
+    ) -> Vec<(program::ProgramId, &'a TSInterfaceDeclaration<'a>)> {
+        self.store
+            .entries()
+            .iter()
+            .flat_map(|entry| {
+                entry.semantic().nodes().iter().filter_map(|node| {
+                    let AstKind::TSInterfaceDeclaration(interface) = node.kind() else {
+                        return None;
+                    };
+                    (interface.id.name == type_name).then_some((entry.id(), interface))
                 })
             })
+            .collect()
     }
 
     fn get_type_parameters_for_type(
@@ -2334,6 +2788,43 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .any(|node| matches!(node.kind(), AstKind::Class(class) if class.id.as_ref().is_some_and(|identifier| identifier.name == name)))
     }
 
+    fn variable_declarator_for_symbol(
+        &self,
+        symbol: SymbolRef,
+    ) -> Option<(NodeId, &'a VariableDeclarator<'a>)> {
+        self.nodes(symbol.program_id)
+            .iter_enumerated()
+            .find_map(|(node_id, node)| match node.kind() {
+                AstKind::VariableDeclarator(declarator)
+                    if binding_pattern_symbol_id(&declarator.id) == Some(symbol.symbol_id) =>
+                {
+                    Some((node_id, declarator))
+                }
+                _ => None,
+            })
+    }
+
+    fn get_type_of_variable_declarator(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        declarator: &'a VariableDeclarator<'a>,
+    ) -> Ty<'a> {
+        if declarator.type_annotation.is_some() {
+            self.get_type_from_ts_type_annotation(program_id, declarator.type_annotation.as_deref())
+        } else {
+            declarator.init.as_ref().map_or_else(Ty::any, |expression| {
+                if declarator.kind == VariableDeclarationKind::Const
+                    && !self.is_in_exported_declaration(program_id, declaration)
+                {
+                    self.get_type_of_const_initializer(program_id, expression, declaration)
+                } else {
+                    self.get_type_of_expression_at_node(program_id, expression, declaration)
+                }
+            })
+        }
+    }
+
     fn get_declared_type_of_formal_parameter(
         &self,
         program_id: program::ProgramId,
@@ -2432,12 +2923,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::IdentifierReference(identifier) if identifier.name == UNDEFINED_IDENT => {
                 Ty::undefined()
             }
-            AstKind::IdentifierReference(_) => {
-                self.get_symbol_at_location(node)
-                    .map_or_else(Ty::none, |symbol| {
+            AstKind::IdentifierReference(identifier) => {
+                self.get_symbol_at_location(node).map_or_else(
+                    || {
+                        self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
+                            .map_or_else(Ty::none, |symbol| self.get_type_of_symbol(symbol))
+                    },
+                    |symbol| {
                         let base_type = self.get_type_of_symbol(symbol);
                         flow::get_flow_type_of_reference(self, node, symbol, base_type)
-                    })
+                    },
+                )
             }
             AstKind::TSPropertySignature(property) => self.get_type_from_ts_type_annotation(
                 node.program_id,
@@ -2488,15 +2984,18 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
+        if let Some((declaration, declarator)) = self.variable_declarator_for_symbol(sym) {
+            return self.get_type_of_variable_declarator(sym.program_id, declaration, declarator);
+        }
+
         let declaration = self
             .semantic(sym.program_id)
             .scoping()
             .symbol_declaration(sym.symbol_id);
         match self.nodes(sym.program_id).kind(declaration) {
-            AstKind::VariableDeclarator(declarator) => self.get_type_from_ts_type_annotation(
-                sym.program_id,
-                declarator.type_annotation.as_deref(),
-            ),
+            AstKind::VariableDeclarator(declarator) => {
+                self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
+            }
             AstKind::FormalParameter(parameter) => match parameter.type_annotation.as_deref() {
                 Some(annotation) => self.get_declared_type_of_formal_parameter(
                     sym.program_id,
@@ -2555,6 +3054,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         function,
                         self.nodes(sym.program_id).parent_id(declaration),
                     ),
+                    AstKind::VariableDeclarator(declarator) => self
+                        .get_type_of_variable_declarator(
+                            sym.program_id,
+                            self.nodes(sym.program_id).parent_id(declaration),
+                            declarator,
+                        ),
                     AstKind::ArrowFunctionExpression(arrow_func_expr) => self
                         .get_type_of_function_signature_with_node(
                             sym.program_id,
@@ -2607,34 +3112,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 .kind()
             {
                 AstKind::VariableDeclarator(declarator) => {
-                    if declarator.type_annotation.is_some() {
-                        self.get_type_from_ts_type_annotation(
-                            sym.program_id,
-                            declarator.type_annotation.as_deref(),
-                        )
-                    } else {
-                        declarator.init.as_ref().map_or_else(Ty::any, |expression| {
-                            let declaration = self
-                                .semantic(sym.program_id)
-                                .scoping()
-                                .symbol_declaration(sym.symbol_id);
-                            if declarator.kind == VariableDeclarationKind::Const
-                                && !self.is_in_exported_declaration(sym.program_id, declaration)
-                            {
-                                self.get_type_of_const_initializer(
-                                    sym.program_id,
-                                    expression,
-                                    declaration,
-                                )
-                            } else {
-                                self.get_type_of_expression_at_node(
-                                    sym.program_id,
-                                    expression,
-                                    declaration,
-                                )
-                            }
-                        })
-                    }
+                    let declaration = self
+                        .semantic(sym.program_id)
+                        .scoping()
+                        .symbol_declaration(sym.symbol_id);
+                    self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
                 }
                 _ => self.get_declared_type_of_symbol(sym),
             }
@@ -2908,14 +3390,26 @@ mod test {
         let ret = parse_and_check_source(&allocator, "const x = 1;");
         let checker = CheckerBuilder::new().build(&ret.store);
 
-        // TODO: once value-position globals are supported, also assert
-        // `Array`/`Promise` resolve to their constructor types.
-        for name in ["Array", "Promise", "Map", "Set", "Symbol", "Object"] {
+        for (name, constructor_type) in [
+            ("Array", "ArrayConstructor"),
+            ("Promise", "PromiseConstructor"),
+            ("Map", "MapConstructor"),
+            ("Set", "SetConstructor"),
+            ("Symbol", "SymbolConstructor"),
+            ("Object", "ObjectConstructor"),
+        ] {
             assert!(
                 checker
                     .get_type_symbol_for_name(ret.program_id, name)
                     .is_some(),
                 "expected default lib to provide global type `{name}`"
+            );
+            let value_symbol = checker
+                .get_value_symbol_for_name(ret.program_id, name)
+                .unwrap_or_else(|| panic!("expected default lib to provide global value `{name}`"));
+            assert_eq!(
+                checker.get_type_of_symbol(value_symbol).to_type_string(),
+                constructor_type
             );
         }
     }
@@ -2937,6 +3431,75 @@ mod test {
             checker
                 .get_type_symbol_for_name(program_id, "Array")
                 .is_none()
+        );
+        assert!(
+            checker
+                .get_value_symbol_for_name(program_id, "Array")
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn value_position_global_identifiers_resolve_to_constructor_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const arrayCtor = Array;
+        const promiseCtor = Promise;
+        const mapCtor = Map;
+        const setCtor = Set;
+        const symbolCtor = Symbol;
+        const objectCtor = Object;
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "arrayCtor"),
+            Ty::type_reference(arena, "ArrayConstructor", [])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "promiseCtor"),
+            Ty::type_reference(arena, "PromiseConstructor", [])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "mapCtor"),
+            Ty::type_reference(arena, "MapConstructor", [])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "setCtor"),
+            Ty::type_reference(arena, "SetConstructor", [])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "symbolCtor"),
+            Ty::type_reference(arena, "SymbolConstructor", [])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "objectCtor"),
+            Ty::type_reference(arena, "ObjectConstructor", [])
+        );
+    }
+
+    #[test]
+    fn value_position_global_constructors_expose_members_and_construct_signatures() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const keys = Object.keys({ a: 1 });
+        const values = new Array<number>(1);
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "keys"),
+            Ty::array(arena, Ty::string())
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "values"),
+            Ty::array(arena, Ty::number())
         );
     }
 

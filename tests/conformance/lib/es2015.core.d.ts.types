@@ -188,7 +188,13 @@ interface DateConstructor {
 >        ^^^^^: number | string | Date   (TyUnion)
 
     new (value: number | string | Date): Date;
+>                                 ^^^^: DateConstructor   (TyTypeReference)
+
+    new (value: number | string | Date): Date;
 >                                 ^^^^: any   (TyAny)
+
+    new (value: number | string | Date): Date;
+>                                        ^^^^: DateConstructor   (TyTypeReference)
 
     new (value: number | string | Date): Date;
 >                                        ^^^^: any   (TyAny)

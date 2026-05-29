@@ -26,6 +26,9 @@ export type QueryKey = Register extends {
 >     ^^^^^^^^^: any   (TyAny)
 
     : TQueryKey extends Array<unknown>
+>                       ^^^^^: ArrayConstructor   (TyTypeReference)
+
+    : TQueryKey extends Array<unknown>
 >                       ^^^^^: any   (TyAny)
 
       ? TQueryKey
@@ -338,6 +341,9 @@ export type QueryFunction<
 >                                                             ^: any   (TyAny)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+>                                                                 ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+> = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
 >                                                                 ^^^^^^^: any   (TyAny)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
@@ -356,6 +362,9 @@ export interface InfiniteData<TData, TPageParam = unknown> {
 > ^^^^^: TData[]   (TyArray)
 
   pages: Array<TData>
+>        ^^^^^: ArrayConstructor   (TyTypeReference)
+
+  pages: Array<TData>
 >        ^^^^^: any   (TyAny)
 
   pages: Array<TData>
@@ -363,6 +372,9 @@ export interface InfiniteData<TData, TPageParam = unknown> {
 
   pageParams: Array<TPageParam>
 > ^^^^^^^^^^: TPageParam[]   (TyArray)
+
+  pageParams: Array<TPageParam>
+>             ^^^^^: ArrayConstructor   (TyTypeReference)
 
   pageParams: Array<TPageParam>
 >             ^^^^^: any   (TyAny)
@@ -450,6 +462,9 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
 >                    ^^^^^^^^^^^^: any   (TyAny)
+
+  ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+>                                    ^^^^^^^: PromiseConstructor   (TyTypeReference)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
 >                                    ^^^^^^^: any   (TyAny)
@@ -593,6 +608,9 @@ export function streamedQuery<
 > ^^^^^: any   (TyAny)
 
   TData = Array<TQueryFnData>,
+>         ^^^^^: ArrayConstructor   (TyTypeReference)
+
+  TData = Array<TQueryFnData>,
 >         ^^^^^: any   (TyAny)
 
   TData = Array<TQueryFnData>,
@@ -630,6 +648,9 @@ export function streamedQuery<
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >                                  ^^^^^: any   (TyAny)
+
+  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
+>                                           ^^^^^: ArrayConstructor   (TyTypeReference)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >                                           ^^^^^: any   (TyAny)
@@ -870,6 +891,9 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                               ^^^^: any   (TyAny)
+
+type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
+>                                                       ^^^^^: ErrorConstructor   (TyTypeReference)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                                       ^^^^^: any   (TyAny)

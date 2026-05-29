@@ -1,4 +1,7 @@
 interface Map<K, V> {
+>         ^^^: MapConstructor   (TyTypeReference)
+
+interface Map<K, V> {
 >         ^^^: any   (TyAny)
 
 interface Map<K, V> {
@@ -32,7 +35,10 @@ interface Map<K, V> {
 >                                          ^^^: Map<K, V>   (TyTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                               ^^^: any   (TyAny)
+>                                               ^^^: MapConstructor   (TyTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                               ^^^: MapConstructor   (TyTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
 >                                                   ^: any   (TyAny)
@@ -77,7 +83,10 @@ interface MapConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny)
 
     new (): Map<any, any>;
->           ^^^: any   (TyAny)
+>           ^^^: MapConstructor   (TyTypeReference)
+
+    new (): Map<any, any>;
+>           ^^^: MapConstructor   (TyTypeReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
 >        ^: any   (TyAny)
@@ -95,7 +104,10 @@ interface MapConstructor {
 >                                               ^: any   (TyAny)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->                                                              ^^^: any   (TyAny)
+>                                                              ^^^: MapConstructor   (TyTypeReference)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>                                                              ^^^: MapConstructor   (TyTypeReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
 >                                                                  ^: any   (TyAny)
@@ -107,7 +119,13 @@ interface MapConstructor {
 >            ^^^^^^^^^: Map<any, any>   (TyTypeReference)
 
     readonly prototype: Map<any, any>;
->                       ^^^: any   (TyAny)
+>                       ^^^: MapConstructor   (TyTypeReference)
+
+    readonly prototype: Map<any, any>;
+>                       ^^^: MapConstructor   (TyTypeReference)
+
+declare var Map: MapConstructor;
+>           ^^^: MapConstructor   (TyTypeReference)
 
 declare var Map: MapConstructor;
 >                ^^^^^^^^^^^^^^: any   (TyAny)
@@ -168,6 +186,9 @@ interface ReadonlyMap<K, V> {
 
     readonly size: number;
 >            ^^^^: number   (TyNumber)
+
+interface WeakMap<K extends WeakKey, V> {
+>         ^^^^^^^: WeakMapConstructor   (TyTypeReference)
 
 interface WeakMap<K extends WeakKey, V> {
 >         ^^^^^^^: any   (TyAny)
@@ -239,7 +260,10 @@ interface WeakMapConstructor {
 >                                                                               ^: any   (TyAny)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                                                                              ^^^^^^^: any   (TyAny)
+>                                                                                              ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                                                                              ^^^^^^^: WeakMapConstructor   (TyTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
 >                                                                                                      ^: any   (TyAny)
@@ -251,13 +275,22 @@ interface WeakMapConstructor {
 >            ^^^^^^^^^: WeakMap<WeakKey, any>   (TyTypeReference)
 
     readonly prototype: WeakMap<WeakKey, any>;
->                       ^^^^^^^: any   (TyAny)
+>                       ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+
+    readonly prototype: WeakMap<WeakKey, any>;
+>                       ^^^^^^^: WeakMapConstructor   (TyTypeReference)
 
     readonly prototype: WeakMap<WeakKey, any>;
 >                               ^^^^^^^: any   (TyAny)
 
 declare var WeakMap: WeakMapConstructor;
+>           ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+
+declare var WeakMap: WeakMapConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface Set<T> {
+>         ^^^: SetConstructor   (TyTypeReference)
 
 interface Set<T> {
 >         ^^^: any   (TyAny)
@@ -296,7 +329,10 @@ interface Set<T> {
 >                                             ^^^: Set<T>   (TyTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                                  ^^^: any   (TyAny)
+>                                                  ^^^: SetConstructor   (TyTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                                                  ^^^: SetConstructor   (TyTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
 >                                                      ^: any   (TyAny)
@@ -326,7 +362,10 @@ interface SetConstructor {
 >                                   ^: any   (TyAny)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
->                                                ^^^: any   (TyAny)
+>                                                ^^^: SetConstructor   (TyTypeReference)
+
+    new <T = any>(values?: readonly T[] | null): Set<T>;
+>                                                ^^^: SetConstructor   (TyTypeReference)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
 >                                                    ^: any   (TyAny)
@@ -335,7 +374,13 @@ interface SetConstructor {
 >            ^^^^^^^^^: Set<any>   (TyTypeReference)
 
     readonly prototype: Set<any>;
->                       ^^^: any   (TyAny)
+>                       ^^^: SetConstructor   (TyTypeReference)
+
+    readonly prototype: Set<any>;
+>                       ^^^: SetConstructor   (TyTypeReference)
+
+declare var Set: SetConstructor;
+>           ^^^: SetConstructor   (TyTypeReference)
 
 declare var Set: SetConstructor;
 >                ^^^^^^^^^^^^^^: any   (TyAny)
@@ -383,6 +428,9 @@ interface ReadonlySet<T> {
 >            ^^^^: number   (TyNumber)
 
 interface WeakSet<T extends WeakKey> {
+>         ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+
+interface WeakSet<T extends WeakKey> {
 >         ^^^^^^^: any   (TyAny)
 
 interface WeakSet<T extends WeakKey> {
@@ -428,7 +476,10 @@ interface WeakSetConstructor {
 >                                                       ^: any   (TyAny)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                                                                    ^^^^^^^: any   (TyAny)
+>                                                                    ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>                                                                    ^^^^^^^: WeakSetConstructor   (TyTypeReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
 >                                                                            ^: any   (TyAny)
@@ -437,10 +488,16 @@ interface WeakSetConstructor {
 >            ^^^^^^^^^: WeakSet<WeakKey>   (TyTypeReference)
 
     readonly prototype: WeakSet<WeakKey>;
->                       ^^^^^^^: any   (TyAny)
+>                       ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+
+    readonly prototype: WeakSet<WeakKey>;
+>                       ^^^^^^^: WeakSetConstructor   (TyTypeReference)
 
     readonly prototype: WeakSet<WeakKey>;
 >                               ^^^^^^^: any   (TyAny)
+
+declare var WeakSet: WeakSetConstructor;
+>           ^^^^^^^: WeakSetConstructor   (TyTypeReference)
 
 declare var WeakSet: WeakSetConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)

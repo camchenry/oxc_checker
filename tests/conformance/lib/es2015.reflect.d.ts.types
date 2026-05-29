@@ -53,6 +53,9 @@ declare namespace Reflect {
 >                  ^^^^^^: Function   (TyTypeReference)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+>                          ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+
+    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
 >                          ^^^^^^^^: any   (TyAny)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
@@ -107,6 +110,9 @@ declare namespace Reflect {
 >                      ^^^^^^: Function   (TyTypeReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                              ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
 >                              ^^^^^^^^: any   (TyAny)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
@@ -117,6 +123,9 @@ declare namespace Reflect {
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
 >                                                                       ^^^^^^^^^: Function | undefined   (TyUnion)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                                                                                   ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
 >                                                                                   ^^^^^^^^: any   (TyAny)
