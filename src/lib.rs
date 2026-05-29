@@ -830,6 +830,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
+        if let Some(array_type) =
+            self.get_global_array_type_reference_type(program_id, name, type_arguments.as_slice())
+        {
+            return array_type;
+        }
+
         if let Some(alias_type) =
             self.get_expanded_type_query_alias_reference(program_id, name, &type_arguments)
         {
@@ -837,6 +843,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         Ty::type_reference(self.arena(), name, type_arguments)
+    }
+
+    fn get_global_array_type_reference_type(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+        type_arguments: &[Ty<'a>],
+    ) -> Option<Ty<'a>> {
+        let [element_type] = type_arguments else {
+            return None;
+        };
+        let readonly = match type_name {
+            "Array" => false,
+            "ReadonlyArray" => true,
+            _ => return None,
+        };
+        let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
+        if !self
+            .store
+            .entry(symbol.program_id)
+            .is_some_and(program::ProgramEntry::is_lib)
+        {
+            return None;
+        }
+        Some(if readonly {
+            Ty::readonly_array(self.arena(), *element_type)
+        } else {
+            Ty::array(self.arena(), *element_type)
+        })
     }
 
     /// Expand references to aliases whose underlying type is a `typeof` query.
@@ -3137,6 +3172,56 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "values"),
             Ty::array(arena(&ret), Ty::number())
+        );
+    }
+
+    #[test]
+    fn global_array_type_references_use_array_variant() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const values: Array<number> = [1, 2, 3];
+        const readonlyValues: ReadonlyArray<string> = ['a'];
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "values"),
+            Ty::array(arena(&ret), Ty::number())
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "readonlyValues"),
+            Ty::readonly_array(arena(&ret), Ty::string())
+        );
+    }
+
+    #[test]
+    fn array_type_references_without_default_lib_stay_type_references() {
+        let allocator = Allocator::default();
+        let host = TestProgramHost::new("/project").add_file(
+            "/project/main.ts",
+            "const values: Array<number> = [1, 2, 3];",
+        );
+        let store = program::ProgramStoreBuilder::new(&allocator, host)
+            .add_root_file("/project/main.ts")
+            .without_default_lib()
+            .build()
+            .unwrap();
+        let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
+        let expected_arena = CheckerArena::new(store.allocator());
+        let checker = CheckerBuilder::new().build(&store);
+        let symbol_id = store
+            .entry(program_id)
+            .unwrap()
+            .semantic()
+            .scoping()
+            .get_root_binding(Ident::from("values"))
+            .unwrap();
+
+        assert_eq!(
+            checker.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)),
+            Ty::type_reference(expected_arena, "Array", [Ty::number()])
         );
     }
 
