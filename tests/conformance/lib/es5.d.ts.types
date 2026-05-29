@@ -3404,7 +3404,7 @@ type Extract<T, U> = T extends U ? T : never;
 >                                  ^: any   (TyAny)
 
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
->    ^^^^: Pick<T, Exclude<keyof T, K>>   (TyTypeReference)
+>    ^^^^: { [P in Exclude<keyof T, K>]: T[P]; }   (TyMapped)
 
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 >         ^: any   (TyAny)

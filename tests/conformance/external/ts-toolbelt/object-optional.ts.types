@@ -302,7 +302,7 @@ type User = {
 >     ^^^^: string   (TyString)
 
 type OptionalName = Optional<User, 'name'>
->    ^^^^^^^^^^^^: Optional<User, "name", "flat">   (TyTypeReference)
+>    ^^^^^^^^^^^^: {}[Equals<Key, "name">]   (TyIndexedAccess)
 
 type OptionalName = Optional<User, 'name'>
 >                   ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
@@ -314,7 +314,7 @@ type OptionalName = Optional<User, 'name'>
 >                            ^^^^: any   (TyAny)
 
 type OptionalEverything = Optional<User>
->    ^^^^^^^^^^^^^^^^^^: Optional<User, Key, "flat">   (TyTypeReference)
+>    ^^^^^^^^^^^^^^^^^^: {}[Equals<Key, Key>]   (TyIndexedAccess)
 
 type OptionalEverything = Optional<User>
 >                         ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
@@ -326,7 +326,7 @@ type OptionalEverything = Optional<User>
 >                                  ^^^^: any   (TyAny)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
->    ^^^^^^^^^^^^^^^^^^^: Optional<User, "profile", "deep">   (TyTypeReference)
+>    ^^^^^^^^^^^^^^^^^^^: {}[Equals<Key, "profile">]   (TyIndexedAccess)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >                          ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
@@ -338,7 +338,7 @@ type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >                                   ^^^^: any   (TyAny)
 
 type DirectFlat = OptionalFlat<User>
->    ^^^^^^^^^^: OptionalFlat<User>   (TyTypeReference)
+>    ^^^^^^^^^^: { [K in keyof User]?: User[K]; } & {}   (TyIntersection)
 
 type DirectFlat = OptionalFlat<User>
 >                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K]; } & {}   (TyIntersection)
@@ -350,7 +350,7 @@ type DirectFlat = OptionalFlat<User>
 >                              ^^^^: any   (TyAny)
 
 type DirectDeep = OptionalDeep<User>
->    ^^^^^^^^^^: OptionalDeep<User>   (TyTypeReference)
+>    ^^^^^^^^^^: { [K in keyof User]?: OptionalDeep<User[K]>; }   (TyMapped)
 
 type DirectDeep = OptionalDeep<User>
 >                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]>; }   (TyMapped)

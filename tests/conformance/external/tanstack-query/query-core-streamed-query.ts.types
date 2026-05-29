@@ -383,7 +383,7 @@ export interface InfiniteData<TData, TPageParam = unknown> {
 >                   ^^^^^^^^^^: any   (TyAny)
 
 export type OmitKeyof<
->           ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+>           ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
   TObject,
 > ^^^^^^^: any   (TyAny)
@@ -416,7 +416,7 @@ export type OmitKeyof<
 >                 ^^^^: any   (TyAny)
 
   OmitKeyof,
-> ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+> ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
   QueryFunction,
 > ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction)
@@ -701,10 +701,10 @@ export function streamedQuery<
 >         ^^^^^^^^^^^^^^^^^: OmitKeyof<typeof context, "signal", "strictly">   (TyTypeReference)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                            ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+>                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                            ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+>                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
 >                                             ^^^^^^^: any   (TyAny)
@@ -881,7 +881,7 @@ type Todo = {
 > ^^^^^: string   (TyString)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->    ^^^^^^^^^^^^: DataTag<readonly ["todos"], Todo[], Error>   (TyTypeReference)
+>    ^^^^^^^^^^^^: readonly ["todos"] extends AnyDataTag ? readonly ["todos"] : readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }   (TyConditional)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
@@ -899,7 +899,7 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                                       ^^^^^: ErrorConstructor   (TyTypeReference)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->    ^^^^^^^^^^^^^^: InferDataFromTag<string, TodoQueryKey>   (TyTypeReference)
+>    ^^^^^^^^^^^^^^: TodoQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)

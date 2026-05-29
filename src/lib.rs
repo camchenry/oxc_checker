@@ -38,7 +38,7 @@ mod types;
 use types::*;
 
 const UNDEFINED_IDENT: Ident = static_ident!("undefined");
-const CONDITIONAL_APPARENT_TYPE_MAX_DEPTH: usize = 16;
+const TYPE_EXPANSION_MAX_DEPTH: usize = 16;
 
 #[derive(Debug, Clone, Copy)]
 enum FunctionKind<'a> {
@@ -842,7 +842,100 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::type_query(self.arena(), name, Ty::any(), type_arguments);
         }
 
-        self.get_type_from_ts_type(program_id, &alias.type_annotation)
+        self.get_type_from_ts_type_expanding_top_level_aliases(program_id, &alias.type_annotation)
+    }
+
+    fn get_type_from_ts_type_expanding_top_level_aliases(
+        &self,
+        program_id: program::ProgramId,
+        ty: &TSType<'a>,
+    ) -> Ty<'a> {
+        self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(program_id, ty, 0)
+    }
+
+    fn get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+        &self,
+        program_id: program::ProgramId,
+        ty: &TSType<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return self.get_type_from_ts_type(program_id, ty);
+        }
+
+        match ty {
+            TSType::TSTypeReference(reference) => self
+                .get_expanded_type_alias_reference(program_id, reference, depth + 1)
+                .unwrap_or_else(|| self.get_type_from_ts_type_reference(program_id, reference)),
+            TSType::TSParenthesizedType(parenthesized) => self
+                .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                    program_id,
+                    &parenthesized.type_annotation,
+                    depth + 1,
+                ),
+            _ => self.get_type_from_ts_type(program_id, ty),
+        }
+    }
+
+    fn get_expanded_type_alias_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TSTypeReference<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        let name = ts_type_name_to_str(self.arena(), &reference.type_name);
+        let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
+
+        self.fill_default_type_arguments(program_id, name, &mut type_arguments);
+
+        let symbol = self.get_type_symbol_for_name(program_id, name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_expanded_type_alias_declaration(
+            symbol.program_id,
+            declaration,
+            &type_arguments,
+            depth,
+        )
+    }
+
+    fn get_expanded_type_alias_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        type_arguments: &[Ty<'a>],
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(alias)
+                if !matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
+            {
+                let substitutions = self.type_parameter_substitutions_for_type_arguments(
+                    alias.type_parameters.as_deref(),
+                    type_arguments,
+                );
+                Some(
+                    self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                        program_id,
+                        &alias.type_annotation,
+                        depth + 1,
+                    )
+                    .substitute_type_parameters(self.arena(), &substitutions),
+                )
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_expanded_type_alias_declaration(
+                    program_id,
+                    parent_id,
+                    type_arguments,
+                    depth,
+                )
+            }
+            _ => None,
+        }
     }
 
     /// Instantiate the pieces of a type-query result that accept explicit type arguments.
@@ -946,16 +1039,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference: &TSTypeReference<'a>,
     ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
-        let mut type_arguments = reference
-            .type_arguments
-            .as_ref()
-            .into_iter()
-            .flat_map(|args| {
-                args.params
-                    .iter()
-                    .map(|ty| self.get_type_from_ts_type(program_id, ty))
-            })
-            .collect::<Vec<_>>();
+        let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
@@ -974,13 +1058,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Ty::type_reference(self.arena(), name, type_arguments)
     }
 
+    fn type_arguments_from_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TSTypeReference<'a>,
+    ) -> Vec<Ty<'a>> {
+        reference
+            .type_arguments
+            .as_ref()
+            .into_iter()
+            .flat_map(|args| {
+                args.params
+                    .iter()
+                    .map(|ty| self.get_type_from_ts_type(program_id, ty))
+            })
+            .collect::<Vec<_>>()
+    }
+
     fn apparent_type_for_conditional_match(
         &self,
         program_id: program::ProgramId,
         ty: Ty<'a>,
         depth: usize,
     ) -> Ty<'a> {
-        if depth >= CONDITIONAL_APPARENT_TYPE_MAX_DEPTH {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return ty;
         }
 
@@ -2210,16 +2311,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         reference: &TyTypeReference<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
+        self.type_parameter_substitutions_for_type_arguments(
+            type_parameters,
+            reference.type_arguments.as_slice(),
+        )
+    }
+
+    fn type_parameter_substitutions_for_type_arguments(
+        &self,
+        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        type_arguments: &[Ty<'a>],
+    ) -> HashMap<&'a str, Ty<'a>> {
         let type_parameters = type_parameters_from_declaration(self.arena(), type_parameters);
         let mut substitutions = HashMap::new();
 
-        for (type_parameter, type_argument) in
-            type_parameters.iter().zip(reference.type_arguments.iter())
-        {
+        for (type_parameter, type_argument) in type_parameters.iter().zip(type_arguments.iter()) {
             substitutions.insert(type_parameter.name, *type_argument);
         }
 
-        for type_parameter in type_parameters.iter().skip(reference.type_arguments.len()) {
+        for type_parameter in type_parameters.iter().skip(type_arguments.len()) {
             let Some(default_type) = type_parameter.default_type else {
                 break;
             };
@@ -3633,6 +3743,22 @@ mod test {
         checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
     }
 
+    fn get_type_alias_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let alias = semantic
+            .nodes()
+            .iter()
+            .find_map(|node| match node.kind() {
+                AstKind::TSTypeAliasDeclaration(alias) if alias.id.name == Ident::from(name) => {
+                    Some(alias)
+                }
+                _ => None,
+            })
+            .unwrap_or_else(|| panic!("expected type alias `{name}`"));
+        checker.get_type_of_type_alias_declaration(ret.program_id, alias)
+    }
+
     fn get_symbol_type_in_function<'a>(
         ret: &ParseAndCheck<'a>,
         func_name: &str,
@@ -4230,6 +4356,25 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "value").to_type_string(),
             "string"
+        );
+    }
+
+    #[test]
+    fn type_alias_declarations_expand_top_level_alias_references() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        type Pick<T, K extends keyof T> = { [P in K]: T[P] };
+        type Exclude<T, U> = T extends U ? never : T;
+        type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
+        type OmitKeyof<TObject, TKey extends keyof TObject> = Omit<TObject, TKey>;
+        ",
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "OmitKeyof").to_type_string(),
+            "{ [P in Exclude<keyof TObject, TKey>]: TObject[P]; }"
         );
     }
 
