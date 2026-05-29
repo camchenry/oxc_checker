@@ -2893,25 +2893,39 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 .symbol_id
                 .get()
                 .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id)),
-            AstKind::IdentifierReference(identifier) => {
-                identifier.reference_id.get().and_then(|reference_id| {
+            AstKind::IdentifierReference(identifier) => identifier
+                .reference_id
+                .get()
+                .and_then(|reference_id| {
                     self.semantic(node.program_id)
                         .scoping()
                         .get_reference(reference_id)
                         .symbol_id()
                         .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
                 })
-            }
+                .or_else(|| {
+                    self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
+                }),
             AstKind::TSTypeReference(reference) => match &reference.type_name {
-                TSTypeName::IdentifierReference(identifier) => {
-                    identifier.reference_id.get().and_then(|reference_id| {
+                TSTypeName::IdentifierReference(identifier) => identifier
+                    .reference_id
+                    .get()
+                    .and_then(|reference_id| {
                         self.semantic(node.program_id)
                             .scoping()
                             .get_reference(reference_id)
                             .symbol_id()
                             .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
                     })
-                }
+                    .or_else(|| {
+                        self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
+                            .or_else(|| {
+                                self.get_type_symbol_for_name(
+                                    node.program_id,
+                                    identifier.name.as_str(),
+                                )
+                            })
+                    }),
                 _ => None,
             },
             _ => None,
@@ -3501,6 +3515,46 @@ mod test {
             get_global_symbol_type(&ret, "values"),
             Ty::array(arena, Ty::number())
         );
+    }
+
+    #[test]
+    fn global_type_reference_locations_resolve_symbols() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        type Values = Array<number>;
+        type Later = Promise<string>;
+        ",
+        );
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+
+        let type_reference_type = |name: &str| {
+            let (node_id, _) = semantic
+                .nodes()
+                .iter_enumerated()
+                .find_map(|(node_id, node)| match node.kind() {
+                    AstKind::TSTypeReference(reference)
+                        if matches!(
+                            &reference.type_name,
+                            TSTypeName::IdentifierReference(identifier)
+                                if identifier.name == Ident::from(name)
+                        ) =>
+                    {
+                        Some((node_id, reference))
+                    }
+                    _ => None,
+                })
+                .unwrap_or_else(|| panic!("expected type reference `{name}`"));
+            let symbol = checker
+                .get_symbol_at_location(NodeRef::new(ret.program_id, node_id))
+                .unwrap_or_else(|| panic!("expected symbol for type reference `{name}`"));
+            checker.get_type_of_symbol(symbol).to_type_string()
+        };
+
+        assert_eq!(type_reference_type("Array"), "ArrayConstructor");
+        assert_eq!(type_reference_type("Promise"), "PromiseConstructor");
     }
 
     #[test]
