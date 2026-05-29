@@ -965,34 +965,34 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
 
   reducer: (data, todo) => ({
-> ^^^^^^^: (data: any, todo: any) => { pages: any[]; pageParams: any[]; }   (TyFunction)
+> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: any[]; }   (TyFunction)
 
   reducer: (data, todo) => ({
->           ^^^^: any   (TyAny)
+>           ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
   reducer: (data, todo) => ({
->                 ^^^^: any   (TyAny)
+>                 ^^^^: Todo   (TyTypeReference)
 
     pages: [...data.pages, todo],
->   ^^^^^: any[]   (TyArray)
+>   ^^^^^: Todo[]   (TyArray)
 
     pages: [...data.pages, todo],
->              ^^^^: any   (TyAny)
+>              ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
     pages: [...data.pages, todo],
->                   ^^^^^: any   (TyAny)
+>                   ^^^^^: Todo[]   (TyArray)
 
     pages: [...data.pages, todo],
->                          ^^^^: any   (TyAny)
+>                          ^^^^: Todo   (TyTypeReference)
 
     pageParams: [...data.pageParams, pageParam],
 >   ^^^^^^^^^^: any[]   (TyArray)
 
     pageParams: [...data.pageParams, pageParam],
->                   ^^^^: any   (TyAny)
+>                   ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
     pageParams: [...data.pageParams, pageParam],
->                        ^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^: number[]   (TyArray)
 
     pageParams: [...data.pageParams, pageParam],
 >                                    ^^^^^^^^^: any   (TyAny)

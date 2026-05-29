@@ -1903,6 +1903,45 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         substitutions
     }
 
+    fn explicit_call_type_parameter_substitutions(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        call_expression: &'a CallExpression<'a>,
+    ) -> HashMap<&'a str, Ty<'a>> {
+        let mut substitutions = HashMap::new();
+
+        if let Some(type_arguments) = &call_expression.type_arguments {
+            for (type_parameter, type_argument) in function
+                .type_parameters
+                .iter()
+                .zip(type_arguments.params.iter())
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    self.get_type_from_ts_type(program_id, type_argument),
+                );
+            }
+        }
+
+        for type_parameter in &function.type_parameters {
+            if substitutions.contains_key(type_parameter.name) {
+                continue;
+            }
+            if let Some(fallback_type) = type_parameter
+                .default_type
+                .or(type_parameter.constraint_type)
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
+                );
+            }
+        }
+
+        substitutions
+    }
+
     fn is_call_signature_applicable(
         &self,
         program_id: program::ProgramId,
@@ -2838,13 +2877,46 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         ty: Ty<'a>,
     ) -> Ty<'a> {
         if let Ty::TypeReference(reference) = ty
+            && self.is_conditional_type_alias_reference(program_id, reference)
             && let Some((expanded_program_id, expanded)) =
                 self.get_expanded_type_alias_reference_type(program_id, reference, 0)
         {
             return self.apparent_type_for_conditional_match(expanded_program_id, expanded, 0);
         }
 
-        self.apparent_type_for_conditional_match(program_id, ty, 0)
+        ty
+    }
+
+    fn is_conditional_type_alias_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> bool {
+        let Some(symbol) = self.get_type_symbol_for_name(program_id, reference.name) else {
+            return false;
+        };
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.is_conditional_type_alias_declaration(symbol.program_id, declaration)
+    }
+
+    fn is_conditional_type_alias_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+    ) -> bool {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                matches!(alias.type_annotation, TSType::TSConditionalType(_))
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.is_conditional_type_alias_declaration(program_id, parent_id)
+            }
+            _ => false,
+        }
     }
 
     fn get_contextual_type_of_function_expression(
@@ -2854,6 +2926,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function_span: Span,
     ) -> Option<Ty<'a>> {
         self.get_contextual_type_of_call_argument(program_id, node_id, function_span)
+            .or_else(|| {
+                self.get_contextual_type_of_object_property_value(
+                    program_id,
+                    node_id,
+                    function_span,
+                )
+            })
             .or_else(|| {
                 self.get_contextual_type_of_binding_initializer(program_id, node_id, function_span)
             })
@@ -2890,7 +2969,51 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
             .into_iter()
             .next()?;
-        self.get_call_parameter_type_at(callee_signature.function, argument_index)
+        let parameter_type =
+            self.get_call_parameter_type_at(callee_signature.function, argument_index)?;
+        Some(parameter_type.substitute_type_parameters(
+            self.arena(),
+            &self.explicit_call_type_parameter_substitutions(
+                program_id,
+                callee_signature.function,
+                call_expression,
+            ),
+        ))
+    }
+
+    fn get_contextual_type_of_object_property_value(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        value_span: Span,
+    ) -> Option<Ty<'a>> {
+        let mut property_name = None;
+        let mut object_span = None;
+
+        if let AstKind::ObjectProperty(property) = self.node_kind(NodeRef::new(program_id, node_id))
+            && property.value.span() == value_span
+        {
+            property_name = property_key_name_str(&property.key);
+        }
+
+        for ancestor in self.nodes(program_id).ancestors(node_id) {
+            match ancestor.kind() {
+                AstKind::ObjectProperty(property) if property.value.span() == value_span => {
+                    property_name = property_key_name_str(&property.key);
+                }
+                AstKind::ObjectExpression(object) if property_name.is_some() => {
+                    object_span = Some(object.span);
+                    break;
+                }
+                _ => {}
+            }
+        }
+
+        let property_name = property_name?;
+        let object_context =
+            self.get_contextual_type_of_call_argument(program_id, node_id, object_span?)?;
+
+        self.get_destructured_property_type(program_id, object_context, property_name)
     }
 
     fn get_contextual_type_of_binding_initializer(
@@ -2979,6 +3102,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: FunctionKind<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
+        let function_span = match function {
+            FunctionKind::Function(f) => f.span,
+            FunctionKind::ArrowFunction(f) => f.span,
+        };
+        let contextual_function = node_id
+            .and_then(|node_id| {
+                self.get_contextual_type_of_function_expression(program_id, node_id, function_span)
+            })
+            .and_then(|contextual_type| {
+                self.get_signatures_of_type_in_program(
+                    program_id,
+                    contextual_type,
+                    SignatureKind::Call,
+                )
+                .into_iter()
+                .next()
+            })
+            .map(|signature| signature.function);
         let type_parameters = match function {
             FunctionKind::Function(f) => {
                 type_parameters_from_declaration(self.arena(), f.type_parameters.as_deref())
@@ -2988,10 +3129,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         };
         let parameters = match function {
-            FunctionKind::Function(f) => self.function_signature_parameters(program_id, &f.params),
-            FunctionKind::ArrowFunction(f) => {
-                self.function_signature_parameters(program_id, &f.params)
-            }
+            FunctionKind::Function(f) => self.function_signature_parameters_with_context(
+                program_id,
+                &f.params,
+                contextual_function,
+            ),
+            FunctionKind::ArrowFunction(f) => self.function_signature_parameters_with_context(
+                program_id,
+                &f.params,
+                contextual_function,
+            ),
         };
         let return_type = match function {
             FunctionKind::Function(f) => f.return_type.as_deref().map_or_else(
@@ -3031,10 +3178,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         params: &FormalParameters<'a>,
     ) -> Vec<TyParameter<'a>> {
+        self.function_signature_parameters_with_context(program_id, params, None)
+    }
+
+    fn function_signature_parameters_with_context(
+        &self,
+        program_id: program::ProgramId,
+        params: &FormalParameters<'a>,
+        contextual_function: Option<&'a TyFunction<'a>>,
+    ) -> Vec<TyParameter<'a>> {
         params
             .items
             .iter()
-            .map(|parameter| self.function_signature_parameter(program_id, parameter))
+            .enumerate()
+            .map(|(index, parameter)| {
+                self.function_signature_parameter_with_context(
+                    program_id,
+                    parameter,
+                    contextual_function.and_then(|function| function.parameters.get(index)),
+                )
+            })
             .chain(
                 params
                     .rest
@@ -3052,6 +3215,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.pattern);
         let ty =
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
+        if parameter.optional {
+            Ty::optional_parameter(name, ty)
+        } else {
+            Ty::parameter(name, ty)
+        }
+    }
+
+    fn function_signature_parameter_with_context(
+        &self,
+        program_id: program::ProgramId,
+        parameter: &FormalParameter<'a>,
+        contextual_parameter: Option<&TyParameter<'a>>,
+    ) -> TyParameter<'a> {
+        if parameter.type_annotation.is_some() {
+            return self.function_signature_parameter(program_id, parameter);
+        }
+
+        let name = binding_pattern_to_parameter_name(self.arena(), &parameter.pattern);
+        let ty = contextual_parameter.map_or_else(Ty::any, |parameter| {
+            self.get_apparent_contextual_parameter_type(program_id, parameter.ty)
+        });
         if parameter.optional {
             Ty::optional_parameter(name, ty)
         } else {
@@ -3297,15 +3481,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // For 1 element: infer the type of the first element
             1 => {
                 let first_element = &array_expression.elements[0];
-                let element_type = match first_element {
-                    ArrayExpressionElement::SpreadElement(_)
-                    | ArrayExpressionElement::Elision(_) => Ty::any(),
-                    _ => self.get_type_of_expression_with_node(
-                        program_id,
-                        first_element.to_expression(),
-                        node_id,
-                    ),
-                };
+                let element_type =
+                    self.get_type_of_array_expression_element(program_id, first_element, node_id);
                 Ty::array(self.arena, element_type)
             }
             // For 2+ elements: try to create a union type if there are mixed types
@@ -3313,15 +3490,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 // TODO(perf): avoid allocating here somehow?
                 let mut element_types = Vec::default();
                 for element in &array_expression.elements {
-                    let element_type = match element {
-                        ArrayExpressionElement::SpreadElement(_)
-                        | ArrayExpressionElement::Elision(_) => Ty::any(),
-                        _ => self.get_type_of_expression_with_node(
-                            program_id,
-                            element.to_expression(),
-                            node_id,
-                        ),
-                    };
+                    let element_type =
+                        self.get_type_of_array_expression_element(program_id, element, node_id);
                     // TODO(perf): avoid re-iterating elements? use a hash set?
                     if !element_types.contains(&element_type) {
                         element_types.push(element_type);
@@ -3333,6 +3503,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::union(self.arena, element_types)
                 };
                 Ty::array(self.arena, element_type)
+            }
+        }
+    }
+
+    fn get_type_of_array_expression_element(
+        &self,
+        program_id: program::ProgramId,
+        element: &'a ArrayExpressionElement<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        match element {
+            ArrayExpressionElement::SpreadElement(spread) => {
+                let argument_type =
+                    self.get_type_of_expression_with_node(program_id, &spread.argument, node_id);
+                array_element_type(argument_type).unwrap_or_else(Ty::any)
+            }
+            ArrayExpressionElement::Elision(_) => Ty::any(),
+            _ => {
+                self.get_type_of_expression_with_node(program_id, element.to_expression(), node_id)
             }
         }
     }
@@ -4871,6 +5060,70 @@ mod test {
             get_first_symbol_type(&ret, "chunk"),
             Ty::type_reference(arena(&ret), "TQueryFnData", std::iter::empty())
         );
+    }
+
+    #[test]
+    fn object_literal_call_argument_contextually_types_callback_property_parameters() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+                type QueryKey = readonly unknown[];
+
+                type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
+                    streamFn: () => AsyncIterable<TQueryFnData>;
+                };
+                type SimpleStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> =
+                    BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+                        reducer?: never;
+                        initialValue?: never;
+                    };
+                type ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey extends QueryKey> =
+                    BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
+                        reducer: (acc: TData, chunk: TQueryFnData) => TData;
+                        initialValue: TData;
+                    };
+                type StreamedQueryParams<TQueryFnData, TData, TQueryKey extends QueryKey> =
+                    | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
+                    | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>;
+
+                function streamedQuery<TQueryFnData, TData, TQueryKey extends QueryKey>(
+                    params: StreamedQueryParams<TQueryFnData, TData, TQueryKey>
+                ): TData {
+                    return params.initialValue as TData;
+                }
+
+                interface InfiniteData<TData, TPageParam = unknown> {
+                    pages: Array<TData>;
+                    pageParams: Array<TPageParam>;
+                }
+
+                type Todo = { id: number; title: string };
+                declare const todoStream: AsyncIterable<Todo>;
+                const pageParam: number = 1;
+
+                const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
+                    streamFn: () => todoStream,
+                    reducer: (data, todo) => ({
+                        pages: [...data.pages, todo],
+                        pageParams: [...data.pageParams, pageParam],
+                    }),
+                    initialValue: { pages: [], pageParams: [] },
+                });
+                ",
+        );
+        let arena = arena(&ret);
+        let todo_type = Ty::type_reference(arena, "Todo", std::iter::empty());
+        let infinite_data_type =
+            Ty::type_reference(arena, "InfiniteData", [todo_type, Ty::number()]);
+
+        assert_eq!(get_first_symbol_type(&ret, "data"), infinite_data_type);
+        assert_eq!(get_first_symbol_type(&ret, "todo"), todo_type);
+        assert_eq!(
+            get_object_property_types(&ret, "reducer")[0].to_type_string(),
+            "(data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }"
+        );
+        assert!(get_object_property_types(&ret, "pages").contains(&Ty::array(arena, todo_type)));
     }
 
     #[test]
