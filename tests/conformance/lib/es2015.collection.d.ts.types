@@ -1,0 +1,446 @@
+interface Map<K, V> {
+>         ^^^: any   (TyAny)
+
+interface Map<K, V> {
+>             ^: any   (TyAny)
+
+interface Map<K, V> {
+>                ^: any   (TyAny)
+
+    delete(key: K): boolean;
+>          ^^^: K   (TyTypeReference)
+
+    delete(key: K): boolean;
+>               ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>           ^^^^^^^^^^: (value: V, key: K, map: Map<K, V>) => void   (TyFunction)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                        ^^^^^: V   (TyTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                               ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                  ^^^: K   (TyTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                       ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                          ^^^: Map<K, V>   (TyTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                               ^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                                   ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                                      ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>                                                                   ^^^^^^^: any   (TyAny)
+
+    get(key: K): V | undefined;
+>       ^^^: K   (TyTypeReference)
+
+    get(key: K): V | undefined;
+>            ^: any   (TyAny)
+
+    get(key: K): V | undefined;
+>                ^: any   (TyAny)
+
+    has(key: K): boolean;
+>       ^^^: K   (TyTypeReference)
+
+    has(key: K): boolean;
+>            ^: any   (TyAny)
+
+    set(key: K, value: V): this;
+>       ^^^: K   (TyTypeReference)
+
+    set(key: K, value: V): this;
+>            ^: any   (TyAny)
+
+    set(key: K, value: V): this;
+>               ^^^^^: V   (TyTypeReference)
+
+    set(key: K, value: V): this;
+>                      ^: any   (TyAny)
+
+    readonly size: number;
+>            ^^^^: number   (TyNumber)
+
+interface MapConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Map<any, any>;
+>           ^^^: any   (TyAny)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>        ^: any   (TyAny)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>           ^: any   (TyAny)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>                                            ^: any   (TyAny)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>                                               ^: any   (TyAny)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>                                                              ^^^: any   (TyAny)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>                                                                  ^: any   (TyAny)
+
+    new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+>                                                                     ^: any   (TyAny)
+
+    readonly prototype: Map<any, any>;
+>            ^^^^^^^^^: Map<any, any>   (TyTypeReference)
+
+    readonly prototype: Map<any, any>;
+>                       ^^^: any   (TyAny)
+
+declare var Map: MapConstructor;
+>                ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyMap<K, V> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyMap<K, V> {
+>                     ^: any   (TyAny)
+
+interface ReadonlyMap<K, V> {
+>                        ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>           ^^^^^^^^^^: (value: V, key: K, map: ReadonlyMap<K, V>) => void   (TyFunction)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                        ^^^^^: V   (TyTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                               ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                  ^^^: K   (TyTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                       ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                          ^^^: ReadonlyMap<K, V>   (TyTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                               ^^^^^^^^^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                                           ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                                              ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                                                           ^^^^^^^: any   (TyAny)
+
+    get(key: K): V | undefined;
+>       ^^^: K   (TyTypeReference)
+
+    get(key: K): V | undefined;
+>            ^: any   (TyAny)
+
+    get(key: K): V | undefined;
+>                ^: any   (TyAny)
+
+    has(key: K): boolean;
+>       ^^^: K   (TyTypeReference)
+
+    has(key: K): boolean;
+>            ^: any   (TyAny)
+
+    readonly size: number;
+>            ^^^^: number   (TyNumber)
+
+interface WeakMap<K extends WeakKey, V> {
+>         ^^^^^^^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {
+>                 ^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {
+>                           ^^^^^^^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {
+>                                    ^: any   (TyAny)
+
+    delete(key: K): boolean;
+>          ^^^: K   (TyTypeReference)
+
+    delete(key: K): boolean;
+>               ^: any   (TyAny)
+
+    get(key: K): V | undefined;
+>       ^^^: K   (TyTypeReference)
+
+    get(key: K): V | undefined;
+>            ^: any   (TyAny)
+
+    get(key: K): V | undefined;
+>                ^: any   (TyAny)
+
+    has(key: K): boolean;
+>       ^^^: K   (TyTypeReference)
+
+    has(key: K): boolean;
+>            ^: any   (TyAny)
+
+    set(key: K, value: V): this;
+>       ^^^: K   (TyTypeReference)
+
+    set(key: K, value: V): this;
+>            ^: any   (TyAny)
+
+    set(key: K, value: V): this;
+>               ^^^^^: V   (TyTypeReference)
+
+    set(key: K, value: V): this;
+>                      ^: any   (TyAny)
+
+interface WeakMapConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>        ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                  ^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                            ^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                     ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                                                            ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                                                               ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                                                                              ^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                                                                                      ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+>                                                                                                         ^: any   (TyAny)
+
+    readonly prototype: WeakMap<WeakKey, any>;
+>            ^^^^^^^^^: WeakMap<WeakKey, any>   (TyTypeReference)
+
+    readonly prototype: WeakMap<WeakKey, any>;
+>                       ^^^^^^^: any   (TyAny)
+
+    readonly prototype: WeakMap<WeakKey, any>;
+>                               ^^^^^^^: any   (TyAny)
+
+declare var WeakMap: WeakMapConstructor;
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface Set<T> {
+>         ^^^: any   (TyAny)
+
+interface Set<T> {
+>             ^: any   (TyAny)
+
+    add(value: T): this;
+>       ^^^^^: T   (TyTypeReference)
+
+    add(value: T): this;
+>              ^: any   (TyAny)
+
+    delete(value: T): boolean;
+>          ^^^^^: T   (TyTypeReference)
+
+    delete(value: T): boolean;
+>                 ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>           ^^^^^^^^^^: (value: T, value2: T, set: Set<T>) => void   (TyFunction)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                        ^^^^^: T   (TyTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                               ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                                  ^^^^^^: T   (TyTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                                          ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                                             ^^^: Set<T>   (TyTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                                                  ^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                                                      ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>                                                                   ^^^^^^^: any   (TyAny)
+
+    has(value: T): boolean;
+>       ^^^^^: T   (TyTypeReference)
+
+    has(value: T): boolean;
+>              ^: any   (TyAny)
+
+    readonly size: number;
+>            ^^^^: number   (TyNumber)
+
+interface SetConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <T = any>(values?: readonly T[] | null): Set<T>;
+>        ^: any   (TyAny)
+
+    new <T = any>(values?: readonly T[] | null): Set<T>;
+>                 ^^^^^^: readonly T[] | null | undefined   (TyUnion)
+
+    new <T = any>(values?: readonly T[] | null): Set<T>;
+>                                   ^: any   (TyAny)
+
+    new <T = any>(values?: readonly T[] | null): Set<T>;
+>                                                ^^^: any   (TyAny)
+
+    new <T = any>(values?: readonly T[] | null): Set<T>;
+>                                                    ^: any   (TyAny)
+
+    readonly prototype: Set<any>;
+>            ^^^^^^^^^: Set<any>   (TyTypeReference)
+
+    readonly prototype: Set<any>;
+>                       ^^^: any   (TyAny)
+
+declare var Set: SetConstructor;
+>                ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlySet<T> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlySet<T> {
+>                     ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>           ^^^^^^^^^^: (value: T, value2: T, set: ReadonlySet<T>) => void   (TyFunction)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                        ^^^^^: T   (TyTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                               ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                                  ^^^^^^: T   (TyTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                                          ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                                             ^^^: ReadonlySet<T>   (TyTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                                                  ^^^^^^^^^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                                                              ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                                                                           ^^^^^^^: any   (TyAny)
+
+    has(value: T): boolean;
+>       ^^^^^: T   (TyTypeReference)
+
+    has(value: T): boolean;
+>              ^: any   (TyAny)
+
+    readonly size: number;
+>            ^^^^: number   (TyNumber)
+
+interface WeakSet<T extends WeakKey> {
+>         ^^^^^^^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {
+>                 ^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {
+>                           ^^^^^^^: any   (TyAny)
+
+    add(value: T): this;
+>       ^^^^^: T   (TyTypeReference)
+
+    add(value: T): this;
+>              ^: any   (TyAny)
+
+    delete(value: T): boolean;
+>          ^^^^^: T   (TyTypeReference)
+
+    delete(value: T): boolean;
+>                 ^: any   (TyAny)
+
+    has(value: T): boolean;
+>       ^^^^^: T   (TyTypeReference)
+
+    has(value: T): boolean;
+>              ^: any   (TyAny)
+
+interface WeakSetConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>        ^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>                  ^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>                            ^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>                                     ^^^^^^: readonly T[] | null | undefined   (TyUnion)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>                                                       ^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>                                                                    ^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+>                                                                            ^: any   (TyAny)
+
+    readonly prototype: WeakSet<WeakKey>;
+>            ^^^^^^^^^: WeakSet<WeakKey>   (TyTypeReference)
+
+    readonly prototype: WeakSet<WeakKey>;
+>                       ^^^^^^^: any   (TyAny)
+
+    readonly prototype: WeakSet<WeakKey>;
+>                               ^^^^^^^: any   (TyAny)
+
+declare var WeakSet: WeakSetConstructor;
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)

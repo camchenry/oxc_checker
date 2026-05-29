@@ -1,0 +1,23 @@
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly prototype: Symbol;
+>            ^^^^^^^^^: Symbol   (TyTypeReference)
+
+    readonly prototype: Symbol;
+>                       ^^^^^^: any   (TyAny)
+
+    (description?: string | number): symbol;
+>    ^^^^^^^^^^^: string | number | undefined   (TyUnion)
+
+    for(key: string): symbol;
+>       ^^^: string   (TyString)
+
+    keyFor(sym: symbol): string | undefined;
+>          ^^^: symbol   (TySymbol)
+
+declare var Symbol: SymbolConstructor;
+>           ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+declare var Symbol: SymbolConstructor;
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny)

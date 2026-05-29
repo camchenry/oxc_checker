@@ -1,0 +1,488 @@
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly hasInstance: unique symbol;
+>            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly isConcatSpreadable: unique symbol;
+>            ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly match: unique symbol;
+>            ^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly replace: unique symbol;
+>            ^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly search: unique symbol;
+>            ^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly species: unique symbol;
+>            ^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly split: unique symbol;
+>            ^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly toPrimitive: unique symbol;
+>            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly toStringTag: unique symbol;
+>            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    readonly unscopables: unique symbol;
+>            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+interface Symbol {
+>         ^^^^^^: any   (TyAny)
+
+    [Symbol.toPrimitive](hint: string): symbol;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.toPrimitive](hint: string): symbol;
+>                        ^^^^: string   (TyString)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Array<T> {
+>         ^^^^^: any   (TyAny)
+
+interface Array<T> {
+>               ^: any   (TyAny)
+
+    readonly [Symbol.unscopables]: {
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>                       ^: any   (TyAny)
+
+    readonly [Symbol.unscopables]: {
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Date {
+>         ^^^^: any   (TyAny)
+
+    [Symbol.toPrimitive](hint: "default"): string;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.toPrimitive](hint: "default"): string;
+>                        ^^^^: "default"   (TyStringLiteral)
+
+    [Symbol.toPrimitive](hint: "string"): string;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.toPrimitive](hint: "string"): string;
+>                        ^^^^: "string"   (TyStringLiteral)
+
+    [Symbol.toPrimitive](hint: "number"): number;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.toPrimitive](hint: "number"): number;
+>                        ^^^^: "number"   (TyStringLiteral)
+
+    [Symbol.toPrimitive](hint: string): string | number;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.toPrimitive](hint: string): string | number;
+>                        ^^^^: string   (TyString)
+
+interface Map<K, V> {
+>         ^^^: any   (TyAny)
+
+interface Map<K, V> {
+>             ^: any   (TyAny)
+
+interface Map<K, V> {
+>                ^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {
+>         ^^^^^^^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {
+>                 ^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {
+>                           ^^^^^^^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {
+>                                    ^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Set<T> {
+>         ^^^: any   (TyAny)
+
+interface Set<T> {
+>             ^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {
+>         ^^^^^^^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {
+>                 ^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {
+>                           ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface JSON {
+>         ^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Function {
+>         ^^^^^^^^: any   (TyAny)
+
+    [Symbol.hasInstance](value: any): boolean;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.hasInstance](value: any): boolean;
+>                        ^^^^^: any   (TyAny)
+
+interface GeneratorFunction {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Math {
+>         ^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Promise<T> {
+>         ^^^^^^^: any   (TyAny)
+
+interface Promise<T> {
+>                 ^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: PromiseConstructor;
+>                    ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: PromiseConstructor;
+>                              ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny)
+
+    [Symbol.match](string: string): RegExpMatchArray | null;
+>           ^^^^^: any   (TyAny)
+
+    [Symbol.match](string: string): RegExpMatchArray | null;
+>                  ^^^^^^: string   (TyString)
+
+    [Symbol.match](string: string): RegExpMatchArray | null;
+>                                   ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.replace](string: string, replaceValue: string): string;
+>           ^^^^^^^: any   (TyAny)
+
+    [Symbol.replace](string: string, replaceValue: string): string;
+>                    ^^^^^^: string   (TyString)
+
+    [Symbol.replace](string: string, replaceValue: string): string;
+>                                    ^^^^^^^^^^^^: string   (TyString)
+
+    [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
+>           ^^^^^^^: any   (TyAny)
+
+    [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
+>                    ^^^^^^: string   (TyString)
+
+    [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
+>                                    ^^^^^^^^: (substring: string, ...args: any[]) => string   (TyFunction)
+
+    [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
+>                                               ^^^^^^^^^: string   (TyString)
+
+    [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                                     ^^^^: any[]   (TyArray)
+
+    [Symbol.search](string: string): number;
+>           ^^^^^^: any   (TyAny)
+
+    [Symbol.search](string: string): number;
+>                   ^^^^^^: string   (TyString)
+
+    [Symbol.split](string: string, limit?: number): string[];
+>           ^^^^^: any   (TyAny)
+
+    [Symbol.split](string: string, limit?: number): string[];
+>                  ^^^^^^: string   (TyString)
+
+    [Symbol.split](string: string, limit?: number): string[];
+>                                  ^^^^^: number | undefined   (TyUnion)
+
+interface RegExpConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: RegExpConstructor;
+>                    ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: RegExpConstructor;
+>                              ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface String {
+>         ^^^^^^: any   (TyAny)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>         ^^^^^^^: {}   (TyObject)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>                            ^^^^^: any   (TyAny)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>                                   ^^^^^^: string   (TyString)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>                                                    ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>                                                                                 ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
+>           ^^^^^^^^^^^: {}   (TyObject)
+
+    replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
+>                                  ^^^^^^^: any   (TyAny)
+
+    replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
+>                                           ^^^^^^: string   (TyString)
+
+    replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
+>                                                           ^^^^^^^^^^^^: string   (TyString)
+
+    replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
+>                                                                                             ^^^^^^^^^^^^: string   (TyString)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>           ^^^^^^^^^^^: {}   (TyObject)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                  ^^^^^^^: any   (TyAny)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                           ^^^^^^: string   (TyString)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                           ^^^^^^^^: (substring: string, ...args: any[]) => string   (TyFunction)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                                      ^^^^^^^^^: string   (TyString)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                                                            ^^^^: any[]   (TyArray)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                                                                                                ^^^^^^^^: (substring: string, ...args: any[]) => string   (TyFunction)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                                                                                                           ^^^^^^^^^: string   (TyString)
+
+    replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                                                                                                                                 ^^^^: any[]   (TyArray)
+
+    search(searcher: { [Symbol.search](string: string): number; }): number;
+>          ^^^^^^^^: {}   (TyObject)
+
+    search(searcher: { [Symbol.search](string: string): number; }): number;
+>                              ^^^^^^: any   (TyAny)
+
+    search(searcher: { [Symbol.search](string: string): number; }): number;
+>                                      ^^^^^^: string   (TyString)
+
+    split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
+>         ^^^^^^^^: {}   (TyObject)
+
+    split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
+>                             ^^^^^: any   (TyAny)
+
+    split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
+>                                    ^^^^^^: string   (TyString)
+
+    split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
+>                                                    ^^^^^: number | undefined   (TyUnion)
+
+    split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
+>                                                                                  ^^^^^: number | undefined   (TyUnion)
+
+interface ArrayBuffer {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "ArrayBuffer";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^: any   (TyAny)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                  ^^^^^^^^^^^^: any   (TyAny)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                                       ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: string;
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                   ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Int8Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Uint8Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                           ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Uint8ClampedArray";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Int16Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Uint16Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Int32Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Uint32Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Float32Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "Float64Array";
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+interface ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: ArrayConstructor;
+>                    ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: ArrayConstructor;
+>                              ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface MapConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: MapConstructor;
+>                    ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: MapConstructor;
+>                              ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface SetConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: SetConstructor;
+>                    ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: SetConstructor;
+>                              ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface ArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: ArrayBufferConstructor;
+>                    ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.species]: ArrayBufferConstructor;
+>                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

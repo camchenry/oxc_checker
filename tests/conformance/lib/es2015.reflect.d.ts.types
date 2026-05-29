@@ -1,0 +1,338 @@
+declare namespace Reflect {
+>                 ^^^^^^^: typeof Reflect   (TyTypeQuery)
+
+    function apply<T, A extends readonly any[], R>(
+>            ^^^^^: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }   (TyObject)
+
+    function apply<T, A extends readonly any[], R>(
+>                  ^: any   (TyAny)
+
+    function apply<T, A extends readonly any[], R>(
+>                     ^: any   (TyAny)
+
+    function apply<T, A extends readonly any[], R>(
+>                                               ^: any   (TyAny)
+
+        target: (this: T, ...args: A) => R,
+>       ^^^^^^: (this: T, ...args: A) => R   (TyFunction)
+
+        target: (this: T, ...args: A) => R,
+>                      ^: any   (TyAny)
+
+        target: (this: T, ...args: A) => R,
+>                            ^^^^: A   (TyTypeReference)
+
+        target: (this: T, ...args: A) => R,
+>                                  ^: any   (TyAny)
+
+        target: (this: T, ...args: A) => R,
+>                                        ^: any   (TyAny)
+
+        thisArgument: T,
+>       ^^^^^^^^^^^^: T   (TyTypeReference)
+
+        thisArgument: T,
+>                     ^: any   (TyAny)
+
+        argumentsList: Readonly<A>,
+>       ^^^^^^^^^^^^^: Readonly<A>   (TyTypeReference)
+
+        argumentsList: Readonly<A>,
+>                      ^^^^^^^^: any   (TyAny)
+
+        argumentsList: Readonly<A>,
+>                               ^: any   (TyAny)
+
+    ): R;
+>      ^: any   (TyAny)
+
+    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+>            ^^^^^: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }   (TyObject)
+
+    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+>                  ^^^^^^: Function   (TyTypeReference)
+
+    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+>                          ^^^^^^^^: any   (TyAny)
+
+    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+>                                                       ^^^^^^^^^^^^^: ArrayLike<any>   (TyTypeReference)
+
+    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+>                                                                      ^^^^^^^^^: any   (TyAny)
+
+    function construct<A extends readonly any[], R>(
+>            ^^^^^^^^^: { <A extends readonly any[], R>(target: none, argumentsList: Readonly<A>, newTarget?: none): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject)
+
+    function construct<A extends readonly any[], R>(
+>                      ^: any   (TyAny)
+
+    function construct<A extends readonly any[], R>(
+>                                                ^: any   (TyAny)
+
+        target: new (...args: A) => R,
+>                       ^^^^: A   (TyTypeReference)
+
+        target: new (...args: A) => R,
+>                             ^: any   (TyAny)
+
+        target: new (...args: A) => R,
+>                                   ^: any   (TyAny)
+
+        argumentsList: Readonly<A>,
+>       ^^^^^^^^^^^^^: Readonly<A>   (TyTypeReference)
+
+        argumentsList: Readonly<A>,
+>                      ^^^^^^^^: any   (TyAny)
+
+        argumentsList: Readonly<A>,
+>                               ^: any   (TyAny)
+
+        newTarget?: new (...args: any) => any,
+>       ^^^^^^^^^: none | undefined   (TyUnion)
+
+        newTarget?: new (...args: any) => any,
+>                           ^^^^: any   (TyAny)
+
+    ): R;
+>      ^: any   (TyAny)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>            ^^^^^^^^^: { <A extends readonly any[], R>(target: none, argumentsList: Readonly<A>, newTarget?: none): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                      ^^^^^^: Function   (TyTypeReference)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                              ^^^^^^^^: any   (TyAny)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                                        ^^^^^^^^^^^^^: ArrayLike<any>   (TyTypeReference)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                                                       ^^^^^^^^^: any   (TyAny)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                                                                       ^^^^^^^^^: Function | undefined   (TyUnion)
+
+    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+>                                                                                   ^^^^^^^^: any   (TyAny)
+
+    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+>            ^^^^^^^^^^^^^^: (target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>) => boolean   (TyFunction)
+
+    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+>                           ^^^^^^: object   (TyPrimitiveObject)
+
+    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+>                                           ^^^^^^^^^^^: PropertyKey   (TyTypeReference)
+
+    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+>                                                        ^^^^^^^^^^^: any   (TyAny)
+
+    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+>                                                                     ^^^^^^^^^^: PropertyDescriptor & ThisType<any>   (TyIntersection)
+
+    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+>                                                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+>                                                                                                      ^^^^^^^^: any   (TyAny)
+
+    function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
+>            ^^^^^^^^^^^^^^: (target: object, propertyKey: PropertyKey) => boolean   (TyFunction)
+
+    function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
+>                           ^^^^^^: object   (TyPrimitiveObject)
+
+    function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
+>                                           ^^^^^^^^^^^: PropertyKey   (TyTypeReference)
+
+    function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
+>                                                        ^^^^^^^^^^^: any   (TyAny)
+
+    function get<T extends object, P extends PropertyKey>(
+>            ^^^: <T extends object, P extends PropertyKey>(target: T, propertyKey: P, receiver?: unknown) => P extends keyof T ? T[P] : any   (TyFunction)
+
+    function get<T extends object, P extends PropertyKey>(
+>                ^: any   (TyAny)
+
+    function get<T extends object, P extends PropertyKey>(
+>                                  ^: any   (TyAny)
+
+    function get<T extends object, P extends PropertyKey>(
+>                                            ^^^^^^^^^^^: any   (TyAny)
+
+        target: T,
+>       ^^^^^^: T   (TyTypeReference)
+
+        target: T,
+>               ^: any   (TyAny)
+
+        propertyKey: P,
+>       ^^^^^^^^^^^: P   (TyTypeReference)
+
+        propertyKey: P,
+>                    ^: any   (TyAny)
+
+        receiver?: unknown,
+>       ^^^^^^^^: unknown   (TyUnknown)
+
+    ): P extends keyof T ? T[P] : any;
+>      ^: any   (TyAny)
+
+    ): P extends keyof T ? T[P] : any;
+>                      ^: any   (TyAny)
+
+    ): P extends keyof T ? T[P] : any;
+>                          ^: any   (TyAny)
+
+    ): P extends keyof T ? T[P] : any;
+>                            ^: any   (TyAny)
+
+    function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
+>            ^^^^^^^^^^^^^^^^^^^^^^^^: <T extends object, P extends PropertyKey>(target: T, propertyKey: P) => TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined   (TyFunction)
+
+    function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
+>                                     ^: any   (TyAny)
+
+    function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
+>                                                       ^: any   (TyAny)
+
+    function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
+>                                                                 ^^^^^^^^^^^: any   (TyAny)
+
+        target: T,
+>       ^^^^^^: T   (TyTypeReference)
+
+        target: T,
+>               ^: any   (TyAny)
+
+        propertyKey: P,
+>       ^^^^^^^^^^^: P   (TyTypeReference)
+
+        propertyKey: P,
+>                    ^: any   (TyAny)
+
+    ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
+>      ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
+>                              ^: any   (TyAny)
+
+    ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
+>                                              ^: any   (TyAny)
+
+    ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
+>                                                  ^: any   (TyAny)
+
+    ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
+>                                                    ^: any   (TyAny)
+
+    function getPrototypeOf(target: object): object | null;
+>            ^^^^^^^^^^^^^^: (target: object) => object | null   (TyFunction)
+
+    function getPrototypeOf(target: object): object | null;
+>                           ^^^^^^: object   (TyPrimitiveObject)
+
+    function has(target: object, propertyKey: PropertyKey): boolean;
+>            ^^^: (target: object, propertyKey: PropertyKey) => boolean   (TyFunction)
+
+    function has(target: object, propertyKey: PropertyKey): boolean;
+>                ^^^^^^: object   (TyPrimitiveObject)
+
+    function has(target: object, propertyKey: PropertyKey): boolean;
+>                                ^^^^^^^^^^^: PropertyKey   (TyTypeReference)
+
+    function has(target: object, propertyKey: PropertyKey): boolean;
+>                                             ^^^^^^^^^^^: any   (TyAny)
+
+    function isExtensible(target: object): boolean;
+>            ^^^^^^^^^^^^: (target: object) => boolean   (TyFunction)
+
+    function isExtensible(target: object): boolean;
+>                         ^^^^^^: object   (TyPrimitiveObject)
+
+    function ownKeys(target: object): (string | symbol)[];
+>            ^^^^^^^: (target: object) => (string | symbol)[]   (TyFunction)
+
+    function ownKeys(target: object): (string | symbol)[];
+>                    ^^^^^^: object   (TyPrimitiveObject)
+
+    function preventExtensions(target: object): boolean;
+>            ^^^^^^^^^^^^^^^^^: (target: object) => boolean   (TyFunction)
+
+    function preventExtensions(target: object): boolean;
+>                              ^^^^^^: object   (TyPrimitiveObject)
+
+    function set<T extends object, P extends PropertyKey>(
+>            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; }   (TyObject)
+
+    function set<T extends object, P extends PropertyKey>(
+>                ^: any   (TyAny)
+
+    function set<T extends object, P extends PropertyKey>(
+>                                  ^: any   (TyAny)
+
+    function set<T extends object, P extends PropertyKey>(
+>                                            ^^^^^^^^^^^: any   (TyAny)
+
+        target: T,
+>       ^^^^^^: T   (TyTypeReference)
+
+        target: T,
+>               ^: any   (TyAny)
+
+        propertyKey: P,
+>       ^^^^^^^^^^^: P   (TyTypeReference)
+
+        propertyKey: P,
+>                    ^: any   (TyAny)
+
+        value: P extends keyof T ? T[P] : any,
+>       ^^^^^: P extends keyof T ? T[P] : any   (TyConditional)
+
+        value: P extends keyof T ? T[P] : any,
+>              ^: any   (TyAny)
+
+        value: P extends keyof T ? T[P] : any,
+>                              ^: any   (TyAny)
+
+        value: P extends keyof T ? T[P] : any,
+>                                  ^: any   (TyAny)
+
+        value: P extends keyof T ? T[P] : any,
+>                                    ^: any   (TyAny)
+
+        receiver?: any,
+>       ^^^^^^^^: any   (TyAny)
+
+    function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
+>            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; }   (TyObject)
+
+    function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
+>                ^^^^^^: object   (TyPrimitiveObject)
+
+    function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
+>                                ^^^^^^^^^^^: PropertyKey   (TyTypeReference)
+
+    function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
+>                                             ^^^^^^^^^^^: any   (TyAny)
+
+    function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
+>                                                          ^^^^^: any   (TyAny)
+
+    function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
+>                                                                      ^^^^^^^^: any   (TyAny)
+
+    function setPrototypeOf(target: object, proto: object | null): boolean;
+>            ^^^^^^^^^^^^^^: (target: object, proto: object | null) => boolean   (TyFunction)
+
+    function setPrototypeOf(target: object, proto: object | null): boolean;
+>                           ^^^^^^: object   (TyPrimitiveObject)
+
+    function setPrototypeOf(target: object, proto: object | null): boolean;
+>                                           ^^^^^: object | null   (TyUnion)

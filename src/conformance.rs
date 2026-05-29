@@ -25,6 +25,7 @@ struct ConformanceSuite {
     tsc_types_path: &'static str,
     compiler_cases_only: bool,
     write_type_outputs: bool,
+    type_outputs_root: Option<&'static str>,
 }
 
 const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
@@ -34,6 +35,7 @@ const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     tsc_types_path: "target/conformance/tsc_types.tsv",
     compiler_cases_only: true,
     write_type_outputs: false,
+    type_outputs_root: None,
 };
 
 const CASES_SUITE: ConformanceSuite = ConformanceSuite {
@@ -43,6 +45,7 @@ const CASES_SUITE: ConformanceSuite = ConformanceSuite {
     tsc_types_path: "target/conformance/cases_tsc_types.tsv",
     compiler_cases_only: false,
     write_type_outputs: true,
+    type_outputs_root: None,
 };
 
 const EXTERNAL_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
@@ -52,14 +55,34 @@ const EXTERNAL_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
     tsc_types_path: "target/conformance/external_tsc_types.tsv",
     compiler_cases_only: false,
     write_type_outputs: true,
+    type_outputs_root: None,
 };
 
-fn all_conformance_suites() -> [&'static ConformanceSuite; 3] {
-    [&CASES_SUITE, &EXTERNAL_LIBRARY_SUITE, &TYPESCRIPT_SUITE]
+const STANDARD_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
+    name: "standard library declaration",
+    cases_root: "src/lib",
+    snapshot_path: "tests/conformance/lib_snapshot.txt",
+    tsc_types_path: "target/conformance/lib_tsc_types.tsv",
+    compiler_cases_only: false,
+    write_type_outputs: true,
+    type_outputs_root: Some("tests/conformance/lib"),
+};
+
+fn all_conformance_suites() -> [&'static ConformanceSuite; 4] {
+    [
+        &CASES_SUITE,
+        &EXTERNAL_LIBRARY_SUITE,
+        &STANDARD_LIBRARY_SUITE,
+        &TYPESCRIPT_SUITE,
+    ]
 }
 
-fn default_conformance_suites() -> [&'static ConformanceSuite; 2] {
-    [&CASES_SUITE, &EXTERNAL_LIBRARY_SUITE]
+fn default_conformance_suites() -> [&'static ConformanceSuite; 3] {
+    [
+        &CASES_SUITE,
+        &EXTERNAL_LIBRARY_SUITE,
+        &STANDARD_LIBRARY_SUITE,
+    ]
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -399,6 +422,12 @@ fn custom_case_type_extractor() -> ConformanceResult {
     extract_tsc_type_records(&CASES_SUITE)
 }
 
+#[cfg(feature = "conformance-tsc")]
+#[test]
+fn standard_library_type_extractor() -> ConformanceResult {
+    extract_tsc_type_records(&STANDARD_LIBRARY_SUITE)
+}
+
 #[cfg(feature = "conformance")]
 #[test]
 fn typescript_compiler_type_records() -> ConformanceResult {
@@ -415,6 +444,12 @@ fn custom_case_type_records() -> ConformanceResult {
 #[test]
 fn external_library_type_records() -> ConformanceResult {
     run_type_record_conformance_on_thread("external_library_type_records", &EXTERNAL_LIBRARY_SUITE)
+}
+
+#[cfg(feature = "conformance")]
+#[test]
+fn standard_library_type_records() -> ConformanceResult {
+    run_type_record_conformance_on_thread("standard_library_type_records", &STANDARD_LIBRARY_SUITE)
 }
 
 #[cfg(all(feature = "conformance", feature = "conformance-tsc"))]
@@ -517,6 +552,7 @@ fn conformance_suite_for_argument(argument: &str) -> Option<&'static Conformance
     match argument {
         "cases" | "local" => Some(&CASES_SUITE),
         "external" | "libraries" | "library" => Some(&EXTERNAL_LIBRARY_SUITE),
+        "lib" | "libs" | "stdlib" | "standard-library" => Some(&STANDARD_LIBRARY_SUITE),
         "typescript" | "ts" | "upstream" => Some(&TYPESCRIPT_SUITE),
         _ => None,
     }
@@ -1734,7 +1770,15 @@ fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[Ty
             );
         }
 
-        let output_path = type_output_path(&path);
+        let output_path = type_output_path(suite, cases_root, &path);
+        if let Some(parent) = output_path.parent() {
+            std::fs::create_dir_all(parent).unwrap_or_else(|err| {
+                panic!(
+                    "failed to create type output directory {}: {err}",
+                    parent.display()
+                )
+            });
+        }
         std::fs::write(&output_path, output).unwrap_or_else(|err| {
             panic!(
                 "failed to write type output {}: {err}",
@@ -1744,7 +1788,18 @@ fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[Ty
     }
 }
 
-fn type_output_path(path: &Path) -> PathBuf {
+fn type_output_path(suite: &ConformanceSuite, cases_root: &Path, path: &Path) -> PathBuf {
+    let Some(type_outputs_root) = suite.type_outputs_root else {
+        return sibling_type_output_path(path);
+    };
+
+    let relative_path = path.strip_prefix(cases_root).unwrap_or(path);
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join(type_outputs_root)
+        .join(sibling_type_output_path(relative_path))
+}
+
+fn sibling_type_output_path(path: &Path) -> PathBuf {
     let file_name = path
         .file_name()
         .and_then(|file_name| file_name.to_str())
@@ -2088,8 +2143,20 @@ mod tests {
     #[test]
     fn type_output_path_appends_types_extension() {
         assert_eq!(
-            type_output_path(Path::new("tests/conformance/cases/compiler/example.ts")),
+            sibling_type_output_path(Path::new("tests/conformance/cases/compiler/example.ts")),
             PathBuf::from("tests/conformance/cases/compiler/example.ts.types")
+        );
+    }
+
+    #[test]
+    fn type_output_path_can_write_under_suite_output_root() {
+        assert_eq!(
+            type_output_path(
+                &STANDARD_LIBRARY_SUITE,
+                Path::new("/repo/src/lib"),
+                Path::new("/repo/src/lib/es5.d.ts"),
+            ),
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/conformance/lib/es5.d.ts.types")
         );
     }
 

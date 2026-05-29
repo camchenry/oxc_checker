@@ -30,6 +30,10 @@ pub struct ProgramEntry<'a> {
     program: &'a Program<'a>,
     module_record: ModuleRecord<'a>,
     semantic: Semantic<'a>,
+    /// Whether this entry is a default standard library file injected by the
+    /// checker rather than user source. Consumers (e.g. conformance record
+    /// extraction) skip lib entries.
+    is_lib: bool,
 }
 
 impl<'a> ProgramEntry<'a> {
@@ -66,6 +70,11 @@ impl<'a> ProgramEntry<'a> {
     #[inline]
     pub const fn semantic(&self) -> &Semantic<'a> {
         &self.semantic
+    }
+
+    #[inline]
+    pub const fn is_lib(&self) -> bool {
+        self.is_lib
     }
 }
 
@@ -187,6 +196,7 @@ pub struct ProgramStoreBuilder<'a, H> {
     allocator: &'a Allocator,
     host: H,
     root_files: Vec<PathBuf>,
+    load_default_lib: bool,
 }
 
 impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
@@ -195,6 +205,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             allocator,
             host,
             root_files: Vec::new(),
+            load_default_lib: true,
         }
     }
 
@@ -203,13 +214,42 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         self
     }
 
+    /// Disable injecting the embedded default standard library (es2015) files.
+    pub fn without_default_lib(mut self) -> Self {
+        self.load_default_lib = false;
+        self
+    }
+
     pub fn build(self) -> ProgramStoreResult<ProgramStore<'a>> {
         let mut store = ProgramStore::new(self.allocator);
+        // Inject the default standard library before user files so global
+        // ambient declarations (Array, Promise, ...) are available to every
+        // program in the store.
+        if self.load_default_lib {
+            self.inject_default_libs(&mut store)?;
+        }
         for root_file in &self.root_files {
             let root_file = self.host.canonicalize_path(root_file);
             self.ensure_program(&mut store, &root_file)?;
         }
         Ok(store)
+    }
+
+    /// Parse and store the embedded default standard library files as ambient
+    /// lib entries.
+    ///
+    /// TODO: make the library year/target configurable instead of always
+    /// loading es2015.
+    ///
+    /// TODO(perf): these files are reparsed for every `ProgramStore`. Consider
+    /// sharing or caching parsed lib programs across builds.
+    fn inject_default_libs(&self, store: &mut ProgramStore<'a>) -> ProgramStoreResult<()> {
+        for (virtual_path, contents) in crate::global_lib::DEFAULT_LIB_FILES {
+            let path = PathBuf::from(virtual_path);
+            let source_text = self.allocator.alloc_str(contents);
+            self.build_entry_from_source(store, path, source_text, SourceType::d_ts(), true)?;
+        }
+        Ok(())
     }
 
     fn ensure_program(
@@ -225,6 +265,20 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         let source_text = self.host.read_source(&path)?;
         let source_text = self.allocator.alloc_str(&source_text);
         let source_type = SourceType::from_path(&path).unwrap_or_else(|_| SourceType::ts());
+        self.build_entry_from_source(store, path, source_text, source_type, false)
+    }
+
+    /// Parse `source_text`, run semantic analysis, store the resulting entry,
+    /// and process its module edges. Shared by user-file loading
+    /// (`ensure_program`) and default lib injection (`inject_default_libs`).
+    fn build_entry_from_source(
+        &self,
+        store: &mut ProgramStore<'a>,
+        path: PathBuf,
+        source_text: &'a str,
+        source_type: SourceType,
+        is_lib: bool,
+    ) -> ProgramStoreResult<ProgramId> {
         let parser_return = Parser::new(self.allocator, source_text, source_type).parse();
         if parser_return.panicked {
             return Err(ProgramStoreError::Parse {
@@ -250,6 +304,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             program,
             module_record: parser_return.module_record,
             semantic: semantic_return.semantic,
+            is_lib,
         });
 
         let requests = store.module_requests(id);
@@ -572,6 +627,7 @@ mod tests {
 
         let store = ProgramStoreBuilder::new(&allocator, host)
             .add_root_file("/project/a.ts")
+            .without_default_lib()
             .build()
             .unwrap();
 
@@ -592,6 +648,7 @@ mod tests {
 
         let store = ProgramStoreBuilder::new(&allocator, host)
             .add_root_file("/project/a.ts")
+            .without_default_lib()
             .build()
             .unwrap();
 
@@ -610,6 +667,7 @@ mod tests {
 
         let store = ProgramStoreBuilder::new(&allocator, host)
             .add_root_file("/project/a.ts")
+            .without_default_lib()
             .build()
             .unwrap();
 
@@ -630,6 +688,7 @@ mod tests {
 
         let store = ProgramStoreBuilder::new(&allocator, host)
             .add_root_file("/project/a.ts")
+            .without_default_lib()
             .build()
             .unwrap();
 

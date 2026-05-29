@@ -1,0 +1,1571 @@
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly iterator: unique symbol;
+>            ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+interface IteratorYieldResult<TYield> {
+>         ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface IteratorYieldResult<TYield> {
+>                             ^^^^^^: any   (TyAny)
+
+    done?: false;
+>   ^^^^: false   (TyBooleanLiteral)
+
+    value: TYield;
+>   ^^^^^: TYield   (TyTypeReference)
+
+    value: TYield;
+>          ^^^^^^: any   (TyAny)
+
+interface IteratorReturnResult<TReturn> {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface IteratorReturnResult<TReturn> {
+>                              ^^^^^^^: any   (TyAny)
+
+    done: true;
+>   ^^^^: true   (TyBooleanLiteral)
+
+    value: TReturn;
+>   ^^^^^: TReturn   (TyTypeReference)
+
+    value: TReturn;
+>          ^^^^^^^: any   (TyAny)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>    ^^^^^^^^^^^^^^: IteratorYieldResult<T> | IteratorReturnResult<TReturn>   (TyUnion)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                   ^: any   (TyAny)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                      ^^^^^^^: any   (TyAny)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                                       ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                                                           ^: any   (TyAny)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                                                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                                                                                     ^^^^^^^: any   (TyAny)
+
+interface Iterator<T, TReturn = any, TNext = any> {
+>         ^^^^^^^^: any   (TyAny)
+
+interface Iterator<T, TReturn = any, TNext = any> {
+>                  ^: any   (TyAny)
+
+interface Iterator<T, TReturn = any, TNext = any> {
+>                     ^^^^^^^: any   (TyAny)
+
+interface Iterator<T, TReturn = any, TNext = any> {
+>                                    ^^^^^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>            ^^^^^: [] | [TNext]   (TyUnion)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                          ^^^^^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                                   ^^^^^^^^^^^^^^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                                                  ^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                                                     ^^^^^^^: any   (TyAny)
+
+    return?(value?: TReturn): IteratorResult<T, TReturn>;
+>           ^^^^^: TReturn | undefined   (TyUnion)
+
+    return?(value?: TReturn): IteratorResult<T, TReturn>;
+>                   ^^^^^^^: any   (TyAny)
+
+    return?(value?: TReturn): IteratorResult<T, TReturn>;
+>                             ^^^^^^^^^^^^^^: any   (TyAny)
+
+    return?(value?: TReturn): IteratorResult<T, TReturn>;
+>                                            ^: any   (TyAny)
+
+    return?(value?: TReturn): IteratorResult<T, TReturn>;
+>                                               ^^^^^^^: any   (TyAny)
+
+    throw?(e?: any): IteratorResult<T, TReturn>;
+>          ^: any   (TyAny)
+
+    throw?(e?: any): IteratorResult<T, TReturn>;
+>                    ^^^^^^^^^^^^^^: any   (TyAny)
+
+    throw?(e?: any): IteratorResult<T, TReturn>;
+>                                   ^: any   (TyAny)
+
+    throw?(e?: any): IteratorResult<T, TReturn>;
+>                                      ^^^^^^^: any   (TyAny)
+
+interface Iterable<T, TReturn = any, TNext = any> {
+>         ^^^^^^^^: any   (TyAny)
+
+interface Iterable<T, TReturn = any, TNext = any> {
+>                  ^: any   (TyAny)
+
+interface Iterable<T, TReturn = any, TNext = any> {
+>                     ^^^^^^^: any   (TyAny)
+
+interface Iterable<T, TReturn = any, TNext = any> {
+>                                    ^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Iterator<T, TReturn, TNext>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Iterator<T, TReturn, TNext>;
+>                        ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Iterator<T, TReturn, TNext>;
+>                                 ^: any   (TyAny)
+
+    [Symbol.iterator](): Iterator<T, TReturn, TNext>;
+>                                    ^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Iterator<T, TReturn, TNext>;
+>                                             ^^^^^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                          ^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                             ^^^^^^^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                                            ^^^^^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                                                                 ^^^^^^^^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                                                                          ^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                                                                             ^^^^^^^: any   (TyAny)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                                                                                      ^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
+>                        ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
+>                                         ^: any   (TyAny)
+
+    [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
+>                                            ^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
+>                                                     ^^^^^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                        ^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                           ^^^^^^^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                                              ^^^^^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                                                                       ^^^^^^^^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                                                                                ^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                                                                                   ^^^^^^^: any   (TyAny)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                                                                                            ^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
+>                        ^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
+>                                       ^: any   (TyAny)
+
+    [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
+>                                          ^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
+>                                                   ^^^^^: any   (TyAny)
+
+type BuiltinIteratorReturn = intrinsic;
+>    ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^^^: any   (TyAny)
+
+interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                       ^: any   (TyAny)
+
+interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                  ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                 ^: any   (TyAny)
+
+interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                    ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>                                      ^: any   (TyAny)
+
+interface Array<T> {
+>         ^^^^^: any   (TyAny)
+
+interface Array<T> {
+>               ^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>                                      ^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, T]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, T]>;
+>                                     ^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<T>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<T>;
+>                           ^: any   (TyAny)
+
+interface ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>        ^: any   (TyAny)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>           ^^^^^^^^: Iterable<T, any, any> | ArrayLike<T>   (TyUnion)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>                              ^: any   (TyAny)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>                                   ^^^^^^^^^: any   (TyAny)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>                                             ^: any   (TyAny)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>                                                  ^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>        ^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>           ^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>              ^^^^^^^^: Iterable<T, any, any> | ArrayLike<T>   (TyUnion)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                        ^^^^^^^^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                 ^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                      ^^^^^^^^^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                ^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                    ^^^^^: (v: T, k: number) => U   (TyFunction)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                            ^: T   (TyTypeReference)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                               ^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                                  ^: number   (TyNumber)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                                                ^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                                                   ^^^^^^^: any   (TyAny)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                                                                                   ^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>                       ^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<T>;
+>                                      ^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, T]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, T]>;
+>                                     ^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<T>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<T>;
+>                           ^: any   (TyAny)
+
+interface IArguments {
+>         ^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<any>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<any>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                     ^: any   (TyAny)
+
+interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                               ^: any   (TyAny)
+
+interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                  ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<T>;
+>                                    ^: any   (TyAny)
+
+interface Map<K, V> {
+>         ^^^: any   (TyAny)
+
+interface Map<K, V> {
+>             ^: any   (TyAny)
+
+interface Map<K, V> {
+>                ^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>                        ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>                                     ^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>                                        ^: any   (TyAny)
+
+    entries(): MapIterator<[K, V]>;
+>              ^^^^^^^^^^^: any   (TyAny)
+
+    entries(): MapIterator<[K, V]>;
+>                           ^: any   (TyAny)
+
+    entries(): MapIterator<[K, V]>;
+>                              ^: any   (TyAny)
+
+    keys(): MapIterator<K>;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    keys(): MapIterator<K>;
+>                       ^: any   (TyAny)
+
+    values(): MapIterator<V>;
+>             ^^^^^^^^^^^: any   (TyAny)
+
+    values(): MapIterator<V>;
+>                         ^: any   (TyAny)
+
+interface ReadonlyMap<K, V> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyMap<K, V> {
+>                     ^: any   (TyAny)
+
+interface ReadonlyMap<K, V> {
+>                        ^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>                        ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>                                     ^: any   (TyAny)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
+>                                        ^: any   (TyAny)
+
+    entries(): MapIterator<[K, V]>;
+>              ^^^^^^^^^^^: any   (TyAny)
+
+    entries(): MapIterator<[K, V]>;
+>                           ^: any   (TyAny)
+
+    entries(): MapIterator<[K, V]>;
+>                              ^: any   (TyAny)
+
+    keys(): MapIterator<K>;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    keys(): MapIterator<K>;
+>                       ^: any   (TyAny)
+
+    values(): MapIterator<V>;
+>             ^^^^^^^^^^^: any   (TyAny)
+
+    values(): MapIterator<V>;
+>                         ^: any   (TyAny)
+
+interface MapConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Map<any, any>;
+>           ^^^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>        ^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>           ^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>              ^^^^^^^^: Iterable<readonly [K, V], any, any> | null | undefined   (TyUnion)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                         ^^^^^^^^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                                            ^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                                               ^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                                                            ^^^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                                                                ^: any   (TyAny)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                                                                   ^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {}
+>         ^^^^^^^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {}
+>                 ^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {}
+>                           ^^^^^^^: any   (TyAny)
+
+interface WeakMap<K extends WeakKey, V> {}
+>                                    ^: any   (TyAny)
+
+interface WeakMapConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>        ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                  ^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                            ^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                     ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                              ^^^^^^^^: Iterable<readonly [K, V], any, any> | null | undefined   (TyUnion)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                         ^^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                                            ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                                               ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                                                            ^^^^^^^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                                                                    ^: any   (TyAny)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                                                                       ^: any   (TyAny)
+
+interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                     ^: any   (TyAny)
+
+interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                               ^: any   (TyAny)
+
+interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                  ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>                                    ^: any   (TyAny)
+
+interface Set<T> {
+>         ^^^: any   (TyAny)
+
+interface Set<T> {
+>             ^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>                                    ^: any   (TyAny)
+
+    entries(): SetIterator<[T, T]>;
+>              ^^^^^^^^^^^: any   (TyAny)
+
+    entries(): SetIterator<[T, T]>;
+>                           ^: any   (TyAny)
+
+    entries(): SetIterator<[T, T]>;
+>                              ^: any   (TyAny)
+
+    keys(): SetIterator<T>;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    keys(): SetIterator<T>;
+>                       ^: any   (TyAny)
+
+    values(): SetIterator<T>;
+>             ^^^^^^^^^^^: any   (TyAny)
+
+    values(): SetIterator<T>;
+>                         ^: any   (TyAny)
+
+interface ReadonlySet<T> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlySet<T> {
+>                     ^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): SetIterator<T>;
+>                                    ^: any   (TyAny)
+
+    entries(): SetIterator<[T, T]>;
+>              ^^^^^^^^^^^: any   (TyAny)
+
+    entries(): SetIterator<[T, T]>;
+>                           ^: any   (TyAny)
+
+    entries(): SetIterator<[T, T]>;
+>                              ^: any   (TyAny)
+
+    keys(): SetIterator<T>;
+>           ^^^^^^^^^^^: any   (TyAny)
+
+    keys(): SetIterator<T>;
+>                       ^: any   (TyAny)
+
+    values(): SetIterator<T>;
+>             ^^^^^^^^^^^: any   (TyAny)
+
+    values(): SetIterator<T>;
+>                         ^: any   (TyAny)
+
+interface SetConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
+>        ^: any   (TyAny)
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
+>           ^^^^^^^^: Iterable<T, any, any> | null | undefined   (TyUnion)
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
+>                      ^^^^^^^^: any   (TyAny)
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
+>                               ^: any   (TyAny)
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
+>                                           ^^^: any   (TyAny)
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
+>                                               ^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {}
+>         ^^^^^^^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {}
+>                 ^: any   (TyAny)
+
+interface WeakSet<T extends WeakKey> {}
+>                           ^^^^^^^: any   (TyAny)
+
+interface WeakSetConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>        ^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                  ^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                            ^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                                     ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                                               ^^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                                                        ^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                                                             ^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                                                                     ^: any   (TyAny)
+
+interface Promise<T> {}
+>         ^^^^^^^: any   (TyAny)
+
+interface Promise<T> {}
+>                 ^: any   (TyAny)
+
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>       ^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>          ^^^^^^: Iterable<T | PromiseLike<T>, any, any>   (TyTypeReference)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                           ^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                               ^^^^^^^^^^^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                                           ^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                                                 ^^^^^^^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                                                         ^^^^^^^: any   (TyAny)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                                                                 ^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>        ^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>           ^^^^^^: Iterable<T | PromiseLike<T>, any, any>   (TyTypeReference)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                   ^^^^^^^^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                            ^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                ^^^^^^^^^^^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                            ^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                  ^^^^^^^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                          ^^^^^^^: any   (TyAny)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                                  ^: any   (TyAny)
+
+interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                        ^: any   (TyAny)
+
+interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                   ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                  ^: any   (TyAny)
+
+interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): StringIterator<T>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): StringIterator<T>;
+>                        ^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): StringIterator<T>;
+>                                       ^: any   (TyAny)
+
+interface String {
+>         ^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): StringIterator<string>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): StringIterator<string>;
+>                        ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                   ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Int8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                                               ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                                               ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                                                                                 ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                                                ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                                                ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                                                                                  ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                           ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                                                       ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                                                       ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                                                                                         ^^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Int16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                                                ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                                                ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                                                                                  ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                                                                                   ^^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Int32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                                                ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                                                ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                                                                                  ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                                                                                   ^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Float32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                                                                                    ^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+interface Float64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny)
+
+    new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                                                                                    ^^^^^^^^^^^: any   (TyAny)

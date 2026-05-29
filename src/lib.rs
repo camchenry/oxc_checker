@@ -29,6 +29,7 @@ use std::{
 };
 
 mod flow;
+mod global_lib;
 pub mod program;
 mod relations;
 mod types;
@@ -2864,6 +2865,61 @@ mod test {
                 .cfg()
                 .is_some()
         );
+    }
+
+    #[test]
+    fn default_lib_provides_global_type_symbols() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "const x = 1;");
+        let checker = CheckerBuilder::new().build(&ret.store);
+
+        // TODO: once value-position globals are supported, also assert
+        // `Array`/`Promise` resolve to their constructor types.
+        for name in ["Array", "Promise", "Map", "Set", "Symbol", "Object"] {
+            assert!(
+                checker
+                    .get_type_symbol_for_name(ret.program_id, name)
+                    .is_some(),
+                "expected default lib to provide global type `{name}`"
+            );
+        }
+    }
+
+    #[test]
+    fn without_default_lib_has_no_global_type_symbols() {
+        let allocator = Allocator::default();
+        let host = TestProgramHost::new("/project").add_file("/project/main.ts", "const x = 1;");
+        let store = program::ProgramStoreBuilder::new(&allocator, host)
+            .add_root_file("/project/main.ts")
+            .without_default_lib()
+            .build()
+            .unwrap();
+        let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
+        let checker = CheckerBuilder::new().build(&store);
+
+        assert_eq!(store.entries().len(), 1);
+        assert!(
+            checker
+                .get_type_symbol_for_name(program_id, "Array")
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn default_lib_entries_are_marked_as_lib() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "const x = 1;");
+
+        let lib_count = ret
+            .store
+            .entries()
+            .iter()
+            .filter(|entry| entry.is_lib())
+            .count();
+        assert_eq!(lib_count, crate::global_lib::DEFAULT_LIB_FILES.len());
+
+        let user_entry = ret.store.entry(ret.program_id).unwrap();
+        assert!(!user_entry.is_lib());
     }
 
     #[test]

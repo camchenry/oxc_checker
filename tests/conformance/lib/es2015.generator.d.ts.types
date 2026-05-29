@@ -1,0 +1,134 @@
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>         ^^^^^^^^^: any   (TyAny)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                   ^: any   (TyAny)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                                ^^^^^^^: any   (TyAny)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                                               ^^^^^: any   (TyAny)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                                                                    ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                                                                                   ^: any   (TyAny)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                                                                                      ^^^^^^^: any   (TyAny)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                                                                                               ^^^^^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>            ^^^^^: [] | [TNext]   (TyUnion)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                          ^^^^^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                                   ^^^^^^^^^^^^^^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                                                  ^: any   (TyAny)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                                                     ^^^^^^^: any   (TyAny)
+
+    return(value: TReturn): IteratorResult<T, TReturn>;
+>          ^^^^^: TReturn   (TyTypeReference)
+
+    return(value: TReturn): IteratorResult<T, TReturn>;
+>                 ^^^^^^^: any   (TyAny)
+
+    return(value: TReturn): IteratorResult<T, TReturn>;
+>                           ^^^^^^^^^^^^^^: any   (TyAny)
+
+    return(value: TReturn): IteratorResult<T, TReturn>;
+>                                          ^: any   (TyAny)
+
+    return(value: TReturn): IteratorResult<T, TReturn>;
+>                                             ^^^^^^^: any   (TyAny)
+
+    throw(e: any): IteratorResult<T, TReturn>;
+>         ^: any   (TyAny)
+
+    throw(e: any): IteratorResult<T, TReturn>;
+>                  ^^^^^^^^^^^^^^: any   (TyAny)
+
+    throw(e: any): IteratorResult<T, TReturn>;
+>                                 ^: any   (TyAny)
+
+    throw(e: any): IteratorResult<T, TReturn>;
+>                                    ^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+>           ^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+>                        ^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+>                                  ^: any   (TyAny)
+
+    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+>                                     ^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): Generator<T, TReturn, TNext>;
+>                                              ^^^^^: any   (TyAny)
+
+interface GeneratorFunction {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (...args: any[]): Generator;
+>           ^^^^: any[]   (TyArray)
+
+    new (...args: any[]): Generator;
+>                         ^^^^^^^^^: any   (TyAny)
+
+    (...args: any[]): Generator;
+>       ^^^^: any[]   (TyArray)
+
+    (...args: any[]): Generator;
+>                     ^^^^^^^^^: any   (TyAny)
+
+    readonly length: number;
+>            ^^^^^^: number   (TyNumber)
+
+    readonly name: string;
+>            ^^^^: string   (TyString)
+
+    readonly prototype: Generator;
+>            ^^^^^^^^^: Generator<unknown, any, any>   (TyTypeReference)
+
+    readonly prototype: Generator;
+>                       ^^^^^^^^^: any   (TyAny)
+
+interface GeneratorFunctionConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (...args: string[]): GeneratorFunction;
+>           ^^^^: string[]   (TyArray)
+
+    new (...args: string[]): GeneratorFunction;
+>                            ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    (...args: string[]): GeneratorFunction;
+>       ^^^^: string[]   (TyArray)
+
+    (...args: string[]): GeneratorFunction;
+>                        ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly length: number;
+>            ^^^^^^: number   (TyNumber)
+
+    readonly name: string;
+>            ^^^^: string   (TyString)
+
+    readonly prototype: GeneratorFunction;
+>            ^^^^^^^^^: GeneratorFunction   (TyTypeReference)
+
+    readonly prototype: GeneratorFunction;
+>                       ^^^^^^^^^^^^^^^^^: any   (TyAny)

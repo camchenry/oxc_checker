@@ -1,0 +1,197 @@
+interface ProxyHandler<T extends object> {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+interface ProxyHandler<T extends object> {
+>                      ^: any   (TyAny)
+
+    apply?(target: T, thisArg: any, argArray: any[]): any;
+>          ^^^^^^: T   (TyTypeReference)
+
+    apply?(target: T, thisArg: any, argArray: any[]): any;
+>                  ^: any   (TyAny)
+
+    apply?(target: T, thisArg: any, argArray: any[]): any;
+>                     ^^^^^^^: any   (TyAny)
+
+    apply?(target: T, thisArg: any, argArray: any[]): any;
+>                                   ^^^^^^^^: any[]   (TyArray)
+
+    construct?(target: T, argArray: any[], newTarget: Function): object;
+>              ^^^^^^: T   (TyTypeReference)
+
+    construct?(target: T, argArray: any[], newTarget: Function): object;
+>                      ^: any   (TyAny)
+
+    construct?(target: T, argArray: any[], newTarget: Function): object;
+>                         ^^^^^^^^: any[]   (TyArray)
+
+    construct?(target: T, argArray: any[], newTarget: Function): object;
+>                                          ^^^^^^^^^: Function   (TyTypeReference)
+
+    construct?(target: T, argArray: any[], newTarget: Function): object;
+>                                                     ^^^^^^^^: any   (TyAny)
+
+    defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
+>                   ^^^^^^: T   (TyTypeReference)
+
+    defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
+>                           ^: any   (TyAny)
+
+    defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
+>                              ^^^^^^^^: string | symbol   (TyUnion)
+
+    defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
+>                                                         ^^^^^^^^^^: PropertyDescriptor   (TyTypeReference)
+
+    defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
+>                                                                     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    deleteProperty?(target: T, p: string | symbol): boolean;
+>                   ^^^^^^: T   (TyTypeReference)
+
+    deleteProperty?(target: T, p: string | symbol): boolean;
+>                           ^: any   (TyAny)
+
+    deleteProperty?(target: T, p: string | symbol): boolean;
+>                              ^: string | symbol   (TyUnion)
+
+    get?(target: T, p: string | symbol, receiver: any): any;
+>        ^^^^^^: T   (TyTypeReference)
+
+    get?(target: T, p: string | symbol, receiver: any): any;
+>                ^: any   (TyAny)
+
+    get?(target: T, p: string | symbol, receiver: any): any;
+>                   ^: string | symbol   (TyUnion)
+
+    get?(target: T, p: string | symbol, receiver: any): any;
+>                                       ^^^^^^^^: any   (TyAny)
+
+    getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
+>                             ^^^^^^: T   (TyTypeReference)
+
+    getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
+>                                     ^: any   (TyAny)
+
+    getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
+>                                        ^: string | symbol   (TyUnion)
+
+    getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
+>                                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    getPrototypeOf?(target: T): object | null;
+>                   ^^^^^^: T   (TyTypeReference)
+
+    getPrototypeOf?(target: T): object | null;
+>                           ^: any   (TyAny)
+
+    has?(target: T, p: string | symbol): boolean;
+>        ^^^^^^: T   (TyTypeReference)
+
+    has?(target: T, p: string | symbol): boolean;
+>                ^: any   (TyAny)
+
+    has?(target: T, p: string | symbol): boolean;
+>                   ^: string | symbol   (TyUnion)
+
+    isExtensible?(target: T): boolean;
+>                 ^^^^^^: T   (TyTypeReference)
+
+    isExtensible?(target: T): boolean;
+>                         ^: any   (TyAny)
+
+    ownKeys?(target: T): ArrayLike<string | symbol>;
+>            ^^^^^^: T   (TyTypeReference)
+
+    ownKeys?(target: T): ArrayLike<string | symbol>;
+>                    ^: any   (TyAny)
+
+    ownKeys?(target: T): ArrayLike<string | symbol>;
+>                        ^^^^^^^^^: any   (TyAny)
+
+    preventExtensions?(target: T): boolean;
+>                      ^^^^^^: T   (TyTypeReference)
+
+    preventExtensions?(target: T): boolean;
+>                              ^: any   (TyAny)
+
+    set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
+>        ^^^^^^: T   (TyTypeReference)
+
+    set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
+>                ^: any   (TyAny)
+
+    set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
+>                   ^: string | symbol   (TyUnion)
+
+    set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
+>                                       ^^^^^^^^: any   (TyAny)
+
+    set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
+>                                                      ^^^^^^^^: any   (TyAny)
+
+    setPrototypeOf?(target: T, v: object | null): boolean;
+>                   ^^^^^^: T   (TyTypeReference)
+
+    setPrototypeOf?(target: T, v: object | null): boolean;
+>                           ^: any   (TyAny)
+
+    setPrototypeOf?(target: T, v: object | null): boolean;
+>                              ^: object | null   (TyUnion)
+
+interface ProxyConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>             ^: any   (TyAny)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                               ^^^^^^: T   (TyTypeReference)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                       ^: any   (TyAny)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                          ^^^^^^^: ProxyHandler<T>   (TyTypeReference)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                                   ^^^^^^^^^^^^: any   (TyAny)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                                                ^: any   (TyAny)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                                                       ^^^^^: T   (TyTypeReference)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                                                              ^: any   (TyAny)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                                                                 ^^^^^^: () => void   (TyFunction)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>        ^: any   (TyAny)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>                          ^^^^^^: T   (TyTypeReference)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>                                  ^: any   (TyAny)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>                                     ^^^^^^^: ProxyHandler<T>   (TyTypeReference)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>                                              ^^^^^^^^^^^^: any   (TyAny)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>                                                           ^: any   (TyAny)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>                                                                ^: any   (TyAny)
+
+declare var Proxy: ProxyConstructor;
+>           ^^^^^: ProxyConstructor   (TyTypeReference)
+
+declare var Proxy: ProxyConstructor;
+>                  ^^^^^^^^^^^^^^^^: any   (TyAny)
