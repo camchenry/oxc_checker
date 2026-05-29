@@ -902,7 +902,7 @@ interface Int8ArrayConstructor {
 >                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
->                                               ^^^^^^^^^^^: any   (TyAny)
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -917,7 +917,7 @@ interface Int8ArrayConstructor {
 >                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
->                                               ^^^^^^^^^^^: any   (TyAny)
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -953,7 +953,7 @@ interface Int8ArrayConstructor {
 >                                                                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
->                                                                                                 ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
@@ -998,7 +998,7 @@ interface Uint8ArrayConstructor {
 >                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
->                                                ^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1013,7 +1013,7 @@ interface Uint8ArrayConstructor {
 >                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
->                                                ^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1049,7 +1049,7 @@ interface Uint8ArrayConstructor {
 >                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
->                                                                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -1094,7 +1094,7 @@ interface Uint8ClampedArrayConstructor {
 >                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
->                                                       ^^^^^^^^^^^: any   (TyAny)
+>                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1109,7 +1109,7 @@ interface Uint8ClampedArrayConstructor {
 >                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
->                                                       ^^^^^^^^^^^: any   (TyAny)
+>                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1145,7 +1145,7 @@ interface Uint8ClampedArrayConstructor {
 >                                                                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
->                                                                                                         ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
@@ -1190,7 +1190,7 @@ interface Int16ArrayConstructor {
 >                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
->                                                ^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1205,7 +1205,7 @@ interface Int16ArrayConstructor {
 >                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
->                                                ^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1241,7 +1241,7 @@ interface Int16ArrayConstructor {
 >                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
->                                                                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
@@ -1286,7 +1286,7 @@ interface Uint16ArrayConstructor {
 >                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
->                                                 ^^^^^^^^^^^: any   (TyAny)
+>                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1301,7 +1301,7 @@ interface Uint16ArrayConstructor {
 >                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
->                                                 ^^^^^^^^^^^: any   (TyAny)
+>                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1337,7 +1337,7 @@ interface Uint16ArrayConstructor {
 >                                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
->                                                                                                   ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
@@ -1382,7 +1382,7 @@ interface Int32ArrayConstructor {
 >                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
->                                                ^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1397,7 +1397,7 @@ interface Int32ArrayConstructor {
 >                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
->                                                ^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1433,7 +1433,7 @@ interface Int32ArrayConstructor {
 >                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
->                                                                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
@@ -1478,7 +1478,7 @@ interface Uint32ArrayConstructor {
 >                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
->                                                 ^^^^^^^^^^^: any   (TyAny)
+>                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1493,7 +1493,7 @@ interface Uint32ArrayConstructor {
 >                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
->                                                 ^^^^^^^^^^^: any   (TyAny)
+>                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1529,7 +1529,7 @@ interface Uint32ArrayConstructor {
 >                                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
->                                                                                                   ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
@@ -1574,7 +1574,7 @@ interface Float32ArrayConstructor {
 >                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
->                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1589,7 +1589,7 @@ interface Float32ArrayConstructor {
 >                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
->                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1625,7 +1625,7 @@ interface Float32ArrayConstructor {
 >                                                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
->                                                                                                    ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
@@ -1670,7 +1670,7 @@ interface Float64ArrayConstructor {
 >                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
->                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number, any, any>   (TyTypeReference)
@@ -1685,7 +1685,7 @@ interface Float64ArrayConstructor {
 >                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
->                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1721,4 +1721,4 @@ interface Float64ArrayConstructor {
 >                                                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
->                                                                                                    ^^^^^^^^^^^: any   (TyAny)
+>                                                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)

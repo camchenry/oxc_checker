@@ -191,13 +191,13 @@ interface DateConstructor {
 >                                 ^^^^: DateConstructor   (TyTypeReference)
 
     new (value: number | string | Date): Date;
->                                 ^^^^: any   (TyAny)
+>                                 ^^^^: DateConstructor   (TyTypeReference)
 
     new (value: number | string | Date): Date;
 >                                        ^^^^: DateConstructor   (TyTypeReference)
 
     new (value: number | string | Date): Date;
->                                        ^^^^: any   (TyAny)
+>                                        ^^^^: DateConstructor   (TyTypeReference)
 
 interface Function {
 >         ^^^^^^^^: any   (TyAny)

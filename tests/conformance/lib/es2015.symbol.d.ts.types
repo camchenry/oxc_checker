@@ -8,7 +8,7 @@ interface SymbolConstructor {
 >                       ^^^^^^: SymbolConstructor   (TyTypeReference)
 
     readonly prototype: Symbol;
->                       ^^^^^^: any   (TyAny)
+>                       ^^^^^^: SymbolConstructor   (TyTypeReference)
 
     (description?: string | number): symbol;
 >    ^^^^^^^^^^^: string | number | undefined   (TyUnion)

@@ -1055,6 +1055,12 @@ impl<'a> Ty<'a> {
                     .substitute_type_parameters(arena, substitutions),
             ),
             Self::Conditional(conditional) => {
+                let infer_type_parameters = infer_type_parameter_names(conditional.extends_type);
+                let infer_substitutions = substitutions_without_names(
+                    substitutions,
+                    infer_type_parameters.iter().copied(),
+                );
+
                 if conditional.is_distributive
                     && let Ty::TypeReference(reference) = conditional.check_type
                     && reference.type_arguments.is_empty()
@@ -1065,15 +1071,19 @@ impl<'a> Ty<'a> {
                         union.types.iter().map(|ty| {
                             let mut substitutions = substitutions.clone();
                             substitutions.insert(reference.name, *ty);
+                            let infer_substitutions = substitutions_without_names(
+                                &substitutions,
+                                infer_type_parameters.iter().copied(),
+                            );
                             Self::conditional(
                                 arena,
                                 *ty,
                                 conditional
                                     .extends_type
-                                    .substitute_type_parameters(arena, &substitutions),
+                                    .substitute_type_parameters(arena, &infer_substitutions),
                                 conditional
                                     .true_type
-                                    .substitute_type_parameters(arena, &substitutions),
+                                    .substitute_type_parameters(arena, &infer_substitutions),
                                 conditional
                                     .false_type
                                     .substitute_type_parameters(arena, &substitutions),
@@ -1090,10 +1100,10 @@ impl<'a> Ty<'a> {
                         .substitute_type_parameters(arena, substitutions),
                     conditional
                         .extends_type
-                        .substitute_type_parameters(arena, substitutions),
+                        .substitute_type_parameters(arena, &infer_substitutions),
                     conditional
                         .true_type
-                        .substitute_type_parameters(arena, substitutions),
+                        .substitute_type_parameters(arena, &infer_substitutions),
                     conditional
                         .false_type
                         .substitute_type_parameters(arena, substitutions),
@@ -1101,17 +1111,19 @@ impl<'a> Ty<'a> {
                 )
             }
             Self::Infer(infer) => {
-                // TODO(correctness): Treat `infer` as a scoped binding site for conditional
-                // type matching instead of only preserving its syntax.
+                let substitutions = substitutions_without_names(
+                    substitutions,
+                    std::iter::once(infer.type_parameter.name),
+                );
                 Self::infer(
                     arena,
                     Self::type_parameter(
                         infer.type_parameter.name,
                         infer.type_parameter.constraint_type.map(|constraint_type| {
-                            constraint_type.substitute_type_parameters(arena, substitutions)
+                            constraint_type.substitute_type_parameters(arena, &substitutions)
                         }),
                         infer.type_parameter.default_type.map(|default_type| {
-                            default_type.substitute_type_parameters(arena, substitutions)
+                            default_type.substitute_type_parameters(arena, &substitutions)
                         }),
                     ),
                 )
@@ -1469,15 +1481,20 @@ fn simplify_conditional_type<'a>(
     is_distributive: bool,
 ) -> Ty<'a> {
     if contains_infer(check_type) || contains_infer(extends_type) {
-        // TODO(correctness): Match `check_type` against `extends_type`, collect `infer`
-        // substitutions, and apply them to the true branch.
-        return Ty::Conditional(arena.alloc(TyConditional {
-            check_type,
-            extends_type,
-            true_type,
-            false_type,
-            is_distributive,
-        }));
+        let mut inferences = InferInferences::new(arena);
+        return match infer_from_types(arena, check_type, extends_type, &mut inferences, 0) {
+            InferMatchResult::Matched => {
+                true_type.substitute_type_parameters(arena, &inferences.substitutions)
+            }
+            InferMatchResult::NoMatch => false_type,
+            InferMatchResult::Deferred => Ty::Conditional(arena.alloc(TyConditional {
+                check_type,
+                extends_type,
+                true_type,
+                false_type,
+                is_distributive,
+            })),
+        };
     }
 
     if contains_unresolved_type_variable(check_type)
@@ -1497,6 +1514,622 @@ fn simplify_conditional_type<'a>(
     } else {
         false_type
     }
+}
+
+const INFER_MATCH_MAX_DEPTH: usize = 64;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum InferMatchResult {
+    Matched,
+    NoMatch,
+    Deferred,
+}
+
+impl InferMatchResult {
+    fn and(self, other: Self) -> Self {
+        match (self, other) {
+            (Self::NoMatch, _) | (_, Self::NoMatch) => Self::NoMatch,
+            (Self::Deferred, _) | (_, Self::Deferred) => Self::Deferred,
+            (Self::Matched, Self::Matched) => Self::Matched,
+        }
+    }
+}
+
+#[derive(Clone)]
+struct InferInferences<'a> {
+    arena: CheckerArena<'a>,
+    substitutions: HashMap<&'a str, Ty<'a>>,
+}
+
+impl<'a> InferInferences<'a> {
+    fn new(arena: CheckerArena<'a>) -> Self {
+        Self {
+            arena,
+            substitutions: HashMap::new(),
+        }
+    }
+
+    fn add(&mut self, infer: &TyInfer<'a>, candidate: Ty<'a>) -> InferMatchResult {
+        if let Some(constraint_type) = infer.type_parameter.constraint_type {
+            let constraint_type =
+                constraint_type.substitute_type_parameters(self.arena, &self.substitutions);
+            if contains_infer(constraint_type) || contains_unresolved_type_variable(constraint_type)
+            {
+                return InferMatchResult::Deferred;
+            }
+            if !crate::relations::is_assignable_to(candidate, constraint_type) {
+                return InferMatchResult::NoMatch;
+            }
+        }
+
+        match self.substitutions.get(infer.type_parameter.name).copied() {
+            Some(existing) if existing == candidate => InferMatchResult::Matched,
+            Some(existing) => {
+                let candidate = Ty::r#union(self.arena, [existing, candidate]);
+                self.substitutions
+                    .insert(infer.type_parameter.name, candidate);
+                InferMatchResult::Matched
+            }
+            None => {
+                self.substitutions
+                    .insert(infer.type_parameter.name, candidate);
+                InferMatchResult::Matched
+            }
+        }
+    }
+}
+
+fn infer_from_types<'a>(
+    arena: CheckerArena<'a>,
+    source: Ty<'a>,
+    target: Ty<'a>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    if depth >= INFER_MATCH_MAX_DEPTH {
+        return InferMatchResult::Deferred;
+    }
+
+    if source == target && !contains_infer(target) {
+        return InferMatchResult::Matched;
+    }
+
+    match (source, target) {
+        (_, Ty::Infer(infer)) => inferences.add(infer, source),
+        (Ty::Any, target) if contains_infer(target) => infer_any_to_type(target, inferences),
+        (Ty::Object(source), Ty::Object(target)) => infer_from_properties(
+            arena,
+            source.properties.iter().copied(),
+            target.properties.iter().copied(),
+            inferences,
+            depth + 1,
+        )
+        .and(infer_from_signatures(
+            arena,
+            source.signatures.iter().copied(),
+            target.signatures.iter().copied(),
+            inferences,
+            depth + 1,
+        )),
+        (Ty::ModuleNamespace(source), Ty::Object(target)) => infer_from_properties(
+            arena,
+            source.properties.iter().copied(),
+            target.properties.iter().copied(),
+            inferences,
+            depth + 1,
+        ),
+        (Ty::Object(source), Ty::ModuleNamespace(target)) => infer_from_properties(
+            arena,
+            source.properties.iter().copied(),
+            target.properties.iter().copied(),
+            inferences,
+            depth + 1,
+        ),
+        (Ty::ModuleNamespace(source), Ty::ModuleNamespace(target)) => infer_from_properties(
+            arena,
+            source.properties.iter().copied(),
+            target.properties.iter().copied(),
+            inferences,
+            depth + 1,
+        ),
+        (Ty::Function(source), Ty::Function(target)) => {
+            infer_from_functions(arena, source, target, inferences, depth + 1)
+        }
+        (Ty::TypeReference(source), Ty::TypeReference(target)) => {
+            if source.name != target.name
+                || source.type_arguments.len() != target.type_arguments.len()
+            {
+                return if contains_unresolved_type_variable(Ty::TypeReference(source)) {
+                    InferMatchResult::Deferred
+                } else {
+                    InferMatchResult::NoMatch
+                };
+            }
+            infer_from_type_iter(
+                arena,
+                source.type_arguments.iter().copied(),
+                target.type_arguments.iter().copied(),
+                inferences,
+                depth + 1,
+            )
+        }
+        (Ty::TypeReference(_), target) if contains_infer(target) => InferMatchResult::Deferred,
+        (Ty::TypeQuery(source), Ty::TypeQuery(target)) => {
+            if source.name != target.name
+                || source.type_arguments.len() != target.type_arguments.len()
+            {
+                return InferMatchResult::NoMatch;
+            }
+            infer_from_types(
+                arena,
+                source.resolved,
+                target.resolved,
+                inferences,
+                depth + 1,
+            )
+            .and(infer_from_type_iter(
+                arena,
+                source.type_arguments.iter().copied(),
+                target.type_arguments.iter().copied(),
+                inferences,
+                depth + 1,
+            ))
+        }
+        (Ty::TypeQuery(source), target) => {
+            infer_from_types(arena, source.resolved, target, inferences, depth + 1)
+        }
+        (source, Ty::TypeQuery(target)) => {
+            infer_from_types(arena, source, target.resolved, inferences, depth + 1)
+        }
+        (Ty::Array(source), Ty::Array(target)) => infer_from_types(
+            arena,
+            source.element_type,
+            target.element_type,
+            inferences,
+            depth + 1,
+        ),
+        (Ty::Tuple(source), Ty::Tuple(target)) => infer_from_tuple_elements(
+            arena,
+            &source.elements,
+            &target.elements,
+            inferences,
+            depth + 1,
+        ),
+        (Ty::Union(source), Ty::Union(target)) if source.types.len() == target.types.len() => {
+            infer_from_type_iter(
+                arena,
+                source.types.iter().copied(),
+                target.types.iter().copied(),
+                inferences,
+                depth + 1,
+            )
+        }
+        (Ty::Union(source), target) => infer_from_source_union(
+            arena,
+            source.types.iter().copied(),
+            target,
+            inferences,
+            depth + 1,
+        ),
+        (source, Ty::Union(target)) => infer_from_target_union(
+            arena,
+            source,
+            target.types.iter().copied(),
+            inferences,
+            depth + 1,
+        ),
+        (Ty::Intersection(source), Ty::Intersection(target))
+            if source.types.len() == target.types.len() =>
+        {
+            infer_from_type_iter(
+                arena,
+                source.types.iter().copied(),
+                target.types.iter().copied(),
+                inferences,
+                depth + 1,
+            )
+        }
+        (Ty::Keyof(source), Ty::Keyof(target)) => {
+            infer_from_types(arena, source.target, target.target, inferences, depth + 1)
+        }
+        (Ty::IndexedAccess(source), Ty::IndexedAccess(target)) => infer_from_types(
+            arena,
+            source.object_type,
+            target.object_type,
+            inferences,
+            depth + 1,
+        )
+        .and(infer_from_types(
+            arena,
+            source.index_type,
+            target.index_type,
+            inferences,
+            depth + 1,
+        )),
+        (Ty::Conditional(source), Ty::Conditional(target)) => infer_from_types(
+            arena,
+            source.check_type,
+            target.check_type,
+            inferences,
+            depth + 1,
+        )
+        .and(infer_from_types(
+            arena,
+            source.extends_type,
+            target.extends_type,
+            inferences,
+            depth + 1,
+        ))
+        .and(infer_from_types(
+            arena,
+            source.true_type,
+            target.true_type,
+            inferences,
+            depth + 1,
+        ))
+        .and(infer_from_types(
+            arena,
+            source.false_type,
+            target.false_type,
+            inferences,
+            depth + 1,
+        )),
+        (Ty::Mapped(_), Ty::Mapped(_)) if contains_infer(target) => InferMatchResult::Deferred,
+        _ => {
+            if crate::relations::is_assignable_to(source, target) {
+                InferMatchResult::Matched
+            } else if contains_unresolved_type_variable(source)
+                || contains_unresolved_type_variable(target)
+            {
+                InferMatchResult::Deferred
+            } else {
+                InferMatchResult::NoMatch
+            }
+        }
+    }
+}
+
+fn infer_any_to_type<'a>(target: Ty<'a>, inferences: &mut InferInferences<'a>) -> InferMatchResult {
+    let mut result = InferMatchResult::Matched;
+    collect_infer_types(target, &mut |infer| {
+        result = result.and(inferences.add(infer, Ty::any()));
+    });
+    result
+}
+
+fn infer_from_properties<'a>(
+    arena: CheckerArena<'a>,
+    source_properties: impl IntoIterator<Item = TyProperty<'a>>,
+    target_properties: impl IntoIterator<Item = TyProperty<'a>>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    let source_properties = source_properties.into_iter().collect::<Vec<_>>();
+    let mut result = InferMatchResult::Matched;
+
+    for target_property in target_properties {
+        let Some(source_property) = source_properties.iter().find(|source_property| {
+            source_property.name == target_property.name
+                && source_property.computed == target_property.computed
+        }) else {
+            return InferMatchResult::NoMatch;
+        };
+
+        result = result.and(infer_from_types(
+            arena,
+            source_property.ty,
+            target_property.ty,
+            inferences,
+            depth + 1,
+        ));
+        if result == InferMatchResult::NoMatch {
+            return result;
+        }
+    }
+
+    result
+}
+
+fn infer_from_signatures<'a>(
+    arena: CheckerArena<'a>,
+    source_signatures: impl IntoIterator<Item = Signature<'a>>,
+    target_signatures: impl IntoIterator<Item = Signature<'a>>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    let source_signatures = source_signatures.into_iter().collect::<Vec<_>>();
+    let mut result = InferMatchResult::Matched;
+
+    for target_signature in target_signatures {
+        let Some(source_signature) = source_signatures
+            .iter()
+            .find(|source_signature| source_signature.kind == target_signature.kind)
+        else {
+            return InferMatchResult::NoMatch;
+        };
+        result = result.and(infer_from_functions(
+            arena,
+            source_signature.function,
+            target_signature.function,
+            inferences,
+            depth + 1,
+        ));
+    }
+
+    result
+}
+
+fn infer_from_functions<'a>(
+    arena: CheckerArena<'a>,
+    source: &TyFunction<'a>,
+    target: &TyFunction<'a>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    if source.parameters.len() != target.parameters.len() {
+        return InferMatchResult::NoMatch;
+    }
+
+    let parameters = source
+        .parameters
+        .iter()
+        .zip(target.parameters.iter())
+        .map(|(source_parameter, target_parameter)| (source_parameter.ty, target_parameter.ty));
+    infer_from_type_pairs(arena, parameters, inferences, depth + 1).and(infer_from_types(
+        arena,
+        source.return_type,
+        target.return_type,
+        inferences,
+        depth + 1,
+    ))
+}
+
+fn infer_from_tuple_elements<'a>(
+    arena: CheckerArena<'a>,
+    source_elements: &ArenaVec<'a, TupleElement<'a>>,
+    target_elements: &ArenaVec<'a, TupleElement<'a>>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    if let Some((rest_index, TupleElement::Rest(rest_type))) = target_elements
+        .iter()
+        .enumerate()
+        .find(|(_, element)| matches!(element, TupleElement::Rest(_)))
+    {
+        if rest_index + 1 != target_elements.len() || source_elements.len() < rest_index {
+            return InferMatchResult::Deferred;
+        }
+        let mut result = infer_from_tuple_elements(
+            arena,
+            &arena.vec_from_iter(source_elements.iter().take(rest_index).copied()),
+            &arena.vec_from_iter(target_elements.iter().take(rest_index).copied()),
+            inferences,
+            depth + 1,
+        );
+        let rest_tuple = Ty::tuple(
+            arena,
+            source_elements
+                .iter()
+                .skip(rest_index)
+                .copied()
+                .collect::<Vec<_>>(),
+        );
+        result = result.and(infer_from_types(
+            arena,
+            rest_tuple,
+            *rest_type,
+            inferences,
+            depth + 1,
+        ));
+        return result;
+    }
+
+    if source_elements.len() != target_elements.len() {
+        return InferMatchResult::NoMatch;
+    }
+
+    let element_pairs = source_elements
+        .iter()
+        .zip(target_elements.iter())
+        .map(|(source, target)| (tuple_element_type(*source), tuple_element_type(*target)));
+    infer_from_type_pairs(arena, element_pairs, inferences, depth + 1)
+}
+
+fn infer_from_source_union<'a>(
+    arena: CheckerArena<'a>,
+    source_types: impl IntoIterator<Item = Ty<'a>>,
+    target: Ty<'a>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    let mut result = InferMatchResult::Matched;
+    for source_type in source_types {
+        result = result.and(infer_from_types(
+            arena,
+            source_type,
+            target,
+            inferences,
+            depth + 1,
+        ));
+        if result == InferMatchResult::NoMatch {
+            return result;
+        }
+    }
+    result
+}
+
+fn infer_from_target_union<'a>(
+    arena: CheckerArena<'a>,
+    source: Ty<'a>,
+    target_types: impl IntoIterator<Item = Ty<'a>>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    let mut deferred = false;
+    for target_type in target_types {
+        let mut branch_inferences = inferences.clone();
+        match infer_from_types(
+            arena,
+            source,
+            target_type,
+            &mut branch_inferences,
+            depth + 1,
+        ) {
+            InferMatchResult::Matched => {
+                *inferences = branch_inferences;
+                return InferMatchResult::Matched;
+            }
+            InferMatchResult::Deferred => deferred = true,
+            InferMatchResult::NoMatch => {}
+        }
+    }
+
+    if deferred {
+        InferMatchResult::Deferred
+    } else {
+        InferMatchResult::NoMatch
+    }
+}
+
+fn infer_from_type_iter<'a>(
+    arena: CheckerArena<'a>,
+    source: impl IntoIterator<Item = Ty<'a>>,
+    target: impl IntoIterator<Item = Ty<'a>>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    infer_from_type_pairs(arena, source.into_iter().zip(target), inferences, depth)
+}
+
+fn infer_from_type_pairs<'a>(
+    arena: CheckerArena<'a>,
+    pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    pairs
+        .into_iter()
+        .fold(InferMatchResult::Matched, |result, (source, target)| {
+            result.and(infer_from_types(
+                arena,
+                source,
+                target,
+                inferences,
+                depth + 1,
+            ))
+        })
+}
+
+fn tuple_element_type(element: TupleElement<'_>) -> Ty<'_> {
+    match element {
+        TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => ty,
+    }
+}
+
+fn infer_type_parameter_names<'a>(ty: Ty<'a>) -> Vec<&'a str> {
+    let mut names = Vec::new();
+    collect_infer_types(ty, &mut |infer| {
+        if !names.contains(&infer.type_parameter.name) {
+            names.push(infer.type_parameter.name);
+        }
+    });
+    names
+}
+
+fn collect_infer_types<'a>(ty: Ty<'a>, f: &mut impl FnMut(&TyInfer<'a>)) {
+    match ty {
+        Ty::Infer(infer) => f(infer),
+        Ty::Object(object) => {
+            for property in &object.properties {
+                collect_infer_types(property.ty, f);
+            }
+            for signature in &object.signatures {
+                collect_infer_types(Ty::Function(signature.function), f);
+            }
+        }
+        Ty::ModuleNamespace(namespace) => {
+            for property in &namespace.properties {
+                collect_infer_types(property.ty, f);
+            }
+        }
+        Ty::Function(function) => {
+            for type_parameter in &function.type_parameters {
+                if let Some(constraint_type) = type_parameter.constraint_type {
+                    collect_infer_types(constraint_type, f);
+                }
+                if let Some(default_type) = type_parameter.default_type {
+                    collect_infer_types(default_type, f);
+                }
+            }
+            for parameter in &function.parameters {
+                collect_infer_types(parameter.ty, f);
+            }
+            collect_infer_types(function.return_type, f);
+        }
+        Ty::TypeReference(reference) => {
+            for ty in &reference.type_arguments {
+                collect_infer_types(*ty, f);
+            }
+        }
+        Ty::TypeQuery(query) => {
+            collect_infer_types(query.resolved, f);
+            for ty in &query.type_arguments {
+                collect_infer_types(*ty, f);
+            }
+        }
+        Ty::TemplateLiteral(template_literal) => {
+            for ty in &template_literal.expressions {
+                collect_infer_types(*ty, f);
+            }
+        }
+        Ty::Array(array) => collect_infer_types(array.element_type, f),
+        Ty::Tuple(tuple) => {
+            for element in &tuple.elements {
+                collect_infer_types(tuple_element_type(*element), f);
+            }
+        }
+        Ty::Union(union) => {
+            for ty in &union.types {
+                collect_infer_types(*ty, f);
+            }
+        }
+        Ty::Intersection(intersection) => {
+            for ty in &intersection.types {
+                collect_infer_types(*ty, f);
+            }
+        }
+        Ty::Keyof(keyof) => collect_infer_types(keyof.target, f),
+        Ty::IndexedAccess(indexed_access) => {
+            collect_infer_types(indexed_access.object_type, f);
+            collect_infer_types(indexed_access.index_type, f);
+        }
+        Ty::Conditional(conditional) => {
+            collect_infer_types(conditional.check_type, f);
+            collect_infer_types(conditional.extends_type, f);
+            collect_infer_types(conditional.true_type, f);
+            collect_infer_types(conditional.false_type, f);
+        }
+        Ty::Mapped(mapped) => {
+            collect_infer_types(mapped.constraint, f);
+            if let Some(name_type) = mapped.name_type {
+                collect_infer_types(name_type, f);
+            }
+            collect_infer_types(mapped.template, f);
+        }
+        _ => {}
+    }
+}
+
+fn substitutions_without_names<'a>(
+    substitutions: &HashMap<&'a str, Ty<'a>>,
+    names: impl IntoIterator<Item = &'a str>,
+) -> HashMap<&'a str, Ty<'a>> {
+    let names = names.into_iter().collect::<Vec<_>>();
+    substitutions
+        .iter()
+        .filter(|(name, _)| !names.contains(name))
+        .map(|(name, ty)| (*name, *ty))
+        .collect()
 }
 
 fn contains_unresolved_type_variable(ty: Ty<'_>) -> bool {
@@ -2070,6 +2703,142 @@ mod tests {
         assert_eq!(
             Ty::r#union(arena, [function, Ty::null(), Ty::undefined()]).to_type_string(),
             "((arg1: A1) => R) | null | undefined"
+        );
+    }
+
+    #[test]
+    fn conditional_infer_extracts_direct_type() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let u = Ty::type_parameter("U", None, None);
+
+        let ty = Ty::conditional(
+            arena,
+            Ty::string(),
+            Ty::infer(arena, u),
+            Ty::type_reference(arena, "U", []),
+            Ty::never(),
+            false,
+        );
+
+        assert_eq!(ty, Ty::string());
+    }
+
+    #[test]
+    fn conditional_infer_extracts_object_property_type() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let u = Ty::type_parameter("U", None, None);
+
+        let ty = Ty::conditional(
+            arena,
+            Ty::object(arena, [Ty::property("value", Ty::number())]),
+            Ty::object(arena, [Ty::property("value", Ty::infer(arena, u))]),
+            Ty::type_reference(arena, "U", []),
+            Ty::never(),
+            false,
+        );
+
+        assert_eq!(ty, Ty::number());
+    }
+
+    #[test]
+    fn conditional_infer_constraint_can_fail() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let u = Ty::type_parameter("U", Some(Ty::string()), None);
+
+        let ty = Ty::conditional(
+            arena,
+            Ty::number(),
+            Ty::infer(arena, u),
+            Ty::type_reference(arena, "U", []),
+            Ty::never(),
+            false,
+        );
+
+        assert_eq!(ty, Ty::never());
+    }
+
+    #[test]
+    fn conditional_infer_merges_repeated_candidates() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let u = Ty::type_parameter("U", None, None);
+
+        let ty = Ty::conditional(
+            arena,
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::string()),
+                    Ty::property("b", Ty::number()),
+                ],
+            ),
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::infer(arena, u)),
+                    Ty::property("b", Ty::infer(arena, u)),
+                ],
+            ),
+            Ty::type_reference(arena, "U", []),
+            Ty::never(),
+            false,
+        );
+
+        assert_eq!(ty.to_type_string(), "string | number");
+    }
+
+    #[test]
+    fn conditional_infer_extracts_tuple_rest() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let head = Ty::type_parameter("Head", None, None);
+        let rest = Ty::type_parameter("Rest", None, None);
+
+        let ty = Ty::conditional(
+            arena,
+            Ty::tuple(
+                arena,
+                vec![
+                    TupleElement::Regular(Ty::string()),
+                    TupleElement::Regular(Ty::number()),
+                ],
+            ),
+            Ty::tuple(
+                arena,
+                vec![
+                    TupleElement::Regular(Ty::infer(arena, head)),
+                    TupleElement::Rest(Ty::infer(arena, rest)),
+                ],
+            ),
+            Ty::type_reference(arena, "Rest", []),
+            Ty::never(),
+            false,
+        );
+
+        assert_eq!(ty.to_type_string(), "[number]");
+    }
+
+    #[test]
+    fn conditional_infer_shadows_outer_type_parameter_substitution() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let outer_array = Ty::array(arena, Ty::string());
+        let conditional = Ty::conditional(
+            arena,
+            Ty::type_reference(arena, "T", []),
+            Ty::array(arena, Ty::infer(arena, Ty::type_parameter("T", None, None))),
+            Ty::type_reference(arena, "T", []),
+            Ty::never(),
+            false,
+        );
+        let substitutions = HashMap::from([("T", outer_array)]);
+
+        assert_eq!(
+            conditional.substitute_type_parameters(arena, &substitutions),
+            Ty::string()
         );
     }
 }

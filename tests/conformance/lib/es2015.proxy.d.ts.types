@@ -32,7 +32,7 @@ interface ProxyHandler<T extends object> {
 >                                                     ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
->                                                     ^^^^^^^^: any   (TyAny)
+>                                                     ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
 >                   ^^^^^^: T   (TyTypeReference)

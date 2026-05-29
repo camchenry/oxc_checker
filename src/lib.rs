@@ -9,9 +9,9 @@ use oxc_ast::{
         FormalParameters, Function, FunctionBody, MethodDefinition, MethodDefinitionKind,
         NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind, Program,
         PropertyDefinition, PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
-        TSInterfaceDeclaration, TSSignature, TSType, TSTypeAnnotation, TSTypeName, TSTypeQuery,
-        TSTypeQueryExprName, TSTypeReference, UnaryExpression, VariableDeclarationKind,
-        VariableDeclarator,
+        TSInterfaceDeclaration, TSSignature, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
+        VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
@@ -38,6 +38,7 @@ mod types;
 use types::*;
 
 const UNDEFINED_IDENT: Ident = static_ident!("undefined");
+const CONDITIONAL_APPARENT_TYPE_MAX_DEPTH: usize = 16;
 
 #[derive(Debug, Clone, Copy)]
 enum FunctionKind<'a> {
@@ -173,6 +174,114 @@ fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'
         }
         TSTypeName::ThisExpression(_) => "this",
     }
+}
+
+fn ts_type_contains_infer(ty: &TSType<'_>) -> bool {
+    match ty {
+        TSType::TSInferType(_) => true,
+        TSType::TSArrayType(array) => ts_type_contains_infer(&array.element_type),
+        TSType::TSTupleType(tuple) => tuple.element_types.iter().any(|element| match element {
+            TSTupleElement::TSRestType(rest) => ts_type_contains_infer(&rest.type_annotation),
+            TSTupleElement::TSOptionalType(optional) => {
+                ts_type_contains_infer(&optional.type_annotation)
+            }
+            _ => element.as_ts_type().is_some_and(ts_type_contains_infer),
+        }),
+        TSType::TSUnionType(union) => union.types.iter().any(|ty| ts_type_contains_infer(ty)),
+        TSType::TSIntersectionType(intersection) => intersection
+            .types
+            .iter()
+            .any(|ty| ts_type_contains_infer(ty)),
+        TSType::TSParenthesizedType(parenthesized) => {
+            ts_type_contains_infer(&parenthesized.type_annotation)
+        }
+        TSType::TSTypeOperatorType(operator) => ts_type_contains_infer(&operator.type_annotation),
+        TSType::TSIndexedAccessType(indexed_access) => {
+            ts_type_contains_infer(&indexed_access.object_type)
+                || ts_type_contains_infer(&indexed_access.index_type)
+        }
+        TSType::TSConditionalType(conditional) => {
+            ts_type_contains_infer(&conditional.check_type)
+                || ts_type_contains_infer(&conditional.extends_type)
+                || ts_type_contains_infer(&conditional.true_type)
+                || ts_type_contains_infer(&conditional.false_type)
+        }
+        TSType::TSTypeReference(reference) => {
+            reference
+                .type_arguments
+                .as_ref()
+                .is_some_and(|type_arguments| {
+                    type_arguments
+                        .params
+                        .iter()
+                        .any(|ty| ts_type_contains_infer(ty))
+                })
+        }
+        TSType::TSFunctionType(function) => {
+            formal_parameters_contain_infer(function.params.as_ref())
+                || ts_type_contains_infer(&function.return_type.type_annotation)
+        }
+        TSType::TSTypeLiteral(type_literal) => {
+            type_literal.members.iter().any(ts_signature_contains_infer)
+        }
+        TSType::TSMappedType(mapped) => {
+            ts_type_contains_infer(&mapped.constraint)
+                || mapped
+                    .name_type
+                    .as_ref()
+                    .is_some_and(|ty| ts_type_contains_infer(ty))
+                || mapped
+                    .type_annotation
+                    .as_ref()
+                    .is_some_and(|ty| ts_type_contains_infer(ty))
+        }
+        _ => false,
+    }
+}
+
+fn ts_signature_contains_infer(signature: &TSSignature<'_>) -> bool {
+    match signature {
+        TSSignature::TSPropertySignature(property) => property
+            .type_annotation
+            .as_deref()
+            .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation)),
+        TSSignature::TSMethodSignature(method) => {
+            formal_parameters_contain_infer(method.params.as_ref())
+                || method
+                    .return_type
+                    .as_deref()
+                    .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation))
+        }
+        TSSignature::TSCallSignatureDeclaration(signature) => {
+            formal_parameters_contain_infer(signature.params.as_ref())
+                || signature
+                    .return_type
+                    .as_deref()
+                    .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation))
+        }
+        TSSignature::TSConstructSignatureDeclaration(signature) => {
+            formal_parameters_contain_infer(signature.params.as_ref())
+                || signature
+                    .return_type
+                    .as_deref()
+                    .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation))
+        }
+        _ => false,
+    }
+}
+
+fn formal_parameters_contain_infer(parameters: &FormalParameters<'_>) -> bool {
+    parameters.items.iter().any(|parameter| {
+        parameter
+            .type_annotation
+            .as_deref()
+            .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation))
+    }) || parameters.rest.as_ref().is_some_and(|parameter| {
+        parameter
+            .type_annotation
+            .as_deref()
+            .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation))
+    })
 }
 
 /// Convert a `typeof` query target into a lookup key when it can be resolved locally.
@@ -627,17 +736,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.get_type_from_ts_type(program_id, ty)),
             ),
-            TSType::TSConditionalType(conditional) => Ty::conditional(
-                self.arena(),
-                self.get_type_from_ts_type(program_id, &conditional.check_type),
-                self.get_type_from_ts_type(program_id, &conditional.extends_type),
-                self.get_type_from_ts_type(program_id, &conditional.true_type),
-                self.get_type_from_ts_type(program_id, &conditional.false_type),
-                matches!(
-                    conditional.check_type,
-                    TSType::TSTypeReference(ref reference) if reference.type_arguments.is_none()
-                ),
-            ),
+            TSType::TSConditionalType(conditional) => {
+                let check_type = self.get_type_from_ts_type(program_id, &conditional.check_type);
+                let extends_type =
+                    self.get_type_from_ts_type(program_id, &conditional.extends_type);
+                let check_type = if ts_type_contains_infer(&conditional.extends_type) {
+                    self.apparent_type_for_conditional_match(program_id, check_type, 0)
+                } else {
+                    check_type
+                };
+                Ty::conditional(
+                    self.arena(),
+                    check_type,
+                    extends_type,
+                    self.get_type_from_ts_type(program_id, &conditional.true_type),
+                    self.get_type_from_ts_type(program_id, &conditional.false_type),
+                    matches!(
+                        conditional.check_type,
+                        TSType::TSTypeReference(ref reference) if reference.type_arguments.is_none()
+                    ),
+                )
+            }
             TSType::TSInferType(infer) => Ty::infer(
                 self.arena(),
                 type_parameter_from_ts_type_parameter(self.arena(), &infer.type_parameter),
@@ -853,6 +972,203 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         Ty::type_reference(self.arena(), name, type_arguments)
+    }
+
+    fn apparent_type_for_conditional_match(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= CONDITIONAL_APPARENT_TYPE_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(reference) => self
+                .apparent_type_reference_for_conditional_match(program_id, reference, depth + 1)
+                .unwrap_or(ty),
+            Ty::Array(array) => {
+                let element_type = self.apparent_type_for_conditional_match(
+                    program_id,
+                    array.element_type,
+                    depth + 1,
+                );
+                if array.readonly {
+                    Ty::readonly_array(self.arena(), element_type)
+                } else {
+                    Ty::array(self.arena(), element_type)
+                }
+            }
+            Ty::Tuple(tuple) => {
+                let elements = tuple
+                    .elements
+                    .iter()
+                    .map(|element| match element {
+                        TupleElement::Regular(ty) => TupleElement::Regular(
+                            self.apparent_type_for_conditional_match(program_id, *ty, depth + 1),
+                        ),
+                        TupleElement::Rest(ty) => TupleElement::Rest(
+                            self.apparent_type_for_conditional_match(program_id, *ty, depth + 1),
+                        ),
+                        TupleElement::Optional(ty) => TupleElement::Optional(
+                            self.apparent_type_for_conditional_match(program_id, *ty, depth + 1),
+                        ),
+                    })
+                    .collect::<Vec<_>>();
+                if tuple.readonly {
+                    Ty::readonly_tuple(self.arena(), elements)
+                } else {
+                    Ty::tuple(self.arena(), elements)
+                }
+            }
+            Ty::Union(union) => Ty::r#union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.apparent_type_for_conditional_match(program_id, *ty, depth + 1)),
+            ),
+            Ty::Intersection(intersection) => Ty::intersection(
+                self.arena(),
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| self.apparent_type_for_conditional_match(program_id, *ty, depth + 1)),
+            ),
+            _ => ty,
+        }
+    }
+
+    fn apparent_type_reference_for_conditional_match(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.apparent_type_declaration_for_conditional_match(
+            symbol.program_id,
+            declaration,
+            reference,
+            depth,
+        )
+    }
+
+    fn apparent_type_declaration_for_conditional_match(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        reference: &TyTypeReference<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSInterfaceDeclaration(_) => {
+                self.apparent_interface_type_for_conditional_match(reference)
+            }
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                let substitutions = self.type_parameter_substitutions_for_reference(
+                    alias.type_parameters.as_deref(),
+                    reference,
+                );
+                let ty = self
+                    .get_type_from_ts_type(program_id, &alias.type_annotation)
+                    .substitute_type_parameters(self.arena(), &substitutions);
+                Some(self.apparent_type_for_conditional_match(program_id, ty, depth + 1))
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.apparent_type_declaration_for_conditional_match(
+                    program_id,
+                    parent_id,
+                    reference,
+                    depth + 1,
+                )
+            }
+            _ => None,
+        }
+    }
+
+    fn apparent_interface_type_for_conditional_match(
+        &self,
+        reference: &TyTypeReference<'a>,
+    ) -> Option<Ty<'a>> {
+        let declarations = self.interface_declarations_for_name(reference.name);
+        if declarations.is_empty() {
+            return None;
+        }
+
+        let mut properties = Vec::new();
+        let mut signatures = Vec::new();
+
+        for (program_id, interface) in declarations {
+            let substitutions = self.type_parameter_substitutions_for_reference(
+                interface.type_parameters.as_deref(),
+                reference,
+            );
+
+            for signature in &interface.body.body {
+                match signature {
+                    TSSignature::TSPropertySignature(property) => {
+                        let Some(name) = property_key_name_str(&property.key) else {
+                            continue;
+                        };
+                        let ty = property.type_annotation.as_deref().map_or_else(
+                            Ty::any,
+                            |annotation| {
+                                self.get_type_from_ts_type(program_id, &annotation.type_annotation)
+                            },
+                        );
+                        let ty = ty.substitute_type_parameters(self.arena(), &substitutions);
+                        properties.push(if property.computed {
+                            Ty::computed_property(name, ty)
+                        } else {
+                            Ty::property(name, ty)
+                        });
+                    }
+                    TSSignature::TSMethodSignature(method) => {
+                        let Some(name) = property_key_name_str(&method.key) else {
+                            continue;
+                        };
+                        let signature = self.signature_from_function_parts(
+                            program_id,
+                            SignatureKind::Call,
+                            method.type_parameters.as_deref(),
+                            method.params.as_ref(),
+                            method.return_type.as_deref(),
+                        );
+                        let signature =
+                            signature.substitute_type_parameters(self.arena(), &substitutions);
+                        properties.push(if method.computed {
+                            Ty::computed_property(name, Ty::Function(signature.function))
+                        } else {
+                            Ty::property(name, Ty::Function(signature.function))
+                        });
+                    }
+                    _ => {}
+                }
+
+                for kind in [SignatureKind::Call, SignatureKind::Construct] {
+                    if let Some(signature) =
+                        self.signature_from_ts_signature(program_id, signature, kind)
+                    {
+                        signatures.push(
+                            signature.substitute_type_parameters(self.arena(), &substitutions),
+                        );
+                    }
+                }
+            }
+        }
+
+        Some(Ty::object_with_signatures(
+            self.arena(),
+            properties,
+            signatures,
+        ))
     }
 
     fn get_global_array_type_reference_type(
@@ -2949,10 +3265,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     },
                 )
             }
-            AstKind::TSPropertySignature(property) => self.get_type_from_ts_type_annotation(
-                node.program_id,
-                property.type_annotation.as_deref(),
-            ),
+            AstKind::TSPropertySignature(property) => {
+                let ty = self.get_type_from_ts_type_annotation(
+                    node.program_id,
+                    property.type_annotation.as_deref(),
+                );
+                if let Ty::Infer(infer) = ty {
+                    Ty::type_reference(self.arena(), infer.type_parameter.name, [])
+                } else {
+                    ty
+                }
+            }
             AstKind::ObjectProperty(property) => {
                 if self.is_in_contextually_typed_initializer(node.program_id, node.node_id)
                     && let Expression::BooleanLiteral(literal) = &property.value
@@ -3895,7 +4218,7 @@ mod test {
     }
 
     #[test]
-    fn infer_types_are_preserved_without_solving() {
+    fn infer_types_resolve_when_concrete() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
             &allocator,
@@ -3906,7 +4229,7 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "value").to_type_string(),
-            "string extends infer U ? U : never"
+            "string"
         );
     }
 

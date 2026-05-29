@@ -2,13 +2,13 @@ export interface Register {
 >                ^^^^^^^^: any   (TyAny)
 
 export type QueryKey = Register extends {
->           ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>           ^^^^^^^^: readonly unknown[]   (TyArray)
 
 export type QueryKey = Register extends {
 >                      ^^^^^^^^: any   (TyAny)
 
   queryKey: infer TQueryKey
-> ^^^^^^^^: infer TQueryKey   (TyInfer)
+> ^^^^^^^^: TQueryKey   (TyTypeReference)
 
   queryKey: infer TQueryKey
 >                 ^^^^^^^^^: any   (TyAny)
@@ -194,13 +194,13 @@ export interface QueryClient {
 >                                                      ^^^^^: any   (TyAny)
 
 export type QueryMeta = Register extends {
->           ^^^^^^^^^: Register extends { queryMeta: infer TQueryMeta; } ? TQueryMeta extends Record<string, unknown> ? TQueryMeta : Record<string, unknown> : Record<string, unknown>   (TyConditional)
+>           ^^^^^^^^^: Record<string, unknown>   (TyTypeReference)
 
 export type QueryMeta = Register extends {
 >                       ^^^^^^^^: any   (TyAny)
 
   queryMeta: infer TQueryMeta
-> ^^^^^^^^^: infer TQueryMeta   (TyInfer)
+> ^^^^^^^^^: TQueryMeta   (TyTypeReference)
 
   queryMeta: infer TQueryMeta
 >                  ^^^^^^^^^^: any   (TyAny)
@@ -425,7 +425,7 @@ export type OmitKeyof<
 > ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
   QueryKey,
-> ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+> ^^^^^^^^: readonly unknown[]   (TyArray)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode: "append" | "reset" | "replace"; }   (TyObject)
@@ -437,10 +437,10 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >                                          ^^^^^^^^^: any   (TyAny)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->                                                            ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                                                            ^^^^^^^^: readonly unknown[]   (TyArray)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->                                                            ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                                                            ^^^^^^^^: readonly unknown[]   (TyArray)
 
   streamFn: (
 > ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
@@ -488,10 +488,10 @@ type SimpleStreamedQueryParams<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
 >   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -521,10 +521,10 @@ type ReducibleStreamedQueryParams<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
 >   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -572,10 +572,10 @@ type StreamedQueryParams<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
   | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -620,16 +620,16 @@ export function streamedQuery<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey = QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
   TQueryKey extends QueryKey = QueryKey,
->                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                   ^^^^^^^^: readonly unknown[]   (TyArray)
 
   TQueryKey extends QueryKey = QueryKey,
->                              ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                              ^^^^^^^^: readonly unknown[]   (TyArray)
 
   TQueryKey extends QueryKey = QueryKey,
->                              ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends readonly unknown[] ? TQueryKey : TQueryKey extends unknown[] ? TQueryKey : readonly unknown[] : readonly unknown[]   (TyConditional)
+>                              ^^^^^^^^: readonly unknown[]   (TyArray)
 
   streamFn,
 > ^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)

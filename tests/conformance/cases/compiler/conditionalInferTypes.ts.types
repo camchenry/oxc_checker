@@ -1,0 +1,239 @@
+type DirectInfer = string extends infer U ? U : never;
+>    ^^^^^^^^^^^: string   (TyString)
+
+type DirectInfer = string extends infer U ? U : never;
+>                                       ^: any   (TyAny)
+
+type DirectInfer = string extends infer U ? U : never;
+>                                           ^: any   (TyAny)
+
+type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
+>    ^^^^^^^^^^^^^: number   (TyNumber)
+
+type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
+>                      ^^^^^: number   (TyNumber)
+
+type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
+>                                                ^^^^^: U   (TyTypeReference)
+
+type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
+>                                                             ^: any   (TyAny)
+
+type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
+>                                                                   ^: any   (TyAny)
+
+type MissingProperty = { other: string } extends { value: infer U } ? U : never;
+>    ^^^^^^^^^^^^^^^: never   (TyNever)
+
+type MissingProperty = { other: string } extends { value: infer U } ? U : never;
+>                        ^^^^^: string   (TyString)
+
+type MissingProperty = { other: string } extends { value: infer U } ? U : never;
+>                                                  ^^^^^: U   (TyTypeReference)
+
+type MissingProperty = { other: string } extends { value: infer U } ? U : never;
+>                                                               ^: any   (TyAny)
+
+type MissingProperty = { other: string } extends { value: infer U } ? U : never;
+>                                                                     ^: any   (TyAny)
+
+type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
+>    ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral)
+
+type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
+>                                                 ^: any   (TyAny)
+
+type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
+>                                                                    ^: any   (TyAny)
+
+type ConstrainedInferFalse = number extends infer U extends string ? U : never;
+>    ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
+
+type ConstrainedInferFalse = number extends infer U extends string ? U : never;
+>                                                 ^: any   (TyAny)
+
+type ConstrainedInferFalse = number extends infer U extends string ? U : never;
+>                                                                    ^: any   (TyAny)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>    ^^^^^^^^^^^^^: string | number   (TyUnion)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                      ^: string   (TyString)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                 ^: number   (TyNumber)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                       ^: U   (TyTypeReference)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                ^: any   (TyAny)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                   ^: U   (TyTypeReference)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                            ^: any   (TyAny)
+
+type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                                  ^: any   (TyAny)
+
+type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>    ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple)
+
+type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                              ^^^^: any   (TyAny)
+
+type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                             ^^^^: any   (TyAny)
+
+type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                                     ^^^^: any   (TyAny)
+
+type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
+>    ^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
+>                                                ^: any   (TyAny)
+
+type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
+>                                                       ^: any   (TyAny)
+
+type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
+>    ^^^^^^^^^^: string | number   (TyUnion)
+
+type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                   ^^^^^: string   (TyString)
+
+type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                       ^^^^^: number   (TyNumber)
+
+type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                                                 ^^^^^: U   (TyTypeReference)
+
+type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                                                              ^: any   (TyAny)
+
+type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                                                                    ^: any   (TyAny)
+
+declare const directInfer: string extends infer U ? U : never;
+>             ^^^^^^^^^^^: string   (TyString)
+
+declare const directInfer: string extends infer U ? U : never;
+>                                               ^: any   (TyAny)
+
+declare const directInfer: string extends infer U ? U : never;
+>                                                   ^: any   (TyAny)
+
+declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
+>             ^^^^^^^^^^^^^: number   (TyNumber)
+
+declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
+>                              ^^^^^: number   (TyNumber)
+
+declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
+>                                                        ^^^^^: U   (TyTypeReference)
+
+declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
+>                                                                     ^: any   (TyAny)
+
+declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
+>                                                                           ^: any   (TyAny)
+
+declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
+>             ^^^^^^^^^^^^^^^: never   (TyNever)
+
+declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
+>                                ^^^^^: string   (TyString)
+
+declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
+>                                                          ^^^^^: U   (TyTypeReference)
+
+declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
+>                                                                       ^: any   (TyAny)
+
+declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
+>                                                                             ^: any   (TyAny)
+
+declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
+>             ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral)
+
+declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
+>                                                         ^: any   (TyAny)
+
+declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
+>                                                                            ^: any   (TyAny)
+
+declare const constrainedInferFalse: number extends infer U extends string ? U : never;
+>             ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
+
+declare const constrainedInferFalse: number extends infer U extends string ? U : never;
+>                                                         ^: any   (TyAny)
+
+declare const constrainedInferFalse: number extends infer U extends string ? U : never;
+>                                                                            ^: any   (TyAny)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>             ^^^^^^^^^^^^^: string | number   (TyUnion)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                              ^: string   (TyString)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                         ^: number   (TyNumber)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                               ^: U   (TyTypeReference)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                        ^: any   (TyAny)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                           ^: U   (TyTypeReference)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                                    ^: any   (TyAny)
+
+declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+>                                                                                          ^: any   (TyAny)
+
+declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>             ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple)
+
+declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                      ^^^^: any   (TyAny)
+
+declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                                     ^^^^: any   (TyAny)
+
+declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                                             ^^^^: any   (TyAny)
+
+declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
+>             ^^^^^^^^^^^^^^^^^: string   (TyString)
+
+declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
+>                                                        ^: any   (TyAny)
+
+declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
+>                                                               ^: any   (TyAny)
+
+declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
+>             ^^^^^^^^^^: string | number   (TyUnion)
+
+declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                           ^^^^^: string   (TyString)
+
+declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                               ^^^^^: number   (TyNumber)
+
+declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                                                         ^^^^^: U   (TyTypeReference)
+
+declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                                                                      ^: any   (TyAny)
+
+declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
+>                                                                                            ^: any   (TyAny)

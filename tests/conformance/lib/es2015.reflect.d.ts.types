@@ -56,7 +56,7 @@ declare namespace Reflect {
 >                          ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                          ^^^^^^^^: any   (TyAny)
+>                          ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
 >                                    ^^^^^^^^^^^^: any   (TyAny)
@@ -113,7 +113,7 @@ declare namespace Reflect {
 >                              ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                              ^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
 >                                        ^^^^^^^^^^^^^: ArrayLike<any>   (TyTypeReference)
@@ -128,7 +128,7 @@ declare namespace Reflect {
 >                                                                                   ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                                                                   ^^^^^^^^: any   (TyAny)
+>                                                                                   ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
 >            ^^^^^^^^^^^^^^: (target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>) => boolean   (TyFunction)
