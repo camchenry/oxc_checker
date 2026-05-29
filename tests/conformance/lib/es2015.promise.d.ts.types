@@ -47,6 +47,9 @@ interface PromiseConstructor {
 >                                                                                                                      ^: any   (TyAny)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
+>   ^^^: <T extends readonly unknown[] | []>(values: T) => Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>   (TyFunction)
+
+    all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
 >       ^: any   (TyAny)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
@@ -74,6 +77,9 @@ interface PromiseConstructor {
 >                                                                                                    ^: any   (TyAny)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>   ^^^^: <T extends readonly unknown[] | []>(values: T) => Promise<Awaited<T[number]>>   (TyFunction)
+
+    race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >        ^: any   (TyAny)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
@@ -95,6 +101,9 @@ interface PromiseConstructor {
 >                                                                       ^: any   (TyAny)
 
     reject<T = never>(reason?: any): Promise<T>;
+>   ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
+
+    reject<T = never>(reason?: any): Promise<T>;
 >          ^: any   (TyAny)
 
     reject<T = never>(reason?: any): Promise<T>;
@@ -110,10 +119,16 @@ interface PromiseConstructor {
 >                                            ^: any   (TyAny)
 
     resolve(): Promise<void>;
+>   ^^^^^^^: () => Promise<void>   (TyFunction)
+
+    resolve(): Promise<void>;
 >              ^^^^^^^: PromiseConstructor   (TyTypeReference)
 
     resolve(): Promise<void>;
 >              ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    resolve<T>(value: T): Promise<Awaited<T>>;
+>   ^^^^^^^: <T>(value: T) => Promise<Awaited<T>>   (TyFunction)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
 >           ^: any   (TyAny)
@@ -135,6 +150,9 @@ interface PromiseConstructor {
 
     resolve<T>(value: T): Promise<Awaited<T>>;
 >                                         ^: any   (TyAny)
+
+    resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
+>   ^^^^^^^: <T>(value: T | PromiseLike<T>) => Promise<Awaited<T>>   (TyFunction)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
 >           ^: any   (TyAny)

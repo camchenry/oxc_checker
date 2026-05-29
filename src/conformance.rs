@@ -1201,12 +1201,10 @@ fn actual_identifier_record<'a>(
                     type_of_type_alias(checker, program_id, alias),
                 )
             } else {
-                let symbol_id = identifier.symbol_id.get()?;
-                let symbol = SymbolRef::new(program_id, symbol_id);
                 (
                     identifier.span,
                     identifier.name.to_string(),
-                    checker.get_type_of_symbol(symbol),
+                    checker.get_type_at_location(node_ref),
                 )
             }
         }
@@ -1242,6 +1240,16 @@ fn actual_identifier_record<'a>(
             let text = property_key_name(&method.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
+        AstKind::TSMethodSignature(method) => {
+            let span = property_key_span(&method.key)?;
+            let text = property_key_name(&method.key)?;
+            (span, text, checker.get_type_at_location(node_ref))
+        }
+        AstKind::TSThisParameter(parameter) => (
+            parameter.this_span,
+            "this".to_string(),
+            checker.get_type_at_location(node_ref),
+        ),
         AstKind::PropertyDefinition(property) => {
             let span = property_key_span(&property.key)?;
             let text = property_key_name(&property.key)?;

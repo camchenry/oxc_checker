@@ -1,4 +1,4 @@
-use crate::types::Ty;
+use crate::types::{Ty, TyTypePredicate};
 
 pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
     if source == target {
@@ -26,7 +26,7 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
                         is_assignable_to(target_parameter.ty, source_parameter.ty)
                     },
                 )
-                && is_assignable_to(source.return_type, target.return_type)
+                && function_return_type_assignable_to(source, target)
         }
         (Ty::TypeReference(source), Ty::TypeReference(target)) => {
             source.name == target.name
@@ -62,6 +62,30 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::BooleanLiteral(_), Ty::Boolean) => true,
         _ => false,
     }
+}
+
+fn function_return_type_assignable_to<'a>(
+    source: &crate::types::TyFunction<'a>,
+    target: &crate::types::TyFunction<'a>,
+) -> bool {
+    match target.type_predicate {
+        Some(target_predicate) => source.type_predicate.is_some_and(|source_predicate| {
+            type_predicate_assignable_to(source_predicate, target_predicate)
+        }),
+        None => is_assignable_to(source.return_type, target.return_type),
+    }
+}
+
+fn type_predicate_assignable_to<'a>(
+    source: &TyTypePredicate<'a>,
+    target: &TyTypePredicate<'a>,
+) -> bool {
+    crate::types::type_predicate_kinds_match(source, target)
+        && match (source.target_type, target.target_type) {
+            (Some(source_type), Some(target_type)) => is_assignable_to(source_type, target_type),
+            (None, None) => true,
+            _ => false,
+        }
 }
 
 fn properties_assignable_to<'a>(

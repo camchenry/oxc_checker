@@ -17,6 +17,9 @@ declare namespace Reflect {
 >       ^^^^^^: (this: T, ...args: A) => R   (TyFunction)
 
         target: (this: T, ...args: A) => R,
+>                ^^^^: T   (TyTypeReference)
+
+        target: (this: T, ...args: A) => R,
 >                      ^: any   (TyAny)
 
         target: (this: T, ...args: A) => R,

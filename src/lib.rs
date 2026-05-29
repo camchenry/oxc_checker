@@ -235,6 +235,10 @@ fn ts_type_contains_infer(ty: &TSType<'_>) -> bool {
                     .as_ref()
                     .is_some_and(|ty| ts_type_contains_infer(ty))
         }
+        TSType::TSTypePredicate(predicate) => predicate
+            .type_annotation
+            .as_deref()
+            .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation)),
         _ => false,
     }
 }
@@ -979,7 +983,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .skip(type_arguments.len())
             .copied();
 
-        Ty::function(
+        Ty::function_with_type_predicate(
             self.arena(),
             remaining_type_parameters,
             function.parameters.iter().map(|parameter| {
@@ -997,6 +1001,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             function
                 .return_type
                 .substitute_type_parameters(self.arena(), &substitutions),
+            function.type_predicate.map(|predicate| {
+                predicate.substitute_type_parameters(self.arena(), &substitutions)
+            }),
         )
     }
 
@@ -1725,15 +1732,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         parameters: &FormalParameters<'a>,
         return_type: Option<&TSTypeAnnotation<'a>>,
     ) -> Signature<'a> {
-        let Ty::Function(function) = Ty::function(
+        let parameters = self.function_signature_parameters(program_id, parameters);
+        let (return_type, type_predicate) = self.return_type_and_type_predicate_from_annotation(
+            program_id,
+            &parameters,
+            return_type,
+        );
+        let Ty::Function(function) = Ty::function_with_type_predicate(
             self.arena(),
             type_parameters_from_declaration(self.arena(), type_parameters),
-            self.function_signature_parameters(program_id, parameters),
-            self.get_type_from_ts_type_annotation(program_id, return_type),
+            parameters,
+            return_type,
+            type_predicate,
         ) else {
             unreachable!("signature construction always creates a function type")
         };
         Signature::new(kind, function)
+    }
+
+    fn return_type_and_type_predicate_from_annotation(
+        &self,
+        program_id: program::ProgramId,
+        parameters: &[TyParameter<'a>],
+        return_type: Option<&TSTypeAnnotation<'a>>,
+    ) -> (Ty<'a>, Option<TyTypePredicate<'a>>) {
+        return_type_and_type_predicate_from_annotation_with_resolver(
+            parameters,
+            return_type,
+            |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
+        )
     }
 
     fn resolve_call_signature_return_type(
@@ -2820,7 +2847,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
         };
 
-        Ty::function(self.arena(), type_parameters, parameters, return_type)
+        let explicit_return_type = match function {
+            FunctionKind::Function(f) => f.return_type.as_deref(),
+            FunctionKind::ArrowFunction(f) => f.return_type.as_deref(),
+        };
+        let (return_type, type_predicate) = match explicit_return_type {
+            Some(annotation) => self.return_type_and_type_predicate_from_annotation(
+                program_id,
+                &parameters,
+                Some(annotation),
+            ),
+            None => (return_type, None),
+        };
+
+        Ty::function_with_type_predicate(
+            self.arena(),
+            type_parameters,
+            parameters,
+            return_type,
+            type_predicate,
+        )
     }
 
     fn function_signature_parameters(
@@ -3271,6 +3317,53 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         annotated_type
     }
+
+    fn get_type_of_binding_identifier_without_symbol(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+    ) -> Ty<'a> {
+        let parent_id = self.nodes(program_id).parent_id(node_id);
+        match self.nodes(program_id).kind(parent_id) {
+            AstKind::FormalParameter(_) | AstKind::FormalParameterRest(_) => {
+                self.get_type_at_location(NodeRef::new(program_id, parent_id))
+            }
+            _ => Ty::none(),
+        }
+    }
+
+    fn get_type_of_type_predicate_identifier(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        name: &str,
+    ) -> Ty<'a> {
+        for ancestor in self.nodes(program_id).ancestor_kinds(node_id) {
+            let parameters = match ancestor {
+                AstKind::TSFunctionType(function) => {
+                    self.function_signature_parameters(program_id, function.params.as_ref())
+                }
+                AstKind::TSMethodSignature(method) => {
+                    self.function_signature_parameters(program_id, method.params.as_ref())
+                }
+                AstKind::TSCallSignatureDeclaration(signature) => {
+                    self.function_signature_parameters(program_id, signature.params.as_ref())
+                }
+                AstKind::Function(function) => {
+                    self.function_signature_parameters(program_id, &function.params)
+                }
+                AstKind::ArrowFunctionExpression(function) => {
+                    self.function_signature_parameters(program_id, &function.params)
+                }
+                _ => continue,
+            };
+            if let Some(parameter) = parameters.iter().find(|parameter| parameter.name == name) {
+                return parameter.ty;
+            }
+            return Ty::none();
+        }
+        Ty::none()
+    }
 }
 
 fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
@@ -3366,6 +3459,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 
     fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         match self.node_kind(node) {
+            AstKind::BindingIdentifier(identifier) => identifier.symbol_id.get().map_or_else(
+                || {
+                    self.get_type_of_binding_identifier_without_symbol(
+                        node.program_id,
+                        node.node_id,
+                    )
+                },
+                |symbol_id| self.get_type_of_symbol(SymbolRef::new(node.program_id, symbol_id)),
+            ),
             AstKind::IdentifierReference(identifier) if identifier.name == UNDEFINED_IDENT => {
                 Ty::undefined()
             }
@@ -3396,6 +3498,55 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 } else {
                     ty
                 }
+            }
+            AstKind::TSMethodSignature(method) => {
+                let signature = self.signature_from_function_parts(
+                    node.program_id,
+                    SignatureKind::Call,
+                    method.type_parameters.as_deref(),
+                    method.params.as_ref(),
+                    method.return_type.as_deref(),
+                );
+                Ty::Function(signature.function)
+            }
+            AstKind::FormalParameter(parameter) => {
+                parameter.type_annotation.as_deref().map_or_else(
+                    || {
+                        self.get_contextual_type_of_formal_parameter(
+                            node.program_id,
+                            node.node_id,
+                            parameter,
+                        )
+                        .unwrap_or_else(Ty::any)
+                    },
+                    |annotation| {
+                        self.get_declared_type_of_formal_parameter(
+                            node.program_id,
+                            parameter,
+                            annotation,
+                        )
+                    },
+                )
+            }
+            AstKind::FormalParameterRest(parameter) => self.get_type_from_ts_type_annotation(
+                node.program_id,
+                parameter.type_annotation.as_deref(),
+            ),
+            AstKind::TSThisParameter(parameter) => self.get_type_from_ts_type_annotation(
+                node.program_id,
+                parameter.type_annotation.as_deref(),
+            ),
+            AstKind::IdentifierName(identifier)
+                if matches!(
+                    self.nodes(node.program_id).parent_kind(node.node_id),
+                    AstKind::TSTypePredicate(_)
+                ) =>
+            {
+                self.get_type_of_type_predicate_identifier(
+                    node.program_id,
+                    node.node_id,
+                    identifier.name.as_str(),
+                )
             }
             AstKind::ObjectProperty(property) => {
                 if self.is_in_contextually_typed_initializer(node.program_id, node.node_id)
@@ -5126,6 +5277,29 @@ mod test {
                 )],
                 Ty::type_reference(arena, arena.str("B"), []),
             )
+        );
+    }
+
+    #[test]
+    fn function_type_predicates_render_in_signatures() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+declare function acceptsPredicate<T, S extends T>(
+    predicate: (value: T) => value is S,
+    assertion: (value: unknown) => asserts value is string,
+): void;
+"#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "predicate").to_type_string(),
+            "(value: T) => value is S"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "assertion").to_type_string(),
+            "(value: unknown) => asserts value is string"
         );
     }
 }

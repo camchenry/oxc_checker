@@ -10,11 +10,20 @@ interface Map<K, V> {
 interface Map<K, V> {
 >                ^: any   (TyAny)
 
+    clear(): void;
+>   ^^^^^: () => void   (TyFunction)
+
+    delete(key: K): boolean;
+>   ^^^^^^: (key: K) => boolean   (TyFunction)
+
     delete(key: K): boolean;
 >          ^^^: K   (TyTypeReference)
 
     delete(key: K): boolean;
 >               ^: any   (TyAny)
+
+    forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
+>   ^^^^^^^: (callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any) => void   (TyFunction)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
 >           ^^^^^^^^^^: (value: V, key: K, map: Map<K, V>) => void   (TyFunction)
@@ -50,6 +59,9 @@ interface Map<K, V> {
 >                                                                   ^^^^^^^: any   (TyAny)
 
     get(key: K): V | undefined;
+>   ^^^: (key: K) => V | undefined   (TyFunction)
+
+    get(key: K): V | undefined;
 >       ^^^: K   (TyTypeReference)
 
     get(key: K): V | undefined;
@@ -59,10 +71,16 @@ interface Map<K, V> {
 >                ^: any   (TyAny)
 
     has(key: K): boolean;
+>   ^^^: (key: K) => boolean   (TyFunction)
+
+    has(key: K): boolean;
 >       ^^^: K   (TyTypeReference)
 
     has(key: K): boolean;
 >            ^: any   (TyAny)
+
+    set(key: K, value: V): this;
+>   ^^^: (key: K, value: V) => none   (TyFunction)
 
     set(key: K, value: V): this;
 >       ^^^: K   (TyTypeReference)
@@ -140,6 +158,9 @@ interface ReadonlyMap<K, V> {
 >                        ^: any   (TyAny)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>   ^^^^^^^: (callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any) => void   (TyFunction)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
 >           ^^^^^^^^^^: (value: V, key: K, map: ReadonlyMap<K, V>) => void   (TyFunction)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
@@ -170,6 +191,9 @@ interface ReadonlyMap<K, V> {
 >                                                                           ^^^^^^^: any   (TyAny)
 
     get(key: K): V | undefined;
+>   ^^^: (key: K) => V | undefined   (TyFunction)
+
+    get(key: K): V | undefined;
 >       ^^^: K   (TyTypeReference)
 
     get(key: K): V | undefined;
@@ -177,6 +201,9 @@ interface ReadonlyMap<K, V> {
 
     get(key: K): V | undefined;
 >                ^: any   (TyAny)
+
+    has(key: K): boolean;
+>   ^^^: (key: K) => boolean   (TyFunction)
 
     has(key: K): boolean;
 >       ^^^: K   (TyTypeReference)
@@ -203,10 +230,16 @@ interface WeakMap<K extends WeakKey, V> {
 >                                    ^: any   (TyAny)
 
     delete(key: K): boolean;
+>   ^^^^^^: (key: K) => boolean   (TyFunction)
+
+    delete(key: K): boolean;
 >          ^^^: K   (TyTypeReference)
 
     delete(key: K): boolean;
 >               ^: any   (TyAny)
+
+    get(key: K): V | undefined;
+>   ^^^: (key: K) => V | undefined   (TyFunction)
 
     get(key: K): V | undefined;
 >       ^^^: K   (TyTypeReference)
@@ -218,10 +251,16 @@ interface WeakMap<K extends WeakKey, V> {
 >                ^: any   (TyAny)
 
     has(key: K): boolean;
+>   ^^^: (key: K) => boolean   (TyFunction)
+
+    has(key: K): boolean;
 >       ^^^: K   (TyTypeReference)
 
     has(key: K): boolean;
 >            ^: any   (TyAny)
+
+    set(key: K, value: V): this;
+>   ^^^: (key: K, value: V) => none   (TyFunction)
 
     set(key: K, value: V): this;
 >       ^^^: K   (TyTypeReference)
@@ -299,16 +338,28 @@ interface Set<T> {
 >             ^: any   (TyAny)
 
     add(value: T): this;
+>   ^^^: (value: T) => none   (TyFunction)
+
+    add(value: T): this;
 >       ^^^^^: T   (TyTypeReference)
 
     add(value: T): this;
 >              ^: any   (TyAny)
+
+    clear(): void;
+>   ^^^^^: () => void   (TyFunction)
+
+    delete(value: T): boolean;
+>   ^^^^^^: (value: T) => boolean   (TyFunction)
 
     delete(value: T): boolean;
 >          ^^^^^: T   (TyTypeReference)
 
     delete(value: T): boolean;
 >                 ^: any   (TyAny)
+
+    forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+>   ^^^^^^^: (callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any) => void   (TyFunction)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
 >           ^^^^^^^^^^: (value: T, value2: T, set: Set<T>) => void   (TyFunction)
@@ -339,6 +390,9 @@ interface Set<T> {
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
 >                                                                   ^^^^^^^: any   (TyAny)
+
+    has(value: T): boolean;
+>   ^^^: (value: T) => boolean   (TyFunction)
 
     has(value: T): boolean;
 >       ^^^^^: T   (TyTypeReference)
@@ -392,6 +446,9 @@ interface ReadonlySet<T> {
 >                     ^: any   (TyAny)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>   ^^^^^^^: (callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any) => void   (TyFunction)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
 >           ^^^^^^^^^^: (value: T, value2: T, set: ReadonlySet<T>) => void   (TyFunction)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
@@ -419,6 +476,9 @@ interface ReadonlySet<T> {
 >                                                                           ^^^^^^^: any   (TyAny)
 
     has(value: T): boolean;
+>   ^^^: (value: T) => boolean   (TyFunction)
+
+    has(value: T): boolean;
 >       ^^^^^: T   (TyTypeReference)
 
     has(value: T): boolean;
@@ -440,16 +500,25 @@ interface WeakSet<T extends WeakKey> {
 >                           ^^^^^^^: any   (TyAny)
 
     add(value: T): this;
+>   ^^^: (value: T) => none   (TyFunction)
+
+    add(value: T): this;
 >       ^^^^^: T   (TyTypeReference)
 
     add(value: T): this;
 >              ^: any   (TyAny)
 
     delete(value: T): boolean;
+>   ^^^^^^: (value: T) => boolean   (TyFunction)
+
+    delete(value: T): boolean;
 >          ^^^^^: T   (TyTypeReference)
 
     delete(value: T): boolean;
 >                 ^: any   (TyAny)
+
+    has(value: T): boolean;
+>   ^^^: (value: T) => boolean   (TyFunction)
 
     has(value: T): boolean;
 >       ^^^^^: T   (TyTypeReference)

@@ -3,7 +3,8 @@ use oxc_ast::ast::{
     BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
     TSMappedType, TSMappedTypeModifierOperator, TSSignature, TSTemplateLiteralType,
     TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-    TSTypeParameter, TSTypeParameterDeclaration, TSTypeReference,
+    TSTypeParameter, TSTypeParameterDeclaration, TSTypePredicate, TSTypePredicateName,
+    TSTypeReference,
 };
 use std::collections::HashMap;
 
@@ -100,6 +101,46 @@ pub(crate) struct TyFunction<'a> {
     pub(crate) type_parameters: ArenaVec<'a, TyTypeParameter<'a>>,
     pub(crate) parameters: ArenaVec<'a, TyParameter<'a>>,
     pub(crate) return_type: Ty<'a>,
+    pub(crate) type_predicate: Option<&'a TyTypePredicate<'a>>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) enum TyTypePredicateKind {
+    This,
+    Identifier,
+    AssertsThis,
+    AssertsIdentifier,
+}
+
+impl TyTypePredicateKind {
+    fn is_asserts(self) -> bool {
+        matches!(self, Self::AssertsThis | Self::AssertsIdentifier)
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct TyTypePredicate<'a> {
+    pub(crate) kind: TyTypePredicateKind,
+    pub(crate) parameter_name: Option<&'a str>,
+    pub(crate) parameter_index: Option<usize>,
+    pub(crate) target_type: Option<Ty<'a>>,
+}
+
+impl<'a> TyTypePredicate<'a> {
+    pub(crate) fn substitute_type_parameters(
+        self,
+        arena: CheckerArena<'a>,
+        substitutions: &HashMap<&'a str, Ty<'a>>,
+    ) -> Self {
+        Self {
+            kind: self.kind,
+            parameter_name: self.parameter_name,
+            parameter_index: self.parameter_index,
+            target_type: self
+                .target_type
+                .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -524,10 +565,21 @@ impl<'a> Ty<'a> {
         parameters: impl IntoIterator<Item = TyParameter<'a>>,
         return_type: Ty<'a>,
     ) -> Self {
+        Self::function_with_type_predicate(arena, type_parameters, parameters, return_type, None)
+    }
+
+    pub(crate) fn function_with_type_predicate(
+        arena: CheckerArena<'a>,
+        type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
+        parameters: impl IntoIterator<Item = TyParameter<'a>>,
+        return_type: Ty<'a>,
+        type_predicate: Option<TyTypePredicate<'a>>,
+    ) -> Self {
         Self::Function(arena.alloc(TyFunction {
             type_parameters: arena.vec_from_iter(type_parameters),
             parameters: arena.vec_from_iter(parameters),
             return_type,
+            type_predicate: type_predicate.map(|predicate| arena.alloc(predicate)),
         }))
     }
 
@@ -719,18 +771,26 @@ impl<'a> Ty<'a> {
                         }
                         TSSignature::TSMethodSignature(method) => {
                             let name = property_key_name(&method.key)?;
-                            let ty = Self::function(
+                            let parameters = function_type_parameters(
+                                arena,
+                                method.this_param.as_deref(),
+                                method.params.as_ref(),
+                            );
+                            let (return_type, type_predicate) =
+                                return_type_and_type_predicate_from_annotation(
+                                    arena,
+                                    &parameters,
+                                    method.return_type.as_deref(),
+                                );
+                            let ty = Self::function_with_type_predicate(
                                 arena,
                                 type_parameters_from_declaration(
                                     arena,
                                     method.type_parameters.as_deref(),
                                 ),
-                                function_type_parameters(
-                                    arena,
-                                    method.this_param.as_deref(),
-                                    method.params.as_ref(),
-                                ),
-                                Self::from_ts_type_annotation(arena, method.return_type.as_deref()),
+                                parameters,
+                                return_type,
+                                type_predicate,
                             );
                             Some(if method.computed {
                                 Self::computed_property(name, ty)
@@ -759,16 +819,25 @@ impl<'a> Ty<'a> {
                 arena,
                 r#union.types.iter().map(|ty| Self::from_ts_type(arena, ty)),
             ),
-            TSType::TSFunctionType(function) => Self::function(
-                arena,
-                type_parameters_from_declaration(arena, function.type_parameters.as_deref()),
-                function_type_parameters(
+            TSType::TSFunctionType(function) => {
+                let parameters = function_type_parameters(
                     arena,
                     function.this_param.as_deref(),
                     function.params.as_ref(),
-                ),
-                Self::from_ts_type_annotation(arena, Some(&function.return_type)),
-            ),
+                );
+                let (return_type, type_predicate) = return_type_and_type_predicate_from_annotation(
+                    arena,
+                    &parameters,
+                    Some(&function.return_type),
+                );
+                Self::function_with_type_predicate(
+                    arena,
+                    type_parameters_from_declaration(arena, function.type_parameters.as_deref()),
+                    parameters,
+                    return_type,
+                    type_predicate,
+                )
+            }
             TSType::TSLiteralType(literal) => match &literal.literal {
                 TSLiteral::BooleanLiteral(boolean_literal) => {
                     if boolean_literal.value {
@@ -868,6 +937,7 @@ impl<'a> Ty<'a> {
                 type_parameter_from_ts_type_parameter(arena, &infer.type_parameter),
             ),
             TSType::TSMappedType(mapped) => Self::from_ts_mapped_type(arena, mapped),
+            TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
             _ => Self::none(),
         }
     }
@@ -975,7 +1045,7 @@ impl<'a> Ty<'a> {
                     })
                     .map(|(name, ty)| (*name, *ty))
                     .collect::<HashMap<_, _>>();
-                Self::function(
+                Self::function_with_type_predicate(
                     arena,
                     function.type_parameters.iter().map(|type_parameter| {
                         Self::type_parameter(
@@ -1003,6 +1073,9 @@ impl<'a> Ty<'a> {
                     function
                         .return_type
                         .substitute_type_parameters(arena, &substitutions),
+                    function.type_predicate.map(|predicate| {
+                        predicate.substitute_type_parameters(arena, &substitutions)
+                    }),
                 )
             }
             Self::TypeReference(reference) => {
@@ -1911,13 +1984,31 @@ fn infer_from_functions<'a>(
         .iter()
         .zip(target.parameters.iter())
         .map(|(source_parameter, target_parameter)| (source_parameter.ty, target_parameter.ty));
-    infer_from_type_pairs(arena, parameters, inferences, depth + 1).and(infer_from_types(
-        arena,
-        source.return_type,
-        target.return_type,
-        inferences,
-        depth + 1,
-    ))
+    let return_type_result = match target.type_predicate {
+        Some(target_predicate) => {
+            let Some(source_predicate) = source.type_predicate else {
+                return InferMatchResult::NoMatch;
+            };
+            if !type_predicate_kinds_match(source_predicate, target_predicate) {
+                return InferMatchResult::NoMatch;
+            }
+            match (source_predicate.target_type, target_predicate.target_type) {
+                (Some(source_type), Some(target_type)) => {
+                    infer_from_types(arena, source_type, target_type, inferences, depth + 1)
+                }
+                (None, None) => InferMatchResult::Matched,
+                _ => InferMatchResult::NoMatch,
+            }
+        }
+        None => infer_from_types(
+            arena,
+            source.return_type,
+            target.return_type,
+            inferences,
+            depth + 1,
+        ),
+    };
+    infer_from_type_pairs(arena, parameters, inferences, depth + 1).and(return_type_result)
 }
 
 fn infer_from_tuple_elements<'a>(
@@ -2101,6 +2192,12 @@ fn collect_infer_types<'a>(ty: Ty<'a>, f: &mut impl FnMut(&TyInfer<'a>)) {
                 collect_infer_types(parameter.ty, f);
             }
             collect_infer_types(function.return_type, f);
+            if let Some(target_type) = function
+                .type_predicate
+                .and_then(|predicate| predicate.target_type)
+            {
+                collect_infer_types(target_type, f);
+            }
         }
         Ty::TypeReference(reference) => {
             for ty in &reference.type_arguments {
@@ -2201,6 +2298,10 @@ fn contains_unresolved_type_variable(ty: Ty<'_>) -> bool {
                 .iter()
                 .any(|parameter| contains_unresolved_type_variable(parameter.ty))
                 || contains_unresolved_type_variable(function.return_type)
+                || function
+                    .type_predicate
+                    .and_then(|predicate| predicate.target_type)
+                    .is_some_and(contains_unresolved_type_variable)
         }
         Ty::TemplateLiteral(template_literal) => template_literal
             .expressions
@@ -2270,6 +2371,10 @@ fn contains_infer(ty: Ty<'_>) -> bool {
                 .iter()
                 .any(|parameter| contains_infer(parameter.ty))
                 || contains_infer(function.return_type)
+                || function
+                    .type_predicate
+                    .and_then(|predicate| predicate.target_type)
+                    .is_some_and(contains_infer)
         }
         Ty::TypeReference(reference) => reference
             .type_arguments
@@ -2459,7 +2564,7 @@ fn function_type_to_string(function: &TyFunction<'_>) -> String {
     let (type_parameters, parameters) = function_type_head_to_string(function);
     format!(
         "{type_parameters}({parameters}) => {}",
-        function.return_type.to_type_string()
+        function_return_type_to_string(function)
     )
 }
 
@@ -2467,8 +2572,29 @@ fn signature_to_type_string(function: &TyFunction<'_>) -> String {
     let (type_parameters, parameters) = function_type_head_to_string(function);
     format!(
         "{type_parameters}({parameters}): {}",
-        function.return_type.to_type_string()
+        function_return_type_to_string(function)
     )
+}
+
+fn function_return_type_to_string(function: &TyFunction<'_>) -> String {
+    function.type_predicate.map_or_else(
+        || function.return_type.to_type_string(),
+        type_predicate_to_type_string,
+    )
+}
+
+fn type_predicate_to_type_string(predicate: &TyTypePredicate<'_>) -> String {
+    let parameter_name = predicate.parameter_name.unwrap_or("this");
+    let mut type_string = String::new();
+    if predicate.kind.is_asserts() {
+        type_string.push_str("asserts ");
+    }
+    type_string.push_str(parameter_name);
+    if let Some(target_type) = predicate.target_type {
+        type_string.push_str(" is ");
+        type_string.push_str(&target_type.to_type_string());
+    }
+    type_string
 }
 
 fn function_type_head_to_string(function: &TyFunction<'_>) -> (String, String) {
@@ -2521,17 +2647,123 @@ fn signature_from_ts_signature<'a>(
         ),
         _ => return None,
     };
-    let Ty::Function(function) = Ty::function(
+    let parameters = function_type_parameters(arena, this_param, parameters);
+    let (return_type, type_predicate) =
+        return_type_and_type_predicate_from_annotation(arena, &parameters, return_type);
+    let Ty::Function(function) = Ty::function_with_type_predicate(
         arena,
         type_parameters_from_declaration(arena, type_parameters),
-        function_type_parameters(arena, this_param, parameters),
-        return_type.map_or_else(Ty::any, |return_type| {
-            Ty::from_ts_type_annotation(arena, Some(return_type))
-        }),
+        parameters,
+        return_type,
+        type_predicate,
     ) else {
         unreachable!("signature construction always creates a function type")
     };
     Some(Signature::new(kind, function))
+}
+
+fn return_type_and_type_predicate_from_annotation<'a>(
+    arena: CheckerArena<'a>,
+    parameters: &[TyParameter<'a>],
+    return_type: Option<&TSTypeAnnotation<'a>>,
+) -> (Ty<'a>, Option<TyTypePredicate<'a>>) {
+    return_type_and_type_predicate_from_annotation_with_resolver(
+        parameters,
+        return_type,
+        |annotation| Ty::from_ts_type_annotation(arena, Some(annotation)),
+    )
+}
+
+pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(
+    parameters: &[TyParameter<'a>],
+    return_type: Option<&TSTypeAnnotation<'a>>,
+    resolve_type_annotation: impl Fn(&TSTypeAnnotation<'a>) -> Ty<'a>,
+) -> (Ty<'a>, Option<TyTypePredicate<'a>>) {
+    let Some(return_type) = return_type else {
+        return (Ty::any(), None);
+    };
+    let TSType::TSTypePredicate(predicate) = &return_type.type_annotation else {
+        return (resolve_type_annotation(return_type), None);
+    };
+    let target_type = predicate
+        .type_annotation
+        .as_deref()
+        .map(resolve_type_annotation);
+    (
+        type_predicate_return_type(predicate.asserts),
+        Some(type_predicate_from_ts_type_predicate_with_target_type(
+            parameters,
+            predicate,
+            target_type,
+        )),
+    )
+}
+
+pub(crate) fn type_predicate_return_type<'a>(asserts: bool) -> Ty<'a> {
+    if asserts { Ty::void() } else { Ty::boolean() }
+}
+
+pub(crate) fn type_predicate_from_ts_type_predicate<'a>(
+    arena: CheckerArena<'a>,
+    parameters: &[TyParameter<'a>],
+    predicate: &TSTypePredicate<'a>,
+) -> TyTypePredicate<'a> {
+    let target_type = predicate
+        .type_annotation
+        .as_deref()
+        .map(|annotation| Ty::from_ts_type_annotation(arena, Some(annotation)));
+    type_predicate_from_ts_type_predicate_with_target_type(parameters, predicate, target_type)
+}
+
+pub(crate) fn type_predicate_from_ts_type_predicate_with_target_type<'a>(
+    parameters: &[TyParameter<'a>],
+    predicate: &TSTypePredicate<'a>,
+    target_type: Option<Ty<'a>>,
+) -> TyTypePredicate<'a> {
+    match &predicate.parameter_name {
+        TSTypePredicateName::Identifier(identifier) => {
+            let parameter_name = identifier.name.as_str();
+            TyTypePredicate {
+                kind: if predicate.asserts {
+                    TyTypePredicateKind::AssertsIdentifier
+                } else {
+                    TyTypePredicateKind::Identifier
+                },
+                parameter_name: Some(parameter_name),
+                parameter_index: parameters
+                    .iter()
+                    .position(|parameter| parameter.name == parameter_name),
+                target_type,
+            }
+        }
+        TSTypePredicateName::This(_) => TyTypePredicate {
+            kind: if predicate.asserts {
+                TyTypePredicateKind::AssertsThis
+            } else {
+                TyTypePredicateKind::This
+            },
+            parameter_name: None,
+            parameter_index: None,
+            target_type,
+        },
+    }
+}
+
+pub(crate) fn type_predicate_kinds_match(
+    source: &TyTypePredicate<'_>,
+    target: &TyTypePredicate<'_>,
+) -> bool {
+    source.kind == target.kind && type_predicate_parameters_match(source, target)
+}
+
+fn type_predicate_parameters_match(
+    source: &TyTypePredicate<'_>,
+    target: &TyTypePredicate<'_>,
+) -> bool {
+    if source.parameter_index != target.parameter_index {
+        return false;
+    }
+    source.parameter_index.is_some() || source.parameter_name == target.parameter_name
 }
 
 fn property_key_name<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {

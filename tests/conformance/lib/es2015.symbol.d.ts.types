@@ -14,7 +14,13 @@ interface SymbolConstructor {
 >    ^^^^^^^^^^^: string | number | undefined   (TyUnion)
 
     for(key: string): symbol;
+>   ^^^: (key: string) => symbol   (TyFunction)
+
+    for(key: string): symbol;
 >       ^^^: string   (TyString)
+
+    keyFor(sym: symbol): string | undefined;
+>   ^^^^^^: (sym: symbol) => string | undefined   (TyFunction)
 
     keyFor(sym: symbol): string | undefined;
 >          ^^^: symbol   (TySymbol)

@@ -158,6 +158,9 @@ export interface QueryClient {
 >                ^^^^^^^^^^^: any   (TyAny)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
+> ^^^^^^^^^^^^: <TData>(queryKey: QueryKey) => TData | undefined   (TyFunction)
+
+  getQueryData<TData>(queryKey: QueryKey): TData | undefined
 >              ^^^^^: any   (TyAny)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
@@ -168,6 +171,9 @@ export interface QueryClient {
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
 >                                          ^^^^^: any   (TyAny)
+
+  setQueryData<TData>(
+> ^^^^^^^^^^^^: <TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void   (TyFunction)
 
   setQueryData<TData>(
 >              ^^^^^: any   (TyAny)

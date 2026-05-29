@@ -5,13 +5,16 @@ interface Array<T> {
 >               ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
+>   ^^^^: <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any) => S | undefined   (TyFunction)
+
+    find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 >        ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 >                  ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                     ^^^^^^^^^: (value: T, index: number, obj: T[]) => none   (TyFunction)
+>                     ^^^^^^^^^: (value: T, index: number, obj: T[]) => value is S   (TyFunction)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 >                                 ^^^^^: T   (TyTypeReference)
@@ -29,6 +32,9 @@ interface Array<T> {
 >                                                               ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
+>                                                                       ^^^^^: T   (TyTypeReference)
+
+    find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 >                                                                                ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
@@ -36,6 +42,9 @@ interface Array<T> {
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 >                                                                                                   ^: any   (TyAny)
+
+    find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
+>   ^^^^: (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any) => T | undefined   (TyFunction)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
 >        ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (TyFunction)
@@ -62,6 +71,9 @@ interface Array<T> {
 >                                                                                   ^: any   (TyAny)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
+>   ^^^^^^^^^: (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any) => number   (TyFunction)
+
+    findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
 >             ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (TyFunction)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
@@ -83,6 +95,9 @@ interface Array<T> {
 >                                                                        ^^^^^^^: any   (TyAny)
 
     fill(value: T, start?: number, end?: number): this;
+>   ^^^^: (value: T, start?: number, end?: number) => none   (TyFunction)
+
+    fill(value: T, start?: number, end?: number): this;
 >        ^^^^^: T   (TyTypeReference)
 
     fill(value: T, start?: number, end?: number): this;
@@ -95,6 +110,9 @@ interface Array<T> {
 >                                  ^^^: number | undefined   (TyUnion)
 
     copyWithin(target: number, start: number, end?: number): this;
+>   ^^^^^^^^^^: (target: number, start: number, end?: number) => none   (TyFunction)
+
+    copyWithin(target: number, start: number, end?: number): this;
 >              ^^^^^^: number   (TyNumber)
 
     copyWithin(target: number, start: number, end?: number): this;
@@ -102,6 +120,9 @@ interface Array<T> {
 
     copyWithin(target: number, start: number, end?: number): this;
 >                                             ^^^: number | undefined   (TyUnion)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) => string   (TyFunction)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
@@ -119,6 +140,9 @@ interface ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
+>   ^^^^: <T>(arrayLike: ArrayLike<T>) => T[]   (TyFunction)
+
+    from<T>(arrayLike: ArrayLike<T>): T[];
 >        ^: any   (TyAny)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
@@ -132,6 +156,9 @@ interface ArrayConstructor {
 
     from<T>(arrayLike: ArrayLike<T>): T[];
 >                                     ^: any   (TyAny)
+
+    from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>   ^^^^: <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any) => U[]   (TyFunction)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >        ^: any   (TyAny)
@@ -168,6 +195,9 @@ interface ArrayConstructor {
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                                                                                      ^: any   (TyAny)
+
+    of<T>(...items: T[]): T[];
+>   ^^: <T>(...items: T[]) => T[]   (TyFunction)
 
     of<T>(...items: T[]): T[];
 >      ^: any   (TyAny)
@@ -209,7 +239,13 @@ interface Math {
 >         ^^^^: any   (TyAny)
 
     clz32(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
+
+    clz32(x: number): number;
 >         ^: number   (TyNumber)
+
+    imul(x: number, y: number): number;
+>   ^^^^: (x: number, y: number) => number   (TyFunction)
 
     imul(x: number, y: number): number;
 >        ^: number   (TyNumber)
@@ -218,46 +254,91 @@ interface Math {
 >                   ^: number   (TyNumber)
 
     sign(x: number): number;
+>   ^^^^: (x: number) => number   (TyFunction)
+
+    sign(x: number): number;
 >        ^: number   (TyNumber)
+
+    log10(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
 
     log10(x: number): number;
 >         ^: number   (TyNumber)
 
     log2(x: number): number;
+>   ^^^^: (x: number) => number   (TyFunction)
+
+    log2(x: number): number;
 >        ^: number   (TyNumber)
+
+    log1p(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
 
     log1p(x: number): number;
 >         ^: number   (TyNumber)
 
     expm1(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
+
+    expm1(x: number): number;
 >         ^: number   (TyNumber)
+
+    cosh(x: number): number;
+>   ^^^^: (x: number) => number   (TyFunction)
 
     cosh(x: number): number;
 >        ^: number   (TyNumber)
 
     sinh(x: number): number;
+>   ^^^^: (x: number) => number   (TyFunction)
+
+    sinh(x: number): number;
 >        ^: number   (TyNumber)
+
+    tanh(x: number): number;
+>   ^^^^: (x: number) => number   (TyFunction)
 
     tanh(x: number): number;
 >        ^: number   (TyNumber)
 
     acosh(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
+
+    acosh(x: number): number;
 >         ^: number   (TyNumber)
+
+    asinh(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
 
     asinh(x: number): number;
 >         ^: number   (TyNumber)
 
     atanh(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
+
+    atanh(x: number): number;
 >         ^: number   (TyNumber)
+
+    hypot(...values: number[]): number;
+>   ^^^^^: (...values: number[]) => number   (TyFunction)
 
     hypot(...values: number[]): number;
 >            ^^^^^^: number[]   (TyArray)
 
     trunc(x: number): number;
+>   ^^^^^: (x: number) => number   (TyFunction)
+
+    trunc(x: number): number;
 >         ^: number   (TyNumber)
 
     fround(x: number): number;
+>   ^^^^^^: (x: number) => number   (TyFunction)
+
+    fround(x: number): number;
 >          ^: number   (TyNumber)
+
+    cbrt(x: number): number;
+>   ^^^^: (x: number) => number   (TyFunction)
 
     cbrt(x: number): number;
 >        ^: number   (TyNumber)
@@ -269,13 +350,25 @@ interface NumberConstructor {
 >            ^^^^^^^: number   (TyNumber)
 
     isFinite(number: unknown): boolean;
+>   ^^^^^^^^: (number: unknown) => boolean   (TyFunction)
+
+    isFinite(number: unknown): boolean;
 >            ^^^^^^: unknown   (TyUnknown)
+
+    isInteger(number: unknown): boolean;
+>   ^^^^^^^^^: (number: unknown) => boolean   (TyFunction)
 
     isInteger(number: unknown): boolean;
 >             ^^^^^^: unknown   (TyUnknown)
 
     isNaN(number: unknown): boolean;
+>   ^^^^^: (number: unknown) => boolean   (TyFunction)
+
+    isNaN(number: unknown): boolean;
 >         ^^^^^^: unknown   (TyUnknown)
+
+    isSafeInteger(number: unknown): boolean;
+>   ^^^^^^^^^^^^^: (number: unknown) => boolean   (TyFunction)
 
     isSafeInteger(number: unknown): boolean;
 >                 ^^^^^^: unknown   (TyUnknown)
@@ -287,7 +380,13 @@ interface NumberConstructor {
 >            ^^^^^^^^^^^^^^^^: number   (TyNumber)
 
     parseFloat(string: string): number;
+>   ^^^^^^^^^^: (string: string) => number   (TyFunction)
+
+    parseFloat(string: string): number;
 >              ^^^^^^: string   (TyString)
+
+    parseInt(string: string, radix?: number): number;
+>   ^^^^^^^^: (string: string, radix?: number) => number   (TyFunction)
 
     parseInt(string: string, radix?: number): number;
 >            ^^^^^^: string   (TyString)
@@ -297,6 +396,9 @@ interface NumberConstructor {
 
 interface ObjectConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    assign<T extends {}, U>(target: T, source: U): T & U;
+>   ^^^^^^: <T extends {}, U>(target: T, source: U) => T & U   (TyFunction)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
 >          ^: any   (TyAny)
@@ -321,6 +423,9 @@ interface ObjectConstructor {
 
     assign<T extends {}, U>(target: T, source: U): T & U;
 >                                                      ^: any   (TyAny)
+
+    assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
+>   ^^^^^^: <T extends {}, U, V>(target: T, source1: U, source2: V) => T & U & V   (TyFunction)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
 >          ^: any   (TyAny)
@@ -357,6 +462,9 @@ interface ObjectConstructor {
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
 >                                                                          ^: any   (TyAny)
+
+    assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
+>   ^^^^^^: <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W) => T & U & V & W   (TyFunction)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
 >          ^: any   (TyAny)
@@ -407,22 +515,37 @@ interface ObjectConstructor {
 >                                                                                             ^: any   (TyAny)
 
     assign(target: object, ...sources: any[]): any;
+>   ^^^^^^: (target: object, ...sources: any[]) => any   (TyFunction)
+
+    assign(target: object, ...sources: any[]): any;
 >          ^^^^^^: object   (TyPrimitiveObject)
 
     assign(target: object, ...sources: any[]): any;
 >                             ^^^^^^^: any[]   (TyArray)
 
     getOwnPropertySymbols(o: any): symbol[];
+>   ^^^^^^^^^^^^^^^^^^^^^: (o: any) => symbol[]   (TyFunction)
+
+    getOwnPropertySymbols(o: any): symbol[];
 >                         ^: any   (TyAny)
 
     keys(o: {}): string[];
+>   ^^^^: (o: {}) => string[]   (TyFunction)
+
+    keys(o: {}): string[];
 >        ^: {}   (TyObject)
+
+    is(value1: any, value2: any): boolean;
+>   ^^: (value1: any, value2: any) => boolean   (TyFunction)
 
     is(value1: any, value2: any): boolean;
 >      ^^^^^^: any   (TyAny)
 
     is(value1: any, value2: any): boolean;
 >                   ^^^^^^: any   (TyAny)
+
+    setPrototypeOf(o: any, proto: object | null): any;
+>   ^^^^^^^^^^^^^^: (o: any, proto: object | null) => any   (TyFunction)
 
     setPrototypeOf(o: any, proto: object | null): any;
 >                  ^: any   (TyAny)
@@ -437,13 +560,16 @@ interface ReadonlyArray<T> {
 >                       ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
+>   ^^^^: <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any) => S | undefined   (TyFunction)
+
+    find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
 >        ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
 >                  ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                     ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => none   (TyFunction)
+>                     ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => value is S   (TyFunction)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
 >                                 ^^^^^: T   (TyTypeReference)
@@ -461,6 +587,9 @@ interface ReadonlyArray<T> {
 >                                                                        ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
+>                                                                                ^^^^^: T   (TyTypeReference)
+
+    find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
 >                                                                                         ^: any   (TyAny)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
@@ -468,6 +597,9 @@ interface ReadonlyArray<T> {
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
 >                                                                                                            ^: any   (TyAny)
+
+    find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
+>   ^^^^: (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any) => T | undefined   (TyFunction)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
 >        ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (TyFunction)
@@ -494,6 +626,9 @@ interface ReadonlyArray<T> {
 >                                                                                            ^: any   (TyAny)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
+>   ^^^^^^^^^: (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any) => number   (TyFunction)
+
+    findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
 >             ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (TyFunction)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
@@ -513,6 +648,9 @@ interface ReadonlyArray<T> {
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
 >                                                                                 ^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) => string   (TyFunction)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
@@ -569,7 +707,13 @@ interface String {
 >         ^^^^^^: any   (TyAny)
 
     codePointAt(pos: number): number | undefined;
+>   ^^^^^^^^^^^: (pos: number) => number | undefined   (TyFunction)
+
+    codePointAt(pos: number): number | undefined;
 >               ^^^: number   (TyNumber)
+
+    includes(searchString: string, position?: number): boolean;
+>   ^^^^^^^^: (searchString: string, position?: number) => boolean   (TyFunction)
 
     includes(searchString: string, position?: number): boolean;
 >            ^^^^^^^^^^^^: string   (TyString)
@@ -578,19 +722,34 @@ interface String {
 >                                  ^^^^^^^^: number | undefined   (TyUnion)
 
     endsWith(searchString: string, endPosition?: number): boolean;
+>   ^^^^^^^^: (searchString: string, endPosition?: number) => boolean   (TyFunction)
+
+    endsWith(searchString: string, endPosition?: number): boolean;
 >            ^^^^^^^^^^^^: string   (TyString)
 
     endsWith(searchString: string, endPosition?: number): boolean;
 >                                  ^^^^^^^^^^^: number | undefined   (TyUnion)
 
     normalize(form: "NFC" | "NFD" | "NFKC" | "NFKD"): string;
+>   ^^^^^^^^^: (form: "NFC" | "NFD" | "NFKC" | "NFKD") => string   (TyFunction)
+
+    normalize(form: "NFC" | "NFD" | "NFKC" | "NFKD"): string;
 >             ^^^^: "NFC" | "NFD" | "NFKC" | "NFKD"   (TyUnion)
+
+    normalize(form?: string): string;
+>   ^^^^^^^^^: (form?: string) => string   (TyFunction)
 
     normalize(form?: string): string;
 >             ^^^^: string | undefined   (TyUnion)
 
     repeat(count: number): string;
+>   ^^^^^^: (count: number) => string   (TyFunction)
+
+    repeat(count: number): string;
 >          ^^^^^: number   (TyNumber)
+
+    startsWith(searchString: string, position?: number): boolean;
+>   ^^^^^^^^^^: (searchString: string, position?: number) => boolean   (TyFunction)
 
     startsWith(searchString: string, position?: number): boolean;
 >              ^^^^^^^^^^^^: string   (TyString)
@@ -599,25 +758,73 @@ interface String {
 >                                    ^^^^^^^^: number | undefined   (TyUnion)
 
     anchor(name: string): string;
+>   ^^^^^^: (name: string) => string   (TyFunction)
+
+    anchor(name: string): string;
 >          ^^^^: string   (TyString)
+
+    big(): string;
+>   ^^^: () => string   (TyFunction)
+
+    blink(): string;
+>   ^^^^^: () => string   (TyFunction)
+
+    bold(): string;
+>   ^^^^: () => string   (TyFunction)
+
+    fixed(): string;
+>   ^^^^^: () => string   (TyFunction)
+
+    fontcolor(color: string): string;
+>   ^^^^^^^^^: (color: string) => string   (TyFunction)
 
     fontcolor(color: string): string;
 >             ^^^^^: string   (TyString)
 
     fontsize(size: number): string;
+>   ^^^^^^^^: (size: number) => string   (TyFunction)
+
+    fontsize(size: number): string;
 >            ^^^^: number   (TyNumber)
+
+    fontsize(size: string): string;
+>   ^^^^^^^^: (size: string) => string   (TyFunction)
 
     fontsize(size: string): string;
 >            ^^^^: string   (TyString)
 
+    italics(): string;
+>   ^^^^^^^: () => string   (TyFunction)
+
+    link(url: string): string;
+>   ^^^^: (url: string) => string   (TyFunction)
+
     link(url: string): string;
 >        ^^^: string   (TyString)
+
+    small(): string;
+>   ^^^^^: () => string   (TyFunction)
+
+    strike(): string;
+>   ^^^^^^: () => string   (TyFunction)
+
+    sub(): string;
+>   ^^^: () => string   (TyFunction)
+
+    sup(): string;
+>   ^^^: () => string   (TyFunction)
 
 interface StringConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     fromCodePoint(...codePoints: number[]): string;
+>   ^^^^^^^^^^^^^: (...codePoints: number[]) => string   (TyFunction)
+
+    fromCodePoint(...codePoints: number[]): string;
 >                    ^^^^^^^^^^: number[]   (TyArray)
+
+    raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
+>   ^^^: (template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]) => string   (TyFunction)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
 >       ^^^^^^^^: { raw: readonly string[] | ArrayLike<string>; }   (TyObject)
@@ -641,6 +848,9 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                        ^^^^^^^^^^^^^^^: any   (TyAny)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
@@ -657,6 +867,9 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
@@ -677,6 +890,9 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                                ^^^^^^^^^^^^^^^: any   (TyAny)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
@@ -693,6 +909,9 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
@@ -713,6 +932,9 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
@@ -729,6 +951,9 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
@@ -749,6 +974,9 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
@@ -767,6 +995,9 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
@@ -783,6 +1014,9 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: (locales: string | string[], options?: Intl.NumberFormatOptions) => string   (TyFunction)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[]   (TyUnion)

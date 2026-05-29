@@ -1,0 +1,80 @@
+type IsString = (value: unknown) => value is string;
+>    ^^^^^^^^: (value: unknown) => value is string   (TyFunction)
+
+type IsString = (value: unknown) => value is string;
+>                ^^^^^: unknown   (TyUnknown)
+
+type IsString = (value: unknown) => value is string;
+>                                   ^^^^^: unknown   (TyUnknown)
+
+type AssertString = (value: unknown) => asserts value is string;
+>    ^^^^^^^^^^^^: (value: unknown) => asserts value is string   (TyFunction)
+
+type AssertString = (value: unknown) => asserts value is string;
+>                    ^^^^^: unknown   (TyUnknown)
+
+type AssertString = (value: unknown) => asserts value is string;
+>                                               ^^^^^: unknown   (TyUnknown)
+
+type AssertValue = (value: unknown) => asserts value;
+>    ^^^^^^^^^^^: (value: unknown) => asserts value   (TyFunction)
+
+type AssertValue = (value: unknown) => asserts value;
+>                   ^^^^^: unknown   (TyUnknown)
+
+type AssertValue = (value: unknown) => asserts value;
+>                                              ^^^^^: unknown   (TyUnknown)
+
+type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
+>    ^^^^^^^^^^^: (this: { ready: boolean; }) => this is { ready: true; }   (TyFunction)
+
+type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
+>                   ^^^^: { ready: boolean; }   (TyObject)
+
+type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
+>                           ^^^^^: boolean   (TyBoolean)
+
+type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
+>                                                          ^^^^^: true   (TyBooleanLiteral)
+
+interface PredicateArray<T> {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface PredicateArray<T> {
+>                        ^: any   (TyAny)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>   ^^^^^: <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S) => this is readonly S[]   (TyFunction)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>         ^: any   (TyAny)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                   ^: any   (TyAny)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                      ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (TyFunction)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                  ^^^^^: T   (TyTypeReference)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                         ^: any   (TyAny)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                            ^^^^^: number   (TyNumber)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                                           ^^^^^: readonly T[]   (TyArray)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                                                           ^: any   (TyAny)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                                                                   ^^^^^: T   (TyTypeReference)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                                                                            ^: any   (TyAny)
+
+    every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
+>                                                                                                                 ^: any   (TyAny)
