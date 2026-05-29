@@ -1445,11 +1445,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         let (class_name, is_static) = match object_type {
             Ty::TypeReference(reference) => {
-                if let Some(ty) = self.get_property_type_of_interface_type(
-                    program_id,
-                    reference,
-                    property_name,
-                ) {
+                if let Some(ty) =
+                    self.get_property_type_of_interface_type(program_id, reference, property_name)
+                {
                     return Some(ty);
                 }
                 (reference.name, false)
@@ -2101,8 +2099,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Some(self.get_module_namespace_type(imported_program_id, &namespace_name));
         }
 
-        self.get_imported_symbol(symbol)
-            .map(|imported_symbol| self.get_type_of_symbol(imported_symbol))
+        let imported_symbol = self.get_imported_symbol(symbol)?;
+        if let Some(alias_type) = self.get_type_of_imported_alias_symbol(imported_symbol) {
+            return Some(alias_type);
+        }
+
+        Some(self.get_type_of_symbol(imported_symbol))
+    }
+
+    fn get_type_of_imported_alias_symbol(&self, symbol: SymbolRef) -> Option<Ty<'a>> {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        let alias = match self.nodes(symbol.program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(alias) => alias,
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(symbol.program_id).parent_id(declaration);
+                let AstKind::TSTypeAliasDeclaration(alias) =
+                    self.nodes(symbol.program_id).kind(parent_id)
+                else {
+                    return None;
+                };
+                alias
+            }
+            _ => return None,
+        };
+        let ty = self.get_type_of_type_alias_declaration(symbol.program_id, alias);
+        (!ty.is_none()).then_some(ty)
     }
 
     fn get_module_namespace_type(
@@ -2250,12 +2274,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // class/function collisions as callable overload groups.
             // TODO(correctness): model the class value-side as a real constructor object type
             // (`{ new(): Foo; prototype: Foo; …static members }`) instead of a `Ty::any` stub.
-            return Ty::type_query(
-                self.arena(),
-                function_name,
-                Ty::any(),
-                std::iter::empty(),
-            );
+            return Ty::type_query(self.arena(), function_name, Ty::any(), std::iter::empty());
         }
 
         let signatures = callable_declarations
@@ -2356,6 +2375,18 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
                 })
             }
+            AstKind::TSTypeReference(reference) => match &reference.type_name {
+                TSTypeName::IdentifierReference(identifier) => {
+                    identifier.reference_id.get().and_then(|reference_id| {
+                        self.semantic(node.program_id)
+                            .scoping()
+                            .get_reference(reference_id)
+                            .symbol_id()
+                            .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
+                    })
+                }
+                _ => None,
+            },
             _ => None,
         }
     }

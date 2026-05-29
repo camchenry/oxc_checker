@@ -17,7 +17,7 @@ class ClassPropertyExample {
 > ^^^^: ClassPropertyItem   (TyTypeReference)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery)
 
   item: ClassPropertyItem = new ClassPropertyItem();
 >       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery)

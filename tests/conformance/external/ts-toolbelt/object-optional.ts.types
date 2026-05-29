@@ -31,6 +31,9 @@ export type Equals<A1 extends any, A2 extends any> =
   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
 >                                                             ^^: any   (TyAny)
 
+import type { Key } from '../Any/Key'
+>             ^^^: string | number | symbol   (TyUnion)
+
 export type Pick<O extends object, K extends Key> = {
 >           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; } & {}   (TyIntersection)
 
@@ -41,7 +44,10 @@ export type Pick<O extends object, K extends Key> = {
 >                                  ^: any   (TyAny)
 
 export type Pick<O extends object, K extends Key> = {
->                                            ^^^: any   (TyAny)
+>                                            ^^^: string | number | symbol   (TyUnion)
+
+export type Pick<O extends object, K extends Key> = {
+>                                            ^^^: string | number | symbol   (TyUnion)
 
   [P in keyof O as P extends K ? P : never]: O[P]
 >             ^: any   (TyAny)
@@ -100,6 +106,21 @@ export type PatchFlat<O extends object, O1 extends object> = {
       ? O1[K]
 >          ^: any   (TyAny)
 
+import type { Pick } from './Pick'
+>             ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; } & {}   (TyIntersection)
+
+import type { Depth } from './_Internal'
+>             ^^^^^: "flat" | "deep"   (TyUnion)
+
+import type { Key } from '../Any/Key'
+>             ^^^: string | number | symbol   (TyUnion)
+
+import type { PatchFlat } from './Patch'
+>             ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; } & {}   (TyIntersection)
+
+import type { Equals } from '../Any/Equals'
+>             ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional)
+
 export type OptionalFlat<O> = {
 >           ^^^^^^^^^^^^: { [K in keyof O]?: O[K]; } & {}   (TyIntersection)
 
@@ -143,7 +164,10 @@ export type OptionalPart<O extends object, depth extends Depth> = {
 >                                          ^^^^^: any   (TyAny)
 
 export type OptionalPart<O extends object, depth extends Depth> = {
->                                                        ^^^^^: any   (TyAny)
+>                                                        ^^^^^: "flat" | "deep"   (TyUnion)
+
+export type OptionalPart<O extends object, depth extends Depth> = {
+>                                                        ^^^^^: "flat" | "deep"   (TyUnion)
 
   flat: OptionalFlat<O>
 > ^^^^: OptionalFlat<O>   (TyTypeReference)
@@ -176,16 +200,25 @@ export type Optional<
 > ^: any   (TyAny)
 
   K extends Key = Key,
->           ^^^: any   (TyAny)
+>           ^^^: string | number | symbol   (TyUnion)
 
   K extends Key = Key,
->                 ^^^: any   (TyAny)
+>           ^^^: string | number | symbol   (TyUnion)
+
+  K extends Key = Key,
+>                 ^^^: string | number | symbol   (TyUnion)
+
+  K extends Key = Key,
+>                 ^^^: string | number | symbol   (TyUnion)
 
   depth extends Depth = 'flat',
 > ^^^^^: any   (TyAny)
 
   depth extends Depth = 'flat',
->               ^^^^^: any   (TyAny)
+>               ^^^^^: "flat" | "deep"   (TyUnion)
+
+  depth extends Depth = 'flat',
+>               ^^^^^: "flat" | "deep"   (TyUnion)
 
   1: OptionalPart<O, depth>
 >    ^^^^^^^^^^^^: any   (TyAny)
@@ -197,13 +230,19 @@ export type Optional<
 >                    ^^^^^: any   (TyAny)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->    ^^^^^^^^^: any   (TyAny)
+>    ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; } & {}   (TyIntersection)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>    ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; } & {}   (TyIntersection)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
 >              ^^^^^^^^^^^^: any   (TyAny)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->                           ^^^^: any   (TyAny)
+>                           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; } & {}   (TyIntersection)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+>                           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; } & {}   (TyIntersection)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
 >                                ^: any   (TyAny)
@@ -218,13 +257,28 @@ export type Optional<
 >                                               ^: any   (TyAny)
 
 }[Equals<Key, K>]
-> ^^^^^^: any   (TyAny)
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional)
 
 }[Equals<Key, K>]
->        ^^^: any   (TyAny)
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional)
+
+}[Equals<Key, K>]
+>        ^^^: string | number | symbol   (TyUnion)
+
+}[Equals<Key, K>]
+>        ^^^: string | number | symbol   (TyUnion)
 
 }[Equals<Key, K>]
 >             ^: any   (TyAny)
+
+  Optional,
+> ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
+
+  OptionalDeep,
+> ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]>; }   (TyMapped)
+
+  OptionalFlat,
+> ^^^^^^^^^^^^: { [K in keyof O]?: O[K]; } & {}   (TyIntersection)
 
 type User = {
 >    ^^^^: { id: string; name: string; profile: { email: string; address: { city: string; }; }; }   (TyObject)
@@ -251,7 +305,10 @@ type OptionalName = Optional<User, 'name'>
 >    ^^^^^^^^^^^^: Optional<User, "name", "flat">   (TyTypeReference)
 
 type OptionalName = Optional<User, 'name'>
->                   ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
+
+type OptionalName = Optional<User, 'name'>
+>                   ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
 
 type OptionalName = Optional<User, 'name'>
 >                            ^^^^: any   (TyAny)
@@ -260,7 +317,10 @@ type OptionalEverything = Optional<User>
 >    ^^^^^^^^^^^^^^^^^^: Optional<User, Key, "flat">   (TyTypeReference)
 
 type OptionalEverything = Optional<User>
->                         ^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
+
+type OptionalEverything = Optional<User>
+>                         ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
 
 type OptionalEverything = Optional<User>
 >                                  ^^^^: any   (TyAny)
@@ -269,7 +329,10 @@ type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >    ^^^^^^^^^^^^^^^^^^^: Optional<User, "profile", "deep">   (TyTypeReference)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
->                          ^^^^^^^^: any   (TyAny)
+>                          ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
+
+type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
+>                          ^^^^^^^^: {}[Equals<Key, K>]   (TyIndexedAccess)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >                                   ^^^^: any   (TyAny)
@@ -278,7 +341,10 @@ type DirectFlat = OptionalFlat<User>
 >    ^^^^^^^^^^: OptionalFlat<User>   (TyTypeReference)
 
 type DirectFlat = OptionalFlat<User>
->                 ^^^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K]; } & {}   (TyIntersection)
+
+type DirectFlat = OptionalFlat<User>
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K]; } & {}   (TyIntersection)
 
 type DirectFlat = OptionalFlat<User>
 >                              ^^^^: any   (TyAny)
@@ -287,7 +353,10 @@ type DirectDeep = OptionalDeep<User>
 >    ^^^^^^^^^^: OptionalDeep<User>   (TyTypeReference)
 
 type DirectDeep = OptionalDeep<User>
->                 ^^^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]>; }   (TyMapped)
+
+type DirectDeep = OptionalDeep<User>
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]>; }   (TyMapped)
 
 type DirectDeep = OptionalDeep<User>
 >                              ^^^^: any   (TyAny)

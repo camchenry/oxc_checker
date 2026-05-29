@@ -95,7 +95,7 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 >                                  ^^^^^^: any   (TyAny)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                           ^^^^^^^^^^^: any   (TyAny)
+>                                           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
 >                                           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
@@ -403,6 +403,18 @@ export type OmitKeyof<
 > = Omit<TObject, TKey>
 >                 ^^^^: any   (TyAny)
 
+  OmitKeyof,
+> ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+
+  QueryFunction,
+> ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction)
+
+  QueryFunctionContext,
+> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+
+  QueryKey,
+> ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
+
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode: "append" | "reset" | "replace"; }   (TyObject)
 
@@ -413,7 +425,10 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >                                          ^^^^^^^^^: any   (TyAny)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->                                                            ^^^^^^^^: any   (TyAny)
+>                                                            ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
+
+type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
+>                                                            ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
 
   streamFn: (
 > ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
@@ -422,7 +437,10 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >   ^^^^^^^: QueryFunctionContext<TQueryKey, never>   (TyTypeReference)
 
     context: QueryFunctionContext<TQueryKey>,
->            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+
+    context: QueryFunctionContext<TQueryKey>,
+>            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
     context: QueryFunctionContext<TQueryKey>,
 >                                 ^^^^^^^^^: any   (TyAny)
@@ -455,7 +473,10 @@ type SimpleStreamedQueryParams<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
+
+  TQueryKey extends QueryKey,
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
 >   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -485,7 +506,10 @@ type ReducibleStreamedQueryParams<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
+
+  TQueryKey extends QueryKey,
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
 >   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -533,7 +557,10 @@ type StreamedQueryParams<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
+
+  TQueryKey extends QueryKey,
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
 
   | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -575,10 +602,16 @@ export function streamedQuery<
 > ^^^^^^^^^: any   (TyAny)
 
   TQueryKey extends QueryKey = QueryKey,
->                   ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
 
   TQueryKey extends QueryKey = QueryKey,
->                              ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                              ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
+
+  TQueryKey extends QueryKey = QueryKey,
+>                              ^^^^^^^^: Register extends { queryKey: infer TQueryKey; } ? TQueryKey extends ReadonlyArray<unknown> ? TQueryKey : TQueryKey extends Array<unknown> ? TQueryKey : ReadonlyArray<unknown> : ReadonlyArray<unknown>   (TyConditional)
 
   streamFn,
 > ^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
@@ -629,7 +662,10 @@ export function streamedQuery<
 >                                           ^^^^^^^^^: any   (TyAny)
 
 }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
->                                                        ^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction)
+
+}: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
+>                                                        ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction)
 
   TData,
 > ^^^^^: any   (TyAny)
@@ -644,7 +680,10 @@ export function streamedQuery<
 >         ^^^^^^^^^^^^^^^^^: OmitKeyof<typeof context, "signal", "strictly">   (TyTypeReference)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                            ^^^^^^^^^: any   (TyAny)
+>                            ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+
+    const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
+>                            ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
 >                                             ^^^^^^^: any   (TyAny)
@@ -704,7 +743,10 @@ export function streamedQuery<
 >                                 ^^^^^^^^^^^^^^^^^: OmitKeyof<typeof context, "signal", "strictly">   (TyTypeReference)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                                                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+
+    const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
+>                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
 >                                                                           ^^^^^^^^^: any   (TyAny)
@@ -799,6 +841,15 @@ export function streamedQuery<
 import { streamedQuery } from '../packages/query-core/src/streamedQuery'
 >        ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
 
+  DataTag,
+> ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
+
+  InferDataFromTag,
+> ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+
+  QueryFunctionContext,
+> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+
 type Todo = {
 >    ^^^^: { id: number; title: string; }   (TyObject)
 
@@ -812,7 +863,10 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >    ^^^^^^^^^^^^: DataTag<readonly ["todos"], Todo[], Error>   (TyTypeReference)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->                   ^^^^^^^: any   (TyAny)
+>                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
+
+type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
+>                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                               ^^^^: any   (TyAny)
@@ -824,7 +878,10 @@ type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >    ^^^^^^^^^^^^^^: InferDataFromTag<string, TodoQueryKey>   (TyTypeReference)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                     ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+
+type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                                              ^^^^^^^^^^^^: any   (TyAny)
@@ -842,7 +899,10 @@ declare const context: QueryFunctionContext<readonly ['todos'], number>
 >             ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+
+declare const context: QueryFunctionContext<readonly ['todos'], number>
+>                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
 const pageParam = context.pageParam
 >     ^^^^^^^^^: any   (TyAny)

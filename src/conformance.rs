@@ -1259,7 +1259,12 @@ fn actual_identifier_record<'a>(
         }
         AstKind::TSTypeReference(reference) => {
             let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
-            (span, text, Ty::any())
+            let ty = type_or_any(
+                checker
+                    .get_symbol_at_location(node_ref)
+                    .map_or_else(Ty::any, |symbol| checker.get_type_of_symbol(symbol)),
+            );
+            (span, text, ty)
         }
         _ => return None,
     };
@@ -1276,6 +1281,10 @@ fn actual_identifier_record<'a>(
         ty_variant: Some(ty.enum_variant_name()),
         ty_repr: sanitize(&checker.type_to_string(ty, node_ref)),
     })
+}
+
+fn type_or_any(ty: Ty<'_>) -> Ty<'_> {
+    if ty.is_none() { Ty::any() } else { ty }
 }
 
 fn type_of_type_alias<'a>(
