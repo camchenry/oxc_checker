@@ -91,6 +91,7 @@ pub(crate) struct TyModuleNamespace<'a> {
 pub(crate) struct TyProperty<'a> {
     pub(crate) name: &'a str,
     pub(crate) computed: bool,
+    pub(crate) optional: bool,
     pub(crate) ty: Ty<'a>,
 }
 
@@ -414,6 +415,7 @@ impl<'a> Ty<'a> {
         TyProperty {
             name,
             computed: false,
+            optional: false,
             ty,
         }
     }
@@ -422,6 +424,25 @@ impl<'a> Ty<'a> {
         TyProperty {
             name,
             computed: true,
+            optional: false,
+            ty,
+        }
+    }
+
+    pub(crate) fn optional_property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
+        TyProperty {
+            name,
+            computed: false,
+            optional: true,
+            ty,
+        }
+    }
+
+    pub(crate) fn computed_optional_property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
+        TyProperty {
+            name,
+            computed: true,
+            optional: true,
             ty,
         }
     }
@@ -685,7 +706,13 @@ impl<'a> Ty<'a> {
                                 property.type_annotation.as_deref(),
                             );
                             Some(if property.computed {
-                                Self::computed_property(name, ty)
+                                if property.optional {
+                                    Self::computed_optional_property(name, ty)
+                                } else {
+                                    Self::computed_property(name, ty)
+                                }
+                            } else if property.optional {
+                                Self::optional_property(name, ty)
                             } else {
                                 Self::property(name, ty)
                             })
@@ -916,6 +943,7 @@ impl<'a> Ty<'a> {
                 object.properties.iter().map(|property| TyProperty {
                     name: property.name,
                     computed: property.computed,
+                    optional: property.optional,
                     ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             )
@@ -932,6 +960,7 @@ impl<'a> Ty<'a> {
                 namespace.properties.iter().map(|property| TyProperty {
                     name: property.name,
                     computed: property.computed,
+                    optional: property.optional,
                     ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             ),
@@ -1812,8 +1841,15 @@ fn infer_from_properties<'a>(
             source_property.name == target_property.name
                 && source_property.computed == target_property.computed
         }) else {
+            if target_property.optional {
+                continue;
+            }
             return InferMatchResult::NoMatch;
         };
+
+        if source_property.optional && !target_property.optional {
+            return InferMatchResult::NoMatch;
+        }
 
         result = result.and(infer_from_types(
             arena,
@@ -2295,6 +2331,10 @@ pub(crate) fn reduce_union_type<'a>(
 
     remove_redundant_literal_types(&mut type_set);
 
+    if type_set.len() > 1 {
+        type_set.retain(|ty| !matches!(ty, Ty::Never));
+    }
+
     if type_set.len() == 1 {
         return type_set[0];
     }
@@ -2504,10 +2544,15 @@ fn property_key_name<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
 }
 
 fn property_name_to_type_string(property: &TyProperty<'_>) -> String {
-    if property.computed {
+    let name = if property.computed {
         format!("[{}]", property.name)
     } else {
         property.name.to_string()
+    };
+    if property.optional {
+        format!("{name}?")
+    } else {
+        name
     }
 }
 
@@ -2690,6 +2735,18 @@ mod tests {
             Ty::r#union(arena, [Ty::void(), Ty::undefined()]).to_type_string(),
             "void | undefined"
         );
+    }
+
+    #[test]
+    fn union_reduction_removes_never_from_multi_member_unions() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+
+        assert_eq!(
+            Ty::r#union(arena, [Ty::never(), Ty::undefined()]),
+            Ty::undefined()
+        );
+        assert_eq!(Ty::r#union(arena, [Ty::never()]), Ty::never());
     }
 
     #[test]

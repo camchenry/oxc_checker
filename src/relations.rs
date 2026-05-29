@@ -8,60 +8,16 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
     match (source, target) {
         (_, Ty::Any | Ty::Unknown) | (Ty::Any, _) => true,
         (Ty::Object(source), Ty::Object(target)) => {
-            target.properties.iter().all(|target_property| {
-                source
-                    .properties
-                    .iter()
-                    .find(|source_property| {
-                        source_property.name == target_property.name
-                            && source_property.computed == target_property.computed
-                    })
-                    .is_some_and(|source_property| {
-                        is_assignable_to(source_property.ty, target_property.ty)
-                    })
-            })
+            properties_assignable_to(&source.properties, &target.properties)
         }
         (Ty::ModuleNamespace(source), Ty::Object(target)) => {
-            target.properties.iter().all(|target_property| {
-                source
-                    .properties
-                    .iter()
-                    .find(|source_property| {
-                        source_property.name == target_property.name
-                            && source_property.computed == target_property.computed
-                    })
-                    .is_some_and(|source_property| {
-                        is_assignable_to(source_property.ty, target_property.ty)
-                    })
-            })
+            properties_assignable_to(&source.properties, &target.properties)
         }
         (Ty::Object(source), Ty::ModuleNamespace(target)) => {
-            target.properties.iter().all(|target_property| {
-                source
-                    .properties
-                    .iter()
-                    .find(|source_property| {
-                        source_property.name == target_property.name
-                            && source_property.computed == target_property.computed
-                    })
-                    .is_some_and(|source_property| {
-                        is_assignable_to(source_property.ty, target_property.ty)
-                    })
-            })
+            properties_assignable_to(&source.properties, &target.properties)
         }
         (Ty::ModuleNamespace(source), Ty::ModuleNamespace(target)) => {
-            target.properties.iter().all(|target_property| {
-                source
-                    .properties
-                    .iter()
-                    .find(|source_property| {
-                        source_property.name == target_property.name
-                            && source_property.computed == target_property.computed
-                    })
-                    .is_some_and(|source_property| {
-                        is_assignable_to(source_property.ty, target_property.ty)
-                    })
-            })
+            properties_assignable_to(&source.properties, &target.properties)
         }
         (Ty::Function(source), Ty::Function(target)) => {
             source.parameters.len() == target.parameters.len()
@@ -106,4 +62,27 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::BooleanLiteral(_), Ty::Boolean) => true,
         _ => false,
     }
+}
+
+fn properties_assignable_to<'a>(
+    source_properties: &[crate::types::TyProperty<'a>],
+    target_properties: &[crate::types::TyProperty<'a>],
+) -> bool {
+    target_properties.iter().all(|target_property| {
+        let Some(source_property) = source_properties.iter().find(|source_property| {
+            source_property.name == target_property.name
+                && source_property.computed == target_property.computed
+        }) else {
+            return target_property.optional;
+        };
+
+        if source_property.optional
+            && !target_property.optional
+            && !is_assignable_to(Ty::undefined(), target_property.ty)
+        {
+            return false;
+        }
+
+        is_assignable_to(source_property.ty, target_property.ty)
+    })
 }

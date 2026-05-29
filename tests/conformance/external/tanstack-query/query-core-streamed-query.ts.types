@@ -224,7 +224,7 @@ export type FetchDirection = 'forward' | 'backward'
 >           ^^^^^^^^^^^^^^: "forward" | "backward"   (TyUnion)
 
 export type QueryFunctionContext<
->           ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
   TQueryKey extends QueryKey = QueryKey,
 > ^^^^^^^^^: any   (TyAny)
@@ -422,13 +422,13 @@ export type OmitKeyof<
 > ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction)
 
   QueryFunctionContext,
-> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
   QueryKey,
 > ^^^^^^^^: readonly unknown[]   (TyArray)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode: "append" | "reset" | "replace"; }   (TyObject)
+>    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: "append" | "reset" | "replace"; }   (TyObject)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >                            ^^^^^^^^^^^^: any   (TyAny)
@@ -449,10 +449,10 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >   ^^^^^^^: QueryFunctionContext<TQueryKey, never>   (TyTypeReference)
 
     context: QueryFunctionContext<TQueryKey>,
->            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+>            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
     context: QueryFunctionContext<TQueryKey>,
->            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+>            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
     context: QueryFunctionContext<TQueryKey>,
 >                                 ^^^^^^^^^: any   (TyAny)
@@ -476,10 +476,10 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >                                                          ^^^^^^^^^^^^: any   (TyAny)
 
   refetchMode?: 'append' | 'reset' | 'replace'
-> ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion)
+> ^^^^^^^^^^^: "append" | "reset" | "replace" | undefined   (TyUnion)
 
 type SimpleStreamedQueryParams<
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer: never; initialValue: never; }   (TyIntersection)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer?: never; initialValue?: never; }   (TyIntersection)
 
   TQueryFnData,
 > ^^^^^^^^^^^^: any   (TyAny)
@@ -503,10 +503,10 @@ type SimpleStreamedQueryParams<
 >                                         ^^^^^^^^^: any   (TyAny)
 
   reducer?: never
-> ^^^^^^^: never   (TyNever)
+> ^^^^^^^: undefined   (TyUndefined)
 
   initialValue?: never
-> ^^^^^^^^^^^^: never   (TyNever)
+> ^^^^^^^^^^^^: undefined   (TyUndefined)
 
 type ReducibleStreamedQueryParams<
 >    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer: (acc: TData, chunk: TQueryFnData) => TData; initialValue: TData; }   (TyIntersection)
@@ -764,10 +764,10 @@ export function streamedQuery<
 >                                 ^^^^^^^^^^^^^^^^^: OmitKeyof<typeof context, "signal", "strictly">   (TyTypeReference)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+>                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+>                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
 >                                                                           ^^^^^^^^^: any   (TyAny)
@@ -869,7 +869,7 @@ import { streamedQuery } from '../packages/query-core/src/streamedQuery'
 > ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
 
   QueryFunctionContext,
-> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
 type Todo = {
 >    ^^^^: { id: number; title: string; }   (TyObject)
@@ -923,10 +923,10 @@ declare const context: QueryFunctionContext<readonly ['todos'], number>
 >             ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+>                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam: unknown; direction: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
+>                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
 const pageParam = context.pageParam
 >     ^^^^^^^^^: any   (TyAny)

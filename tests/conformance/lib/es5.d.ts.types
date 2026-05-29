@@ -83,16 +83,16 @@ interface PropertyDescriptor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     configurable?: boolean;
->   ^^^^^^^^^^^^: boolean   (TyBoolean)
+>   ^^^^^^^^^^^^: boolean | undefined   (TyUnion)
 
     enumerable?: boolean;
->   ^^^^^^^^^^: boolean   (TyBoolean)
+>   ^^^^^^^^^^: boolean | undefined   (TyUnion)
 
     value?: any;
 >   ^^^^^: any   (TyAny)
 
     writable?: boolean;
->   ^^^^^^^^: boolean   (TyBoolean)
+>   ^^^^^^^^: boolean | undefined   (TyUnion)
 
     set?(v: any): void;
 >        ^: any   (TyAny)
@@ -1088,13 +1088,13 @@ interface ImportCallOptions {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     /** @deprecated*/ assert?: ImportAssertions;
->                     ^^^^^^: ImportAssertions   (TyTypeReference)
+>                     ^^^^^^: ImportAssertions | undefined   (TyUnion)
 
     /** @deprecated*/ assert?: ImportAssertions;
 >                              ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     with?: ImportAttributes;
->   ^^^^: ImportAttributes   (TyTypeReference)
+>   ^^^^: ImportAttributes | undefined   (TyUnion)
 
     with?: ImportAttributes;
 >          ^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -1403,10 +1403,10 @@ interface RegExpMatchArray extends Array<string> {
 >                                  ^^^^^: any   (TyAny)
 
     index?: number;
->   ^^^^^: number   (TyNumber)
+>   ^^^^^: number | undefined   (TyUnion)
 
     input?: string;
->   ^^^^^: string   (TyString)
+>   ^^^^^: string | undefined   (TyUnion)
 
 interface RegExpExecArray extends Array<string> {
 >         ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -1541,7 +1541,7 @@ interface Error {
 >   ^^^^^^^: string   (TyString)
 
     stack?: string;
->   ^^^^^: string   (TyString)
+>   ^^^^^: string | undefined   (TyUnion)
 
 interface ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -3017,28 +3017,28 @@ interface TypedPropertyDescriptor<T> {
 >                                 ^: any   (TyAny)
 
     enumerable?: boolean;
->   ^^^^^^^^^^: boolean   (TyBoolean)
+>   ^^^^^^^^^^: boolean | undefined   (TyUnion)
 
     configurable?: boolean;
->   ^^^^^^^^^^^^: boolean   (TyBoolean)
+>   ^^^^^^^^^^^^: boolean | undefined   (TyUnion)
 
     writable?: boolean;
->   ^^^^^^^^: boolean   (TyBoolean)
+>   ^^^^^^^^: boolean | undefined   (TyUnion)
 
     value?: T;
->   ^^^^^: T   (TyTypeReference)
+>   ^^^^^: T | undefined   (TyUnion)
 
     value?: T;
 >           ^: any   (TyAny)
 
     get?: () => T;
->   ^^^: () => T   (TyFunction)
+>   ^^^: (() => T) | undefined   (TyUnion)
 
     get?: () => T;
 >               ^: any   (TyAny)
 
     set?: (value: T) => void;
->   ^^^: (value: T) => void   (TyFunction)
+>   ^^^: ((value: T) => void) | undefined   (TyUnion)
 
     set?: (value: T) => void;
 >          ^^^^^: T   (TyTypeReference)
@@ -3827,7 +3827,7 @@ interface DataViewConstructor {
 >                             ^^^^^^^^^^^^^^^: any   (TyAny)
 
     new <TArrayBuffer extends ArrayBufferLike & { BYTES_PER_ELEMENT?: never; }>(buffer: TArrayBuffer, byteOffset?: number, byteLength?: number): DataView<TArrayBuffer>;
->                                                 ^^^^^^^^^^^^^^^^^: never   (TyNever)
+>                                                 ^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
 
     new <TArrayBuffer extends ArrayBufferLike & { BYTES_PER_ELEMENT?: never; }>(buffer: TArrayBuffer, byteOffset?: number, byteLength?: number): DataView<TArrayBuffer>;
 >                                                                               ^^^^^^: TArrayBuffer   (TyTypeReference)
@@ -9053,10 +9053,10 @@ declare namespace Intl {
 >              ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
         currency?: string;
->       ^^^^^^^^: string   (TyString)
+>       ^^^^^^^^: string | undefined   (TyUnion)
 
         currencyDisplay?: NumberFormatOptionsCurrencyDisplay;
->       ^^^^^^^^^^^^^^^: NumberFormatOptionsCurrencyDisplay   (TyTypeReference)
+>       ^^^^^^^^^^^^^^^: NumberFormatOptionsCurrencyDisplay | undefined   (TyUnion)
 
         currencyDisplay?: NumberFormatOptionsCurrencyDisplay;
 >                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -9065,16 +9065,16 @@ declare namespace Intl {
 >       ^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
 
         minimumFractionDigits?: number;
->       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
 
         maximumFractionDigits?: number;
->       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
 
         minimumSignificantDigits?: number;
->       ^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
 
         maximumSignificantDigits?: number;
->       ^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
 
         useGrouping: ResolvedNumberFormatOptionsUseGrouping;
 >       ^^^^^^^^^^^: ResolvedNumberFormatOptionsUseGrouping   (TyTypeReference)
@@ -9209,34 +9209,34 @@ declare namespace Intl {
 >       ^^^^^^^^: string   (TyString)
 
         hour12?: boolean;
->       ^^^^^^: boolean   (TyBoolean)
+>       ^^^^^^: boolean | undefined   (TyUnion)
 
         weekday?: string;
->       ^^^^^^^: string   (TyString)
+>       ^^^^^^^: string | undefined   (TyUnion)
 
         era?: string;
->       ^^^: string   (TyString)
+>       ^^^: string | undefined   (TyUnion)
 
         year?: string;
->       ^^^^: string   (TyString)
+>       ^^^^: string | undefined   (TyUnion)
 
         month?: string;
->       ^^^^^: string   (TyString)
+>       ^^^^^: string | undefined   (TyUnion)
 
         day?: string;
->       ^^^: string   (TyString)
+>       ^^^: string | undefined   (TyUnion)
 
         hour?: string;
->       ^^^^: string   (TyString)
+>       ^^^^: string | undefined   (TyUnion)
 
         minute?: string;
->       ^^^^^^: string   (TyString)
+>       ^^^^^^: string | undefined   (TyUnion)
 
         second?: string;
->       ^^^^^^: string   (TyString)
+>       ^^^^^^: string | undefined   (TyUnion)
 
         timeZoneName?: string;
->       ^^^^^^^^^^^^: string   (TyString)
+>       ^^^^^^^^^^^^: string | undefined   (TyUnion)
 
     interface DateTimeFormat {
 >             ^^^^^^^^^^^^^^: DateTimeFormatConstructor   (TyTypeReference)

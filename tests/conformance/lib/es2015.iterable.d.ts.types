@@ -11,7 +11,7 @@ interface IteratorYieldResult<TYield> {
 >                             ^^^^^^: any   (TyAny)
 
     done?: false;
->   ^^^^: false   (TyBooleanLiteral)
+>   ^^^^: false | undefined   (TyUnion)
 
     value: TYield;
 >   ^^^^^: TYield   (TyTypeReference)

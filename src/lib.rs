@@ -1226,7 +1226,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         );
                         let ty = ty.substitute_type_parameters(self.arena(), &substitutions);
                         properties.push(if property.computed {
-                            Ty::computed_property(name, ty)
+                            if property.optional {
+                                Ty::computed_optional_property(name, ty)
+                            } else {
+                                Ty::computed_property(name, ty)
+                            }
+                        } else if property.optional {
+                            Ty::optional_property(name, ty)
                         } else {
                             Ty::property(name, ty)
                         });
@@ -3380,8 +3386,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     node.program_id,
                     property.type_annotation.as_deref(),
                 );
-                if let Ty::Infer(infer) = ty {
+                let ty = if let Ty::Infer(infer) = ty {
                     Ty::type_reference(self.arena(), infer.type_parameter.name, [])
+                } else {
+                    ty
+                };
+                if property.optional {
+                    Ty::union(self.arena(), [ty, Ty::undefined()])
                 } else {
                     ty
                 }
@@ -4375,6 +4386,22 @@ mod test {
         assert_eq!(
             get_type_alias_type(&ret, "OmitKeyof").to_type_string(),
             "{ [P in Exclude<keyof TObject, TKey>]: TObject[P]; }"
+        );
+    }
+
+    #[test]
+    fn type_literal_property_signatures_preserve_optional_modifier() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type Params = { refetchMode?: "append" | "reset" };
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Params").to_type_string(),
+            "{ refetchMode?: \"append\" | \"reset\"; }"
         );
     }
 
