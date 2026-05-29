@@ -325,6 +325,45 @@ fn binding_pattern_symbol_id(pattern: &BindingPattern<'_>) -> Option<SymbolId> {
     }
 }
 
+fn binding_pattern_default_initializer_symbol_id(
+    pattern: &BindingPattern<'_>,
+    initializer_span: Span,
+) -> Option<SymbolId> {
+    match pattern {
+        BindingPattern::BindingIdentifier(_) => None,
+        BindingPattern::ObjectPattern(object) => object
+            .properties
+            .iter()
+            .find_map(|property| {
+                binding_pattern_default_initializer_symbol_id(&property.value, initializer_span)
+            })
+            .or_else(|| {
+                object.rest.as_ref().and_then(|rest| {
+                    binding_pattern_default_initializer_symbol_id(&rest.argument, initializer_span)
+                })
+            }),
+        BindingPattern::ArrayPattern(array) => array
+            .elements
+            .iter()
+            .flatten()
+            .find_map(|element| {
+                binding_pattern_default_initializer_symbol_id(element, initializer_span)
+            })
+            .or_else(|| {
+                array.rest.as_ref().and_then(|rest| {
+                    binding_pattern_default_initializer_symbol_id(&rest.argument, initializer_span)
+                })
+            }),
+        BindingPattern::AssignmentPattern(assignment) => {
+            if assignment.right.span() == initializer_span {
+                binding_pattern_symbol_id(&assignment.left)
+            } else {
+                binding_pattern_default_initializer_symbol_id(&assignment.left, initializer_span)
+            }
+        }
+    }
+}
+
 /*
 
 type Signature struct {
@@ -2768,12 +2807,70 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         .iter()
                         .position(|item| item.span == parameter.span)
                         .map(|index| (function.span, index)),
+                    AstKind::ArrowFunctionExpression(function) => function
+                        .params
+                        .items
+                        .iter()
+                        .position(|item| item.span == parameter.span)
+                        .map(|index| (function.span, index)),
                     _ => None,
                 })?;
 
+        let contextual_type = self.get_contextual_type_of_function_expression(
+            program_id,
+            parameter_node_id,
+            function_span,
+        )?;
+        let callback_function = self
+            .get_signatures_of_type_in_program(program_id, contextual_type, SignatureKind::Call)
+            .into_iter()
+            .next()?
+            .function;
+        callback_function
+            .parameters
+            .get(parameter_index)
+            .map(|parameter| self.get_apparent_contextual_parameter_type(program_id, parameter.ty))
+    }
+
+    fn get_apparent_contextual_parameter_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+    ) -> Ty<'a> {
+        if let Ty::TypeReference(reference) = ty
+            && let Some((expanded_program_id, expanded)) =
+                self.get_expanded_type_alias_reference_type(program_id, reference, 0)
+        {
+            return self.apparent_type_for_conditional_match(expanded_program_id, expanded, 0);
+        }
+
+        self.apparent_type_for_conditional_match(program_id, ty, 0)
+    }
+
+    fn get_contextual_type_of_function_expression(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        function_span: Span,
+    ) -> Option<Ty<'a>> {
+        self.get_contextual_type_of_call_argument(program_id, node_id, function_span)
+            .or_else(|| {
+                self.get_contextual_type_of_binding_initializer(program_id, node_id, function_span)
+            })
+            .or_else(|| {
+                self.get_contextual_type_of_return_expression(program_id, node_id, function_span)
+            })
+    }
+
+    fn get_contextual_type_of_call_argument(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        function_span: Span,
+    ) -> Option<Ty<'a>> {
         let call_expression =
-            nodes
-                .ancestors(parameter_node_id)
+            self.nodes(program_id)
+                .ancestors(node_id)
                 .find_map(|node| match node.kind() {
                     AstKind::CallExpression(call_expression) => Some(call_expression),
                     _ => None,
@@ -2787,21 +2884,81 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let callee_type = self.get_type_of_expression_with_node(
             program_id,
             &call_expression.callee,
-            Some(parameter_node_id),
+            Some(node_id),
         );
         let callee_signature = self
             .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
             .into_iter()
             .next()?;
-        let Ty::Function(callback_function) =
-            self.get_call_parameter_type_at(callee_signature.function, argument_index)?
-        else {
-            return None;
-        };
-        callback_function
-            .parameters
-            .get(parameter_index)
-            .map(|parameter| parameter.ty)
+        self.get_call_parameter_type_at(callee_signature.function, argument_index)
+    }
+
+    fn get_contextual_type_of_binding_initializer(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        function_span: Span,
+    ) -> Option<Ty<'a>> {
+        self.nodes(program_id)
+            .ancestors_enumerated(node_id)
+            .find_map(|(ancestor_id, node)| match node.kind() {
+                AstKind::FormalParameter(parameter) => {
+                    binding_pattern_default_initializer_symbol_id(&parameter.pattern, function_span)
+                        .and_then(|symbol_id| {
+                            self.get_type_of_formal_parameter_binding(
+                                program_id,
+                                ancestor_id,
+                                parameter,
+                                symbol_id,
+                            )
+                        })
+                }
+                AstKind::VariableDeclarator(declarator) => {
+                    binding_pattern_default_initializer_symbol_id(&declarator.id, function_span)
+                        .and_then(|symbol_id| {
+                            self.get_type_of_variable_declarator_binding(
+                                program_id,
+                                ancestor_id,
+                                declarator,
+                                symbol_id,
+                            )
+                        })
+                }
+                _ => None,
+            })
+    }
+
+    fn get_contextual_type_of_return_expression(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        function_span: Span,
+    ) -> Option<Ty<'a>> {
+        let mut matching_return_seen = false;
+        for ancestor in self.nodes(program_id).ancestors(node_id) {
+            match ancestor.kind() {
+                AstKind::ReturnStatement(statement)
+                    if statement
+                        .argument
+                        .as_ref()
+                        .is_some_and(|argument| argument.span() == function_span) =>
+                {
+                    matching_return_seen = true;
+                }
+                AstKind::Function(function) if matching_return_seen => {
+                    return function.return_type.as_deref().map(|annotation| {
+                        self.get_type_from_ts_type_annotation(program_id, Some(annotation))
+                    });
+                }
+                AstKind::ArrowFunctionExpression(function) if matching_return_seen => {
+                    return function.return_type.as_deref().map(|annotation| {
+                        self.get_type_from_ts_type_annotation(program_id, Some(annotation))
+                    });
+                }
+                _ => {}
+            }
+        }
+        None
     }
 
     fn get_type_of_function_signature(
@@ -4705,6 +4862,39 @@ mod test {
         assert_eq!(
             get_symbol_type_in_function(&ret, "streamedQuery", "initialValue").to_type_string(),
             "TData"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "items"),
+            Ty::type_reference(arena(&ret), "TData", std::iter::empty())
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "chunk"),
+            Ty::type_reference(arena(&ret), "TQueryFnData", std::iter::empty())
+        );
+    }
+
+    #[test]
+    fn returned_function_expression_uses_annotated_return_context_for_parameters() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+                type QueryFunctionContext<TQueryKey, TPageParam = never> =
+                    [TPageParam] extends [never]
+                        ? { queryKey: TQueryKey; pageParam?: unknown }
+                        : { queryKey: TQueryKey; pageParam: TPageParam };
+                type QueryFunction<T, TQueryKey, TPageParam = never> =
+                    (queryContext: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
+
+                function makeQuery<TData, TQueryKey>(): QueryFunction<TData, TQueryKey> {
+                    return async (context) => undefined as TData;
+                }
+                ",
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "context").to_type_string(),
+            "{ queryKey: TQueryKey; pageParam?: unknown; }"
         );
     }
 

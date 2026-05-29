@@ -56,10 +56,34 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::Array(source), Ty::Array(target)) => {
             is_assignable_to(source.element_type, target.element_type)
         }
+        (Ty::Tuple(source), Ty::Tuple(target)) => {
+            source.elements.len() == target.elements.len()
+                && source.elements.iter().zip(target.elements.iter()).all(
+                    |(source_element, target_element)| {
+                        tuple_element_assignable_to(source_element, target_element)
+                    },
+                )
+        }
         (Ty::UniqueSymbol(_), Ty::Symbol) => true,
         (Ty::NumberLiteral(_), Ty::Number) => true,
         (Ty::StringLiteral(_), Ty::String) => true,
         (Ty::BooleanLiteral(_), Ty::Boolean) => true,
+        _ => false,
+    }
+}
+
+fn tuple_element_assignable_to<'a>(
+    source: &crate::types::TupleElement<'a>,
+    target: &crate::types::TupleElement<'a>,
+) -> bool {
+    use crate::types::TupleElement;
+
+    match (source, target) {
+        (TupleElement::Regular(source), TupleElement::Regular(target))
+        | (TupleElement::Rest(source), TupleElement::Rest(target))
+        | (TupleElement::Optional(source), TupleElement::Optional(target)) => {
+            is_assignable_to(*source, *target)
+        }
         _ => false,
     }
 }

@@ -647,13 +647,13 @@ export function streamedQuery<
 > ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->            ^^^^^: any   (TyAny)
+>            ^^^^^: TData   (TyTypeReference)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                   ^^^^^: any   (TyAny)
+>                   ^^^^^: TQueryFnData   (TyTypeReference)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                  ^^^^^: any   (TyAny)
+>                                  ^^^^^: TData   (TyTypeReference)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >                                           ^^^^^: ArrayConstructor   (TyTypeReference)
@@ -665,7 +665,7 @@ export function streamedQuery<
 >                                                 ^^^^^^^^^^^^: any   (TyAny)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                                                 ^^^^^: any   (TyAny)
+>                                                                 ^^^^^: TQueryFnData   (TyTypeReference)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >                                                                           ^^^^^: any   (TyAny)
@@ -701,7 +701,7 @@ export function streamedQuery<
 > ^^^^^^^^^: any   (TyAny)
 
   return async (context) => {
->               ^^^^^^^: any   (TyAny)
+>               ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
 >         ^^^^^^^^^^^^^^^^^: OmitKeyof<typeof context, "signal", "strictly">   (TyTypeReference)
@@ -713,52 +713,52 @@ export function streamedQuery<
 >                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                                             ^^^^^^^: any   (TyAny)
+>                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
       client: context.client,
->     ^^^^^^: any   (TyAny)
+>     ^^^^^^: QueryClient   (TyTypeReference)
 
       client: context.client,
->             ^^^^^^^: any   (TyAny)
+>             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
       client: context.client,
->                     ^^^^^^: any   (TyAny)
+>                     ^^^^^^: QueryClient   (TyTypeReference)
 
       meta: context.meta,
->     ^^^^: any   (TyAny)
+>     ^^^^: QueryMeta | undefined   (TyUnion)
 
       meta: context.meta,
->           ^^^^^^^: any   (TyAny)
+>           ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
       meta: context.meta,
->                   ^^^^: any   (TyAny)
+>                   ^^^^: QueryMeta | undefined   (TyUnion)
 
       queryKey: context.queryKey,
->     ^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^: TQueryKey   (TyTypeReference)
 
       queryKey: context.queryKey,
->               ^^^^^^^: any   (TyAny)
+>               ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
       queryKey: context.queryKey,
->                       ^^^^^^^^: any   (TyAny)
+>                       ^^^^^^^^: TQueryKey   (TyTypeReference)
 
       pageParam: context.pageParam,
->     ^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^: unknown   (TyUnknown)
 
       pageParam: context.pageParam,
->                ^^^^^^^: any   (TyAny)
+>                ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
       pageParam: context.pageParam,
->                        ^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^: unknown   (TyUnknown)
 
       direction: context.direction,
->     ^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^: unknown   (TyUnknown)
 
       direction: context.direction,
->                ^^^^^^^: any   (TyAny)
+>                ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
       direction: context.direction,
->                        ^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^: unknown   (TyUnknown)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
 >         ^^^^^^: any   (TyAny)
@@ -806,31 +806,31 @@ export function streamedQuery<
 >                                ^^^^^: any   (TyAny)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->       ^^^^^^^: any   (TyAny)
+>       ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->               ^^^^^^: any   (TyAny)
+>               ^^^^^^: QueryClient   (TyTypeReference)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                      ^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^: <TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void   (TyFunction)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
 >                                   ^^^^^: any   (TyAny)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                          ^^^^^^^: any   (TyAny)
+>                                          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                                  ^^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^^: TQueryKey   (TyTypeReference)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                                             ^^^^^^^^: any   (TyAny)
+>                                                             ^^^^^^^^: TData | undefined   (TyUnion)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >         ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                 ^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^: TData | undefined   (TyUnion)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >                              ^^^^^^^^^: undefined   (TyUndefined)
@@ -839,28 +839,28 @@ export function streamedQuery<
 >                                          ^^^^^^^^^^^^: TData   (TyTypeReference)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                                         ^^^^^^^^: any   (TyAny)
+>                                                         ^^^^^^^^: TData | undefined   (TyUnion)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >                                                                   ^^^^^: any   (TyAny)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->          ^^^^^^^: any   (TyAny)
+>          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                  ^^^^^^: any   (TyAny)
+>                  ^^^^^^: QueryClient   (TyTypeReference)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                         ^^^^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^^^^: <TData>(queryKey: QueryKey) => TData | undefined   (TyFunction)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
 >                                      ^^^^^: any   (TyAny)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                             ^^^^^^^: any   (TyAny)
+>                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                                     ^^^^^^^^: any   (TyAny)
+>                                                     ^^^^^^^^: TQueryKey   (TyTypeReference)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
 >                                                                  ^^^^^^: TData   (TyTypeReference)
