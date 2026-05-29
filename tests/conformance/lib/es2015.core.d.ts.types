@@ -95,7 +95,7 @@ interface Array<T> {
 >                                                                        ^^^^^^^: any   (TyAny)
 
     fill(value: T, start?: number, end?: number): this;
->   ^^^^: (value: T, start?: number, end?: number) => none   (TyFunction)
+>   ^^^^: (value: T, start?: number, end?: number) => this   (TyFunction)
 
     fill(value: T, start?: number, end?: number): this;
 >        ^^^^^: T   (TyTypeReference)
@@ -110,7 +110,7 @@ interface Array<T> {
 >                                  ^^^: number | undefined   (TyUnion)
 
     copyWithin(target: number, start: number, end?: number): this;
->   ^^^^^^^^^^: (target: number, start: number, end?: number) => none   (TyFunction)
+>   ^^^^^^^^^^: (target: number, start: number, end?: number) => this   (TyFunction)
 
     copyWithin(target: number, start: number, end?: number): this;
 >              ^^^^^^: number   (TyNumber)

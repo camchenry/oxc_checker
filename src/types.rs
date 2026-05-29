@@ -53,6 +53,7 @@ pub(crate) enum Ty<'a> {
     Never,
     /// Primitive `object` keyword (not to be confused with `{}`)
     PrimitiveObject,
+    This,
     Object(&'a TyObject<'a>),
     ModuleNamespace(&'a TyModuleNamespace<'a>),
     Function(&'a TyFunction<'a>),
@@ -452,6 +453,10 @@ impl<'a> Ty<'a> {
         Self::PrimitiveObject
     }
 
+    pub(crate) fn this() -> Self {
+        Self::This
+    }
+
     pub(crate) fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty {
             name,
@@ -745,6 +750,7 @@ impl<'a> Ty<'a> {
             TSType::TSVoidKeyword(_) => Self::void(),
             TSType::TSNeverKeyword(_) => Self::never(),
             TSType::TSObjectKeyword(_) => Self::primitive_object(),
+            TSType::TSThisType(_) => Self::this(),
             TSType::TSTypeLiteral(type_literal) => Self::object_with_signatures(
                 arena,
                 type_literal
@@ -1272,6 +1278,7 @@ impl<'a> Ty<'a> {
             Self::Object(_) => "TyObject",
             Self::ModuleNamespace(_) => "TyModuleNamespace",
             Self::PrimitiveObject => "TyPrimitiveObject",
+            Self::This => "TyThis",
             Self::Function(_) => "TyFunction",
             Self::TypeReference(_) => "TyTypeReference",
             Self::TypeQuery(_) => "TyTypeQuery",
@@ -1311,6 +1318,7 @@ impl<'a> Ty<'a> {
             Self::Void => "void".to_string(),
             Self::Never => "never".to_string(),
             Self::PrimitiveObject => "object".to_string(),
+            Self::This => "this".to_string(),
             Self::Object(object) => {
                 if object.properties.is_empty() && object.signatures.is_empty() {
                     return "{}".to_string();

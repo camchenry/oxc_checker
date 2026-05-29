@@ -80,7 +80,7 @@ interface Map<K, V> {
 >            ^: any   (TyAny)
 
     set(key: K, value: V): this;
->   ^^^: (key: K, value: V) => none   (TyFunction)
+>   ^^^: (key: K, value: V) => this   (TyFunction)
 
     set(key: K, value: V): this;
 >       ^^^: K   (TyTypeReference)
@@ -260,7 +260,7 @@ interface WeakMap<K extends WeakKey, V> {
 >            ^: any   (TyAny)
 
     set(key: K, value: V): this;
->   ^^^: (key: K, value: V) => none   (TyFunction)
+>   ^^^: (key: K, value: V) => this   (TyFunction)
 
     set(key: K, value: V): this;
 >       ^^^: K   (TyTypeReference)
@@ -338,7 +338,7 @@ interface Set<T> {
 >             ^: any   (TyAny)
 
     add(value: T): this;
->   ^^^: (value: T) => none   (TyFunction)
+>   ^^^: (value: T) => this   (TyFunction)
 
     add(value: T): this;
 >       ^^^^^: T   (TyTypeReference)
@@ -500,7 +500,7 @@ interface WeakSet<T extends WeakKey> {
 >                           ^^^^^^^: any   (TyAny)
 
     add(value: T): this;
->   ^^^: (value: T) => none   (TyFunction)
+>   ^^^: (value: T) => this   (TyFunction)
 
     add(value: T): this;
 >       ^^^^^: T   (TyTypeReference)
