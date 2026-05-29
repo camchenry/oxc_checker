@@ -5370,6 +5370,24 @@ mod test {
     }
 
     #[test]
+    fn optional_mapped_type_aliases_include_undefined_and_drop_empty_intersection() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        type OptionalFlat<O> = {
+            [K in keyof O]?: O[K]
+        } & {};
+        ",
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "OptionalFlat").to_type_string(),
+            "{ [K in keyof O]?: O[K] | undefined; }"
+        );
+    }
+
+    #[test]
     fn tuple_wrapped_conditionals_are_not_distributive() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

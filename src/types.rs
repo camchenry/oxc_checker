@@ -655,9 +655,7 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         types: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
-        Self::Intersection(arena.alloc(TyIntersection {
-            types: arena.vec_from_iter(types),
-        }))
+        reduce_intersection_type(arena, types)
     }
 
     pub(crate) fn keyof(arena: CheckerArena<'a>, target: Ty<'a>) -> Self {
@@ -955,17 +953,23 @@ impl<'a> Ty<'a> {
             .name_type
             .as_ref()
             .map(|name_ty| Self::from_ts_type(arena, name_ty));
+        let optional = MappedModifier::from_ast(mapped.optional);
         let template = mapped
             .type_annotation
             .as_ref()
             .map_or_else(Self::any, |ty| Self::from_ts_type(arena, ty));
+        let template = if matches!(optional, MappedModifier::True | MappedModifier::Plus) {
+            Self::r#union(arena, [template, Self::undefined()])
+        } else {
+            template
+        };
         Self::mapped(
             arena,
             arena.str(&mapped.key.name),
             constraint,
             name_type,
             template,
-            MappedModifier::from_ast(mapped.optional),
+            optional,
             MappedModifier::from_ast(mapped.readonly),
         )
     }
@@ -2480,6 +2484,53 @@ fn remove_redundant_literal_types(type_set: &mut Vec<Ty<'_>>) {
         Ty::BigIntLiteral(_) => !has_bigint,
         _ => true,
     });
+}
+
+fn reduce_intersection_type<'a>(
+    arena: CheckerArena<'a>,
+    types: impl IntoIterator<Item = Ty<'a>>,
+) -> Ty<'a> {
+    let mut type_set = Vec::new();
+    for ty in types {
+        add_type_to_intersection(&mut type_set, ty);
+    }
+
+    let has_object_like_member = type_set
+        .iter()
+        .any(|ty| is_empty_object_intersection_identity_target(*ty));
+    if has_object_like_member {
+        type_set.retain(|ty| !matches!(ty, Ty::Object(object) if is_empty_object_type(object)));
+    }
+
+    match type_set.as_slice() {
+        [] => Ty::object(arena, []),
+        [ty] => *ty,
+        _ => Ty::Intersection(arena.alloc(TyIntersection {
+            types: arena.vec_from_iter(type_set),
+        })),
+    }
+}
+
+fn add_type_to_intersection<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
+    if let Ty::Intersection(intersection) = ty {
+        for ty in &intersection.types {
+            add_type_to_intersection(type_set, *ty);
+        }
+    } else if !type_set.contains(&ty) {
+        type_set.push(ty);
+    }
+}
+
+fn is_empty_object_type(object: &TyObject<'_>) -> bool {
+    object.properties.is_empty() && object.signatures.is_empty()
+}
+
+fn is_empty_object_intersection_identity_target(ty: Ty<'_>) -> bool {
+    match ty {
+        Ty::Mapped(_) => true,
+        Ty::Object(object) => !is_empty_object_type(object),
+        _ => false,
+    }
 }
 
 fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
