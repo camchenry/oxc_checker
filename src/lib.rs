@@ -2892,7 +2892,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         parameter: &FormalParameter<'a>,
     ) -> TyParameter<'a> {
-        let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
+        let name = binding_pattern_to_parameter_name(self.arena(), &parameter.pattern);
         let ty =
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
         if parameter.optional {
@@ -2907,7 +2907,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         parameter: &FormalParameterRest<'a>,
     ) -> TyParameter<'a> {
-        let name = binding_pattern_name_str(&parameter.rest.argument).unwrap_or("_");
+        let name = binding_pattern_to_parameter_name(self.arena(), &parameter.rest.argument);
         Ty::rest_parameter(
             name,
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref()),
@@ -3303,6 +3303,289 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_type_of_variable_declarator_binding(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        declarator: &'a VariableDeclarator<'a>,
+        symbol_id: SymbolId,
+    ) -> Option<Ty<'a>> {
+        let binding_type =
+            self.get_type_of_variable_declarator(program_id, declaration, declarator);
+        self.get_type_of_binding_pattern_symbol(program_id, &declarator.id, symbol_id, binding_type)
+    }
+
+    fn get_type_of_formal_parameter_binding(
+        &self,
+        program_id: program::ProgramId,
+        parameter_node_id: NodeId,
+        parameter: &'a FormalParameter<'a>,
+        symbol_id: SymbolId,
+    ) -> Option<Ty<'a>> {
+        let binding_type = parameter.type_annotation.as_deref().map_or_else(
+            || {
+                self.get_contextual_type_of_formal_parameter(
+                    program_id,
+                    parameter_node_id,
+                    parameter,
+                )
+                .unwrap_or_else(Ty::any)
+            },
+            |annotation| {
+                self.get_declared_type_of_formal_parameter(program_id, parameter, annotation)
+            },
+        );
+        self.get_type_of_binding_pattern_symbol(
+            program_id,
+            &parameter.pattern,
+            symbol_id,
+            binding_type,
+        )
+    }
+
+    fn get_type_of_rest_parameter_binding(
+        &self,
+        program_id: program::ProgramId,
+        parameter: &'a FormalParameterRest<'a>,
+        symbol_id: SymbolId,
+    ) -> Option<Ty<'a>> {
+        let binding_type =
+            self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
+        self.get_type_of_binding_pattern_symbol(
+            program_id,
+            &parameter.rest.argument,
+            symbol_id,
+            binding_type,
+        )
+    }
+
+    fn get_type_of_binding_identifier_from_binding_pattern(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        symbol_id: SymbolId,
+    ) -> Option<Ty<'a>> {
+        self.nodes(program_id)
+            .ancestors_enumerated(node_id)
+            .find_map(|(ancestor_id, ancestor)| match ancestor.kind() {
+                AstKind::FormalParameter(parameter) => self.get_type_of_formal_parameter_binding(
+                    program_id,
+                    ancestor_id,
+                    parameter,
+                    symbol_id,
+                ),
+                AstKind::FormalParameterRest(parameter) => {
+                    self.get_type_of_rest_parameter_binding(program_id, parameter, symbol_id)
+                }
+                AstKind::VariableDeclarator(declarator) => self
+                    .get_type_of_variable_declarator_binding(
+                        program_id,
+                        ancestor_id,
+                        declarator,
+                        symbol_id,
+                    ),
+                _ => None,
+            })
+    }
+
+    fn get_type_of_binding_pattern_symbol(
+        &self,
+        program_id: program::ProgramId,
+        pattern: &BindingPattern<'a>,
+        symbol_id: SymbolId,
+        pattern_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        match pattern {
+            BindingPattern::BindingIdentifier(identifier)
+                if identifier.symbol_id.get() == Some(symbol_id) =>
+            {
+                Some(pattern_type)
+            }
+            BindingPattern::BindingIdentifier(_) => None,
+            BindingPattern::ObjectPattern(object) => {
+                for property in &object.properties {
+                    let Some(property_name) = property_key_name_str(&property.key) else {
+                        continue;
+                    };
+                    let Some(property_type) = self.get_destructured_property_type(
+                        program_id,
+                        pattern_type,
+                        property_name,
+                    ) else {
+                        continue;
+                    };
+                    if let Some(ty) = self.get_type_of_binding_pattern_symbol(
+                        program_id,
+                        &property.value,
+                        symbol_id,
+                        property_type,
+                    ) {
+                        return Some(ty);
+                    }
+                }
+
+                object.rest.as_ref().and_then(|rest| {
+                    self.get_type_of_binding_pattern_symbol(
+                        program_id,
+                        &rest.argument,
+                        symbol_id,
+                        Ty::any(),
+                    )
+                })
+            }
+            BindingPattern::ArrayPattern(array) => {
+                for (index, element) in array.elements.iter().enumerate() {
+                    let Some(element) = element else {
+                        continue;
+                    };
+                    let element_type = tuple_element_type_at_index(&pattern_type, index)
+                        .or_else(|| array_element_type(pattern_type))
+                        .unwrap_or_else(Ty::any);
+                    if let Some(ty) = self.get_type_of_binding_pattern_symbol(
+                        program_id,
+                        element,
+                        symbol_id,
+                        element_type,
+                    ) {
+                        return Some(ty);
+                    }
+                }
+
+                array.rest.as_ref().and_then(|rest| {
+                    self.get_type_of_binding_pattern_symbol(
+                        program_id,
+                        &rest.argument,
+                        symbol_id,
+                        array_element_type(pattern_type)
+                            .map(|element_type| Ty::array(self.arena(), element_type))
+                            .unwrap_or_else(Ty::any),
+                    )
+                })
+            }
+            BindingPattern::AssignmentPattern(assignment) => self
+                .get_type_of_binding_pattern_symbol(
+                    program_id,
+                    &assignment.left,
+                    symbol_id,
+                    self.get_non_undefined_type(pattern_type),
+                ),
+        }
+    }
+
+    fn get_non_undefined_type(&self, ty: Ty<'a>) -> Ty<'a> {
+        let Ty::Union(union) = ty else {
+            return ty;
+        };
+        let types = union
+            .types
+            .iter()
+            .copied()
+            .filter(|ty| !matches!(ty, Ty::Undefined))
+            .collect::<Vec<_>>();
+        if types.is_empty() {
+            Ty::never()
+        } else {
+            Ty::union(self.arena(), types)
+        }
+    }
+
+    fn get_destructured_property_type(
+        &self,
+        program_id: program::ProgramId,
+        object_type: Ty<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        self.get_destructured_property_type_at_depth(program_id, object_type, property_name, 0)
+    }
+
+    fn get_destructured_property_type_at_depth(
+        &self,
+        program_id: program::ProgramId,
+        object_type: Ty<'a>,
+        property_name: &str,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return object_type.property_type(property_name);
+        }
+
+        match object_type {
+            Ty::Object(object) => object.properties.iter().find_map(|property| {
+                if property.computed || property.name != property_name {
+                    return None;
+                }
+                Some(if property.optional {
+                    Ty::union(self.arena(), [property.ty, Ty::undefined()])
+                } else {
+                    property.ty
+                })
+            }),
+            Ty::ModuleNamespace(namespace) => namespace.properties.iter().find_map(|property| {
+                (property.name == property_name && !property.computed).then_some(property.ty)
+            }),
+            Ty::Union(union) => {
+                let property_types = union
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        self.get_destructured_property_type_at_depth(
+                            program_id,
+                            *ty,
+                            property_name,
+                            depth + 1,
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                (!property_types.is_empty()).then(|| Ty::union(self.arena(), property_types))
+            }
+            Ty::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
+                self.get_destructured_property_type_at_depth(
+                    program_id,
+                    *ty,
+                    property_name,
+                    depth + 1,
+                )
+            }),
+            Ty::TypeReference(reference) => self
+                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                .and_then(|(expanded_program_id, expanded)| {
+                    self.get_destructured_property_type_at_depth(
+                        expanded_program_id,
+                        expanded,
+                        property_name,
+                        depth + 1,
+                    )
+                })
+                .or_else(|| {
+                    self.get_property_type_of_interface_type(program_id, reference, property_name)
+                }),
+            _ => None,
+        }
+    }
+
+    fn get_expanded_type_alias_reference_type(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+        depth: usize,
+    ) -> Option<(program::ProgramId, Ty<'a>)> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_expanded_type_alias_declaration(
+            symbol.program_id,
+            declaration,
+            reference.type_arguments.as_slice(),
+            depth + 1,
+        )
+        .map(|ty| (symbol.program_id, ty))
+    }
+
     fn get_declared_type_of_formal_parameter(
         &self,
         program_id: program::ProgramId,
@@ -3602,23 +3885,45 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             .scoping()
             .symbol_declaration(sym.symbol_id);
         match self.nodes(sym.program_id).kind(declaration) {
-            AstKind::VariableDeclarator(declarator) => {
-                self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
-            }
-            AstKind::FormalParameter(parameter) => match parameter.type_annotation.as_deref() {
-                Some(annotation) => self.get_declared_type_of_formal_parameter(
+            AstKind::VariableDeclarator(declarator) => self
+                .get_type_of_variable_declarator_binding(
                     sym.program_id,
+                    declaration,
+                    declarator,
+                    sym.symbol_id,
+                )
+                .unwrap_or_else(|| {
+                    self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
+                }),
+            AstKind::FormalParameter(parameter) => self
+                .get_type_of_formal_parameter_binding(
+                    sym.program_id,
+                    declaration,
                     parameter,
-                    annotation,
-                ),
-                None => self
-                    .get_contextual_type_of_formal_parameter(sym.program_id, declaration, parameter)
-                    .unwrap_or_else(Ty::any),
-            },
-            AstKind::FormalParameterRest(parameter) => self.get_type_from_ts_type_annotation(
-                sym.program_id,
-                parameter.type_annotation.as_deref(),
-            ),
+                    sym.symbol_id,
+                )
+                .unwrap_or_else(|| match parameter.type_annotation.as_deref() {
+                    Some(annotation) => self.get_declared_type_of_formal_parameter(
+                        sym.program_id,
+                        parameter,
+                        annotation,
+                    ),
+                    None => self
+                        .get_contextual_type_of_formal_parameter(
+                            sym.program_id,
+                            declaration,
+                            parameter,
+                        )
+                        .unwrap_or_else(Ty::any),
+                }),
+            AstKind::FormalParameterRest(parameter) => self
+                .get_type_of_rest_parameter_binding(sym.program_id, parameter, sym.symbol_id)
+                .unwrap_or_else(|| {
+                    self.get_type_from_ts_type_annotation(
+                        sym.program_id,
+                        parameter.type_annotation.as_deref(),
+                    )
+                }),
             AstKind::CatchParameter(parameter) => self.get_type_from_ts_type_annotation(
                 sym.program_id,
                 parameter.type_annotation.as_deref(),
@@ -3646,6 +3951,14 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
             AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
             AstKind::BindingIdentifier(identifier) => {
+                if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
+                    sym.program_id,
+                    declaration,
+                    sym.symbol_id,
+                ) {
+                    return ty;
+                }
+
                 match self.nodes(sym.program_id).parent_kind(declaration) {
                     AstKind::Class(_) => {
                         // TODO(correctness): model the class value-side as a real constructor
@@ -4336,6 +4649,63 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "f"), Ty::null());
         assert_eq!(get_global_symbol_type(&ret, "g"), Ty::any());
         assert_eq!(get_global_symbol_type(&ret, "h"), Ty::unknown());
+    }
+
+    #[test]
+    fn destructured_parameters_preserve_pattern_and_property_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+                type BaseStreamedQueryParams<TQueryFnData> = {
+                    streamFn: (context: TQueryFnData) => TQueryFnData;
+                    refetchMode?: 'append' | 'reset' | 'replace';
+                };
+                type SimpleStreamedQueryParams<TQueryFnData> =
+                    BaseStreamedQueryParams<TQueryFnData> & {
+                        reducer?: never;
+                        initialValue?: never;
+                    };
+                type ReducibleStreamedQueryParams<TQueryFnData, TData> =
+                    BaseStreamedQueryParams<TQueryFnData> & {
+                        reducer: (acc: TData, chunk: TQueryFnData) => TData;
+                        initialValue: TData;
+                    };
+                type StreamedQueryParams<TQueryFnData, TData> =
+                    | SimpleStreamedQueryParams<TQueryFnData>
+                    | ReducibleStreamedQueryParams<TQueryFnData, TData>;
+
+                function streamedQuery<TQueryFnData, TData>({
+                    streamFn,
+                    refetchMode = 'reset',
+                    reducer = (items, chunk) => items,
+                    initialValue = {} as TData,
+                }: StreamedQueryParams<TQueryFnData, TData>): TData {
+                    return initialValue;
+                }
+                ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "streamedQuery").to_type_string(),
+            "<TQueryFnData, TData>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData>) => TData"
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret, "streamedQuery", "streamFn").to_type_string(),
+            "(context: TQueryFnData) => TQueryFnData"
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret, "streamedQuery", "refetchMode").to_type_string(),
+            "\"append\" | \"reset\" | \"replace\""
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret, "streamedQuery", "reducer").to_type_string(),
+            "(acc: TData, chunk: TQueryFnData) => TData"
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret, "streamedQuery", "initialValue").to_type_string(),
+            "TData"
+        );
     }
 
     #[test]

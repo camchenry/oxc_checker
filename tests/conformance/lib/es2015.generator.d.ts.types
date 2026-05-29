@@ -23,10 +23,10 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                                                                                               ^^^^^: any   (TyAny)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->   ^^^^: (..._: [] | [TNext]) => IteratorResult<T, TReturn>   (TyFunction)
+>   ^^^^: (...[value]: [] | [TNext]) => IteratorResult<T, TReturn>   (TyFunction)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->            ^^^^^: [] | [TNext]   (TyUnion)
+>            ^^^^^: any   (TyAny)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
 >                          ^^^^^: any   (TyAny)

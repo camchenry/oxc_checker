@@ -2775,6 +2775,15 @@ fn property_key_name<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     }
 }
 
+fn property_key_to_binding_pattern_string(key: &PropertyKey<'_>) -> Option<String> {
+    match key {
+        PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.to_string()),
+        PropertyKey::Identifier(identifier) => Some(identifier.name.to_string()),
+        PropertyKey::StringLiteral(literal) => Some(format!("{:?}", literal.value.as_str())),
+        _ => None,
+    }
+}
+
 fn property_name_to_type_string(property: &TyProperty<'_>) -> String {
     let name = if property.computed {
         format!("[{}]", property.name)
@@ -2792,6 +2801,63 @@ fn binding_pattern_name_str<'a>(pattern: &BindingPattern<'a>) -> Option<&'a str>
     match pattern {
         BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.as_str()),
         _ => None,
+    }
+}
+
+pub(crate) fn binding_pattern_to_parameter_name<'a>(
+    arena: CheckerArena<'a>,
+    pattern: &BindingPattern<'a>,
+) -> &'a str {
+    binding_pattern_name_str(pattern)
+        .unwrap_or_else(|| arena.str(&binding_pattern_to_string(pattern)))
+}
+
+fn binding_pattern_to_string(pattern: &BindingPattern<'_>) -> String {
+    match pattern {
+        BindingPattern::BindingIdentifier(identifier) => identifier.name.to_string(),
+        BindingPattern::ObjectPattern(object) => {
+            let mut parts = object
+                .properties
+                .iter()
+                .filter_map(binding_property_to_string)
+                .collect::<Vec<_>>();
+            if let Some(rest) = &object.rest {
+                parts.push(format!("...{}", binding_pattern_to_string(&rest.argument)));
+            }
+            if parts.is_empty() {
+                "{ }".to_string()
+            } else {
+                format!("{{ {}, }}", parts.join(", "))
+            }
+        }
+        BindingPattern::ArrayPattern(array) => {
+            let mut parts = array
+                .elements
+                .iter()
+                .map(|element| {
+                    element
+                        .as_ref()
+                        .map_or_else(String::new, binding_pattern_to_string)
+                })
+                .collect::<Vec<_>>();
+            if let Some(rest) = &array.rest {
+                parts.push(format!("...{}", binding_pattern_to_string(&rest.argument)));
+            }
+            format!("[{}]", parts.join(", "))
+        }
+        BindingPattern::AssignmentPattern(assignment) => {
+            binding_pattern_to_string(&assignment.left)
+        }
+    }
+}
+
+fn binding_property_to_string(property: &oxc_ast::ast::BindingProperty<'_>) -> Option<String> {
+    let key = property_key_to_binding_pattern_string(&property.key)?;
+    let value = binding_pattern_to_string(&property.value);
+    if property.shorthand || key == value {
+        Some(key)
+    } else {
+        Some(format!("{key}: {value}"))
     }
 }
 
@@ -2862,7 +2928,7 @@ fn function_type_parameter<'a>(
     arena: CheckerArena<'a>,
     parameter: &FormalParameter<'a>,
 ) -> TyParameter<'a> {
-    let name = binding_pattern_name_str(&parameter.pattern).unwrap_or("_");
+    let name = binding_pattern_to_parameter_name(arena, &parameter.pattern);
     let ty = Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref());
     if parameter.optional {
         Ty::optional_parameter(name, ty)
@@ -2875,7 +2941,7 @@ fn function_type_rest_parameter<'a>(
     arena: CheckerArena<'a>,
     parameter: &FormalParameterRest<'a>,
 ) -> TyParameter<'a> {
-    let name = binding_pattern_name_str(&parameter.rest.argument).unwrap_or("_");
+    let name = binding_pattern_to_parameter_name(arena, &parameter.rest.argument);
     Ty::rest_parameter(
         name,
         Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),

@@ -1641,10 +1641,10 @@ FAIL src/lib/es2015.core.d.ts matched_types=77 mismatched_types=515 total_types=
 FAIL src/lib/es2015.generator.d.ts matched_types=45 mismatched_types=4 total_types=49 match_percentage=91.84%
   - src/lib/es2015.generator.d.ts:5 `next` type mismatch
       expected: { (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }
-      actual:   (..._: [] | [TNext]) => IteratorResult<T, TReturn>
+      actual:   (...[value]: [] | [TNext]) => IteratorResult<T, TReturn>
   - src/lib/es2015.generator.d.ts:5 `value` type mismatch
       expected: TNext | undefined
-      actual:   [] | [TNext]
+      actual:   any
   - src/lib/es2015.generator.d.ts:6 `return` type mismatch
       expected: { (value: TReturn): IteratorResult<T, TReturn>; (value: TReturn): IteratorResult<T, TReturn>; }
       actual:   (value: TReturn) => IteratorResult<T, TReturn>
@@ -1657,10 +1657,10 @@ FAIL src/lib/es2015.iterable.d.ts matched_types=457 mismatched_types=161 total_t
       actual:   any
   - src/lib/es2015.iterable.d.ts:25 `next` type mismatch
       expected: { (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }
-      actual:   (..._: [] | [TNext]) => IteratorResult<T, TReturn>
+      actual:   (...[value]: [] | [TNext]) => IteratorResult<T, TReturn>
   - src/lib/es2015.iterable.d.ts:25 `value` type mismatch
       expected: TNext | undefined
-      actual:   [] | [TNext]
+      actual:   any
   - src/lib/es2015.iterable.d.ts:26 `return` type mismatch
       expected: { (value?: TReturn): IteratorResult<T, TReturn>; (value?: TReturn): IteratorResult<T, TReturn>; } | undefined
       actual:   (value?: TReturn) => IteratorResult<T, TReturn>

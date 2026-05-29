@@ -605,7 +605,7 @@ type StreamedQueryParams<
 >                                                     ^^^^^^^^^: any   (TyAny)
 
 export function streamedQuery<
->               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
+>               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
 
   TQueryFnData = unknown,
 > ^^^^^^^^^^^^: any   (TyAny)
@@ -638,13 +638,13 @@ export function streamedQuery<
 >                              ^^^^^^^^: readonly unknown[]   (TyArray)
 
   streamFn,
-> ^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+> ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
 
   refetchMode = 'reset',
-> ^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+> ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
-> ^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+> ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >            ^^^^^: any   (TyAny)
@@ -671,7 +671,7 @@ export function streamedQuery<
 >                                                                           ^^^^^: any   (TyAny)
 
   initialValue = [] as TData,
-> ^^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+> ^^^^^^^^^^^^: TData   (TyTypeReference)
 
   initialValue = [] as TData,
 >                      ^^^^^: any   (TyAny)
@@ -764,7 +764,7 @@ export function streamedQuery<
 >         ^^^^^^: any   (TyAny)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                        ^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>                        ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
 >                                 ^^^^^^^^^^^^^^^^^: OmitKeyof<typeof context, "signal", "strictly">   (TyTypeReference)
@@ -779,10 +779,10 @@ export function streamedQuery<
 >                                                                           ^^^^^^^^^: any   (TyAny)
 
     let result = initialValue
->       ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>       ^^^^^^: TData   (TyTypeReference)
 
     let result = initialValue
->                ^^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>                ^^^^^^^^^^^^: TData   (TyTypeReference)
 
     for await (const chunk of stream) {
 >                    ^^^^^: any   (TyAny)
@@ -791,16 +791,16 @@ export function streamedQuery<
 >                             ^^^^^^: any   (TyAny)
 
       if (refetchMode === 'replace') {
->         ^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>         ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion)
 
         result = reducer(result, chunk)
->       ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>       ^^^^^^: TData   (TyTypeReference)
 
         result = reducer(result, chunk)
->                ^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>                ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
 
         result = reducer(result, chunk)
->                        ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>                        ^^^^^^: TData   (TyTypeReference)
 
         result = reducer(result, chunk)
 >                                ^^^^^: any   (TyAny)
@@ -827,7 +827,7 @@ export function streamedQuery<
 >                                                             ^^^^^^^^: any   (TyAny)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->         ^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>         ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >                 ^^^^^^^^: any   (TyAny)
@@ -836,7 +836,7 @@ export function streamedQuery<
 >                              ^^^^^^^^^: undefined   (TyUndefined)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                          ^^^^^^^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>                                          ^^^^^^^^^^^^: TData   (TyTypeReference)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >                                                         ^^^^^^^^: any   (TyAny)
@@ -863,10 +863,10 @@ export function streamedQuery<
 >                                                     ^^^^^^^^: any   (TyAny)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                                                  ^^^^^^: StreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyTypeReference)
+>                                                                  ^^^^^^: TData   (TyTypeReference)
 
 import { streamedQuery } from '../packages/query-core/src/streamedQuery'
->        ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
+>        ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
 
   DataTag,
 > ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
@@ -947,7 +947,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >     ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"], never>   (TyTypeReference)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>(_: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
+>               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = Array<TQueryFnData>, TQueryKey extends QueryKey = QueryKey>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey, never>   (TyFunction)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
 >                             ^^^^: any   (TyAny)
