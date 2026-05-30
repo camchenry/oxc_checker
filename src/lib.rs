@@ -3470,11 +3470,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &'a Function<'a>,
         node_id: NodeId,
     ) -> Ty<'a> {
-        let Some(function_name) = function
-            .id
-            .as_ref()
-            .map(|identifier| identifier.name.as_str())
-        else {
+        let Some(identifier) = function.id.as_ref() else {
+            return self.get_type_of_function_signature_with_node(
+                program_id,
+                FunctionKind::Function(function),
+                Some(node_id),
+            );
+        };
+        let function_name = identifier.name.as_str();
+        let Some(symbol_id) = identifier.symbol_id.get() else {
             return self.get_type_of_function_signature_with_node(
                 program_id,
                 FunctionKind::Function(function),
@@ -3482,23 +3486,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         };
 
-        // TODO(overloads): TypeScript Go groups overloads by symbol identity and declaration
-        // order. OXC exposes enough symbol data to tighten this later; this first pass uses
-        // same-program function declarations with the same name.
+        // TypeScript overloads share a symbol. Use semantic declarations instead of scanning the
+        // whole AST for same-name functions, which can also accidentally cross scope boundaries.
         let function_declarations = self
-            .nodes(program_id)
-            .iter_enumerated()
-            .filter_map(|(declaration_id, node)| match node.kind() {
-                AstKind::Function(candidate)
-                    if candidate
-                        .id
-                        .as_ref()
-                        .is_some_and(|identifier| identifier.name == function_name) =>
-                {
-                    Some((declaration_id, candidate))
-                }
-                _ => None,
-            })
+            .semantic(program_id)
+            .scoping()
+            .symbol_declarations(symbol_id)
+            .filter_map(
+                |declaration_id| match self.nodes(program_id).kind(declaration_id) {
+                    AstKind::Function(candidate) => Some((declaration_id, candidate)),
+                    AstKind::BindingIdentifier(_) => {
+                        let parent_id = self.nodes(program_id).parent_id(declaration_id);
+                        match self.nodes(program_id).kind(parent_id) {
+                            AstKind::Function(candidate) => Some((parent_id, candidate)),
+                            _ => None,
+                        }
+                    }
+                    _ => None,
+                },
+            )
             .collect::<Vec<_>>();
 
         let overload_declarations = function_declarations
