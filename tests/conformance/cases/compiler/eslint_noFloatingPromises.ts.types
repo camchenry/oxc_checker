@@ -23,16 +23,16 @@ promise;
 >^^^^^^^^: Promise<T>   (TyTypeReference)
 
 async function returnsPromise() {
->              ^^^^^^^^^^^^^^: () => string   (TyFunction)
+>              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(() => {});
->^^^^^^^^^^^^^^: () => string   (TyFunction)
+>^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(() => {});
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<string>   (TyTypeReference)
 
 returnsPromise().then(() => {});
->                ^^^^: any   (TyAny)
+>                ^^^^: <TResult1 = string, TResult2 = never>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
 
 Promise.reject('value').catch();
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -98,22 +98,22 @@ await promise;
 >     ^^^^^^^: Promise<T>   (TyTypeReference)
 
 async function returnsPromise() {
->              ^^^^^^^^^^^^^^: () => string   (TyFunction)
+>              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 void returnsPromise();
 >^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
 
 void returnsPromise();
->    ^^^^^^^^^^^^^^: () => string   (TyFunction)
+>    ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(
->^^^^^^^^^^^^^^: () => string   (TyFunction)
+>^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(
->^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^: Promise<string>   (TyTypeReference)
 
 returnsPromise().then(
->                ^^^^: any   (TyAny)
+>                ^^^^: <TResult1 = string, TResult2 = never>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
 
 Promise.reject('value').catch(() => {});
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -239,13 +239,13 @@ await createMyThenable();
 >     ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction)
 
 async function returnsPromise() {
->              ^^^^^^^^^^^^^^: () => string   (TyFunction)
+>              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 void returnsPromise();
 >^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
 
 void returnsPromise();
->    ^^^^^^^^^^^^^^: () => string   (TyFunction)
+>    ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 void Promise.reject('value');
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
@@ -263,7 +263,7 @@ await (async function () {
 > ^^^^^^^^^^^^^: any   (TyAny)
 
 (async function () {
->^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
 
   await res(1);
 > ^^^^^^^^^^^^^: any   (TyAny)

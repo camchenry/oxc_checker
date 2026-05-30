@@ -116900,7 +116900,7 @@ declare namespace WebAssembly {
 >                ^^^^^: string | undefined   (TyUnion)
 
         getArg(exceptionTag: Tag, index: number): any;
->       ^^^^^^: { (exceptionTag: Tag, index: number): any; (exceptionTag: Tag, index: number): any; }   (TyObject)
+>       ^^^^^^: (exceptionTag: Tag, index: number) => any   (TyFunction)
 
         getArg(exceptionTag: Tag, index: number): any;
 >              ^^^^^^^^^^^^: Tag   (TyTypeReference)
@@ -116915,7 +116915,7 @@ declare namespace WebAssembly {
 >                                 ^^^^^: number   (TyNumber)
 
         is(exceptionTag: Tag): boolean;
->       ^^: { (exceptionTag: Tag): boolean; (exceptionTag: Tag): boolean; }   (TyObject)
+>       ^^: (exceptionTag: Tag) => boolean   (TyFunction)
 
         is(exceptionTag: Tag): boolean;
 >          ^^^^^^^^^^^^: Tag   (TyTypeReference)
@@ -116987,7 +116987,7 @@ declare namespace WebAssembly {
 >                           ^: any   (TyAny)
 
         valueOf(): ValueTypeMap[T];
->       ^^^^^^^: { (): ValueTypeMap[T]; (): ValueTypeMap[T]; }   (TyObject)
+>       ^^^^^^^: () => ValueTypeMap[T]   (TyFunction)
 
         valueOf(): ValueTypeMap[T];
 >                  ^^^^^^^^^^^^: any   (TyAny)
@@ -117146,7 +117146,7 @@ declare namespace WebAssembly {
 >                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
         grow(delta: AddressValue): AddressValue;
->       ^^^^: { (delta: AddressValue): AddressValue; (delta: AddressValue): AddressValue; }   (TyObject)
+>       ^^^^: (delta: AddressValue) => AddressValue   (TyFunction)
 
         grow(delta: AddressValue): AddressValue;
 >            ^^^^^: AddressValue   (TyTypeReference)
@@ -117158,7 +117158,7 @@ declare namespace WebAssembly {
 >                                  ^^^^^^^^^^^^: any   (TyAny)
 
         toFixedLengthBuffer(): ArrayBuffer;
->       ^^^^^^^^^^^^^^^^^^^: { (): ArrayBuffer; (): ArrayBuffer; }   (TyObject)
+>       ^^^^^^^^^^^^^^^^^^^: () => ArrayBuffer   (TyFunction)
 
         toFixedLengthBuffer(): ArrayBuffer;
 >                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
@@ -117167,7 +117167,7 @@ declare namespace WebAssembly {
 >                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
         toResizableBuffer(): ArrayBuffer;
->       ^^^^^^^^^^^^^^^^^: { (): ArrayBuffer; (): ArrayBuffer; }   (TyObject)
+>       ^^^^^^^^^^^^^^^^^: () => ArrayBuffer   (TyFunction)
 
         toResizableBuffer(): ArrayBuffer;
 >                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
@@ -117341,7 +117341,7 @@ declare namespace WebAssembly {
 >                        ^^^^^^^^^^^^: any   (TyAny)
 
         get(index: AddressValue): any;
->       ^^^: { (index: AddressValue): any; (index: AddressValue): any; }   (TyObject)
+>       ^^^: (index: AddressValue) => any   (TyFunction)
 
         get(index: AddressValue): any;
 >           ^^^^^: AddressValue   (TyTypeReference)
@@ -117350,7 +117350,7 @@ declare namespace WebAssembly {
 >                  ^^^^^^^^^^^^: any   (TyAny)
 
         grow(delta: AddressValue, value?: any): AddressValue;
->       ^^^^: { (delta: AddressValue, value?: any): AddressValue; (delta: AddressValue, value?: any): AddressValue; }   (TyObject)
+>       ^^^^: (delta: AddressValue, value?: any) => AddressValue   (TyFunction)
 
         grow(delta: AddressValue, value?: any): AddressValue;
 >            ^^^^^: AddressValue   (TyTypeReference)
@@ -117365,7 +117365,7 @@ declare namespace WebAssembly {
 >                                               ^^^^^^^^^^^^: any   (TyAny)
 
         set(index: AddressValue, value?: any): void;
->       ^^^: { (index: AddressValue, value?: any): void; (index: AddressValue, value?: any): void; }   (TyObject)
+>       ^^^: (index: AddressValue, value?: any) => void   (TyFunction)
 
         set(index: AddressValue, value?: any): void;
 >           ^^^^^: AddressValue   (TyTypeReference)

@@ -10721,7 +10721,7 @@ declare namespace Intl {
 >             ^^^^^^^^: any   (TyAny)
 
         compare(x: string, y: string): number;
->       ^^^^^^^: { (x: string, y: string): number; (x: string, y: string): number; }   (TyObject)
+>       ^^^^^^^: (x: string, y: string) => number   (TyFunction)
 
         compare(x: string, y: string): number;
 >               ^: string   (TyString)
@@ -10730,7 +10730,7 @@ declare namespace Intl {
 >                          ^: string   (TyString)
 
         resolvedOptions(): ResolvedCollatorOptions;
->       ^^^^^^^^^^^^^^^: { (): ResolvedCollatorOptions; (): ResolvedCollatorOptions; }   (TyObject)
+>       ^^^^^^^^^^^^^^^: () => ResolvedCollatorOptions   (TyFunction)
 
         resolvedOptions(): ResolvedCollatorOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -10769,7 +10769,7 @@ declare namespace Intl {
 >                                                                 ^^^^^^^^: CollatorConstructor   (TyTypeReference)
 
         supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: CollatorOptions): string[]; (locales: string | string[], options?: CollatorOptions): string[]; }   (TyObject)
+>       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: CollatorOptions) => string[]   (TyFunction)
 
         supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion)
@@ -10937,13 +10937,13 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^: any   (TyAny)
 
         format(value: number): string;
->       ^^^^^^: { (value: number): string; (value: number): string; }   (TyObject)
+>       ^^^^^^: (value: number) => string   (TyFunction)
 
         format(value: number): string;
 >              ^^^^^: number   (TyNumber)
 
         resolvedOptions(): ResolvedNumberFormatOptions;
->       ^^^^^^^^^^^^^^^: { (): ResolvedNumberFormatOptions; (): ResolvedNumberFormatOptions; }   (TyObject)
+>       ^^^^^^^^^^^^^^^: () => ResolvedNumberFormatOptions   (TyFunction)
 
         resolvedOptions(): ResolvedNumberFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -10982,7 +10982,7 @@ declare namespace Intl {
 >                                                                     ^^^^^^^^^^^^: NumberFormatConstructor   (TyTypeReference)
 
         supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: NumberFormatOptions): string[]; (locales: string | string[], options?: NumberFormatOptions): string[]; }   (TyObject)
+>       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: NumberFormatOptions) => string[]   (TyFunction)
 
         supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion)
@@ -11102,7 +11102,7 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^^^: any   (TyAny)
 
         format(date?: Date | number): string;
->       ^^^^^^: { (date?: Date | number): string; (date?: Date | number): string; }   (TyObject)
+>       ^^^^^^: (date?: Date | number) => string   (TyFunction)
 
         format(date?: Date | number): string;
 >              ^^^^: Date | number | undefined   (TyUnion)
@@ -11114,7 +11114,7 @@ declare namespace Intl {
 >                     ^^^^: DateConstructor   (TyTypeReference)
 
         resolvedOptions(): ResolvedDateTimeFormatOptions;
->       ^^^^^^^^^^^^^^^: { (): ResolvedDateTimeFormatOptions; (): ResolvedDateTimeFormatOptions; }   (TyObject)
+>       ^^^^^^^^^^^^^^^: () => ResolvedDateTimeFormatOptions   (TyFunction)
 
         resolvedOptions(): ResolvedDateTimeFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -11153,7 +11153,7 @@ declare namespace Intl {
 >                                                                       ^^^^^^^^^^^^^^: DateTimeFormatConstructor   (TyTypeReference)
 
         supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: DateTimeFormatOptions): string[]; (locales: string | string[], options?: DateTimeFormatOptions): string[]; }   (TyObject)
+>       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: DateTimeFormatOptions) => string[]   (TyFunction)
 
         supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion)

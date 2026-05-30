@@ -47,6 +47,15 @@ enum FunctionKind<'a> {
     ArrowFunction(&'a ArrowFunctionExpression<'a>),
 }
 
+impl<'a> FunctionKind<'a> {
+    fn returns_promise(self) -> bool {
+        match self {
+            FunctionKind::Function(function) => function.r#async && !function.generator,
+            FunctionKind::ArrowFunction(function) => function.r#async,
+        }
+    }
+}
+
 struct ReturnExpressionVisitor<'a> {
     expressions: Vec<&'a Expression<'a>>,
 }
@@ -3199,36 +3208,57 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: FunctionKind<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        if let FunctionKind::ArrowFunction(arrow_function) = function
+        let return_type = if let FunctionKind::ArrowFunction(arrow_function) = function
             && let Some(expression) = arrow_function.get_expression()
         {
-            return self.get_return_expression_type(program_id, expression, node_id, false);
-        }
-
-        let body = match function {
-            FunctionKind::Function(f) => f.body.as_deref(),
-            FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
-        };
-        let Some(body) = body else {
-            return Ty::any();
-        };
-        let return_expressions = ReturnExpressionVisitor::expressions_in_body(body);
-        if return_expressions.is_empty() {
-            return Ty::void();
-        }
-
-        let preserve_literal_returns = return_expressions.len() > 1;
-        Ty::union(
-            self.arena(),
-            return_expressions.into_iter().map(|argument| {
-                self.get_return_expression_type(
-                    program_id,
-                    argument,
-                    node_id,
-                    preserve_literal_returns,
+            self.get_return_expression_type(program_id, expression, node_id, false)
+        } else {
+            let body = match function {
+                FunctionKind::Function(f) => f.body.as_deref(),
+                FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
+            };
+            let Some(body) = body else {
+                return Ty::any();
+            };
+            let return_expressions = ReturnExpressionVisitor::expressions_in_body(body);
+            if return_expressions.is_empty() {
+                Ty::void()
+            } else {
+                let preserve_literal_returns = return_expressions.len() > 1;
+                Ty::union(
+                    self.arena(),
+                    return_expressions.into_iter().map(|argument| {
+                        self.get_return_expression_type(
+                            program_id,
+                            argument,
+                            node_id,
+                            preserve_literal_returns,
+                        )
+                    }),
                 )
-            }),
-        )
+            }
+        };
+
+        if function.returns_promise() {
+            self.get_async_function_return_type(program_id, return_type)
+        } else {
+            return_type
+        }
+    }
+
+    fn get_async_function_return_type(
+        &self,
+        program_id: program::ProgramId,
+        return_type: Ty<'a>,
+    ) -> Ty<'a> {
+        match self.get_global_promise_type(program_id) {
+            Ty::Any => Ty::any(),
+            Ty::TypeReference(reference) => {
+                // TODO(correctness): TypeScript wraps async returns with Promise<Awaited<T>>.
+                Ty::type_reference(self.arena(), reference.name, [return_type])
+            }
+            _ => Ty::type_reference(self.arena(), "Promise", [return_type]),
+        }
     }
 
     fn get_return_expression_type(
@@ -6011,6 +6041,44 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "predicate").to_type_string(),
             "() => boolean"
+        );
+    }
+
+    #[test]
+    fn async_function_inference_wraps_return_type_in_promise() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        async function returnsString() {
+            return 'value';
+        }
+
+        async function empty() {}
+
+        const returnsNumber = async () => 1;
+        const stringResult = returnsString();
+        const emptyResult = empty();
+        const numberResult = returnsNumber();
+        "#,
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "returnsString").to_type_string(),
+            "() => Promise<string>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "stringResult"),
+            Ty::type_reference(arena, "Promise", [Ty::string()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "emptyResult"),
+            Ty::type_reference(arena, "Promise", [Ty::void()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "numberResult"),
+            Ty::type_reference(arena, "Promise", [Ty::number()])
         );
     }
 
