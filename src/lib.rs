@@ -3610,31 +3610,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         };
 
-        // TypeScript overloads share a symbol. Use semantic declarations instead of scanning the
-        // whole AST for same-name functions, which can also accidentally cross scope boundaries.
-        let function_declarations = self
-            .semantic(program_id)
-            .scoping()
-            .symbol_declarations(symbol_id)
-            .filter_map(
-                |declaration_id| match self.nodes(program_id).kind(declaration_id) {
-                    AstKind::Function(candidate) => Some((declaration_id, candidate)),
-                    AstKind::BindingIdentifier(_) => {
-                        let parent_id = self.nodes(program_id).parent_id(declaration_id);
-                        match self.nodes(program_id).kind(parent_id) {
-                            AstKind::Function(candidate) => Some((parent_id, candidate)),
-                            _ => None,
-                        }
-                    }
-                    _ => None,
-                },
-            )
-            .collect::<Vec<_>>();
+        let function_declarations =
+            self.function_declarations_for_value_symbol(program_id, symbol_id, function_name);
 
         let overload_declarations = function_declarations
             .iter()
             .copied()
-            .filter(|(_, candidate)| candidate.body.is_none())
+            .filter(|(_, _, candidate)| candidate.body.is_none())
             .collect::<Vec<_>>();
         let callable_declarations = if overload_declarations.is_empty() {
             function_declarations
@@ -3659,18 +3641,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::type_query(self.arena(), function_name, Ty::any(), std::iter::empty());
         }
 
-        let signatures = callable_declarations
-            .into_iter()
-            .map(|(declaration_id, declaration)| {
+        let signatures = callable_declarations.into_iter().map(
+            |(declaration_program_id, declaration_id, declaration)| {
                 let Ty::Function(function) = self.get_type_of_function_signature_with_node(
-                    program_id,
+                    declaration_program_id,
                     FunctionKind::Function(declaration),
                     Some(declaration_id),
                 ) else {
                     unreachable!("function declarations resolve to function types")
                 };
                 Signature::new(SignatureKind::Call, function)
-            });
+            },
+        );
         Ty::object_with_signatures(self.arena(), [], signatures)
     }
 
@@ -3678,6 +3660,74 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.nodes(program_id)
             .iter()
             .any(|node| matches!(node.kind(), AstKind::Class(class) if class.id.as_ref().is_some_and(|identifier| identifier.name == name)))
+    }
+
+    fn function_declarations_for_value_symbol(
+        &self,
+        program_id: program::ProgramId,
+        symbol_id: SymbolId,
+        function_name: &'a str,
+    ) -> Vec<(program::ProgramId, NodeId, &'a Function<'a>)> {
+        let scoping = self.semantic(program_id).scoping();
+        let is_root_function =
+            scoping.get_root_binding(Ident::from(function_name)) == Some(symbol_id);
+
+        if !is_root_function || !self.is_global_script_entry(program_id) {
+            return self.function_declarations_for_symbol(program_id, symbol_id);
+        }
+
+        let mut seen = HashSet::new();
+        self.store
+            .entries()
+            .iter()
+            .filter(|entry| !entry.is_lib() && self.is_global_script_entry(entry.id()))
+            .filter_map(|entry| {
+                entry
+                    .semantic()
+                    .scoping()
+                    .get_root_binding(Ident::from(function_name))
+                    .map(|symbol_id| (entry.id(), symbol_id))
+            })
+            .flat_map(|(program_id, symbol_id)| {
+                self.function_declarations_for_symbol(program_id, symbol_id)
+            })
+            .filter(|(program_id, declaration_id, _)| seen.insert((*program_id, *declaration_id)))
+            .collect()
+    }
+
+    fn function_declarations_for_symbol(
+        &self,
+        program_id: program::ProgramId,
+        symbol_id: SymbolId,
+    ) -> Vec<(program::ProgramId, NodeId, &'a Function<'a>)> {
+        // TypeScript overloads share a symbol. Use semantic declarations instead of scanning the
+        // whole AST for same-name functions, which can also accidentally cross scope boundaries.
+        self.semantic(program_id)
+            .scoping()
+            .symbol_declarations(symbol_id)
+            .filter_map(
+                |declaration_id| match self.nodes(program_id).kind(declaration_id) {
+                    AstKind::Function(candidate) => Some((program_id, declaration_id, candidate)),
+                    AstKind::BindingIdentifier(_) => {
+                        let parent_id = self.nodes(program_id).parent_id(declaration_id);
+                        match self.nodes(program_id).kind(parent_id) {
+                            AstKind::Function(candidate) => {
+                                Some((program_id, parent_id, candidate))
+                            }
+                            _ => None,
+                        }
+                    }
+                    _ => None,
+                },
+            )
+            .collect()
+    }
+
+    fn is_global_script_entry(&self, program_id: program::ProgramId) -> bool {
+        self.store.entry(program_id).is_some_and(|entry| {
+            entry.module_record().requested_modules.is_empty()
+                && entry.module_record().local_export_entries.is_empty()
+        })
     }
 
     fn variable_declarator_for_symbol(
@@ -6196,6 +6246,37 @@ mod test {
         assert_eq!(
             get_first_symbol_type(&ret, "reject").to_type_string(),
             "(reason?: any) => void"
+        );
+    }
+
+    #[test]
+    fn global_script_function_declarations_merge_across_programs() {
+        let allocator = Allocator::default();
+        let host = TestProgramHost::new("/project")
+            .add_file(
+                "/project/a.ts",
+                "async function returnsPromise() { return 'value'; }",
+            )
+            .add_file(
+                "/project/b.ts",
+                "async function returnsPromise() { return 'value'; }",
+            )
+            .add_file(
+                "/project/e.ts",
+                "async function returnsPromise() { return 'value'; }",
+            );
+        let store = program::ProgramStoreBuilder::new(&allocator, host)
+            .add_root_file("/project/a.ts")
+            .add_root_file("/project/b.ts")
+            .add_root_file("/project/e.ts")
+            .build()
+            .unwrap();
+        let program_id = store.id_for_path(Path::new("/project/a.ts")).unwrap();
+        let ret = ParseAndCheck { store, program_id };
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "returnsPromise").to_type_string(),
+            "{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }"
         );
     }
 
