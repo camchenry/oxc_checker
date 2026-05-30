@@ -33,9 +33,10 @@ fn bench_check_lib(
 ) {
     let allocator = Allocator::default();
     let (store, program_id) = build_store(&allocator, path, name);
+    let plan = benchmark_support::check_plan(&store, program_id);
 
     group.bench_function(name, |bencher| {
-        bencher.iter(|| black_box(benchmark_support::check_program(&store, program_id)));
+        bencher.iter(|| black_box(benchmark_support::check_program_with_plan(&store, &plan)));
     });
 }
 

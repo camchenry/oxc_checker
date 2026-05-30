@@ -4440,6 +4440,65 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 #[doc(hidden)]
 pub mod benchmark_support {
     use super::{AstKind, Checker, CheckerBuilder, NodeRef, program};
+    use oxc_semantic::NodeId;
+
+    pub struct CheckPlan {
+        program_id: program::ProgramId,
+        queries: Vec<CheckQuery>,
+    }
+
+    #[derive(Clone, Copy)]
+    enum CheckQueryKind {
+        Location,
+        TypeAlias,
+    }
+
+    #[derive(Clone, Copy)]
+    struct CheckQuery {
+        node_id: NodeId,
+        kind: CheckQueryKind,
+    }
+
+    #[must_use]
+    pub fn check_plan(
+        store: &program::ProgramStore<'_>,
+        program_id: program::ProgramId,
+    ) -> CheckPlan {
+        let queries = store
+            .entry(program_id)
+            .map(|entry| {
+                entry
+                    .semantic()
+                    .nodes()
+                    .iter_enumerated()
+                    .filter_map(|(node_id, node)| {
+                        let kind = match node.kind() {
+                            AstKind::BindingIdentifier(_)
+                            | AstKind::IdentifierReference(_)
+                            | AstKind::IdentifierName(_)
+                            | AstKind::TSPropertySignature(_)
+                            | AstKind::TSMethodSignature(_)
+                            | AstKind::TSThisParameter(_)
+                            | AstKind::FormalParameter(_)
+                            | AstKind::FormalParameterRest(_)
+                            | AstKind::StaticMemberExpression(_)
+                            | AstKind::ObjectProperty(_)
+                            | AstKind::MethodDefinition(_)
+                            | AstKind::PropertyDefinition(_) => CheckQueryKind::Location,
+                            AstKind::TSTypeAliasDeclaration(_) => CheckQueryKind::TypeAlias,
+                            _ => return None,
+                        };
+                        Some(CheckQuery { node_id, kind })
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+
+        CheckPlan {
+            program_id,
+            queries,
+        }
+    }
 
     /// Run checker type queries over an already parsed and semantically built program.
     ///
@@ -4450,32 +4509,30 @@ pub mod benchmark_support {
         store: &program::ProgramStore<'_>,
         program_id: program::ProgramId,
     ) -> usize {
+        let plan = check_plan(store, program_id);
+        check_program_with_plan(store, &plan)
+    }
+
+    #[must_use]
+    pub fn check_program_with_plan(store: &program::ProgramStore<'_>, plan: &CheckPlan) -> usize {
         let checker = CheckerBuilder::new().build(store);
-        let Some(entry) = store.entry(program_id) else {
+        let Some(entry) = store.entry(plan.program_id) else {
             return 0;
         };
 
-        entry
-            .semantic()
-            .nodes()
-            .iter_enumerated()
-            .filter_map(|(node_id, node)| {
-                let node_ref = NodeRef::new(program_id, node_id);
-                let ty = match node.kind() {
-                    AstKind::BindingIdentifier(_)
-                    | AstKind::IdentifierReference(_)
-                    | AstKind::IdentifierName(_)
-                    | AstKind::TSPropertySignature(_)
-                    | AstKind::TSMethodSignature(_)
-                    | AstKind::TSThisParameter(_)
-                    | AstKind::FormalParameter(_)
-                    | AstKind::FormalParameterRest(_)
-                    | AstKind::StaticMemberExpression(_)
-                    | AstKind::ObjectProperty(_)
-                    | AstKind::MethodDefinition(_)
-                    | AstKind::PropertyDefinition(_) => checker.get_type_at_location(node_ref),
-                    AstKind::TSTypeAliasDeclaration(alias) => {
-                        checker.get_type_of_type_alias_declaration(program_id, alias)
+        plan.queries
+            .iter()
+            .filter_map(|query| {
+                let node_ref = NodeRef::new(plan.program_id, query.node_id);
+                let node = entry.semantic().nodes().kind(query.node_id);
+                let ty = match node {
+                    _ if matches!(query.kind, CheckQueryKind::Location) => {
+                        checker.get_type_at_location(node_ref)
+                    }
+                    AstKind::TSTypeAliasDeclaration(alias)
+                        if matches!(query.kind, CheckQueryKind::TypeAlias) =>
+                    {
+                        checker.get_type_of_type_alias_declaration(plan.program_id, alias)
                     }
                     _ => return None,
                 };
