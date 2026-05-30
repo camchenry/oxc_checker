@@ -317,7 +317,7 @@ interface String {
 >         ^^^^^^: any   (TyAny)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->   ^^^^^: (matcher: {}) => RegExpMatchArray | null   (TyFunction)
+>   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: {}): RegExpMatchArray | null; (matcher: {}): RegExpMatchArray | null; }   (TyObject)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
 >         ^^^^^^^: {}   (TyObject)
@@ -338,7 +338,7 @@ interface String {
 >                                                                                 ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->   ^^^^^^^: (searchValue: {}, replaceValue: string) => string   (TyFunction)
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
 >           ^^^^^^^^^^^: {}   (TyObject)
@@ -359,7 +359,7 @@ interface String {
 >                                                                                             ^^^^^^^^^^^^: string   (TyString)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->   ^^^^^^^: (searchValue: {}, replacer: (substring: string, ...args: any[]) => string) => string   (TyFunction)
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
 >           ^^^^^^^^^^^: {}   (TyObject)
@@ -392,7 +392,7 @@ interface String {
 >                                                                                                                                                                 ^^^^: any[]   (TyArray)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->   ^^^^^^: (searcher: {}) => number   (TyFunction)
+>   ^^^^^^: { (regexp: string | RegExp): number; (searcher: {}): number; (searcher: {}): number; }   (TyObject)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
 >          ^^^^^^^^: {}   (TyObject)
@@ -407,7 +407,7 @@ interface String {
 >                                      ^^^^^^: string   (TyString)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->   ^^^^^: (splitter: {}, limit?: number) => string[]   (TyFunction)
+>   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; (splitter: {}, limit?: number): string[]; }   (TyObject)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
 >         ^^^^^^^^: {}   (TyObject)

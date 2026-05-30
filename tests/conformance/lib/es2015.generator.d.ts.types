@@ -23,7 +23,7 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                                                                                               ^^^^^: any   (TyAny)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->   ^^^^: (...[value]: [] | [TNext]) => IteratorResult<T, TReturn>   (TyFunction)
+>   ^^^^: { (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }   (TyObject)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
 >            ^^^^^: any   (TyAny)
@@ -41,7 +41,7 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                                                     ^^^^^^^: any   (TyAny)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->   ^^^^^^: (value: TReturn) => IteratorResult<T, TReturn>   (TyFunction)
+>   ^^^^^^: { (value: TReturn): IteratorResult<T, TReturn>; (value: TReturn): IteratorResult<T, TReturn>; }   (TyObject)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
 >          ^^^^^: TReturn   (TyTypeReference)
@@ -59,7 +59,7 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                                             ^^^^^^^: any   (TyAny)
 
     throw(e: any): IteratorResult<T, TReturn>;
->   ^^^^^: (e: any) => IteratorResult<T, TReturn>   (TyFunction)
+>   ^^^^^: { (e: any): IteratorResult<T, TReturn>; (e: any): IteratorResult<T, TReturn>; }   (TyObject)
 
     throw(e: any): IteratorResult<T, TReturn>;
 >         ^: any   (TyAny)

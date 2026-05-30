@@ -2417,6 +2417,89 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_type_of_ts_method_signature_location(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        method: &'a oxc_ast::ast::TSMethodSignature<'a>,
+    ) -> Ty<'a> {
+        let Some(method_name) = property_key_name_str(&method.key) else {
+            let signature = self.signature_from_function_parts(
+                program_id,
+                SignatureKind::Call,
+                method.type_parameters.as_deref(),
+                method.params.as_ref(),
+                method.return_type.as_deref(),
+            );
+            return Ty::Function(signature.function);
+        };
+
+        let Some(current_interface) =
+            self.nodes(program_id)
+                .ancestor_kinds(node_id)
+                .find_map(|kind| match kind {
+                    AstKind::TSInterfaceDeclaration(interface) => Some(interface),
+                    _ => None,
+                })
+        else {
+            let signature = self.signature_from_function_parts(
+                program_id,
+                SignatureKind::Call,
+                method.type_parameters.as_deref(),
+                method.params.as_ref(),
+                method.return_type.as_deref(),
+            );
+            return Ty::Function(signature.function);
+        };
+
+        let current_type_arguments = type_parameters_from_declaration(
+            self.arena(),
+            current_interface.type_parameters.as_deref(),
+        )
+        .into_iter()
+        .map(|type_parameter| Ty::type_reference(self.arena(), type_parameter.name, []))
+        .collect::<Vec<_>>();
+
+        let method_signatures = self
+            .interface_declarations_for_name(current_interface.id.name.as_str())
+            .into_iter()
+            .flat_map(|(interface_program_id, interface)| {
+                let substitutions = self.type_parameter_substitutions_for_type_arguments(
+                    interface.type_parameters.as_deref(),
+                    &current_type_arguments,
+                );
+                interface.body.body.iter().filter_map(move |signature| {
+                    let TSSignature::TSMethodSignature(candidate) = signature else {
+                        return None;
+                    };
+                    (property_key_name_str(&candidate.key) == Some(method_name)).then(|| {
+                        self.signature_from_function_parts(
+                            interface_program_id,
+                            SignatureKind::Call,
+                            candidate.type_parameters.as_deref(),
+                            candidate.params.as_ref(),
+                            candidate.return_type.as_deref(),
+                        )
+                        .substitute_type_parameters(self.arena(), &substitutions)
+                    })
+                })
+            })
+            .collect::<Vec<_>>();
+
+        if method_signatures.is_empty() {
+            let signature = self.signature_from_function_parts(
+                program_id,
+                SignatureKind::Call,
+                method.type_parameters.as_deref(),
+                method.params.as_ref(),
+                method.return_type.as_deref(),
+            );
+            Ty::Function(signature.function)
+        } else {
+            Ty::object_with_signatures(self.arena(), [], method_signatures)
+        }
+    }
+
     fn type_parameter_substitutions_for_reference(
         &self,
         type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
@@ -4129,14 +4212,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 }
             }
             AstKind::TSMethodSignature(method) => {
-                let signature = self.signature_from_function_parts(
-                    node.program_id,
-                    SignatureKind::Call,
-                    method.type_parameters.as_deref(),
-                    method.params.as_ref(),
-                    method.return_type.as_deref(),
-                );
-                Ty::Function(signature.function)
+                self.get_type_of_ts_method_signature_location(node.program_id, node.node_id, method)
             }
             AstKind::FormalParameter(parameter) => {
                 parameter.type_annotation.as_deref().map_or_else(
@@ -4626,6 +4702,27 @@ mod test {
                     if property_key_name_str(&property.key) == Some(name) =>
                 {
                     Some(checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)))
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
+    fn get_ts_method_signature_types(ret: &ParseAndCheck<'_>, name: &str) -> Vec<String> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        semantic
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| match node.kind() {
+                AstKind::TSMethodSignature(method)
+                    if property_key_name_str(&method.key) == Some(name) =>
+                {
+                    Some(
+                        checker
+                            .get_type_at_location(NodeRef::new(ret.program_id, node_id))
+                            .to_type_string(),
+                    )
                 }
                 _ => None,
             })
@@ -5634,6 +5731,30 @@ mod test {
 
         assert_eq!(get_global_symbol_type(&ret, "fromString"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "fromNumber"), Ty::number());
+    }
+
+    #[test]
+    fn merged_interface_method_signature_locations_use_overload_object_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface MapLike<K> {
+            delete(key: K): boolean;
+        }
+        interface MapLike<K> {
+            delete(key: K): boolean;
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_ts_method_signature_types(&ret, "delete"),
+            vec![
+                "{ (key: K): boolean; (key: K): boolean; }".to_string(),
+                "{ (key: K): boolean; (key: K): boolean; }".to_string(),
+            ]
+        );
     }
 
     #[test]

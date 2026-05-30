@@ -5,7 +5,7 @@ interface ProxyHandler<T extends object> {
 >                      ^: any   (TyAny)
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
->   ^^^^^: (target: T, thisArg: any, argArray: any[]) => any   (TyFunction)
+>   ^^^^^: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; }   (TyObject)
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
 >          ^^^^^^: T   (TyTypeReference)
@@ -20,7 +20,7 @@ interface ProxyHandler<T extends object> {
 >                                   ^^^^^^^^: any[]   (TyArray)
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
->   ^^^^^^^^^: (target: T, argArray: any[], newTarget: Function) => object   (TyFunction)
+>   ^^^^^^^^^: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; }   (TyObject)
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
 >              ^^^^^^: T   (TyTypeReference)
@@ -41,7 +41,7 @@ interface ProxyHandler<T extends object> {
 >                                                     ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
->   ^^^^^^^^^^^^^^: (target: T, property: string | symbol, attributes: PropertyDescriptor) => boolean   (TyFunction)
+>   ^^^^^^^^^^^^^^: { (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; }   (TyObject)
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
 >                   ^^^^^^: T   (TyTypeReference)
@@ -59,7 +59,7 @@ interface ProxyHandler<T extends object> {
 >                                                                     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     deleteProperty?(target: T, p: string | symbol): boolean;
->   ^^^^^^^^^^^^^^: (target: T, p: string | symbol) => boolean   (TyFunction)
+>   ^^^^^^^^^^^^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; }   (TyObject)
 
     deleteProperty?(target: T, p: string | symbol): boolean;
 >                   ^^^^^^: T   (TyTypeReference)
@@ -71,7 +71,7 @@ interface ProxyHandler<T extends object> {
 >                              ^: string | symbol   (TyUnion)
 
     get?(target: T, p: string | symbol, receiver: any): any;
->   ^^^: (target: T, p: string | symbol, receiver: any) => any   (TyFunction)
+>   ^^^: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; }   (TyObject)
 
     get?(target: T, p: string | symbol, receiver: any): any;
 >        ^^^^^^: T   (TyTypeReference)
@@ -86,7 +86,7 @@ interface ProxyHandler<T extends object> {
 >                                       ^^^^^^^^: any   (TyAny)
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
->   ^^^^^^^^^^^^^^^^^^^^^^^^: (target: T, p: string | symbol) => PropertyDescriptor | undefined   (TyFunction)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: { (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; }   (TyObject)
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
 >                             ^^^^^^: T   (TyTypeReference)
@@ -101,7 +101,7 @@ interface ProxyHandler<T extends object> {
 >                                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     getPrototypeOf?(target: T): object | null;
->   ^^^^^^^^^^^^^^: (target: T) => object | null   (TyFunction)
+>   ^^^^^^^^^^^^^^: { (target: T): object | null; (target: T): object | null; }   (TyObject)
 
     getPrototypeOf?(target: T): object | null;
 >                   ^^^^^^: T   (TyTypeReference)
@@ -110,7 +110,7 @@ interface ProxyHandler<T extends object> {
 >                           ^: any   (TyAny)
 
     has?(target: T, p: string | symbol): boolean;
->   ^^^: (target: T, p: string | symbol) => boolean   (TyFunction)
+>   ^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; }   (TyObject)
 
     has?(target: T, p: string | symbol): boolean;
 >        ^^^^^^: T   (TyTypeReference)
@@ -122,7 +122,7 @@ interface ProxyHandler<T extends object> {
 >                   ^: string | symbol   (TyUnion)
 
     isExtensible?(target: T): boolean;
->   ^^^^^^^^^^^^: (target: T) => boolean   (TyFunction)
+>   ^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; }   (TyObject)
 
     isExtensible?(target: T): boolean;
 >                 ^^^^^^: T   (TyTypeReference)
@@ -131,7 +131,7 @@ interface ProxyHandler<T extends object> {
 >                         ^: any   (TyAny)
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
->   ^^^^^^^: (target: T) => ArrayLike<string | symbol>   (TyFunction)
+>   ^^^^^^^: { (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; }   (TyObject)
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
 >            ^^^^^^: T   (TyTypeReference)
@@ -143,7 +143,7 @@ interface ProxyHandler<T extends object> {
 >                        ^^^^^^^^^: any   (TyAny)
 
     preventExtensions?(target: T): boolean;
->   ^^^^^^^^^^^^^^^^^: (target: T) => boolean   (TyFunction)
+>   ^^^^^^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; }   (TyObject)
 
     preventExtensions?(target: T): boolean;
 >                      ^^^^^^: T   (TyTypeReference)
@@ -152,7 +152,7 @@ interface ProxyHandler<T extends object> {
 >                              ^: any   (TyAny)
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
->   ^^^: (target: T, p: string | symbol, newValue: any, receiver: any) => boolean   (TyFunction)
+>   ^^^: { (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; }   (TyObject)
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
 >        ^^^^^^: T   (TyTypeReference)
@@ -170,7 +170,7 @@ interface ProxyHandler<T extends object> {
 >                                                      ^^^^^^^^: any   (TyAny)
 
     setPrototypeOf?(target: T, v: object | null): boolean;
->   ^^^^^^^^^^^^^^: (target: T, v: object | null) => boolean   (TyFunction)
+>   ^^^^^^^^^^^^^^: { (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; }   (TyObject)
 
     setPrototypeOf?(target: T, v: object | null): boolean;
 >                   ^^^^^^: T   (TyTypeReference)
@@ -185,7 +185,7 @@ interface ProxyConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
->   ^^^^^^^^^: <T extends object>(target: T, handler: ProxyHandler<T>) => { proxy: T; revoke: () => void; }   (TyFunction)
+>   ^^^^^^^^^: { <T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; }; <T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; }; }   (TyObject)
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
 >             ^: any   (TyAny)
