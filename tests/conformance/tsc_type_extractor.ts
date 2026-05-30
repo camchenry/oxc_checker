@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
+import { parseArgs as parseNodeArgs } from "node:util";
 import { Worker, isMainThread, parentPort, workerData } from "node:worker_threads";
 import type * as typescript from "typescript";
 
@@ -63,6 +64,15 @@ interface WorkerData {
   tasks: CompilerTask[];
 }
 
+interface CliArgs {
+  repoRoot: string;
+  casesRoot: string;
+  out: string;
+  caseDiscovery: CaseDiscovery;
+  workerCount: number;
+  casePath?: string;
+}
+
 const DEFAULT_WORKERS = Math.max(
   1,
   Math.min(8, os.availableParallelism ? os.availableParallelism() : os.cpus().length || 1),
@@ -80,21 +90,32 @@ function conformanceTypeFormatFlags(ts: TypeScript): typescript.TypeFormatFlags 
     | ts.TypeFormatFlags.NoTypeReduction;
 }
 
-function parseArgs(argv: string[]): Map<string, string> {
-  const args = new Map<string, string>();
-  for (let i = 2; i < argv.length; i += 2) {
-    const key = argv[i];
-    const value = argv[i + 1];
-    if (!key || !key.startsWith("--") || value === undefined) {
-      throw new Error("usage: tsc_type_extractor.ts --cases-root DIR --out FILE|- [--repo-root DIR] [--case FILE] [--case-discovery compiler|all] [--workers N]");
-    }
-    args.set(key.slice(2), value);
-  }
-  return args;
+function parseCliArgs(argv: string[]): CliArgs {
+  const { values } = parseNodeArgs({
+    args: argv.slice(2),
+    allowPositionals: false,
+    options: {
+      "case": { type: "string" },
+      "case-discovery": { type: "string" },
+      "cases-root": { type: "string" },
+      "out": { type: "string" },
+      "repo-root": { type: "string" },
+      "workers": { type: "string" },
+    },
+    strict: true,
+  });
+
+  return {
+    repoRoot: path.resolve(values["repo-root"] || process.cwd()),
+    casesRoot: path.resolve(requiredArg(values["cases-root"], "cases-root")),
+    out: requiredArg(values.out, "out"),
+    caseDiscovery: parseCaseDiscovery(values["case-discovery"]),
+    workerCount: parseWorkerCount(values.workers),
+    casePath: values.case,
+  };
 }
 
-function requiredArg(args: Map<string, string>, name: string): string {
-  const value = args.get(name);
+function requiredArg(value: string | undefined, name: string): string {
   if (value === undefined) {
     throw new Error(`missing required --${name} argument`);
   }
@@ -699,15 +720,15 @@ async function workerMain(): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  const args = parseArgs(process.argv);
-  const repoRoot = path.resolve(args.get("repo-root") || process.cwd());
-  const casesRoot = path.resolve(requiredArg(args, "cases-root"));
-  const outArg = requiredArg(args, "out");
+  const args = parseCliArgs(process.argv);
+  const repoRoot = args.repoRoot;
+  const casesRoot = args.casesRoot;
+  const outArg = args.out;
   const outPath = outArg === "-" ? undefined : path.resolve(outArg);
-  const caseDiscovery = parseCaseDiscovery(args.get("case-discovery"));
-  const workerCount = parseWorkerCount(args.get("workers"));
+  const caseDiscovery = args.caseDiscovery;
+  const workerCount = args.workerCount;
   const ts = await loadTypeScript(repoRoot);
-  const casePath = args.get("case");
+  const casePath = args.casePath;
   const files = casePath
     ? [resolveSingleCase(casesRoot, caseDiscovery, casePath)]
     : discoverCompilerCases(casesRoot, caseDiscovery);
