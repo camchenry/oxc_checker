@@ -319,7 +319,7 @@ fn type_matches_typeof(ty: Ty<'_>, witness: TypeofWitness) -> bool {
 fn is_definitely_falsy(ty: Ty<'_>) -> bool {
     match ty {
         Ty::Undefined | Ty::Null => true,
-        Ty::BooleanLiteral(boolean) => !boolean.value,
+        Ty::BooleanLiteral(value) => !value,
         _ => false,
     }
 }

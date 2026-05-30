@@ -62,7 +62,7 @@ pub(crate) enum Ty<'a> {
     TypeQuery(&'a TyTypeQuery<'a>),
     StringLiteral(&'a TyStringLiteral<'a>),
     NumberLiteral(&'a TyNumberLiteral<'a>),
-    BooleanLiteral(&'a TyBooleanLiteral),
+    BooleanLiteral(bool),
     BigIntLiteral(&'a TyBigIntLiteral<'a>),
     TemplateLiteral(&'a TyTemplateLiteral<'a>),
     Array(&'a TyArray<'a>),
@@ -185,11 +185,6 @@ pub(crate) struct TyStringLiteral<'a> {
 pub(crate) struct TyNumberLiteral<'a> {
     // TODO(ast): use a number type?
     pub(crate) value: &'a str,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyBooleanLiteral {
-    pub(crate) value: bool,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -357,22 +352,22 @@ impl<'a> Ty<'a> {
     }
 
     /// Literal `boolean` type (`true` or `false`), subtype of `boolean`
-    pub(crate) fn boolean_literal(arena: CheckerArena<'a>, value: bool) -> Self {
+    pub(crate) fn boolean_literal(value: bool) -> Self {
         if value {
-            Self::boolean_true(arena)
+            Self::boolean_true()
         } else {
-            Self::boolean_false(arena)
+            Self::boolean_false()
         }
     }
 
     /// Literal `true` type (subtype of `boolean`)
-    pub(crate) fn boolean_true(arena: CheckerArena<'a>) -> Self {
-        Self::BooleanLiteral(arena.alloc(TyBooleanLiteral { value: true }))
+    pub(crate) fn boolean_true() -> Self {
+        Self::BooleanLiteral(true)
     }
 
     /// Literal `false` type (subtype of `boolean`)
-    pub(crate) fn boolean_false(arena: CheckerArena<'a>) -> Self {
-        Self::BooleanLiteral(arena.alloc(TyBooleanLiteral { value: false }))
+    pub(crate) fn boolean_false() -> Self {
+        Self::BooleanLiteral(false)
     }
 
     pub(crate) fn bigint() -> Self {
@@ -844,11 +839,7 @@ impl<'a> Ty<'a> {
             }
             TSType::TSLiteralType(literal) => match &literal.literal {
                 TSLiteral::BooleanLiteral(boolean_literal) => {
-                    if boolean_literal.value {
-                        Self::boolean_true(arena)
-                    } else {
-                        Self::boolean_false(arena)
-                    }
+                    Self::boolean_literal(boolean_literal.value)
                 }
                 TSLiteral::NumericLiteral(numeric_literal) => {
                     let name = numeric_literal.raw.as_ref().map_or_else(
@@ -1386,7 +1377,7 @@ impl<'a> Ty<'a> {
                 format!("{content:?}")
             }
             Self::NumberLiteral(number_literal) => number_literal.value.to_string(),
-            Self::BooleanLiteral(boolean_literal) => boolean_literal.value.to_string(),
+            Self::BooleanLiteral(value) => value.to_string(),
             Self::BigIntLiteral(big_int_literal) => format!("{}n", big_int_literal.value),
             Self::TemplateLiteral(template_literal) => {
                 let mut repr = String::from("`");
@@ -3062,7 +3053,7 @@ mod tests {
             Ty::string()
         );
         assert_eq!(
-            Ty::r#union(arena, [Ty::boolean_true(arena), Ty::boolean()]),
+            Ty::r#union(arena, [Ty::boolean_true(), Ty::boolean()]),
             Ty::boolean()
         );
         assert_eq!(
