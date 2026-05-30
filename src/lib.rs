@@ -31,6 +31,7 @@ use std::{
 
 mod flow;
 mod global_lib;
+mod global_types;
 pub mod program;
 mod relations;
 mod types;
@@ -436,6 +437,7 @@ impl CheckerBuilder {
         CheckerReturn {
             store,
             arena: CheckerArena::new(store.allocator()),
+            global_symbols: global_types::GlobalSymbolTable::new(store),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_class_members: RefCell::new(Vec::new()),
         }
@@ -475,6 +477,7 @@ impl SymbolRef {
 struct CheckerReturn<'a, 'store> {
     store: &'store program::ProgramStore<'a>,
     arena: CheckerArena<'a>,
+    global_symbols: global_types::GlobalSymbolTable,
     resolving_symbols: RefCell<Vec<SymbolRef>>,
     resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
 }
@@ -542,12 +545,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         match expression {
             Expression::Identifier(identifier) => {
-                // TODO: I think we actually need to check if this is the *global* `undefined` reference,
-                // but for now we'll just assume it's always the global one.
-                if identifier.name == UNDEFINED_IDENT {
-                    return Ty::undefined();
-                }
-                identifier
+                let symbol = identifier
                     .reference_id
                     .get()
                     .and_then(|reference_id| {
@@ -559,8 +557,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
                     .or_else(|| {
                         self.get_value_symbol_for_name(program_id, identifier.name.as_str())
-                    })
-                    .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol))
+                    });
+                if let Some(symbol) = symbol {
+                    return self.get_type_of_symbol(symbol);
+                }
+                if identifier.name == UNDEFINED_IDENT {
+                    return Ty::undefined();
+                }
+                Ty::any()
             }
             Expression::ObjectExpression(object) => {
                 self.get_type_of_object_expression(program_id, object, node_id)
@@ -1322,35 +1326,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             properties,
             signatures,
         ))
-    }
-
-    fn get_global_array_type_reference_type(
-        &self,
-        program_id: program::ProgramId,
-        type_name: &str,
-        type_arguments: &[Ty<'a>],
-    ) -> Option<Ty<'a>> {
-        let [element_type] = type_arguments else {
-            return None;
-        };
-        let readonly = match type_name {
-            "Array" => false,
-            "ReadonlyArray" => true,
-            _ => return None,
-        };
-        let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
-        if !self
-            .store
-            .entry(symbol.program_id)
-            .is_some_and(program::ProgramEntry::is_lib)
-        {
-            return None;
-        }
-        Some(if readonly {
-            Ty::readonly_array(self.arena(), *element_type)
-        } else {
-            Ty::array(self.arena(), *element_type)
-        })
     }
 
     /// Expand references to aliases whose underlying type is a `typeof` query.
@@ -2576,168 +2551,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .scoping()
             .get_root_binding(Ident::from(name))
             .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
-    }
-
-    fn get_type_symbol_for_name(
-        &self,
-        program_id: program::ProgramId,
-        type_name: &str,
-    ) -> Option<SymbolRef> {
-        self.get_type_symbol_in_program(program_id, type_name)
-            .or_else(|| {
-                self.store
-                    .entries()
-                    .iter()
-                    .find_map(|entry| self.get_type_symbol_in_program(entry.id(), type_name))
-            })
-    }
-
-    fn get_value_symbol_for_name(
-        &self,
-        program_id: program::ProgramId,
-        value_name: &str,
-    ) -> Option<SymbolRef> {
-        self.get_value_symbol_in_program(program_id, value_name)
-            .or_else(|| {
-                self.store
-                    .entries()
-                    .iter()
-                    .find_map(|entry| self.get_value_symbol_in_program(entry.id(), value_name))
-            })
-    }
-
-    fn get_type_symbol_in_program(
-        &self,
-        program_id: program::ProgramId,
-        type_name: &str,
-    ) -> Option<SymbolRef> {
-        if let Some(symbol) = self
-            .get_root_symbol(program_id, type_name)
-            .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
-            .filter(|symbol| self.symbol_has_type_meaning(*symbol))
-        {
-            return Some(symbol);
-        }
-
-        self.nodes(program_id)
-            .iter()
-            .find_map(|node| match node.kind() {
-                AstKind::TSInterfaceDeclaration(interface) if interface.id.name == type_name => {
-                    interface
-                        .id
-                        .symbol_id
-                        .get()
-                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
-                }
-                AstKind::TSTypeAliasDeclaration(alias) if alias.id.name == type_name => alias
-                    .id
-                    .symbol_id
-                    .get()
-                    .map(|symbol_id| SymbolRef::new(program_id, symbol_id)),
-                AstKind::Class(class)
-                    if class
-                        .id
-                        .as_ref()
-                        .is_some_and(|identifier| identifier.name == type_name) =>
-                {
-                    class
-                        .id
-                        .as_ref()
-                        .and_then(|identifier| identifier.symbol_id.get())
-                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
-                }
-                _ => None,
-            })
-    }
-
-    fn get_value_symbol_in_program(
-        &self,
-        program_id: program::ProgramId,
-        value_name: &str,
-    ) -> Option<SymbolRef> {
-        if let Some(symbol) = self
-            .get_root_symbol(program_id, value_name)
-            .and_then(|symbol| self.get_imported_symbol(symbol).or(Some(symbol)))
-            .filter(|symbol| self.symbol_has_value_meaning(*symbol))
-        {
-            return Some(symbol);
-        }
-
-        self.nodes(program_id)
-            .iter()
-            .find_map(|node| match node.kind() {
-                AstKind::VariableDeclarator(declarator)
-                    if binding_pattern_name_str(&declarator.id) == Some(value_name) =>
-                {
-                    binding_pattern_symbol_id(&declarator.id)
-                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
-                }
-                AstKind::Function(function)
-                    if function
-                        .id
-                        .as_ref()
-                        .is_some_and(|identifier| identifier.name == value_name) =>
-                {
-                    function
-                        .id
-                        .as_ref()
-                        .and_then(|identifier| identifier.symbol_id.get())
-                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
-                }
-                AstKind::Class(class)
-                    if class
-                        .id
-                        .as_ref()
-                        .is_some_and(|identifier| identifier.name == value_name) =>
-                {
-                    class
-                        .id
-                        .as_ref()
-                        .and_then(|identifier| identifier.symbol_id.get())
-                        .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
-                }
-                _ => None,
-            })
-    }
-
-    fn symbol_has_type_meaning(&self, symbol: SymbolRef) -> bool {
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
-        match self.nodes(symbol.program_id).kind(declaration) {
-            AstKind::TSInterfaceDeclaration(_)
-            | AstKind::TSTypeAliasDeclaration(_)
-            | AstKind::Class(_) => true,
-            AstKind::BindingIdentifier(_) => matches!(
-                self.nodes(symbol.program_id).parent_kind(declaration),
-                AstKind::TSInterfaceDeclaration(_)
-                    | AstKind::TSTypeAliasDeclaration(_)
-                    | AstKind::Class(_)
-            ),
-            AstKind::ImportSpecifier(_)
-            | AstKind::ImportDefaultSpecifier(_)
-            | AstKind::ImportNamespaceSpecifier(_) => true,
-            _ => false,
-        }
-    }
-
-    fn symbol_has_value_meaning(&self, symbol: SymbolRef) -> bool {
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
-        match self.nodes(symbol.program_id).kind(declaration) {
-            AstKind::VariableDeclarator(_) | AstKind::Function(_) | AstKind::Class(_) => true,
-            AstKind::BindingIdentifier(_) => matches!(
-                self.nodes(symbol.program_id).parent_kind(declaration),
-                AstKind::VariableDeclarator(_) | AstKind::Function(_) | AstKind::Class(_)
-            ),
-            AstKind::ImportSpecifier(_)
-            | AstKind::ImportDefaultSpecifier(_)
-            | AstKind::ImportNamespaceSpecifier(_) => true,
-            _ => false,
-        }
     }
 
     fn interface_declarations_for_name(
@@ -4182,14 +3995,18 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 },
                 |symbol_id| self.get_type_of_symbol(SymbolRef::new(node.program_id, symbol_id)),
             ),
-            AstKind::IdentifierReference(identifier) if identifier.name == UNDEFINED_IDENT => {
-                Ty::undefined()
-            }
             AstKind::IdentifierReference(identifier) => {
                 self.get_symbol_at_location(node).map_or_else(
                     || {
-                        self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
+                        if identifier.name == UNDEFINED_IDENT {
+                            Ty::undefined()
+                        } else {
+                            self.get_value_symbol_for_name(
+                                node.program_id,
+                                identifier.name.as_str(),
+                            )
                             .map_or_else(Ty::none, |symbol| self.get_type_of_symbol(symbol))
+                        }
                     },
                     |symbol| {
                         let base_type = self.get_type_of_symbol(symbol);
@@ -4693,6 +4510,15 @@ mod test {
         checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id))
     }
 
+    fn get_global_type<'a>(
+        ret: &ParseAndCheck<'a>,
+        program_id: program::ProgramId,
+        name: &str,
+    ) -> Ty<'a> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        checker.get_global_type(program_id, name)
+    }
+
     fn get_object_property_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
         let checker = CheckerBuilder::new().build(&ret.store);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
@@ -4819,6 +4645,103 @@ mod test {
             checker
                 .get_value_symbol_for_name(program_id, "Array")
                 .is_none()
+        );
+    }
+
+    #[test]
+    fn global_symbol_table_resolves_other_root_script_declarations() {
+        let allocator = Allocator::default();
+        let host = TestProgramHost::new("/project")
+            .add_file("/project/main.ts", "const value = shared;")
+            .add_file(
+                "/project/globals.ts",
+                "interface Shared { count: number } declare const shared: Shared;",
+            );
+        let store = program::ProgramStoreBuilder::new(&allocator, host)
+            .add_root_file("/project/main.ts")
+            .add_root_file("/project/globals.ts")
+            .build()
+            .unwrap();
+        let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
+        let checker = CheckerBuilder::new().build(&store);
+        let scoping = store.entry(program_id).unwrap().semantic().scoping();
+        let value_symbol_id = scoping.get_root_binding(Ident::from("value")).unwrap();
+
+        assert!(
+            checker
+                .get_type_symbol_for_name(program_id, "Shared")
+                .is_some()
+        );
+        assert_eq!(
+            checker
+                .get_type_of_symbol(SymbolRef::new(program_id, value_symbol_id))
+                .to_type_string(),
+            "Shared"
+        );
+    }
+
+    #[test]
+    fn local_value_symbols_shadow_default_lib_globals() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const Array = 1;
+        const value = Array;
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value"),
+            Ty::number_literal(arena, "1")
+        );
+    }
+
+    #[test]
+    fn local_undefined_binding_wins_before_global_undefined_fallback() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const undefined = 1;
+        const value = undefined;
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value"),
+            Ty::number_literal(arena, "1")
+        );
+        assert_eq!(
+            get_identifier_reference_types(&ret, "undefined"),
+            vec![Ty::number_literal(arena, "1")]
+        );
+    }
+
+    #[test]
+    fn parameter_named_undefined_shadows_global_undefined() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        function shadow(undefined: number) {
+            const inside = undefined;
+        }
+        const outside = undefined;
+        ",
+        );
+
+        assert_eq!(get_first_symbol_type(&ret, "inside"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "outside"), Ty::undefined());
+        assert_eq!(
+            get_identifier_reference_types(&ret, "undefined"),
+            vec![Ty::number(), Ty::undefined()]
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret, "shadow", "undefined"),
+            Ty::number()
         );
     }
 
@@ -6275,6 +6198,23 @@ declare function acceptsPredicate<T, S extends T>(
         assert_eq!(
             get_first_symbol_type(&ret, "assertion").to_type_string(),
             "(value: unknown) => asserts value is string"
+        );
+    }
+
+    #[test]
+    fn test_get_global_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "");
+        let checker = CheckerBuilder::new().build(&ret.store);
+
+        // Now test things that should be in the global environment:
+        assert_eq!(
+            get_global_type(&ret, ret.program_id, "Promise"),
+            Ty::type_reference(arena(&ret), "Promise", std::iter::empty())
+        );
+        assert_eq!(
+            checker.get_global_promise_type(ret.program_id),
+            Ty::type_reference(arena(&ret), "Promise", std::iter::empty())
         );
     }
 }
