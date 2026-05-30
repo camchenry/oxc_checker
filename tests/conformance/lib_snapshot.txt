@@ -3588,7 +3588,7 @@ FAIL src/lib/es5.d.ts matched_types=3170 mismatched_types=270 total_types=3440 m
       expected: PromiseConstructor
       actual:   any
   - src/lib/es5.d.ts:1552 `Awaited` type mismatch
-      expected: T extends null | undefined ? T : T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? F extends (value: infer V, ...args: infer _) => any ? Awaited<...> : never : T
+      expected: T extends null | undefined ? T : T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? F extends (value: infer V, ...args: infer _) => any ? Awaited<V> : never : T
       actual:   T extends (null | undefined) ? T : T extends (object & { then: (onfulfilled: infer F, ...args: infer _) => any; }) ? F extends ((value: infer V, ...args: infer _) => any) ? Awaited<V> : never : T
   - src/lib/es5.d.ts:1553 `onfulfilled` type mismatch
       expected: F

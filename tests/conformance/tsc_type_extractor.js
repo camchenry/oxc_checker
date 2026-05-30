@@ -400,7 +400,9 @@ function recordForNode(ts, checker, sourceFile, relativePath, node) {
 
 function typeTextForIdentifier(ts, checker, symbol, node) {
   if (ts.isTypeAliasDeclaration(node.parent) && node.parent.name === node) {
-    return checker.typeToString(
+    return typeToString(
+      ts,
+      checker,
       checker.getTypeFromTypeNode(node.parent.type),
       node,
       ts.TypeFormatFlags.InTypeAlias,
@@ -411,21 +413,41 @@ function typeTextForIdentifier(ts, checker, symbol, node) {
       const aliased = checker.getAliasedSymbol(symbol);
       if (aliased && aliased !== symbol) {
         if (aliased.declarations?.some((declaration) => ts.isTypeAliasDeclaration(declaration))) {
-          return checker.typeToString(
+          return typeToString(
+            ts,
+            checker,
             checker.getDeclaredTypeOfSymbol(aliased),
             node,
             ts.TypeFormatFlags.InTypeAlias,
           );
         }
-        return checker.typeToString(checker.getTypeOfSymbolAtLocation(aliased, node), node);
+        return typeToString(ts, checker, checker.getTypeOfSymbolAtLocation(aliased, node), node);
       }
     }
-    return checker.typeToString(checker.getTypeOfSymbolAtLocation(symbol, node), node);
+    return typeToString(ts, checker, checker.getTypeOfSymbolAtLocation(symbol, node), node);
   }
   if (ts.isPropertyAccessExpression(node.parent) && node.parent.name === node) {
-    return checker.typeToString(checker.getTypeAtLocation(node), node);
+    return typeToString(ts, checker, checker.getTypeAtLocation(node), node);
   }
   return undefined;
+}
+
+function typeToString(ts, checker, type, node, flags) {
+  const typeText = flags === undefined
+    ? checker.typeToString(type, node)
+    : checker.typeToString(type, node, flags);
+  if (!typeTextNeedsExpansion(typeText)) {
+    return typeText;
+  }
+  return checker.typeToString(
+    type,
+    node,
+    (flags || 0) | ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope,
+  );
+}
+
+function typeTextNeedsExpansion(typeText) {
+  return /<\.\.\.>|\{ \.\.\.; \}|\.\.\. \d+ more \.\.\./.test(typeText);
 }
 
 function collectRecords(ts, checker, sourceFile, relativePath) {
