@@ -15,7 +15,7 @@ use oxc_ast::{
     },
 };
 use oxc_ast_visit::Visit;
-use oxc_index::nonmax::NonMaxU32;
+use oxc_index::{IndexVec, nonmax::NonMaxU32};
 use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
@@ -438,7 +438,15 @@ impl CheckerBuilder {
             store,
             arena: CheckerArena::new(store.allocator()),
             global_symbols: global_types::GlobalSymbolTable::new(store),
-            declared_type_cache: RefCell::new(HashMap::new()),
+            declared_type_cache: RefCell::new(
+                store
+                    .entries()
+                    .iter()
+                    .map(|entry| {
+                        IndexVec::from_vec(vec![None; entry.semantic().scoping().symbols_len()])
+                    })
+                    .collect(),
+            ),
             interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_class_members: RefCell::new(Vec::new()),
@@ -480,7 +488,7 @@ struct CheckerReturn<'a, 'store> {
     store: &'store program::ProgramStore<'a>,
     arena: CheckerArena<'a>,
     global_symbols: global_types::GlobalSymbolTable,
-    declared_type_cache: RefCell<HashMap<SymbolRef, Ty<'a>>>,
+    declared_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
     interface_declarations_cache:
         RefCell<HashMap<String, &'a [(program::ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     resolving_symbols: RefCell<Vec<SymbolRef>>,
@@ -4149,7 +4157,14 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
-        if let Some(ty) = self.declared_type_cache.borrow().get(&sym).copied() {
+        if let Some(ty) = self
+            .declared_type_cache
+            .borrow()
+            .get(sym.program_id.index())
+            .and_then(|cache| cache.get(sym.symbol_id))
+            .copied()
+            .flatten()
+        {
             return ty;
         }
 
@@ -4306,7 +4321,14 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
         })();
 
-        self.declared_type_cache.borrow_mut().insert(sym, ty);
+        if let Some(slot) = self
+            .declared_type_cache
+            .borrow_mut()
+            .get_mut(sym.program_id.index())
+            .and_then(|cache| cache.get_mut(sym.symbol_id))
+        {
+            *slot = Some(ty);
+        }
         ty
     }
 
