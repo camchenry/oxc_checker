@@ -439,6 +439,7 @@ impl CheckerBuilder {
             arena: CheckerArena::new(store.allocator()),
             global_symbols: global_types::GlobalSymbolTable::new(store),
             declared_type_cache: RefCell::new(HashMap::new()),
+            interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_class_members: RefCell::new(Vec::new()),
         }
@@ -480,6 +481,8 @@ struct CheckerReturn<'a, 'store> {
     arena: CheckerArena<'a>,
     global_symbols: global_types::GlobalSymbolTable,
     declared_type_cache: RefCell<HashMap<SymbolRef, Ty<'a>>>,
+    interface_declarations_cache:
+        RefCell<HashMap<String, &'a [(program::ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     resolving_symbols: RefCell<Vec<SymbolRef>>,
     resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
 }
@@ -1258,7 +1261,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let mut properties = Vec::new();
         let mut signatures = Vec::new();
 
-        for (program_id, interface) in declarations {
+        for &(program_id, interface) in declarations {
             let substitutions = self.type_parameter_substitutions_for_reference(
                 interface.type_parameters.as_deref(),
                 reference,
@@ -1637,7 +1640,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Vec<Signature<'a>> {
         let interface_signatures = self
             .interface_declarations_for_name(reference.name)
-            .into_iter()
+            .iter()
+            .copied()
             .flat_map(|(program_id, interface)| {
                 self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
             })
@@ -2260,7 +2264,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        for (program_id, interface) in &declarations {
+        for &(program_id, interface) in declarations {
             let substitutions = self.type_parameter_substitutions_for_reference(
                 interface.type_parameters.as_deref(),
                 reference,
@@ -2275,14 +2279,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .type_annotation
                     .as_deref()
                     .map_or_else(Ty::any, |annotation| {
-                        self.get_type_from_ts_type(*program_id, &annotation.type_annotation)
+                        self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                     });
                 return Some(ty.substitute_type_parameters(self.arena(), &substitutions));
             }
         }
 
         let method_signatures = declarations
-            .into_iter()
+            .iter()
+            .copied()
             .flat_map(|(program_id, interface)| {
                 let substitutions = self.type_parameter_substitutions_for_reference(
                     interface.type_parameters.as_deref(),
@@ -2439,7 +2444,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let method_signatures = self
             .interface_declarations_for_name(current_interface.id.name.as_str())
-            .into_iter()
+            .iter()
+            .copied()
             .flat_map(|(interface_program_id, interface)| {
                 let substitutions = self.type_parameter_substitutions_for_type_arguments(
                     interface.type_parameters.as_deref(),
@@ -2558,19 +2564,43 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn interface_declarations_for_name(
         &self,
         type_name: &str,
-    ) -> Vec<(program::ProgramId, &'a TSInterfaceDeclaration<'a>)> {
-        self.store
-            .entries()
-            .iter()
-            .flat_map(|entry| {
-                entry.semantic().nodes().iter().filter_map(|node| {
-                    let AstKind::TSInterfaceDeclaration(interface) = node.kind() else {
-                        return None;
-                    };
-                    (interface.id.name == type_name).then_some((entry.id(), interface))
-                })
-            })
-            .collect()
+    ) -> &'a [(program::ProgramId, &'a TSInterfaceDeclaration<'a>)] {
+        if let Some(declarations) = self.interface_declarations_cache.borrow().get(type_name) {
+            return declarations;
+        }
+
+        let declarations = self
+            .arena()
+            .vec_from_iter(self.store.entries().iter().flat_map(|entry| {
+                let scoping = entry.semantic().scoping();
+                scoping
+                    .get_root_binding(Ident::from(type_name))
+                    .into_iter()
+                    .flat_map(move |symbol_id| {
+                        scoping.symbol_declarations(symbol_id).filter_map(
+                            move |node_id| match entry.semantic().nodes().kind(node_id) {
+                                AstKind::TSInterfaceDeclaration(interface) => {
+                                    Some((entry.id(), interface))
+                                }
+                                AstKind::BindingIdentifier(_) => {
+                                    let parent_id = entry.semantic().nodes().parent_id(node_id);
+                                    match entry.semantic().nodes().kind(parent_id) {
+                                        AstKind::TSInterfaceDeclaration(interface) => {
+                                            Some((entry.id(), interface))
+                                        }
+                                        _ => None,
+                                    }
+                                }
+                                _ => None,
+                            },
+                        )
+                    })
+            }));
+        let declarations = self.arena().alloc(declarations.into_boxed_slice());
+        self.interface_declarations_cache
+            .borrow_mut()
+            .insert(type_name.to_string(), declarations);
+        declarations
     }
 
     fn get_type_parameters_for_type(
