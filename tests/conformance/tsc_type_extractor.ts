@@ -1,35 +1,102 @@
 #!/usr/bin/env node
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
-const { Worker, isMainThread, parentPort, workerData } = require("worker_threads");
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import process from "node:process";
+import { pathToFileURL } from "node:url";
+import { Worker, isMainThread, parentPort, workerData } from "node:worker_threads";
+import type * as typescript from "typescript";
+
+type TypeScript = typeof typescript & {
+  optionDeclarations: readonly { name: string }[];
+  getNormalizedAbsolutePath(fileName: string, currentDirectory: string): string;
+  normalizePath(fileName: string): string;
+};
+type TypeChecker = typescript.TypeChecker;
+type TypeScriptType = typescript.Type;
+type TypeScriptSymbol = typescript.Symbol;
+type TypeScriptNode = typescript.Node;
+type TypeScriptSourceFile = typescript.SourceFile;
+type TypeScriptCompilerOptions = typescript.CompilerOptions;
+
+type CaseDiscovery = "compiler" | "all";
+
+interface CompilerDirective {
+  key: string;
+  normalizedKey: string;
+  value: string;
+}
+
+interface CompilerFile {
+  name: string;
+  content: string;
+  options: Map<string, string>;
+}
+
+interface CompilerCase {
+  physicalPath: string;
+  relativePath: string;
+  settings: Map<string, string>;
+  files: CompilerFile[];
+  hasExplicitFiles: boolean;
+}
+
+interface VirtualFile {
+  content: string;
+  fileName: string;
+  recordPath: string;
+}
+
+interface CompilerTask {
+  options: TypeScriptCompilerOptions;
+  useCaseSensitive: boolean;
+  virtualFiles: VirtualFile[];
+}
+
+interface WorkerMessage {
+  records?: string[];
+  error?: string;
+}
+
+interface WorkerData {
+  repoRoot: string;
+  tasks: CompilerTask[];
+}
 
 const DEFAULT_WORKERS = Math.max(
   1,
   Math.min(8, os.availableParallelism ? os.availableParallelism() : os.cpus().length || 1),
 );
 
-function parseArgs(argv) {
-  const args = new Map();
+function parseArgs(argv: string[]): Map<string, string> {
+  const args = new Map<string, string>();
   for (let i = 2; i < argv.length; i += 2) {
     const key = argv[i];
     const value = argv[i + 1];
     if (!key || !key.startsWith("--") || value === undefined) {
-      throw new Error("usage: tsc_type_extractor.js --cases-root DIR --out FILE|- [--repo-root DIR] [--case FILE] [--case-discovery compiler|all] [--workers N]");
+      throw new Error("usage: tsc_type_extractor.ts --cases-root DIR --out FILE|- [--repo-root DIR] [--case FILE] [--case-discovery compiler|all] [--workers N]");
     }
     args.set(key.slice(2), value);
   }
   return args;
 }
 
-function parseCaseDiscovery(value) {
+function requiredArg(args: Map<string, string>, name: string): string {
+  const value = args.get(name);
+  if (value === undefined) {
+    throw new Error(`missing required --${name} argument`);
+  }
+  return value;
+}
+
+function parseCaseDiscovery(value: string | undefined): CaseDiscovery {
   if (value === undefined || value === "compiler" || value === "all") {
     return value || "compiler";
   }
   throw new Error("--case-discovery must be either compiler or all");
 }
 
-function parseWorkerCount(value) {
+function parseWorkerCount(value: string | undefined): number {
   if (value === undefined) {
     return DEFAULT_WORKERS;
   }
@@ -41,8 +108,8 @@ function parseWorkerCount(value) {
   return count;
 }
 
-function loadTypeScript(repoRoot) {
-  const candidates = [];
+async function loadTypeScript(repoRoot: string): Promise<TypeScript> {
+  const candidates: string[] = [];
   if (process.env.TYPESCRIPT_MODULE) {
     candidates.push(process.env.TYPESCRIPT_MODULE);
   }
@@ -52,34 +119,39 @@ function loadTypeScript(repoRoot) {
 
   for (const candidate of candidates) {
     if (candidate && fs.existsSync(candidate)) {
-      return require(candidate);
+      return loadTypeScriptModule(pathToFileURL(candidate).href);
     }
   }
 
   try {
-    return require("typescript");
+    return await loadTypeScriptModule("typescript");
   } catch {
     const message = [
       "Unable to load the TypeScript compiler API.",
       "Install the npm `typescript` package, build the TypeScript submodule, or set TYPESCRIPT_MODULE=/path/to/typescript.js.",
       "Tried:",
       ...candidates.map((candidate) => `  - ${candidate}`),
-      `  - require("typescript") from ${process.cwd()}`,
+      `  - import("typescript") from ${process.cwd()}`,
     ].join("\n");
     throw new Error(message);
   }
 }
 
-function discoverCompilerCases(casesRoot, caseDiscovery) {
+async function loadTypeScriptModule(specifier: string): Promise<TypeScript> {
+  const module = await import(specifier);
+  return module.default ?? module;
+}
+
+function discoverCompilerCases(casesRoot: string, caseDiscovery: CaseDiscovery): string[] {
   const searchRoot = caseDiscovery === "compiler"
     ? path.join(casesRoot, "compiler")
     : casesRoot;
-  const files = [];
+  const files: string[] = [];
   discoverCaseFiles(searchRoot, files);
   return files.sort();
 }
 
-function resolveSingleCase(casesRoot, caseDiscovery, casePath) {
+function resolveSingleCase(casesRoot: string, caseDiscovery: CaseDiscovery, casePath: string): string {
   const file = path.resolve(casePath);
   const relative = normalizeSlashes(path.relative(casesRoot, file));
   if (relative.startsWith("../") || relative === ".." || path.isAbsolute(relative)) {
@@ -94,7 +166,7 @@ function resolveSingleCase(casesRoot, caseDiscovery, casePath) {
   return file;
 }
 
-function discoverCaseFiles(root, files) {
+function discoverCaseFiles(root: string, files: string[]): void {
   for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
     const file = path.join(root, entry.name);
     if (entry.isDirectory()) {
@@ -105,7 +177,7 @@ function discoverCaseFiles(root, files) {
   }
 }
 
-function parseCompilerDirective(line) {
+function parseCompilerDirective(line: string): CompilerDirective | undefined {
   const match = /^\/\/\s*@(\w+)\s*:\s*([^\r\n]*)/.exec(line.trimStart());
   if (!match) {
     return undefined;
@@ -117,14 +189,14 @@ function parseCompilerDirective(line) {
   };
 }
 
-function parseCompilerCase(file, casesRoot) {
+function parseCompilerCase(file: string, casesRoot: string): CompilerCase {
   const sourceText = fs.readFileSync(file, "utf8");
   const relativePath = path.relative(casesRoot, file).replace(/\\/g, "/");
-  const settings = new Map();
-  const files = [];
-  let currentFileName;
-  let currentFileOptions = new Map();
-  let currentFileLines = [];
+  const settings = new Map<string, string>();
+  const files: CompilerFile[] = [];
+  let currentFileName: string | undefined;
+  let currentFileOptions = new Map<string, string>();
+  let currentFileLines: string[] = [];
   let hasExplicitFiles = false;
 
   const lines = sourceText.split(/\r\n?|\n/);
@@ -166,7 +238,12 @@ function parseCompilerCase(file, casesRoot) {
   return { physicalPath: file, relativePath, settings, files, hasExplicitFiles };
 }
 
-function pushCompilerFile(files, name, lines, options) {
+function pushCompilerFile(
+  files: CompilerFile[],
+  name: string,
+  lines: string[],
+  options: Map<string, string>,
+): void {
   files.push({
     name: normalizeSlashes(name),
     content: lines.join("\n"),
@@ -174,29 +251,34 @@ function pushCompilerFile(files, name, lines, options) {
   });
 }
 
-function normalizeSlashes(value) {
+function normalizeSlashes(value: string): string {
   return String(value).replace(/\\/g, "/");
 }
 
-function recordPathForFile(compilerCase, sourceFile) {
+function recordPathForFile(compilerCase: CompilerCase, sourceFile: CompilerFile): string {
   return compilerCase.hasExplicitFiles
     ? `${compilerCase.relativePath}::${sourceFile.name}`
     : compilerCase.relativePath;
 }
 
-function optionEntries(settings) {
+function optionEntries(settings: Map<string, string>): Array<{ key: string; value: string }> {
   return Array.from(settings, ([key, value]) => ({ key, value }));
 }
 
-function compilerOptionNameMap(ts) {
+function compilerOptionNameMap(ts: TypeScript): Map<string, string> {
   return new Map(ts.optionDeclarations.map((option) => [option.name.toLowerCase(), option.name]));
 }
 
-function compilerSettingsKey(settings) {
+function compilerSettingsKey(settings: Map<string, string>): string {
   return JSON.stringify(Array.from(settings).sort(([left], [right]) => left.localeCompare(right)));
 }
 
-function createCompilerOptions(ts, compilerCase, repoRoot, optionNameMap) {
+function createCompilerOptions(
+  ts: TypeScript,
+  compilerCase: CompilerCase,
+  repoRoot: string,
+  optionNameMap: Map<string, string>,
+): TypeScriptCompilerOptions {
   const baseOptions = {
     allowJs: true,
     checkJs: true,
@@ -207,7 +289,7 @@ function createCompilerOptions(ts, compilerCase, repoRoot, optionNameMap) {
     strict: true,
     target: ts.ScriptTarget.Latest,
   };
-  const jsonOptions = {};
+  const jsonOptions: Record<string, unknown> = {};
 
   for (const { key, value } of optionEntries(compilerCase.settings)) {
     const normalizedKey = key.toLowerCase();
@@ -225,9 +307,12 @@ function createCompilerOptions(ts, compilerCase, repoRoot, optionNameMap) {
   return { ...baseOptions, ...converted.options, noEmit: true, skipLibCheck: true };
 }
 
-function createCompilerOptionsCache(ts, repoRoot) {
+function createCompilerOptionsCache(
+  ts: TypeScript,
+  repoRoot: string,
+): (compilerCase: CompilerCase) => TypeScriptCompilerOptions {
   const optionNameMap = compilerOptionNameMap(ts);
-  const cache = new Map();
+  const cache = new Map<string, TypeScriptCompilerOptions>();
   return (compilerCase) => {
     const key = compilerSettingsKey(compilerCase.settings);
     let options = cache.get(key);
@@ -239,7 +324,7 @@ function createCompilerOptionsCache(ts, repoRoot) {
   };
 }
 
-function parseCompilerOptionValue(key, value) {
+function parseCompilerOptionValue(key: string, value: string): boolean | string | string[] {
   const trimmed = value.trim();
   if (/^(true|false)$/i.test(trimmed)) {
     return /^true$/i.test(trimmed);
@@ -253,7 +338,7 @@ function parseCompilerOptionValue(key, value) {
   return trimmed;
 }
 
-function useCaseSensitiveFileNames(ts, compilerCase) {
+function useCaseSensitiveFileNames(ts: TypeScript, compilerCase: CompilerCase): boolean {
   const setting = Array.from(compilerCase.settings).find(([key]) => key.toLowerCase() === "usecasesensitivefilenames");
   if (!setting) {
     return ts.sys.useCaseSensitiveFileNames;
@@ -261,7 +346,7 @@ function useCaseSensitiveFileNames(ts, compilerCase) {
   return /^true$/i.test(setting[1].trim());
 }
 
-function virtualFileName(ts, compilerCase, sourceFile) {
+function virtualFileName(ts: TypeScript, compilerCase: CompilerCase, sourceFile: CompilerFile): string {
   if (!compilerCase.hasExplicitFiles) {
     return normalizeSlashes(path.resolve(compilerCase.physicalPath));
   }
@@ -269,15 +354,20 @@ function virtualFileName(ts, compilerCase, sourceFile) {
   return normalizeSlashes(ts.getNormalizedAbsolutePath(sourceFile.name, caseDirectory));
 }
 
-function canonicalFileName(ts, fileName, useCaseSensitive) {
+function canonicalFileName(ts: TypeScript, fileName: string, useCaseSensitive: boolean): string {
   const normalized = normalizeSlashes(ts.normalizePath(fileName));
   return useCaseSensitive ? normalized : normalized.toLowerCase();
 }
 
-function createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive) {
+function createVirtualCompilerHost(
+  ts: TypeScript,
+  options: TypeScriptCompilerOptions,
+  virtualFiles: VirtualFile[],
+  useCaseSensitive: boolean,
+) {
   const defaultHost = ts.createCompilerHost(options, true);
-  const filesByName = new Map();
-  const directories = new Set();
+  const filesByName = new Map<string, VirtualFile>();
+  const directories = new Set<string>();
   for (const file of virtualFiles) {
     filesByName.set(canonicalFileName(ts, file.fileName, useCaseSensitive), file);
     addAncestorDirectories(ts, directories, file.fileName, useCaseSensitive);
@@ -286,17 +376,22 @@ function createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive) 
   return {
     ...defaultHost,
     useCaseSensitiveFileNames: () => useCaseSensitive,
-    getCanonicalFileName: (fileName) => canonicalFileName(ts, fileName, useCaseSensitive),
+    getCanonicalFileName: (fileName: string) => canonicalFileName(ts, fileName, useCaseSensitive),
     getCurrentDirectory: () => normalizeSlashes(process.cwd()),
     trace: () => {},
-    fileExists: (fileName) => filesByName.has(canonicalFileName(ts, fileName, useCaseSensitive)) || defaultHost.fileExists(fileName),
-    directoryExists: (dirName) => directories.has(canonicalFileName(ts, dirName, useCaseSensitive))
+    fileExists: (fileName: string) => filesByName.has(canonicalFileName(ts, fileName, useCaseSensitive)) || defaultHost.fileExists(fileName),
+    directoryExists: (dirName: string) => directories.has(canonicalFileName(ts, dirName, useCaseSensitive))
       || (defaultHost.directoryExists ? defaultHost.directoryExists(dirName) : true),
-    readFile: (fileName) => {
+    readFile: (fileName: string) => {
       const file = filesByName.get(canonicalFileName(ts, fileName, useCaseSensitive));
       return file ? file.content : defaultHost.readFile(fileName);
     },
-    getSourceFile: (fileName, languageVersion, onError, shouldCreateNewSourceFile) => {
+    getSourceFile: (
+      fileName: string,
+      languageVersion: typescript.ScriptTarget | typescript.CreateSourceFileOptions,
+      onError?: (message: string) => void,
+      shouldCreateNewSourceFile?: boolean,
+    ) => {
       const file = filesByName.get(canonicalFileName(ts, fileName, useCaseSensitive));
       if (file) {
         return ts.createSourceFile(file.fileName, file.content, languageVersion, true);
@@ -306,7 +401,12 @@ function createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive) 
   };
 }
 
-function addAncestorDirectories(ts, directories, fileName, useCaseSensitive) {
+function addAncestorDirectories(
+  ts: TypeScript,
+  directories: Set<string>,
+  fileName: string,
+  useCaseSensitive: boolean,
+): void {
   let current = normalizeSlashes(path.dirname(fileName));
   while (current && current !== ".") {
     directories.add(canonicalFileName(ts, current, useCaseSensitive));
@@ -318,11 +418,17 @@ function addAncestorDirectories(ts, directories, fileName, useCaseSensitive) {
   }
 }
 
-function isCompilableRootFile(fileName) {
+function isCompilableRootFile(fileName: string): boolean {
   return /\.(d\.ts|tsx?|jsx?|mjs|cjs|mts|cts)$/i.test(fileName);
 }
 
-function collectProgramRecords(ts, options, virtualFiles, useCaseSensitive, records) {
+function collectProgramRecords(
+  ts: TypeScript,
+  options: TypeScriptCompilerOptions,
+  virtualFiles: VirtualFile[],
+  useCaseSensitive: boolean,
+  records: string[],
+): void {
   const host = createVirtualCompilerHost(ts, options, virtualFiles, useCaseSensitive);
   const rootNames = virtualFiles
     .filter((sourceFile) => isCompilableRootFile(sourceFile.fileName))
@@ -342,7 +448,7 @@ function collectProgramRecords(ts, options, virtualFiles, useCaseSensitive, reco
     try {
       records.push(...collectRecords(ts, checker, sourceFile, virtualFile.recordPath));
     } catch (error) {
-      const message = sanitize(error && error.message ? error.message : String(error));
+      const message = sanitize(error instanceof Error && error.message ? error.message : String(error));
       records.push(`${virtualFile.recordPath}\t0\t0\t<extractor-error>\t${message}`);
     }
   }
@@ -354,7 +460,11 @@ function collectProgramRecords(ts, options, virtualFiles, useCaseSensitive, reco
   }
 }
 
-function prepareCompilerCase(ts, compilerCase, compilerOptionsForCase) {
+function prepareCompilerCase(
+  ts: TypeScript,
+  compilerCase: CompilerCase,
+  compilerOptionsForCase: (compilerCase: CompilerCase) => TypeScriptCompilerOptions,
+) {
   const options = compilerOptionsForCase(compilerCase);
   const useCaseSensitive = useCaseSensitiveFileNames(ts, compilerCase);
   const virtualFiles = compilerCase.files.map((sourceFile) => ({
@@ -365,7 +475,7 @@ function prepareCompilerCase(ts, compilerCase, compilerOptionsForCase) {
   return { compilerCase, options, useCaseSensitive, virtualFiles };
 }
 
-function compilerTaskFromPrepared(prepared) {
+function compilerTaskFromPrepared(prepared: { options: TypeScriptCompilerOptions; useCaseSensitive: boolean; virtualFiles: VirtualFile[] }): CompilerTask {
   return {
     options: prepared.options,
     useCaseSensitive: prepared.useCaseSensitive,
@@ -373,15 +483,21 @@ function compilerTaskFromPrepared(prepared) {
   };
 }
 
-function taskWeight(task) {
+function taskWeight(task: CompilerTask): number {
   return task.virtualFiles.length;
 }
 
-function sanitize(value) {
+function sanitize(value: unknown): string {
   return String(value).replace(/[\t\r\n]+/g, " ").trim();
 }
 
-function recordForNode(ts, checker, sourceFile, relativePath, node) {
+function recordForNode(
+  ts: TypeScript,
+  checker: TypeChecker,
+  sourceFile: TypeScriptSourceFile,
+  relativePath: string,
+  node: TypeScriptNode,
+): string | undefined {
   if (!ts.isIdentifier(node)) {
     return undefined;
   }
@@ -398,7 +514,12 @@ function recordForNode(ts, checker, sourceFile, relativePath, node) {
   return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
 }
 
-function typeTextForIdentifier(ts, checker, symbol, node) {
+function typeTextForIdentifier(
+  ts: TypeScript,
+  checker: TypeChecker,
+  symbol: TypeScriptSymbol | undefined,
+  node: TypeScriptNode,
+): string | undefined {
   if (ts.isTypeAliasDeclaration(node.parent) && node.parent.name === node) {
     return typeToString(
       ts,
@@ -412,7 +533,7 @@ function typeTextForIdentifier(ts, checker, symbol, node) {
     if (symbol.flags & ts.SymbolFlags.Alias) {
       const aliased = checker.getAliasedSymbol(symbol);
       if (aliased && aliased !== symbol) {
-        if (aliased.declarations?.some((declaration) => ts.isTypeAliasDeclaration(declaration))) {
+        if (aliased.declarations?.some((declaration: TypeScriptNode) => ts.isTypeAliasDeclaration(declaration))) {
           return typeToString(
             ts,
             checker,
@@ -432,7 +553,13 @@ function typeTextForIdentifier(ts, checker, symbol, node) {
   return undefined;
 }
 
-function typeToString(ts, checker, type, node, flags) {
+function typeToString(
+  ts: TypeScript,
+  checker: TypeChecker,
+  type: TypeScriptType,
+  node: TypeScriptNode,
+  flags?: number,
+): string {
   const typeText = flags === undefined
     ? checker.typeToString(type, node)
     : checker.typeToString(type, node, flags);
@@ -446,21 +573,29 @@ function typeToString(ts, checker, type, node, flags) {
   );
 }
 
-function typeTextNeedsExpansion(typeText) {
+function typeTextNeedsExpansion(typeText: string): boolean {
   return /<\.\.\.>|\{ \.\.\.; \}|\.\.\. \d+ more \.\.\./.test(typeText);
 }
 
-function collectRecords(ts, checker, sourceFile, relativePath) {
-  const records = [];
-  const stack = [sourceFile];
+function collectRecords(
+  ts: TypeScript,
+  checker: TypeChecker,
+  sourceFile: TypeScriptSourceFile,
+  relativePath: string,
+): string[] {
+  const records: string[] = [];
+  const stack: TypeScriptNode[] = [sourceFile];
   while (stack.length > 0) {
     const node = stack.pop();
+    if (!node) {
+      continue;
+    }
     const record = recordForNode(ts, checker, sourceFile, relativePath, node);
     if (record) {
       records.push(record);
     }
-    const children = [];
-    ts.forEachChild(node, (child) => {
+    const children: TypeScriptNode[] = [];
+    ts.forEachChild(node, (child: TypeScriptNode) => {
       children.push(child);
     });
     for (let index = children.length - 1; index >= 0; index -= 1) {
@@ -470,14 +605,14 @@ function collectRecords(ts, checker, sourceFile, relativePath) {
   return records;
 }
 
-function collectTaskRecords(ts, task) {
-  const records = [];
+function collectTaskRecords(ts: TypeScript, task: CompilerTask): string[] {
+  const records: string[] = [];
   collectProgramRecords(ts, task.options, task.virtualFiles, task.useCaseSensitive, records);
   return records;
 }
 
-function buildCompilerTasks(ts, repoRoot, casesRoot, files) {
-  const tasks = [];
+function buildCompilerTasks(ts: TypeScript, repoRoot: string, casesRoot: string, files: string[]): CompilerTask[] {
+  const tasks: CompilerTask[] = [];
   const compilerOptionsForCase = createCompilerOptionsCache(ts, repoRoot);
 
   for (const file of files) {
@@ -489,9 +624,9 @@ function buildCompilerTasks(ts, repoRoot, casesRoot, files) {
   return tasks;
 }
 
-function taskChunks(tasks, workerCount) {
+function taskChunks(tasks: CompilerTask[], workerCount: number): CompilerTask[][] {
   const chunkCount = Math.min(workerCount, tasks.length);
-  const chunks = Array.from({ length: chunkCount }, () => ({ weight: 0, tasks: [] }));
+  const chunks = Array.from({ length: chunkCount }, () => ({ weight: 0, tasks: [] as CompilerTask[] }));
   const sortedTasks = [...tasks].sort((left, right) => taskWeight(right) - taskWeight(left));
 
   for (const task of sortedTasks) {
@@ -508,26 +643,26 @@ function taskChunks(tasks, workerCount) {
   return chunks.map((chunk) => chunk.tasks).filter((chunk) => chunk.length > 0);
 }
 
-function runWorker(repoRoot, tasks) {
+function runWorker(repoRoot: string, tasks: CompilerTask[]): Promise<string[]> {
   return new Promise((resolve, reject) => {
-    const worker = new Worker(__filename, {
+    const worker = new Worker(new URL(import.meta.url), {
       workerData: { repoRoot, tasks },
     });
     let settled = false;
 
-    worker.on("message", (message) => {
+    worker.on("message", (message: WorkerMessage) => {
       settled = true;
       if (message.error) {
         reject(new Error(message.error));
       } else {
-        resolve(message.records);
+        resolve(message.records ?? []);
       }
     });
-    worker.on("error", (error) => {
+    worker.on("error", (error: Error) => {
       settled = true;
       reject(error);
     });
-    worker.on("exit", (code) => {
+    worker.on("exit", (code: number) => {
       if (!settled && code !== 0) {
         reject(new Error(`worker stopped with exit code ${code}`));
       }
@@ -535,7 +670,12 @@ function runWorker(repoRoot, tasks) {
   });
 }
 
-async function collectRecordsFromTasks(ts, repoRoot, tasks, workerCount) {
+async function collectRecordsFromTasks(
+  ts: TypeScript,
+  repoRoot: string,
+  tasks: CompilerTask[],
+  workerCount: number,
+): Promise<string[]> {
   if (tasks.length === 0) {
     return [];
   }
@@ -549,25 +689,26 @@ async function collectRecordsFromTasks(ts, repoRoot, tasks, workerCount) {
   return results.flat();
 }
 
-function workerMain() {
+async function workerMain(): Promise<void> {
   try {
-    const ts = loadTypeScript(workerData.repoRoot);
-    const records = workerData.tasks.flatMap((task) => collectTaskRecords(ts, task));
-    parentPort.postMessage({ records });
+    const data = workerData as WorkerData;
+    const ts = await loadTypeScript(data.repoRoot);
+    const records = data.tasks.flatMap((task) => collectTaskRecords(ts, task));
+    parentPort?.postMessage({ records });
   } catch (error) {
-    parentPort.postMessage({ error: error && error.stack ? error.stack : String(error) });
+    parentPort?.postMessage({ error: error instanceof Error && error.stack ? error.stack : String(error) });
   }
 }
 
-async function main() {
+async function main(): Promise<void> {
   const args = parseArgs(process.argv);
   const repoRoot = path.resolve(args.get("repo-root") || process.cwd());
-  const casesRoot = path.resolve(args.get("cases-root"));
-  const outArg = args.get("out");
+  const casesRoot = path.resolve(requiredArg(args, "cases-root"));
+  const outArg = requiredArg(args, "out");
   const outPath = outArg === "-" ? undefined : path.resolve(outArg);
   const caseDiscovery = parseCaseDiscovery(args.get("case-discovery"));
   const workerCount = parseWorkerCount(args.get("workers"));
-  const ts = loadTypeScript(repoRoot);
+  const ts = await loadTypeScript(repoRoot);
   const casePath = args.get("case");
   const files = casePath
     ? [resolveSingleCase(casesRoot, caseDiscovery, casePath)]
@@ -580,6 +721,9 @@ async function main() {
     process.stdout.write(`${records.join("\n")}\n`);
     return;
   }
+  if (!outPath) {
+    throw new Error("missing output path");
+  }
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, `${records.join("\n")}\n`);
 }
@@ -590,5 +734,7 @@ if (isMainThread) {
     process.exit(1);
   });
 } else {
-  workerMain();
+  workerMain().catch((error) => {
+    parentPort?.postMessage({ error: error instanceof Error && error.stack ? error.stack : String(error) });
+  });
 }

@@ -42,7 +42,7 @@ Local architecture map:
 | Type relations and assignability | `internal/checker/relater.go` | planned `src/checker/relations.rs`; current `Checker::is_assignable_to` hook | This should become a first-class subsystem before broad checking diagnostics are added. Start with small, explicit relation rules and keep diagnostics separate. |
 | Type inference | `internal/checker/inference.go` | current generic substitution and call inference helpers; planned `src/checker/inference.rs` | Current support is deliberately narrow. Use TypeScript-Go terminology such as inference context and type mapper when the implementation grows. |
 | Flow-sensitive narrowing | `internal/checker/flow.go` | planned `src/checker/flow.rs` | No full local flow model exists yet. Add the module as a boundary only when real narrowing behavior lands. |
-| Conformance baselines | `testdata/baselines`, test tasks in `Herebyfile.mjs` | `src/conformance.rs`, `tests/conformance/tsc_type_extractor.js`, snapshot files | Local harness compares identifier type strings from TypeScript's compiler API against OXC records. This is closer to a type-query oracle than tsgo's full diagnostic and emit baselines. |
+| Conformance baselines | `testdata/baselines`, test tasks in `Herebyfile.mjs` | `src/conformance.rs`, `tests/conformance/tsc_type_extractor.ts`, snapshot files | Local harness compares identifier type strings from TypeScript's compiler API against OXC records. This is closer to a type-query oracle than tsgo's full diagnostic and emit baselines. |
 
 Intentional differences:
 

@@ -19,10 +19,10 @@ The normal test suite does not run the TypeScript conformance harness:
 cargo test
 ```
 
-The conformance extractor needs the TypeScript compiler API. Install it into the ignored `target` directory, build the TypeScript submodule so `vendor/TypeScript/built/local/typescript.js` exists, or set `TYPESCRIPT_MODULE=/path/to/typescript.js`.
+The conformance extractor needs the TypeScript compiler API. Install the checked-in conformance npm dev dependencies, build the TypeScript submodule so `vendor/TypeScript/built/local/typescript.js` exists, or set `TYPESCRIPT_MODULE=/path/to/typescript.js`.
 
 ```sh
-npm --prefix target/conformance install typescript
+npm --prefix tests/conformance install
 ```
 
 Regenerate the TypeScript compiler API record cache and run the default type record comparison with:

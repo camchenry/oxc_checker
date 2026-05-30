@@ -731,7 +731,7 @@ fn run_tsc_extractor(
     cases_root: &Path,
     out_path: &Path,
 ) -> ConformanceResult {
-    let extractor_path = repo_root.join("tests/conformance/tsc_type_extractor.js");
+    let extractor_path = repo_root.join("tests/conformance/tsc_type_extractor.ts");
     let case_discovery = if suite.compiler_cases_only {
         "compiler"
     } else {
@@ -770,7 +770,7 @@ fn run_tsc_extractor_to_stdout(
     cases_root: &Path,
     case_path: &Path,
 ) -> ConformanceResult<String> {
-    let extractor_path = repo_root.join("tests/conformance/tsc_type_extractor.js");
+    let extractor_path = repo_root.join("tests/conformance/tsc_type_extractor.ts");
     let case_discovery = if suite.compiler_cases_only {
         "compiler"
     } else {
