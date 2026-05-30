@@ -4355,6 +4355,56 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 }
 
+#[cfg(feature = "bench")]
+#[doc(hidden)]
+pub mod benchmark_support {
+    use super::{AstKind, Checker, CheckerBuilder, NodeRef, program};
+
+    /// Run checker type queries over an already parsed and semantically built program.
+    ///
+    /// This intentionally excludes parsing, semantic analysis, file IO, and type string rendering
+    /// so Criterion benchmarks can isolate checker work.
+    #[must_use]
+    pub fn check_program(
+        store: &program::ProgramStore<'_>,
+        program_id: program::ProgramId,
+    ) -> usize {
+        let checker = CheckerBuilder::new().build(store);
+        let Some(entry) = store.entry(program_id) else {
+            return 0;
+        };
+
+        entry
+            .semantic()
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| {
+                let node_ref = NodeRef::new(program_id, node_id);
+                let ty = match node.kind() {
+                    AstKind::BindingIdentifier(_)
+                    | AstKind::IdentifierReference(_)
+                    | AstKind::IdentifierName(_)
+                    | AstKind::TSPropertySignature(_)
+                    | AstKind::TSMethodSignature(_)
+                    | AstKind::TSThisParameter(_)
+                    | AstKind::FormalParameter(_)
+                    | AstKind::FormalParameterRest(_)
+                    | AstKind::StaticMemberExpression(_)
+                    | AstKind::ObjectProperty(_)
+                    | AstKind::MethodDefinition(_)
+                    | AstKind::PropertyDefinition(_) => checker.get_type_at_location(node_ref),
+                    AstKind::TSTypeAliasDeclaration(alias) => {
+                        checker.get_type_of_type_alias_declaration(program_id, alias)
+                    }
+                    _ => return None,
+                };
+
+                Some(usize::from(!ty.is_none()))
+            })
+            .sum()
+    }
+}
+
 #[cfg(all(test, any(feature = "conformance", feature = "conformance-tsc")))]
 mod conformance;
 

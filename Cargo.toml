@@ -5,6 +5,7 @@ edition = "2024"
 
 [features]
 default = []
+bench = []
 conformance = []
 conformance-tsc = []
 
@@ -19,3 +20,14 @@ oxc_span =  "0.132.0"
 oxc_syntax = "0.132.0"
 oxc_index = "4.1.0"
 oxc_str = "0.132.0"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "check_es5_lib"
+harness = false
+required-features = ["bench"]
+
+[profile.bench]
+debug = true
