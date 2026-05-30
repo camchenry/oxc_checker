@@ -1,26 +1,26 @@
 const promise = new Promise((resolve, reject) => resolve('value'));
->     ^^^^^^^: Promise<T>   (TyTypeReference)
+>     ^^^^^^^: Promise<unknown>   (TyTypeReference)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
 >                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                            ^^^^^^^: any   (TyAny)
+>                            ^^^^^^^: (value: unknown) => void   (TyFunction)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                                     ^^^^^^: any   (TyAny)
+>                                     ^^^^^^: (reason?: any) => void   (TyFunction)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                                                ^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^: (value: unknown) => void   (TyFunction)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                                                ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^^^^^^: void   (TyVoid)
 
 promise;
->^^^^^^^: Promise<T>   (TyTypeReference)
+>^^^^^^^: Promise<unknown>   (TyTypeReference)
 
 promise;
->^^^^^^^^: Promise<T>   (TyTypeReference)
+>^^^^^^^^: Promise<unknown>   (TyTypeReference)
 
 async function returnsPromise() {
 >              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
@@ -74,28 +74,28 @@ Promise.reject('value').finally();
 >                        ^^^^^: any   (TyAny)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->     ^^^^^^^: Promise<T>   (TyTypeReference)
+>     ^^^^^^^: Promise<unknown>   (TyTypeReference)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
 >                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                            ^^^^^^^: any   (TyAny)
+>                            ^^^^^^^: (value: unknown) => void   (TyFunction)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                                     ^^^^^^: any   (TyAny)
+>                                     ^^^^^^: (reason?: any) => void   (TyFunction)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                                                ^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^: (value: unknown) => void   (TyFunction)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
->                                                ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^^^^^^: void   (TyVoid)
 
 await promise;
 >^^^^^^^^^^^^^^: any   (TyAny)
 
 await promise;
->     ^^^^^^^: Promise<T>   (TyTypeReference)
+>     ^^^^^^^: Promise<unknown>   (TyTypeReference)
 
 async function returnsPromise() {
 >              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)

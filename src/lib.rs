@@ -2165,6 +2165,57 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
 
+        for type_parameter in &function.type_parameters {
+            substitutions
+                .entry(type_parameter.name)
+                .or_insert_with(Ty::unknown);
+        }
+
+        substitutions
+    }
+
+    fn explicit_construct_type_parameter_substitutions(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        new_expression: &'a NewExpression<'a>,
+    ) -> HashMap<&'a str, Ty<'a>> {
+        let mut substitutions = HashMap::new();
+
+        if let Some(type_arguments) = &new_expression.type_arguments {
+            for (type_parameter, type_argument) in function
+                .type_parameters
+                .iter()
+                .zip(type_arguments.params.iter())
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    self.get_type_from_ts_type(program_id, type_argument),
+                );
+            }
+        }
+
+        for type_parameter in &function.type_parameters {
+            if substitutions.contains_key(type_parameter.name) {
+                continue;
+            }
+            if let Some(fallback_type) = type_parameter
+                .default_type
+                .or(type_parameter.constraint_type)
+            {
+                substitutions.insert(
+                    type_parameter.name,
+                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
+                );
+            }
+        }
+
+        for type_parameter in &function.type_parameters {
+            substitutions
+                .entry(type_parameter.name)
+                .or_insert_with(Ty::unknown);
+        }
+
         substitutions
     }
 
@@ -2874,6 +2925,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         self.get_contextual_type_of_call_argument(program_id, node_id, function_span)
             .or_else(|| {
+                self.get_contextual_type_of_construct_argument(program_id, node_id, function_span)
+            })
+            .or_else(|| {
                 self.get_contextual_type_of_object_property_value(
                     program_id,
                     node_id,
@@ -2924,6 +2978,46 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 program_id,
                 callee_signature.function,
                 call_expression,
+            ),
+        ))
+    }
+
+    fn get_contextual_type_of_construct_argument(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        function_span: Span,
+    ) -> Option<Ty<'a>> {
+        let new_expression =
+            self.nodes(program_id)
+                .ancestors(node_id)
+                .find_map(|node| match node.kind() {
+                    AstKind::NewExpression(new_expression) => Some(new_expression),
+                    _ => None,
+                })?;
+        let argument_index = new_expression.arguments.iter().position(|argument| {
+            argument
+                .as_expression()
+                .is_some_and(|expression| expression.span() == function_span)
+        })?;
+
+        let callee_type = self.get_type_of_expression_with_node(
+            program_id,
+            &new_expression.callee,
+            Some(node_id),
+        );
+        let construct_signature = self
+            .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Construct)
+            .into_iter()
+            .next()?;
+        let parameter_type =
+            self.get_call_parameter_type_at(construct_signature.function, argument_index)?;
+        Some(parameter_type.substitute_type_parameters(
+            self.arena(),
+            &self.explicit_construct_type_parameter_substitutions(
+                program_id,
+                construct_signature.function,
+                new_expression,
             ),
         ))
     }
@@ -6079,6 +6173,29 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "numberResult"),
             Ty::type_reference(arena, "Promise", [Ty::number()])
+        );
+    }
+
+    #[test]
+    fn promise_constructor_contextually_types_executor_parameters() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "const promise = new Promise((resolve, reject) => resolve('value'));",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "promise"),
+            Ty::type_reference(arena, "Promise", [Ty::unknown()])
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "resolve").to_type_string(),
+            "(value: unknown) => void"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "reject").to_type_string(),
+            "(reason?: any) => void"
         );
     }
 
