@@ -263,7 +263,10 @@ export type QueryFunctionContext<
 >     ^^^^^^: AbortSignal   (TyTypeReference)
 
       signal: AbortSignal
->             ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort: (reason?: any) => AbortSignal; any: (signals: AbortSignal[]) => AbortSignal; timeout: (milliseconds: number) => AbortSignal; }   (TyObject)
+
+      signal: AbortSignal
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort: (reason?: any) => AbortSignal; any: (signals: AbortSignal[]) => AbortSignal; timeout: (milliseconds: number) => AbortSignal; }   (TyObject)
 
       meta: QueryMeta | undefined
 >     ^^^^: QueryMeta | undefined   (TyUnion)
@@ -293,7 +296,10 @@ export type QueryFunctionContext<
 >     ^^^^^^: AbortSignal   (TyTypeReference)
 
       signal: AbortSignal
->             ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort: (reason?: any) => AbortSignal; any: (signals: AbortSignal[]) => AbortSignal; timeout: (milliseconds: number) => AbortSignal; }   (TyObject)
+
+      signal: AbortSignal
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort: (reason?: any) => AbortSignal; any: (signals: AbortSignal[]) => AbortSignal; timeout: (milliseconds: number) => AbortSignal; }   (TyObject)
 
       pageParam: TPageParam
 >     ^^^^^^^^^: TPageParam   (TyTypeReference)

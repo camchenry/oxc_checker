@@ -83,13 +83,13 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
       actual:   Record<string, unknown>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:64 `AbortSignal` type mismatch
       expected: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }
-      actual:   any
+      actual:   { new (): AbortSignal; prototype: AbortSignal; abort: (reason?: any) => AbortSignal; any: (signals: AbortSignal[]) => AbortSignal; timeout: (milliseconds: number) => AbortSignal; }
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:65 `meta` type mismatch
       expected: Record<string, unknown> | undefined
       actual:   QueryMeta | undefined
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:72 `AbortSignal` type mismatch
       expected: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }
-      actual:   any
+      actual:   { new (): AbortSignal; prototype: AbortSignal; abort: (reason?: any) => AbortSignal; any: (signals: AbortSignal[]) => AbortSignal; timeout: (milliseconds: number) => AbortSignal; }
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts:75 `meta` type mismatch
       expected: Record<string, unknown> | undefined
       actual:   QueryMeta | undefined

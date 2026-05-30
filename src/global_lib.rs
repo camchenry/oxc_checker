@@ -44,4 +44,13 @@ pub(crate) const DEFAULT_LIB_FILES: &[(&str, &str)] = &[
         "lib.es2015.symbol.wellknown.d.ts",
         include_str!("lib/es2015.symbol.wellknown.d.ts"),
     ),
+    ("lib.dom.d.ts", include_str!("lib/dom.generated.d.ts")),
+    (
+        "lib.dom.iterable.d.ts",
+        include_str!("lib/dom.iterable.generated.d.ts"),
+    ),
+    (
+        "lib.dom.asynciterable.d.ts",
+        include_str!("lib/dom.asynciterable.generated.d.ts"),
+    ),
 ];

@@ -5,19 +5,25 @@ if (x) {
 >   ^: string | undefined   (TyUnion)
 
   console.log(x);
-> ^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^: Console   (TyTypeReference)
 
   console.log(x);
->         ^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(x);
+>         ^^^: (...data: any[]) => void   (TyFunction)
 
   console.log(x);
 >             ^: string   (TyString)
 
   console.log(x);
-> ^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^: Console   (TyTypeReference)
 
   console.log(x);
->         ^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(x);
+>         ^^^: (...data: any[]) => void   (TyFunction)
 
   console.log(x);
 >             ^: string | undefined   (TyUnion)
@@ -41,19 +47,25 @@ if (typeof y === "string") {
 >          ^: string | number | boolean   (TyUnion)
 
   console.log(y);
-> ^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^: Console   (TyTypeReference)
 
   console.log(y);
->         ^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(y);
+>         ^^^: (...data: any[]) => void   (TyFunction)
 
   console.log(y);
 >             ^: string   (TyString)
 
   console.log(y)
-> ^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^: Console   (TyTypeReference)
 
   console.log(y)
->         ^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(y)
+>         ^^^: (...data: any[]) => void   (TyFunction)
 
   console.log(y)
 >             ^: number | boolean   (TyUnion)
