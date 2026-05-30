@@ -1,3 +1,4 @@
+// @filename: a.ts
 const promise = new Promise((resolve, reject) => resolve('value'));
 promise;
 
@@ -12,6 +13,7 @@ Promise.reject('value').finally();
 
 [1, 2, 3].map(async x => x + 1);
 
+// @filename: b.ts
 const promise = new Promise((resolve, reject) => resolve('value'));
 await promise;
 
@@ -32,11 +34,24 @@ await Promise.reject('value').finally(() => {});
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
 
-// checkThenables
+// @filename: c.ts
 
+// checkThenables
 declare function createPromiseLike(): PromiseLike<string>;
 
 createPromiseLike();
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+
+// @filename: d.ts
+declare function createPromiseLike(): PromiseLike<string>;
+
 await createPromiseLike();
 
 interface MyThenable {
@@ -47,6 +62,7 @@ declare function createMyThenable(): MyThenable;
 
 await createMyThenable();
 
+// @filename: e.ts
 // ignoreVoid
 
 async function returnsPromise() {
@@ -56,6 +72,7 @@ void returnsPromise();
 
 void Promise.reject('value');
 
+// @filename: f.ts
 // ignoreIIFE
 
 await (async function () {
