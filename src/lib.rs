@@ -438,6 +438,7 @@ impl CheckerBuilder {
             store,
             arena: CheckerArena::new(store.allocator()),
             global_symbols: global_types::GlobalSymbolTable::new(store),
+            declared_type_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_class_members: RefCell::new(Vec::new()),
         }
@@ -459,7 +460,7 @@ impl NodeRef {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 struct SymbolRef {
     program_id: program::ProgramId,
     symbol_id: SymbolId,
@@ -478,6 +479,7 @@ struct CheckerReturn<'a, 'store> {
     store: &'store program::ProgramStore<'a>,
     arena: CheckerArena<'a>,
     global_symbols: global_types::GlobalSymbolTable,
+    declared_type_cache: RefCell<HashMap<SymbolRef, Ty<'a>>>,
     resolving_symbols: RefCell<Vec<SymbolRef>>,
     resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
 }
@@ -687,7 +689,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_binary_expression(
         &self,
         program_id: program::ProgramId,
-        binary_expression: &BinaryExpression<'a>,
+        binary_expression: &'a BinaryExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         let left =
@@ -725,7 +727,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_of_unary_expression(
         &self,
         program_id: program::ProgramId,
-        unary_expression: &UnaryExpression<'a>,
+        unary_expression: &'a UnaryExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         let argument =
@@ -4117,144 +4119,165 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
-        if let Some((declaration, declarator)) = self.variable_declarator_for_symbol(sym) {
-            return self.get_type_of_variable_declarator(sym.program_id, declaration, declarator);
+        if let Some(ty) = self.declared_type_cache.borrow().get(&sym).copied() {
+            return ty;
         }
 
-        let declaration = self
-            .semantic(sym.program_id)
-            .scoping()
-            .symbol_declaration(sym.symbol_id);
-        match self.nodes(sym.program_id).kind(declaration) {
-            AstKind::VariableDeclarator(declarator) => self
-                .get_type_of_variable_declarator_binding(
+        let ty = (|| {
+            if let Some((declaration, declarator)) = self.variable_declarator_for_symbol(sym) {
+                return self.get_type_of_variable_declarator(
                     sym.program_id,
                     declaration,
                     declarator,
-                    sym.symbol_id,
-                )
-                .unwrap_or_else(|| {
-                    self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
-                }),
-            AstKind::FormalParameter(parameter) => self
-                .get_type_of_formal_parameter_binding(
-                    sym.program_id,
-                    declaration,
-                    parameter,
-                    sym.symbol_id,
-                )
-                .unwrap_or_else(|| match parameter.type_annotation.as_deref() {
-                    Some(annotation) => self.get_declared_type_of_formal_parameter(
+                );
+            }
+
+            let declaration = self
+                .semantic(sym.program_id)
+                .scoping()
+                .symbol_declaration(sym.symbol_id);
+            match self.nodes(sym.program_id).kind(declaration) {
+                AstKind::VariableDeclarator(declarator) => self
+                    .get_type_of_variable_declarator_binding(
                         sym.program_id,
-                        parameter,
-                        annotation,
-                    ),
-                    None => self
-                        .get_contextual_type_of_formal_parameter(
+                        declaration,
+                        declarator,
+                        sym.symbol_id,
+                    )
+                    .unwrap_or_else(|| {
+                        self.get_type_of_variable_declarator(
                             sym.program_id,
                             declaration,
-                            parameter,
+                            declarator,
                         )
-                        .unwrap_or_else(Ty::any),
-                }),
-            AstKind::FormalParameterRest(parameter) => self
-                .get_type_of_rest_parameter_binding(sym.program_id, parameter, sym.symbol_id)
-                .unwrap_or_else(|| {
-                    self.get_type_from_ts_type_annotation(
+                    }),
+                AstKind::FormalParameter(parameter) => self
+                    .get_type_of_formal_parameter_binding(
                         sym.program_id,
-                        parameter.type_annotation.as_deref(),
+                        declaration,
+                        parameter,
+                        sym.symbol_id,
                     )
-                }),
-            AstKind::CatchParameter(parameter) => self.get_type_from_ts_type_annotation(
-                sym.program_id,
-                parameter.type_annotation.as_deref(),
-            ),
-            AstKind::PropertyDefinition(property) => {
-                self.get_type_of_property_definition(sym.program_id, property, Some(declaration))
-            }
-            AstKind::Function(function) => {
-                self.get_type_of_function_declaration_group(sym.program_id, function, declaration)
-            }
-            AstKind::ArrowFunctionExpression(arrow_func_expr) => self
-                .get_type_of_function_signature_with_node(
+                    .unwrap_or_else(|| match parameter.type_annotation.as_deref() {
+                        Some(annotation) => self.get_declared_type_of_formal_parameter(
+                            sym.program_id,
+                            parameter,
+                            annotation,
+                        ),
+                        None => self
+                            .get_contextual_type_of_formal_parameter(
+                                sym.program_id,
+                                declaration,
+                                parameter,
+                            )
+                            .unwrap_or_else(Ty::any),
+                    }),
+                AstKind::FormalParameterRest(parameter) => self
+                    .get_type_of_rest_parameter_binding(sym.program_id, parameter, sym.symbol_id)
+                    .unwrap_or_else(|| {
+                        self.get_type_from_ts_type_annotation(
+                            sym.program_id,
+                            parameter.type_annotation.as_deref(),
+                        )
+                    }),
+                AstKind::CatchParameter(parameter) => self.get_type_from_ts_type_annotation(
                     sym.program_id,
-                    FunctionKind::ArrowFunction(arrow_func_expr),
+                    parameter.type_annotation.as_deref(),
+                ),
+                AstKind::PropertyDefinition(property) => self.get_type_of_property_definition(
+                    sym.program_id,
+                    property,
                     Some(declaration),
                 ),
-            AstKind::AccessorProperty(property) => self.get_type_from_ts_type_annotation(
-                sym.program_id,
-                property.type_annotation.as_deref(),
-            ),
-            AstKind::TSTypeAliasDeclaration(alias)
-                if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
-            {
-                self.get_type_of_type_alias_declaration(sym.program_id, alias)
-            }
-            AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
-            AstKind::BindingIdentifier(identifier) => {
-                if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
+                AstKind::Function(function) => self.get_type_of_function_declaration_group(
                     sym.program_id,
+                    function,
                     declaration,
-                    sym.symbol_id,
-                ) {
-                    return ty;
-                }
-
-                match self.nodes(sym.program_id).parent_kind(declaration) {
-                    AstKind::Class(_) => {
-                        // TODO(correctness): model the class value-side as a real constructor
-                        // object type instead of a `Ty::any` stub. Today the `Ty::TypeQuery`
-                        // name field is what downstream class-static lookups key off.
-                        Ty::type_query(
-                            self.arena(),
-                            identifier.name.as_str(),
-                            Ty::any(),
-                            std::iter::empty(),
-                        )
-                    }
-                    AstKind::Function(function) => self.get_type_of_function_declaration_group(
+                ),
+                AstKind::ArrowFunctionExpression(arrow_func_expr) => self
+                    .get_type_of_function_signature_with_node(
                         sym.program_id,
-                        function,
-                        self.nodes(sym.program_id).parent_id(declaration),
+                        FunctionKind::ArrowFunction(arrow_func_expr),
+                        Some(declaration),
                     ),
-                    AstKind::VariableDeclarator(declarator) => self
-                        .get_type_of_variable_declarator(
-                            sym.program_id,
-                            self.nodes(sym.program_id).parent_id(declaration),
-                            declarator,
-                        ),
-                    AstKind::ArrowFunctionExpression(arrow_func_expr) => self
-                        .get_type_of_function_signature_with_node(
-                            sym.program_id,
-                            FunctionKind::ArrowFunction(arrow_func_expr),
-                            Some(declaration),
-                        ),
-                    AstKind::TSTypeAliasDeclaration(alias)
-                        if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
-                    {
-                        self.get_type_of_type_alias_declaration(sym.program_id, alias)
-                    }
-                    AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
-                    _ => Ty::none(),
+                AstKind::AccessorProperty(property) => self.get_type_from_ts_type_annotation(
+                    sym.program_id,
+                    property.type_annotation.as_deref(),
+                ),
+                AstKind::TSTypeAliasDeclaration(alias)
+                    if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
+                {
+                    self.get_type_of_type_alias_declaration(sym.program_id, alias)
                 }
+                AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
+                AstKind::BindingIdentifier(identifier) => {
+                    if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
+                        sym.program_id,
+                        declaration,
+                        sym.symbol_id,
+                    ) {
+                        return ty;
+                    }
+
+                    match self.nodes(sym.program_id).parent_kind(declaration) {
+                        AstKind::Class(_) => {
+                            // TODO(correctness): model the class value-side as a real constructor
+                            // object type instead of a `Ty::any` stub. Today the `Ty::TypeQuery`
+                            // name field is what downstream class-static lookups key off.
+                            Ty::type_query(
+                                self.arena(),
+                                identifier.name.as_str(),
+                                Ty::any(),
+                                std::iter::empty(),
+                            )
+                        }
+                        AstKind::Function(function) => self.get_type_of_function_declaration_group(
+                            sym.program_id,
+                            function,
+                            self.nodes(sym.program_id).parent_id(declaration),
+                        ),
+                        AstKind::VariableDeclarator(declarator) => self
+                            .get_type_of_variable_declarator(
+                                sym.program_id,
+                                self.nodes(sym.program_id).parent_id(declaration),
+                                declarator,
+                            ),
+                        AstKind::ArrowFunctionExpression(arrow_func_expr) => self
+                            .get_type_of_function_signature_with_node(
+                                sym.program_id,
+                                FunctionKind::ArrowFunction(arrow_func_expr),
+                                Some(declaration),
+                            ),
+                        AstKind::TSTypeAliasDeclaration(alias)
+                            if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
+                        {
+                            self.get_type_of_type_alias_declaration(sym.program_id, alias)
+                        }
+                        AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
+                        _ => Ty::none(),
+                    }
+                }
+                AstKind::Class(class) => class.id.as_ref().map_or_else(Ty::any, |identifier| {
+                    // TODO(correctness): same as above—replace `Ty::any` stub with a real
+                    // constructor object type for the class.
+                    Ty::type_query(
+                        self.arena(),
+                        identifier.name.as_str(),
+                        Ty::any(),
+                        std::iter::empty(),
+                    )
+                }),
+                // TODO
+                AstKind::ImportSpecifier(_)
+                | AstKind::ImportDefaultSpecifier(_)
+                | AstKind::ImportNamespaceSpecifier(_) => Ty::any(),
+                AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
+                _ => Ty::none(),
             }
-            AstKind::Class(class) => class.id.as_ref().map_or_else(Ty::any, |identifier| {
-                // TODO(correctness): same as above—replace `Ty::any` stub with a real
-                // constructor object type for the class.
-                Ty::type_query(
-                    self.arena(),
-                    identifier.name.as_str(),
-                    Ty::any(),
-                    std::iter::empty(),
-                )
-            }),
-            // TODO
-            AstKind::ImportSpecifier(_)
-            | AstKind::ImportDefaultSpecifier(_)
-            | AstKind::ImportNamespaceSpecifier(_) => Ty::any(),
-            AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
-            _ => Ty::none(),
-        }
+        })();
+
+        self.declared_type_cache.borrow_mut().insert(sym, ty);
+        ty
     }
 
     fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
