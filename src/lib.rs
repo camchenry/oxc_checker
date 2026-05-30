@@ -2486,17 +2486,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .collect::<Vec<_>>();
 
-        if method_signatures.is_empty() {
-            let signature = self.signature_from_function_parts(
-                program_id,
-                SignatureKind::Call,
-                method.type_parameters.as_deref(),
-                method.params.as_ref(),
-                method.return_type.as_deref(),
-            );
-            Ty::Function(signature.function)
-        } else {
-            Ty::object_with_signatures(self.arena(), [], method_signatures)
+        match method_signatures.as_slice() {
+            [] => {
+                let signature = self.signature_from_function_parts(
+                    program_id,
+                    SignatureKind::Call,
+                    method.type_parameters.as_deref(),
+                    method.params.as_ref(),
+                    method.return_type.as_deref(),
+                );
+                Ty::Function(signature.function)
+            }
+            [signature] => Ty::Function(signature.function),
+            _ => Ty::object_with_signatures(self.arena(), [], method_signatures),
         }
     }
 
@@ -5731,6 +5733,27 @@ mod test {
 
         assert_eq!(get_global_symbol_type(&ret, "fromString"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "fromNumber"), Ty::number());
+    }
+
+    #[test]
+    fn single_interface_method_signature_location_uses_function_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface PredicateArray<T> {
+            every<S extends T>(predicate: (value: T) => value is S): this is readonly S[];
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_ts_method_signature_types(&ret, "every"),
+            vec![
+                "<S extends T>(predicate: (value: T) => value is S) => this is readonly S[]"
+                    .to_string(),
+            ]
+        );
     }
 
     #[test]
