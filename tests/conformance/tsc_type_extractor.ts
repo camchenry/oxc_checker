@@ -531,6 +531,14 @@ function recordForNode(
   relativePath: string,
   node: TypeScriptNode,
 ): string | undefined {
+  if (ts.isExpressionStatement(node)) {
+    const typeText = typeToString(ts, checker, checker.getTypeAtLocation(node.expression), node);
+    const start = node.getStart(sourceFile, false);
+    const end = node.getEnd();
+    const text = sanitize(node.getText(sourceFile));
+    return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
+  }
+
   if (!ts.isIdentifier(node)) {
     return undefined;
   }

@@ -5,10 +5,16 @@ if (x) {
 >   ^: string | undefined   (TyUnion)
 
   console.log(x);
+> ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  console.log(x);
 >         ^^^: any   (TyAny)
 
   console.log(x);
 >             ^: string   (TyString)
+
+  console.log(x);
+> ^^^^^^^^^^^^^^^: any   (TyAny)
 
   console.log(x);
 >         ^^^: any   (TyAny)
@@ -35,10 +41,16 @@ if (typeof y === "string") {
 >          ^: string | number | boolean   (TyUnion)
 
   console.log(y);
+> ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  console.log(y);
 >         ^^^: any   (TyAny)
 
   console.log(y);
 >             ^: string   (TyString)
+
+  console.log(y)
+> ^^^^^^^^^^^^^^: any   (TyAny)
 
   console.log(y)
 >         ^^^: any   (TyAny)

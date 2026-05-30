@@ -920,6 +920,7 @@ fn collect_oxc_records_from_source(
                     source_file,
                     compiler_case.has_explicit_files,
                 ),
+                &source_file.source_text,
             ));
         }
         return records;
@@ -945,6 +946,7 @@ fn collect_oxc_records_from_source(
                 source_file,
                 compiler_case.has_explicit_files,
             ),
+            &source_file.source_text,
         ));
     }
 
@@ -1167,6 +1169,7 @@ fn actual_identifier_records<'a>(
     store: &program::ProgramStore<'a>,
     program_id: program::ProgramId,
     path: &str,
+    source_text: &str,
 ) -> Vec<TypeRecord> {
     let checker = CheckerBuilder::new().build(store);
     store
@@ -1176,7 +1179,14 @@ fn actual_identifier_records<'a>(
         .nodes()
         .iter_enumerated()
         .filter_map(|(node_id, node)| {
-            actual_identifier_record(&checker, program_id, path, node_id, node.kind())
+            actual_identifier_record(
+                &checker,
+                program_id,
+                path,
+                source_text,
+                node_id,
+                node.kind(),
+            )
         })
         .collect()
 }
@@ -1185,6 +1195,7 @@ fn actual_identifier_record<'a>(
     checker: &CheckerReturn<'a, '_>,
     program_id: program::ProgramId,
     path: &str,
+    source_text: &str,
     node_id: NodeId,
     kind: AstKind<'a>,
 ) -> Option<TypeRecord> {
@@ -1310,6 +1321,11 @@ fn actual_identifier_record<'a>(
             );
             (span, text, ty)
         }
+        AstKind::ExpressionStatement(statement) => (
+            statement.span,
+            source_text_for_span(source_text, statement.span)?,
+            checker.get_type_of_expression_at_node(program_id, &statement.expression, node_id),
+        ),
         _ => return None,
     };
 
@@ -1325,6 +1341,12 @@ fn actual_identifier_record<'a>(
         ty_variant: Some(ty.enum_variant_name()),
         ty_repr: sanitize(&checker.type_to_string(ty, node_ref)),
     })
+}
+
+fn source_text_for_span(source_text: &str, span: Span) -> Option<String> {
+    source_text
+        .get(span.start as usize..span.end as usize)
+        .map(ToString::to_string)
 }
 
 fn type_or_any(ty: Ty<'_>) -> Ty<'_> {
@@ -2222,6 +2244,22 @@ mod tests {
             record.path == "compiler/ambientStatement1.ts"
                 && record.text == "v1"
                 && record.ty_repr == "() => boolean"
+        }));
+    }
+
+    #[test]
+    fn expression_statement_records_use_whole_statement_text() {
+        let source_text = "declare function x(): number;\nx();";
+        let records = collect_oxc_records_from_source(
+            Path::new("tests/conformance/cases"),
+            Path::new("tests/conformance/cases/compiler/expressionStatement.ts"),
+            source_text,
+        );
+
+        assert!(records.iter().any(|record| {
+            record.path == "compiler/expressionStatement.ts"
+                && record.text == "x();"
+                && record.ty_repr == "number"
         }));
     }
 }

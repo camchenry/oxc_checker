@@ -25,6 +25,9 @@ const xa = <any>x;``
 const xa = <any>x;``
 >               ^: any   (TyAny)
 
+const xa = <any>x;``
+>                 ^^: any   (TyAny)
+
 interface i00<T = number> { a: T; }
 >         ^^^: any   (TyAny)
 

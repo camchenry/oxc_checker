@@ -1,0 +1,236 @@
+const promise = new Promise((resolve, reject) => resolve('value'));
+>     ^^^^^^^: Promise<T>   (TyTypeReference)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                            ^^^^^^^: any   (TyAny)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                                     ^^^^^^: any   (TyAny)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                                                ^^^^^^^: any   (TyAny)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                                                ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+promise;
+>^^^^^^^: Promise<T>   (TyTypeReference)
+
+promise;
+>^^^^^^^^: Promise<T>   (TyTypeReference)
+
+async function returnsPromise() {
+>              ^^^^^^^^^^^^^^: { (): string; (): string; (): string; }   (TyObject)
+
+returnsPromise().then(() => {});
+>^^^^^^^^^^^^^^: { (): string; (): string; (): string; }   (TyObject)
+
+returnsPromise().then(() => {});
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+returnsPromise().then(() => {});
+>                ^^^^: any   (TyAny)
+
+Promise.reject('value').catch();
+>^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+Promise.reject('value').catch();
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<never>   (TyTypeReference)
+
+Promise.reject('value').catch();
+>       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
+
+Promise.reject('value').catch();
+>                       ^^^^^: <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
+
+Promise.reject('value').finally();
+>^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+Promise.reject('value').finally();
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+Promise.reject('value').finally();
+>       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
+
+Promise.reject('value').finally();
+>                       ^^^^^^^: any   (TyAny)
+
+[1, 2, 3].map(async x => x + 1);
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+[1, 2, 3].map(async x => x + 1);
+>         ^^^: any   (TyAny)
+
+[1, 2, 3].map(async x => x + 1);
+>                   ^: any   (TyAny)
+
+[1, 2, 3].map(async x => x + 1);
+>                        ^: any   (TyAny)
+
+[1, 2, 3].map(async x => x + 1);
+>                        ^^^^^: any   (TyAny)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>     ^^^^^^^: Promise<T>   (TyTypeReference)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                            ^^^^^^^: any   (TyAny)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                                     ^^^^^^: any   (TyAny)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                                                ^^^^^^^: any   (TyAny)
+
+const promise = new Promise((resolve, reject) => resolve('value'));
+>                                                ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+await promise;
+>^^^^^^^^^^^^^^: any   (TyAny)
+
+await promise;
+>     ^^^^^^^: Promise<T>   (TyTypeReference)
+
+async function returnsPromise() {
+>              ^^^^^^^^^^^^^^: { (): string; (): string; (): string; }   (TyObject)
+
+void returnsPromise();
+>^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+
+void returnsPromise();
+>    ^^^^^^^^^^^^^^: { (): string; (): string; (): string; }   (TyObject)
+
+returnsPromise().then(
+>^^^^^^^^^^^^^^: { (): string; (): string; (): string; }   (TyObject)
+
+returnsPromise().then(
+>^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+returnsPromise().then(
+>                ^^^^: any   (TyAny)
+
+Promise.reject('value').catch(() => {});
+>^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+Promise.reject('value').catch(() => {});
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<never>   (TyTypeReference)
+
+Promise.reject('value').catch(() => {});
+>       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
+
+Promise.reject('value').catch(() => {});
+>                       ^^^^^: <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
+
+await Promise.reject('value').finally(() => {});
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+await Promise.reject('value').finally(() => {});
+>     ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+await Promise.reject('value').finally(() => {});
+>             ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
+
+await Promise.reject('value').finally(() => {});
+>                             ^^^^^^^: any   (TyAny)
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
+>     ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
+>             ^^^: { <T>(values: Iterable<T | PromiseLike<T>, any, any>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
+>                           ^^^: any   (TyAny)
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
+>                                     ^: any   (TyAny)
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
+>                                          ^: any   (TyAny)
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
+>                                          ^^^^^: any   (TyAny)
+
+declare function createPromiseLike(): PromiseLike<string>;
+>                ^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction)
+
+declare function createPromiseLike(): PromiseLike<string>;
+>                                     ^^^^^^^^^^^: any   (TyAny)
+
+createPromiseLike();
+>^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction)
+
+createPromiseLike();
+>^^^^^^^^^^^^^^^^^^^^: PromiseLike<string>   (TyTypeReference)
+
+await createPromiseLike();
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+await createPromiseLike();
+>     ^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction)
+
+interface MyThenable {
+>         ^^^^^^^^^^: any   (TyAny)
+
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+> ^^^^: (onFulfilled: () => void, onRejected: () => void) => MyThenable   (TyFunction)
+
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+>      ^^^^^^^^^^^: () => void   (TyFunction)
+
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+>                               ^^^^^^^^^^: () => void   (TyFunction)
+
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+>                                                        ^^^^^^^^^^: any   (TyAny)
+
+declare function createMyThenable(): MyThenable;
+>                ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction)
+
+declare function createMyThenable(): MyThenable;
+>                                    ^^^^^^^^^^: any   (TyAny)
+
+await createMyThenable();
+>^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+await createMyThenable();
+>     ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction)
+
+async function returnsPromise() {
+>              ^^^^^^^^^^^^^^: { (): string; (): string; (): string; }   (TyObject)
+
+void returnsPromise();
+>^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+
+void returnsPromise();
+>    ^^^^^^^^^^^^^^: { (): string; (): string; (): string; }   (TyObject)
+
+void Promise.reject('value');
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+
+void Promise.reject('value');
+>    ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+void Promise.reject('value');
+>            ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
+
+await (async function () {
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  await res(1);
+> ^^^^^^^^^^^^^: any   (TyAny)
+
+(async function () {
+>^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  await res(1);
+> ^^^^^^^^^^^^^: any   (TyAny)
