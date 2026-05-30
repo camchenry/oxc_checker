@@ -128,7 +128,7 @@ interface Array<T> {
 >                  ^^^^^^^: string | string[]   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
 >                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -656,7 +656,7 @@ interface ReadonlyArray<T> {
 >                  ^^^^^^^: string | string[]   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
 >                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

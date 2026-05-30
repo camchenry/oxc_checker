@@ -1457,7 +1457,7 @@ impl<'a> Ty<'a> {
                 .iter()
                 .map(|ty| {
                     let type_string = ty.to_type_string();
-                    if matches!(ty, Ty::Function(_)) {
+                    if ty.union_or_intersection_type_needs_parentheses() {
                         format!("({type_string})")
                     } else {
                         type_string
@@ -1470,7 +1470,7 @@ impl<'a> Ty<'a> {
                 .iter()
                 .map(|ty| {
                     let type_string = ty.to_type_string();
-                    if matches!(ty, Ty::Function(_)) {
+                    if ty.union_or_intersection_type_needs_parentheses() {
                         format!("({type_string})")
                     } else {
                         type_string
@@ -1550,6 +1550,14 @@ impl<'a> Ty<'a> {
         matches!(
             self,
             Self::Function(_) | Self::Union(_) | Self::Conditional(_)
+        )
+    }
+
+    /// Whether this type needs parentheses in a union or intersection type
+    fn union_or_intersection_type_needs_parentheses(&self) -> bool {
+        matches!(
+            self,
+            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
         )
     }
 
