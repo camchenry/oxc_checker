@@ -68,6 +68,18 @@ const DEFAULT_WORKERS = Math.max(
   Math.min(8, os.availableParallelism ? os.availableParallelism() : os.cpus().length || 1),
 );
 
+function conformanceTypeFormatFlags(ts: TypeScript): typescript.TypeFormatFlags {
+  return ts.TypeFormatFlags.NoTruncation
+    | ts.TypeFormatFlags.UseStructuralFallback
+    | ts.TypeFormatFlags.WriteTypeArgumentsOfSignature
+    | ts.TypeFormatFlags.UseFullyQualifiedType
+    | ts.TypeFormatFlags.WriteClassExpressionAsTypeLiteral
+    | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope
+    | ts.TypeFormatFlags.AllowUniqueESSymbolType
+    | ts.TypeFormatFlags.WriteArrowStyleSignature
+    | ts.TypeFormatFlags.NoTypeReduction;
+}
+
 function parseArgs(argv: string[]): Map<string, string> {
   const args = new Map<string, string>();
   for (let i = 2; i < argv.length; i += 2) {
@@ -560,21 +572,7 @@ function typeToString(
   node: TypeScriptNode,
   flags?: number,
 ): string {
-  const typeText = flags === undefined
-    ? checker.typeToString(type, node)
-    : checker.typeToString(type, node, flags);
-  if (!typeTextNeedsExpansion(typeText)) {
-    return typeText;
-  }
-  return checker.typeToString(
-    type,
-    node,
-    (flags || 0) | ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope,
-  );
-}
-
-function typeTextNeedsExpansion(typeText: string): boolean {
-  return /<\.\.\.>|\{ \.\.\.; \}|\.\.\. \d+ more \.\.\./.test(typeText);
+  return checker.typeToString(type, node, (flags || 0) | conformanceTypeFormatFlags(ts));
 }
 
 function collectRecords(
