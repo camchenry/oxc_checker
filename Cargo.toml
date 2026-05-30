@@ -6,6 +6,7 @@ edition = "2024"
 [features]
 default = []
 bench = []
+allocation-stats = ["oxc_allocator/track_allocations"]
 conformance = []
 conformance-tsc = []
 

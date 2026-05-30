@@ -694,7 +694,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn get_type_of_boolean_literal(&self, literal: &BooleanLiteral) -> Ty<'a> {
-        Ty::boolean_literal(self.arena(), literal.value)
+        Ty::boolean_literal(literal.value)
     }
 
     fn get_type_of_binary_expression(
@@ -5657,15 +5657,10 @@ mod test {
         const tupleContext: StringsThenConfig = ['value', { huh: false }];
         ",
         );
-        let arena = arena(&ret);
 
         assert_eq!(
             get_object_property_types(&ret, "huh"),
-            vec![
-                Ty::boolean(),
-                Ty::boolean_true(arena),
-                Ty::boolean_false(arena),
-            ]
+            vec![Ty::boolean(), Ty::boolean_true(), Ty::boolean_false(),]
         );
     }
 
@@ -5689,10 +5684,7 @@ mod test {
             get_global_symbol_type(&ret, "label"),
             Ty::string_literal(arena(&ret), "\"ready\"")
         );
-        assert_eq!(
-            get_global_symbol_type(&ret, "enabled"),
-            Ty::boolean_true(arena(&ret))
-        );
+        assert_eq!(get_global_symbol_type(&ret, "enabled"), Ty::boolean_true());
     }
 
     #[test]
