@@ -5,13 +5,13 @@ use oxc_ast::{
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, BinaryExpression,
         BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
-        ComputedMemberExpression, Expression, FormalParameter, FormalParameterRest,
-        FormalParameters, Function, FunctionBody, MethodDefinition, MethodDefinitionKind,
-        NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind, Program,
-        PropertyDefinition, PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
-        TSInterfaceDeclaration, TSSignature, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
-        VariableDeclarationKind, VariableDeclarator,
+        ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
+        FormalParameterRest, FormalParameters, Function, FunctionBody, IdentifierReference,
+        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
+        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, ReturnStatement,
+        StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSSignature, TSTupleElement,
+        TSType, TSTypeAnnotation, TSTypeName, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
@@ -600,7 +600,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         self.get_value_symbol_for_name(program_id, identifier.name.as_str())
                     });
                 if let Some(symbol) = symbol {
-                    return self.get_type_of_symbol(symbol);
+                    let base_type = self.get_type_of_symbol(symbol);
+                    return self
+                        .identifier_node_ref(program_id, identifier)
+                        .map_or(base_type, |node| {
+                            flow::get_flow_type_of_reference(self, node, symbol, base_type)
+                        });
                 }
                 if identifier.name == UNDEFINED_IDENT {
                     return Ty::undefined();
@@ -612,6 +617,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             Expression::BinaryExpression(binary_expression) => {
                 self.get_type_of_binary_expression(program_id, binary_expression, node_id)
+            }
+            Expression::ConditionalExpression(conditional) => {
+                self.get_type_of_conditional_expression(program_id, conditional, node_id)
             }
             Expression::UnaryExpression(unary_expression) => {
                 self.get_type_of_unary_expression(program_id, unary_expression, node_id)
@@ -690,6 +698,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn identifier_node_ref(
+        &self,
+        program_id: program::ProgramId,
+        identifier: &IdentifierReference<'a>,
+    ) -> Option<NodeRef> {
+        self.nodes(program_id)
+            .iter_enumerated()
+            .find_map(|(node_id, node)| match node.kind() {
+                AstKind::IdentifierReference(candidate)
+                    if candidate.span == identifier.span
+                        && candidate.name == identifier.name
+                        && candidate.reference_id.get() == identifier.reference_id.get() =>
+                {
+                    Some(NodeRef::new(program_id, node_id))
+                }
+                _ => None,
+            })
+    }
+
     fn is_in_exported_declaration(&self, program_id: program::ProgramId, node_id: NodeId) -> bool {
         self.nodes(program_id).ancestor_kinds(node_id).any(|kind| {
             matches!(
@@ -761,6 +788,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             _ => Ty::any(),
         }
+    }
+
+    fn get_type_of_conditional_expression(
+        &self,
+        program_id: program::ProgramId,
+        conditional: &'a ConditionalExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let consequent =
+            self.get_type_of_expression_with_node(program_id, &conditional.consequent, node_id);
+        let alternate =
+            self.get_type_of_expression_with_node(program_id, &conditional.alternate, node_id);
+
+        Ty::union(self.arena(), [consequent, alternate])
     }
 
     fn get_type_of_unary_expression(
@@ -5445,6 +5486,31 @@ mod test {
         assert_eq!(
             reference_types[2],
             Ty::union(arena(&ret), [Ty::number(), Ty::boolean()])
+        );
+    }
+
+    #[test]
+    fn flow_narrows_typeof_conditional_expression_arms() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const y: string | number | boolean;
+        const z = typeof y === 'string' ? y : undefined;
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "z"),
+            Ty::union(arena, [Ty::string(), Ty::undefined()])
+        );
+        assert_eq!(
+            get_identifier_reference_types(&ret, "y"),
+            vec![
+                Ty::union(arena, [Ty::string(), Ty::number(), Ty::boolean()]),
+                Ty::string(),
+            ]
         );
     }
 

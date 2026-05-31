@@ -32,13 +32,13 @@ declare const y: string | number | boolean;
 >             ^: string | number | boolean   (TyUnion)
 
 const z = typeof y === "string" ? y : undefined;
->     ^: any   (TyAny)
+>     ^: string | undefined   (TyUnion)
 
 const z = typeof y === "string" ? y : undefined;
 >                ^: string | number | boolean   (TyUnion)
 
 const z = typeof y === "string" ? y : undefined;
->                                 ^: string | number | boolean   (TyUnion)
+>                                 ^: string   (TyString)
 
 const z = typeof y === "string" ? y : undefined;
 >                                     ^^^^^^^^^: undefined   (TyUndefined)

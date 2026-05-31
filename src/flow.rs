@@ -1,6 +1,6 @@
 use oxc_ast::{
     AstKind,
-    ast::{Expression, IfStatement},
+    ast::{ConditionalExpression, Expression, IfStatement},
 };
 use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
@@ -96,6 +96,11 @@ fn collect_branch_facts<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef) -> V
                     facts.push(fact);
                 }
             }
+            AstKind::ConditionalExpression(conditional) => {
+                if let Some(fact) = branch_fact_for_conditional(conditional, query_span) {
+                    facts.push(fact);
+                }
+            }
             _ => {}
         }
     }
@@ -122,6 +127,36 @@ fn branch_fact_for_if<'a>(
 
     let alternate = if_statement.alternate.as_ref()?;
     let alternate_span = alternate.span();
+    if alternate_span.contains_inclusive(query_span) {
+        return Some(BranchFact {
+            condition,
+            condition_span,
+            branch_span: alternate_span,
+            assume_true: false,
+        });
+    }
+
+    None
+}
+
+/// Return the branch fact for a conditional expression when a query is inside one of its arms.
+fn branch_fact_for_conditional<'a>(
+    conditional: &'a ConditionalExpression<'a>,
+    query_span: Span,
+) -> Option<BranchFact<'a>> {
+    let condition = &conditional.test;
+    let condition_span = condition.span();
+    let consequent_span = conditional.consequent.span();
+    if consequent_span.contains_inclusive(query_span) {
+        return Some(BranchFact {
+            condition,
+            condition_span,
+            branch_span: consequent_span,
+            assume_true: true,
+        });
+    }
+
+    let alternate_span = conditional.alternate.span();
     if alternate_span.contains_inclusive(query_span) {
         return Some(BranchFact {
             condition,
