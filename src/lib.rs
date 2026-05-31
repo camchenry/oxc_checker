@@ -1070,7 +1070,28 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
             TSType::TSMappedType(mapped) => self.get_type_from_ts_mapped_type(program_id, mapped),
             TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
-            _ => Ty::none(),
+            TSType::TSIntrinsicKeyword(_) => {
+                // TODO(correctness): handle intrinsic keywords
+                Ty::none()
+            }
+            TSType::TSConstructorType(_) => {
+                // TODO(correctness): handle constructor types
+                Ty::none()
+            }
+            TSType::TSImportType(_) => {
+                // TODO(correctness): handle types like `import('foo').T`
+                Ty::none()
+            }
+            TSType::TSNamedTupleMember(_) => {
+                // TODO(correctness): handle named tuple members
+                Ty::none()
+            }
+            TSType::JSDocNullableType(_)
+            | TSType::JSDocNonNullableType(_)
+            | TSType::JSDocUnknownType(_) => {
+                // TODO(completeness): We are not currently handling JSDoc.
+                Ty::any()
+            }
         }
     }
 
