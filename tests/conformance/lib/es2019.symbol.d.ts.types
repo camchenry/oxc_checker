@@ -1,0 +1,5 @@
+interface Symbol {
+>         ^^^^^^: any   (TyAny)
+
+    readonly description: string | undefined;
+>            ^^^^^^^^^^^: string | undefined   (TyUnion)

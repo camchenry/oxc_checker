@@ -1,0 +1,50 @@
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly matchAll: unique symbol;
+>            ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                              ^: any   (TyAny)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                         ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                        ^: any   (TyAny)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                           ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): RegExpStringIterator<T>;
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.iterator](): RegExpStringIterator<T>;
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    [Symbol.iterator](): RegExpStringIterator<T>;
+>                        ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): RegExpStringIterator<T>;
+>                                             ^: any   (TyAny)
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny)
+
+    [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
+>                     ^^^: string   (TyString)
+
+    [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
+>                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
+>                                                        ^^^^^^^^^^^^^^^: any   (TyAny)

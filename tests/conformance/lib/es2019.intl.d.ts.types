@@ -1,0 +1,8 @@
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery)
+
+    interface DateTimeFormatPartTypesRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        unknown: never;
+>       ^^^^^^^: never   (TyNever)

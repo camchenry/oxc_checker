@@ -1,0 +1,83 @@
+interface ObjectConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>   ^^^^^^: { <T>(o: {} | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: {} | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>          ^: any   (TyAny)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>             ^: {} | ArrayLike<T>   (TyUnion)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>                               ^: any   (TyAny)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>                                      ^^^^^^^^^: any   (TyAny)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>                                                ^: any   (TyAny)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>                                                     ^: any   (TyAny)
+
+    values(o: {}): any[];
+>   ^^^^^^: { <T>(o: {} | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: {} | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
+
+    values(o: {}): any[];
+>          ^: {}   (TyObject)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>   ^^^^^^^: { <T>(o: {} | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: {} | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }   (TyObject)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>           ^: any   (TyAny)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>              ^: {} | ArrayLike<T>   (TyUnion)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>                                ^: any   (TyAny)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>                                       ^^^^^^^^^: any   (TyAny)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>                                                 ^: any   (TyAny)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>                                                               ^: any   (TyAny)
+
+    entries(o: {}): [string, any][];
+>   ^^^^^^^: { <T>(o: {} | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: {} | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }   (TyObject)
+
+    entries(o: {}): [string, any][];
+>           ^: {}   (TyObject)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; }; }   (TyObject)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                             ^: any   (TyAny)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                ^: T   (TyTypeReference)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                   ^: any   (TyAny)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                                     ^: any   (TyAny)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                                                                 ^: any   (TyAny)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                                                                   ^: any   (TyAny)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (TyAny)

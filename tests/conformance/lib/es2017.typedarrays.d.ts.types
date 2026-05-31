@@ -1,0 +1,134 @@
+interface Int8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Int8Array<ArrayBuffer>;
+>           ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+
+    new (): Int8Array<ArrayBuffer>;
+>           ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+
+    new (): Int8Array<ArrayBuffer>;
+>                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Int8Array<ArrayBuffer>;
+>                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Uint8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Uint8Array<ArrayBuffer>;
+>           ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+
+    new (): Uint8Array<ArrayBuffer>;
+>           ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+
+    new (): Uint8Array<ArrayBuffer>;
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Uint8Array<ArrayBuffer>;
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Uint8ClampedArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Uint8ClampedArray<ArrayBuffer>;
+>           ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference)
+
+    new (): Uint8ClampedArray<ArrayBuffer>;
+>           ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference)
+
+    new (): Uint8ClampedArray<ArrayBuffer>;
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Uint8ClampedArray<ArrayBuffer>;
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Int16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Int16Array<ArrayBuffer>;
+>           ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+
+    new (): Int16Array<ArrayBuffer>;
+>           ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+
+    new (): Int16Array<ArrayBuffer>;
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Int16Array<ArrayBuffer>;
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Uint16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Uint16Array<ArrayBuffer>;
+>           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+
+    new (): Uint16Array<ArrayBuffer>;
+>           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+
+    new (): Uint16Array<ArrayBuffer>;
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Uint16Array<ArrayBuffer>;
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Int32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Int32Array<ArrayBuffer>;
+>           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+
+    new (): Int32Array<ArrayBuffer>;
+>           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+
+    new (): Int32Array<ArrayBuffer>;
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Int32Array<ArrayBuffer>;
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Uint32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Uint32Array<ArrayBuffer>;
+>           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+
+    new (): Uint32Array<ArrayBuffer>;
+>           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+
+    new (): Uint32Array<ArrayBuffer>;
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Uint32Array<ArrayBuffer>;
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Float32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Float32Array<ArrayBuffer>;
+>           ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference)
+
+    new (): Float32Array<ArrayBuffer>;
+>           ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference)
+
+    new (): Float32Array<ArrayBuffer>;
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Float32Array<ArrayBuffer>;
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+interface Float64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): Float64Array<ArrayBuffer>;
+>           ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference)
+
+    new (): Float64Array<ArrayBuffer>;
+>           ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference)
+
+    new (): Float64Array<ArrayBuffer>;
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): Float64Array<ArrayBuffer>;
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)

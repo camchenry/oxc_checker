@@ -1,0 +1,764 @@
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery)
+
+    type UnicodeBCP47LocaleIdentifier = string;
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+    type RelativeTimeFormatUnit =
+>        ^^^^^^^^^^^^^^^^^^^^^^: "year" | "years" | "quarter" | "quarters" | "month" | "months" | "week" | "weeks" | "day" | "days" | "hour" | "hours" | "minute" | "minutes" | "second" | "seconds"   (TyUnion)
+
+    type RelativeTimeFormatUnitSingular =
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: "year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"   (TyUnion)
+
+    type RelativeTimeFormatLocaleMatcher = "lookup" | "best fit";
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: "lookup" | "best fit"   (TyUnion)
+
+    type RelativeTimeFormatNumeric = "always" | "auto";
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^: "always" | "auto"   (TyUnion)
+
+    type RelativeTimeFormatStyle = "long" | "short" | "narrow";
+>        ^^^^^^^^^^^^^^^^^^^^^^^: "long" | "short" | "narrow"   (TyUnion)
+
+    type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
+>        ^^^^^^^^^^^^^^^: UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined   (TyUnion)
+
+    type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
+>                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+    type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
+>                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+    type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
+>                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
+>                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+    type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
+>                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+    interface RelativeTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        localeMatcher?: RelativeTimeFormatLocaleMatcher;
+>       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion)
+
+        localeMatcher?: RelativeTimeFormatLocaleMatcher;
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        numeric?: RelativeTimeFormatNumeric;
+>       ^^^^^^^: RelativeTimeFormatNumeric | undefined   (TyUnion)
+
+        numeric?: RelativeTimeFormatNumeric;
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        style?: RelativeTimeFormatStyle;
+>       ^^^^^: RelativeTimeFormatStyle | undefined   (TyUnion)
+
+        style?: RelativeTimeFormatStyle;
+>               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface ResolvedRelativeTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        locale: UnicodeBCP47LocaleIdentifier;
+>       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference)
+
+        locale: UnicodeBCP47LocaleIdentifier;
+>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        style: RelativeTimeFormatStyle;
+>       ^^^^^: RelativeTimeFormatStyle   (TyTypeReference)
+
+        style: RelativeTimeFormatStyle;
+>              ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        numeric: RelativeTimeFormatNumeric;
+>       ^^^^^^^: RelativeTimeFormatNumeric   (TyTypeReference)
+
+        numeric: RelativeTimeFormatNumeric;
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        numberingSystem: string;
+>       ^^^^^^^^^^^^^^^: string   (TyString)
+
+    type RelativeTimeFormatPart =
+>        ^^^^^^^^^^^^^^^^^^^^^^: { type: "literal"; value: string; } | { type: Exclude<NumberFormatPartTypes, "literal">; value: string; unit: RelativeTimeFormatUnitSingular; }   (TyUnion)
+
+            type: "literal";
+>           ^^^^: "literal"   (TyStringLiteral)
+
+            value: string;
+>           ^^^^^: string   (TyString)
+
+            type: Exclude<NumberFormatPartTypes, "literal">;
+>           ^^^^: Exclude<NumberFormatPartTypes, "literal">   (TyTypeReference)
+
+            type: Exclude<NumberFormatPartTypes, "literal">;
+>                 ^^^^^^^: any   (TyAny)
+
+            type: Exclude<NumberFormatPartTypes, "literal">;
+>                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+            value: string;
+>           ^^^^^: string   (TyString)
+
+            unit: RelativeTimeFormatUnitSingular;
+>           ^^^^: RelativeTimeFormatUnitSingular   (TyTypeReference)
+
+            unit: RelativeTimeFormatUnitSingular;
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface RelativeTimeFormat {
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface RelativeTimeFormat {
+>             ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        format(value: number, unit: RelativeTimeFormatUnit): string;
+>       ^^^^^^: (value: number, unit: RelativeTimeFormatUnit) => string   (TyFunction)
+
+        format(value: number, unit: RelativeTimeFormatUnit): string;
+>              ^^^^^: number   (TyNumber)
+
+        format(value: number, unit: RelativeTimeFormatUnit): string;
+>                             ^^^^: RelativeTimeFormatUnit   (TyTypeReference)
+
+        format(value: number, unit: RelativeTimeFormatUnit): string;
+>                                   ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
+>       ^^^^^^^^^^^^^: (value: number, unit: RelativeTimeFormatUnit) => RelativeTimeFormatPart[]   (TyFunction)
+
+        formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
+>                     ^^^^^: number   (TyNumber)
+
+        formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
+>                                    ^^^^: RelativeTimeFormatUnit   (TyTypeReference)
+
+        formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
+>                                          ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
+>                                                                   ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        resolvedOptions(): ResolvedRelativeTimeFormatOptions;
+>       ^^^^^^^^^^^^^^^: () => ResolvedRelativeTimeFormatOptions   (TyFunction)
+
+        resolvedOptions(): ResolvedRelativeTimeFormatOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    const RelativeTimeFormat: {
+>         ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+            locales?: LocalesArgument,
+>           ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+            locales?: LocalesArgument,
+>                     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+            options?: RelativeTimeFormatOptions,
+>           ^^^^^^^: RelativeTimeFormatOptions | undefined   (TyUnion)
+
+            options?: RelativeTimeFormatOptions,
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        ): RelativeTimeFormat;
+>          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        ): RelativeTimeFormat;
+>          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        supportedLocalesOf(
+>       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]   (TyFunction)
+
+            locales?: LocalesArgument,
+>           ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+            locales?: LocalesArgument,
+>                     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+            options?: RelativeTimeFormatOptions,
+>           ^^^^^^^: RelativeTimeFormatOptions | undefined   (TyUnion)
+
+            options?: RelativeTimeFormatOptions,
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        ): UnicodeBCP47LocaleIdentifier[];
+>          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface NumberFormatOptionsStyleRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        unit: never;
+>       ^^^^: never   (TyNever)
+
+    interface NumberFormatOptionsCurrencyDisplayRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        narrowSymbol: never;
+>       ^^^^^^^^^^^^: never   (TyNever)
+
+    interface NumberFormatOptionsSignDisplayRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        auto: never;
+>       ^^^^: never   (TyNever)
+
+        never: never;
+>       ^^^^^: never   (TyNever)
+
+        always: never;
+>       ^^^^^^: never   (TyNever)
+
+        exceptZero: never;
+>       ^^^^^^^^^^: never   (TyNever)
+
+    type NumberFormatOptionsSignDisplay = keyof NumberFormatOptionsSignDisplayRegistry;
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: keyof NumberFormatOptionsSignDisplayRegistry   (TyKeyof)
+
+    type NumberFormatOptionsSignDisplay = keyof NumberFormatOptionsSignDisplayRegistry;
+>                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface NumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        numberingSystem?: string | undefined;
+>       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+        compactDisplay?: "short" | "long" | undefined;
+>       ^^^^^^^^^^^^^^: "short" | "long" | undefined   (TyUnion)
+
+        notation?: "standard" | "scientific" | "engineering" | "compact" | undefined;
+>       ^^^^^^^^: "standard" | "scientific" | "engineering" | "compact" | undefined   (TyUnion)
+
+        signDisplay?: NumberFormatOptionsSignDisplay | undefined;
+>       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay | undefined   (TyUnion)
+
+        signDisplay?: NumberFormatOptionsSignDisplay | undefined;
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        unit?: string | undefined;
+>       ^^^^: string | undefined   (TyUnion)
+
+        unitDisplay?: "short" | "long" | "narrow" | undefined;
+>       ^^^^^^^^^^^: "short" | "long" | "narrow" | undefined   (TyUnion)
+
+        currencySign?: "standard" | "accounting" | undefined;
+>       ^^^^^^^^^^^^: "standard" | "accounting" | undefined   (TyUnion)
+
+    interface ResolvedNumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        compactDisplay?: "short" | "long";
+>       ^^^^^^^^^^^^^^: "short" | "long" | undefined   (TyUnion)
+
+        notation: "standard" | "scientific" | "engineering" | "compact";
+>       ^^^^^^^^: "standard" | "scientific" | "engineering" | "compact"   (TyUnion)
+
+        signDisplay: NumberFormatOptionsSignDisplay;
+>       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay   (TyTypeReference)
+
+        signDisplay: NumberFormatOptionsSignDisplay;
+>                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        unit?: string;
+>       ^^^^: string | undefined   (TyUnion)
+
+        unitDisplay?: "short" | "long" | "narrow";
+>       ^^^^^^^^^^^: "short" | "long" | "narrow" | undefined   (TyUnion)
+
+        currencySign?: "standard" | "accounting";
+>       ^^^^^^^^^^^^: "standard" | "accounting" | undefined   (TyUnion)
+
+    interface NumberFormatPartTypeRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        compact: never;
+>       ^^^^^^^: never   (TyNever)
+
+        exponentInteger: never;
+>       ^^^^^^^^^^^^^^^: never   (TyNever)
+
+        exponentMinusSign: never;
+>       ^^^^^^^^^^^^^^^^^: never   (TyNever)
+
+        exponentSeparator: never;
+>       ^^^^^^^^^^^^^^^^^: never   (TyNever)
+
+        unit: never;
+>       ^^^^: never   (TyNever)
+
+        unknown: never;
+>       ^^^^^^^: never   (TyNever)
+
+    interface DateTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        calendar?: string | undefined;
+>       ^^^^^^^^: string | undefined   (TyUnion)
+
+        dayPeriod?: "narrow" | "short" | "long" | undefined;
+>       ^^^^^^^^^: "narrow" | "short" | "long" | undefined   (TyUnion)
+
+        numberingSystem?: string | undefined;
+>       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+        dateStyle?: "full" | "long" | "medium" | "short" | undefined;
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion)
+
+        timeStyle?: "full" | "long" | "medium" | "short" | undefined;
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion)
+
+        hourCycle?: "h11" | "h12" | "h23" | "h24" | undefined;
+>       ^^^^^^^^^: "h11" | "h12" | "h23" | "h24" | undefined   (TyUnion)
+
+    type LocaleHourCycleKey = "h12" | "h23" | "h11" | "h24";
+>        ^^^^^^^^^^^^^^^^^^: "h12" | "h23" | "h11" | "h24"   (TyUnion)
+
+    type LocaleCollationCaseFirst = "upper" | "lower" | "false";
+>        ^^^^^^^^^^^^^^^^^^^^^^^^: "upper" | "lower" | "false"   (TyUnion)
+
+    interface LocaleOptions {
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+        baseName?: string;
+>       ^^^^^^^^: string | undefined   (TyUnion)
+
+        calendar?: string;
+>       ^^^^^^^^: string | undefined   (TyUnion)
+
+        caseFirst?: LocaleCollationCaseFirst;
+>       ^^^^^^^^^: LocaleCollationCaseFirst | undefined   (TyUnion)
+
+        caseFirst?: LocaleCollationCaseFirst;
+>                   ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        collation?: string;
+>       ^^^^^^^^^: string | undefined   (TyUnion)
+
+        hourCycle?: LocaleHourCycleKey;
+>       ^^^^^^^^^: LocaleHourCycleKey | undefined   (TyUnion)
+
+        hourCycle?: LocaleHourCycleKey;
+>                   ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        language?: string;
+>       ^^^^^^^^: string | undefined   (TyUnion)
+
+        numberingSystem?: string;
+>       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+        numeric?: boolean;
+>       ^^^^^^^: boolean | undefined   (TyUnion)
+
+        region?: string;
+>       ^^^^^^: string | undefined   (TyUnion)
+
+        script?: string;
+>       ^^^^^^: string | undefined   (TyUnion)
+
+    interface Locale extends LocaleOptions {
+>             ^^^^^^: any   (TyAny)
+
+    interface Locale extends LocaleOptions {
+>             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+    interface Locale extends LocaleOptions {
+>                            ^^^^^^^^^^^^^: any   (TyAny)
+
+        baseName: string;
+>       ^^^^^^^^: string   (TyString)
+
+        language: string;
+>       ^^^^^^^^: string   (TyString)
+
+        maximize(): Locale;
+>       ^^^^^^^^: () => Locale   (TyFunction)
+
+        maximize(): Locale;
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        maximize(): Locale;
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        minimize(): Locale;
+>       ^^^^^^^^: () => Locale   (TyFunction)
+
+        minimize(): Locale;
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        minimize(): Locale;
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        toString(): UnicodeBCP47LocaleIdentifier;
+>       ^^^^^^^^: () => UnicodeBCP47LocaleIdentifier   (TyFunction)
+
+        toString(): UnicodeBCP47LocaleIdentifier;
+>                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    const Locale: {
+>         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>            ^^^: UnicodeBCP47LocaleIdentifier | Locale   (TyUnion)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                                                        ^^^^^^^: LocaleOptions | undefined   (TyUnion)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                                                                  ^^^^^^^^^^^^^: any   (TyAny)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+
+    type DisplayNamesFallback =
+>        ^^^^^^^^^^^^^^^^^^^^: "code" | "none"   (TyUnion)
+
+    type DisplayNamesType =
+>        ^^^^^^^^^^^^^^^^: "language" | "region" | "script" | "calendar" | "dateTimeField" | "currency"   (TyUnion)
+
+    type DisplayNamesLanguageDisplay =
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: "dialect" | "standard"   (TyUnion)
+
+    interface DisplayNamesOptions {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        localeMatcher?: RelativeTimeFormatLocaleMatcher;
+>       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion)
+
+        localeMatcher?: RelativeTimeFormatLocaleMatcher;
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        style?: RelativeTimeFormatStyle;
+>       ^^^^^: RelativeTimeFormatStyle | undefined   (TyUnion)
+
+        style?: RelativeTimeFormatStyle;
+>               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        type: DisplayNamesType;
+>       ^^^^: DisplayNamesType   (TyTypeReference)
+
+        type: DisplayNamesType;
+>             ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        languageDisplay?: DisplayNamesLanguageDisplay;
+>       ^^^^^^^^^^^^^^^: DisplayNamesLanguageDisplay | undefined   (TyUnion)
+
+        languageDisplay?: DisplayNamesLanguageDisplay;
+>                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        fallback?: DisplayNamesFallback;
+>       ^^^^^^^^: DisplayNamesFallback | undefined   (TyUnion)
+
+        fallback?: DisplayNamesFallback;
+>                  ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface ResolvedDisplayNamesOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        locale: UnicodeBCP47LocaleIdentifier;
+>       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference)
+
+        locale: UnicodeBCP47LocaleIdentifier;
+>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        style: RelativeTimeFormatStyle;
+>       ^^^^^: RelativeTimeFormatStyle   (TyTypeReference)
+
+        style: RelativeTimeFormatStyle;
+>              ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        type: DisplayNamesType;
+>       ^^^^: DisplayNamesType   (TyTypeReference)
+
+        type: DisplayNamesType;
+>             ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        fallback: DisplayNamesFallback;
+>       ^^^^^^^^: DisplayNamesFallback   (TyTypeReference)
+
+        fallback: DisplayNamesFallback;
+>                 ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        languageDisplay?: DisplayNamesLanguageDisplay;
+>       ^^^^^^^^^^^^^^^: DisplayNamesLanguageDisplay | undefined   (TyUnion)
+
+        languageDisplay?: DisplayNamesLanguageDisplay;
+>                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface DisplayNames {
+>             ^^^^^^^^^^^^: any   (TyAny)
+
+    interface DisplayNames {
+>             ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        of(code: string): string | undefined;
+>       ^^: (code: string) => string | undefined   (TyFunction)
+
+        of(code: string): string | undefined;
+>          ^^^^: string   (TyString)
+
+        resolvedOptions(): ResolvedDisplayNamesOptions;
+>       ^^^^^^^^^^^^^^^: () => ResolvedDisplayNamesOptions   (TyFunction)
+
+        resolvedOptions(): ResolvedDisplayNamesOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    const DisplayNames: {
+>         ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        prototype: DisplayNames;
+>       ^^^^^^^^^: DisplayNames   (TyTypeReference)
+
+        prototype: DisplayNames;
+>                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        prototype: DisplayNames;
+>                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+>            ^^^^^^^: LocalesArgument   (TyTypeReference)
+
+        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+>                     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+>                                      ^^^^^^^: DisplayNamesOptions   (TyTypeReference)
+
+        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+>                                               ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+>                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+>                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
+>       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]   (TyFunction)
+
+        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
+>                          ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
+>                                    ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
+>                                                     ^^^^^^^: { localeMatcher?: RelativeTimeFormatLocaleMatcher; } | undefined   (TyUnion)
+
+        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
+>                                                                 ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion)
+
+        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
+>                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
+>                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface CollatorConstructor {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                                       ^^^^^^^: CollatorOptions | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                                                 ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                                                                   ^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                  ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                                   ^^^^^^^: CollatorOptions | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                                             ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+>                                                               ^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
+>       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: CollatorOptions) => string[]   (TyFunction)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
+>                          ^^^^^^^: LocalesArgument   (TyTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
+>                                                    ^^^^^^^: CollatorOptions | undefined   (TyUnion)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
+>                                                              ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface DateTimeFormatConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                       ^^^^^^^: DateTimeFormatOptions | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                                                         ^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                  ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                   ^^^^^^^: DateTimeFormatOptions | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                                                     ^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
+>       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: DateTimeFormatOptions) => string[]   (TyFunction)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
+>                          ^^^^^^^: LocalesArgument   (TyTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
+>                                                    ^^^^^^^: DateTimeFormatOptions | undefined   (TyUnion)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
+>                                                              ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface NumberFormatConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                       ^^^^^^^: NumberFormatOptions | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                                 ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                                                       ^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                  ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                   ^^^^^^^: NumberFormatOptions | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                             ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                                                   ^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
+>       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: NumberFormatOptions) => string[]   (TyFunction)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
+>                          ^^^^^^^: LocalesArgument   (TyTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
+>                                                    ^^^^^^^: NumberFormatOptions | undefined   (TyUnion)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
+>                                                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface PluralRulesConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                                       ^^^^^^^: PluralRulesOptions | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                                                                      ^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                  ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                                   ^^^^^^^: PluralRulesOptions | undefined   (TyUnion)
+
+        (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
+>                                                                  ^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }) => string[]   (TyFunction)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>                          ^^^^^^^: LocalesArgument   (TyTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>                                                    ^^^^^^^: { localeMatcher?: "lookup" | "best fit"; } | undefined   (TyUnion)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>                                                                ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion)

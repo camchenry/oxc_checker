@@ -1,0 +1,17 @@
+interface Number {
+>         ^^^^^^: any   (TyAny)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }   (TyObject)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
+>                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
+>                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
+>                                                  ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
+>                                                            ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

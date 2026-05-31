@@ -129521,7 +129521,7 @@ interface FileSystemDirectoryHandleAsyncIterator<T> extends AsyncIteratorObject<
 >    ^^^^^^: SymbolConstructor   (TyTypeReference)
 
     [Symbol.asyncIterator](): FileSystemDirectoryHandleAsyncIterator<T>;
->           ^^^^^^^^^^^^^: any   (TyAny)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.asyncIterator](): FileSystemDirectoryHandleAsyncIterator<T>;
 >                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -129539,7 +129539,7 @@ interface FileSystemDirectoryHandle {
 >    ^^^^^^: SymbolConstructor   (TyTypeReference)
 
     [Symbol.asyncIterator](): FileSystemDirectoryHandleAsyncIterator<[string, FileSystemDirectoryHandle | FileSystemFileHandle]>;
->           ^^^^^^^^^^^^^: any   (TyAny)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.asyncIterator](): FileSystemDirectoryHandleAsyncIterator<[string, FileSystemDirectoryHandle | FileSystemFileHandle]>;
 >                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -129617,7 +129617,7 @@ interface ReadableStreamAsyncIterator<T> extends AsyncIteratorObject<T, BuiltinI
 >    ^^^^^^: SymbolConstructor   (TyTypeReference)
 
     [Symbol.asyncIterator](): ReadableStreamAsyncIterator<T>;
->           ^^^^^^^^^^^^^: any   (TyAny)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.asyncIterator](): ReadableStreamAsyncIterator<T>;
 >                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -129638,7 +129638,7 @@ interface ReadableStream<R = any> {
 >    ^^^^^^: SymbolConstructor   (TyTypeReference)
 
     [Symbol.asyncIterator](options?: ReadableStreamIteratorOptions): ReadableStreamAsyncIterator<R>;
->           ^^^^^^^^^^^^^: any   (TyAny)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [Symbol.asyncIterator](options?: ReadableStreamIteratorOptions): ReadableStreamAsyncIterator<R>;
 >                          ^^^^^^^: ReadableStreamIteratorOptions | undefined   (TyUnion)

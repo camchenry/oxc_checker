@@ -6250,6 +6250,20 @@ mod test {
     }
 
     #[test]
+    fn promise_finally_returns_original_promise_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "const rejected = Promise.reject('value').finally();",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "rejected"),
+            Ty::type_reference(arena(&ret), "Promise", [Ty::never()])
+        );
+    }
+
+    #[test]
     fn global_script_function_declarations_merge_across_programs() {
         let allocator = Allocator::default();
         let host = TestProgramHost::new("/project")

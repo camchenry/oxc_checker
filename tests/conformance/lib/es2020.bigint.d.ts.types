@@ -1,0 +1,1907 @@
+interface BigIntToLocaleStringOptions {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    localeMatcher?: string;
+>   ^^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+    style?: string;
+>   ^^^^^: string | undefined   (TyUnion)
+
+    numberingSystem?: string;
+>   ^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+    unit?: string;
+>   ^^^^: string | undefined   (TyUnion)
+
+    unitDisplay?: string;
+>   ^^^^^^^^^^^: string | undefined   (TyUnion)
+
+    currency?: string;
+>   ^^^^^^^^: string | undefined   (TyUnion)
+
+    currencyDisplay?: string;
+>   ^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+    useGrouping?: boolean;
+>   ^^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+    minimumIntegerDigits?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21;
+>   ^^^^^^^^^^^^^^^^^^^^: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | undefined   (TyUnion)
+
+    minimumFractionDigits?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20;
+>   ^^^^^^^^^^^^^^^^^^^^^: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | undefined   (TyUnion)
+
+    maximumFractionDigits?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20;
+>   ^^^^^^^^^^^^^^^^^^^^^: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | undefined   (TyUnion)
+
+    minimumSignificantDigits?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21;
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | undefined   (TyUnion)
+
+    maximumSignificantDigits?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21;
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | undefined   (TyUnion)
+
+    notation?: string;
+>   ^^^^^^^^: string | undefined   (TyUnion)
+
+    compactDisplay?: string;
+>   ^^^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+interface BigInt {
+>         ^^^^^^: BigIntConstructor   (TyTypeReference)
+
+interface BigInt {
+>         ^^^^^^: any   (TyAny)
+
+    toString(radix?: number): string;
+>   ^^^^^^^^: { (radix?: number): string; (radix?: number): string; }   (TyObject)
+
+    toString(radix?: number): string;
+>            ^^^^^: number | undefined   (TyUnion)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
+>   ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string; (locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string; }   (TyObject)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
+>                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
+>                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
+>                                                  ^^^^^^^: BigIntToLocaleStringOptions | undefined   (TyUnion)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
+>                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    valueOf(): bigint;
+>   ^^^^^^^: { (): bigint; (): bigint; }   (TyObject)
+
+    readonly [Symbol.toStringTag]: "BigInt";
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "BigInt";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+interface BigIntConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    (value: bigint | boolean | number | string): bigint;
+>    ^^^^^: bigint | boolean | number | string   (TyUnion)
+
+    readonly prototype: BigInt;
+>            ^^^^^^^^^: BigInt   (TyTypeReference)
+
+    readonly prototype: BigInt;
+>                       ^^^^^^: BigIntConstructor   (TyTypeReference)
+
+    readonly prototype: BigInt;
+>                       ^^^^^^: BigIntConstructor   (TyTypeReference)
+
+    asIntN(bits: number, int: bigint): bigint;
+>   ^^^^^^: { (bits: number, int: bigint): bigint; (bits: number, int: bigint): bigint; }   (TyObject)
+
+    asIntN(bits: number, int: bigint): bigint;
+>          ^^^^: number   (TyNumber)
+
+    asIntN(bits: number, int: bigint): bigint;
+>                        ^^^: bigint   (TyBigint)
+
+    asUintN(bits: number, int: bigint): bigint;
+>   ^^^^^^^: { (bits: number, int: bigint): bigint; (bits: number, int: bigint): bigint; }   (TyObject)
+
+    asUintN(bits: number, int: bigint): bigint;
+>           ^^^^: number   (TyNumber)
+
+    asUintN(bits: number, int: bigint): bigint;
+>                         ^^^: bigint   (TyBigint)
+
+declare var BigInt: BigIntConstructor;
+>           ^^^^^^: BigIntConstructor   (TyTypeReference)
+
+declare var BigInt: BigIntConstructor;
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>         ^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                       ^^^^^^^^^^^^: any   (TyAny)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                            ^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                                              ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly BYTES_PER_ELEMENT: number;
+>            ^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+    readonly buffer: TArrayBuffer;
+>            ^^^^^^: TArrayBuffer   (TyTypeReference)
+
+    readonly buffer: TArrayBuffer;
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+    readonly byteLength: number;
+>            ^^^^^^^^^^: number   (TyNumber)
+
+    readonly byteOffset: number;
+>            ^^^^^^^^^^: number   (TyNumber)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>   ^^^^^^^^^^: { (target: number, start: number, end?: number): this; (target: number, start: number, end?: number): this; }   (TyObject)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>              ^^^^^^: number   (TyNumber)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>                              ^^^^^: number   (TyNumber)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>                                             ^^^: number | undefined   (TyUnion)
+
+    entries(): ArrayIterator<[number, bigint]>;
+>   ^^^^^^^: { (): ArrayIterator<[number, bigint]>; (): ArrayIterator<[number, bigint]>; }   (TyObject)
+
+    entries(): ArrayIterator<[number, bigint]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>   ^^^^^: { (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; }   (TyObject)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>         ^^^^^^^^^: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                     ^^^^^: bigint   (TyBigint)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                    ^^^^^: number   (TyNumber)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                   ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                          ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                          ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                        ^^^^^^^^^^^^: any   (TyAny)
+
+    every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                                                   ^^^^^^^: any   (TyAny)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>   ^^^^: { (value: bigint, start?: number, end?: number): this; (value: bigint, start?: number, end?: number): this; }   (TyObject)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>        ^^^^^: bigint   (TyBigint)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>                       ^^^^^: number | undefined   (TyUnion)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>                                       ^^^: number | undefined   (TyUnion)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>   ^^^^^^: { (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>; (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>          ^^^^^^^^^: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any   (TyFunction)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                      ^^^^^: bigint   (TyBigint)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                     ^^^^^: number   (TyNumber)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                    ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                         ^^^^^^^^^^^^: any   (TyAny)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                ^^^^^^^: any   (TyAny)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => any, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>   ^^^^: { (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined; (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined; }   (TyObject)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>        ^^^^^^^^^: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                    ^^^^^: bigint   (TyBigint)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                   ^^^^^: number   (TyNumber)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                  ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                                       ^^^^^^^^^^^^: any   (TyAny)
+
+    find(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                                                                  ^^^^^^^: any   (TyAny)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>   ^^^^^^^^^: { (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number; (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number; }   (TyObject)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>             ^^^^^^^^^: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                         ^^^^^: bigint   (TyBigint)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                        ^^^^^: number   (TyNumber)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                       ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                              ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                              ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                                            ^^^^^^^^^^^^: any   (TyAny)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                                                                       ^^^^^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>   ^^^^^^^: { (callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void; (callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void; }   (TyObject)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>           ^^^^^^^^^^: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void   (TyFunction)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                        ^^^^^: bigint   (TyBigint)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                       ^^^^^: number   (TyNumber)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                      ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                             ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                             ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                                           ^^^^^^^^^^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                                                                   ^^^^^^^: any   (TyAny)
+
+    includes(searchElement: bigint, fromIndex?: number): boolean;
+>   ^^^^^^^^: { (searchElement: bigint, fromIndex?: number): boolean; (searchElement: bigint, fromIndex?: number): boolean; }   (TyObject)
+
+    includes(searchElement: bigint, fromIndex?: number): boolean;
+>            ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    includes(searchElement: bigint, fromIndex?: number): boolean;
+>                                   ^^^^^^^^^: number | undefined   (TyUnion)
+
+    indexOf(searchElement: bigint, fromIndex?: number): number;
+>   ^^^^^^^: { (searchElement: bigint, fromIndex?: number): number; (searchElement: bigint, fromIndex?: number): number; }   (TyObject)
+
+    indexOf(searchElement: bigint, fromIndex?: number): number;
+>           ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    indexOf(searchElement: bigint, fromIndex?: number): number;
+>                                  ^^^^^^^^^: number | undefined   (TyUnion)
+
+    join(separator?: string): string;
+>   ^^^^: { (separator?: string): string; (separator?: string): string; }   (TyObject)
+
+    join(separator?: string): string;
+>        ^^^^^^^^^: string | undefined   (TyUnion)
+
+    keys(): ArrayIterator<number>;
+>   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    lastIndexOf(searchElement: bigint, fromIndex?: number): number;
+>   ^^^^^^^^^^^: { (searchElement: bigint, fromIndex?: number): number; (searchElement: bigint, fromIndex?: number): number; }   (TyObject)
+
+    lastIndexOf(searchElement: bigint, fromIndex?: number): number;
+>               ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    lastIndexOf(searchElement: bigint, fromIndex?: number): number;
+>                                      ^^^^^^^^^: number | undefined   (TyUnion)
+
+    readonly length: number;
+>            ^^^^^^: number   (TyNumber)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>   ^^^: { (callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>       ^^^^^^^^^^: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint   (TyFunction)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                    ^^^^^: bigint   (TyBigint)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                   ^^^^^: number   (TyNumber)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                  ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                       ^^^^^^^^^^^^: any   (TyAny)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                 ^^^^^^^: any   (TyAny)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                 ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                 ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>   ^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>          ^^^^^^^^^^: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint   (TyFunction)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                       ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                              ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                    ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                          ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                 ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                 ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                               ^^^^^^^^^^^^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>   ^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>          ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>             ^^^^^^^^^^: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U   (TyFunction)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                          ^^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                         ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                            ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                  ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                        ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                               ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                               ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                             ^^^^^^^^^^^^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                               ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                  ^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                    ^: any   (TyAny)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>   ^^^^^^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>               ^^^^^^^^^^: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint   (TyFunction)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                            ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                   ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                         ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                               ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>   ^^^^^^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>               ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                  ^^^^^^^^^^: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U   (TyFunction)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                               ^^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                              ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                 ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                       ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                             ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                  ^^^^^^^^^^^^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                    ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                       ^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                     ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigInt64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                         ^: any   (TyAny)
+
+    reverse(): this;
+>   ^^^^^^^: { (): this; (): this; }   (TyObject)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>   ^^^: { (array: ArrayLike<bigint>, offset?: number): void; (array: ArrayLike<bigint>, offset?: number): void; }   (TyObject)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>       ^^^^^: ArrayLike<bigint>   (TyTypeReference)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>              ^^^^^^^^^: any   (TyAny)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>                                 ^^^^^^: number | undefined   (TyUnion)
+
+    slice(start?: number, end?: number): BigInt64Array<ArrayBuffer>;
+>   ^^^^^: { (start?: number, end?: number): BigInt64Array<ArrayBuffer>; (start?: number, end?: number): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    slice(start?: number, end?: number): BigInt64Array<ArrayBuffer>;
+>         ^^^^^: number | undefined   (TyUnion)
+
+    slice(start?: number, end?: number): BigInt64Array<ArrayBuffer>;
+>                         ^^^: number | undefined   (TyUnion)
+
+    slice(start?: number, end?: number): BigInt64Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    slice(start?: number, end?: number): BigInt64Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    slice(start?: number, end?: number): BigInt64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    slice(start?: number, end?: number): BigInt64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>   ^^^^: { (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; }   (TyObject)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>        ^^^^^^^^^: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                    ^^^^^: bigint   (TyBigint)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                   ^^^^^: number   (TyNumber)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                  ^^^^^: BigInt64Array<TArrayBuffer>   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                       ^^^^^^^^^^^^: any   (TyAny)
+
+    some(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                                                  ^^^^^^^: any   (TyAny)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>   ^^^^: { (compareFn?: (a: bigint, b: bigint) => number | bigint): this; (compareFn?: (a: bigint, b: bigint) => number | bigint): this; }   (TyObject)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>        ^^^^^^^^^: ((a: bigint, b: bigint) => number | bigint) | undefined   (TyUnion)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>                     ^: bigint   (TyBigint)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>                                ^: bigint   (TyBigint)
+
+    subarray(begin?: number, end?: number): BigInt64Array<TArrayBuffer>;
+>   ^^^^^^^^: { (begin?: number, end?: number): BigInt64Array<TArrayBuffer>; (begin?: number, end?: number): BigInt64Array<TArrayBuffer>; }   (TyObject)
+
+    subarray(begin?: number, end?: number): BigInt64Array<TArrayBuffer>;
+>            ^^^^^: number | undefined   (TyUnion)
+
+    subarray(begin?: number, end?: number): BigInt64Array<TArrayBuffer>;
+>                            ^^^: number | undefined   (TyUnion)
+
+    subarray(begin?: number, end?: number): BigInt64Array<TArrayBuffer>;
+>                                           ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    subarray(begin?: number, end?: number): BigInt64Array<TArrayBuffer>;
+>                                           ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    subarray(begin?: number, end?: number): BigInt64Array<TArrayBuffer>;
+>                                                         ^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                  ^^^^^^^: string | string[] | undefined   (TyUnion)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                               ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                                         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toString(): string;
+>   ^^^^^^^^: { (): string; (): string; }   (TyObject)
+
+    valueOf(): BigInt64Array<TArrayBuffer>;
+>   ^^^^^^^: { (): BigInt64Array<TArrayBuffer>; (): BigInt64Array<TArrayBuffer>; }   (TyObject)
+
+    valueOf(): BigInt64Array<TArrayBuffer>;
+>              ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    valueOf(): BigInt64Array<TArrayBuffer>;
+>              ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    valueOf(): BigInt64Array<TArrayBuffer>;
+>                            ^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<bigint>;
+>   ^^^^^^: { (): ArrayIterator<bigint>; (): ArrayIterator<bigint>; }   (TyObject)
+
+    values(): ArrayIterator<bigint>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<bigint>;
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.iterator](): ArrayIterator<bigint>;
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    [Symbol.iterator](): ArrayIterator<bigint>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "BigInt64Array";
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "BigInt64Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+interface BigInt64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly prototype: BigInt64Array<ArrayBufferLike>;
+>            ^^^^^^^^^: BigInt64Array<ArrayBufferLike>   (TyTypeReference)
+
+    readonly prototype: BigInt64Array<ArrayBufferLike>;
+>                       ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    readonly prototype: BigInt64Array<ArrayBufferLike>;
+>                       ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    readonly prototype: BigInt64Array<ArrayBufferLike>;
+>                                     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (length?: number): BigInt64Array<ArrayBuffer>;
+>        ^^^^^^: number | undefined   (TyUnion)
+
+    new (length?: number): BigInt64Array<ArrayBuffer>;
+>                          ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (length?: number): BigInt64Array<ArrayBuffer>;
+>                          ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (length?: number): BigInt64Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (length?: number): BigInt64Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>        ^^^^^: ArrayLike<bigint> | Iterable<bigint, any, any>   (TyUnion)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyAny)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                   ^^^^^^^^: any   (TyAny)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>        ^^^^^^^^^^^^: any   (TyAny)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                             ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                                            ^^^^^^: TArrayBuffer   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                                                                  ^^^^^^^^^^: number | undefined   (TyUnion)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                                                                                       ^^^^^^: number | undefined   (TyUnion)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                                                                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                                                                                                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
+>                                                                                                                                       ^^^^^^^^^^^^: any   (TyAny)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>        ^^^^^^: ArrayBuffer   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                             ^^^^^^^^^^: number | undefined   (TyUnion)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                                                  ^^^^^^: number | undefined   (TyUnion)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<ArrayBuffer>;
+>                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>        ^^^^^: ArrayLike<bigint> | ArrayBuffer   (TyUnion)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyAny)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>                                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
+>                                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    readonly BYTES_PER_ELEMENT: number;
+>            ^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+    of(...items: bigint[]): BigInt64Array<ArrayBuffer>;
+>   ^^: { (...items: bigint[]): BigInt64Array<ArrayBuffer>; (...items: bigint[]): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    of(...items: bigint[]): BigInt64Array<ArrayBuffer>;
+>         ^^^^^: bigint[]   (TyArray)
+
+    of(...items: bigint[]): BigInt64Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    of(...items: bigint[]): BigInt64Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    of(...items: bigint[]): BigInt64Array<ArrayBuffer>;
+>                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    of(...items: bigint[]): BigInt64Array<ArrayBuffer>;
+>                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
+>        ^^^^^^^^^: ArrayLike<bigint>   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
+>                   ^^^^^^^^^: any   (TyAny)
+
+    from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>           ^^^^^^^^^: ArrayLike<U>   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                      ^^^^^^^^^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                ^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                    ^^^^^: (v: U, k: number) => bigint   (TyFunction)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                            ^: U   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                               ^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                  ^: number   (TyNumber)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                        ^^^^^^^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<bigint, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
+>                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => bigint) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
+>                                                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+declare var BigInt64Array: BigInt64ArrayConstructor;
+>           ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+
+declare var BigInt64Array: BigInt64ArrayConstructor;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                        ^^^^^^^^^^^^: any   (TyAny)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                             ^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                                               ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly BYTES_PER_ELEMENT: number;
+>            ^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+    readonly buffer: TArrayBuffer;
+>            ^^^^^^: TArrayBuffer   (TyTypeReference)
+
+    readonly buffer: TArrayBuffer;
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+    readonly byteLength: number;
+>            ^^^^^^^^^^: number   (TyNumber)
+
+    readonly byteOffset: number;
+>            ^^^^^^^^^^: number   (TyNumber)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>   ^^^^^^^^^^: { (target: number, start: number, end?: number): this; (target: number, start: number, end?: number): this; }   (TyObject)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>              ^^^^^^: number   (TyNumber)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>                              ^^^^^: number   (TyNumber)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>                                             ^^^: number | undefined   (TyUnion)
+
+    entries(): ArrayIterator<[number, bigint]>;
+>   ^^^^^^^: { (): ArrayIterator<[number, bigint]>; (): ArrayIterator<[number, bigint]>; }   (TyObject)
+
+    entries(): ArrayIterator<[number, bigint]>;
+>              ^^^^^^^^^^^^^: any   (TyAny)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>   ^^^^^: { (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; }   (TyObject)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>         ^^^^^^^^^: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                     ^^^^^: bigint   (TyBigint)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                    ^^^^^: number   (TyNumber)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                   ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                          ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                          ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                         ^^^^^^^^^^^^: any   (TyAny)
+
+    every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                                                    ^^^^^^^: any   (TyAny)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>   ^^^^: { (value: bigint, start?: number, end?: number): this; (value: bigint, start?: number, end?: number): this; }   (TyObject)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>        ^^^^^: bigint   (TyBigint)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>                       ^^^^^: number | undefined   (TyUnion)
+
+    fill(value: bigint, start?: number, end?: number): this;
+>                                       ^^^: number | undefined   (TyUnion)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>   ^^^^^^: { (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>; (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>          ^^^^^^^^^: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any   (TyFunction)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                      ^^^^^: bigint   (TyBigint)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                     ^^^^^: number   (TyNumber)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                    ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                          ^^^^^^^^^^^^: any   (TyAny)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                 ^^^^^^^: any   (TyAny)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                 ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                 ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    filter(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => any, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>   ^^^^: { (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined; (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined; }   (TyObject)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>        ^^^^^^^^^: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                    ^^^^^: bigint   (TyBigint)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                   ^^^^^: number   (TyNumber)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                  ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                                        ^^^^^^^^^^^^: any   (TyAny)
+
+    find(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): bigint | undefined;
+>                                                                                                   ^^^^^^^: any   (TyAny)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>   ^^^^^^^^^: { (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number; (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number; }   (TyObject)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>             ^^^^^^^^^: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                         ^^^^^: bigint   (TyBigint)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                        ^^^^^: number   (TyNumber)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                       ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                              ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                              ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                                             ^^^^^^^^^^^^: any   (TyAny)
+
+    findIndex(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): number;
+>                                                                                                        ^^^^^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>   ^^^^^^^: { (callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void; (callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void; }   (TyObject)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>           ^^^^^^^^^^: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void   (TyFunction)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                        ^^^^^: bigint   (TyBigint)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                       ^^^^^: number   (TyNumber)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                      ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                             ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                             ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                                            ^^^^^^^^^^^^: any   (TyAny)
+
+    forEach(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => void, thisArg?: any): void;
+>                                                                                                    ^^^^^^^: any   (TyAny)
+
+    includes(searchElement: bigint, fromIndex?: number): boolean;
+>   ^^^^^^^^: { (searchElement: bigint, fromIndex?: number): boolean; (searchElement: bigint, fromIndex?: number): boolean; }   (TyObject)
+
+    includes(searchElement: bigint, fromIndex?: number): boolean;
+>            ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    includes(searchElement: bigint, fromIndex?: number): boolean;
+>                                   ^^^^^^^^^: number | undefined   (TyUnion)
+
+    indexOf(searchElement: bigint, fromIndex?: number): number;
+>   ^^^^^^^: { (searchElement: bigint, fromIndex?: number): number; (searchElement: bigint, fromIndex?: number): number; }   (TyObject)
+
+    indexOf(searchElement: bigint, fromIndex?: number): number;
+>           ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    indexOf(searchElement: bigint, fromIndex?: number): number;
+>                                  ^^^^^^^^^: number | undefined   (TyUnion)
+
+    join(separator?: string): string;
+>   ^^^^: { (separator?: string): string; (separator?: string): string; }   (TyObject)
+
+    join(separator?: string): string;
+>        ^^^^^^^^^: string | undefined   (TyUnion)
+
+    keys(): ArrayIterator<number>;
+>   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny)
+
+    lastIndexOf(searchElement: bigint, fromIndex?: number): number;
+>   ^^^^^^^^^^^: { (searchElement: bigint, fromIndex?: number): number; (searchElement: bigint, fromIndex?: number): number; }   (TyObject)
+
+    lastIndexOf(searchElement: bigint, fromIndex?: number): number;
+>               ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    lastIndexOf(searchElement: bigint, fromIndex?: number): number;
+>                                      ^^^^^^^^^: number | undefined   (TyUnion)
+
+    readonly length: number;
+>            ^^^^^^: number   (TyNumber)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>   ^^^: { (callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>       ^^^^^^^^^^: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint   (TyFunction)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                    ^^^^^: bigint   (TyBigint)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                   ^^^^^: number   (TyNumber)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                  ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                        ^^^^^^^^^^^^: any   (TyAny)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                  ^^^^^^^: any   (TyAny)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                  ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                  ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    map(callbackfn: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>   ^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>          ^^^^^^^^^^: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint   (TyFunction)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                       ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                              ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                    ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                          ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                 ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                 ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduce(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                                ^^^^^^^^^^^^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>   ^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>          ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>             ^^^^^^^^^^: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U   (TyFunction)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                          ^^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                         ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                            ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                  ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                        ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                               ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                               ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                              ^^^^^^^^^^^^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                   ^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                 ^: any   (TyAny)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                     ^: any   (TyAny)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>   ^^^^^^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>               ^^^^^^^^^^: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint   (TyFunction)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                            ^^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                   ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                         ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                               ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduceRight(callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint;
+>                                                                                                                     ^^^^^^^^^^^^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>   ^^^^^^^^^^^: { (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; (callbackfn: (previousValue: bigint, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => bigint): bigint; <U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U; }   (TyObject)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>               ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                  ^^^^^^^^^^: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U   (TyFunction)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                               ^^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                              ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                 ^^^^^^^^^^^^: bigint   (TyBigint)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                       ^^^^^^^^^^^^: number   (TyNumber)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                             ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                   ^^^^^^^^^^^^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                     ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                        ^^^^^^^^^^^^: U   (TyTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                      ^: any   (TyAny)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: bigint, currentIndex: number, array: BigUint64Array<TArrayBuffer>) => U, initialValue: U): U;
+>                                                                                                                                                          ^: any   (TyAny)
+
+    reverse(): this;
+>   ^^^^^^^: { (): this; (): this; }   (TyObject)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>   ^^^: { (array: ArrayLike<bigint>, offset?: number): void; (array: ArrayLike<bigint>, offset?: number): void; }   (TyObject)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>       ^^^^^: ArrayLike<bigint>   (TyTypeReference)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>              ^^^^^^^^^: any   (TyAny)
+
+    set(array: ArrayLike<bigint>, offset?: number): void;
+>                                 ^^^^^^: number | undefined   (TyUnion)
+
+    slice(start?: number, end?: number): BigUint64Array<ArrayBuffer>;
+>   ^^^^^: { (start?: number, end?: number): BigUint64Array<ArrayBuffer>; (start?: number, end?: number): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    slice(start?: number, end?: number): BigUint64Array<ArrayBuffer>;
+>         ^^^^^: number | undefined   (TyUnion)
+
+    slice(start?: number, end?: number): BigUint64Array<ArrayBuffer>;
+>                         ^^^: number | undefined   (TyUnion)
+
+    slice(start?: number, end?: number): BigUint64Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    slice(start?: number, end?: number): BigUint64Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    slice(start?: number, end?: number): BigUint64Array<ArrayBuffer>;
+>                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    slice(start?: number, end?: number): BigUint64Array<ArrayBuffer>;
+>                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>   ^^^^: { (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; }   (TyObject)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>        ^^^^^^^^^: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean   (TyFunction)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                    ^^^^^: bigint   (TyBigint)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                   ^^^^^: number   (TyNumber)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                  ^^^^^: BigUint64Array<TArrayBuffer>   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                        ^^^^^^^^^^^^: any   (TyAny)
+
+    some(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
+>                                                                                                   ^^^^^^^: any   (TyAny)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>   ^^^^: { (compareFn?: (a: bigint, b: bigint) => number | bigint): this; (compareFn?: (a: bigint, b: bigint) => number | bigint): this; }   (TyObject)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>        ^^^^^^^^^: ((a: bigint, b: bigint) => number | bigint) | undefined   (TyUnion)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>                     ^: bigint   (TyBigint)
+
+    sort(compareFn?: (a: bigint, b: bigint) => number | bigint): this;
+>                                ^: bigint   (TyBigint)
+
+    subarray(begin?: number, end?: number): BigUint64Array<TArrayBuffer>;
+>   ^^^^^^^^: { (begin?: number, end?: number): BigUint64Array<TArrayBuffer>; (begin?: number, end?: number): BigUint64Array<TArrayBuffer>; }   (TyObject)
+
+    subarray(begin?: number, end?: number): BigUint64Array<TArrayBuffer>;
+>            ^^^^^: number | undefined   (TyUnion)
+
+    subarray(begin?: number, end?: number): BigUint64Array<TArrayBuffer>;
+>                            ^^^: number | undefined   (TyUnion)
+
+    subarray(begin?: number, end?: number): BigUint64Array<TArrayBuffer>;
+>                                           ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    subarray(begin?: number, end?: number): BigUint64Array<TArrayBuffer>;
+>                                           ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    subarray(begin?: number, end?: number): BigUint64Array<TArrayBuffer>;
+>                                                          ^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                  ^^^^^^^: string | string[] | undefined   (TyUnion)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                               ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                                         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toString(): string;
+>   ^^^^^^^^: { (): string; (): string; }   (TyObject)
+
+    valueOf(): BigUint64Array<TArrayBuffer>;
+>   ^^^^^^^: { (): BigUint64Array<TArrayBuffer>; (): BigUint64Array<TArrayBuffer>; }   (TyObject)
+
+    valueOf(): BigUint64Array<TArrayBuffer>;
+>              ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    valueOf(): BigUint64Array<TArrayBuffer>;
+>              ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    valueOf(): BigUint64Array<TArrayBuffer>;
+>                             ^^^^^^^^^^^^: any   (TyAny)
+
+    values(): ArrayIterator<bigint>;
+>   ^^^^^^: { (): ArrayIterator<bigint>; (): ArrayIterator<bigint>; }   (TyObject)
+
+    values(): ArrayIterator<bigint>;
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.iterator](): ArrayIterator<bigint>;
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.iterator](): ArrayIterator<bigint>;
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    [Symbol.iterator](): ArrayIterator<bigint>;
+>                        ^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "BigUint64Array";
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "BigUint64Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+interface BigUint64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly prototype: BigUint64Array<ArrayBufferLike>;
+>            ^^^^^^^^^: BigUint64Array<ArrayBufferLike>   (TyTypeReference)
+
+    readonly prototype: BigUint64Array<ArrayBufferLike>;
+>                       ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    readonly prototype: BigUint64Array<ArrayBufferLike>;
+>                       ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    readonly prototype: BigUint64Array<ArrayBufferLike>;
+>                                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (length?: number): BigUint64Array<ArrayBuffer>;
+>        ^^^^^^: number | undefined   (TyUnion)
+
+    new (length?: number): BigUint64Array<ArrayBuffer>;
+>                          ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (length?: number): BigUint64Array<ArrayBuffer>;
+>                          ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (length?: number): BigUint64Array<ArrayBuffer>;
+>                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (length?: number): BigUint64Array<ArrayBuffer>;
+>                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>        ^^^^^: ArrayLike<bigint> | Iterable<bigint, any, any>   (TyUnion)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyAny)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                   ^^^^^^^^: any   (TyAny)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>        ^^^^^^^^^^^^: any   (TyAny)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                             ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                                            ^^^^^^: TArrayBuffer   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                                                                  ^^^^^^^^^^: number | undefined   (TyUnion)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                                                                                       ^^^^^^: number | undefined   (TyUnion)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                                                                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                                                                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
+>                                                                                                                                        ^^^^^^^^^^^^: any   (TyAny)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>        ^^^^^^: ArrayBuffer   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                             ^^^^^^^^^^: number | undefined   (TyUnion)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                                                  ^^^^^^: number | undefined   (TyUnion)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<ArrayBuffer>;
+>                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>        ^^^^^: ArrayLike<bigint> | ArrayBuffer   (TyUnion)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyAny)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>                                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
+>                                                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    readonly BYTES_PER_ELEMENT: number;
+>            ^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+    of(...items: bigint[]): BigUint64Array<ArrayBuffer>;
+>   ^^: { (...items: bigint[]): BigUint64Array<ArrayBuffer>; (...items: bigint[]): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    of(...items: bigint[]): BigUint64Array<ArrayBuffer>;
+>         ^^^^^: bigint[]   (TyArray)
+
+    of(...items: bigint[]): BigUint64Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    of(...items: bigint[]): BigUint64Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    of(...items: bigint[]): BigUint64Array<ArrayBuffer>;
+>                                          ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    of(...items: bigint[]): BigUint64Array<ArrayBuffer>;
+>                                          ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
+>        ^^^^^^^^^: ArrayLike<bigint>   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
+>                   ^^^^^^^^^: any   (TyAny)
+
+    from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>           ^^^^^^^^^: ArrayLike<U>   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                      ^^^^^^^^^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                ^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                    ^^^^^: (v: U, k: number) => bigint   (TyFunction)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                            ^: U   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                               ^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                  ^: number   (TyNumber)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                        ^^^^^^^: any   (TyAny)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                        ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                        ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<bigint, any, any>   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>        ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => bigint) | undefined   (TyUnion)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                              ^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
+>                                                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+declare var BigUint64Array: BigUint64ArrayConstructor;
+>           ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+
+declare var BigUint64Array: BigUint64ArrayConstructor;
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^: any   (TyAny)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                  ^^^^^^^^^^^^: any   (TyAny)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                                       ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    getBigInt64(byteOffset: number, littleEndian?: boolean): bigint;
+>   ^^^^^^^^^^^: { (byteOffset: number, littleEndian?: boolean): bigint; (byteOffset: number, littleEndian?: boolean): bigint; }   (TyObject)
+
+    getBigInt64(byteOffset: number, littleEndian?: boolean): bigint;
+>               ^^^^^^^^^^: number   (TyNumber)
+
+    getBigInt64(byteOffset: number, littleEndian?: boolean): bigint;
+>                                   ^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+    getBigUint64(byteOffset: number, littleEndian?: boolean): bigint;
+>   ^^^^^^^^^^^^: { (byteOffset: number, littleEndian?: boolean): bigint; (byteOffset: number, littleEndian?: boolean): bigint; }   (TyObject)
+
+    getBigUint64(byteOffset: number, littleEndian?: boolean): bigint;
+>                ^^^^^^^^^^: number   (TyNumber)
+
+    getBigUint64(byteOffset: number, littleEndian?: boolean): bigint;
+>                                    ^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+    setBigInt64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>   ^^^^^^^^^^^: { (byteOffset: number, value: bigint, littleEndian?: boolean): void; (byteOffset: number, value: bigint, littleEndian?: boolean): void; }   (TyObject)
+
+    setBigInt64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>               ^^^^^^^^^^: number   (TyNumber)
+
+    setBigInt64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>                                   ^^^^^: bigint   (TyBigint)
+
+    setBigInt64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>                                                  ^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+    setBigUint64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>   ^^^^^^^^^^^^: { (byteOffset: number, value: bigint, littleEndian?: boolean): void; (byteOffset: number, value: bigint, littleEndian?: boolean): void; }   (TyObject)
+
+    setBigUint64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>                ^^^^^^^^^^: number   (TyNumber)
+
+    setBigUint64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>                                    ^^^^^: bigint   (TyBigint)
+
+    setBigUint64(byteOffset: number, value: bigint, littleEndian?: boolean): void;
+>                                                   ^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery)
+
+    interface NumberFormat {
+>             ^^^^^^^^^^^^: any   (TyAny)
+
+        format(value: number | bigint): string;
+>       ^^^^^^: (value: number | bigint) => string   (TyFunction)
+
+        format(value: number | bigint): string;
+>              ^^^^^: number | bigint   (TyUnion)

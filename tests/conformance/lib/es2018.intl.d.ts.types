@@ -1,0 +1,209 @@
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery)
+
+    type LDMLPluralRule = "zero" | "one" | "two" | "few" | "many" | "other";
+>        ^^^^^^^^^^^^^^: "zero" | "one" | "two" | "few" | "many" | "other"   (TyUnion)
+
+    type PluralRuleType = "cardinal" | "ordinal";
+>        ^^^^^^^^^^^^^^: "cardinal" | "ordinal"   (TyUnion)
+
+    interface PluralRulesOptions {
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        localeMatcher?: "lookup" | "best fit" | undefined;
+>       ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion)
+
+        type?: PluralRuleType | undefined;
+>       ^^^^: PluralRuleType | undefined   (TyUnion)
+
+        type?: PluralRuleType | undefined;
+>              ^^^^^^^^^^^^^^: any   (TyAny)
+
+        minimumIntegerDigits?: number | undefined;
+>       ^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+        minimumFractionDigits?: number | undefined;
+>       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+        maximumFractionDigits?: number | undefined;
+>       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+        minimumSignificantDigits?: number | undefined;
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+        maximumSignificantDigits?: number | undefined;
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+    interface ResolvedPluralRulesOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        locale: string;
+>       ^^^^^^: string   (TyString)
+
+        pluralCategories: LDMLPluralRule[];
+>       ^^^^^^^^^^^^^^^^: LDMLPluralRule[]   (TyArray)
+
+        pluralCategories: LDMLPluralRule[];
+>                         ^^^^^^^^^^^^^^: any   (TyAny)
+
+        type: PluralRuleType;
+>       ^^^^: PluralRuleType   (TyTypeReference)
+
+        type: PluralRuleType;
+>             ^^^^^^^^^^^^^^: any   (TyAny)
+
+        minimumIntegerDigits: number;
+>       ^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+        minimumFractionDigits: number;
+>       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+        maximumFractionDigits: number;
+>       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+        minimumSignificantDigits?: number;
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+        maximumSignificantDigits?: number;
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+    interface PluralRules {
+>             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+
+    interface PluralRules {
+>             ^^^^^^^^^^^: any   (TyAny)
+
+        resolvedOptions(): ResolvedPluralRulesOptions;
+>       ^^^^^^^^^^^^^^^: () => ResolvedPluralRulesOptions   (TyFunction)
+
+        resolvedOptions(): ResolvedPluralRulesOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        select(n: number): LDMLPluralRule;
+>       ^^^^^^: (n: number) => LDMLPluralRule   (TyFunction)
+
+        select(n: number): LDMLPluralRule;
+>              ^: number   (TyNumber)
+
+        select(n: number): LDMLPluralRule;
+>                          ^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface PluralRulesConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>            ^^^^^^^: string | readonly string[] | undefined   (TyUnion)
+
+        new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                  ^^^^^^^: PluralRulesOptions | undefined   (TyUnion)
+
+        new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                                                 ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+
+        new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                                                 ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+
+        (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>        ^^^^^^^: string | readonly string[] | undefined   (TyUnion)
+
+        (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                              ^^^^^^^: PluralRulesOptions | undefined   (TyUnion)
+
+        (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                        ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+
+        (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+
+        supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>       ^^^^^^^^^^^^^^^^^^: (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }) => string[]   (TyFunction)
+
+        supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>                          ^^^^^^^: string | readonly string[]   (TyUnion)
+
+        supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>                                                               ^^^^^^^: { localeMatcher?: "lookup" | "best fit"; } | undefined   (TyUnion)
+
+        supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+>                                                                           ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion)
+
+    const PluralRules: PluralRulesConstructor;
+>         ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+
+    const PluralRules: PluralRulesConstructor;
+>                      ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface NumberFormatPartTypeRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        literal: never;
+>       ^^^^^^^: never   (TyNever)
+
+        nan: never;
+>       ^^^: never   (TyNever)
+
+        infinity: never;
+>       ^^^^^^^^: never   (TyNever)
+
+        percent: never;
+>       ^^^^^^^: never   (TyNever)
+
+        integer: never;
+>       ^^^^^^^: never   (TyNever)
+
+        group: never;
+>       ^^^^^: never   (TyNever)
+
+        decimal: never;
+>       ^^^^^^^: never   (TyNever)
+
+        fraction: never;
+>       ^^^^^^^^: never   (TyNever)
+
+        plusSign: never;
+>       ^^^^^^^^: never   (TyNever)
+
+        minusSign: never;
+>       ^^^^^^^^^: never   (TyNever)
+
+        percentSign: never;
+>       ^^^^^^^^^^^: never   (TyNever)
+
+        currency: never;
+>       ^^^^^^^^: never   (TyNever)
+
+    type NumberFormatPartTypes = keyof NumberFormatPartTypeRegistry;
+>        ^^^^^^^^^^^^^^^^^^^^^: keyof NumberFormatPartTypeRegistry   (TyKeyof)
+
+    type NumberFormatPartTypes = keyof NumberFormatPartTypeRegistry;
+>                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface NumberFormatPart {
+>             ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        type: NumberFormatPartTypes;
+>       ^^^^: NumberFormatPartTypes   (TyTypeReference)
+
+        type: NumberFormatPartTypes;
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        value: string;
+>       ^^^^^: string   (TyString)
+
+    interface NumberFormat {
+>             ^^^^^^^^^^^^: any   (TyAny)
+
+        formatToParts(number?: number | bigint): NumberFormatPart[];
+>       ^^^^^^^^^^^^^: (number?: number | bigint) => NumberFormatPart[]   (TyFunction)
+
+        formatToParts(number?: number | bigint): NumberFormatPart[];
+>                     ^^^^^^: number | bigint | undefined   (TyUnion)
+
+        formatToParts(number?: number | bigint): NumberFormatPart[];
+>                                                ^^^^^^^^^^^^^^^^: any   (TyAny)

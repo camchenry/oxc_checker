@@ -1,0 +1,56 @@
+interface String {
+>         ^^^^^^: any   (TyAny)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>   ^^^^^^^^: { (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; }   (TyObject)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>            ^^^^^^: RegExp   (TyTypeReference)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>                             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>                                                  ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject)
+
+    toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
+>                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
+>                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject)
+
+    toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
+>                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
+>                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }   (TyObject)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>                 ^^^^: string   (TyString)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>                               ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>                                                               ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>                                                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

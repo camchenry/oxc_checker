@@ -1,0 +1,17 @@
+interface RegExpMatchArray {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    groups?: {
+>   ^^^^^^: {} | undefined   (TyUnion)
+
+interface RegExpExecArray {
+>         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    groups?: {
+>   ^^^^^^: {} | undefined   (TyUnion)
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny)
+
+    readonly dotAll: boolean;
+>            ^^^^^^: boolean   (TyBoolean)

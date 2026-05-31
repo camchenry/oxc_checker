@@ -1,0 +1,47 @@
+interface Date {
+>         ^^^^: any   (TyAny)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                                  ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+
+    toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                                      ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion)
+
+    toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+
+    toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+
+    toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                                      ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion)
+
+    toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
+>                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

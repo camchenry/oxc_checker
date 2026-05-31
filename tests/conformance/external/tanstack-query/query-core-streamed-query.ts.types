@@ -935,7 +935,7 @@ type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                                              ^^^^^^^^^^^^: any   (TyAny)
 
 declare const todoStream: AsyncIterable<Todo>
->             ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
+>             ^^^^^^^^^^: AsyncIterable<Todo, any, any>   (TyTypeReference)
 
 declare const todoStream: AsyncIterable<Todo>
 >                         ^^^^^^^^^^^^^: any   (TyAny)
@@ -977,13 +977,13 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                                                ^^^^: any   (TyAny)
 
   streamFn: () => todoStream,
-> ^^^^^^^^: () => AsyncIterable<Todo>   (TyFunction)
+> ^^^^^^^^: () => AsyncIterable<Todo, any, any>   (TyFunction)
 
   streamFn: () => todoStream,
->                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
+>                 ^^^^^^^^^^: AsyncIterable<Todo, any, any>   (TyTypeReference)
 
   streamFn: () => todoStream,
->                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
+>                 ^^^^^^^^^^: AsyncIterable<Todo, any, any>   (TyTypeReference)
 
   reducer: (data, todo) => ({
 > ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: any[]; }   (TyFunction)

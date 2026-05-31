@@ -50,13 +50,13 @@ Promise.reject('value').finally();
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
 
 Promise.reject('value').finally();
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<never>   (TyTypeReference)
 
 Promise.reject('value').finally();
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 Promise.reject('value').finally();
->                       ^^^^^^^: any   (TyAny)
+>                       ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction)
 
 [1, 2, 3].map(async x => x + 1);
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -137,7 +137,7 @@ await Promise.reject('value').finally(() => {});
 >             ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 await Promise.reject('value').finally(() => {});
->                             ^^^^^^^: any   (TyAny)
+>                             ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

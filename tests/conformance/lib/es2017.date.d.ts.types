@@ -1,0 +1,26 @@
+interface DateConstructor {
+>         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>   ^^^: { (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; }   (TyObject)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>       ^^^^: number   (TyNumber)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>                     ^^^^^^^^^^: number | undefined   (TyUnion)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>                                          ^^^^: number | undefined   (TyUnion)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>                                                         ^^^^^: number | undefined   (TyUnion)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>                                                                         ^^^^^^^: number | undefined   (TyUnion)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>                                                                                           ^^^^^^^: number | undefined   (TyUnion)
+
+    UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+>                                                                                                             ^^: number | undefined   (TyUnion)

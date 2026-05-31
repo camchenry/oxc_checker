@@ -1,0 +1,8 @@
+interface ArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (): ArrayBuffer;
+>           ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+
+    new (): ArrayBuffer;
+>           ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)

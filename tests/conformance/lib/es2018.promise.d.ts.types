@@ -1,0 +1,17 @@
+interface Promise<T> {
+>         ^^^^^^^: any   (TyAny)
+
+interface Promise<T> {
+>                 ^: any   (TyAny)
+
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+>   ^^^^^^^: { (onfinally?: (() => void) | undefined | null): Promise<T>; (onfinally?: (() => void) | undefined | null): Promise<T>; }   (TyObject)
+
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+>           ^^^^^^^^^: (() => void) | undefined | null   (TyUnion)
+
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+>                                                         ^^^^^^^: any   (TyAny)
+
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+>                                                                 ^: any   (TyAny)

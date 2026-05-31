@@ -1022,7 +1022,7 @@ interface String {
 >                                     ^^^^^^^^: number | undefined   (TyUnion)
 
     localeCompare(that: string): number;
->   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; }   (TyObject)
+>   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; }   (TyObject)
 
     localeCompare(that: string): number;
 >                 ^^^^: string   (TyString)
@@ -1127,7 +1127,7 @@ interface String {
 >   ^^^^^^^^^^^: { (): string; (): string; }   (TyObject)
 
     toLocaleLowerCase(locales?: string | string[]): string;
->   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: string | string[]): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: string | string[]): string; }   (TyObject)
 
     toLocaleLowerCase(locales?: string | string[]): string;
 >                     ^^^^^^^: string | string[] | undefined   (TyUnion)
@@ -1136,7 +1136,7 @@ interface String {
 >   ^^^^^^^^^^^: { (): string; (): string; }   (TyObject)
 
     toLocaleUpperCase(locales?: string | string[]): string;
->   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: string | string[]): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: string | string[]): string; }   (TyObject)
 
     toLocaleUpperCase(locales?: string | string[]): string;
 >                     ^^^^^^^: string | string[] | undefined   (TyUnion)
@@ -1517,13 +1517,13 @@ interface Date {
 >   ^^^^^^^^^^^^: { (): string; (): string; }   (TyObject)
 
     toLocaleString(): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
 
     toLocaleDateString(): string;
->   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
 
     toLocaleTimeString(): string;
->   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
 
     valueOf(): number;
 >   ^^^^^^^: { (): number; (): number; }   (TyObject)
@@ -1799,7 +1799,7 @@ interface DateConstructor {
 >         ^: string   (TyString)
 
     UTC(year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->   ^^^: { (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; }   (TyObject)
+>   ^^^: { (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; }   (TyObject)
 
     UTC(year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
 >       ^^^^: number   (TyNumber)
@@ -11186,7 +11186,7 @@ interface String {
 >         ^^^^^^: any   (TyAny)
 
     localeCompare(that: string, locales?: string | string[], options?: Intl.CollatorOptions): number;
->   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; }   (TyObject)
+>   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; }   (TyObject)
 
     localeCompare(that: string, locales?: string | string[], options?: Intl.CollatorOptions): number;
 >                 ^^^^: string   (TyString)
@@ -11207,7 +11207,7 @@ interface Number {
 >         ^^^^^^: any   (TyAny)
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >                  ^^^^^^^: string | string[] | undefined   (TyUnion)
@@ -11225,7 +11225,7 @@ interface Date {
 >         ^^^^: any   (TyAny)
 
     toLocaleString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
 
     toLocaleString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >                  ^^^^^^^: string | string[] | undefined   (TyUnion)
@@ -11237,7 +11237,7 @@ interface Date {
 >                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     toLocaleDateString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
 
     toLocaleDateString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: string | string[] | undefined   (TyUnion)
@@ -11249,7 +11249,7 @@ interface Date {
 >                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     toLocaleTimeString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
 
     toLocaleTimeString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: string | string[] | undefined   (TyUnion)

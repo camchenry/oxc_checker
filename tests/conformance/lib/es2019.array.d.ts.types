@@ -1,0 +1,215 @@
+type FlatArray<Arr, Depth extends number> = {
+>    ^^^^^^^^^: { done: Arr; recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [none, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr; }[Depth extends none ? "done" : "recur"]   (TyIndexedAccess)
+
+type FlatArray<Arr, Depth extends number> = {
+>              ^^^: any   (TyAny)
+
+type FlatArray<Arr, Depth extends number> = {
+>                   ^^^^^: any   (TyAny)
+
+    done: Arr;
+>   ^^^^: Arr   (TyTypeReference)
+
+    done: Arr;
+>         ^^^: any   (TyAny)
+
+    recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
+>   ^^^^^: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [none, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr   (TyConditional)
+
+    recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
+>          ^^^: any   (TyAny)
+
+    recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
+>                      ^^^^^^^^^^^^^: any   (TyAny)
+
+    recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
+>                                          ^^^^^^^^: any   (TyAny)
+
+    recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
+>                                                      ^^^^^^^^^: any   (TyAny)
+
+    recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
+>                                                                ^^^^^^^^: any   (TyAny)
+
+    recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
+>                                                                                                                                                         ^^^^^: any   (TyAny)
+
+        : Arr;
+>         ^^^: any   (TyAny)
+
+}[Depth extends -1 ? "done" : "recur"];
+> ^^^^^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>                       ^: any   (TyAny)
+
+    flatMap<U, This = undefined>(
+>   ^^^^^^^: { <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; }   (TyObject)
+
+    flatMap<U, This = undefined>(
+>           ^: any   (TyAny)
+
+    flatMap<U, This = undefined>(
+>              ^^^^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (TyFunction)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                  ^^^^: This   (TyTypeReference)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                        ^^^^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                              ^^^^^: T   (TyTypeReference)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                     ^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                        ^^^^^: number   (TyNumber)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                       ^^^^^: T[]   (TyArray)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                              ^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                                      ^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                                          ^^^^^^^^^^^^^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                                                        ^: any   (TyAny)
+
+        thisArg?: This,
+>       ^^^^^^^: This | undefined   (TyUnion)
+
+        thisArg?: This,
+>                 ^^^^: any   (TyAny)
+
+    ): U[];
+>      ^: any   (TyAny)
+
+    flat<A, D extends number = 1>(
+>   ^^^^: { <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; }   (TyObject)
+
+    flat<A, D extends number = 1>(
+>        ^: any   (TyAny)
+
+    flat<A, D extends number = 1>(
+>           ^: any   (TyAny)
+
+        this: A,
+>       ^^^^: A   (TyTypeReference)
+
+        this: A,
+>             ^: any   (TyAny)
+
+        depth?: D,
+>       ^^^^^: D | undefined   (TyUnion)
+
+        depth?: D,
+>               ^: any   (TyAny)
+
+    ): FlatArray<A, D>[];
+>      ^^^^^^^^^: any   (TyAny)
+
+    ): FlatArray<A, D>[];
+>                ^: any   (TyAny)
+
+    ): FlatArray<A, D>[];
+>                   ^: any   (TyAny)
+
+interface Array<T> {
+>         ^^^^^: any   (TyAny)
+
+interface Array<T> {
+>               ^: any   (TyAny)
+
+    flatMap<U, This = undefined>(
+>   ^^^^^^^: { <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; }   (TyObject)
+
+    flatMap<U, This = undefined>(
+>           ^: any   (TyAny)
+
+    flatMap<U, This = undefined>(
+>              ^^^^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (TyFunction)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                  ^^^^: This   (TyTypeReference)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                        ^^^^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                              ^^^^^: T   (TyTypeReference)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                     ^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                        ^^^^^: number   (TyNumber)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                       ^^^^^: T[]   (TyArray)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                              ^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                                      ^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                                          ^^^^^^^^^^^^^: any   (TyAny)
+
+        callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
+>                                                                                        ^: any   (TyAny)
+
+        thisArg?: This,
+>       ^^^^^^^: This | undefined   (TyUnion)
+
+        thisArg?: This,
+>                 ^^^^: any   (TyAny)
+
+    ): U[];
+>      ^: any   (TyAny)
+
+    flat<A, D extends number = 1>(
+>   ^^^^: { <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; }   (TyObject)
+
+    flat<A, D extends number = 1>(
+>        ^: any   (TyAny)
+
+    flat<A, D extends number = 1>(
+>           ^: any   (TyAny)
+
+        this: A,
+>       ^^^^: A   (TyTypeReference)
+
+        this: A,
+>             ^: any   (TyAny)
+
+        depth?: D,
+>       ^^^^^: D | undefined   (TyUnion)
+
+        depth?: D,
+>               ^: any   (TyAny)
+
+    ): FlatArray<A, D>[];
+>      ^^^^^^^^^: any   (TyAny)
+
+    ): FlatArray<A, D>[];
+>                ^: any   (TyAny)
+
+    ): FlatArray<A, D>[];
+>                   ^: any   (TyAny)

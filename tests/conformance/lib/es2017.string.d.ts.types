@@ -1,0 +1,20 @@
+interface String {
+>         ^^^^^^: any   (TyAny)
+
+    padStart(maxLength: number, fillString?: string): string;
+>   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject)
+
+    padStart(maxLength: number, fillString?: string): string;
+>            ^^^^^^^^^: number   (TyNumber)
+
+    padStart(maxLength: number, fillString?: string): string;
+>                               ^^^^^^^^^^: string | undefined   (TyUnion)
+
+    padEnd(maxLength: number, fillString?: string): string;
+>   ^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject)
+
+    padEnd(maxLength: number, fillString?: string): string;
+>          ^^^^^^^^^: number   (TyNumber)
+
+    padEnd(maxLength: number, fillString?: string): string;
+>                             ^^^^^^^^^^: string | undefined   (TyUnion)

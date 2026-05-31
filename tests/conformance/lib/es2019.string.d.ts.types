@@ -1,0 +1,14 @@
+interface String {
+>         ^^^^^^: any   (TyAny)
+
+    trimEnd(): string;
+>   ^^^^^^^: { (): string; (): string; }   (TyObject)
+
+    trimStart(): string;
+>   ^^^^^^^^^: { (): string; (): string; }   (TyObject)
+
+    trimLeft(): string;
+>   ^^^^^^^^: { (): string; (): string; }   (TyObject)
+
+    trimRight(): string;
+>   ^^^^^^^^^: { (): string; (): string; }   (TyObject)

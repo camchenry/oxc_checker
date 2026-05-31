@@ -1,0 +1,74 @@
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery)
+
+    interface DateTimeFormatPartTypesRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        day: any;
+>       ^^^: any   (TyAny)
+
+        dayPeriod: any;
+>       ^^^^^^^^^: any   (TyAny)
+
+        era: any;
+>       ^^^: any   (TyAny)
+
+        hour: any;
+>       ^^^^: any   (TyAny)
+
+        literal: any;
+>       ^^^^^^^: any   (TyAny)
+
+        minute: any;
+>       ^^^^^^: any   (TyAny)
+
+        month: any;
+>       ^^^^^: any   (TyAny)
+
+        second: any;
+>       ^^^^^^: any   (TyAny)
+
+        timeZoneName: any;
+>       ^^^^^^^^^^^^: any   (TyAny)
+
+        weekday: any;
+>       ^^^^^^^: any   (TyAny)
+
+        year: any;
+>       ^^^^: any   (TyAny)
+
+    type DateTimeFormatPartTypes = keyof DateTimeFormatPartTypesRegistry;
+>        ^^^^^^^^^^^^^^^^^^^^^^^: keyof DateTimeFormatPartTypesRegistry   (TyKeyof)
+
+    type DateTimeFormatPartTypes = keyof DateTimeFormatPartTypesRegistry;
+>                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface DateTimeFormatPart {
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        type: DateTimeFormatPartTypes;
+>       ^^^^: DateTimeFormatPartTypes   (TyTypeReference)
+
+        type: DateTimeFormatPartTypes;
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        value: string;
+>       ^^^^^: string   (TyString)
+
+    interface DateTimeFormat {
+>             ^^^^^^^^^^^^^^: any   (TyAny)
+
+        formatToParts(date?: Date | number): DateTimeFormatPart[];
+>       ^^^^^^^^^^^^^: (date?: Date | number) => DateTimeFormatPart[]   (TyFunction)
+
+        formatToParts(date?: Date | number): DateTimeFormatPart[];
+>                     ^^^^: Date | number | undefined   (TyUnion)
+
+        formatToParts(date?: Date | number): DateTimeFormatPart[];
+>                            ^^^^: DateConstructor   (TyTypeReference)
+
+        formatToParts(date?: Date | number): DateTimeFormatPart[];
+>                            ^^^^: DateConstructor   (TyTypeReference)
+
+        formatToParts(date?: Date | number): DateTimeFormatPart[];
+>                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
