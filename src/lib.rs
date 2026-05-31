@@ -1841,22 +1841,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
     ) -> HashMap<&'a str, Ty<'a>> {
-        let mut substitutions = HashMap::new();
-        let mut explicit_type_parameters = Vec::new();
-
-        if let Some(type_arguments) = &call_expression.type_arguments {
-            for (type_parameter, type_argument) in function
-                .type_parameters
-                .iter()
-                .zip(type_arguments.params.iter())
-            {
-                substitutions.insert(
-                    type_parameter.name,
-                    self.get_type_from_ts_type(program_id, type_argument),
-                );
-                explicit_type_parameters.push(type_parameter.name);
-            }
-        }
+        let (mut substitutions, explicit_type_parameters) = self
+            .explicit_type_parameter_substitutions(
+                program_id,
+                function,
+                call_expression.type_arguments.as_deref(),
+            );
 
         let inferable_type_parameters = function
             .type_parameters
@@ -1883,20 +1873,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         }
 
-        for type_parameter in &function.type_parameters {
-            if substitutions.contains_key(type_parameter.name) {
-                continue;
-            }
-            if let Some(fallback_type) = type_parameter
-                .default_type
-                .or(type_parameter.constraint_type)
-            {
-                substitutions.insert(
-                    type_parameter.name,
-                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
-                );
-            }
-        }
+        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, false);
 
         substitutions
     }
@@ -1907,9 +1884,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &TyFunction<'a>,
         call_expression: &'a CallExpression<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
-        let mut substitutions = HashMap::new();
+        let (mut substitutions, _) = self.explicit_type_parameter_substitutions(
+            program_id,
+            function,
+            call_expression.type_arguments.as_deref(),
+        );
+        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, false);
 
-        if let Some(type_arguments) = &call_expression.type_arguments {
+        substitutions
+    }
+
+    fn explicit_type_parameter_substitutions(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        type_arguments: Option<&oxc_ast::ast::TSTypeParameterInstantiation<'a>>,
+    ) -> (HashMap<&'a str, Ty<'a>>, Vec<&'a str>) {
+        let mut substitutions = HashMap::new();
+        let mut explicit_type_parameters = Vec::new();
+
+        if let Some(type_arguments) = type_arguments {
             for (type_parameter, type_argument) in function
                 .type_parameters
                 .iter()
@@ -1919,9 +1913,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     type_parameter.name,
                     self.get_type_from_ts_type(program_id, type_argument),
                 );
+                explicit_type_parameters.push(type_parameter.name);
             }
         }
 
+        (substitutions, explicit_type_parameters)
+    }
+
+    fn add_type_parameter_fallback_substitutions(
+        &self,
+        function: &TyFunction<'a>,
+        substitutions: &mut HashMap<&'a str, Ty<'a>>,
+        fill_unresolved_with_unknown: bool,
+    ) {
         for type_parameter in &function.type_parameters {
             if substitutions.contains_key(type_parameter.name) {
                 continue;
@@ -1932,12 +1936,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             {
                 substitutions.insert(
                     type_parameter.name,
-                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
+                    fallback_type.substitute_type_parameters(self.arena(), substitutions),
                 );
             }
         }
 
-        substitutions
+        if fill_unresolved_with_unknown {
+            for type_parameter in &function.type_parameters {
+                substitutions
+                    .entry(type_parameter.name)
+                    .or_insert_with(Ty::unknown);
+            }
+        }
     }
 
     fn is_call_signature_applicable(
@@ -1948,37 +1958,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
         substitutions: &HashMap<&'a str, Ty<'a>>,
     ) -> bool {
-        let argument_count = call_expression.arguments.len();
-        let minimum_argument_count = function
-            .parameters
-            .iter()
-            .filter(|parameter| !parameter.optional && !parameter.rest)
-            .count();
-        let has_rest_parameter = function.parameters.iter().any(|parameter| parameter.rest);
-        if argument_count < minimum_argument_count {
+        if !self.has_compatible_type_argument_count(
+            function,
+            call_expression
+                .type_arguments
+                .as_ref()
+                .map_or(0, |type_arguments| type_arguments.params.len()),
+        ) {
             return false;
         }
-        if !has_rest_parameter && argument_count > function.parameters.len() {
+        if !self.has_compatible_argument_count(function, call_expression.arguments.len()) {
             return false;
         }
 
-        for (index, argument) in call_expression.arguments.iter().enumerate() {
-            let Some(argument) = argument.as_expression() else {
-                continue;
-            };
-            let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
-                return false;
-            };
-            let parameter_type =
-                parameter_type.substitute_type_parameters(self.arena(), substitutions);
-            let argument_type =
-                self.get_type_of_expression_with_node(program_id, argument, node_id);
-            if !self.is_assignable_to(argument_type, parameter_type) {
-                return false;
-            }
-        }
-
-        true
+        self.arguments_are_assignable_to_parameters(
+            program_id,
+            function,
+            call_expression
+                .arguments
+                .iter()
+                .map(|argument| argument.as_expression()),
+            node_id,
+            substitutions,
+        )
     }
 
     fn get_call_parameter_type_at(
@@ -2109,22 +2111,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
-        let mut substitutions = HashMap::new();
-        let mut explicit_type_parameters = Vec::new();
-
-        if let Some(type_arguments) = &new_expression.type_arguments {
-            for (type_parameter, type_argument) in function
-                .type_parameters
-                .iter()
-                .zip(type_arguments.params.iter())
-            {
-                substitutions.insert(
-                    type_parameter.name,
-                    self.get_type_from_ts_type(program_id, type_argument),
-                );
-                explicit_type_parameters.push(type_parameter.name);
-            }
-        }
+        let (mut substitutions, explicit_type_parameters) = self
+            .explicit_type_parameter_substitutions(
+                program_id,
+                function,
+                new_expression.type_arguments.as_deref(),
+            );
 
         let inferable_type_parameters = function
             .type_parameters
@@ -2150,26 +2142,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         }
 
-        for type_parameter in &function.type_parameters {
-            if substitutions.contains_key(type_parameter.name) {
-                continue;
-            }
-            if let Some(fallback_type) = type_parameter
-                .default_type
-                .or(type_parameter.constraint_type)
-            {
-                substitutions.insert(
-                    type_parameter.name,
-                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
-                );
-            }
-        }
-
-        for type_parameter in &function.type_parameters {
-            substitutions
-                .entry(type_parameter.name)
-                .or_insert_with(Ty::unknown);
-        }
+        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, true);
 
         substitutions
     }
@@ -2180,41 +2153,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
-        let mut substitutions = HashMap::new();
-
-        if let Some(type_arguments) = &new_expression.type_arguments {
-            for (type_parameter, type_argument) in function
-                .type_parameters
-                .iter()
-                .zip(type_arguments.params.iter())
-            {
-                substitutions.insert(
-                    type_parameter.name,
-                    self.get_type_from_ts_type(program_id, type_argument),
-                );
-            }
-        }
-
-        for type_parameter in &function.type_parameters {
-            if substitutions.contains_key(type_parameter.name) {
-                continue;
-            }
-            if let Some(fallback_type) = type_parameter
-                .default_type
-                .or(type_parameter.constraint_type)
-            {
-                substitutions.insert(
-                    type_parameter.name,
-                    fallback_type.substitute_type_parameters(self.arena(), &substitutions),
-                );
-            }
-        }
-
-        for type_parameter in &function.type_parameters {
-            substitutions
-                .entry(type_parameter.name)
-                .or_insert_with(Ty::unknown);
-        }
+        let (mut substitutions, _) = self.explicit_type_parameter_substitutions(
+            program_id,
+            function,
+            new_expression.type_arguments.as_deref(),
+        );
+        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, true);
 
         substitutions
     }
@@ -2226,32 +2170,65 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         new_expression: &'a NewExpression<'a>,
         substitutions: &HashMap<&'a str, Ty<'a>>,
     ) -> bool {
-        if new_expression
-            .type_arguments
-            .as_ref()
-            .is_some_and(|type_arguments| {
-                type_arguments.params.len() > function.type_parameters.len()
-            })
-        {
+        if !self.has_compatible_type_argument_count(
+            function,
+            new_expression
+                .type_arguments
+                .as_ref()
+                .map_or(0, |type_arguments| type_arguments.params.len()),
+        ) {
+            return false;
+        }
+        if !self.has_compatible_argument_count(function, new_expression.arguments.len()) {
             return false;
         }
 
-        let argument_count = new_expression.arguments.len();
+        self.arguments_are_assignable_to_parameters(
+            program_id,
+            function,
+            new_expression
+                .arguments
+                .iter()
+                .map(|argument| argument.as_expression()),
+            None,
+            substitutions,
+        )
+    }
+
+    fn has_compatible_type_argument_count(
+        &self,
+        function: &TyFunction<'a>,
+        type_argument_count: usize,
+    ) -> bool {
+        type_argument_count <= function.type_parameters.len()
+    }
+
+    fn has_compatible_argument_count(
+        &self,
+        function: &TyFunction<'a>,
+        argument_count: usize,
+    ) -> bool {
         let minimum_argument_count = function
             .parameters
             .iter()
             .filter(|parameter| !parameter.optional && !parameter.rest)
             .count();
         let has_rest_parameter = function.parameters.iter().any(|parameter| parameter.rest);
-        if argument_count < minimum_argument_count {
-            return false;
-        }
-        if !has_rest_parameter && argument_count > function.parameters.len() {
-            return false;
-        }
 
-        for (index, argument) in new_expression.arguments.iter().enumerate() {
-            let Some(argument) = argument.as_expression() else {
+        argument_count >= minimum_argument_count
+            && (has_rest_parameter || argument_count <= function.parameters.len())
+    }
+
+    fn arguments_are_assignable_to_parameters(
+        &self,
+        program_id: program::ProgramId,
+        function: &TyFunction<'a>,
+        arguments: impl Iterator<Item = Option<&'a Expression<'a>>>,
+        node_id: Option<NodeId>,
+        substitutions: &HashMap<&'a str, Ty<'a>>,
+    ) -> bool {
+        for (index, argument) in arguments.enumerate() {
+            let Some(argument) = argument else {
                 continue;
             };
             let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
@@ -2259,7 +2236,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
             let parameter_type =
                 parameter_type.substitute_type_parameters(self.arena(), substitutions);
-            let argument_type = self.get_type_of_expression(program_id, argument);
+            let argument_type =
+                self.get_type_of_expression_with_node(program_id, argument, node_id);
             if !self.is_assignable_to(argument_type, parameter_type) {
                 return false;
             }
@@ -5989,6 +5967,25 @@ mod test {
 
         assert_eq!(get_global_symbol_type(&ret, "fromString"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "fromNumber"), Ty::number());
+    }
+
+    #[test]
+    fn function_overloads_skip_signatures_with_too_many_type_arguments() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function pick<T>(x: T): T;
+        function pick<T, U>(x: T): U;
+        function pick(x: unknown): unknown {
+            return x;
+        }
+
+        const value = pick<number, string>(123);
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "value"), Ty::string());
     }
 
     #[test]
