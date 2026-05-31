@@ -1,10 +1,7 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
-    BindingPattern, Expression, FormalParameter, FormalParameterRest, PropertyKey, TSLiteral,
-    TSMappedType, TSMappedTypeModifierOperator, TSSignature, TSTemplateLiteralType,
-    TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-    TSTypeParameter, TSTypeParameterDeclaration, TSTypePredicate, TSTypePredicateName,
-    TSTypeReference,
+    BindingPattern, Expression, PropertyKey, TSMappedTypeModifierOperator, TSTemplateLiteralType,
+    TSType, TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
 };
 use std::collections::HashMap;
 
@@ -318,7 +315,7 @@ pub(crate) enum MappedModifier {
 }
 
 impl MappedModifier {
-    fn from_ast(op: Option<TSMappedTypeModifierOperator>) -> Self {
+    pub(crate) fn from_ast(op: Option<TSMappedTypeModifierOperator>) -> Self {
         match op {
             None => Self::None,
             Some(TSMappedTypeModifierOperator::True) => Self::True,
@@ -409,22 +406,14 @@ impl<'a> Ty<'a> {
     pub(crate) fn ts_template_literal(
         arena: CheckerArena<'a>,
         template: &TSTemplateLiteralType<'a>,
+        expressions: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
-        Self::TemplateLiteral(
-            arena.alloc(TyTemplateLiteral {
-                quasis: arena.vec_from_iter(template.quasis.iter().map(|q| {
-                    TemplateLiteralElement {
-                        value: q.value.raw.as_str(),
-                    }
-                })),
-                expressions: arena.vec_from_iter(
-                    template
-                        .types
-                        .iter()
-                        .map(|ty| Self::from_ts_type(arena, ty)),
-                ),
-            }),
-        )
+        Self::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+            quasis: arena.vec_from_iter(template.quasis.iter().map(|q| TemplateLiteralElement {
+                value: q.value.raw.as_str(),
+            })),
+            expressions: arena.vec_from_iter(expressions),
+        }))
     }
 
     pub(crate) fn undefined() -> Self {
@@ -739,269 +728,6 @@ impl<'a> Ty<'a> {
 
     pub(crate) fn is_any(&self) -> bool {
         matches!(self, Self::Any)
-    }
-
-    /// Take a type annotation like `: number` and return the corresponding type. Returns no
-    /// type if there is no type annotation.
-    pub(crate) fn from_ts_type_annotation(
-        arena: CheckerArena<'a>,
-        type_annotation: Option<&TSTypeAnnotation<'a>>,
-    ) -> Self {
-        type_annotation.map_or_else(Self::any, |type_annotation| {
-            Self::from_ts_type(arena, &type_annotation.type_annotation)
-        })
-    }
-
-    /// Turns a declared type in the AST and turns it into an actual type.
-    pub(crate) fn from_ts_type(arena: CheckerArena<'a>, t: &TSType<'a>) -> Self {
-        match t {
-            TSType::TSNumberKeyword(_) => Self::number(),
-            TSType::TSStringKeyword(_) => Self::string(),
-            TSType::TSBooleanKeyword(_) => Self::boolean(),
-            TSType::TSBigIntKeyword(_) => Self::bigint(),
-            TSType::TSSymbolKeyword(_) => Self::symbol(),
-            TSType::TSUndefinedKeyword(_) => Self::undefined(),
-            TSType::TSNullKeyword(_) => Self::null(),
-            TSType::TSAnyKeyword(_) => Self::any(),
-            TSType::TSUnknownKeyword(_) => Self::unknown(),
-            TSType::TSVoidKeyword(_) => Self::void(),
-            TSType::TSNeverKeyword(_) => Self::never(),
-            TSType::TSObjectKeyword(_) => Self::primitive_object(),
-            TSType::TSThisType(_) => Self::this(),
-            TSType::TSTypeLiteral(type_literal) => Self::object_with_signatures(
-                arena,
-                type_literal
-                    .members
-                    .iter()
-                    .filter_map(|member| match member {
-                        TSSignature::TSPropertySignature(property) => {
-                            let name = property_key_name(&property.key)?;
-                            let ty = Self::from_ts_type_annotation(
-                                arena,
-                                property.type_annotation.as_deref(),
-                            );
-                            Some(if property.computed {
-                                if property.optional {
-                                    Self::computed_optional_property(name, ty)
-                                } else {
-                                    Self::computed_property(name, ty)
-                                }
-                            } else if property.optional {
-                                Self::optional_property(name, ty)
-                            } else {
-                                Self::property(name, ty)
-                            })
-                        }
-                        TSSignature::TSMethodSignature(method) => {
-                            let name = property_key_name(&method.key)?;
-                            let parameters = function_type_parameters(
-                                arena,
-                                method.this_param.as_deref(),
-                                method.params.as_ref(),
-                            );
-                            let (return_type, type_predicate) =
-                                return_type_and_type_predicate_from_annotation(
-                                    arena,
-                                    &parameters,
-                                    method.return_type.as_deref(),
-                                );
-                            let ty = Self::function_with_type_predicate(
-                                arena,
-                                type_parameters_from_declaration(
-                                    arena,
-                                    method.type_parameters.as_deref(),
-                                ),
-                                parameters,
-                                return_type,
-                                type_predicate,
-                            );
-                            Some(if method.computed {
-                                Self::computed_property(name, ty)
-                            } else {
-                                Self::property(name, ty)
-                            })
-                        }
-                        _ => None,
-                    }),
-                type_literal
-                    .members
-                    .iter()
-                    .filter_map(|member| signature_from_ts_signature(arena, member)),
-            ),
-            TSType::TSArrayType(array) => {
-                Self::array(arena, Self::from_ts_type(arena, &array.element_type))
-            }
-            TSType::TSTypeReference(reference) => Self::from_ts_type_reference(arena, reference),
-            TSType::TSParenthesizedType(parenthesized) => {
-                Self::from_ts_type(arena, &parenthesized.type_annotation)
-            }
-            TSType::TSTemplateLiteralType(template_literal) => {
-                Self::ts_template_literal(arena, template_literal)
-            }
-            TSType::TSUnionType(r#union) => Self::r#union(
-                arena,
-                r#union.types.iter().map(|ty| Self::from_ts_type(arena, ty)),
-            ),
-            TSType::TSFunctionType(function) => {
-                let parameters = function_type_parameters(
-                    arena,
-                    function.this_param.as_deref(),
-                    function.params.as_ref(),
-                );
-                let (return_type, type_predicate) = return_type_and_type_predicate_from_annotation(
-                    arena,
-                    &parameters,
-                    Some(&function.return_type),
-                );
-                Self::function_with_type_predicate(
-                    arena,
-                    type_parameters_from_declaration(arena, function.type_parameters.as_deref()),
-                    parameters,
-                    return_type,
-                    type_predicate,
-                )
-            }
-            TSType::TSLiteralType(literal) => match &literal.literal {
-                TSLiteral::BooleanLiteral(boolean_literal) => {
-                    Self::boolean_literal(boolean_literal.value)
-                }
-                TSLiteral::NumericLiteral(numeric_literal) => {
-                    let name = numeric_literal.raw.as_ref().map_or_else(
-                        || arena.str(&numeric_literal.value.to_string()),
-                        |raw| raw.as_str(),
-                    );
-                    Self::number_literal(arena, name)
-                }
-                TSLiteral::StringLiteral(string_literal) => {
-                    Self::string_literal(arena, string_literal.value.as_str())
-                }
-                TSLiteral::BigIntLiteral(bigint_literal) => {
-                    Self::bigint_literal(arena, bigint_literal.value.as_str())
-                }
-                TSLiteral::TemplateLiteral(template_literal) => {
-                    Self::template_literal(arena, template_literal.as_ref())
-                }
-                TSLiteral::UnaryExpression(_) => Ty::none(),
-            },
-            TSType::TSTupleType(tuple_type) => Self::tuple(
-                arena,
-                tuple_type
-                    .element_types
-                    .iter()
-                    .map(|ty| match ty {
-                        TSTupleElement::TSRestType(rest) => {
-                            TupleElement::Rest(Self::from_ts_type(arena, &rest.type_annotation))
-                        }
-                        TSTupleElement::TSOptionalType(optional) => {
-                            TupleElement::Optional(Self::r#union(
-                                arena,
-                                [
-                                    Self::from_ts_type(arena, &optional.type_annotation),
-                                    Self::undefined(),
-                                ],
-                            ))
-                        }
-                        _ => TupleElement::Regular(match ty.as_ts_type() {
-                            Some(ts_type) => Self::from_ts_type(arena, ts_type),
-                            None => Self::none(),
-                        }),
-                    })
-                    .collect(),
-            ),
-            TSType::TSIntersectionType(intersection_type) => Self::intersection(
-                arena,
-                intersection_type
-                    .types
-                    .iter()
-                    .map(|ty| Self::from_ts_type(arena, ty)),
-            ),
-            TSType::TSTypeOperatorType(operator) => match operator.operator {
-                TSTypeOperatorOperator::Keyof => {
-                    Self::keyof(arena, Self::from_ts_type(arena, &operator.type_annotation))
-                }
-                TSTypeOperatorOperator::Unique
-                    if matches!(operator.type_annotation, TSType::TSSymbolKeyword(_)) =>
-                {
-                    Self::unique_symbol(arena, None)
-                }
-                // `readonly` only applies to array/tuple literals; mark the inner type
-                // as readonly and otherwise pass it through.
-                TSTypeOperatorOperator::Readonly => {
-                    match Self::from_ts_type(arena, &operator.type_annotation) {
-                        Self::Array(array) => Self::readonly_array(arena, array.element_type),
-                        Self::Tuple(tuple) => Self::Tuple(arena.alloc(TyTuple {
-                            elements: arena.vec_from_iter(tuple.elements.iter().copied()),
-                            readonly: true,
-                        })),
-                        inner => inner,
-                    }
-                }
-                TSTypeOperatorOperator::Unique => Self::none(),
-            },
-            TSType::TSIndexedAccessType(indexed_access) => Self::indexed_access(
-                arena,
-                Self::from_ts_type(arena, &indexed_access.object_type),
-                Self::from_ts_type(arena, &indexed_access.index_type),
-            ),
-            TSType::TSConditionalType(conditional) => Self::conditional(
-                arena,
-                Self::from_ts_type(arena, &conditional.check_type),
-                Self::from_ts_type(arena, &conditional.extends_type),
-                Self::from_ts_type(arena, &conditional.true_type),
-                Self::from_ts_type(arena, &conditional.false_type),
-                ts_type_is_naked_type_reference(&conditional.check_type),
-            ),
-            TSType::TSInferType(infer) => Self::infer(
-                arena,
-                type_parameter_from_ts_type_parameter(arena, &infer.type_parameter),
-            ),
-            TSType::TSMappedType(mapped) => Self::from_ts_mapped_type(arena, mapped),
-            TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
-            _ => Self::none(),
-        }
-    }
-
-    /// Build a mapped type from `{ [K in C as N]?: T }` / `{ readonly [K in C]: T }`.
-    fn from_ts_mapped_type(arena: CheckerArena<'a>, mapped: &TSMappedType<'a>) -> Self {
-        let constraint = Self::from_ts_type(arena, &mapped.constraint);
-        let name_type = mapped
-            .name_type
-            .as_ref()
-            .map(|name_ty| Self::from_ts_type(arena, name_ty));
-        let optional = MappedModifier::from_ast(mapped.optional);
-        let template = mapped
-            .type_annotation
-            .as_ref()
-            .map_or_else(Self::any, |ty| Self::from_ts_type(arena, ty));
-        let template = if matches!(optional, MappedModifier::True | MappedModifier::Plus) {
-            Self::r#union(arena, [template, Self::undefined()])
-        } else {
-            template
-        };
-        Self::mapped(
-            arena,
-            arena.str(&mapped.key.name),
-            constraint,
-            name_type,
-            template,
-            optional,
-            MappedModifier::from_ast(mapped.readonly),
-        )
-    }
-
-    pub(crate) fn from_ts_type_reference(
-        arena: CheckerArena<'a>,
-        reference: &TSTypeReference<'a>,
-    ) -> Self {
-        Self::type_reference(
-            arena,
-            ts_type_name_to_str(arena, &reference.type_name),
-            reference
-                .type_arguments
-                .as_ref()
-                .into_iter()
-                .flat_map(|args| args.params.iter().map(|ty| Self::from_ts_type(arena, ty))),
-        )
     }
 
     pub(crate) fn from_expression(expression: &Expression<'_>) -> Self {
@@ -2408,13 +2134,6 @@ fn contains_infer(ty: Ty<'_>) -> bool {
     }
 }
 
-fn ts_type_is_naked_type_reference(ty: &TSType<'_>) -> bool {
-    matches!(
-        ty,
-        TSType::TSTypeReference(reference) if reference.type_arguments.is_none()
-    )
-}
-
 pub(crate) fn reduce_union_type<'a>(
     arena: CheckerArena<'a>,
     types: impl IntoIterator<Item = Ty<'a>>,
@@ -2670,54 +2389,6 @@ fn function_type_head_to_string(function: &TyFunction<'_>) -> (String, String) {
     (type_parameters, parameters)
 }
 
-fn signature_from_ts_signature<'a>(
-    arena: CheckerArena<'a>,
-    signature: &TSSignature<'a>,
-) -> Option<Signature<'a>> {
-    let (kind, type_parameters, this_param, parameters, return_type) = match signature {
-        TSSignature::TSCallSignatureDeclaration(signature) => (
-            SignatureKind::Call,
-            signature.type_parameters.as_deref(),
-            signature.this_param.as_deref(),
-            signature.params.as_ref(),
-            signature.return_type.as_deref(),
-        ),
-        TSSignature::TSConstructSignatureDeclaration(signature) => (
-            SignatureKind::Construct,
-            signature.type_parameters.as_deref(),
-            None,
-            signature.params.as_ref(),
-            signature.return_type.as_deref(),
-        ),
-        _ => return None,
-    };
-    let parameters = function_type_parameters(arena, this_param, parameters);
-    let (return_type, type_predicate) =
-        return_type_and_type_predicate_from_annotation(arena, &parameters, return_type);
-    let Ty::Function(function) = Ty::function_with_type_predicate(
-        arena,
-        type_parameters_from_declaration(arena, type_parameters),
-        parameters,
-        return_type,
-        type_predicate,
-    ) else {
-        unreachable!("signature construction always creates a function type")
-    };
-    Some(Signature::new(kind, function))
-}
-
-fn return_type_and_type_predicate_from_annotation<'a>(
-    arena: CheckerArena<'a>,
-    parameters: &[TyParameter<'a>],
-    return_type: Option<&TSTypeAnnotation<'a>>,
-) -> (Ty<'a>, Option<TyTypePredicate<'a>>) {
-    return_type_and_type_predicate_from_annotation_with_resolver(
-        parameters,
-        return_type,
-        |annotation| Ty::from_ts_type_annotation(arena, Some(annotation)),
-    )
-}
-
 pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(
     parameters: &[TyParameter<'a>],
     return_type: Option<&TSTypeAnnotation<'a>>,
@@ -2745,18 +2416,6 @@ pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(
 
 pub(crate) fn type_predicate_return_type<'a>(asserts: bool) -> Ty<'a> {
     if asserts { Ty::void() } else { Ty::boolean() }
-}
-
-pub(crate) fn type_predicate_from_ts_type_predicate<'a>(
-    arena: CheckerArena<'a>,
-    parameters: &[TyParameter<'a>],
-    predicate: &TSTypePredicate<'a>,
-) -> TyTypePredicate<'a> {
-    let target_type = predicate
-        .type_annotation
-        .as_deref()
-        .map(|annotation| Ty::from_ts_type_annotation(arena, Some(annotation)));
-    type_predicate_from_ts_type_predicate_with_target_type(parameters, predicate, target_type)
 }
 
 pub(crate) fn type_predicate_from_ts_type_predicate_with_target_type<'a>(
@@ -2902,104 +2561,6 @@ fn binding_property_to_string(property: &oxc_ast::ast::BindingProperty<'_>) -> O
         Some(key)
     } else {
         Some(format!("{key}: {value}"))
-    }
-}
-
-pub(crate) fn type_parameters_from_declaration<'a>(
-    arena: CheckerArena<'a>,
-    declaration: Option<&TSTypeParameterDeclaration<'a>>,
-) -> Vec<TyTypeParameter<'a>> {
-    declaration.map_or_else(Vec::new, |declaration| {
-        declaration
-            .params
-            .iter()
-            .map(|parameter| type_parameter_from_ts_type_parameter(arena, parameter))
-            .collect()
-    })
-}
-
-pub(crate) fn type_parameter_from_ts_type_parameter<'a>(
-    arena: CheckerArena<'a>,
-    parameter: &TSTypeParameter<'a>,
-) -> TyTypeParameter<'a> {
-    Ty::type_parameter(
-        parameter.name.name.as_str(),
-        parameter
-            .constraint
-            .as_ref()
-            .map(|constraint_type| Ty::from_ts_type(arena, constraint_type)),
-        parameter
-            .default
-            .as_ref()
-            .map(|default_type| Ty::from_ts_type(arena, default_type)),
-    )
-}
-
-fn function_type_parameters<'a>(
-    arena: CheckerArena<'a>,
-    this_param: Option<&TSThisParameter<'a>>,
-    params: &oxc_ast::ast::FormalParameters<'a>,
-) -> Vec<TyParameter<'a>> {
-    this_param
-        .iter()
-        .map(|parameter| function_type_this_parameter(arena, parameter))
-        .chain(
-            params
-                .items
-                .iter()
-                .map(|parameter| function_type_parameter(arena, parameter)),
-        )
-        .chain(
-            params
-                .rest
-                .iter()
-                .map(|parameter| function_type_rest_parameter(arena, parameter)),
-        )
-        .collect()
-}
-
-fn function_type_this_parameter<'a>(
-    arena: CheckerArena<'a>,
-    parameter: &TSThisParameter<'a>,
-) -> TyParameter<'a> {
-    Ty::parameter(
-        "this",
-        Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
-    )
-}
-
-fn function_type_parameter<'a>(
-    arena: CheckerArena<'a>,
-    parameter: &FormalParameter<'a>,
-) -> TyParameter<'a> {
-    let name = binding_pattern_to_parameter_name(arena, &parameter.pattern);
-    let ty = Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref());
-    if parameter.optional {
-        Ty::optional_parameter(name, ty)
-    } else {
-        Ty::parameter(name, ty)
-    }
-}
-
-fn function_type_rest_parameter<'a>(
-    arena: CheckerArena<'a>,
-    parameter: &FormalParameterRest<'a>,
-) -> TyParameter<'a> {
-    let name = binding_pattern_to_parameter_name(arena, &parameter.rest.argument);
-    Ty::rest_parameter(
-        name,
-        Ty::from_ts_type_annotation(arena, parameter.type_annotation.as_deref()),
-    )
-}
-
-fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'a str {
-    match name {
-        TSTypeName::IdentifierReference(identifier) => identifier.name.as_str(),
-        TSTypeName::QualifiedName(qualified) => {
-            let left = ts_type_name_to_str(arena, &qualified.left);
-            arena.str(&format!("{}.{}", left, qualified.right.name))
-        }
-        TSTypeName::ThisExpression(_) => "this",
     }
 }
 

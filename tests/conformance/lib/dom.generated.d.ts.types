@@ -25868,7 +25868,7 @@ interface Document extends Node, DocumentOrShadowRoot, FontFaceSource, GlobalEve
 >                           ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     readonly defaultView: (WindowProxy & typeof globalThis) | null;
->            ^^^^^^^^^^^: (WindowProxy & none) | null   (TyUnion)
+>            ^^^^^^^^^^^: (WindowProxy & typeof globalThis) | null   (TyUnion)
 
     readonly defaultView: (WindowProxy & typeof globalThis) | null;
 >                          ^^^^^^^^^^^: any   (TyAny)
@@ -67802,7 +67802,7 @@ interface PerformanceObserver {
 >         ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 interface PerformanceObserver {
->         ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>         ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
     disconnect(): void;
 >   ^^^^^^^^^^: { (): void; (): void; }   (TyObject)
@@ -67823,16 +67823,16 @@ interface PerformanceObserver {
 >                  ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 declare var PerformanceObserver: {
->           ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>           ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
     prototype: PerformanceObserver;
 >   ^^^^^^^^^: PerformanceObserver   (TyTypeReference)
 
     prototype: PerformanceObserver;
->              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
     prototype: PerformanceObserver;
->              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
     new(callback: PerformanceObserverCallback): PerformanceObserver;
 >       ^^^^^^^^: PerformanceObserverCallback   (TyTypeReference)
@@ -67841,10 +67841,10 @@ declare var PerformanceObserver: {
 >                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     new(callback: PerformanceObserverCallback): PerformanceObserver;
->                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
     new(callback: PerformanceObserverCallback): PerformanceObserver;
->                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
     readonly supportedEntryTypes: ReadonlyArray<string>;
 >            ^^^^^^^^^^^^^^^^^^^: readonly string[]   (TyArray)
@@ -69317,7 +69317,7 @@ interface PushManager {
 >         ^^^^^^^^^^^: any   (TyAny)
 
 interface PushManager {
->         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
     getSubscription(): Promise<PushSubscription | null>;
 >   ^^^^^^^^^^^^^^^: { (): Promise<PushSubscription | null>; (): Promise<PushSubscription | null>; }   (TyObject)
@@ -69374,22 +69374,22 @@ interface PushManager {
 >                                                             ^^^^^^^^^^^^^^^^: { new (): PushSubscription; prototype: PushSubscription; }   (TyObject)
 
 declare var PushManager: {
->           ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>           ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
     prototype: PushManager;
 >   ^^^^^^^^^: PushManager   (TyTypeReference)
 
     prototype: PushManager;
->              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
     prototype: PushManager;
->              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
     new(): PushManager;
->          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
     new(): PushManager;
->          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
     readonly supportedContentEncodings: ReadonlyArray<string>;
 >            ^^^^^^^^^^^^^^^^^^^^^^^^^: readonly string[]   (TyArray)
@@ -69404,10 +69404,10 @@ interface PushManagerAttribute {
 >            ^^^^^^^^^^^: PushManager   (TyTypeReference)
 
     readonly pushManager: PushManager;
->                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
     readonly pushManager: PushManager;
->                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: ReadonlyArray<string>; }   (TyObject)
+>                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; supportedContentEncodings: readonly string[]; }   (TyObject)
 
 interface PushSubscription {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -118340,10 +118340,10 @@ interface PerformanceObserverCallback {
 >                                           ^^^^^^^^: PerformanceObserver   (TyTypeReference)
 
     (entries: PerformanceObserverEntryList, observer: PerformanceObserver): void;
->                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
     (entries: PerformanceObserverEntryList, observer: PerformanceObserver): void;
->                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: ReadonlyArray<string>; }   (TyObject)
+>                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; supportedEntryTypes: readonly string[]; }   (TyObject)
 
 interface PositionCallback {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)

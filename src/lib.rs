@@ -9,8 +9,9 @@ use oxc_ast::{
         FormalParameterRest, FormalParameters, Function, FunctionBody, IdentifierReference,
         MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
         ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, ReturnStatement,
-        StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSSignature, TSTupleElement,
-        TSType, TSTypeAnnotation, TSTypeName, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType,
+        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
@@ -837,10 +838,97 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &TSType<'a>) -> Ty<'a> {
         match ty {
+            TSType::TSNumberKeyword(_) => Ty::number(),
+            TSType::TSStringKeyword(_) => Ty::string(),
+            TSType::TSBooleanKeyword(_) => Ty::boolean(),
+            TSType::TSBigIntKeyword(_) => Ty::bigint(),
+            TSType::TSSymbolKeyword(_) => Ty::symbol(),
+            TSType::TSUndefinedKeyword(_) => Ty::undefined(),
+            TSType::TSNullKeyword(_) => Ty::null(),
+            TSType::TSAnyKeyword(_) => Ty::any(),
+            TSType::TSUnknownKeyword(_) => Ty::unknown(),
+            TSType::TSVoidKeyword(_) => Ty::void(),
+            TSType::TSNeverKeyword(_) => Ty::never(),
+            TSType::TSObjectKeyword(_) => Ty::primitive_object(),
+            TSType::TSThisType(_) => Ty::this(),
+            TSType::TSTypeLiteral(type_literal) => Ty::object_with_signatures(
+                self.arena(),
+                type_literal
+                    .members
+                    .iter()
+                    .filter_map(|member| match member {
+                        TSSignature::TSPropertySignature(property) => {
+                            let name = property_key_name_str(&property.key)?;
+                            let ty = self.get_type_from_ts_type_annotation(
+                                program_id,
+                                property.type_annotation.as_deref(),
+                            );
+                            Some(if property.computed {
+                                if property.optional {
+                                    Ty::computed_optional_property(name, ty)
+                                } else {
+                                    Ty::computed_property(name, ty)
+                                }
+                            } else if property.optional {
+                                Ty::optional_property(name, ty)
+                            } else {
+                                Ty::property(name, ty)
+                            })
+                        }
+                        TSSignature::TSMethodSignature(method) => {
+                            let name = property_key_name_str(&method.key)?;
+                            let parameters = self.function_type_parameters(
+                                program_id,
+                                method.this_param.as_deref(),
+                                method.params.as_ref(),
+                            );
+                            let (return_type, type_predicate) = self
+                                .return_type_and_type_predicate_from_annotation(
+                                    program_id,
+                                    &parameters,
+                                    method.return_type.as_deref(),
+                                );
+                            let ty = Ty::function_with_type_predicate(
+                                self.arena(),
+                                self.type_parameters_from_declaration(
+                                    program_id,
+                                    method.type_parameters.as_deref(),
+                                ),
+                                parameters,
+                                return_type,
+                                type_predicate,
+                            );
+                            Some(if method.computed {
+                                Ty::computed_property(name, ty)
+                            } else {
+                                Ty::property(name, ty)
+                            })
+                        }
+                        _ => None,
+                    }),
+                type_literal.members.iter().filter_map(|member| {
+                    self.signature_from_type_literal_signature(program_id, member)
+                }),
+            ),
+            TSType::TSArrayType(array) => Ty::array(
+                self.arena(),
+                self.get_type_from_ts_type(program_id, &array.element_type),
+            ),
             TSType::TSTypeReference(reference) => {
                 self.get_type_from_ts_type_reference(program_id, reference)
             }
             TSType::TSTypeQuery(query) => self.get_type_from_ts_type_query(program_id, query),
+            TSType::TSParenthesizedType(parenthesized) => {
+                self.get_type_from_ts_type(program_id, &parenthesized.type_annotation)
+            }
+            TSType::TSTemplateLiteralType(template_literal) => Ty::ts_template_literal(
+                self.arena(),
+                template_literal,
+                template_literal
+                    .types
+                    .iter()
+                    .map(|ty| self.get_type_from_ts_type(program_id, ty)),
+            ),
             TSType::TSIntersectionType(intersection_type) => Ty::intersection(
                 self.arena(),
                 intersection_type
@@ -854,6 +942,106 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .types
                     .iter()
                     .map(|ty| self.get_type_from_ts_type(program_id, ty)),
+            ),
+            TSType::TSFunctionType(function) => {
+                let parameters = self.function_type_parameters(
+                    program_id,
+                    function.this_param.as_deref(),
+                    function.params.as_ref(),
+                );
+                let (return_type, type_predicate) = self
+                    .return_type_and_type_predicate_from_annotation(
+                        program_id,
+                        &parameters,
+                        Some(&function.return_type),
+                    );
+                Ty::function_with_type_predicate(
+                    self.arena(),
+                    self.type_parameters_from_declaration(
+                        program_id,
+                        function.type_parameters.as_deref(),
+                    ),
+                    parameters,
+                    return_type,
+                    type_predicate,
+                )
+            }
+            TSType::TSLiteralType(literal) => match &literal.literal {
+                TSLiteral::BooleanLiteral(boolean_literal) => {
+                    Ty::boolean_literal(boolean_literal.value)
+                }
+                TSLiteral::NumericLiteral(numeric_literal) => {
+                    let name = numeric_literal.raw.as_ref().map_or_else(
+                        || self.arena().str(&numeric_literal.value.to_string()),
+                        |raw| raw.as_str(),
+                    );
+                    Ty::number_literal(self.arena(), name)
+                }
+                TSLiteral::StringLiteral(string_literal) => {
+                    Ty::string_literal(self.arena(), string_literal.value.as_str())
+                }
+                TSLiteral::BigIntLiteral(bigint_literal) => {
+                    Ty::bigint_literal(self.arena(), bigint_literal.value.as_str())
+                }
+                TSLiteral::TemplateLiteral(template_literal) => {
+                    Ty::template_literal(self.arena(), template_literal.as_ref())
+                }
+                TSLiteral::UnaryExpression(_) => Ty::none(),
+            },
+            TSType::TSTupleType(tuple_type) => Ty::tuple(
+                self.arena(),
+                tuple_type
+                    .element_types
+                    .iter()
+                    .map(|ty| match ty {
+                        TSTupleElement::TSRestType(rest) => TupleElement::Rest(
+                            self.get_type_from_ts_type(program_id, &rest.type_annotation),
+                        ),
+                        TSTupleElement::TSOptionalType(optional) => {
+                            TupleElement::Optional(Ty::union(
+                                self.arena(),
+                                [
+                                    self.get_type_from_ts_type(
+                                        program_id,
+                                        &optional.type_annotation,
+                                    ),
+                                    Ty::undefined(),
+                                ],
+                            ))
+                        }
+                        _ => TupleElement::Regular(match ty.as_ts_type() {
+                            Some(ts_type) => self.get_type_from_ts_type(program_id, ts_type),
+                            None => Ty::none(),
+                        }),
+                    })
+                    .collect(),
+            ),
+            TSType::TSTypeOperatorType(operator) => match operator.operator {
+                TSTypeOperatorOperator::Keyof => Ty::keyof(
+                    self.arena(),
+                    self.get_type_from_ts_type(program_id, &operator.type_annotation),
+                ),
+                TSTypeOperatorOperator::Unique
+                    if matches!(operator.type_annotation, TSType::TSSymbolKeyword(_)) =>
+                {
+                    Ty::unique_symbol(self.arena(), None)
+                }
+                TSTypeOperatorOperator::Readonly => {
+                    match self.get_type_from_ts_type(program_id, &operator.type_annotation) {
+                        Ty::Array(array) => Ty::readonly_array(self.arena(), array.element_type),
+                        Ty::Tuple(tuple) => Ty::readonly_tuple(
+                            self.arena(),
+                            tuple.elements.iter().copied().collect(),
+                        ),
+                        inner => inner,
+                    }
+                }
+                TSTypeOperatorOperator::Unique => Ty::none(),
+            },
+            TSType::TSIndexedAccessType(indexed_access) => Ty::indexed_access(
+                self.arena(),
+                self.get_type_from_ts_type(program_id, &indexed_access.object_type),
+                self.get_type_from_ts_type(program_id, &indexed_access.index_type),
             ),
             TSType::TSConditionalType(conditional) => {
                 let check_type = self.get_type_from_ts_type(program_id, &conditional.check_type);
@@ -878,10 +1066,44 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             TSType::TSInferType(infer) => Ty::infer(
                 self.arena(),
-                type_parameter_from_ts_type_parameter(self.arena(), &infer.type_parameter),
+                self.type_parameter_from_ts_type_parameter(program_id, &infer.type_parameter),
             ),
-            _ => Ty::from_ts_type(self.arena(), ty),
+            TSType::TSMappedType(mapped) => self.get_type_from_ts_mapped_type(program_id, mapped),
+            TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
+            _ => Ty::none(),
         }
+    }
+
+    fn get_type_from_ts_mapped_type(
+        &self,
+        program_id: program::ProgramId,
+        mapped: &TSMappedType<'a>,
+    ) -> Ty<'a> {
+        let constraint = self.get_type_from_ts_type(program_id, &mapped.constraint);
+        let name_type = mapped
+            .name_type
+            .as_ref()
+            .map(|name_ty| self.get_type_from_ts_type(program_id, name_ty));
+        let optional = MappedModifier::from_ast(mapped.optional);
+        let template = mapped
+            .type_annotation
+            .as_ref()
+            .map_or_else(Ty::any, |ty| self.get_type_from_ts_type(program_id, ty));
+        let template = if matches!(optional, MappedModifier::True | MappedModifier::Plus) {
+            Ty::union(self.arena(), [template, Ty::undefined()])
+        } else {
+            template
+        };
+
+        Ty::mapped(
+            self.arena(),
+            self.arena().str(&mapped.key.name),
+            constraint,
+            name_type,
+            template,
+            optional,
+            MappedModifier::from_ast(mapped.readonly),
+        )
     }
 
     /// Resolve `typeof Foo` type queries and apply query type arguments when present.
@@ -1032,6 +1254,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if !matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
             {
                 let substitutions = self.type_parameter_substitutions_for_type_arguments(
+                    program_id,
                     alias.type_parameters.as_deref(),
                     type_arguments,
                 );
@@ -1314,6 +1537,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             AstKind::TSTypeAliasDeclaration(alias) => {
                 let substitutions = self.type_parameter_substitutions_for_reference(
+                    program_id,
                     alias.type_parameters.as_deref(),
                     reference,
                 );
@@ -1349,6 +1573,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         for &(program_id, interface) in declarations {
             let substitutions = self.type_parameter_substitutions_for_reference(
+                program_id,
                 interface.type_parameters.as_deref(),
                 reference,
             );
@@ -1449,10 +1674,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::TSTypeAliasDeclaration(alias)
                 if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
             {
-                let type_parameters = type_parameters_from_declaration(
-                    self.arena(),
-                    alias.type_parameters.as_deref(),
-                );
+                let type_parameters = self
+                    .type_parameters_from_declaration(program_id, alias.type_parameters.as_deref());
                 let substitutions = type_parameters
                     .iter()
                     .zip(type_arguments.iter())
@@ -1749,6 +1972,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         kind: SignatureKind,
     ) -> Vec<Signature<'a>> {
         let substitutions = self.type_parameter_substitutions_for_reference(
+            program_id,
             interface.type_parameters.as_deref(),
             reference,
         );
@@ -1777,6 +2001,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .substitute_type_parameters(
                         self.arena(),
                         &self.type_parameter_substitutions_for_reference(
+                            program_id,
                             alias.type_parameters.as_deref(),
                             reference,
                         ),
@@ -1825,6 +2050,39 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Some(signature)
     }
 
+    fn signature_from_type_literal_signature(
+        &self,
+        program_id: program::ProgramId,
+        signature: &TSSignature<'a>,
+    ) -> Option<Signature<'a>> {
+        let (kind, type_parameters, this_param, parameters, return_type) = match signature {
+            TSSignature::TSCallSignatureDeclaration(signature) => (
+                SignatureKind::Call,
+                signature.type_parameters.as_deref(),
+                signature.this_param.as_deref(),
+                signature.params.as_ref(),
+                signature.return_type.as_deref(),
+            ),
+            TSSignature::TSConstructSignatureDeclaration(signature) => (
+                SignatureKind::Construct,
+                signature.type_parameters.as_deref(),
+                None,
+                signature.params.as_ref(),
+                signature.return_type.as_deref(),
+            ),
+            _ => return None,
+        };
+
+        Some(self.signature_from_function_parts_with_this(
+            program_id,
+            kind,
+            type_parameters,
+            this_param,
+            parameters,
+            return_type,
+        ))
+    }
+
     fn signature_from_function_parts(
         &self,
         program_id: program::ProgramId,
@@ -1833,7 +2091,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         parameters: &FormalParameters<'a>,
         return_type: Option<&TSTypeAnnotation<'a>>,
     ) -> Signature<'a> {
-        let parameters = self.function_signature_parameters(program_id, parameters);
+        self.signature_from_function_parts_with_this(
+            program_id,
+            kind,
+            type_parameters,
+            None,
+            parameters,
+            return_type,
+        )
+    }
+
+    fn signature_from_function_parts_with_this(
+        &self,
+        program_id: program::ProgramId,
+        kind: SignatureKind,
+        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        this_param: Option<&TSThisParameter<'a>>,
+        parameters: &FormalParameters<'a>,
+        return_type: Option<&TSTypeAnnotation<'a>>,
+    ) -> Signature<'a> {
+        let parameters = self.function_type_parameters(program_id, this_param, parameters);
         let (return_type, type_predicate) = self.return_type_and_type_predicate_from_annotation(
             program_id,
             &parameters,
@@ -2376,6 +2653,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         for &(program_id, interface) in declarations {
             let substitutions = self.type_parameter_substitutions_for_reference(
+                program_id,
                 interface.type_parameters.as_deref(),
                 reference,
             );
@@ -2400,6 +2678,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .copied()
             .flat_map(|(program_id, interface)| {
                 let substitutions = self.type_parameter_substitutions_for_reference(
+                    program_id,
                     interface.type_parameters.as_deref(),
                     reference,
                 );
@@ -2441,6 +2720,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         match self.nodes(program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(interface) => {
                 let substitutions = self.type_parameter_substitutions_for_reference(
+                    program_id,
                     interface.type_parameters.as_deref(),
                     reference,
                 );
@@ -2559,6 +2839,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .copied()
             .flat_map(|(interface_program_id, interface)| {
                 let substitutions = self.type_parameter_substitutions_for_type_arguments(
+                    interface_program_id,
                     interface.type_parameters.as_deref(),
                     &current_type_arguments,
                 );
@@ -2598,10 +2879,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn type_parameter_substitutions_for_reference(
         &self,
+        program_id: program::ProgramId,
         type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         reference: &TyTypeReference<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
         self.type_parameter_substitutions_for_type_arguments(
+            program_id,
             type_parameters,
             reference.type_arguments.as_slice(),
         )
@@ -2609,10 +2892,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn type_parameter_substitutions_for_type_arguments(
         &self,
+        program_id: program::ProgramId,
         type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         type_arguments: &[Ty<'a>],
     ) -> HashMap<&'a str, Ty<'a>> {
-        let type_parameters = type_parameters_from_declaration(self.arena(), type_parameters);
+        let type_parameters = self.type_parameters_from_declaration(program_id, type_parameters);
         let mut substitutions = HashMap::new();
 
         for (type_parameter, type_argument) in type_parameters.iter().zip(type_arguments.iter()) {
@@ -2659,24 +2943,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             declaration
                 .params
                 .iter()
-                .map(|parameter| {
-                    Ty::type_parameter(
-                        parameter.name.name.as_str(),
-                        parameter
-                            .constraint
-                            .as_ref()
-                            .map(|constraint| self.get_type_from_ts_type(program_id, constraint)),
-                        parameter.default.as_ref().map(|default| {
-                            self.get_apparent_type_at_use(
-                                program_id,
-                                self.get_type_from_ts_type(program_id, default),
-                                0,
-                            )
-                        }),
-                    )
-                })
+                .map(|parameter| self.type_parameter_from_ts_type_parameter(program_id, parameter))
                 .collect()
         })
+    }
+
+    fn type_parameter_from_ts_type_parameter(
+        &self,
+        program_id: program::ProgramId,
+        parameter: &TSTypeParameter<'a>,
+    ) -> TyTypeParameter<'a> {
+        Ty::type_parameter(
+            parameter.name.name.as_str(),
+            parameter
+                .constraint
+                .as_ref()
+                .map(|constraint| self.get_type_from_ts_type(program_id, constraint)),
+            parameter.default.as_ref().map(|default| {
+                self.get_apparent_type_at_use(
+                    program_id,
+                    self.get_type_from_ts_type(program_id, default),
+                    0,
+                )
+            }),
+        )
     }
 
     fn get_class_symbol_for_type(
@@ -2997,6 +3287,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if matches!(alias.type_annotation, TSType::TSConditionalType(_)) =>
             {
                 let substitutions = self.type_parameter_substitutions_for_reference(
+                    program_id,
                     alias.type_parameters.as_deref(),
                     reference,
                 );
@@ -3387,6 +3678,38 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         params: &FormalParameters<'a>,
     ) -> Vec<TyParameter<'a>> {
         self.function_signature_parameters_with_context(program_id, params, None)
+    }
+
+    fn function_type_parameters(
+        &self,
+        program_id: program::ProgramId,
+        this_param: Option<&TSThisParameter<'a>>,
+        params: &FormalParameters<'a>,
+    ) -> Vec<TyParameter<'a>> {
+        this_param
+            .iter()
+            .map(|parameter| {
+                Ty::parameter(
+                    "this",
+                    self.get_type_from_ts_type_annotation(
+                        program_id,
+                        parameter.type_annotation.as_deref(),
+                    ),
+                )
+            })
+            .chain(
+                params
+                    .items
+                    .iter()
+                    .map(|parameter| self.function_signature_parameter(program_id, parameter)),
+            )
+            .chain(
+                params
+                    .rest
+                    .iter()
+                    .map(|parameter| self.function_signature_rest_parameter(program_id, parameter)),
+            )
+            .collect()
     }
 
     fn function_signature_parameters_with_context(
