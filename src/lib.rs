@@ -136,6 +136,26 @@ fn infer_type_parameter_from_types<'a>(
                 }
             }
         }
+        (Ty::Function(parameter_function), Ty::Function(argument_function)) => {
+            for (parameter, argument) in parameter_function
+                .parameters
+                .iter()
+                .zip(argument_function.parameters.iter())
+            {
+                infer_type_parameter_from_types(
+                    &parameter.ty,
+                    &argument.ty,
+                    type_parameters,
+                    substitutions,
+                );
+            }
+            infer_type_parameter_from_types(
+                &parameter_function.return_type,
+                &argument_function.return_type,
+                type_parameters,
+                substitutions,
+            );
+        }
         _ => {}
     }
 }
@@ -1509,15 +1529,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id);
+        let property_name = member.property.name.as_str();
         let ty = object_type
-            .property_type(member.property.name.as_str())
-            .or_else(|| self.get_array_property_type(&object_type, member.property.name.as_str()))
+            .property_type(property_name)
             .or_else(|| {
-                self.get_property_type_of_named_type(
-                    program_id,
-                    &object_type,
-                    member.property.name.as_str(),
-                )
+                self.get_property_type_of_array_type(program_id, &object_type, property_name)
+            })
+            .or_else(|| {
+                self.get_property_type_of_named_type(program_id, &object_type, property_name)
             })
             .or_else(|| {
                 if matches!(member.object, Expression::ThisExpression(_)) {
@@ -1529,7 +1548,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             self.get_property_type_of_named_type(
                                 program_id,
                                 &this_type,
-                                member.property.name.as_str(),
+                                property_name,
                             )
                         })
                 } else {
@@ -1537,7 +1556,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             })
             .unwrap_or_else(Ty::any);
-        self.get_apparent_type_at_use(program_id, ty, 0)
+        if matches!(ty, Ty::Function(_)) {
+            ty
+        } else {
+            self.get_apparent_type_at_use(program_id, ty, 0)
+        }
     }
 
     fn get_type_of_computed_member_expression(
@@ -1554,43 +1577,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         tuple_element_type_at_index(&object_type, index).unwrap_or_else(Ty::any)
     }
 
-    /// Resolve known properties on array-like types without loading TypeScript library declarations.
-    /// These signatures provide enough structure for method calls to contextually type callbacks.
-    fn get_array_property_type(&self, object_type: &Ty<'a>, property_name: &str) -> Option<Ty<'a>> {
-        let element_type = self.get_array_element_type(object_type)?;
-        match property_name {
-            "every" => {
-                let predicate = Ty::function(
-                    self.arena(),
-                    [],
-                    [
-                        Ty::parameter("value", element_type),
-                        Ty::parameter("index", Ty::number()),
-                        Ty::parameter("array", *object_type),
-                    ],
-                    Ty::unknown(),
-                );
-                Some(Ty::function(
-                    self.arena(),
-                    [],
-                    [
-                        Ty::parameter("predicate", predicate),
-                        Ty::parameter("thisArg", Ty::any()),
-                    ],
-                    Ty::boolean(),
-                ))
-            }
-            _ => None,
-        }
-    }
-
-    /// Extract the element type from an array type.
-    /// Array method signatures need this to expose callback parameter and array argument types.
-    fn get_array_element_type(&self, object_type: &Ty<'a>) -> Option<Ty<'a>> {
+    fn get_property_type_of_array_type(
+        &self,
+        program_id: program::ProgramId,
+        object_type: &Ty<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
         let Ty::Array(array) = object_type else {
             return None;
         };
-        Some(array.element_type)
+        let interface_name = if array.readonly {
+            "ReadonlyArray"
+        } else {
+            "Array"
+        };
+        let array_type = Ty::type_reference(self.arena(), interface_name, [array.element_type]);
+        let Ty::TypeReference(reference) = array_type else {
+            unreachable!("array interface references are represented as type references")
+        };
+        self.get_property_type_of_interface_type(program_id, reference, property_name)
     }
 
     fn is_in_contextually_typed_initializer(
@@ -6807,6 +6812,24 @@ mod test {
             Ty::type_reference(arena(&ret), "Ship", std::iter::empty())
         );
         assert_eq!(get_global_symbol_type(&ret, "sunk"), Ty::boolean());
+    }
+
+    #[test]
+    fn array_map_infers_async_callback_return_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const mapped = [1, 2, 3].map(async x => x + 1);
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "mapped"),
+            Ty::array(arena, Ty::type_reference(arena, "Promise", [Ty::number()]))
+        );
+        assert_eq!(get_first_symbol_type(&ret, "x"), Ty::number());
     }
 
     #[test]

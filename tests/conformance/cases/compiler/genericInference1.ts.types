@@ -1,14 +1,14 @@
 ['a', 'b', 'c'].map(x => x.length);
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any[]   (TyArray)
 
 ['a', 'b', 'c'].map(x => x.length);
->               ^^^: any   (TyAny)
+>               ^^^: <U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any) => U[]   (TyFunction)
 
 ['a', 'b', 'c'].map(x => x.length);
->                   ^: any   (TyAny)
+>                   ^: string   (TyString)
 
 ['a', 'b', 'c'].map(x => x.length);
->                        ^: any   (TyAny)
+>                        ^: string   (TyString)
 
 ['a', 'b', 'c'].map(x => x.length);
 >                        ^^^^^^^^: any   (TyAny)

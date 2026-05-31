@@ -59,19 +59,19 @@ Promise.reject('value').finally();
 >                       ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction)
 
 [1, 2, 3].map(async x => x + 1);
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<number>[]   (TyArray)
 
 [1, 2, 3].map(async x => x + 1);
->         ^^^: any   (TyAny)
+>         ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (TyFunction)
 
 [1, 2, 3].map(async x => x + 1);
->                   ^: any   (TyAny)
+>                   ^: number   (TyNumber)
 
 [1, 2, 3].map(async x => x + 1);
->                        ^: any   (TyAny)
+>                        ^: number   (TyNumber)
 
 [1, 2, 3].map(async x => x + 1);
->                        ^^^^^: any   (TyAny)
+>                        ^^^^^: number   (TyNumber)
 
 const promise = new Promise((resolve, reject) => resolve('value'));
 >     ^^^^^^^: Promise<unknown>   (TyTypeReference)
@@ -149,16 +149,16 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 >             ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
->                           ^^^: any   (TyAny)
+>                           ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (TyFunction)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
->                                     ^: any   (TyAny)
+>                                     ^: number   (TyNumber)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
->                                          ^: any   (TyAny)
+>                                          ^: number   (TyNumber)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
->                                          ^^^^^: any   (TyAny)
+>                                          ^^^^^: number   (TyNumber)
 
 declare function createPromiseLike(): PromiseLike<string>;
 >                ^^^^^^^^^^^^^^^^^: { (): PromiseLike<string>; (): PromiseLike<string>; }   (TyObject)

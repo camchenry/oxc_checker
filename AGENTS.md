@@ -2,6 +2,7 @@
 - run `cargo conformance` for full verification
 - architecture-wise, aim to be similar to `typescript-go` codebase
 - if something should be addressed later, leave a TODO. for example:`TODO(perf)`, `TODO`, `TODO(correctness)`
+- don't hard-code things or overfit to the test data. do the more general and more correct method always, unless it's for performance.
 
 ## TypeScript conformance tests
 
