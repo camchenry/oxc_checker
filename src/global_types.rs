@@ -5,6 +5,9 @@ use oxc_syntax::symbol::SymbolFlags;
 
 use crate::{Checker, CheckerReturn, SymbolRef, Ty, program};
 
+const ARRAY_TYPE_NAME: &str = "Array";
+const READONLY_ARRAY_TYPE_NAME: &str = "ReadonlyArray";
+
 #[derive(Clone, Copy, Debug, Default)]
 struct GlobalSymbolEntry {
     value_symbol: Option<SymbolRef>,
@@ -157,8 +160,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         };
         let readonly = match type_name {
-            "Array" => false,
-            "ReadonlyArray" => true,
+            ARRAY_TYPE_NAME => false,
+            READONLY_ARRAY_TYPE_NAME => true,
             _ => return None,
         };
         let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
@@ -176,20 +179,40 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         })
     }
 
+    pub(crate) fn get_global_array_type(
+        &self,
+        program_id: program::ProgramId,
+        element_type: Ty<'a>,
+    ) -> Ty<'a> {
+        self.get_global_type_reference(program_id, ARRAY_TYPE_NAME, [element_type])
+    }
+
+    pub(crate) fn get_global_readonly_array_type(
+        &self,
+        program_id: program::ProgramId,
+        element_type: Ty<'a>,
+    ) -> Ty<'a> {
+        self.get_global_type_reference(program_id, READONLY_ARRAY_TYPE_NAME, [element_type])
+    }
+
     pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Ty<'a> {
         self.get_global_type(program_id, "Promise")
     }
 
     pub(crate) fn get_global_type(&self, program_id: program::ProgramId, name: &str) -> Ty<'a> {
-        let sym = self.get_type_symbol_for_name(program_id, name);
-        let Some(sym) = sym else {
+        self.get_global_type_reference(program_id, name, std::iter::empty())
+    }
+
+    fn get_global_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        name: &str,
+        type_arguments: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Ty<'a> {
+        if self.get_type_symbol_for_name(program_id, name).is_none() {
             return Ty::any();
-        };
-        let ty = self.get_type_of_symbol(sym);
-        if ty.is_none() {
-            Ty::type_reference(self.arena(), self.arena().str(name), std::iter::empty())
-        } else {
-            ty
         }
+
+        Ty::type_reference(self.arena(), self.arena().str(name), type_arguments)
     }
 }

@@ -1586,14 +1586,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let Ty::Array(array) = object_type else {
             return None;
         };
-        let interface_name = if array.readonly {
-            "ReadonlyArray"
+        let array_type = if array.readonly {
+            self.get_global_readonly_array_type(program_id, array.element_type)
         } else {
-            "Array"
+            self.get_global_array_type(program_id, array.element_type)
         };
-        let array_type = Ty::type_reference(self.arena(), interface_name, [array.element_type]);
         let Ty::TypeReference(reference) = array_type else {
-            unreachable!("array interface references are represented as type references")
+            return None;
         };
         self.get_property_type_of_interface_type(program_id, reference, property_name)
     }
