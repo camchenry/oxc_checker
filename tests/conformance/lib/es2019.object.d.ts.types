@@ -2,13 +2,13 @@ interface ObjectConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T], any, any>): {}; (entries: Iterable<readonly any[], any, any>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T], any, any>): {}; (entries: Iterable<readonly any[], any, any>): any; }   (TyObject)
+>   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): {}; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): {}; (entries: Iterable<readonly any[]>): any; }   (TyObject)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
 >               ^: any   (TyAny)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                        ^^^^^^^: Iterable<readonly [PropertyKey, T], any, any>   (TyTypeReference)
+>                        ^^^^^^^: Iterable<readonly [PropertyKey, T]>   (TyTypeReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
 >                                 ^^^^^^^^: any   (TyAny)
@@ -23,10 +23,10 @@ interface ObjectConstructor {
 >                                                                                      ^: any   (TyAny)
 
     fromEntries(entries: Iterable<readonly any[]>): any;
->   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T], any, any>): {}; (entries: Iterable<readonly any[], any, any>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T], any, any>): {}; (entries: Iterable<readonly any[], any, any>): any; }   (TyObject)
+>   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): {}; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): {}; (entries: Iterable<readonly any[]>): any; }   (TyObject)
 
     fromEntries(entries: Iterable<readonly any[]>): any;
->               ^^^^^^^: Iterable<readonly any[], any, any>   (TyTypeReference)
+>               ^^^^^^^: Iterable<readonly any[]>   (TyTypeReference)
 
     fromEntries(entries: Iterable<readonly any[]>): any;
 >                        ^^^^^^^^: any   (TyAny)

@@ -41,7 +41,7 @@ interface i00<T = number> { a: T; }
 >                              ^: any   (TyAny)
 
 const i00c00 = (<i00>x)
->     ^^^^^^: i00<number>   (TyTypeReference)
+>     ^^^^^^: i00   (TyTypeReference)
 
 const i00c00 = (<i00>x)
 >                ^^^: any   (TyAny)

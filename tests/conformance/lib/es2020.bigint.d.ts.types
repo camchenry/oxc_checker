@@ -725,7 +725,7 @@ interface BigInt64ArrayConstructor {
 >                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
->        ^^^^^: ArrayLike<bigint> | Iterable<bigint, any, any>   (TyUnion)
+>        ^^^^^: ArrayLike<bigint> | Iterable<bigint>   (TyUnion)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
 >               ^^^^^^^^^: any   (TyAny)
@@ -851,7 +851,7 @@ interface BigInt64ArrayConstructor {
 >                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<bigint>   (TyTypeReference)
@@ -872,7 +872,7 @@ interface BigInt64ArrayConstructor {
 >                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -914,10 +914,10 @@ interface BigInt64ArrayConstructor {
 >                                                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
 
     from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
->        ^^^^^^^^: Iterable<bigint, any, any>   (TyTypeReference)
+>        ^^^^^^^^: Iterable<bigint>   (TyTypeReference)
 
     from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
 >                  ^^^^^^^^: any   (TyAny)
@@ -935,13 +935,13 @@ interface BigInt64ArrayConstructor {
 >                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
 >        ^: any   (TyAny)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
->           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+>           ^^^^^^^^: Iterable<T>   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny)
@@ -1586,7 +1586,7 @@ interface BigUint64ArrayConstructor {
 >                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
->        ^^^^^: ArrayLike<bigint> | Iterable<bigint, any, any>   (TyUnion)
+>        ^^^^^: ArrayLike<bigint> | Iterable<bigint>   (TyUnion)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
 >               ^^^^^^^^^: any   (TyAny)
@@ -1712,7 +1712,7 @@ interface BigUint64ArrayConstructor {
 >                                          ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<bigint>   (TyTypeReference)
@@ -1733,7 +1733,7 @@ interface BigUint64ArrayConstructor {
 >                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -1775,10 +1775,10 @@ interface BigUint64ArrayConstructor {
 >                                                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
 
     from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
->        ^^^^^^^^: Iterable<bigint, any, any>   (TyTypeReference)
+>        ^^^^^^^^: Iterable<bigint>   (TyTypeReference)
 
     from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
 >                  ^^^^^^^^: any   (TyAny)
@@ -1796,13 +1796,13 @@ interface BigUint64ArrayConstructor {
 >                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint, any, any>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
 >        ^: any   (TyAny)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
->           ^^^^^^^^: Iterable<T, any, any>   (TyTypeReference)
+>           ^^^^^^^^: Iterable<T>   (TyTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny)

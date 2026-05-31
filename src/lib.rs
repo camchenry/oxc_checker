@@ -1111,6 +1111,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
+        let explicit_type_argument_count = type_arguments.len();
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
@@ -1126,7 +1127,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return alias_type;
         }
 
-        Ty::type_reference(self.arena(), name, type_arguments)
+        Ty::type_reference_with_explicit_type_argument_count(
+            self.arena(),
+            name,
+            type_arguments,
+            explicit_type_argument_count,
+        )
     }
 
     fn type_arguments_from_reference(
@@ -1141,9 +1147,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .flat_map(|args| {
                 args.params
                     .iter()
-                    .map(|ty| self.get_type_from_ts_type(program_id, ty))
+                    .map(|ty| self.get_type_argument_from_ts_type(program_id, ty))
             })
             .collect::<Vec<_>>()
+    }
+
+    fn get_type_argument_from_ts_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: &TSType<'a>,
+    ) -> Ty<'a> {
+        match self.get_type_from_ts_type(program_id, ty) {
+            Ty::TypeQuery(query) if query.type_arguments.is_empty() && !query.resolved.is_any() => {
+                query.resolved
+            }
+            ty => self.get_apparent_type_at_use(program_id, ty, 0),
+        }
     }
 
     fn apparent_type_for_conditional_match(
@@ -1490,7 +1509,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id);
-        object_type
+        let ty = object_type
             .property_type(member.property.name.as_str())
             .or_else(|| self.get_array_property_type(&object_type, member.property.name.as_str()))
             .or_else(|| {
@@ -1517,7 +1536,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     None
                 }
             })
-            .unwrap_or_else(Ty::any)
+            .unwrap_or_else(Ty::any);
+        self.get_apparent_type_at_use(program_id, ty, 0)
     }
 
     fn get_type_of_computed_member_expression(
@@ -1776,7 +1796,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
         let Ty::Function(function) = Ty::function_with_type_predicate(
             self.arena(),
-            type_parameters_from_declaration(self.arena(), type_parameters),
+            self.type_parameters_from_declaration(program_id, type_parameters),
             parameters,
             return_type,
             type_predicate,
@@ -2479,13 +2499,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::Function(signature.function);
         };
 
-        let current_type_arguments = type_parameters_from_declaration(
-            self.arena(),
-            current_interface.type_parameters.as_deref(),
-        )
-        .into_iter()
-        .map(|type_parameter| Ty::type_reference(self.arena(), type_parameter.name, []))
-        .collect::<Vec<_>>();
+        let current_type_arguments = self
+            .type_parameters_from_declaration(
+                program_id,
+                current_interface.type_parameters.as_deref(),
+            )
+            .into_iter()
+            .map(|type_parameter| Ty::type_reference(self.arena(), type_parameter.name, []))
+            .collect::<Vec<_>>();
 
         let method_signatures = self
             .interface_declarations_for_name(current_interface.id.name.as_str())
@@ -2584,6 +2605,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         substitutions
     }
 
+    fn type_parameters_from_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+    ) -> Vec<TyTypeParameter<'a>> {
+        declaration.map_or_else(Vec::new, |declaration| {
+            declaration
+                .params
+                .iter()
+                .map(|parameter| {
+                    Ty::type_parameter(
+                        parameter.name.name.as_str(),
+                        parameter
+                            .constraint
+                            .as_ref()
+                            .map(|constraint| self.get_type_from_ts_type(program_id, constraint)),
+                        parameter.default.as_ref().map(|default| {
+                            self.get_apparent_type_at_use(
+                                program_id,
+                                self.get_type_from_ts_type(program_id, default),
+                                0,
+                            )
+                        }),
+                    )
+                })
+                .collect()
+        })
+    }
+
     fn get_class_symbol_for_type(
         &self,
         program_id: program::ProgramId,
@@ -2667,18 +2717,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         declaration: NodeId,
     ) -> Option<Vec<TyTypeParameter<'a>>> {
         match self.nodes(program_id).kind(declaration) {
-            AstKind::TSInterfaceDeclaration(interface) => Some(type_parameters_from_declaration(
-                self.arena(),
-                interface.type_parameters.as_deref(),
-            )),
-            AstKind::TSTypeAliasDeclaration(alias) => Some(type_parameters_from_declaration(
-                self.arena(),
-                alias.type_parameters.as_deref(),
-            )),
-            AstKind::Class(class) => Some(type_parameters_from_declaration(
-                self.arena(),
-                class.type_parameters.as_deref(),
-            )),
+            AstKind::TSInterfaceDeclaration(interface) => {
+                Some(self.type_parameters_from_declaration(
+                    program_id,
+                    interface.type_parameters.as_deref(),
+                ))
+            }
+            AstKind::TSTypeAliasDeclaration(alias) => Some(
+                self.type_parameters_from_declaration(program_id, alias.type_parameters.as_deref()),
+            ),
+            AstKind::Class(class) => Some(
+                self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
+            ),
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
                 self.get_type_parameters_for_declaration(program_id, parent_id)
@@ -2843,7 +2893,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         callback_function
             .parameters
             .get(parameter_index)
-            .map(|parameter| self.get_apparent_contextual_parameter_type(program_id, parameter.ty))
+            .map(|parameter| self.get_apparent_type_at_use(program_id, parameter.ty, 0))
     }
 
     fn get_apparent_contextual_parameter_type(
@@ -2854,18 +2904,101 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if let Ty::TypeReference(reference) = ty
             && self.is_conditional_type_alias_reference(program_id, reference)
             && let Some((expanded_program_id, expanded)) =
-                self.get_expanded_type_alias_reference_type(program_id, reference, 0)
+                self.get_conditional_type_alias_reference_type(program_id, reference)
         {
-            let apparent =
-                self.apparent_type_for_conditional_match(expanded_program_id, expanded, 0);
-            return if matches!(apparent, Ty::Conditional(_)) {
-                ty
-            } else {
-                apparent
-            };
+            if matches!(expanded, Ty::Conditional(_)) {
+                let apparent =
+                    self.apparent_type_for_conditional_match(expanded_program_id, expanded, 0);
+                return if matches!(apparent, Ty::Conditional(_)) {
+                    ty
+                } else {
+                    apparent
+                };
+            }
+            return expanded;
         }
 
         ty
+    }
+
+    fn get_conditional_type_alias_reference_type(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> Option<(program::ProgramId, Ty<'a>)> {
+        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_conditional_type_alias_declaration_type(symbol.program_id, declaration, reference)
+            .map(|ty| (symbol.program_id, ty))
+    }
+
+    fn get_conditional_type_alias_declaration_type(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        reference: &TyTypeReference<'a>,
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(alias)
+                if matches!(alias.type_annotation, TSType::TSConditionalType(_)) =>
+            {
+                let substitutions = self.type_parameter_substitutions_for_reference(
+                    alias.type_parameters.as_deref(),
+                    reference,
+                );
+                Some(
+                    self.get_type_from_ts_type(program_id, &alias.type_annotation)
+                        .substitute_type_parameters(self.arena(), &substitutions),
+                )
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_conditional_type_alias_declaration_type(program_id, parent_id, reference)
+            }
+            _ => None,
+        }
+    }
+
+    fn get_apparent_type_at_use(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(_) => self.get_apparent_contextual_parameter_type(program_id, ty),
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.get_apparent_type_at_use(program_id, *ty, depth + 1)),
+            ),
+            Ty::Function(function) => Ty::function_with_type_predicate(
+                self.arena(),
+                function.type_parameters.iter().copied(),
+                function.parameters.iter().map(|parameter| {
+                    let ty = self.get_apparent_type_at_use(program_id, parameter.ty, depth + 1);
+                    if parameter.rest {
+                        Ty::rest_parameter(parameter.name, ty)
+                    } else if parameter.optional {
+                        Ty::optional_parameter(parameter.name, ty)
+                    } else {
+                        Ty::parameter(parameter.name, ty)
+                    }
+                }),
+                self.get_apparent_type_at_use(program_id, function.return_type, depth + 1),
+                function.type_predicate.copied(),
+            ),
+            _ => ty,
+        }
     }
 
     fn is_conditional_type_alias_reference(
@@ -3146,10 +3279,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .map(|signature| signature.function);
         let type_parameters = match function {
             FunctionKind::Function(f) => {
-                type_parameters_from_declaration(self.arena(), f.type_parameters.as_deref())
+                self.type_parameters_from_declaration(program_id, f.type_parameters.as_deref())
             }
             FunctionKind::ArrowFunction(f) => {
-                type_parameters_from_declaration(self.arena(), f.type_parameters.as_deref())
+                self.type_parameters_from_declaration(program_id, f.type_parameters.as_deref())
             }
         };
         let parameters = match function {
@@ -3285,7 +3418,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_annotation: Option<&TSTypeAnnotation<'a>>,
     ) -> Ty<'a> {
         let ty = self.get_type_from_ts_type_annotation(program_id, type_annotation);
-        self.get_apparent_contextual_parameter_type(program_id, ty)
+        self.get_apparent_type_at_use(program_id, ty, 0)
     }
 
     fn infer_function_return_type(
@@ -3931,26 +4064,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn get_apparent_binding_type(&self, program_id: program::ProgramId, ty: Ty<'a>) -> Ty<'a> {
-        let Ty::Function(function) = ty else {
-            return ty;
-        };
-
-        Ty::function_with_type_predicate(
-            self.arena(),
-            function.type_parameters.iter().copied(),
-            function.parameters.iter().map(|parameter| {
-                let ty = self.get_apparent_contextual_parameter_type(program_id, parameter.ty);
-                if parameter.rest {
-                    Ty::rest_parameter(parameter.name, ty)
-                } else if parameter.optional {
-                    Ty::optional_parameter(parameter.name, ty)
-                } else {
-                    Ty::parameter(parameter.name, ty)
-                }
-            }),
-            function.return_type,
-            function.type_predicate.copied(),
-        )
+        self.get_apparent_type_at_use(program_id, ty, 0)
     }
 
     fn get_non_undefined_type(&self, ty: Ty<'a>) -> Ty<'a> {
@@ -5582,6 +5696,65 @@ mod test {
         assert_eq!(
             get_symbol_type_in_function(&ret, "useParams", "streamFn").to_type_string(),
             "(context: { queryKey: TQueryKey; pageParam?: unknown; }) => void"
+        );
+    }
+
+    #[test]
+    fn streamed_query_style_aliases_render_at_use_sites() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+                interface Register {}
+                interface QueryClient {}
+                interface AbortSignal {}
+                type QueryKey = Register extends { queryKey: infer TQueryKey }
+                    ? TQueryKey extends readonly unknown[] ? TQueryKey : readonly unknown[]
+                    : readonly unknown[];
+                type QueryMeta = Register extends { queryMeta: infer TQueryMeta }
+                    ? TQueryMeta extends Record<string, unknown> ? TQueryMeta : Record<string, unknown>
+                    : Record<string, unknown>;
+                type QueryFunctionContext<TQueryKey extends QueryKey = QueryKey, TPageParam = never> =
+                    [TPageParam] extends [never]
+                        ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown }
+                        : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; meta: QueryMeta | undefined };
+                type QueryFunction<T = unknown, TQueryKey extends QueryKey = QueryKey, TPageParam = never> =
+                    (context: QueryFunctionContext<TQueryKey, TPageParam>) => T;
+                type OmitKeyof<TObject, TKey extends keyof TObject, TStrictly = 'strictly'> = Omit<TObject, TKey>;
+                type StreamedQueryParams<TQueryFnData, TData, TQueryKey extends QueryKey> = {
+                    streamFn: (context: QueryFunctionContext<TQueryKey>) => TQueryFnData;
+                    initialValue: TData;
+                };
+
+                function streamedQuery<
+                    TQueryFnData = unknown,
+                    TData = Array<TQueryFnData>,
+                    TQueryKey extends QueryKey = QueryKey,
+                >({ streamFn, initialValue }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<TData, TQueryKey> {
+                    return (context) => {
+                        const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
+                            client: context.client,
+                            meta: context.meta,
+                            queryKey: context.queryKey,
+                        };
+                        const meta = context.meta;
+                        return initialValue;
+                    };
+                }
+                ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "streamedQuery").to_type_string(),
+            "<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "signalLessContext").to_type_string(),
+            "OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, \"signal\">"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "meta").to_type_string(),
+            "Record<string, unknown> | undefined"
         );
     }
 

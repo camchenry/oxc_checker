@@ -39,7 +39,7 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts matched
   - tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts:13 `x + 1` extra in oxc output
       expected: <missing>
       actual:   any
-FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched_types=16 mismatched_types=13 total_types=29 match_percentage=55.17%
+FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched_types=17 mismatched_types=12 total_types=29 match_percentage=58.62%
   - tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts:2 `await promise;` type mismatch
       expected: unknown
       actual:   any
@@ -61,9 +61,6 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched
   - tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts:19 `await Promise.all([1, 2, 3].map(async x => x + 1));` type mismatch
       expected: number[]
       actual:   any
-  - tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts:19 `all` type mismatch
-      expected: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }
-      actual:   { <T>(values: Iterable<T | PromiseLike<T>, any, any>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }
   - tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts:19 `map` type mismatch
       expected: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]
       actual:   any
@@ -120,10 +117,13 @@ FAIL tests/conformance/cases/compiler/genericInference1.ts matched_types=0 misma
 PASS tests/conformance/cases/compiler/importTypes.ts::a.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/importTypes.ts::index.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/tupleTypes.ts matched_types=14 mismatched_types=0 total_types=14 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/typeCast.ts matched_types=16 mismatched_types=1 total_types=17 match_percentage=94.12%
+FAIL tests/conformance/cases/compiler/typeCast.ts matched_types=15 mismatched_types=2 total_types=17 match_percentage=88.24%
   - tests/conformance/cases/compiler/typeCast.ts:6 ```` type mismatch
       expected: ""
       actual:   any
+  - tests/conformance/cases/compiler/typeCast.ts:9 `i00c00` type mismatch
+      expected: i00<number>
+      actual:   i00
 PASS tests/conformance/cases/compiler/typePredicates.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/unionTypes.ts matched_types=16 mismatched_types=1 total_types=17 match_percentage=94.12%
   - tests/conformance/cases/compiler/unionTypes.ts:17 `AllLiterals` type mismatch

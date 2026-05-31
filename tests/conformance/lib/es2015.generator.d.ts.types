@@ -113,7 +113,7 @@ interface GeneratorFunction {
 >            ^^^^: string   (TyString)
 
     readonly prototype: Generator;
->            ^^^^^^^^^: Generator<unknown, any, any>   (TyTypeReference)
+>            ^^^^^^^^^: Generator   (TyTypeReference)
 
     readonly prototype: Generator;
 >                       ^^^^^^^^^: any   (TyAny)
