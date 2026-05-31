@@ -5,7 +5,7 @@ export type Depth = 'flat' | 'deep'
 >           ^^^^^: "flat" | "deep"   (TyUnion)
 
 export type Equals<A1 extends any, A2 extends any> =
->           ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional)
+>           ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional)
 
 export type Equals<A1 extends any, A2 extends any> =
 >                  ^^: any   (TyAny)
@@ -119,7 +119,7 @@ import type { PatchFlat } from './Patch'
 >             ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (TyMapped)
 
 import type { Equals } from '../Any/Equals'
->             ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional)
+>             ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional)
 
 export type OptionalFlat<O> = {
 >           ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped)
@@ -257,10 +257,10 @@ export type Optional<
 >                                               ^: any   (TyAny)
 
 }[Equals<Key, K>]
-> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional)
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional)
 
 }[Equals<Key, K>]
-> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional)
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional)
 
 }[Equals<Key, K>]
 >        ^^^: string | number | symbol   (TyUnion)

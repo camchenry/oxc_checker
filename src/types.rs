@@ -1448,7 +1448,7 @@ impl<'a> Ty<'a> {
                 .iter()
                 .map(|ty| {
                     let type_string = ty.to_type_string();
-                    if ty.union_or_intersection_type_needs_parentheses() {
+                    if ty.display_needs_parentheses() {
                         format!("({type_string})")
                     } else {
                         type_string
@@ -1461,7 +1461,7 @@ impl<'a> Ty<'a> {
                 .iter()
                 .map(|ty| {
                     let type_string = ty.to_type_string();
-                    if ty.union_or_intersection_type_needs_parentheses() {
+                    if ty.display_needs_parentheses() {
                         format!("({type_string})")
                     } else {
                         type_string
@@ -1471,7 +1471,7 @@ impl<'a> Ty<'a> {
                 .join(" & "),
             Self::Keyof(keyof) => {
                 let target = keyof.target.to_type_string();
-                if keyof.target.type_operator_needs_parentheses() {
+                if keyof.target.display_needs_parentheses() {
                     format!("keyof ({target})")
                 } else {
                     format!("keyof {target}")
@@ -1480,10 +1480,7 @@ impl<'a> Ty<'a> {
             Self::IndexedAccess(indexed_access) => {
                 let object_type = indexed_access.object_type.to_type_string();
                 let index_type = indexed_access.index_type.to_type_string();
-                if indexed_access
-                    .object_type
-                    .indexed_access_needs_parentheses()
-                {
+                if indexed_access.object_type.display_needs_parentheses() {
                     format!("({object_type})[{index_type}]")
                 } else {
                     format!("{object_type}[{index_type}]")
@@ -1492,18 +1489,10 @@ impl<'a> Ty<'a> {
             Self::Conditional(conditional) => {
                 let check_type = conditional.check_type.to_type_string();
                 let extends_type = conditional.extends_type.to_type_string();
-                let check_type = if conditional.check_type.conditional_type_needs_parentheses() {
+                let check_type = if conditional.check_type.display_needs_parentheses() {
                     format!("({check_type})")
                 } else {
                     check_type
-                };
-                let extends_type = if conditional
-                    .extends_type
-                    .conditional_type_needs_parentheses()
-                {
-                    format!("({extends_type})")
-                } else {
-                    extends_type
                 };
                 format!(
                     "{check_type} extends {extends_type} ? {} : {}",
@@ -1538,35 +1527,6 @@ impl<'a> Ty<'a> {
 
     /// Whether this type needs parentheses when printed
     fn display_needs_parentheses(&self) -> bool {
-        matches!(
-            self,
-            Self::Function(_) | Self::Union(_) | Self::Conditional(_)
-        )
-    }
-
-    /// Whether this type needs parentheses in a union or intersection type
-    fn union_or_intersection_type_needs_parentheses(&self) -> bool {
-        matches!(
-            self,
-            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
-        )
-    }
-
-    fn type_operator_needs_parentheses(&self) -> bool {
-        matches!(
-            self,
-            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
-        )
-    }
-
-    fn indexed_access_needs_parentheses(&self) -> bool {
-        matches!(
-            self,
-            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
-        )
-    }
-
-    fn conditional_type_needs_parentheses(&self) -> bool {
         matches!(
             self,
             Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
