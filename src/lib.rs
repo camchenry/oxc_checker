@@ -601,11 +601,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     });
                 if let Some(symbol) = symbol {
                     let base_type = self.get_type_of_symbol(symbol);
-                    return self
-                        .identifier_node_ref(program_id, identifier)
-                        .map_or(base_type, |node| {
-                            flow::get_flow_type_of_reference(self, node, symbol, base_type)
-                        });
+                    return flow::get_flow_type_of_reference(
+                        self,
+                        self.identifier_node_ref(program_id, identifier),
+                        symbol,
+                        base_type,
+                    );
                 }
                 if identifier.name == UNDEFINED_IDENT {
                     return Ty::undefined();
@@ -702,19 +703,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         identifier: &IdentifierReference<'a>,
-    ) -> Option<NodeRef> {
-        self.nodes(program_id)
-            .iter_enumerated()
-            .find_map(|(node_id, node)| match node.kind() {
-                AstKind::IdentifierReference(candidate)
-                    if candidate.span == identifier.span
-                        && candidate.name == identifier.name
-                        && candidate.reference_id.get() == identifier.reference_id.get() =>
-                {
-                    Some(NodeRef::new(program_id, node_id))
-                }
-                _ => None,
-            })
+    ) -> NodeRef {
+        NodeRef::new(program_id, identifier.node_id())
     }
 
     fn is_in_exported_declaration(&self, program_id: program::ProgramId, node_id: NodeId) -> bool {
@@ -2793,18 +2783,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<(NodeId, &'a Class<'a>)> {
-        let declaration = self
-            .semantic(symbol.program_id)
+        self.semantic(symbol.program_id)
             .scoping()
-            .symbol_declaration(symbol.symbol_id);
-        match self.nodes(symbol.program_id).kind(declaration) {
+            .symbol_declarations(symbol.symbol_id)
+            .find_map(|declaration| self.class_declaration_at(symbol.program_id, declaration))
+    }
+
+    fn class_declaration_at(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+    ) -> Option<(NodeId, &'a Class<'a>)> {
+        match self.nodes(program_id).kind(declaration) {
             AstKind::Class(class) => Some((declaration, class)),
             AstKind::BindingIdentifier(_) => {
-                let parent_id = self.nodes(symbol.program_id).parent_id(declaration);
-                if let AstKind::Class(class) = self.nodes(symbol.program_id).kind(parent_id) {
-                    Some((parent_id, class))
-                } else {
-                    None
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                match self.nodes(program_id).kind(parent_id) {
+                    AstKind::Class(class) => Some((parent_id, class)),
+                    _ => None,
                 }
             }
             _ => None,
@@ -3837,9 +3833,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn has_class_declaration_named(&self, program_id: program::ProgramId, name: &str) -> bool {
-        self.nodes(program_id)
-            .iter()
-            .any(|node| matches!(node.kind(), AstKind::Class(class) if class.id.as_ref().is_some_and(|identifier| identifier.name == name)))
+        self.semantic(program_id)
+            .scoping()
+            .get_root_binding(Ident::from(name))
+            .is_some_and(|symbol_id| {
+                self.get_class_for_symbol(SymbolRef::new(program_id, symbol_id))
+                    .is_some()
+            })
     }
 
     fn function_declarations_for_value_symbol(
@@ -3914,16 +3914,28 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         symbol: SymbolRef,
     ) -> Option<(NodeId, &'a VariableDeclarator<'a>)> {
-        self.nodes(symbol.program_id)
-            .iter_enumerated()
-            .find_map(|(node_id, node)| match node.kind() {
-                AstKind::VariableDeclarator(declarator)
-                    if binding_pattern_symbol_id(&declarator.id) == Some(symbol.symbol_id) =>
-                {
-                    Some((node_id, declarator))
+        self.semantic(symbol.program_id)
+            .scoping()
+            .symbol_declarations(symbol.symbol_id)
+            .find_map(|declaration| self.variable_declarator_at(symbol.program_id, declaration))
+    }
+
+    fn variable_declarator_at(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+    ) -> Option<(NodeId, &'a VariableDeclarator<'a>)> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::VariableDeclarator(declarator) => Some((declaration, declarator)),
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                match self.nodes(program_id).kind(parent_id) {
+                    AstKind::VariableDeclarator(declarator) => Some((parent_id, declarator)),
+                    _ => None,
                 }
-                _ => None,
-            })
+            }
+            _ => None,
+        }
     }
 
     fn get_type_of_variable_declarator(
