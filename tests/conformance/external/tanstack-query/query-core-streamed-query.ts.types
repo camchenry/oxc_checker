@@ -164,7 +164,7 @@ export interface QueryClient {
 >              ^^^^^: any   (TyAny)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
->                     ^^^^^^^^: QueryKey   (TyTypeReference)
+>                     ^^^^^^^^: readonly unknown[]   (TyArray)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
 >                               ^^^^^^^^: any   (TyAny)
@@ -179,7 +179,7 @@ export interface QueryClient {
 >              ^^^^^: any   (TyAny)
 
     queryKey: QueryKey,
->   ^^^^^^^^: QueryKey   (TyTypeReference)
+>   ^^^^^^^^: readonly unknown[]   (TyArray)
 
     queryKey: QueryKey,
 >             ^^^^^^^^: any   (TyAny)
@@ -458,7 +458,7 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 > ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
 
     context: QueryFunctionContext<TQueryKey>,
->   ^^^^^^^: QueryFunctionContext<TQueryKey, never>   (TyTypeReference)
+>   ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
     context: QueryFunctionContext<TQueryKey>,
 >            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
@@ -644,7 +644,7 @@ export function streamedQuery<
 >                              ^^^^^^^^: readonly unknown[]   (TyArray)
 
   streamFn,
-> ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
+> ^^^^^^^^: (context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
 
   refetchMode = 'reset',
 > ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion)
@@ -773,7 +773,7 @@ export function streamedQuery<
 >         ^^^^^^: any   (TyAny)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                        ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
+>                        ^^^^^^^^: (context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
 >                                 ^^^^^^^^^^^^^^^^^: OmitKeyof<typeof context, "signal", "strictly">   (TyTypeReference)

@@ -141,15 +141,14 @@ fn infer_type_parameter_from_types<'a>(
 }
 
 fn property_key_name(key: &PropertyKey<'_>) -> Option<String> {
-    match key {
-        PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.to_string()),
-        _ => None,
-    }
+    property_key_name_str(key).map(str::to_string)
 }
 
 fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
+        PropertyKey::Identifier(identifier) => Some(identifier.name.as_str()),
+        PropertyKey::StringLiteral(literal) => Some(literal.value.as_str()),
         _ => None,
     }
 }
@@ -2857,7 +2856,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && let Some((expanded_program_id, expanded)) =
                 self.get_expanded_type_alias_reference_type(program_id, reference, 0)
         {
-            return self.apparent_type_for_conditional_match(expanded_program_id, expanded, 0);
+            let apparent =
+                self.apparent_type_for_conditional_match(expanded_program_id, expanded, 0);
+            return if matches!(apparent, Ty::Conditional(_)) {
+                ty
+            } else {
+                apparent
+            };
         }
 
         ty
@@ -3272,6 +3277,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             name,
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref()),
         )
+    }
+
+    fn get_parameter_type_from_ts_type_annotation(
+        &self,
+        program_id: program::ProgramId,
+        type_annotation: Option<&TSTypeAnnotation<'a>>,
+    ) -> Ty<'a> {
+        let ty = self.get_type_from_ts_type_annotation(program_id, type_annotation);
+        self.get_apparent_contextual_parameter_type(program_id, ty)
     }
 
     fn infer_function_return_type(
@@ -3791,8 +3805,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         parameter: &'a FormalParameterRest<'a>,
         symbol_id: SymbolId,
     ) -> Option<Ty<'a>> {
-        let binding_type =
-            self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
+        let binding_type = self.get_parameter_type_from_ts_type_annotation(
+            program_id,
+            parameter.type_annotation.as_deref(),
+        );
         self.get_type_of_binding_pattern_symbol(
             program_id,
             &parameter.rest.argument,
@@ -3841,7 +3857,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             BindingPattern::BindingIdentifier(identifier)
                 if identifier.symbol_id.get() == Some(symbol_id) =>
             {
-                Some(pattern_type)
+                Some(self.get_apparent_binding_type(program_id, pattern_type))
             }
             BindingPattern::BindingIdentifier(_) => None,
             BindingPattern::ObjectPattern(object) => {
@@ -3912,6 +3928,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_non_undefined_type(pattern_type),
                 ),
         }
+    }
+
+    fn get_apparent_binding_type(&self, program_id: program::ProgramId, ty: Ty<'a>) -> Ty<'a> {
+        let Ty::Function(function) = ty else {
+            return ty;
+        };
+
+        Ty::function_with_type_predicate(
+            self.arena(),
+            function.type_parameters.iter().copied(),
+            function.parameters.iter().map(|parameter| {
+                let ty = self.get_apparent_contextual_parameter_type(program_id, parameter.ty);
+                if parameter.rest {
+                    Ty::rest_parameter(parameter.name, ty)
+                } else if parameter.optional {
+                    Ty::optional_parameter(parameter.name, ty)
+                } else {
+                    Ty::parameter(parameter.name, ty)
+                }
+            }),
+            function.return_type,
+            function.type_predicate.copied(),
+        )
     }
 
     fn get_non_undefined_type(&self, ty: Ty<'a>) -> Ty<'a> {
@@ -4034,7 +4073,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         parameter: &FormalParameter<'a>,
         annotation: &TSTypeAnnotation<'a>,
     ) -> Ty<'a> {
-        let annotated_type = self.get_type_from_ts_type_annotation(program_id, Some(annotation));
+        let annotated_type =
+            self.get_parameter_type_from_ts_type_annotation(program_id, Some(annotation));
 
         if parameter.optional {
             return Ty::union(self.arena(), [annotated_type, Ty::undefined()]);
@@ -4250,11 +4290,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     },
                 )
             }
-            AstKind::FormalParameterRest(parameter) => self.get_type_from_ts_type_annotation(
-                node.program_id,
-                parameter.type_annotation.as_deref(),
-            ),
-            AstKind::TSThisParameter(parameter) => self.get_type_from_ts_type_annotation(
+            AstKind::FormalParameterRest(parameter) => self
+                .get_parameter_type_from_ts_type_annotation(
+                    node.program_id,
+                    parameter.type_annotation.as_deref(),
+                ),
+            AstKind::TSThisParameter(parameter) => self.get_parameter_type_from_ts_type_annotation(
                 node.program_id,
                 parameter.type_annotation.as_deref(),
             ),
@@ -5510,6 +5551,37 @@ mod test {
         assert_eq!(
             get_first_symbol_type(&ret, "context").to_type_string(),
             "{ queryKey: TQueryKey; pageParam?: unknown; }"
+        );
+    }
+
+    #[test]
+    fn declared_function_type_parameters_expand_conditional_alias_annotations() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+                type QueryFunctionContext<TQueryKey, TPageParam = never> =
+                    [TPageParam] extends [never]
+                        ? { queryKey: TQueryKey; pageParam?: unknown }
+                        : { queryKey: TQueryKey; pageParam: TPageParam };
+
+                type BaseStreamedQueryParams<TQueryKey> = {
+                    streamFn: (context: QueryFunctionContext<TQueryKey>) => void;
+                };
+
+                function useParams<TQueryKey>({ streamFn }: BaseStreamedQueryParams<TQueryKey>) {
+                    return streamFn;
+                }
+                ",
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "context").to_type_string(),
+            "{ queryKey: TQueryKey; pageParam?: unknown; }"
+        );
+        assert_eq!(
+            get_symbol_type_in_function(&ret, "useParams", "streamFn").to_type_string(),
+            "(context: { queryKey: TQueryKey; pageParam?: unknown; }) => void"
         );
     }
 
