@@ -7,6 +7,13 @@ use crate::{Checker, CheckerReturn, SymbolRef, Ty, program};
 
 const ARRAY_TYPE_NAME: &str = "Array";
 const READONLY_ARRAY_TYPE_NAME: &str = "ReadonlyArray";
+const OBJECT_TYPE_NAME: &str = "Object";
+const FUNCTION_TYPE_NAME: &str = "Function";
+const STRING_TYPE_NAME: &str = "String";
+const BOOLEAN_TYPE_NAME: &str = "Boolean";
+const NUMBER_TYPE_NAME: &str = "Number";
+const SYMBOL_TYPE_NAME: &str = "Symbol";
+const BIGINT_TYPE_NAME: &str = "BigInt";
 
 #[derive(Clone, Copy, Debug, Default)]
 struct GlobalSymbolEntry {
@@ -193,6 +200,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         element_type: Ty<'a>,
     ) -> Ty<'a> {
         self.get_global_type_reference(program_id, READONLY_ARRAY_TYPE_NAME, [element_type])
+    }
+
+    pub(crate) fn get_global_object_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.get_global_type(program_id, OBJECT_TYPE_NAME)
+    }
+
+    pub(crate) fn get_global_function_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.get_global_type(program_id, FUNCTION_TYPE_NAME)
+    }
+
+    pub(crate) fn get_global_string_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.get_global_type(program_id, STRING_TYPE_NAME)
+    }
+
+    pub(crate) fn get_global_boolean_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.get_global_type(program_id, BOOLEAN_TYPE_NAME)
+    }
+
+    pub(crate) fn get_global_number_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.get_global_type(program_id, NUMBER_TYPE_NAME)
+    }
+
+    pub(crate) fn get_global_symbol_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.get_global_type(program_id, SYMBOL_TYPE_NAME)
+    }
+
+    pub(crate) fn get_global_bigint_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.get_global_type(program_id, BIGINT_TYPE_NAME)
     }
 
     pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Ty<'a> {

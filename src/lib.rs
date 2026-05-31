@@ -1533,7 +1533,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let ty = object_type
             .property_type(property_name)
             .or_else(|| {
-                self.get_property_type_of_array_type(program_id, &object_type, property_name)
+                self.get_property_type_of_global_interface_type(
+                    program_id,
+                    object_type,
+                    property_name,
+                )
             })
             .or_else(|| {
                 self.get_property_type_of_named_type(program_id, &object_type, property_name)
@@ -1577,21 +1581,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         tuple_element_type_at_index(&object_type, index).unwrap_or_else(Ty::any)
     }
 
-    fn get_property_type_of_array_type(
+    fn get_property_type_of_global_interface_type(
         &self,
         program_id: program::ProgramId,
-        object_type: &Ty<'a>,
+        object_type: Ty<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        let Ty::Array(array) = object_type else {
-            return None;
+        let interface_type = match object_type {
+            Ty::Array(array) if array.readonly => {
+                self.get_global_readonly_array_type(program_id, array.element_type)
+            }
+            Ty::Array(array) => self.get_global_array_type(program_id, array.element_type),
+            Ty::Object(_) | Ty::PrimitiveObject => self.get_global_object_type(program_id),
+            Ty::Function(_) => self.get_global_function_type(program_id),
+            Ty::String | Ty::StringLiteral(_) => self.get_global_string_type(program_id),
+            Ty::Boolean | Ty::BooleanLiteral(_) => self.get_global_boolean_type(program_id),
+            Ty::Number | Ty::NumberLiteral(_) => self.get_global_number_type(program_id),
+            Ty::Symbol | Ty::UniqueSymbol(_) => self.get_global_symbol_type(program_id),
+            Ty::Bigint | Ty::BigIntLiteral(_) => self.get_global_bigint_type(program_id),
+            _ => return None,
         };
-        let array_type = if array.readonly {
-            self.get_global_readonly_array_type(program_id, array.element_type)
-        } else {
-            self.get_global_array_type(program_id, array.element_type)
-        };
-        let Ty::TypeReference(reference) = array_type else {
+        let Ty::TypeReference(reference) = interface_type else {
             return None;
         };
         self.get_property_type_of_interface_type(program_id, reference, property_name)
@@ -5073,6 +5083,23 @@ mod test {
             .collect()
     }
 
+    fn get_static_member_expression_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        semantic
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| match node.kind() {
+                AstKind::StaticMemberExpression(member)
+                    if member.property.name == Ident::from(name) =>
+                {
+                    Some(checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)))
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
     fn arena<'a>(ret: &ParseAndCheck<'a>) -> CheckerArena<'a> {
         CheckerArena::new(ret.store.allocator())
     }
@@ -6829,6 +6856,53 @@ mod test {
             Ty::array(arena, Ty::type_reference(arena, "Promise", [Ty::number()]))
         );
         assert_eq!(get_first_symbol_type(&ret, "x"), Ty::number());
+    }
+
+    #[test]
+    fn array_map_string_callback_member_uses_global_string_interface() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const lengths = ['a', 'bb', 'ccc'].map(x => x.length);
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(get_first_symbol_type(&ret, "x"), Ty::string());
+        assert_eq!(
+            get_static_member_expression_types(&ret, "length"),
+            vec![Ty::number()]
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "lengths"),
+            Ty::array(arena, Ty::number())
+        );
+    }
+
+    #[test]
+    fn primitive_and_object_members_use_global_interfaces() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const key: symbol;
+        declare const big: bigint;
+        const objectText = ({ a: 1 }).toString();
+        const functionLength = ((value: number) => value).length;
+        const fixed = (1).toFixed();
+        const boolValue = (true).valueOf();
+        const symbolText = key.toString();
+        const bigValue = big.valueOf();
+        ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "objectText"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "functionLength"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "fixed"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "boolValue"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "symbolText"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "bigValue"), Ty::bigint());
     }
 
     #[test]
