@@ -93,6 +93,7 @@ pub(crate) struct TyProperty<'a> {
     pub(crate) computed: bool,
     pub(crate) optional: bool,
     pub(crate) method: bool,
+    pub(crate) readonly: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -459,6 +460,7 @@ impl<'a> Ty<'a> {
             computed: false,
             optional: false,
             method: false,
+            readonly: false,
             ty,
         }
     }
@@ -755,6 +757,7 @@ impl<'a> Ty<'a> {
                     computed: property.computed,
                     optional: property.optional,
                     method: property.method,
+                    readonly: property.readonly,
                     ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             )
@@ -773,6 +776,7 @@ impl<'a> Ty<'a> {
                     computed: property.computed,
                     optional: property.optional,
                     method: property.method,
+                    readonly: property.readonly,
                     ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             ),
@@ -1075,17 +1079,20 @@ impl<'a> Ty<'a> {
                     .iter()
                     .map(|signature| signature.to_type_string())
                     .chain(object.properties.iter().map(|property| {
+                        let readonly = if property.readonly { "readonly " } else { "" };
                         if property.method
                             && let Ty::Function(function) = property.ty
                         {
                             format!(
-                                "{}{};",
+                                "{}{}{};",
+                                readonly,
                                 property_name_to_type_string(property),
                                 signature_to_type_string(function)
                             )
                         } else {
                             format!(
-                                "{}: {};",
+                                "{}{}: {};",
+                                readonly,
                                 property_name_to_type_string(property),
                                 property.ty.to_type_string()
                             )
@@ -2949,11 +2956,31 @@ mod tests {
             computed: false,
             optional: false,
             method: true,
+            readonly: false,
         };
 
         assert_eq!(
             Ty::object(arena, [abort]).to_type_string(),
             "{ abort(reason?: any): AbortSignal; }"
+        );
+    }
+
+    #[test]
+    fn object_readonly_property_display() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let readonly = TyProperty {
+            name: "x",
+            ty: Ty::string(),
+            computed: false,
+            optional: false,
+            method: false,
+            readonly: true,
+        };
+
+        assert_eq!(
+            Ty::object(arena, [readonly]).to_type_string(),
+            "{ readonly x: string; }"
         );
     }
 

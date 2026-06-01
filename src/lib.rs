@@ -991,6 +991,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 computed: property.computed,
                                 optional: property.optional,
                                 method: false,
+                                readonly: property.readonly,
                             })
                         }
                         TSSignature::TSMethodSignature(method) => {
@@ -1022,6 +1023,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 computed: method.computed,
                                 optional: method.optional,
                                 method: true,
+                                readonly: false,
                             })
                         }
                         _ => None,
@@ -1607,6 +1609,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 computed: false,
                 optional: matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus),
                 method: false,
+                readonly: property.readonly,
             });
         }
 
@@ -2095,6 +2098,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             computed: property.computed,
                             optional: property.optional,
                             method: false,
+                            readonly: property.readonly,
                         });
                     }
                     TSSignature::TSMethodSignature(method) => {
@@ -2116,6 +2120,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             computed: method.computed,
                             optional: method.optional,
                             method: true,
+                            readonly: false,
                         });
                     }
                     _ => {}
