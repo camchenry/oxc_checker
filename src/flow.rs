@@ -6,7 +6,7 @@ use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
 
-use crate::{CheckerReturn, NodeRef, SymbolRef, types::Ty};
+use crate::{CheckerReturn, NodeRef, SymbolRef, evolving_arrays, types::Ty};
 
 /// A branch-local condition that may narrow identifier references inside an `if` arm.
 #[derive(Clone, Copy)]
@@ -56,7 +56,9 @@ pub(crate) fn get_flow_type_of_reference<'a>(
         return base_type;
     }
 
-    let mut narrowed_type = base_type;
+    let mut narrowed_type =
+        evolving_arrays::get_flow_type_of_reference(checker, node, symbol, base_type)
+            .unwrap_or(base_type);
     let mut facts = collect_branch_facts(checker, node);
     facts.reverse();
 

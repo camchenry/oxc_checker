@@ -1010,13 +1010,13 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                                    ^^^^^^^^^: number   (TyNumber)
 
   initialValue: { pages: [], pageParams: [] },
-> ^^^^^^^^^^^^: { pages: any[]; pageParams: any[]; }   (TyObject)
+> ^^^^^^^^^^^^: { pages: never[]; pageParams: never[]; }   (TyObject)
 
   initialValue: { pages: [], pageParams: [] },
->                 ^^^^^: any[]   (TyArray)
+>                 ^^^^^: never[]   (TyArray)
 
   initialValue: { pages: [], pageParams: [] },
->                            ^^^^^^^^^^: any[]   (TyArray)
+>                            ^^^^^^^^^^: never[]   (TyArray)
 
   refetchMode: 'append',
 > ^^^^^^^^^^^: string   (TyString)

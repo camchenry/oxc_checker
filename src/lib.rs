@@ -31,6 +31,7 @@ use std::{
     collections::{HashMap, HashSet},
 };
 
+mod evolving_arrays;
 mod flow;
 mod global_lib;
 mod global_types;
@@ -4749,8 +4750,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         match array_expression.elements.len() {
-            // For 0 elements: infer `any[]`
-            0 => Ty::array(self.arena, Ty::any()),
+            0 => Ty::array(
+                self.arena,
+                evolving_arrays::empty_array_literal_element_type(
+                    self,
+                    program_id,
+                    array_expression,
+                    node_id,
+                ),
+            ),
             // For 1 element: infer the type of the first element
             1 => {
                 let first_element = &array_expression.elements[0];
@@ -6985,6 +6993,42 @@ mod test {
         );
     }
 
+    #[test]
+    fn flow_evolves_empty_array_locals_from_mutations() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        let values = [];
+        const before = values;
+        values.push(1);
+        const afterPush = values;
+        values[1] = 'ready';
+        const afterWrite = values;
+        values = [false];
+        const afterReset = values;
+        ",
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "before"),
+            Ty::array(arena, Ty::any())
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "afterPush"),
+            Ty::array(arena, Ty::number())
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "afterWrite"),
+            Ty::array(arena, Ty::union(arena, [Ty::number(), Ty::string()]))
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "afterReset"),
+            Ty::array(arena, Ty::boolean())
+        );
+    }
+
     #[cfg(target_pointer_width = "64")]
     #[test]
     fn type_enum_is_pointer_sized_payload_plus_discriminant() {
@@ -7182,6 +7226,10 @@ mod test {
             "(data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }"
         );
         assert!(get_object_property_types(&ret, "pages").contains(&Ty::array(arena, todo_type)));
+        assert!(get_object_property_types(&ret, "pages").contains(&Ty::array(arena, Ty::never())));
+        assert!(
+            get_object_property_types(&ret, "pageParams").contains(&Ty::array(arena, Ty::never()))
+        );
     }
 
     #[test]
