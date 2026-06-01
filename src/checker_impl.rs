@@ -1,45 +1,36 @@
-use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
-        AwaitExpression, BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class,
-        ClassElement, ComputedMemberExpression, ConditionalExpression, Expression, ForOfStatement,
-        ForStatementLeft, FormalParameter, FormalParameterRest, FormalParameters, Function,
-        FunctionBody, IdentifierReference, MethodDefinition, MethodDefinitionKind, NewExpression,
-        NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
-        PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
-        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature,
-        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        ArrayExpression, ArrayExpressionElement, AssignmentExpression, AwaitExpression,
+        BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
+        ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
+        FormalParameterRest, FormalParameters, Function, IdentifierReference, MethodDefinition,
+        MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind,
+        PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
+        TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
+        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
+        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
+        VariableDeclarationKind, VariableDeclarator,
     },
 };
-use oxc_ast_visit::Visit;
-use oxc_index::{IndexVec, nonmax::NonMaxU32};
-use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
+use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
 use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, UnaryOperator},
-    scope::ScopeFlags,
 };
-use std::{
-    cell::RefCell,
-    collections::{HashMap, HashSet},
-};
+use std::collections::{HashMap, HashSet};
 
 use crate::{
     ClassMemberResolution, FunctionKind, ReturnExpressionVisitor, array_element_type,
     binding_pattern_default_initializer_symbol_id,
     checker::{Checker, CheckerReturn, NodeRef, SymbolRef},
-    evolving_arrays, flow, for_statement_left_contains_declarator,
-    global_types::GlobalSymbolTable,
-    index_signature_key_types, index_type_to_property_name, infer_type_parameter_from_types,
-    is_index_signature_object, is_iterable_type_reference, is_mapped_empty_object_intersection,
-    is_number_index_type, is_promise_like_type_reference,
-    program::{self, ProgramId, ProgramStore},
+    evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
+    index_type_to_property_name, infer_type_parameter_from_types, is_index_signature_object,
+    is_iterable_type_reference, is_mapped_empty_object_intersection, is_number_index_type,
+    is_promise_like_type_reference,
+    program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_contains_infer,
     ts_type_name_to_str, ts_type_query_expr_name_to_str, tuple_element_type,
     tuple_element_type_at_index, tuple_index_from_expression,
@@ -3708,18 +3699,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
         None
-    }
-
-    fn get_type_of_function_signature(
-        &self,
-        program_id: program::ProgramId,
-        function: &'a Function<'a>,
-    ) -> Ty<'a> {
-        self.get_type_of_function_signature_with_node(
-            program_id,
-            FunctionKind::Function(function),
-            None,
-        )
     }
 
     fn get_type_of_function_signature_with_node(

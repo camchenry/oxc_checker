@@ -23,10 +23,6 @@ impl<'a> CheckerArena<'a> {
         self.allocator.alloc_str(value)
     }
 
-    pub(crate) fn concat_strs_array<const N: usize>(&self, strings: [&str; N]) -> &'a str {
-        self.allocator.alloc_concat_strs_array(strings)
-    }
-
     pub(crate) fn vec_from_iter<T>(&self, iter: impl IntoIterator<Item = T>) -> ArenaVec<'a, T> {
         ArenaVec::from_iter_in(iter, self.allocator)
     }
@@ -218,15 +214,6 @@ pub(crate) struct TyTemplateLiteral<'a> {
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) struct TemplateLiteralElement<'a> {
     pub(crate) value: &'a str,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) enum TyLiteralPrimitiveType {
-    Number,
-    String,
-    Boolean,
-    BigInt,
-    Template,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -561,6 +548,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
+    #[cfg(test)]
     pub(crate) fn function(
         arena: CheckerArena<'a>,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
@@ -1036,7 +1024,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    #[cfg(debug_assertions)]
+    #[cfg(test)]
     pub(crate) fn enum_variant_name(self) -> &'static str {
         match self {
             Self::None => "TyNone",
@@ -1076,6 +1064,7 @@ impl<'a> Ty<'a> {
         }
     }
 
+    #[allow(dead_code)]
     pub(crate) fn to_type_string(self) -> String {
         match self {
             Self::None => "none".to_string(),
@@ -2805,16 +2794,6 @@ fn type_predicate_parameters_match(
         return false;
     }
     source.parameter_index.is_some() || source.parameter_name == target.parameter_name
-}
-
-fn property_key_name<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
-    match key {
-        PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
-        PropertyKey::Identifier(identifier) => Some(identifier.name.as_str()),
-        PropertyKey::NumericLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
-        PropertyKey::StringLiteral(literal) => Some(literal.value.as_str()),
-        _ => None,
-    }
 }
 
 fn property_key_to_binding_pattern_string(key: &PropertyKey<'_>) -> Option<String> {

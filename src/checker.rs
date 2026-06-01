@@ -64,6 +64,8 @@ type Checker interface {
 }
 
 */
+
+#[allow(dead_code)]
 pub trait Checker<'a> {
     fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef>;
     fn get_type_at_location(&self, node: NodeRef) -> Ty<'a>;

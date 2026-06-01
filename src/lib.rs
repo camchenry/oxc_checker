@@ -1,35 +1,16 @@
-#![allow(dead_code, unused_imports)]
-use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
-        AwaitExpression, BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class,
-        ClassElement, ComputedMemberExpression, ConditionalExpression, Expression, ForOfStatement,
-        ForStatementLeft, FormalParameter, FormalParameterRest, FormalParameters, Function,
-        FunctionBody, IdentifierReference, MethodDefinition, MethodDefinitionKind, NewExpression,
-        NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
-        PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
-        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature,
-        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        ArrowFunctionExpression, BindingPattern, Expression, ForStatementLeft, FormalParameters,
+        Function, FunctionBody, PropertyKey, ReturnStatement, TSSignature, TSTupleElement, TSType,
+        TSTypeName, TSTypeQueryExprName, VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
-use oxc_index::{IndexVec, nonmax::NonMaxU32};
-use oxc_semantic::{AstNode, AstNodes, NodeId, Semantic, SemanticBuilder, SymbolId};
+use oxc_semantic::SymbolId;
 use oxc_span::{GetSpan, Span};
-use oxc_str::{Ident, static_ident};
-use oxc_syntax::{
-    module_record::{ExportExportName, ExportLocalName},
-    operator::{AssignmentOperator, BinaryOperator, UnaryOperator},
-    scope::ScopeFlags,
-};
-use std::{
-    cell::RefCell,
-    collections::{HashMap, HashSet},
-};
+use oxc_syntax::scope::ScopeFlags;
+use std::collections::HashMap;
 
 mod checker;
 mod checker_impl;
@@ -404,20 +385,6 @@ fn ts_type_query_expr_name_to_str<'a>(
     }
 }
 
-fn binding_pattern_name(pattern: &BindingPattern<'_>) -> Option<String> {
-    match pattern {
-        BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.to_string()),
-        _ => None,
-    }
-}
-
-fn binding_pattern_name_str<'a>(pattern: &BindingPattern<'a>) -> Option<&'a str> {
-    match pattern {
-        BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.as_str()),
-        _ => None,
-    }
-}
-
 fn binding_pattern_symbol_id(pattern: &BindingPattern<'_>) -> Option<SymbolId> {
     match pattern {
         BindingPattern::BindingIdentifier(identifier) => identifier.symbol_id.get(),
@@ -723,7 +690,6 @@ mod test {
     use crate::program::ProgramHost;
     use oxc_allocator::Allocator;
     use oxc_str::Ident;
-    use std::cell::RefCell;
     use std::{
         collections::HashMap,
         path::{Path, PathBuf},
