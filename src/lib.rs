@@ -1373,6 +1373,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object_type: Ty<'a>,
         index_type: Ty<'a>,
     ) -> Option<Ty<'a>> {
+        if let Ty::Array(array) = object_type
+            && is_number_index_type(index_type)
+        {
+            return Some(array.element_type);
+        }
+
         match index_type {
             Ty::Union(union) => {
                 let property_types = union
@@ -1448,6 +1454,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         match ty {
+            Ty::TypeReference(reference)
+                if self.is_global_awaited_type_reference(program_id, reference) =>
+            {
+                let target =
+                    self.expand_type_at_use(program_id, reference.type_arguments[0], depth + 1);
+                self.get_awaited_type(program_id, target)
+            }
             Ty::TypeReference(reference) => self
                 .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
                 .map(|(expanded_program_id, expanded)| {
@@ -1558,6 +1571,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         mapped: &TyMapped<'a>,
         depth: usize,
     ) -> Option<Ty<'a>> {
+        if let Some(ty) = self.expand_array_mapped_type(program_id, mapped, depth + 1) {
+            return Some(ty);
+        }
+
         let properties =
             self.properties_for_mapped_constraint(program_id, mapped.constraint, depth)?;
         let mut expanded = Vec::new();
@@ -1589,6 +1606,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         Some(Ty::object(self.arena(), expanded))
+    }
+
+    fn expand_array_mapped_type(
+        &self,
+        program_id: program::ProgramId,
+        mapped: &TyMapped<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        let Ty::Keyof(keyof) = mapped.constraint else {
+            return None;
+        };
+        let Ty::Array(_) = self.expand_type_at_use(program_id, keyof.target, depth + 1) else {
+            return None;
+        };
+        if mapped.name_type.is_some() {
+            return None;
+        }
+
+        let substitutions = HashMap::from([(mapped.key, Ty::number())]);
+        let element_type = mapped
+            .template
+            .substitute_type_parameters(self.arena(), &substitutions);
+        let element_type = self.expand_type_at_use(program_id, element_type, depth + 1);
+        Some(Ty::array(self.arena(), element_type))
     }
 
     fn properties_for_mapped_constraint(
@@ -5096,21 +5137,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
         let ty = self.get_type_of_expression_with_node(program_id, &await_expr.argument, node_id);
-        self.get_awaited_type(ty)
+        self.get_awaited_type(program_id, ty)
     }
 
-    fn get_awaited_type(&self, ty: Ty<'a>) -> Ty<'a> {
+    fn get_awaited_type(&self, program_id: program::ProgramId, ty: Ty<'a>) -> Ty<'a> {
         match ty {
             Ty::Union(union) => Ty::union(
                 self.arena(),
-                union.types.iter().map(|ty| self.get_awaited_type(*ty)),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.get_awaited_type(program_id, *ty)),
             ),
             Ty::TypeReference(reference) if is_promise_like_type_reference(reference.name) => {
                 reference
                     .type_arguments
                     .first()
                     .copied()
-                    .map(|ty| self.get_awaited_type(ty))
+                    .map(|ty| {
+                        let awaited = self.get_awaited_type(program_id, ty);
+                        self.expand_type_at_use(program_id, awaited, 0)
+                    })
                     .unwrap_or(ty)
             }
             _ => ty,
@@ -5177,12 +5224,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if !is_await {
             return element_type;
         }
-        let awaited_type = self.get_awaited_type(element_type);
+        let awaited_type = self.get_awaited_type(program_id, element_type);
         if awaited_type != element_type {
             return awaited_type;
         }
         if self.is_scoped_type_parameter_reference(program_id, node_id, element_type) {
-            return Ty::type_reference(self.arena(), "Awaited", [element_type]);
+            return self.get_global_awaited_type(program_id, element_type);
         }
         element_type
     }
@@ -5231,6 +5278,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
         names
     }
+}
+
+fn is_number_index_type(ty: Ty<'_>) -> bool {
+    matches!(ty, Ty::Number | Ty::NumberLiteral(_))
 }
 
 fn is_promise_like_type_reference(name: &str) -> bool {
@@ -7668,6 +7719,23 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "catchResult"),
             Ty::type_reference(arena, "Promise", [Ty::void()])
+        );
+    }
+
+    #[test]
+    fn awaited_special_handling_requires_global_awaited_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type Awaited<T> = { value: T };
+        type Value = Awaited<Promise<number>>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Value").to_type_string(),
+            "{ value: Promise<number>; }"
         );
     }
 

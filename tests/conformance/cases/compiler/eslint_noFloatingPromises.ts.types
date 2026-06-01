@@ -131,7 +131,7 @@ await Promise.reject('value').finally(() => {});
 >                             ^^^^^^^: (onfinally?: (() => void) | null | undefined) => Promise<never>   (TyFunction)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { -readonly [P in keyof Promise<number>[]]: Awaited<Promise<number>[][P]>; }   (TyMapped)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
 >     ^^^^^^^: PromiseConstructor   (TyTypeReference)

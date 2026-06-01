@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use oxc_ast::AstKind;
 use oxc_syntax::symbol::SymbolFlags;
 
-use crate::{Checker, CheckerReturn, SymbolRef, Ty, program};
+use crate::{Checker, CheckerReturn, SymbolRef, Ty, TyTypeReference, program};
 
 const ARRAY_TYPE_NAME: &str = "Array";
 const READONLY_ARRAY_TYPE_NAME: &str = "ReadonlyArray";
@@ -14,6 +14,7 @@ const BOOLEAN_TYPE_NAME: &str = "Boolean";
 const NUMBER_TYPE_NAME: &str = "Number";
 const SYMBOL_TYPE_NAME: &str = "Symbol";
 const BIGINT_TYPE_NAME: &str = "BigInt";
+const AWAITED_TYPE_NAME: &str = "Awaited";
 
 #[derive(Clone, Copy, Debug, Default)]
 struct GlobalSymbolEntry {
@@ -232,6 +233,36 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Ty<'a> {
         self.get_global_type(program_id, "Promise")
+    }
+
+    pub(crate) fn get_global_awaited_type(
+        &self,
+        program_id: program::ProgramId,
+        awaited_type: Ty<'a>,
+    ) -> Ty<'a> {
+        if !self.is_default_lib_type(program_id, AWAITED_TYPE_NAME) {
+            return Ty::any();
+        }
+        Ty::type_reference(self.arena(), AWAITED_TYPE_NAME, [awaited_type])
+    }
+
+    pub(crate) fn is_global_awaited_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> bool {
+        reference.name == AWAITED_TYPE_NAME
+            && reference.type_arguments.len() == 1
+            && self.is_default_lib_type(program_id, AWAITED_TYPE_NAME)
+    }
+
+    fn is_default_lib_type(&self, program_id: program::ProgramId, name: &str) -> bool {
+        self.get_type_symbol_for_name(program_id, name)
+            .is_some_and(|symbol| {
+                self.store
+                    .entry(symbol.program_id)
+                    .is_some_and(program::ProgramEntry::is_lib)
+            })
     }
 
     pub(crate) fn get_global_type(&self, program_id: program::ProgramId, name: &str) -> Ty<'a> {
