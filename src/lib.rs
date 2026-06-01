@@ -6665,6 +6665,34 @@ mod test {
     }
 
     #[test]
+    fn flow_narrows_undefined_equality_conditional_expression_arms() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        function usePrevious<TData>(previous: TData | undefined, initialValue: TData) {
+            const value = previous === undefined ? initialValue : previous;
+        }
+        ",
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "value").to_type_string(),
+            "TData | (TData & ({} | null))"
+        );
+        assert_eq!(
+            get_identifier_reference_types(&ret, "previous")
+                .into_iter()
+                .map(Ty::to_type_string)
+                .collect::<Vec<_>>(),
+            vec![
+                "TData | undefined".to_string(),
+                "TData & ({} | null)".to_string(),
+            ]
+        );
+    }
+
+    #[test]
     fn flow_write_invalidates_previous_narrowing() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

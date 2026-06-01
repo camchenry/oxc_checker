@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 
-use oxc_ast::AstKind;
+use oxc_ast::{AstKind, ast::Expression};
 use oxc_syntax::symbol::SymbolFlags;
 
-use crate::{Checker, CheckerReturn, SymbolRef, Ty, TyTypeReference, program};
+use crate::{Checker, CheckerReturn, SymbolRef, Ty, TyTypeReference, UNDEFINED_IDENT, program};
 
 const ARRAY_TYPE_NAME: &str = "Array";
 const READONLY_ARRAY_TYPE_NAME: &str = "ReadonlyArray";
@@ -96,6 +96,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<SymbolRef> {
         self.get_value_symbol_in_program(program_id, value_name)
             .or_else(|| self.global_symbols.value_symbol(value_name))
+    }
+
+    pub(crate) fn is_global_undefined_expression(
+        &self,
+        program_id: program::ProgramId,
+        expression: &Expression<'_>,
+    ) -> bool {
+        let Expression::Identifier(identifier) = expression else {
+            return false;
+        };
+        if identifier.name != UNDEFINED_IDENT {
+            return false;
+        }
+        identifier.reference_id.get().is_none_or(|reference_id| {
+            self.semantic(program_id)
+                .scoping()
+                .get_reference(reference_id)
+                .symbol_id()
+                .is_none()
+        })
     }
 
     fn get_type_symbol_in_program(

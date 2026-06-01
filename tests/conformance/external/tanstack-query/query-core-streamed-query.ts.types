@@ -851,7 +851,7 @@ export function streamedQuery<
 >                                          ^^^^^^^^^^^^: TData   (TyTypeReference)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                                         ^^^^^^^^: TData | undefined   (TyUnion)
+>                                                         ^^^^^^^^: TData & ({} | null)   (TyIntersection)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >                                                                   ^^^^^: Awaited<TQueryFnData>   (TyTypeReference)

@@ -63,6 +63,7 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     for fact in facts {
         let candidate_type = narrow_by_condition(
             checker,
+            node,
             symbol,
             narrowed_type,
             fact.condition,
@@ -172,6 +173,7 @@ fn branch_fact_for_conditional<'a>(
 /// Narrow a type based on one condition expression and an assumed condition outcome.
 fn narrow_by_condition<'a>(
     checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
     symbol: SymbolRef,
     current_type: Ty<'a>,
     condition: &'a Expression<'a>,
@@ -187,6 +189,11 @@ fn narrow_by_condition<'a>(
         return current_type;
     };
 
+    if let Some(mut effective_true) = undefined_equality_guard(checker, symbol, binary) {
+        effective_true = effective_true == assume_true;
+        return narrow_by_undefined_equality(checker, node, current_type, effective_true);
+    }
+
     let Some((target, witness, mut effective_true)) = typeof_guard(binary) else {
         return current_type;
     };
@@ -197,6 +204,93 @@ fn narrow_by_condition<'a>(
     }
 
     narrow_by_typeof(checker, current_type, witness, effective_true)
+}
+
+/// Recognize `x === undefined` / `x !== undefined` and reversed-operand equivalents.
+fn undefined_equality_guard(
+    checker: &CheckerReturn<'_, '_>,
+    symbol: SymbolRef,
+    binary: &oxc_ast::ast::BinaryExpression<'_>,
+) -> Option<bool> {
+    let equality = match binary.operator {
+        BinaryOperator::Equality | BinaryOperator::StrictEquality => true,
+        BinaryOperator::Inequality | BinaryOperator::StrictInequality => false,
+        _ => return None,
+    };
+
+    let left = skip_parentheses(&binary.left);
+    let right = skip_parentheses(&binary.right);
+    if expression_matches_symbol(checker, symbol, left)
+        && checker.is_global_undefined_expression(symbol.program_id, right)
+    {
+        return Some(equality);
+    }
+    if expression_matches_symbol(checker, symbol, right)
+        && checker.is_global_undefined_expression(symbol.program_id, left)
+    {
+        return Some(equality);
+    }
+    None
+}
+
+fn narrow_by_undefined_equality<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    ty: Ty<'a>,
+    assume_undefined: bool,
+) -> Ty<'a> {
+    if matches!(ty, Ty::Any | Ty::Unknown) {
+        return ty;
+    }
+    if assume_undefined {
+        return filter_type(checker, ty, |ty| matches!(ty, Ty::Undefined | Ty::Void));
+    }
+    remove_undefined_from_type(checker, node, ty)
+}
+
+fn remove_undefined_from_type<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    ty: Ty<'a>,
+) -> Ty<'a> {
+    match ty {
+        Ty::Union(union) => {
+            let types = union
+                .types
+                .iter()
+                .filter_map(|ty| non_undefined_constituent(checker, node, *ty))
+                .collect::<Vec<_>>();
+            if types.is_empty() {
+                Ty::never()
+            } else {
+                Ty::union(checker.arena(), types)
+            }
+        }
+        _ => non_undefined_constituent(checker, node, ty).unwrap_or_else(Ty::never),
+    }
+}
+
+fn non_undefined_constituent<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    ty: Ty<'a>,
+) -> Option<Ty<'a>> {
+    match ty {
+        Ty::Undefined | Ty::Void => None,
+        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => {
+            Some(Ty::intersection(
+                checker.arena(),
+                [
+                    ty,
+                    Ty::union(
+                        checker.arena(),
+                        [Ty::object(checker.arena(), []), Ty::null()],
+                    ),
+                ],
+            ))
+        }
+        _ => Some(ty),
+    }
 }
 
 /// Recognize `typeof x === "kind"` and reversed-operand equivalents.
