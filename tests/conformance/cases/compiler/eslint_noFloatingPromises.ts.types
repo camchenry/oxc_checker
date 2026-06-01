@@ -92,7 +92,7 @@ const promise = new Promise((resolve, reject) => resolve('value'));
 >                                                ^^^^^^^^^^^^^^^^: void   (TyVoid)
 
 await promise;
->^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^: unknown   (TyUnknown)
 
 await promise;
 >     ^^^^^^^: Promise<unknown>   (TyTypeReference)
@@ -128,7 +128,7 @@ Promise.reject('value').catch(() => {});
 >                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
 
 await Promise.reject('value').finally(() => {});
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
 
 await Promise.reject('value').finally(() => {});
 >     ^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -140,7 +140,7 @@ await Promise.reject('value').finally(() => {});
 >                             ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { -readonly [P in keyof Promise<number>[]]: Awaited<Promise<number>[][P]>; }   (TyMapped)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
 >     ^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -206,7 +206,7 @@ declare function createPromiseLike(): PromiseLike<string>;
 >                                     ^^^^^^^^^^^: any   (TyAny)
 
 await createPromiseLike();
->^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 await createPromiseLike();
 >     ^^^^^^^^^^^^^^^^^: { (): PromiseLike<string>; (): PromiseLike<string>; }   (TyObject)
@@ -231,9 +231,6 @@ declare function createMyThenable(): MyThenable;
 
 declare function createMyThenable(): MyThenable;
 >                                    ^^^^^^^^^^: any   (TyAny)
-
-await createMyThenable();
->^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 await createMyThenable();
 >     ^^^^^^^^^^^^^^^^: { (): MyThenable; (): MyThenable; }   (TyObject)

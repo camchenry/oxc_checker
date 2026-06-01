@@ -3,8 +3,8 @@ use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, BinaryExpression,
-        BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
+        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AwaitExpression,
+        BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
         ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
         FormalParameterRest, FormalParameters, Function, FunctionBody, IdentifierReference,
         MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
@@ -723,6 +723,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     node_id,
                 ),
             Expression::NullLiteral(_) => Ty::null(),
+            Expression::AwaitExpression(await_expr) => {
+                self.get_type_of_await_expression(program_id, await_expr, node_id)
+            }
             _ => Ty::from_expression(expression),
         }
     }
@@ -4711,6 +4714,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::none();
         }
         Ty::none()
+    }
+
+    fn get_type_of_await_expression(
+        &self,
+        program_id: program::ProgramId,
+        await_expr: &'a AwaitExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let type_ref =
+            self.get_type_of_expression_with_node(program_id, &await_expr.argument, node_id);
+        // TODO(correctness): Actually check this is the global Promise type
+        let Ty::TypeReference(promise_type) = type_ref else {
+            return Ty::any();
+        };
+        promise_type
+            .type_arguments
+            .first()
+            .copied()
+            .unwrap_or(Ty::none())
     }
 }
 
