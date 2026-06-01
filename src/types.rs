@@ -1328,6 +1328,10 @@ fn simplify_conditional_type<'a>(
     false_type: Ty<'a>,
     is_distributive: bool,
 ) -> Ty<'a> {
+    if let Some(is_equal) = simplify_type_equality_function_extends(check_type, extends_type) {
+        return if is_equal { true_type } else { false_type };
+    }
+
     if contains_infer(check_type) || contains_infer(extends_type) {
         let mut inferences = InferInferences::new(arena);
         return match infer_from_types(arena, check_type, extends_type, &mut inferences, 0) {
@@ -1364,6 +1368,56 @@ fn simplify_conditional_type<'a>(
     }
 }
 
+fn simplify_type_equality_function_extends(
+    check_type: Ty<'_>,
+    extends_type: Ty<'_>,
+) -> Option<bool> {
+    let (Ty::Function(check_function), Ty::Function(extends_function)) = (check_type, extends_type)
+    else {
+        return None;
+    };
+    if !check_function.parameters.is_empty()
+        || !extends_function.parameters.is_empty()
+        || check_function.type_parameters.len() != 1
+        || extends_function.type_parameters.len() != 1
+    {
+        return None;
+    }
+
+    let Ty::Conditional(check_return) = check_function.return_type else {
+        return None;
+    };
+    let Ty::Conditional(extends_return) = extends_function.return_type else {
+        return None;
+    };
+    if !is_conditional_equality_probe(check_return, check_function.type_parameters[0].name)
+        || !is_conditional_equality_probe(extends_return, extends_function.type_parameters[0].name)
+    {
+        return None;
+    }
+    if contains_unresolved_type_variable(check_return.extends_type)
+        || contains_unresolved_type_variable(extends_return.extends_type)
+    {
+        return None;
+    }
+
+    Some(
+        crate::relations::is_assignable_to(check_return.extends_type, extends_return.extends_type)
+            && crate::relations::is_assignable_to(
+                extends_return.extends_type,
+                check_return.extends_type,
+            ),
+    )
+}
+
+fn is_conditional_equality_probe(
+    conditional: &TyConditional<'_>,
+    type_parameter_name: &str,
+) -> bool {
+    matches!(conditional.check_type, Ty::TypeReference(reference) if reference.name == type_parameter_name && reference.type_arguments.is_empty())
+        && matches!(conditional.true_type, Ty::NumberLiteral(literal) if literal.value == "1")
+        && matches!(conditional.false_type, Ty::NumberLiteral(literal) if literal.value == "0")
+}
 const INFER_MATCH_MAX_DEPTH: usize = 64;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -2518,6 +2572,7 @@ fn property_key_name<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
         PropertyKey::Identifier(identifier) => Some(identifier.name.as_str()),
+        PropertyKey::NumericLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
         PropertyKey::StringLiteral(literal) => Some(literal.value.as_str()),
         _ => None,
     }
@@ -2527,6 +2582,7 @@ fn property_key_to_binding_pattern_string(key: &PropertyKey<'_>) -> Option<Strin
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.to_string()),
         PropertyKey::Identifier(identifier) => Some(identifier.name.to_string()),
+        PropertyKey::NumericLiteral(literal) => literal.raw.as_ref().map(ToString::to_string),
         PropertyKey::StringLiteral(literal) => Some(format!("{:?}", literal.value.as_str())),
         _ => None,
     }

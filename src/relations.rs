@@ -19,6 +19,14 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::ModuleNamespace(source), Ty::ModuleNamespace(target)) => {
             properties_assignable_to(&source.properties, &target.properties)
         }
+        (Ty::Union(source), target) => source
+            .types
+            .iter()
+            .all(|source_type| is_assignable_to(*source_type, target)),
+        (source, Ty::Union(target)) => target
+            .types
+            .iter()
+            .any(|target_type| is_assignable_to(source, *target_type)),
         (Ty::Function(source), Ty::Function(target)) => {
             source.parameters.len() == target.parameters.len()
                 && source.parameters.iter().zip(target.parameters.iter()).all(
@@ -68,6 +76,38 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::NumberLiteral(_), Ty::Number) => true,
         (Ty::StringLiteral(_), Ty::String) => true,
         (Ty::BooleanLiteral(_), Ty::Boolean) => true,
+        (source, Ty::Keyof(target)) => is_assignable_to_keyof(source, target.target),
+        _ => false,
+    }
+}
+
+fn is_assignable_to_keyof<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
+    let Some(source_name) = property_name_from_key_type(source) else {
+        return false;
+    };
+    keyof_type_contains_property(target, source_name)
+}
+
+fn property_name_from_key_type(ty: Ty<'_>) -> Option<&str> {
+    match ty {
+        Ty::StringLiteral(literal) => Some(literal.value),
+        Ty::NumberLiteral(literal) => Some(literal.value),
+        Ty::BooleanLiteral(true) => Some("true"),
+        Ty::BooleanLiteral(false) => Some("false"),
+        _ => None,
+    }
+}
+
+fn keyof_type_contains_property(target: Ty<'_>, name: &str) -> bool {
+    match target {
+        Ty::Object(object) => object
+            .properties
+            .iter()
+            .any(|property| !property.computed && property.name == name),
+        Ty::Intersection(intersection) => intersection
+            .types
+            .iter()
+            .any(|ty| keyof_type_contains_property(*ty, name)),
         _ => false,
     }
 }

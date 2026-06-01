@@ -905,7 +905,7 @@ type Todo = {
 > ^^^^^: string   (TyString)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->    ^^^^^^^^^^^^: readonly ["todos"] extends AnyDataTag ? readonly ["todos"] : readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }   (TyConditional)
+>    ^^^^^^^^^^^^: readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }   (TyIntersection)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
@@ -923,7 +923,7 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                                       ^^^^^: ErrorConstructor   (TyTypeReference)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->    ^^^^^^^^^^^^^^: TodoQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string   (TyConditional)
+>    ^^^^^^^^^^^^^^: Todo[]   (TyArray)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)

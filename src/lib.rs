@@ -41,7 +41,7 @@ mod types;
 use types::*;
 
 const UNDEFINED_IDENT: Ident = static_ident!("undefined");
-const TYPE_EXPANSION_MAX_DEPTH: usize = 16;
+const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
 
 #[derive(Debug, Clone, Copy)]
 enum FunctionKind<'a> {
@@ -228,6 +228,7 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
         PropertyKey::Identifier(identifier) => Some(identifier.name.as_str()),
+        PropertyKey::NumericLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
         PropertyKey::StringLiteral(literal) => Some(literal.value.as_str()),
         _ => None,
     }
@@ -236,6 +237,21 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
 fn property_key_span(key: &PropertyKey<'_>) -> Option<Span> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.span),
+        _ => None,
+    }
+}
+
+fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
+    match ty {
+        Ty::StringLiteral(literal) => Some(literal.value),
+        Ty::NumberLiteral(literal) => Some(literal.value),
+        Ty::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
+        Ty::TemplateLiteral(template) if template.expressions.is_empty() => {
+            Some(template.quasis[0].value)
+        }
+        Ty::TypeReference(reference) if reference.type_arguments.is_empty() => Some(reference.name),
+        Ty::String => Some(arena.str("string")),
+        Ty::Number => Some(arena.str("number")),
         _ => None,
     }
 }
@@ -1113,11 +1129,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 TSTypeOperatorOperator::Unique => Ty::none(),
             },
-            TSType::TSIndexedAccessType(indexed_access) => Ty::indexed_access(
-                self.arena(),
-                self.get_type_from_ts_type(program_id, &indexed_access.object_type),
-                self.get_type_from_ts_type(program_id, &indexed_access.index_type),
-            ),
+            TSType::TSIndexedAccessType(indexed_access) => {
+                let object_type =
+                    self.get_type_from_ts_type(program_id, &indexed_access.object_type);
+                let index_type = self.get_type_from_ts_type(program_id, &indexed_access.index_type);
+                let lookup_index_type = self.get_type_from_ts_type_expanding_top_level_aliases(
+                    program_id,
+                    &indexed_access.index_type,
+                );
+                self.resolve_indexed_access_type(program_id, object_type, lookup_index_type)
+                    .unwrap_or_else(|| Ty::indexed_access(self.arena(), object_type, index_type))
+            }
             TSType::TSConditionalType(conditional) => {
                 let check_type = self.get_type_from_ts_type(program_id, &conditional.check_type);
                 let extends_type =
@@ -1314,6 +1336,283 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn resolve_indexed_access_type(
+        &self,
+        program_id: program::ProgramId,
+        object_type: Ty<'a>,
+        index_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        match index_type {
+            Ty::Union(union) => {
+                let property_types = union
+                    .types
+                    .iter()
+                    .map(|index_type| {
+                        self.resolve_indexed_access_type(program_id, object_type, *index_type)
+                    })
+                    .collect::<Option<Vec<_>>>()?;
+                Some(Ty::union(self.arena(), property_types))
+            }
+            _ => {
+                let property_name = index_type_to_property_name(self.arena(), index_type)?;
+                self.get_property_type_for_indexed_access(program_id, object_type, property_name)
+            }
+        }
+    }
+
+    fn get_property_type_for_indexed_access(
+        &self,
+        program_id: program::ProgramId,
+        object_type: Ty<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        match object_type {
+            Ty::Object(object) => object.properties.iter().find_map(|property| {
+                if property.computed || property.name != property_name {
+                    return None;
+                }
+                Some(if property.optional {
+                    Ty::union(self.arena(), [property.ty, Ty::undefined()])
+                } else {
+                    property.ty
+                })
+            }),
+            Ty::Union(union) => {
+                let property_types = union
+                    .types
+                    .iter()
+                    .map(|ty| {
+                        self.get_property_type_for_indexed_access(program_id, *ty, property_name)
+                    })
+                    .collect::<Option<Vec<_>>>()?;
+                Some(Ty::union(self.arena(), property_types))
+            }
+            Ty::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
+                self.get_property_type_for_indexed_access(program_id, *ty, property_name)
+            }),
+            Ty::TypeReference(reference) => self
+                .get_expanded_type_alias_reference_type(program_id, reference, 0)
+                .and_then(|(expanded_program_id, expanded)| {
+                    self.get_property_type_for_indexed_access(
+                        expanded_program_id,
+                        expanded,
+                        property_name,
+                    )
+                })
+                .or_else(|| {
+                    self.get_property_type_of_interface_type(program_id, reference, property_name)
+                }),
+            _ => None,
+        }
+    }
+
+    fn expand_type_at_use(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(reference) => self
+                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                .map(|(expanded_program_id, expanded)| {
+                    self.expand_type_at_use(expanded_program_id, expanded, depth + 1)
+                })
+                .unwrap_or(ty),
+            Ty::IndexedAccess(indexed_access) => {
+                let object_type =
+                    self.expand_type_at_use(program_id, indexed_access.object_type, depth + 1);
+                let index_type = indexed_access.index_type;
+                let lookup_index_type =
+                    self.expand_type_for_index_lookup(program_id, index_type, depth + 1);
+                self.resolve_indexed_access_type(program_id, object_type, lookup_index_type)
+                    .map(|resolved| self.expand_type_at_use(program_id, resolved, depth + 1))
+                    .unwrap_or_else(|| Ty::indexed_access(self.arena(), object_type, index_type))
+            }
+            Ty::Mapped(mapped) => self
+                .expand_mapped_type(program_id, mapped, depth + 1)
+                .unwrap_or(ty),
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.expand_type_at_use(program_id, *ty, depth + 1)),
+            ),
+            Ty::Intersection(intersection) => Ty::intersection(
+                self.arena(),
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| self.expand_type_at_use(program_id, *ty, depth + 1)),
+            ),
+            Ty::Conditional(conditional) => Ty::conditional(
+                self.arena(),
+                self.expand_type_at_use(program_id, conditional.check_type, depth + 1),
+                self.expand_type_at_use(program_id, conditional.extends_type, depth + 1),
+                self.expand_type_at_use(program_id, conditional.true_type, depth + 1),
+                self.expand_type_at_use(program_id, conditional.false_type, depth + 1),
+                conditional.is_distributive,
+            ),
+            Ty::Keyof(keyof) => Ty::keyof(
+                self.arena(),
+                self.expand_type_at_use(program_id, keyof.target, depth + 1),
+            ),
+            _ => ty,
+        }
+    }
+
+    fn expand_type_for_index_lookup(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(reference) => {
+                let expanded_arguments = reference
+                    .type_arguments
+                    .iter()
+                    .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1))
+                    .collect::<Vec<_>>();
+                let reference_ty = Ty::type_reference_with_explicit_type_argument_count(
+                    self.arena(),
+                    reference.name,
+                    expanded_arguments,
+                    reference.explicit_type_argument_count,
+                );
+                let Ty::TypeReference(reference) = reference_ty else {
+                    return reference_ty;
+                };
+                self.get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                    .map(|(expanded_program_id, expanded)| {
+                        self.expand_type_for_index_lookup(expanded_program_id, expanded, depth + 1)
+                    })
+                    .unwrap_or(reference_ty)
+            }
+            Ty::Conditional(conditional) => Ty::conditional(
+                self.arena(),
+                self.expand_type_for_index_lookup(program_id, conditional.check_type, depth + 1),
+                self.expand_type_for_index_lookup(program_id, conditional.extends_type, depth + 1),
+                self.expand_type_for_index_lookup(program_id, conditional.true_type, depth + 1),
+                self.expand_type_for_index_lookup(program_id, conditional.false_type, depth + 1),
+                conditional.is_distributive,
+            ),
+            Ty::Keyof(keyof) => Ty::keyof(
+                self.arena(),
+                self.expand_type_for_index_lookup(program_id, keyof.target, depth + 1),
+            ),
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1)),
+            ),
+            _ => ty,
+        }
+    }
+
+    fn expand_mapped_type(
+        &self,
+        program_id: program::ProgramId,
+        mapped: &TyMapped<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        let properties =
+            self.properties_for_mapped_constraint(program_id, mapped.constraint, depth)?;
+        let mut expanded = Vec::new();
+
+        for property in properties {
+            let key_type = Ty::string_literal(self.arena(), property.name);
+            let substitutions = HashMap::from([(mapped.key, key_type)]);
+            let property_name = if let Some(name_type) = mapped.name_type {
+                let name_type = name_type.substitute_type_parameters(self.arena(), &substitutions);
+                let name_type = self.expand_type_at_use(program_id, name_type, depth + 1);
+                if matches!(name_type, Ty::Never) {
+                    continue;
+                }
+                index_type_to_property_name(self.arena(), name_type)?
+            } else {
+                property.name
+            };
+            let ty = mapped
+                .template
+                .substitute_type_parameters(self.arena(), &substitutions);
+            let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+            expanded.push(
+                if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) {
+                    Ty::optional_property(property_name, ty)
+                } else {
+                    Ty::property(property_name, ty)
+                },
+            );
+        }
+
+        Some(Ty::object(self.arena(), expanded))
+    }
+
+    fn properties_for_mapped_constraint(
+        &self,
+        program_id: program::ProgramId,
+        constraint: Ty<'a>,
+        depth: usize,
+    ) -> Option<Vec<TyProperty<'a>>> {
+        let Ty::Keyof(keyof) = constraint else {
+            return None;
+        };
+        self.properties_for_keyof_type(program_id, keyof.target, depth + 1)
+    }
+
+    fn properties_for_keyof_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Option<Vec<TyProperty<'a>>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        match self.expand_type_at_use(program_id, ty, depth + 1) {
+            Ty::Object(object) => Some(
+                object
+                    .properties
+                    .iter()
+                    .copied()
+                    .filter(|property| !property.computed)
+                    .collect(),
+            ),
+            Ty::Intersection(intersection) => {
+                let mut properties = Vec::new();
+                for ty in &intersection.types {
+                    for property in self.properties_for_keyof_type(program_id, *ty, depth + 1)? {
+                        if !properties.iter().any(|existing: &TyProperty<'_>| {
+                            existing.name == property.name && existing.computed == property.computed
+                        }) {
+                            properties.push(property);
+                        }
+                    }
+                }
+                Some(properties)
+            }
+            Ty::TypeReference(reference) => self
+                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                .and_then(|(expanded_program_id, expanded)| {
+                    self.properties_for_keyof_type(expanded_program_id, expanded, depth + 1)
+                }),
+            _ => None,
+        }
+    }
+
     fn get_expanded_type_alias_reference(
         &self,
         program_id: program::ProgramId,
@@ -1354,14 +1653,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     alias.type_parameters.as_deref(),
                     type_arguments,
                 );
-                Some(
-                    self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                let ty = self
+                    .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
                         program_id,
                         &alias.type_annotation,
                         depth + 1,
                     )
-                    .substitute_type_parameters(self.arena(), &substitutions),
-                )
+                    .substitute_type_parameters(self.arena(), &substitutions);
+                Some(self.expand_type_at_use(program_id, ty, depth + 1))
             }
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
