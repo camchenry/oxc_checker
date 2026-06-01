@@ -91,6 +91,14 @@ fn infer_type_parameter_from_types<'a>(
     substitutions: &mut HashMap<&'a str, Ty<'a>>,
 ) {
     match (parameter_type, argument_type) {
+        (Ty::Union(parameter_union), _) => {
+            infer_type_parameter_from_union(
+                parameter_union.types.iter().copied(),
+                argument_type,
+                type_parameters,
+                substitutions,
+            );
+        }
         (Ty::TypeReference(reference), _)
             if reference.type_arguments.is_empty() && type_parameters.contains(&reference.name) =>
         {
@@ -158,6 +166,56 @@ fn infer_type_parameter_from_types<'a>(
             );
         }
         _ => {}
+    }
+}
+
+fn infer_type_parameter_from_union<'a>(
+    parameter_types: impl IntoIterator<Item = Ty<'a>>,
+    argument_type: &Ty<'a>,
+    type_parameters: &[&'a str],
+    substitutions: &mut HashMap<&'a str, Ty<'a>>,
+) {
+    let parameter_types = parameter_types
+        .into_iter()
+        .filter(|ty| !matches!(ty, Ty::Null | Ty::Undefined | Ty::Never))
+        .collect::<Vec<_>>();
+
+    let candidates = match argument_type {
+        Ty::Function(_) => parameter_types
+            .iter()
+            .copied()
+            .filter(|ty| matches!(ty, Ty::Function(_)))
+            .collect::<Vec<_>>(),
+        Ty::TypeReference(argument_reference) => parameter_types
+            .iter()
+            .copied()
+            .filter(|ty| {
+                matches!(ty, Ty::TypeReference(parameter_reference) if parameter_reference.name == argument_reference.name)
+            })
+            .collect::<Vec<_>>(),
+        _ => Vec::new(),
+    };
+
+    let candidates = if candidates.is_empty() {
+        parameter_types
+            .iter()
+            .copied()
+            .filter(|ty| {
+                matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && type_parameters.contains(&reference.name))
+            })
+            .collect::<Vec<_>>()
+    } else {
+        candidates
+    };
+
+    let candidates = if candidates.is_empty() {
+        parameter_types
+    } else {
+        candidates
+    };
+
+    for candidate in candidates {
+        infer_type_parameter_from_types(&candidate, argument_type, type_parameters, substitutions);
     }
 }
 
@@ -6955,6 +7013,44 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "rejected"),
             Ty::type_reference(arena(&ret), "Promise", [Ty::never()])
+        );
+    }
+
+    #[test]
+    fn promise_then_and_catch_infer_callback_returns_through_nullable_callback_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        async function returnsPromise() { return 'value'; }
+        const thenMethod = returnsPromise().then;
+        const thenResult = returnsPromise().then(() => {});
+        const defaultThenResult = returnsPromise().then();
+        const catchMethod = Promise.reject('value').catch;
+        const catchResult = Promise.reject('value').catch(() => {});
+        "#,
+        );
+        let arena = arena(&ret);
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "thenMethod").to_type_string(),
+            "<TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "thenResult"),
+            Ty::type_reference(arena, "Promise", [Ty::void()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "defaultThenResult"),
+            Ty::type_reference(arena, "Promise", [Ty::string()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "catchMethod").to_type_string(),
+            "<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "catchResult"),
+            Ty::type_reference(arena, "Promise", [Ty::void()])
         );
     }
 
