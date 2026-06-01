@@ -3,9 +3,9 @@ use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AwaitExpression,
-        BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
-        ComputedMemberExpression, ConditionalExpression, Expression, ForOfStatement,
+        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
+        AwaitExpression, BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class,
+        ClassElement, ComputedMemberExpression, ConditionalExpression, Expression, ForOfStatement,
         ForStatementLeft, FormalParameter, FormalParameterRest, FormalParameters, Function,
         FunctionBody, IdentifierReference, MethodDefinition, MethodDefinitionKind, NewExpression,
         NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
@@ -23,7 +23,7 @@ use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
 use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
-    operator::{BinaryOperator, UnaryOperator},
+    operator::{AssignmentOperator, BinaryOperator, UnaryOperator},
     scope::ScopeFlags,
 };
 use std::{
@@ -708,6 +708,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::BinaryExpression(binary_expression) => {
                 self.get_type_of_binary_expression(program_id, binary_expression, node_id)
             }
+            Expression::AssignmentExpression(assignment_expression) => {
+                self.get_type_of_assignment_expression(program_id, assignment_expression, node_id)
+            }
             Expression::ConditionalExpression(conditional) => {
                 self.get_type_of_conditional_expression(program_id, conditional, node_id)
             }
@@ -865,6 +868,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             | BinaryOperator::Exponential
                 if self.is_number_like_for_arithmetic(left)
                     && self.is_number_like_for_arithmetic(right) =>
+            {
+                Ty::number()
+            }
+            _ => Ty::any(),
+        }
+    }
+
+    fn get_type_of_assignment_expression(
+        &self,
+        program_id: program::ProgramId,
+        assignment_expression: &'a AssignmentExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let right = self.get_type_of_expression_with_node(
+            program_id,
+            &assignment_expression.right,
+            node_id,
+        );
+        match assignment_expression.operator {
+            AssignmentOperator::Assign => right,
+            AssignmentOperator::Addition if self.is_string_like_for_addition(right) => Ty::string(),
+            AssignmentOperator::Addition
+            | AssignmentOperator::Subtraction
+            | AssignmentOperator::Multiplication
+            | AssignmentOperator::Division
+            | AssignmentOperator::Remainder
+            | AssignmentOperator::Exponential
+                if self.is_number_like_for_arithmetic(right) =>
             {
                 Ty::number()
             }

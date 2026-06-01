@@ -11,7 +11,4 @@
 >                        ^: string   (TyString)
 
 ['a', 'b', 'c'].map(x => x.length);
->                        ^^^^^^^^: number   (TyNumber)
-
-['a', 'b', 'c'].map(x => x.length);
 >                          ^^^^^^: number   (TyNumber)

@@ -659,9 +659,6 @@ export function streamedQuery<
 >                   ^^^^^: TQueryFnData   (TyTypeReference)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: TData   (TyTypeReference)
-
-  reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >                                  ^^^^^: TData   (TyTypeReference)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
@@ -806,7 +803,7 @@ export function streamedQuery<
 >       ^^^^^^: TData   (TyTypeReference)
 
         result = reducer(result, chunk)
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: TData   (TyTypeReference)
 
         result = reducer(result, chunk)
 >                ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
@@ -843,9 +840,6 @@ export function streamedQuery<
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >         ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction)
-
-          reducer(previous === undefined ? initialValue : previous, chunk),
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: TData   (TyTypeReference)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >                 ^^^^^^^^: TData | undefined   (TyUnion)
@@ -982,9 +976,6 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
   streamFn: () => todoStream,
 >                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
 
-  streamFn: () => todoStream,
->                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
-
   reducer: (data, todo) => ({
 > ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: any[]; }   (TyFunction)
 
@@ -993,9 +984,6 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 
   reducer: (data, todo) => ({
 >                 ^^^^: Todo   (TyTypeReference)
-
-  reducer: (data, todo) => ({
->                          ^^: { pages: Todo[]; pageParams: any[]; }   (TyObject)
 
     pages: [...data.pages, todo],
 >   ^^^^^: Todo[]   (TyArray)

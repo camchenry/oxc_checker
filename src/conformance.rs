@@ -1297,11 +1297,23 @@ fn actual_identifier_record<'a>(
             let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
-        AstKind::ExpressionStatement(statement) => (
-            statement.span,
-            source_text_for_span(source_text, statement.span)?,
-            checker.get_type_of_expression_at_node(program_id, &statement.expression, node_id),
-        ),
+        AstKind::ExpressionStatement(statement) => {
+            let expression_text = source_text_for_span(source_text, statement.span)?;
+            if matches!(
+                checker.nodes(program_id).parent_kind(node_id),
+                AstKind::ArrowFunctionExpression(_)
+            ) || matches!(
+                checker.nodes(program_id).parent_kind(node_id),
+                AstKind::FunctionBody(body) if body.span == statement.span
+            ) {
+                return None;
+            }
+            (
+                statement.span,
+                expression_text,
+                checker.get_type_of_expression_at_node(program_id, &statement.expression, node_id),
+            )
+        }
         _ => return None,
     };
 
