@@ -947,13 +947,13 @@ declare const context: QueryFunctionContext<readonly ['todos'], number>
 >                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
 
 const pageParam = context.pageParam
->     ^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^: number   (TyNumber)
 
 const pageParam = context.pageParam
 >                 ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
 
 const pageParam = context.pageParam
->                         ^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^: number   (TyNumber)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
 >     ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>   (TyTypeReference)
@@ -977,7 +977,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
 
   reducer: (data, todo) => ({
-> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: any[]; }   (TyFunction)
+> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }   (TyFunction)
 
   reducer: (data, todo) => ({
 >           ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
@@ -998,7 +998,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                          ^^^^: Todo   (TyTypeReference)
 
     pageParams: [...data.pageParams, pageParam],
->   ^^^^^^^^^^: any[]   (TyArray)
+>   ^^^^^^^^^^: number[]   (TyArray)
 
     pageParams: [...data.pageParams, pageParam],
 >                   ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
@@ -1007,7 +1007,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                        ^^^^^^^^^^: number[]   (TyArray)
 
     pageParams: [...data.pageParams, pageParam],
->                                    ^^^^^^^^^: any   (TyAny)
+>                                    ^^^^^^^^^: number   (TyNumber)
 
   initialValue: { pages: [], pageParams: [] },
 > ^^^^^^^^^^^^: { pages: any[]; pageParams: any[]; }   (TyObject)

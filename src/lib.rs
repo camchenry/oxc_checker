@@ -2493,9 +2493,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id);
+        let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
         let property_name = member.property.name.as_str();
         let ty = object_type
             .property_type(property_name)
+            .or_else(|| apparent_object_type.property_type(property_name))
             .or_else(|| {
                 self.get_property_type_of_global_interface_type(
                     program_id,
@@ -7278,6 +7280,8 @@ mod test {
                     streamFn: (context: QueryFunctionContext<TQueryKey>) => TQueryFnData;
                     initialValue: TData;
                 };
+                declare const numberedContext: QueryFunctionContext<readonly [\"todos\"], number>;
+                const pageParam = numberedContext.pageParam;
 
                 function streamedQuery<
                     TQueryFnData = unknown,
@@ -7320,6 +7324,7 @@ mod test {
                 "Record<string, unknown> | undefined",
             ]
         );
+        assert_eq!(get_global_symbol_type(&ret, "pageParam"), Ty::number());
         assert_eq!(
             get_first_symbol_type(&ret, "signalLessContext").to_type_string(),
             "OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, \"signal\">"
