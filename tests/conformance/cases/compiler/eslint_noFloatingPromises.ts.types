@@ -221,7 +221,7 @@ declare function createMyThenable(): MyThenable;
 >                                    ^^^^^^^^^^: any   (TyAny)
 
 await createMyThenable();
->^^^^^^^^^^^^^^^^^^^^^^^^^: MyThenable   (TyTypeReference)
+>^^^^^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
 
 await createMyThenable();
 >     ^^^^^^^^^^^^^^^^: { (): MyThenable; (): MyThenable; }   (TyObject)

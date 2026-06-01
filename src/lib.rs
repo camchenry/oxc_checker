@@ -5160,7 +5160,69 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     })
                     .unwrap_or(ty)
             }
-            _ => ty,
+            _ => self
+                .get_structural_thenable_awaited_type(program_id, ty)
+                .unwrap_or(ty),
+        }
+    }
+
+    // TODO: Should we be looking at thenable specifically?
+    fn get_structural_thenable_awaited_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        let then_type = self.get_then_property_type(program_id, ty)?;
+        let then_signatures =
+            self.get_signatures_of_type_in_program(program_id, then_type, SignatureKind::Call);
+        if then_signatures.is_empty() {
+            return None;
+        }
+
+        let awaited_types = then_signatures
+            .iter()
+            .filter_map(|signature| signature.function.parameters.first())
+            .flat_map(|parameter| self.get_fulfilled_value_types(program_id, parameter.ty))
+            .map(|ty| {
+                let awaited = self.get_awaited_type(program_id, ty);
+                self.expand_type_at_use(program_id, awaited, 0)
+            })
+            .collect::<Vec<_>>();
+
+        Some(if awaited_types.is_empty() {
+            Ty::never()
+        } else {
+            Ty::union(self.arena(), awaited_types)
+        })
+    }
+
+    fn get_then_property_type(&self, program_id: program::ProgramId, ty: Ty<'a>) -> Option<Ty<'a>> {
+        match ty {
+            Ty::TypeReference(_) | Ty::TypeQuery(_) => {
+                self.get_property_type_of_named_type(program_id, &ty, "then")
+            }
+            _ => self.get_property_type_for_indexed_access(program_id, ty, "then"),
+        }
+    }
+
+    fn get_fulfilled_value_types(
+        &self,
+        program_id: program::ProgramId,
+        callback_type: Ty<'a>,
+    ) -> Vec<Ty<'a>> {
+        match callback_type {
+            Ty::Union(union) => union
+                .types
+                .iter()
+                .filter(|ty| !matches!(ty, Ty::Null | Ty::Undefined | Ty::Never))
+                .flat_map(|ty| self.get_fulfilled_value_types(program_id, *ty))
+                .collect(),
+            _ => self
+                .get_signatures_of_type_in_program(program_id, callback_type, SignatureKind::Call)
+                .iter()
+                .filter_map(|signature| signature.function.parameters.first())
+                .map(|parameter| parameter.ty)
+                .collect(),
         }
     }
 
@@ -7644,6 +7706,37 @@ mod test {
         assert_eq!(
             get_first_symbol_type(&ret, "chunk").to_type_string(),
             "Awaited<TQueryFnData>"
+        );
+    }
+
+    #[test]
+    fn await_structural_thenable_uses_fulfilled_callback_value_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function createPromiseLike(): PromiseLike<string>;
+
+        interface MyThenable {
+            then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+        }
+
+        declare function createMyThenable(): MyThenable;
+
+        async function main() {
+            const promiseLikeValue = await createPromiseLike();
+            const customThenableValue = await createMyThenable();
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "promiseLikeValue"),
+            Ty::string()
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "customThenableValue"),
+            Ty::never()
         );
     }
 
