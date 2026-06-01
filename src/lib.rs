@@ -257,20 +257,6 @@ fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
     }
 }
 
-fn ts_type_name_to_string(name: &TSTypeName<'_>) -> String {
-    match name {
-        TSTypeName::IdentifierReference(identifier) => identifier.name.to_string(),
-        TSTypeName::QualifiedName(qualified) => {
-            format!(
-                "{}.{}",
-                ts_type_name_to_string(&qualified.left),
-                qualified.right.name
-            )
-        }
-        TSTypeName::ThisExpression(_) => "this".to_string(),
-    }
-}
-
 fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'a str {
     match name {
         TSTypeName::IdentifierReference(identifier) => identifier.name.as_str(),

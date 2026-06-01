@@ -1280,7 +1280,7 @@ fn actual_identifier_record<'a>(
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSClassImplements(implements) => {
-            let (span, text) = ts_type_name_span_and_text(&implements.expression)?;
+            let (span, text) = ts_type_name_span_and_text(checker.arena(), &implements.expression)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSInterfaceHeritage(heritage) => {
@@ -1294,7 +1294,7 @@ fn actual_identifier_record<'a>(
             )
         }
         AstKind::TSTypeReference(reference) => {
-            let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
+            let (span, text) = ts_type_name_span_and_text(checker.arena(), &reference.type_name)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::ExpressionStatement(statement) => {
@@ -1350,16 +1350,16 @@ fn ts_module_declaration_name_span_and_text(
     }
 }
 
-fn ts_type_name_span_and_text(name: &TSTypeName<'_>) -> Option<(Span, String)> {
-    match name {
-        TSTypeName::IdentifierReference(identifier) => {
-            Some((identifier.span, identifier.name.to_string()))
-        }
-        TSTypeName::QualifiedName(qualified) => {
-            Some((qualified.span, ts_type_name_to_string(name)))
-        }
-        TSTypeName::ThisExpression(_) => None,
-    }
+fn ts_type_name_span_and_text<'a>(
+    arena: CheckerArena<'a>,
+    name: &TSTypeName<'a>,
+) -> Option<(Span, String)> {
+    let span = match name {
+        TSTypeName::IdentifierReference(identifier) => identifier.span,
+        TSTypeName::QualifiedName(qualified) => qualified.span,
+        TSTypeName::ThisExpression(_) => return None,
+    };
+    Some((span, ts_type_name_to_str(arena, name).to_string()))
 }
 
 fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Vec<FileResult> {
