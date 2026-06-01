@@ -3941,6 +3941,9 @@ type Partial<T> = {
 >            ^: any   (TyAny)
 
     [P in keyof T]?: T[P];
+>    ^: any   (TyAny)
+
+    [P in keyof T]?: T[P];
 >               ^: any   (TyAny)
 
     [P in keyof T]?: T[P];
@@ -3956,6 +3959,9 @@ type Required<T> = {
 >             ^: any   (TyAny)
 
     [P in keyof T]-?: T[P];
+>    ^: any   (TyAny)
+
+    [P in keyof T]-?: T[P];
 >               ^: any   (TyAny)
 
     [P in keyof T]-?: T[P];
@@ -3968,6 +3974,9 @@ type Readonly<T> = {
 >    ^^^^^^^^: { readonly [P in keyof T]: T[P]; }   (TyMapped)
 
 type Readonly<T> = {
+>             ^: any   (TyAny)
+
+    readonly [P in keyof T]: T[P];
 >             ^: any   (TyAny)
 
     readonly [P in keyof T]: T[P];
@@ -3992,6 +4001,9 @@ type Pick<T, K extends keyof T> = {
 >                            ^: any   (TyAny)
 
     [P in K]: T[P];
+>    ^: any   (TyAny)
+
+    [P in K]: T[P];
 >         ^: any   (TyAny)
 
     [P in K]: T[P];
@@ -4008,6 +4020,9 @@ type Record<K extends keyof any, T> = {
 
 type Record<K extends keyof any, T> = {
 >                                ^: any   (TyAny)
+
+    [P in K]: T;
+>    ^: any   (TyAny)
 
     [P in K]: T;
 >         ^: any   (TyAny)

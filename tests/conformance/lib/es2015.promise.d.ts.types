@@ -65,6 +65,9 @@ interface PromiseConstructor {
 >                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
+>                                                                           ^: any   (TyAny)
+
+    all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
 >                                                                                      ^: any   (TyAny)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;

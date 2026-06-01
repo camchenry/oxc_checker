@@ -47,7 +47,7 @@ export type dataTagSymbol = typeof dataTagSymbol
 >           ^^^^^^^^^^^^^: typeof dataTagSymbol   (TyTypeQuery)
 
 export type dataTagSymbol = typeof dataTagSymbol
->           ^^^^^^^^^^^^^: typeof dataTagSymbol   (TyTypeQuery)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagSymbol = typeof dataTagSymbol
 >                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -59,7 +59,7 @@ export type dataTagErrorSymbol = typeof dataTagErrorSymbol
 >           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeQuery)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol
->           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeQuery)
+>           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol
 >                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)

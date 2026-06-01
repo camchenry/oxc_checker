@@ -50,6 +50,9 @@ export type Pick<O extends object, K extends Key> = {
 >                                            ^^^: string | number | symbol   (TyUnion)
 
   [P in keyof O as P extends K ? P : never]: O[P]
+>  ^: any   (TyAny)
+
+  [P in keyof O as P extends K ? P : never]: O[P]
 >             ^: any   (TyAny)
 
   [P in keyof O as P extends K ? P : never]: O[P]
@@ -75,6 +78,9 @@ export type PatchFlat<O extends object, O1 extends object> = {
 
 export type PatchFlat<O extends object, O1 extends object> = {
 >                                       ^^: any   (TyAny)
+
+  [K in keyof (O & O1)]: K extends keyof O
+>  ^: any   (TyAny)
 
   [K in keyof (O & O1)]: K extends keyof O
 >              ^: any   (TyAny)
@@ -128,6 +134,9 @@ export type OptionalFlat<O> = {
 >                        ^: any   (TyAny)
 
   [K in keyof O]?: O[K]
+>  ^: any   (TyAny)
+
+  [K in keyof O]?: O[K]
 >             ^: any   (TyAny)
 
   [K in keyof O]?: O[K]
@@ -141,6 +150,9 @@ export type OptionalDeep<O> = {
 
 export type OptionalDeep<O> = {
 >                        ^: any   (TyAny)
+
+  [K in keyof O]?: OptionalDeep<O[K]>
+>  ^: any   (TyAny)
 
   [K in keyof O]?: OptionalDeep<O[K]>
 >             ^: any   (TyAny)

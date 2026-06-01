@@ -61,6 +61,9 @@ interface Array<T> {
     readonly [Symbol.unscopables]: {
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
+        [K in keyof any[]]?: boolean;
+>        ^: any   (TyAny)
+
 interface ReadonlyArray<T> {
 >         ^^^^^^^^^^^^^: any   (TyAny)
 
@@ -72,6 +75,9 @@ interface ReadonlyArray<T> {
 
     readonly [Symbol.unscopables]: {
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+        [K in keyof readonly any[]]?: boolean;
+>        ^: any   (TyAny)
 
 interface Date {
 >         ^^^^: any   (TyAny)

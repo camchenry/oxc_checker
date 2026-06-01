@@ -9,10 +9,7 @@ use std::{
 };
 
 use oxc_allocator::Allocator;
-use oxc_ast::{
-    AstKind,
-    ast::{TSModuleDeclarationName, TSType},
-};
+use oxc_ast::AstKind;
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_span::GetSpan;
 
@@ -1201,24 +1198,11 @@ fn actual_identifier_record<'a>(
 ) -> Option<TypeRecord> {
     let node_ref = NodeRef::new(program_id, node_id);
     let (span, text, ty) = match kind {
-        AstKind::BindingIdentifier(identifier) => {
-            if let AstKind::TSTypeAliasDeclaration(alias) =
-                checker.nodes(program_id).parent_kind(node_id)
-                && matches!(alias.type_annotation, TSType::TSTypeQuery(_))
-            {
-                (
-                    identifier.span,
-                    identifier.name.to_string(),
-                    type_of_type_alias(checker, program_id, alias),
-                )
-            } else {
-                (
-                    identifier.span,
-                    identifier.name.to_string(),
-                    checker.get_type_at_location(node_ref),
-                )
-            }
-        }
+        AstKind::BindingIdentifier(identifier) => (
+            identifier.span,
+            identifier.name.to_string(),
+            checker.get_type_at_location(node_ref),
+        ),
         AstKind::IdentifierReference(identifier) => (
             identifier.span,
             identifier.name.to_string(),
@@ -1269,57 +1253,49 @@ fn actual_identifier_record<'a>(
         AstKind::TSTypeAliasDeclaration(alias) => (
             alias.id.span,
             alias.id.name.to_string(),
-            type_of_type_alias(checker, program_id, alias),
+            checker.get_type_at_location(node_ref),
         ),
         AstKind::TSImportEqualsDeclaration(import_equals) => (
             import_equals.id.span,
             import_equals.id.name.to_string(),
-            Ty::any(),
+            checker.get_type_at_location(node_ref),
         ),
-        AstKind::TSInterfaceDeclaration(interface) => {
-            (interface.id.span, interface.id.name.to_string(), Ty::any())
-        }
+        AstKind::TSInterfaceDeclaration(interface) => (
+            interface.id.span,
+            interface.id.name.to_string(),
+            checker.get_type_at_location(node_ref),
+        ),
         AstKind::TSModuleDeclaration(module) => {
-            let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
-                return None;
-            };
-            // TODO(correctness): model namespace value-side as a real module namespace
-            // type instead of a `Ty::any` stub. We keep the `Ty::TypeQuery` wrapper so the
-            // record renders as `typeof Module`.
-            (
-                identifier.span,
-                identifier.name.to_string(),
-                Ty::type_query(
-                    checker.arena(),
-                    identifier.name.as_str(),
-                    Ty::any(),
-                    std::iter::empty(),
-                ),
-            )
+            let (span, text) = ts_module_declaration_name_span_and_text(&module.id)?;
+            (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
             parameter.name.name.to_string(),
-            Ty::any(),
+            checker.get_type_at_location(node_ref),
+        ),
+        AstKind::TSMappedType(mapped) => (
+            mapped.key.span,
+            mapped.key.name.to_string(),
+            checker.get_type_at_location(node_ref),
         ),
         AstKind::TSClassImplements(implements) => {
             let (span, text) = ts_type_name_span_and_text(&implements.expression)?;
-            (span, text, Ty::any())
+            (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSInterfaceHeritage(heritage) => {
             let Expression::Identifier(identifier) = &heritage.expression else {
                 return None;
             };
-            (identifier.span, identifier.name.to_string(), Ty::any())
+            (
+                identifier.span,
+                identifier.name.to_string(),
+                checker.get_type_at_location(node_ref),
+            )
         }
         AstKind::TSTypeReference(reference) => {
             let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
-            let ty = type_or_any(
-                checker
-                    .get_symbol_at_location(node_ref)
-                    .map_or_else(Ty::any, |symbol| checker.get_type_of_symbol(symbol)),
-            );
-            (span, text, ty)
+            (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::ExpressionStatement(statement) => (
             statement.span,
@@ -1349,17 +1325,17 @@ fn source_text_for_span(source_text: &str, span: Span) -> Option<String> {
         .map(ToString::to_string)
 }
 
-fn type_or_any(ty: Ty<'_>) -> Ty<'_> {
-    if ty.is_none() { Ty::any() } else { ty }
-}
-
-fn type_of_type_alias<'a>(
-    checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
-    alias: &oxc_ast::ast::TSTypeAliasDeclaration<'a>,
-) -> Ty<'a> {
-    let ty = checker.get_type_of_type_alias_declaration(program_id, alias);
-    if ty.is_none() { Ty::any() } else { ty }
+fn ts_module_declaration_name_span_and_text(
+    name: &oxc_ast::ast::TSModuleDeclarationName<'_>,
+) -> Option<(Span, String)> {
+    match name {
+        oxc_ast::ast::TSModuleDeclarationName::Identifier(identifier) => {
+            Some((identifier.span, identifier.name.to_string()))
+        }
+        oxc_ast::ast::TSModuleDeclarationName::StringLiteral(literal) => {
+            Some((literal.span, literal.value.to_string()))
+        }
+    }
 }
 
 fn ts_type_name_span_and_text(name: &TSTypeName<'_>) -> Option<(Span, String)> {

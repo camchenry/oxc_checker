@@ -10,10 +10,10 @@ use oxc_ast::{
         FunctionBody, IdentifierReference, MethodDefinition, MethodDefinitionKind, NewExpression,
         NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
         PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
-        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSSignature, TSThisParameter,
-        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
-        VariableDeclarationKind, VariableDeclarator,
+        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature,
+        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
@@ -5161,6 +5161,36 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
             AstKind::PropertyDefinition(property) => {
                 self.get_type_of_property_definition(node.program_id, property, Some(node.node_id))
+            }
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                let ty = self.get_type_of_type_alias_declaration(node.program_id, alias);
+                if ty.is_none() { Ty::any() } else { ty }
+            }
+            AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
+            AstKind::TSInterfaceDeclaration(_) => Ty::any(),
+            AstKind::TSModuleDeclaration(module) => {
+                let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
+                    return Ty::none();
+                };
+                // TODO(correctness): model namespace value-side as a real module namespace
+                // type instead of an `any` stub. The `TypeQuery` wrapper preserves the
+                // `typeof Module` display used by TypeScript for namespace declarations.
+                Ty::type_query(
+                    self.arena(),
+                    identifier.name.as_str(),
+                    Ty::any(),
+                    std::iter::empty(),
+                )
+            }
+            AstKind::TSTypeParameter(_) => Ty::any(),
+            AstKind::TSMappedType(_) => Ty::any(),
+            AstKind::TSClassImplements(_) => Ty::any(),
+            AstKind::TSInterfaceHeritage(_) => Ty::any(),
+            AstKind::TSTypeReference(_) => {
+                let ty = self
+                    .get_symbol_at_location(node)
+                    .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol));
+                if ty.is_none() { Ty::any() } else { ty }
             }
             _ => self
                 .get_symbol_at_location(node)
