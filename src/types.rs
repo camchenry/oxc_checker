@@ -1683,6 +1683,13 @@ fn infer_from_types<'a>(
                 depth + 1,
             )
         }
+        (Ty::Intersection(source), Ty::Object(target)) => infer_from_intersection_properties(
+            arena,
+            source.types.iter().copied(),
+            target.properties.iter().copied(),
+            inferences,
+            depth + 1,
+        ),
         (Ty::Keyof(source), Ty::Keyof(target)) => {
             infer_from_types(arena, source.target, target.target, inferences, depth + 1)
         }
@@ -1789,6 +1796,39 @@ fn infer_from_properties<'a>(
     }
 
     result
+}
+
+fn infer_from_intersection_properties<'a>(
+    arena: CheckerArena<'a>,
+    source_types: impl IntoIterator<Item = Ty<'a>>,
+    target_properties: impl IntoIterator<Item = TyProperty<'a>>,
+    inferences: &mut InferInferences<'a>,
+    depth: usize,
+) -> InferMatchResult {
+    let source_properties = source_types
+        .into_iter()
+        .flat_map(intersection_infer_properties)
+        .collect::<Vec<_>>();
+    infer_from_properties(
+        arena,
+        source_properties,
+        target_properties,
+        inferences,
+        depth + 1,
+    )
+}
+
+fn intersection_infer_properties(ty: Ty<'_>) -> Vec<TyProperty<'_>> {
+    match ty {
+        Ty::Object(object) => object.properties.iter().copied().collect(),
+        Ty::ModuleNamespace(namespace) => namespace.properties.iter().copied().collect(),
+        Ty::Intersection(intersection) => intersection
+            .types
+            .iter()
+            .flat_map(|ty| intersection_infer_properties(*ty))
+            .collect(),
+        _ => Vec::new(),
+    }
 }
 
 fn infer_from_signatures<'a>(
@@ -2481,6 +2521,10 @@ fn reduce_intersection_type<'a>(
     let mut type_set = Vec::new();
     for ty in types {
         add_type_to_intersection(&mut type_set, ty);
+    }
+
+    if type_set.len() > 1 {
+        type_set.retain(|ty| !matches!(ty, Ty::Unknown));
     }
 
     let has_object_like_member = type_set

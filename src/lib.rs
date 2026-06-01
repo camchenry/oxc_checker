@@ -1208,9 +1208,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             TSType::TSConditionalType(conditional) => {
                 let check_type = self.get_type_from_ts_type(program_id, &conditional.check_type);
-                let extends_type =
-                    self.get_type_from_ts_type(program_id, &conditional.extends_type);
-                let check_type = if ts_type_contains_infer(&conditional.extends_type) {
+                let contains_infer = ts_type_contains_infer(&conditional.extends_type);
+                let extends_type = if contains_infer {
+                    self.get_type_from_ts_type_expanding_top_level_aliases(
+                        program_id,
+                        &conditional.extends_type,
+                    )
+                } else {
+                    self.get_type_from_ts_type(program_id, &conditional.extends_type)
+                };
+                let check_type = if contains_infer {
                     self.apparent_type_for_conditional_match(program_id, check_type, 0)
                 } else {
                     check_type
@@ -7192,6 +7199,20 @@ mod test {
                 interface Register {}
                 interface QueryClient {}
                 interface AbortSignal {}
+                interface Error {}
+                type Todo = { id: number; title: string };
+                declare const dataTagSymbol: unique symbol;
+                declare const dataTagErrorSymbol: unique symbol;
+                type AnyDataTag = { [dataTagSymbol]: any; [dataTagErrorSymbol]: any };
+                type DataTag<TType, TValue, TError> = TType extends AnyDataTag
+                    ? TType
+                    : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError };
+                type InferDataFromTag<TQueryFnData, TTaggedQueryKey> =
+                    TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
+                        ? TaggedValue
+                        : TQueryFnData;
+                type TodoQueryKey = DataTag<readonly [\"todos\"], Todo[], Error>;
+                type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>;
                 type QueryKey = Register extends { queryKey: infer TQueryKey }
                     ? TQueryKey extends readonly unknown[] ? TQueryKey : readonly unknown[]
                     : readonly unknown[];
@@ -7235,6 +7256,14 @@ mod test {
         assert_eq!(
             get_type_alias_type(&ret, "QueryMeta").to_type_string(),
             "{ [x: string]: unknown; }"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "InferDataFromTag").to_type_string(),
+            "TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "TaggedTodoData").to_type_string(),
+            "Todo[]"
         );
         assert_eq!(
             get_first_symbol_type(&ret, "signalLessContext").to_type_string(),

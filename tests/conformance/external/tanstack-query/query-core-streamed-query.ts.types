@@ -128,7 +128,7 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 >                           ^^^^^^: any   (TyAny)
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
->           ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+>           ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData   (TyConditional)
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
 >                            ^^^^^^^^^^^^: any   (TyAny)
@@ -884,7 +884,7 @@ import { streamedQuery } from '../packages/query-core/src/streamedQuery'
 > ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
 
   InferDataFromTag,
-> ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+> ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData   (TyConditional)
 
   QueryFunctionContext,
 > ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
@@ -920,10 +920,10 @@ type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >    ^^^^^^^^^^^^^^: Todo[]   (TyArray)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                                              ^^^^^^^^^^^^: any   (TyAny)
