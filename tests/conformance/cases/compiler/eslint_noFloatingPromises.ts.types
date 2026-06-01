@@ -32,7 +32,7 @@ returnsPromise().then(() => {});
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
 
 returnsPromise().then(() => {});
->                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
+>                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>   (TyFunction)
 
 Promise.reject('value').catch();
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -44,7 +44,7 @@ Promise.reject('value').catch();
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 Promise.reject('value').catch();
->                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
+>                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>   (TyFunction)
 
 Promise.reject('value').finally();
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -56,7 +56,7 @@ Promise.reject('value').finally();
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 Promise.reject('value').finally();
->                       ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction)
+>                       ^^^^^^^: (onfinally?: (() => void) | null | undefined) => Promise<never>   (TyFunction)
 
 [1, 2, 3].map(async x => x + 1);
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<number>[]   (TyArray)
@@ -113,7 +113,7 @@ returnsPromise().then(
 >^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
 
 returnsPromise().then(
->                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
+>                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>   (TyFunction)
 
 Promise.reject('value').catch(() => {});
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -125,7 +125,7 @@ Promise.reject('value').catch(() => {});
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 Promise.reject('value').catch(() => {});
->                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
+>                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>   (TyFunction)
 
 await Promise.reject('value').finally(() => {});
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
@@ -137,7 +137,7 @@ await Promise.reject('value').finally(() => {});
 >             ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 await Promise.reject('value').finally(() => {});
->                             ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction)
+>                             ^^^^^^^: (onfinally?: (() => void) | null | undefined) => Promise<never>   (TyFunction)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { -readonly [P in keyof Promise<number>[]]: Awaited<Promise<number>[][P]>; }   (TyMapped)
@@ -231,6 +231,9 @@ declare function createMyThenable(): MyThenable;
 
 declare function createMyThenable(): MyThenable;
 >                                    ^^^^^^^^^^: any   (TyAny)
+
+await createMyThenable();
+>^^^^^^^^^^^^^^^^^^^^^^^^^: MyThenable   (TyTypeReference)
 
 await createMyThenable();
 >     ^^^^^^^^^^^^^^^^: { (): MyThenable; (): MyThenable; }   (TyObject)

@@ -770,7 +770,7 @@ export function streamedQuery<
 >                        ^^^^^^^^^: unknown   (TyUnknown)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: AsyncIterable<TQueryFnData>   (TyTypeReference)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
 >                        ^^^^^^^^: (context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction)
@@ -794,10 +794,10 @@ export function streamedQuery<
 >                ^^^^^^^^^^^^: TData   (TyTypeReference)
 
     for await (const chunk of stream) {
->                    ^^^^^: any   (TyAny)
+>                    ^^^^^: Awaited<TQueryFnData>   (TyTypeReference)
 
     for await (const chunk of stream) {
->                             ^^^^^^: any   (TyAny)
+>                             ^^^^^^: AsyncIterable<TQueryFnData>   (TyTypeReference)
 
       if (refetchMode === 'replace') {
 >         ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion)
@@ -815,7 +815,7 @@ export function streamedQuery<
 >                        ^^^^^^: TData   (TyTypeReference)
 
         result = reducer(result, chunk)
->                                ^^^^^: any   (TyAny)
+>                                ^^^^^: Awaited<TQueryFnData>   (TyTypeReference)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
 >       ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
@@ -860,7 +860,7 @@ export function streamedQuery<
 >                                                         ^^^^^^^^: TData | undefined   (TyUnion)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                                                   ^^^^^: any   (TyAny)
+>                                                                   ^^^^^: Awaited<TQueryFnData>   (TyTypeReference)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
 >          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)

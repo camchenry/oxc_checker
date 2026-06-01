@@ -30,9 +30,9 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched
       actual:   number
 PASS tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::c.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::d.ts matched_types=12 mismatched_types=1 total_types=13 match_percentage=92.31%
-  - tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::d.ts:11 `await createMyThenable();` missing from oxc output
+  - tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::d.ts:11 `await createMyThenable();` type mismatch
       expected: never
-      actual:   <missing>
+      actual:   MyThenable
 PASS tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::e.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::f.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/expressionInference.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%

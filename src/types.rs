@@ -2179,6 +2179,10 @@ pub(crate) fn reduce_union_type<'a>(
         type_set.retain(|ty| !matches!(ty, Ty::Never));
     }
 
+    // TODO(perf): this is just for nicer display purposes but we
+    // should handle this when printing instead, with flags?
+    normalize_null_undefined_order(&mut type_set);
+
     if type_set.len() == 1 {
         return type_set[0];
     }
@@ -2195,6 +2199,18 @@ fn add_type_to_union<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
         }
     } else if !type_set.contains(&ty) {
         type_set.push(ty);
+    }
+}
+
+fn normalize_null_undefined_order(type_set: &mut [Ty<'_>]) {
+    let Some(null_index) = type_set.iter().position(|ty| matches!(ty, Ty::Null)) else {
+        return;
+    };
+    let Some(undefined_index) = type_set.iter().position(|ty| matches!(ty, Ty::Undefined)) else {
+        return;
+    };
+    if undefined_index < null_index {
+        type_set.swap(undefined_index, null_index);
     }
 }
 

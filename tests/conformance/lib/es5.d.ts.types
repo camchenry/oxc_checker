@@ -3725,7 +3725,7 @@ interface PromiseLike<T> {
 >                     ^: any   (TyAny)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>;
->   ^^^^: { <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>; <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>; }   (TyObject)
+>   ^^^^: { <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): PromiseLike<TResult1 | TResult2>; <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): PromiseLike<TResult1 | TResult2>; }   (TyObject)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>;
 >        ^^^^^^^^: any   (TyAny)
@@ -3737,7 +3737,7 @@ interface PromiseLike<T> {
 >                      ^^^^^^^^: any   (TyAny)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>;
->                                        ^^^^^^^^^^^: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null   (TyUnion)
+>                                        ^^^^^^^^^^^: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined   (TyUnion)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>;
 >                                                        ^^^^^: T   (TyTypeReference)
@@ -3755,7 +3755,7 @@ interface PromiseLike<T> {
 >                                                                                            ^^^^^^^^: any   (TyAny)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>;
->                                                                                                                           ^^^^^^^^^^: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null   (TyUnion)
+>                                                                                                                           ^^^^^^^^^^: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined   (TyUnion)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2>;
 >                                                                                                                                          ^^^^^^: any   (TyAny)
@@ -3785,7 +3785,7 @@ interface Promise<T> {
 >                 ^: any   (TyAny)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
->   ^^^^: { <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>; <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>; }   (TyObject)
+>   ^^^^: { <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; <TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; }   (TyObject)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
 >        ^^^^^^^^: any   (TyAny)
@@ -3797,7 +3797,7 @@ interface Promise<T> {
 >                      ^^^^^^^^: any   (TyAny)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
->                                        ^^^^^^^^^^^: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null   (TyUnion)
+>                                        ^^^^^^^^^^^: ((value: T) => TResult1 | PromiseLike<TResult1>) | null | undefined   (TyUnion)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
 >                                                        ^^^^^: T   (TyTypeReference)
@@ -3815,7 +3815,7 @@ interface Promise<T> {
 >                                                                                            ^^^^^^^^: any   (TyAny)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
->                                                                                                                           ^^^^^^^^^^: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null   (TyUnion)
+>                                                                                                                           ^^^^^^^^^^: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined   (TyUnion)
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
 >                                                                                                                                          ^^^^^^: any   (TyAny)
@@ -3839,13 +3839,13 @@ interface Promise<T> {
 >                                                                                                                                                                                                                                    ^^^^^^^^: any   (TyAny)
 
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
->   ^^^^^: { <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>; <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>; }   (TyObject)
+>   ^^^^^: { <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<T | TResult>; <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<T | TResult>; }   (TyObject)
 
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
 >         ^^^^^^^: any   (TyAny)
 
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
->                          ^^^^^^^^^^: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null   (TyUnion)
+>                          ^^^^^^^^^^: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined   (TyUnion)
 
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
 >                                         ^^^^^^: any   (TyAny)

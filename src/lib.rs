@@ -5,14 +5,15 @@ use oxc_ast::{
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AwaitExpression,
         BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
-        ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
-        FormalParameterRest, FormalParameters, Function, FunctionBody, IdentifierReference,
-        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
-        ObjectPropertyKind, Program, PropertyDefinition, PropertyKey, ReturnStatement,
-        StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType,
-        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        ComputedMemberExpression, ConditionalExpression, Expression, ForOfStatement,
+        ForStatementLeft, FormalParameter, FormalParameterRest, FormalParameters, Function,
+        FunctionBody, IdentifierReference, MethodDefinition, MethodDefinitionKind, NewExpression,
+        NumericLiteral, ObjectExpression, ObjectPropertyKind, Program, PropertyDefinition,
+        PropertyKey, ReturnStatement, StaticMemberExpression, StringLiteral,
+        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSSignature, TSThisParameter,
+        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
+        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
+        VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_ast_visit::Visit;
@@ -449,6 +450,19 @@ fn binding_pattern_default_initializer_symbol_id(
                 binding_pattern_default_initializer_symbol_id(&assignment.left, initializer_span)
             }
         }
+    }
+}
+
+fn for_statement_left_contains_declarator(
+    left: &ForStatementLeft<'_>,
+    target: &VariableDeclarator<'_>,
+) -> bool {
+    match left {
+        ForStatementLeft::VariableDeclaration(declaration) => declaration
+            .declarations
+            .iter()
+            .any(|declarator| declarator.span == target.span),
+        _ => false,
     }
 }
 
@@ -4352,16 +4366,45 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if declarator.type_annotation.is_some() {
             self.get_type_from_ts_type_annotation(program_id, declarator.type_annotation.as_deref())
         } else {
-            declarator.init.as_ref().map_or_else(Ty::any, |expression| {
-                if declarator.kind == VariableDeclarationKind::Const
-                    && !self.is_in_exported_declaration(program_id, declaration)
-                {
-                    self.get_type_of_const_initializer(program_id, expression, declaration)
-                } else {
-                    self.get_type_of_expression_at_node(program_id, expression, declaration)
-                }
-            })
+            declarator.init.as_ref().map_or_else(
+                || {
+                    self.get_type_of_for_of_declarator(program_id, declaration, declarator)
+                        .unwrap_or_else(Ty::any)
+                },
+                |expression| {
+                    if declarator.kind == VariableDeclarationKind::Const
+                        && !self.is_in_exported_declaration(program_id, declaration)
+                    {
+                        self.get_type_of_const_initializer(program_id, expression, declaration)
+                    } else {
+                        self.get_type_of_expression_at_node(program_id, expression, declaration)
+                    }
+                },
+            )
         }
+    }
+
+    fn get_type_of_for_of_declarator(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        declarator: &'a VariableDeclarator<'a>,
+    ) -> Option<Ty<'a>> {
+        let (for_of_node_id, for_of) = self
+            .nodes(program_id)
+            .ancestors_enumerated(declaration)
+            .find_map(|(ancestor_id, node)| match node.kind() {
+                AstKind::ForOfStatement(for_of)
+                    if for_statement_left_contains_declarator(&for_of.left, declarator) =>
+                {
+                    Some((ancestor_id, for_of))
+                }
+                _ => None,
+            })?;
+
+        let iterable_type =
+            self.get_type_of_expression_with_node(program_id, &for_of.right, Some(for_of_node_id));
+        self.get_iteration_element_type(program_id, for_of_node_id, iterable_type, for_of.r#await)
     }
 
     fn get_type_of_variable_declarator_binding(
@@ -4722,17 +4765,176 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         await_expr: &'a AwaitExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let type_ref =
-            self.get_type_of_expression_with_node(program_id, &await_expr.argument, node_id);
-        // TODO(correctness): Actually check this is the global Promise type
-        let Ty::TypeReference(promise_type) = type_ref else {
-            return Ty::any();
+        let ty = self.get_type_of_expression_with_node(program_id, &await_expr.argument, node_id);
+        self.get_awaited_type(ty)
+    }
+
+    fn get_awaited_type(&self, ty: Ty<'a>) -> Ty<'a> {
+        match ty {
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union.types.iter().map(|ty| self.get_awaited_type(*ty)),
+            ),
+            Ty::TypeReference(reference) if is_promise_like_type_reference(reference.name) => {
+                reference
+                    .type_arguments
+                    .first()
+                    .copied()
+                    .map(|ty| self.get_awaited_type(ty))
+                    .unwrap_or(ty)
+            }
+            _ => ty,
+        }
+    }
+
+    fn get_iteration_element_type(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        iterable_type: Ty<'a>,
+        is_await: bool,
+    ) -> Option<Ty<'a>> {
+        match iterable_type {
+            Ty::Any => Some(Ty::any()),
+            Ty::Union(union) => {
+                let element_types = union
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        self.get_iteration_element_type(program_id, node_id, *ty, is_await)
+                    })
+                    .collect::<Vec<_>>();
+                (!element_types.is_empty()).then(|| Ty::union(self.arena(), element_types))
+            }
+            Ty::Array(array) => Some(self.get_for_of_element_type(
+                program_id,
+                node_id,
+                array.element_type,
+                is_await,
+            )),
+            Ty::Tuple(tuple) => Some(
+                self.get_for_of_element_type(
+                    program_id,
+                    node_id,
+                    Ty::union(
+                        self.arena(),
+                        tuple
+                            .elements
+                            .iter()
+                            .map(|element| tuple_element_type(*element)),
+                    ),
+                    is_await,
+                ),
+            ),
+            Ty::TypeReference(reference) if is_iterable_type_reference(reference.name) => reference
+                .type_arguments
+                .first()
+                .copied()
+                .map(|element_type| {
+                    self.get_for_of_element_type(program_id, node_id, element_type, is_await)
+                }),
+            _ => None,
+        }
+    }
+
+    fn get_for_of_element_type(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        element_type: Ty<'a>,
+        is_await: bool,
+    ) -> Ty<'a> {
+        if !is_await {
+            return element_type;
+        }
+        let awaited_type = self.get_awaited_type(element_type);
+        if awaited_type != element_type {
+            return awaited_type;
+        }
+        if self.is_scoped_type_parameter_reference(program_id, node_id, element_type) {
+            return Ty::type_reference(self.arena(), "Awaited", [element_type]);
+        }
+        element_type
+    }
+
+    fn is_scoped_type_parameter_reference(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        ty: Ty<'a>,
+    ) -> bool {
+        let Ty::TypeReference(reference) = ty else {
+            return false;
         };
-        promise_type
-            .type_arguments
-            .first()
-            .copied()
-            .unwrap_or(Ty::none())
+        if !reference.type_arguments.is_empty() {
+            return false;
+        }
+        self.type_parameter_names_in_scope(program_id, node_id)
+            .contains(&reference.name)
+    }
+
+    fn type_parameter_names_in_scope(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+    ) -> Vec<&'a str> {
+        let mut names = Vec::new();
+        for ancestor in self.nodes(program_id).ancestors(node_id) {
+            match ancestor.kind() {
+                AstKind::Function(function) => {
+                    push_type_parameter_names(&mut names, function.type_parameters.as_deref());
+                }
+                AstKind::ArrowFunctionExpression(function) => {
+                    push_type_parameter_names(&mut names, function.type_parameters.as_deref());
+                }
+                AstKind::Class(class) => {
+                    push_type_parameter_names(&mut names, class.type_parameters.as_deref());
+                }
+                AstKind::TSInterfaceDeclaration(interface) => {
+                    push_type_parameter_names(&mut names, interface.type_parameters.as_deref());
+                }
+                AstKind::TSTypeAliasDeclaration(alias) => {
+                    push_type_parameter_names(&mut names, alias.type_parameters.as_deref());
+                }
+                _ => {}
+            }
+        }
+        names
+    }
+}
+
+fn is_promise_like_type_reference(name: &str) -> bool {
+    matches!(name, "Promise" | "PromiseLike")
+}
+
+fn is_iterable_type_reference(name: &str) -> bool {
+    matches!(
+        name,
+        "AsyncIterable"
+            | "AsyncIterableIterator"
+            | "AsyncIterator"
+            | "AsyncIteratorObject"
+            | "Iterable"
+            | "IterableIterator"
+            | "Iterator"
+            | "IteratorObject"
+            | "ArrayIterator"
+            | "MapIterator"
+            | "SetIterator"
+    )
+}
+
+fn push_type_parameter_names<'a>(
+    names: &mut Vec<&'a str>,
+    type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+) {
+    if let Some(type_parameters) = type_parameters {
+        names.extend(
+            type_parameters
+                .params
+                .iter()
+                .map(|parameter| parameter.name.name.as_str()),
+        );
     }
 }
 
@@ -4747,6 +4949,12 @@ fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
         return None;
     }
     Some(literal.value as usize)
+}
+
+fn tuple_element_type(element: TupleElement<'_>) -> Ty<'_> {
+    match element {
+        TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => ty,
+    }
 }
 
 fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option<Ty<'a>> {
@@ -6998,6 +7206,33 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "numberResult"),
             Ty::type_reference(arena, "Promise", [Ty::number()])
+        );
+    }
+
+    #[test]
+    fn await_union_and_for_await_preserve_async_iterable_element_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        async function useStream<TQueryFnData>(
+            streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+        ) {
+            const stream = await streamFn();
+            for await (const chunk of stream) {
+                chunk;
+            }
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "stream").to_type_string(),
+            "AsyncIterable<TQueryFnData>"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "chunk").to_type_string(),
+            "Awaited<TQueryFnData>"
         );
     }
 
