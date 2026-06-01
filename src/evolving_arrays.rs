@@ -7,7 +7,8 @@ use oxc_span::GetSpan;
 use oxc_syntax::operator::AssignmentOperator;
 
 use crate::{
-    CheckerReturn, NodeRef, SymbolRef, program,
+    checker::{CheckerReturn, NodeRef, SymbolRef},
+    program,
     types::{TupleElement, Ty},
 };
 

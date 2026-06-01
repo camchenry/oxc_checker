@@ -3,7 +3,12 @@ use std::collections::HashMap;
 use oxc_ast::{AstKind, ast::Expression};
 use oxc_syntax::symbol::SymbolFlags;
 
-use crate::{Checker, CheckerReturn, SymbolRef, Ty, TyTypeReference, UNDEFINED_IDENT, program};
+use crate::{
+    checker::{CheckerReturn, SymbolRef},
+    checker_impl::UNDEFINED_IDENT,
+    program,
+    types::{Ty, TyTypeReference},
+};
 
 const ARRAY_TYPE_NAME: &str = "Array";
 const READONLY_ARRAY_TYPE_NAME: &str = "ReadonlyArray";
@@ -89,7 +94,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .or_else(|| self.global_symbols.type_symbol(type_name))
     }
 
-    pub(crate) fn get_value_symbol_for_name(
+    pub fn get_value_symbol_for_name(
         &self,
         program_id: program::ProgramId,
         value_name: &str,

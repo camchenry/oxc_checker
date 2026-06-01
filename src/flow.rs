@@ -6,7 +6,11 @@ use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
 
-use crate::{CheckerReturn, NodeRef, SymbolRef, evolving_arrays, types::Ty};
+use crate::{
+    checker::{CheckerReturn, NodeRef, SymbolRef},
+    evolving_arrays,
+    types::Ty,
+};
 
 /// A branch-local condition that may narrow identifier references inside an `if` arm.
 #[derive(Clone, Copy)]

@@ -538,7 +538,7 @@ fn normalize_path(path: &Path) -> PathBuf {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::Checker;
+    use crate::checker::{Checker, CheckerBuilder, SymbolRef};
     use oxc_str::Ident;
 
     #[derive(Default)]
@@ -714,7 +714,7 @@ mod tests {
             .build()
             .unwrap();
         let program_id = store.id_for_path(Path::new("/project/a.ts")).unwrap();
-        let checker = crate::CheckerBuilder::new().build(&store);
+        let checker = CheckerBuilder::new().build(&store);
         let symbol_id = store
             .entry(program_id)
             .unwrap()
@@ -722,7 +722,7 @@ mod tests {
             .scoping()
             .get_root_binding(Ident::from("result"))
             .unwrap();
-        let symbol = crate::SymbolRef::new(program_id, symbol_id);
+        let symbol = SymbolRef::new(program_id, symbol_id);
 
         assert_eq!(checker.get_type_of_symbol(symbol), crate::Ty::string());
     }
