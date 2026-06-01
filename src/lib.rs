@@ -735,10 +735,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ParenthesizedExpression(parenthesized) => self
                 .get_type_of_expression_with_node(program_id, &parenthesized.expression, node_id),
             Expression::TSTypeAssertion(assertion) => {
-                self.get_type_from_ts_type(program_id, &assertion.type_annotation)
+                self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
             }
             Expression::TSAsExpression(assertion) => {
-                self.get_type_from_ts_type(program_id, &assertion.type_annotation)
+                self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
             }
             Expression::ThisExpression(_) => node_id
                 .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
@@ -1850,11 +1850,37 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         reference: &TSTypeReference<'a>,
     ) -> Ty<'a> {
+        self.get_type_from_ts_type_reference_with_default_display(program_id, reference, false)
+    }
+
+    fn get_type_from_type_assertion(
+        &self,
+        program_id: program::ProgramId,
+        ty: &TSType<'a>,
+    ) -> Ty<'a> {
+        match ty {
+            TSType::TSTypeReference(reference) => self
+                .get_type_from_ts_type_reference_with_default_display(program_id, reference, true),
+            _ => self.get_type_from_ts_type(program_id, ty),
+        }
+    }
+
+    fn get_type_from_ts_type_reference_with_default_display(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TSTypeReference<'a>,
+        display_default_type_arguments: bool,
+    ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
         let explicit_type_argument_count = type_arguments.len();
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
+        let type_argument_display_count = if display_default_type_arguments {
+            type_arguments.len()
+        } else {
+            explicit_type_argument_count
+        };
 
         if let Some(array_type) =
             self.get_global_array_type_reference_type(program_id, name, type_arguments.as_slice())
@@ -1871,8 +1897,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Ty::type_reference_with_explicit_type_argument_count(
             self.arena(),
             name,
-            type_arguments,
-            explicit_type_argument_count,
+            type_arguments.iter().copied(),
+            type_argument_display_count,
         )
     }
 
@@ -7377,6 +7403,10 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "boxed"),
             Ty::type_reference(arena(&ret), "Box", [Ty::number()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "boxed").to_type_string(),
+            "Box<number>"
         );
         assert_eq!(get_global_symbol_type(&ret, "boxedValue"), Ty::number());
         assert_eq!(
