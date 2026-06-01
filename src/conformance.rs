@@ -1216,12 +1216,12 @@ fn actual_identifier_record<'a>(
             (identifier.span, &identifier.name, ty)
         }
         AstKind::TSPropertySignature(property) => {
-            let span = property_key_span(&property.key)?;
+            let span = property.key.span();
             let text = property_key_name_str(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::ObjectProperty(property) => {
-            let span = property_key_span(&property.key)?;
+            let span = property.key.span();
             let text = property_key_name_str(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
@@ -1231,12 +1231,12 @@ fn actual_identifier_record<'a>(
             checker.get_type_at_location(node_ref),
         ),
         AstKind::MethodDefinition(method) => {
-            let span = property_key_span(&method.key)?;
+            let span = method.key.span();
             let text = property_key_name_str(&method.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSMethodSignature(method) => {
-            let span = property_key_span(&method.key)?;
+            let span = method.key.span();
             let text = property_key_name_str(&method.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
@@ -1246,7 +1246,7 @@ fn actual_identifier_record<'a>(
             checker.get_type_at_location(node_ref),
         ),
         AstKind::PropertyDefinition(property) => {
-            let span = property_key_span(&property.key)?;
+            let span = property.key.span();
             let text = property_key_name_str(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }

@@ -231,13 +231,6 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     }
 }
 
-fn property_key_span(key: &PropertyKey<'_>) -> Option<Span> {
-    match key {
-        PropertyKey::StaticIdentifier(identifier) => Some(identifier.span),
-        _ => None,
-    }
-}
-
 fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
     match ty {
         Ty::StringLiteral(literal) => Some(literal.value),
