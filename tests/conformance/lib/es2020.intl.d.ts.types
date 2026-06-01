@@ -116,7 +116,7 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     interface RelativeTimeFormat {
->             ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>             ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         format(value: number, unit: RelativeTimeFormatUnit): string;
 >       ^^^^^^: (value: number, unit: RelativeTimeFormatUnit) => string   (TyFunction)
@@ -152,7 +152,7 @@ declare namespace Intl {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     const RelativeTimeFormat: {
->         ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>         ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
             locales?: LocalesArgument,
 >           ^^^^^^^: LocalesArgument | undefined   (TyUnion)
@@ -167,10 +167,10 @@ declare namespace Intl {
 >                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
         ): RelativeTimeFormat;
->          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         ): RelativeTimeFormat;
->          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         supportedLocalesOf(
 >       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]   (TyFunction)
@@ -506,7 +506,7 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^: any   (TyAny)
 
     interface DisplayNames {
->             ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>             ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         of(code: string): string | undefined;
 >       ^^: (code: string) => string | undefined   (TyFunction)
@@ -521,16 +521,16 @@ declare namespace Intl {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     const DisplayNames: {
->         ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>         ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         prototype: DisplayNames;
 >       ^^^^^^^^^: DisplayNames   (TyTypeReference)
 
         prototype: DisplayNames;
->                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         prototype: DisplayNames;
->                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
 >            ^^^^^^^: LocalesArgument   (TyTypeReference)
@@ -545,10 +545,10 @@ declare namespace Intl {
 >                                               ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+>                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
 >       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]   (TyFunction)

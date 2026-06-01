@@ -3,7 +3,7 @@ use oxc_ast::ast::{
     BindingPattern, Expression, PropertyKey, TSMappedTypeModifierOperator, TSTemplateLiteralType,
     TSType, TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
 };
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Clone, Copy)]
 pub(crate) struct CheckerArena<'a> {
@@ -89,9 +89,10 @@ pub(crate) struct TyModuleNamespace<'a> {
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) struct TyProperty<'a> {
     pub(crate) name: &'a str,
+    pub(crate) ty: Ty<'a>,
     pub(crate) computed: bool,
     pub(crate) optional: bool,
-    pub(crate) ty: Ty<'a>,
+    pub(crate) method: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -457,33 +458,7 @@ impl<'a> Ty<'a> {
             name,
             computed: false,
             optional: false,
-            ty,
-        }
-    }
-
-    pub(crate) fn computed_property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
-        TyProperty {
-            name,
-            computed: true,
-            optional: false,
-            ty,
-        }
-    }
-
-    pub(crate) fn optional_property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
-        TyProperty {
-            name,
-            computed: false,
-            optional: true,
-            ty,
-        }
-    }
-
-    pub(crate) fn computed_optional_property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
-        TyProperty {
-            name,
-            computed: true,
-            optional: true,
+            method: false,
             ty,
         }
     }
@@ -779,6 +754,7 @@ impl<'a> Ty<'a> {
                     name: property.name,
                     computed: property.computed,
                     optional: property.optional,
+                    method: property.method,
                     ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             )
@@ -796,6 +772,7 @@ impl<'a> Ty<'a> {
                     name: property.name,
                     computed: property.computed,
                     optional: property.optional,
+                    method: property.method,
                     ty: property.ty.substitute_type_parameters(arena, substitutions),
                 }),
             ),
@@ -1098,11 +1075,21 @@ impl<'a> Ty<'a> {
                     .iter()
                     .map(|signature| signature.to_type_string())
                     .chain(object.properties.iter().map(|property| {
-                        format!(
-                            "{}: {};",
-                            property_name_to_type_string(property),
-                            property.ty.to_type_string()
-                        )
+                        if property.method
+                            && let Ty::Function(function) = property.ty
+                        {
+                            format!(
+                                "{}{};",
+                                property_name_to_type_string(property),
+                                signature_to_type_string(function)
+                            )
+                        } else {
+                            format!(
+                                "{}: {};",
+                                property_name_to_type_string(property),
+                                property.ty.to_type_string()
+                            )
+                        }
                     }))
                     .collect::<Vec<_>>()
                     .join(" ");
@@ -2277,29 +2264,31 @@ fn remove_redundant_literal_types(type_set: &mut Vec<Ty<'_>>) {
     let has_number = type_set.iter().any(|ty| matches!(ty, Ty::Number));
     let has_boolean = type_set.iter().any(|ty| matches!(ty, Ty::Boolean));
     let has_bigint = type_set.iter().any(|ty| matches!(ty, Ty::Bigint));
-    let template_literals = type_set
-        .iter()
-        .filter_map(|ty| match ty {
-            Ty::TemplateLiteral(template_literal) => Some(*template_literal),
-            _ => None,
-        })
-        .collect::<Vec<_>>();
+    let template_literals = (!has_string).then(|| {
+        type_set
+            .iter()
+            .filter_map(|ty| match ty {
+                Ty::TemplateLiteral(template_literal) => Some(*template_literal),
+                _ => None,
+            })
+            .collect::<Vec<_>>()
+    });
 
     type_set.retain(|ty| match ty {
-        Ty::StringLiteral(string_literal) => {
-            !has_string
-                && !template_literals.iter().any(|template_literal| {
-                    template_literal_matches_string(template_literal, string_literal.value)
-                })
-        }
+        Ty::StringLiteral(string_literal) => template_literals.as_ref().is_some_and(|templates| {
+            !templates.iter().any(|template_literal| {
+                template_literal_matches_string(template_literal, string_literal.value)
+            })
+        }),
         Ty::TemplateLiteral(template_literal) => {
-            !has_string
-                && template_literal_static_value(template_literal).is_none_or(|value| {
-                    !template_literals.iter().any(|candidate| {
+            template_literals.as_ref().is_some_and(|templates| {
+                template_literal_static_value(template_literal).is_none_or(|value| {
+                    !templates.iter().any(|candidate| {
                         *candidate != *template_literal
                             && template_literal_matches_string(candidate, value)
                     })
                 })
+            })
         }
         Ty::NumberLiteral(_) => !has_number,
         Ty::BooleanLiteral(_) => !has_boolean,
@@ -2326,16 +2315,29 @@ fn template_literal_matches_string(template_literal: &TyTemplateLiteral<'_>, val
     if !value.starts_with(first_quasi.value) {
         return false;
     }
-    template_literal_remaining_matches(template_literal, 0, &value[first_quasi.value.len()..])
+    let mut seen = HashSet::new();
+    template_literal_remaining_matches(
+        template_literal,
+        0,
+        value,
+        first_quasi.value.len(),
+        &mut seen,
+    )
 }
 
 fn template_literal_remaining_matches(
     template_literal: &TyTemplateLiteral<'_>,
     expression_index: usize,
-    remaining: &str,
+    value: &str,
+    offset: usize,
+    seen: &mut HashSet<(usize, usize)>,
 ) -> bool {
+    if !seen.insert((expression_index, offset)) {
+        return false;
+    }
+
     let Some(expression) = template_literal.expressions.get(expression_index) else {
-        return remaining.is_empty();
+        return offset == value.len();
     };
     let next_quasi = template_literal
         .quasis
@@ -2345,43 +2347,59 @@ fn template_literal_remaining_matches(
     match expression {
         Ty::String => {
             if next_quasi.is_empty() {
-                return string_split_indices(remaining).any(|split_index| {
+                return string_split_indices(&value[offset..]).any(|split_index| {
                     template_literal_remaining_matches(
                         template_literal,
                         expression_index + 1,
-                        &remaining[split_index..],
+                        value,
+                        offset + split_index,
+                        seen,
                     )
                 });
             }
 
-            let mut search_start = 0;
-            while let Some(found_index) = remaining[search_start..].find(next_quasi) {
-                let next_index = search_start + found_index + next_quasi.len();
+            let mut search_start = offset;
+            while let Some(found_index) = value[search_start..].find(next_quasi) {
+                let match_index = search_start + found_index;
+                let next_index = match_index + next_quasi.len();
                 if template_literal_remaining_matches(
                     template_literal,
                     expression_index + 1,
-                    &remaining[next_index..],
+                    value,
+                    next_index,
+                    seen,
                 ) {
                     return true;
                 }
-                search_start += found_index + 1;
-                while !remaining.is_char_boundary(search_start) && search_start < remaining.len() {
-                    search_start += 1;
-                }
+                search_start = next_char_boundary(value, match_index + 1);
             }
             false
         }
         Ty::StringLiteral(string_literal) => {
-            let Some(remaining) = remaining.strip_prefix(string_literal.value) else {
+            let Some(remaining) = value[offset..].strip_prefix(string_literal.value) else {
                 return false;
             };
             let Some(remaining) = remaining.strip_prefix(next_quasi) else {
                 return false;
             };
-            template_literal_remaining_matches(template_literal, expression_index + 1, remaining)
+            template_literal_remaining_matches(
+                template_literal,
+                expression_index + 1,
+                value,
+                value.len() - remaining.len(),
+                seen,
+            )
         }
         _ => false,
     }
+}
+
+fn next_char_boundary(value: &str, byte_index: usize) -> usize {
+    let mut index = byte_index.min(value.len());
+    while index < value.len() && !value.is_char_boundary(index) {
+        index += 1;
+    }
+    index
 }
 
 fn string_split_indices(value: &str) -> impl Iterator<Item = usize> + '_ {
@@ -2912,6 +2930,30 @@ mod tests {
         assert_eq!(
             Ty::r#union(arena, [function, Ty::null(), Ty::undefined()]).to_type_string(),
             "((arg1: A1) => R) | null | undefined"
+        );
+    }
+
+    #[test]
+    fn object_method_display_uses_signature_syntax() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let abort_signal = Ty::type_reference(arena, "AbortSignal", []);
+        let abort = TyProperty {
+            name: "abort",
+            ty: Ty::function(
+                arena,
+                [],
+                [Ty::optional_parameter("reason", Ty::any())],
+                abort_signal,
+            ),
+            computed: false,
+            optional: false,
+            method: true,
+        };
+
+        assert_eq!(
+            Ty::object(arena, [abort]).to_type_string(),
+            "{ abort(reason?: any): AbortSignal; }"
         );
     }
 

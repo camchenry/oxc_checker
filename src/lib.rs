@@ -985,16 +985,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 program_id,
                                 property.type_annotation.as_deref(),
                             );
-                            Some(if property.computed {
-                                if property.optional {
-                                    Ty::computed_optional_property(name, ty)
-                                } else {
-                                    Ty::computed_property(name, ty)
-                                }
-                            } else if property.optional {
-                                Ty::optional_property(name, ty)
-                            } else {
-                                Ty::property(name, ty)
+                            Some(TyProperty {
+                                name,
+                                ty,
+                                computed: property.computed,
+                                optional: property.optional,
+                                method: false,
                             })
                         }
                         TSSignature::TSMethodSignature(method) => {
@@ -1020,10 +1016,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 return_type,
                                 type_predicate,
                             );
-                            Some(if method.computed {
-                                Ty::computed_property(name, ty)
-                            } else {
-                                Ty::property(name, ty)
+                            Some(TyProperty {
+                                name,
+                                ty,
+                                computed: method.computed,
+                                optional: method.optional,
+                                method: true,
                             })
                         }
                         _ => None,
@@ -1603,13 +1601,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .template
                 .substitute_type_parameters(self.arena(), &substitutions);
             let ty = self.expand_type_at_use(program_id, ty, depth + 1);
-            expanded.push(
-                if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) {
-                    Ty::optional_property(property_name, ty)
-                } else {
-                    Ty::property(property_name, ty)
-                },
-            );
+            expanded.push(TyProperty {
+                name: property_name,
+                ty,
+                computed: false,
+                optional: matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus),
+                method: false,
+            });
         }
 
         Some(Ty::object(self.arena(), expanded))
@@ -2091,16 +2089,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             },
                         );
                         let ty = ty.substitute_type_parameters(self.arena(), &substitutions);
-                        properties.push(if property.computed {
-                            if property.optional {
-                                Ty::computed_optional_property(name, ty)
-                            } else {
-                                Ty::computed_property(name, ty)
-                            }
-                        } else if property.optional {
-                            Ty::optional_property(name, ty)
-                        } else {
-                            Ty::property(name, ty)
+                        properties.push(TyProperty {
+                            name,
+                            ty,
+                            computed: property.computed,
+                            optional: property.optional,
+                            method: false,
                         });
                     }
                     TSSignature::TSMethodSignature(method) => {
@@ -2116,10 +2110,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         );
                         let signature =
                             signature.substitute_type_parameters(self.arena(), &substitutions);
-                        properties.push(if method.computed {
-                            Ty::computed_property(name, Ty::Function(signature.function))
-                        } else {
-                            Ty::property(name, Ty::Function(signature.function))
+                        properties.push(TyProperty {
+                            name,
+                            ty: Ty::Function(signature.function),
+                            computed: method.computed,
+                            optional: method.optional,
+                            method: true,
                         });
                     }
                     _ => {}
