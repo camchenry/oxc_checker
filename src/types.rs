@@ -2277,14 +2277,118 @@ fn remove_redundant_literal_types(type_set: &mut Vec<Ty<'_>>) {
     let has_number = type_set.iter().any(|ty| matches!(ty, Ty::Number));
     let has_boolean = type_set.iter().any(|ty| matches!(ty, Ty::Boolean));
     let has_bigint = type_set.iter().any(|ty| matches!(ty, Ty::Bigint));
+    let template_literals = type_set
+        .iter()
+        .filter_map(|ty| match ty {
+            Ty::TemplateLiteral(template_literal) => Some(*template_literal),
+            _ => None,
+        })
+        .collect::<Vec<_>>();
 
     type_set.retain(|ty| match ty {
-        Ty::StringLiteral(_) | Ty::TemplateLiteral(_) => !has_string,
+        Ty::StringLiteral(string_literal) => {
+            !has_string
+                && !template_literals.iter().any(|template_literal| {
+                    template_literal_matches_string(template_literal, string_literal.value)
+                })
+        }
+        Ty::TemplateLiteral(template_literal) => {
+            !has_string
+                && template_literal_static_value(template_literal).is_none_or(|value| {
+                    !template_literals.iter().any(|candidate| {
+                        *candidate != *template_literal
+                            && template_literal_matches_string(candidate, value)
+                    })
+                })
+        }
         Ty::NumberLiteral(_) => !has_number,
         Ty::BooleanLiteral(_) => !has_boolean,
         Ty::BigIntLiteral(_) => !has_bigint,
         _ => true,
     });
+}
+
+fn template_literal_static_value<'a>(template_literal: &TyTemplateLiteral<'a>) -> Option<&'a str> {
+    if !template_literal.expressions.is_empty() || template_literal.quasis.len() != 1 {
+        return None;
+    }
+    Some(template_literal.quasis[0].value)
+}
+
+fn template_literal_matches_string(template_literal: &TyTemplateLiteral<'_>, value: &str) -> bool {
+    if let Some(static_value) = template_literal_static_value(template_literal) {
+        return static_value == value;
+    }
+
+    let Some(first_quasi) = template_literal.quasis.first() else {
+        return false;
+    };
+    if !value.starts_with(first_quasi.value) {
+        return false;
+    }
+    template_literal_remaining_matches(template_literal, 0, &value[first_quasi.value.len()..])
+}
+
+fn template_literal_remaining_matches(
+    template_literal: &TyTemplateLiteral<'_>,
+    expression_index: usize,
+    remaining: &str,
+) -> bool {
+    let Some(expression) = template_literal.expressions.get(expression_index) else {
+        return remaining.is_empty();
+    };
+    let next_quasi = template_literal
+        .quasis
+        .get(expression_index + 1)
+        .map_or("", |quasi| quasi.value);
+
+    match expression {
+        Ty::String => {
+            if next_quasi.is_empty() {
+                return string_split_indices(remaining).any(|split_index| {
+                    template_literal_remaining_matches(
+                        template_literal,
+                        expression_index + 1,
+                        &remaining[split_index..],
+                    )
+                });
+            }
+
+            let mut search_start = 0;
+            while let Some(found_index) = remaining[search_start..].find(next_quasi) {
+                let next_index = search_start + found_index + next_quasi.len();
+                if template_literal_remaining_matches(
+                    template_literal,
+                    expression_index + 1,
+                    &remaining[next_index..],
+                ) {
+                    return true;
+                }
+                search_start += found_index + 1;
+                while !remaining.is_char_boundary(search_start) && search_start < remaining.len() {
+                    search_start += 1;
+                }
+            }
+            false
+        }
+        Ty::StringLiteral(string_literal) => {
+            let Some(remaining) = remaining.strip_prefix(string_literal.value) else {
+                return false;
+            };
+            let Some(remaining) = remaining.strip_prefix(next_quasi) else {
+                return false;
+            };
+            template_literal_remaining_matches(template_literal, expression_index + 1, remaining)
+        }
+        _ => false,
+    }
+}
+
+fn string_split_indices(value: &str) -> impl Iterator<Item = usize> + '_ {
+    value
+        .char_indices()
+        .map(|(index, _)| index)
+        .chain(std::iter::once(value.len()))
 }
 
 fn reduce_intersection_type<'a>(
@@ -2751,6 +2855,50 @@ mod tests {
             Ty::undefined()
         );
         assert_eq!(Ty::r#union(arena, [Ty::never()]), Ty::never());
+    }
+
+    #[test]
+    fn union_reduction_absorbs_literals_contained_by_template_literals() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let literal_template = Ty::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+            quasis: arena.vec_from_iter([TemplateLiteralElement { value: "test" }]),
+            expressions: arena.vec_from_iter([]),
+        }));
+        let pattern_template = Ty::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+            quasis: arena.vec_from_iter([
+                TemplateLiteralElement { value: "test" },
+                TemplateLiteralElement { value: "" },
+            ]),
+            expressions: arena.vec_from_iter([Ty::string()]),
+        }));
+
+        assert_eq!(
+            Ty::r#union(arena, [literal_template, pattern_template]).to_type_string(),
+            "`test${string}`"
+        );
+        assert_eq!(
+            Ty::r#union(arena, [Ty::string_literal(arena, "test"), pattern_template])
+                .to_type_string(),
+            "`test${string}`"
+        );
+
+        let backtracking_template = Ty::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+            quasis: arena.vec_from_iter([
+                TemplateLiteralElement { value: "" },
+                TemplateLiteralElement { value: "a" },
+                TemplateLiteralElement { value: "" },
+            ]),
+            expressions: arena.vec_from_iter([Ty::string(), Ty::string_literal(arena, "b")]),
+        }));
+        assert_eq!(
+            Ty::r#union(
+                arena,
+                [Ty::string_literal(arena, "aab"), backtracking_template]
+            )
+            .to_type_string(),
+            "`${string}a${\"b\"}`"
+        );
     }
 
     #[test]
