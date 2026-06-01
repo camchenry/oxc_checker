@@ -221,10 +221,6 @@ fn infer_type_parameter_from_union<'a>(
     }
 }
 
-fn property_key_name(key: &PropertyKey<'_>) -> Option<String> {
-    property_key_name_str(key).map(str::to_string)
-}
-
 fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
@@ -3823,13 +3819,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let ty = class.body.body.iter().find_map(|element| match element {
             ClassElement::MethodDefinition(method)
-                if property_key_name(&method.key).as_deref() == Some(property_name) =>
+                if property_key_name_str(&method.key) == Some(property_name) =>
             {
                 Some(self.get_type_of_method_definition(program_id, method, class_node_id))
             }
             ClassElement::PropertyDefinition(property)
                 if property.r#static == is_static
-                    && property_key_name(&property.key).as_deref() == Some(property_name) =>
+                    && property_key_name_str(&property.key) == Some(property_name) =>
             {
                 Some(self.get_type_of_property_definition(
                     program_id,

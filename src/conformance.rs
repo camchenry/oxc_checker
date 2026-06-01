@@ -1197,15 +1197,15 @@ fn actual_identifier_record<'a>(
     kind: AstKind<'a>,
 ) -> Option<TypeRecord> {
     let node_ref = NodeRef::new(program_id, node_id);
-    let (span, text, ty) = match kind {
+    let (span, text, ty): (Span, &str, Ty<'_>) = match kind {
         AstKind::BindingIdentifier(identifier) => (
             identifier.span,
-            identifier.name.to_string(),
+            &identifier.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::IdentifierReference(identifier) => (
             identifier.span,
-            identifier.name.to_string(),
+            &identifier.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::IdentifierName(identifier) => {
@@ -1213,56 +1213,56 @@ fn actual_identifier_record<'a>(
             if ty.is_none() {
                 return None;
             }
-            (identifier.span, identifier.name.to_string(), ty)
+            (identifier.span, &identifier.name, ty)
         }
         AstKind::TSPropertySignature(property) => {
             let span = property_key_span(&property.key)?;
-            let text = property_key_name(&property.key)?;
+            let text = property_key_name_str(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::ObjectProperty(property) => {
             let span = property_key_span(&property.key)?;
-            let text = property_key_name(&property.key)?;
+            let text = property_key_name_str(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::StaticMemberExpression(member) => (
             member.property.span,
-            member.property.name.to_string(),
+            &member.property.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::MethodDefinition(method) => {
             let span = property_key_span(&method.key)?;
-            let text = property_key_name(&method.key)?;
+            let text = property_key_name_str(&method.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSMethodSignature(method) => {
             let span = property_key_span(&method.key)?;
-            let text = property_key_name(&method.key)?;
+            let text = property_key_name_str(&method.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSThisParameter(parameter) => (
             parameter.this_span,
-            "this".to_string(),
+            "this",
             checker.get_type_at_location(node_ref),
         ),
         AstKind::PropertyDefinition(property) => {
             let span = property_key_span(&property.key)?;
-            let text = property_key_name(&property.key)?;
+            let text = property_key_name_str(&property.key)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSTypeAliasDeclaration(alias) => (
             alias.id.span,
-            alias.id.name.to_string(),
+            &alias.id.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSImportEqualsDeclaration(import_equals) => (
             import_equals.id.span,
-            import_equals.id.name.to_string(),
+            &import_equals.id.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSInterfaceDeclaration(interface) => (
             interface.id.span,
-            interface.id.name.to_string(),
+            &interface.id.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSModuleDeclaration(module) => {
@@ -1271,12 +1271,12 @@ fn actual_identifier_record<'a>(
         }
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
-            parameter.name.name.to_string(),
+            &parameter.name.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSMappedType(mapped) => (
             mapped.key.span,
-            mapped.key.name.to_string(),
+            &mapped.key.name,
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSClassImplements(implements) => {
@@ -1289,7 +1289,7 @@ fn actual_identifier_record<'a>(
             };
             (
                 identifier.span,
-                identifier.name.to_string(),
+                &identifier.name,
                 checker.get_type_at_location(node_ref),
             )
         }
@@ -1298,7 +1298,7 @@ fn actual_identifier_record<'a>(
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::ExpressionStatement(statement) => {
-            let expression_text = source_text_for_span(source_text, statement.span)?;
+            let expression_text = statement.span.source_text(source_text);
             if matches!(
                 checker.nodes(program_id).parent_kind(node_id),
                 AstKind::ArrowFunctionExpression(_)
@@ -1325,27 +1325,21 @@ fn actual_identifier_record<'a>(
         path: path.to_string(),
         start: span.start,
         end: span.end,
-        text: sanitize(&text),
+        text: sanitize(text),
         ty_variant: Some(ty.enum_variant_name()),
         ty_repr: sanitize(&checker.type_to_string(ty, node_ref)),
     })
 }
 
-fn source_text_for_span(source_text: &str, span: Span) -> Option<String> {
-    source_text
-        .get(span.start as usize..span.end as usize)
-        .map(ToString::to_string)
-}
-
-fn ts_module_declaration_name_span_and_text(
-    name: &oxc_ast::ast::TSModuleDeclarationName<'_>,
-) -> Option<(Span, String)> {
+fn ts_module_declaration_name_span_and_text<'a>(
+    name: &'a oxc_ast::ast::TSModuleDeclarationName<'a>,
+) -> Option<(Span, &'a str)> {
     match name {
         oxc_ast::ast::TSModuleDeclarationName::Identifier(identifier) => {
-            Some((identifier.span, identifier.name.to_string()))
+            Some((identifier.span, &identifier.name))
         }
         oxc_ast::ast::TSModuleDeclarationName::StringLiteral(literal) => {
-            Some((literal.span, literal.value.to_string()))
+            Some((literal.span, &literal.value))
         }
     }
 }
@@ -1353,13 +1347,13 @@ fn ts_module_declaration_name_span_and_text(
 fn ts_type_name_span_and_text<'a>(
     arena: CheckerArena<'a>,
     name: &TSTypeName<'a>,
-) -> Option<(Span, String)> {
+) -> Option<(Span, &'a str)> {
     let span = match name {
         TSTypeName::IdentifierReference(identifier) => identifier.span,
         TSTypeName::QualifiedName(qualified) => qualified.span,
         TSTypeName::ThisExpression(_) => return None,
     };
-    Some((span, ts_type_name_to_str(arena, name).to_string()))
+    Some((span, ts_type_name_to_str(arena, name)))
 }
 
 fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Vec<FileResult> {
