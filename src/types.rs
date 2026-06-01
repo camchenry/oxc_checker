@@ -78,6 +78,7 @@ pub(crate) enum Ty<'a> {
 pub(crate) struct TyObject<'a> {
     pub(crate) properties: ArenaVec<'a, TyProperty<'a>>,
     pub(crate) signatures: ArenaVec<'a, Signature<'a>>,
+    pub(crate) index_infos: ArenaVec<'a, IndexInfo<'a>>,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -521,6 +522,7 @@ impl<'a> Ty<'a> {
         Self::Object(arena.alloc(TyObject {
             properties: arena.vec_from_iter(properties),
             signatures: arena.vec_from_iter(std::iter::empty()),
+            index_infos: arena.vec_from_iter(std::iter::empty()),
         }))
     }
 
@@ -532,6 +534,19 @@ impl<'a> Ty<'a> {
         Self::Object(arena.alloc(TyObject {
             properties: arena.vec_from_iter(properties),
             signatures: arena.vec_from_iter(signatures),
+            index_infos: arena.vec_from_iter(std::iter::empty()),
+        }))
+    }
+
+    pub(crate) fn object_with_index_infos(
+        arena: CheckerArena<'a>,
+        properties: impl IntoIterator<Item = TyProperty<'a>>,
+        index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
+    ) -> Self {
+        Self::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter(properties),
+            signatures: arena.vec_from_iter(std::iter::empty()),
+            index_infos: arena.vec_from_iter(index_infos),
         }))
     }
 
@@ -759,6 +774,18 @@ impl<'a> Ty<'a> {
                     method: property.method,
                     readonly: property.readonly,
                     ty: property.ty.substitute_type_parameters(arena, substitutions),
+                }),
+            )
+            .with_index_infos(
+                arena,
+                object.index_infos.iter().map(|info| IndexInfo {
+                    key_type: info
+                        .key_type
+                        .substitute_type_parameters(arena, substitutions),
+                    value_type: info
+                        .value_type
+                        .substitute_type_parameters(arena, substitutions),
+                    readonly: info.readonly,
                 }),
             )
             .with_signatures(
@@ -1070,7 +1097,10 @@ impl<'a> Ty<'a> {
             Self::PrimitiveObject => "object".to_string(),
             Self::This => "this".to_string(),
             Self::Object(object) => {
-                if object.properties.is_empty() && object.signatures.is_empty() {
+                if object.properties.is_empty()
+                    && object.signatures.is_empty()
+                    && object.index_infos.is_empty()
+                {
                     return "{}".to_string();
                 }
 
@@ -1078,6 +1108,15 @@ impl<'a> Ty<'a> {
                     .signatures
                     .iter()
                     .map(|signature| signature.to_type_string())
+                    .chain(object.index_infos.iter().map(|info| {
+                        let readonly = if info.readonly { "readonly " } else { "" };
+                        format!(
+                            "{}[x: {}]: {};",
+                            readonly,
+                            info.key_type.to_type_string(),
+                            info.value_type.to_type_string()
+                        )
+                    }))
                     .chain(object.properties.iter().map(|property| {
                         let readonly = if property.readonly { "readonly " } else { "" };
                         if property.method
@@ -1310,7 +1349,26 @@ impl<'a> Ty<'a> {
         let Self::Object(object) = self else {
             return self;
         };
-        Self::object_with_signatures(arena, object.properties.iter().copied(), signatures)
+        Self::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter(object.properties.iter().copied()),
+            signatures: arena.vec_from_iter(signatures),
+            index_infos: arena.vec_from_iter(object.index_infos.iter().copied()),
+        }))
+    }
+
+    fn with_index_infos(
+        self,
+        arena: CheckerArena<'a>,
+        index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
+    ) -> Self {
+        let Self::Object(object) = self else {
+            return self;
+        };
+        Self::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter(object.properties.iter().copied()),
+            signatures: arena.vec_from_iter(object.signatures.iter().copied()),
+            index_infos: arena.vec_from_iter(index_infos),
+        }))
     }
 }
 
@@ -2452,7 +2510,7 @@ fn add_type_to_intersection<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
 }
 
 fn is_empty_object_type(object: &TyObject<'_>) -> bool {
-    object.properties.is_empty() && object.signatures.is_empty()
+    object.properties.is_empty() && object.signatures.is_empty() && object.index_infos.is_empty()
 }
 
 fn is_empty_object_intersection_identity_target(ty: Ty<'_>) -> bool {
@@ -2549,7 +2607,15 @@ impl<'a> Signature<'a> {
     }
 }
 
-pub(crate) struct IndexInfo {}
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub(crate) struct IndexInfo<'a> {
+    /// The type of the index key. The `K` in `{ [k: K]: V }` or `string` in `{ [k: string]: number }`
+    pub(crate) key_type: Ty<'a>,
+    /// The type of the index value. The `V` in `{ [k: K]: V }` or `string` in `{ [k: string]: number }`
+    pub(crate) value_type: Ty<'a>,
+    /// Whether the index returns a readonly value.
+    pub(crate) readonly: bool,
+}
 
 fn function_type_to_string(function: &TyFunction<'_>) -> String {
     let (type_parameters, parameters) = function_type_head_to_string(function);

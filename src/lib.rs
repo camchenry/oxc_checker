@@ -348,6 +348,26 @@ fn ts_type_contains_infer(ty: &TSType<'_>) -> bool {
     }
 }
 
+fn is_mapped_empty_object_intersection(ty: &TSType<'_>) -> bool {
+    let TSType::TSIntersectionType(intersection) = ty else {
+        return false;
+    };
+
+    let mut has_mapped = false;
+    let mut has_empty_object = false;
+    for ty in &intersection.types {
+        match ty {
+            TSType::TSMappedType(_) => has_mapped = true,
+            TSType::TSTypeLiteral(type_literal) if type_literal.members.is_empty() => {
+                has_empty_object = true;
+            }
+            _ => return false,
+        }
+    }
+
+    has_mapped && has_empty_object
+}
+
 fn ts_signature_contains_infer(signature: &TSSignature<'_>) -> bool {
     match signature {
         TSSignature::TSPropertySignature(property) => property
@@ -534,7 +554,7 @@ trait Checker<'a> {
     fn get_properties_of_type(&self, t: Ty<'a>) -> Vec<SymbolRef>;
     fn get_property_of_type(&self, t: Ty<'a>, name: &str) -> Option<SymbolRef>;
     fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>>;
-    fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo>;
+    fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo<'a>>;
     fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool;
     fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String;
     fn symbol_to_string(&self, s: SymbolRef, location: NodeRef) -> String;
@@ -957,6 +977,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         })
     }
 
+    fn get_type_from_property_signature_annotation(
+        &self,
+        program_id: program::ProgramId,
+        type_annotation: &TSTypeAnnotation<'a>,
+    ) -> Ty<'a> {
+        if let TSType::TSTypeReference(reference) = &type_annotation.type_annotation
+            && let Some(expanded) =
+                self.get_flat_mapped_intersection_alias_reference(program_id, reference, 0)
+        {
+            return expanded;
+        }
+
+        self.get_type_from_ts_type(program_id, &type_annotation.type_annotation)
+    }
+
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &TSType<'a>) -> Ty<'a> {
         match ty {
@@ -1339,7 +1374,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::type_query(self.arena(), name, Ty::any(), type_arguments);
         }
 
-        self.get_type_from_ts_type_expanding_top_level_aliases(program_id, &alias.type_annotation)
+        let ty = self
+            .get_type_from_ts_type_expanding_top_level_aliases(program_id, &alias.type_annotation);
+        self.expand_index_signature_alias_result(program_id, ty, 0)
     }
 
     fn get_type_from_ts_type_expanding_top_level_aliases(
@@ -1371,6 +1408,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     depth + 1,
                 ),
             _ => self.get_type_from_ts_type(program_id, ty),
+        }
+    }
+
+    fn expand_index_signature_alias_result(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(reference) => self
+                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                .map(|(_, expanded)| expanded)
+                .filter(|expanded| is_index_signature_object(*expanded))
+                .unwrap_or(ty),
+            _ => ty,
         }
     }
 
@@ -1582,6 +1639,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Some(ty);
         }
 
+        if let Some(ty) = self.expand_index_signature_mapped_type(program_id, mapped, depth + 1) {
+            return Some(ty);
+        }
+
         let properties =
             self.properties_for_mapped_constraint(program_id, mapped.constraint, depth)?;
         let mut expanded = Vec::new();
@@ -1638,6 +1699,33 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .substitute_type_parameters(self.arena(), &substitutions);
         let element_type = self.expand_type_at_use(program_id, element_type, depth + 1);
         Some(Ty::array(self.arena(), element_type))
+    }
+
+    fn expand_index_signature_mapped_type(
+        &self,
+        program_id: program::ProgramId,
+        mapped: &TyMapped<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if mapped.name_type.is_some() {
+            return None;
+        }
+
+        let key_types = index_signature_key_types(mapped.constraint)?;
+        let index_infos = key_types.into_iter().map(|key_type| {
+            let substitutions = HashMap::from([(mapped.key, key_type)]);
+            let ty = mapped
+                .template
+                .substitute_type_parameters(self.arena(), &substitutions);
+            let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+            IndexInfo {
+                key_type,
+                value_type: ty,
+                readonly: matches!(mapped.readonly, MappedModifier::True | MappedModifier::Plus),
+            }
+        });
+
+        Some(Ty::object_with_index_infos(self.arena(), [], index_infos))
     }
 
     fn properties_for_mapped_constraint(
@@ -1715,6 +1803,72 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             &type_arguments,
             depth,
         )
+    }
+
+    fn get_flat_mapped_intersection_alias_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TSTypeReference<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        let name = ts_type_name_to_str(self.arena(), &reference.type_name);
+        let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
+
+        self.fill_default_type_arguments(program_id, name, &mut type_arguments);
+
+        let symbol = self.get_type_symbol_for_name(program_id, name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_flat_mapped_intersection_alias_declaration(
+            symbol.program_id,
+            declaration,
+            &type_arguments,
+            depth + 1,
+        )
+    }
+
+    fn get_flat_mapped_intersection_alias_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        type_arguments: &[Ty<'a>],
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(alias)
+                if is_mapped_empty_object_intersection(&alias.type_annotation) =>
+            {
+                let substitutions = self.type_parameter_substitutions_for_type_arguments(
+                    program_id,
+                    alias.type_parameters.as_deref(),
+                    type_arguments,
+                );
+                let ty = self
+                    .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                        program_id,
+                        &alias.type_annotation,
+                        depth + 1,
+                    )
+                    .substitute_type_parameters(self.arena(), &substitutions);
+                Some(self.expand_type_at_use(program_id, ty, depth + 1))
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_flat_mapped_intersection_alias_declaration(
+                    program_id,
+                    parent_id,
+                    type_arguments,
+                    depth + 1,
+                )
+            }
+            _ => None,
+        }
     }
 
     fn get_expanded_type_alias_declaration(
@@ -5543,10 +5697,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 )
             }
             AstKind::TSPropertySignature(property) => {
-                let ty = self.get_type_from_ts_type_annotation(
-                    node.program_id,
-                    property.type_annotation.as_deref(),
-                );
+                let ty = property
+                    .type_annotation
+                    .as_deref()
+                    .map_or_else(Ty::any, |annotation| {
+                        self.get_type_from_property_signature_annotation(
+                            node.program_id,
+                            annotation,
+                        )
+                    });
                 let ty = if let Ty::Infer(infer) = ty {
                     Ty::type_reference(self.arena(), infer.type_parameter.name, [])
                 } else {
@@ -5929,7 +6088,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
     }
 
-    fn get_index_infos_of_type(&self, _t: Ty<'a>) -> Vec<IndexInfo> {
+    fn get_index_infos_of_type(&self, _t: Ty<'a>) -> Vec<IndexInfo<'a>> {
         Vec::new()
     }
 
@@ -5947,6 +6106,34 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             .symbol_name(s.symbol_id)
             .to_string()
     }
+}
+
+fn index_signature_key_types<'a>(constraint: Ty<'a>) -> Option<Vec<Ty<'a>>> {
+    match constraint {
+        Ty::String => Some(vec![Ty::string()]),
+        Ty::Number => Some(vec![Ty::number()]),
+        Ty::Symbol => Some(vec![Ty::symbol()]),
+        Ty::Union(union) => {
+            let mut key_types = Vec::new();
+            for ty in &union.types {
+                let keys = index_signature_key_types(*ty)?;
+                for key in keys {
+                    if !key_types.contains(&key) {
+                        key_types.push(key);
+                    }
+                }
+            }
+            Some(key_types)
+        }
+        _ => None,
+    }
+}
+
+fn is_index_signature_object(ty: Ty<'_>) -> bool {
+    let Ty::Object(object) = ty else {
+        return false;
+    };
+    object.signatures.is_empty() && object.properties.is_empty() && !object.index_infos.is_empty()
 }
 
 #[cfg(feature = "bench")]
@@ -6246,6 +6433,27 @@ mod test {
             .filter_map(|(node_id, node)| match node.kind() {
                 AstKind::TSMethodSignature(method)
                     if property_key_name_str(&method.key) == Some(name) =>
+                {
+                    Some(
+                        checker
+                            .get_type_at_location(NodeRef::new(ret.program_id, node_id))
+                            .to_type_string(),
+                    )
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
+    fn get_ts_property_signature_types(ret: &ParseAndCheck<'_>, name: &str) -> Vec<String> {
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        semantic
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| match node.kind() {
+                AstKind::TSPropertySignature(property)
+                    if property_key_name_str(&property.key) == Some(name) =>
                 {
                     Some(
                         checker
@@ -7025,6 +7233,10 @@ mod test {
             "<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>"
         );
         assert_eq!(
+            get_type_alias_type(&ret, "QueryMeta").to_type_string(),
+            "{ [x: string]: unknown; }"
+        );
+        assert_eq!(
             get_first_symbol_type(&ret, "signalLessContext").to_type_string(),
             "OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, \"signal\">"
         );
@@ -7274,12 +7486,27 @@ mod test {
         type OptionalFlat<O> = {
             [K in keyof O]?: O[K]
         } & {};
+        type OptionalDeep<O> = {
+            [K in keyof O]?: OptionalDeep<O[K]>
+        };
+        type OptionalPart<O> = {
+            flat: OptionalFlat<O>
+            deep: OptionalDeep<O>
+        };
         ",
         );
 
         assert_eq!(
             get_type_alias_type(&ret, "OptionalFlat").to_type_string(),
             "{ [K in keyof O]?: O[K] | undefined; }"
+        );
+        assert_eq!(
+            get_ts_property_signature_types(&ret, "flat"),
+            vec!["{ [K in keyof O]?: O[K] | undefined; }"]
+        );
+        assert_eq!(
+            get_ts_property_signature_types(&ret, "deep"),
+            vec!["OptionalDeep<O>"]
         );
     }
 

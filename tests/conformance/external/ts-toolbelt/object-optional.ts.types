@@ -182,7 +182,7 @@ export type OptionalPart<O extends object, depth extends Depth> = {
 >                                                        ^^^^^: "flat" | "deep"   (TyUnion)
 
   flat: OptionalFlat<O>
-> ^^^^: OptionalFlat<O>   (TyTypeReference)
+> ^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped)
 
   flat: OptionalFlat<O>
 >       ^^^^^^^^^^^^: any   (TyAny)

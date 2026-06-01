@@ -200,7 +200,7 @@ export interface QueryClient {
 >                                                      ^^^^^: any   (TyAny)
 
 export type QueryMeta = Register extends {
->           ^^^^^^^^^: Record<string, unknown>   (TyTypeReference)
+>           ^^^^^^^^^: { [x: string]: unknown; }   (TyObject)
 
 export type QueryMeta = Register extends {
 >                       ^^^^^^^^: any   (TyAny)

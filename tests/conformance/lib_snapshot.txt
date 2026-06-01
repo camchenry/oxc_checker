@@ -188494,7 +188494,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3194 mismatched_types=65949 total_
       actual:   { new (descriptor: TableDescriptor, value?: any): Table; prototype: Table; }
   - src/lib/dom.generated.d.ts:42745 `Exports` extra in oxc output
       expected: <missing>
-      actual:   { [P in string]: ExportValue; }
+      actual:   { [x: string]: ExportValue; }
   - src/lib/dom.generated.d.ts:42745 `Record` extra in oxc output
       expected: <missing>
       actual:   any
@@ -188509,7 +188509,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3194 mismatched_types=65949 total_
       actual:   any
   - src/lib/dom.generated.d.ts:42747 `Imports` extra in oxc output
       expected: <missing>
-      actual:   { [P in string]: ModuleImports; }
+      actual:   { [x: string]: ModuleImports; }
   - src/lib/dom.generated.d.ts:42747 `Record` extra in oxc output
       expected: <missing>
       actual:   any
@@ -188518,7 +188518,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3194 mismatched_types=65949 total_
       actual:   any
   - src/lib/dom.generated.d.ts:42748 `ModuleImports` extra in oxc output
       expected: <missing>
-      actual:   { [P in string]: ImportValue; }
+      actual:   { [x: string]: ImportValue; }
   - src/lib/dom.generated.d.ts:42748 `Record` extra in oxc output
       expected: <missing>
       actual:   any
@@ -193345,7 +193345,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3194 mismatched_types=65949 total_
       actual:   { new (): PerformanceEntry; prototype: PerformanceEntry; }
   - src/lib/dom.generated.d.ts:44203 `PublicKeyCredentialClientCapabilities` extra in oxc output
       expected: <missing>
-      actual:   { [P in string]: boolean; }
+      actual:   { [x: string]: boolean; }
   - src/lib/dom.generated.d.ts:44203 `Record` extra in oxc output
       expected: <missing>
       actual:   any

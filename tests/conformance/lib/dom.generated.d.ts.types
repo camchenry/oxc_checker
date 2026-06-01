@@ -117647,7 +117647,7 @@ declare namespace WebAssembly {
 >                                                   ^^^^^: { new (descriptor: TableDescriptor, value?: any): Table; prototype: Table; }   (TyObject)
 
     type Exports = Record<string, ExportValue>;
->        ^^^^^^^: { [P in string]: ExportValue; }   (TyMapped)
+>        ^^^^^^^: { [x: string]: ExportValue; }   (TyObject)
 
     type Exports = Record<string, ExportValue>;
 >                  ^^^^^^: any   (TyAny)
@@ -117662,7 +117662,7 @@ declare namespace WebAssembly {
 >                      ^^^^^^^^^^^: any   (TyAny)
 
     type Imports = Record<string, ModuleImports>;
->        ^^^^^^^: { [P in string]: ModuleImports; }   (TyMapped)
+>        ^^^^^^^: { [x: string]: ModuleImports; }   (TyObject)
 
     type Imports = Record<string, ModuleImports>;
 >                  ^^^^^^: any   (TyAny)
@@ -117671,7 +117671,7 @@ declare namespace WebAssembly {
 >                                 ^^^^^^^^^^^^^: any   (TyAny)
 
     type ModuleImports = Record<string, ImportValue>;
->        ^^^^^^^^^^^^^: { [P in string]: ImportValue; }   (TyMapped)
+>        ^^^^^^^^^^^^^: { [x: string]: ImportValue; }   (TyObject)
 
     type ModuleImports = Record<string, ImportValue>;
 >                        ^^^^^^: any   (TyAny)
@@ -124457,7 +124457,7 @@ type PerformanceEntryList = PerformanceEntry[];
 >                           ^^^^^^^^^^^^^^^^: { new (): PerformanceEntry; prototype: PerformanceEntry; }   (TyObject)
 
 type PublicKeyCredentialClientCapabilities = Record<string, boolean>;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { [P in string]: boolean; }   (TyMapped)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { [x: string]: boolean; }   (TyObject)
 
 type PublicKeyCredentialClientCapabilities = Record<string, boolean>;
 >                                            ^^^^^^: any   (TyAny)
