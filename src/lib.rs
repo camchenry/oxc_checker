@@ -989,7 +989,55 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return expanded;
         }
 
-        self.get_type_from_ts_type(program_id, &type_annotation.type_annotation)
+        let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
+        self.get_apparent_property_signature_type(program_id, ty, 0)
+    }
+
+    fn get_apparent_property_signature_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(reference)
+                if self.is_conditional_type_alias_reference(program_id, reference) =>
+            {
+                self.get_conditional_type_alias_reference_type(program_id, reference)
+                    .map(|(expanded_program_id, expanded)| {
+                        let expanded = if matches!(expanded, Ty::Conditional(_)) {
+                            self.apparent_type_for_conditional_match(
+                                expanded_program_id,
+                                expanded,
+                                depth + 1,
+                            )
+                        } else {
+                            expanded
+                        };
+                        if matches!(expanded, Ty::Conditional(_)) {
+                            ty
+                        } else {
+                            self.get_apparent_property_signature_type(
+                                expanded_program_id,
+                                expanded,
+                                depth + 1,
+                            )
+                        }
+                    })
+                    .unwrap_or(ty)
+            }
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union.types.iter().map(|ty| {
+                    self.get_apparent_property_signature_type(program_id, *ty, depth + 1)
+                }),
+            ),
+            _ => ty,
+        }
     }
 
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
@@ -7264,6 +7312,13 @@ mod test {
         assert_eq!(
             get_type_alias_type(&ret, "TaggedTodoData").to_type_string(),
             "Todo[]"
+        );
+        assert_eq!(
+            get_ts_property_signature_types(&ret, "meta"),
+            vec![
+                "Record<string, unknown> | undefined",
+                "Record<string, unknown> | undefined",
+            ]
         );
         assert_eq!(
             get_first_symbol_type(&ret, "signalLessContext").to_type_string(),

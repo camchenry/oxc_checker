@@ -269,7 +269,7 @@ export type QueryFunctionContext<
 >             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (TyObject)
 
       meta: QueryMeta | undefined
->     ^^^^: QueryMeta | undefined   (TyUnion)
+>     ^^^^: Record<string, unknown> | undefined   (TyUnion)
 
       meta: QueryMeta | undefined
 >           ^^^^^^^^^: any   (TyAny)
@@ -314,7 +314,7 @@ export type QueryFunctionContext<
 >                ^^^^^^^^^^^^^^: any   (TyAny)
 
       meta: QueryMeta | undefined
->     ^^^^: QueryMeta | undefined   (TyUnion)
+>     ^^^^: Record<string, unknown> | undefined   (TyUnion)
 
       meta: QueryMeta | undefined
 >           ^^^^^^^^^: any   (TyAny)
