@@ -29,10 +29,10 @@ returnsPromise().then(() => {});
 >^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
 
 returnsPromise().then(() => {});
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<string>   (TyTypeReference)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
 
 returnsPromise().then(() => {});
->                ^^^^: <TResult1 = string, TResult2 = never>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
+>                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
 
 Promise.reject('value').catch();
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -44,7 +44,7 @@ Promise.reject('value').catch();
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 Promise.reject('value').catch();
->                       ^^^^^: <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
+>                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
 
 Promise.reject('value').finally();
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -110,22 +110,22 @@ returnsPromise().then(
 >^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
 
 returnsPromise().then(
->^^^^^^^^^^^^^^^^^^^^^^: Promise<string>   (TyTypeReference)
+>^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
 
 returnsPromise().then(
->                ^^^^: <TResult1 = string, TResult2 = never>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
+>                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction)
 
 Promise.reject('value').catch(() => {});
 >^^^^^^^: PromiseConstructor   (TyTypeReference)
 
 Promise.reject('value').catch(() => {});
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<never>   (TyTypeReference)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
 
 Promise.reject('value').catch(() => {});
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 Promise.reject('value').catch(() => {});
->                       ^^^^^: <TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
+>                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction)
 
 await Promise.reject('value').finally(() => {});
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

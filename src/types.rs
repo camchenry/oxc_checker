@@ -147,6 +147,10 @@ pub(crate) struct TyTypeParameter<'a> {
     /// constraint type (e.g., `U` in `T extends U`)
     pub(crate) constraint_type: Option<Ty<'a>>,
     pub(crate) default_type: Option<Ty<'a>>,
+    // TODO: This should probably be a flag.
+    /// Whether to display the default type when printing. This can be used to
+    /// omit the default type in lib declarations.
+    pub(crate) display_default: bool,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -516,10 +520,20 @@ impl<'a> Ty<'a> {
         constraint_type: Option<Ty<'a>>,
         default_type: Option<Ty<'a>>,
     ) -> TyTypeParameter<'a> {
+        Self::type_parameter_with_display_default(name, constraint_type, default_type, true)
+    }
+
+    pub(crate) fn type_parameter_with_display_default(
+        name: &'a str,
+        constraint_type: Option<Ty<'a>>,
+        default_type: Option<Ty<'a>>,
+        display_default: bool,
+    ) -> TyTypeParameter<'a> {
         TyTypeParameter {
             name,
             constraint_type,
             default_type,
+            display_default,
         }
     }
 
@@ -786,6 +800,13 @@ impl<'a> Ty<'a> {
                 }),
             ),
             Self::Function(function) => {
+                let has_non_identity_outer_substitution = substitutions.iter().any(|(name, ty)| {
+                    !function
+                        .type_parameters
+                        .iter()
+                        .any(|type_parameter| type_parameter.name == *name)
+                        && !is_identity_type_parameter_substitution(name, *ty)
+                });
                 let substitutions = substitutions
                     .iter()
                     .filter(|(name, _)| {
@@ -799,7 +820,7 @@ impl<'a> Ty<'a> {
                 Self::function_with_type_predicate(
                     arena,
                     function.type_parameters.iter().map(|type_parameter| {
-                        Self::type_parameter(
+                        Self::type_parameter_with_display_default(
                             type_parameter.name,
                             type_parameter.constraint_type.map(|constraint_type| {
                                 constraint_type.substitute_type_parameters(arena, &substitutions)
@@ -807,6 +828,7 @@ impl<'a> Ty<'a> {
                             type_parameter.default_type.map(|default_type| {
                                 default_type.substitute_type_parameters(arena, &substitutions)
                             }),
+                            type_parameter.display_default && !has_non_identity_outer_substitution,
                         )
                     }),
                     function.parameters.iter().map(|parameter| {
@@ -971,7 +993,7 @@ impl<'a> Ty<'a> {
                 );
                 Self::infer(
                     arena,
-                    Self::type_parameter(
+                    Self::type_parameter_with_display_default(
                         infer.type_parameter.name,
                         infer.type_parameter.constraint_type.map(|constraint_type| {
                             constraint_type.substitute_type_parameters(arena, &substitutions)
@@ -979,6 +1001,7 @@ impl<'a> Ty<'a> {
                         infer.type_parameter.default_type.map(|default_type| {
                             default_type.substitute_type_parameters(arena, &substitutions)
                         }),
+                        infer.type_parameter.display_default,
                     ),
                 )
             }
@@ -2175,6 +2198,10 @@ fn add_type_to_union<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
     }
 }
 
+fn is_identity_type_parameter_substitution(name: &str, ty: Ty<'_>) -> bool {
+    matches!(ty, Ty::TypeReference(reference) if reference.name == name && reference.type_arguments.is_empty())
+}
+
 fn remove_redundant_literal_types(type_set: &mut Vec<Ty<'_>>) {
     let has_string = type_set.iter().any(|ty| matches!(ty, Ty::String));
     let has_number = type_set.iter().any(|ty| matches!(ty, Ty::Number));
@@ -2274,7 +2301,9 @@ fn type_parameter_to_type_string(type_parameter: &TyTypeParameter<'_>) -> String
         type_string.push_str(" extends ");
         type_string.push_str(&constraint_type.to_type_string());
     }
-    if let Some(default_type) = type_parameter.default_type {
+    if type_parameter.display_default
+        && let Some(default_type) = type_parameter.default_type
+    {
         type_string.push_str(" = ");
         type_string.push_str(&default_type.to_type_string());
     }
