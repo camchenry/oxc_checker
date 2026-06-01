@@ -1318,6 +1318,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if let TSType::TSTypeQuery(query) = &alias.type_annotation
             && let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name)
         {
+            let query_type = self.get_type_from_ts_type_query(program_id, query);
+            if let Ty::TypeQuery(query) = query_type
+                && matches!(query.resolved, Ty::UniqueSymbol(_))
+            {
+                return query.resolved;
+            }
+
             let type_arguments =
                 query
                     .type_arguments
@@ -7021,6 +7028,19 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "tagged").to_type_string(),
             "{ [dataTagSymbol]: any; }"
+        );
+
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const unsetMarker: unique symbol;
+        type UnsetMarker = typeof unsetMarker;
+        ",
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "UnsetMarker").to_type_string(),
+            "unique symbol"
         );
     }
 

@@ -44,7 +44,7 @@ export declare const dataTagSymbol: unique symbol
 >                    ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagSymbol = typeof dataTagSymbol
->           ^^^^^^^^^^^^^: typeof dataTagSymbol   (TyTypeQuery)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagSymbol = typeof dataTagSymbol
 >           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -56,7 +56,7 @@ export declare const dataTagErrorSymbol: unique symbol
 >                    ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol
->           ^^^^^^^^^^^^^^^^^^: typeof dataTagErrorSymbol   (TyTypeQuery)
+>           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol
 >           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -68,10 +68,10 @@ export declare const unsetMarker: unique symbol
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type UnsetMarker = typeof unsetMarker
->           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type UnsetMarker = typeof unsetMarker
->           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type UnsetMarker = typeof unsetMarker
 >                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -98,10 +98,10 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 >                                  ^^^^^^: any   (TyAny)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
+>                                           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                           ^^^^^^^^^^^: typeof unsetMarker   (TyTypeQuery)
+>                                           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
 >                                                          ^^^^^: any   (TyAny)
