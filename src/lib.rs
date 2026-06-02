@@ -17,6 +17,7 @@ mod global_types;
 mod infer;
 pub mod program;
 mod relations;
+mod type_set;
 mod types;
 
 use types::*;
