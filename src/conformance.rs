@@ -11,6 +11,7 @@ use std::{
 use oxc_allocator::Allocator;
 use oxc_ast::AstKind;
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
+use oxc_semantic::NodeId;
 use oxc_span::GetSpan;
 
 use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef};
