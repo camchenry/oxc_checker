@@ -504,12 +504,6 @@ fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
     Some(literal.value as usize)
 }
 
-fn tuple_element_type(element: TupleElement<'_>) -> Ty<'_> {
-    match element {
-        TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => ty,
-    }
-}
-
 fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option<Ty<'a>> {
     let Ty::Tuple(tuple) = object_type else {
         return None;

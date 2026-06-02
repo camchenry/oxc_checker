@@ -31,8 +31,8 @@ use crate::{
     is_mapped_empty_object_intersection, is_number_index_type, is_promise_like_type_reference,
     program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_contains_infer,
-    ts_type_name_to_str, ts_type_query_expr_name_to_str, tuple_element_type,
-    tuple_element_type_at_index, tuple_index_from_expression,
+    ts_type_name_to_str, ts_type_query_expr_name_to_str, tuple_element_type_at_index,
+    tuple_index_from_expression,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyFunction, TyMapped, TyParameter, TyProperty, TyTypeParameter, TyTypePredicate,
@@ -4897,20 +4897,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 array.element_type,
                 is_await,
             )),
-            Ty::Tuple(tuple) => Some(
-                self.get_for_of_element_type(
-                    program_id,
-                    node_id,
-                    Ty::union(
-                        self.arena(),
-                        tuple
-                            .elements
-                            .iter()
-                            .map(|element| tuple_element_type(*element)),
-                    ),
-                    is_await,
+            Ty::Tuple(tuple) => Some(self.get_for_of_element_type(
+                program_id,
+                node_id,
+                Ty::union(
+                    self.arena(),
+                    tuple.elements.iter().map(|element| element.ty()),
                 ),
-            ),
+                is_await,
+            )),
             Ty::TypeReference(reference) if is_iterable_type_reference(reference.name) => reference
                 .type_arguments
                 .first()

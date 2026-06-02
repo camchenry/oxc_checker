@@ -240,9 +240,21 @@ pub(crate) struct TyTuple<'a> {
 /// A tuple element is either: a regular type [`Ty`], a rest type, or an optional type.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) enum TupleElement<'a> {
+    /// A regular tuple element, like `string` in `[string, number]`.
     Regular(Ty<'a>),
+    /// A rest tuple element, like `string[]` in `[string, ...string[]]`.
     Rest(Ty<'a>),
+    /// An optional tuple element, like `number?` in `[string, number?]`.
     Optional(Ty<'a>),
+}
+
+impl<'a> TupleElement<'a> {
+    /// Returns the type of this tuple element.
+    pub(crate) fn ty(&self) -> Ty<'a> {
+        match self {
+            TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => *ty,
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]
