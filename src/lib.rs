@@ -526,20 +526,13 @@ fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option
             }
             TupleElement::Rest(ty) => {
                 if index >= current_index {
-                    return Some(array_element_type(*ty).unwrap_or(*ty));
+                    return Some(ty.array_element_type().unwrap_or(*ty));
                 }
             }
         }
     }
 
     Some(Ty::undefined())
-}
-
-fn array_element_type<'a>(ty: Ty<'a>) -> Option<Ty<'a>> {
-    let Ty::Array(array) = ty else {
-        return None;
-    };
-    Some(array.element_type)
 }
 
 fn index_signature_key_types<'a>(constraint: Ty<'a>) -> Option<Vec<Ty<'a>>> {
@@ -561,13 +554,6 @@ fn index_signature_key_types<'a>(constraint: Ty<'a>) -> Option<Vec<Ty<'a>>> {
         }
         _ => None,
     }
-}
-
-fn is_index_signature_object(ty: Ty<'_>) -> bool {
-    let Ty::Object(object) = ty else {
-        return false;
-    };
-    object.signatures.is_empty() && object.properties.is_empty() && !object.index_infos.is_empty()
 }
 
 #[cfg(feature = "bench")]

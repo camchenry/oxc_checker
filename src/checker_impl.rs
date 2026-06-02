@@ -23,13 +23,12 @@ use oxc_syntax::{
 use std::collections::{HashMap, HashSet};
 
 use crate::{
-    ClassMemberResolution, FunctionKind, ReturnExpressionVisitor, array_element_type,
+    ClassMemberResolution, FunctionKind, ReturnExpressionVisitor,
     binding_pattern_default_initializer_symbol_id,
     checker::{Checker, CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
-    index_type_to_property_name, infer_type_parameter_from_types, is_index_signature_object,
-    is_iterable_type_reference, is_mapped_empty_object_intersection, is_number_index_type,
-    is_promise_like_type_reference,
+    index_type_to_property_name, infer_type_parameter_from_types, is_iterable_type_reference,
+    is_mapped_empty_object_intersection, is_number_index_type, is_promise_like_type_reference,
     program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_contains_infer,
     ts_type_name_to_str, ts_type_query_expr_name_to_str, tuple_element_type,
@@ -886,7 +885,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::TypeReference(reference) => self
                 .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
                 .map(|(_, expanded)| expanded)
-                .filter(|expanded| is_index_signature_object(*expanded))
+                .filter(|expanded| expanded.is_index_signature_object())
                 .unwrap_or(ty),
             _ => ty,
         }
@@ -2452,7 +2451,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .get(index)
             .or_else(|| function.parameters.iter().find(|parameter| parameter.rest))?;
         if parameter.rest {
-            Some(array_element_type(parameter.ty).unwrap_or(parameter.ty))
+            Some(parameter.ty.array_element_type().unwrap_or(parameter.ty))
         } else {
             Some(parameter.ty)
         }
@@ -4191,7 +4190,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ArrayExpressionElement::SpreadElement(spread) => {
                 let argument_type =
                     self.get_type_of_expression_with_node(program_id, &spread.argument, node_id);
-                array_element_type(argument_type).unwrap_or_else(Ty::any)
+                argument_type.array_element_type().unwrap_or_else(Ty::any)
             }
             ArrayExpressionElement::Elision(_) => Ty::any(),
             _ => {
@@ -4562,7 +4561,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         continue;
                     };
                     let element_type = tuple_element_type_at_index(&pattern_type, index)
-                        .or_else(|| array_element_type(pattern_type))
+                        .or_else(|| pattern_type.array_element_type())
                         .unwrap_or_else(Ty::any);
                     if let Some(ty) = self.get_type_of_binding_pattern_symbol(
                         program_id,
@@ -4579,7 +4578,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         program_id,
                         &rest.argument,
                         symbol_id,
-                        array_element_type(pattern_type)
+                        pattern_type
+                            .array_element_type()
                             .map(|element_type| Ty::array(self.arena(), element_type))
                             .unwrap_or_else(Ty::any),
                     )

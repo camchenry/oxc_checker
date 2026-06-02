@@ -77,6 +77,13 @@ pub(crate) struct TyObject<'a> {
     pub(crate) index_infos: ArenaVec<'a, IndexInfo<'a>>,
 }
 
+impl<'a> TyObject<'a> {
+    /// Returns `true` if the object has no properties, signatures, or index infos.
+    fn is_empty(&self) -> bool {
+        self.properties.is_empty() && self.signatures.is_empty() && self.index_infos.is_empty()
+    }
+}
+
 #[derive(Debug, PartialEq, Eq)]
 pub(crate) struct TyModuleNamespace<'a> {
     pub(crate) name: &'a str,
@@ -1359,6 +1366,24 @@ impl<'a> Ty<'a> {
             index_infos: arena.vec_from_iter(index_infos),
         }))
     }
+
+    /// Returns `true` if the type is [`Ty::Object`] with no properties, no signatures, and has index infos.
+    pub fn is_index_signature_object(&self) -> bool {
+        let Ty::Object(object) = self else {
+            return false;
+        };
+        object.signatures.is_empty()
+            && object.properties.is_empty()
+            && !object.index_infos.is_empty()
+    }
+
+    /// Returns the element type of an array type, or `None` if the type is not an array.
+    pub fn array_element_type(&self) -> Option<Self> {
+        let Ty::Array(array) = self else {
+            return None;
+        };
+        Some(array.element_type)
+    }
 }
 
 fn simplify_conditional_type<'a>(
@@ -2520,7 +2545,7 @@ fn reduce_intersection_type<'a>(
         .iter()
         .any(|ty| is_empty_object_intersection_identity_target(*ty));
     if has_object_like_member {
-        type_set.retain(|ty| !matches!(ty, Ty::Object(object) if is_empty_object_type(object)));
+        type_set.retain(|ty| !matches!(ty, Ty::Object(object) if object.is_empty()));
     }
 
     match type_set.as_slice() {
@@ -2542,14 +2567,10 @@ fn add_type_to_intersection<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
     }
 }
 
-fn is_empty_object_type(object: &TyObject<'_>) -> bool {
-    object.properties.is_empty() && object.signatures.is_empty() && object.index_infos.is_empty()
-}
-
 fn is_empty_object_intersection_identity_target(ty: Ty<'_>) -> bool {
     match ty {
         Ty::Mapped(_) => true,
-        Ty::Object(object) => !is_empty_object_type(object),
+        Ty::Object(object) => !object.is_empty(),
         _ => false,
     }
 }
