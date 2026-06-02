@@ -2819,19 +2819,11 @@ fn property_name_to_type_string(property: &TyProperty<'_>) -> String {
     }
 }
 
-fn binding_pattern_name_str<'a>(pattern: &BindingPattern<'a>) -> Option<&'a str> {
-    match pattern {
-        BindingPattern::BindingIdentifier(identifier) => Some(identifier.name.as_str()),
-        _ => None,
-    }
-}
-
 pub(crate) fn binding_pattern_to_parameter_name<'a>(
     arena: CheckerArena<'a>,
     pattern: &BindingPattern<'a>,
 ) -> &'a str {
-    binding_pattern_name_str(pattern)
-        .unwrap_or_else(|| arena.str(&binding_pattern_to_string(pattern)))
+    arena.str(&binding_pattern_to_string(pattern))
 }
 
 fn binding_pattern_to_string(pattern: &BindingPattern<'_>) -> String {
