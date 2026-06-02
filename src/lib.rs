@@ -964,6 +964,28 @@ mod test {
     }
 
     #[test]
+    fn flow_does_not_index_condition_reference_in_global_symbol_program() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const x: string | undefined;
+        if (x) {
+            Array;
+        }
+        ",
+        );
+
+        assert_eq!(
+            get_identifier_reference_types(&ret, "Array")
+                .into_iter()
+                .map(Ty::to_type_string)
+                .collect::<Vec<_>>(),
+            vec!["ArrayConstructor".to_string()]
+        );
+    }
+
+    #[test]
     fn flow_narrows_typeof_conditional_expression_arms() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

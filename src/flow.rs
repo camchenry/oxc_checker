@@ -7,7 +7,7 @@ use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
-    evolving_arrays,
+    evolving_arrays, program,
     types::Ty,
 };
 
@@ -186,7 +186,7 @@ fn narrow_by_condition<'a>(
 ) -> Ty<'a> {
     let condition = skip_parentheses(condition);
 
-    if expression_matches_symbol(checker, symbol, condition) {
+    if expression_matches_symbol(checker, node.program_id, symbol, condition) {
         return narrow_by_truthiness(checker, current_type, assume_true);
     }
 
@@ -194,7 +194,9 @@ fn narrow_by_condition<'a>(
         return current_type;
     };
 
-    if let Some(mut effective_true) = undefined_equality_guard(checker, symbol, binary) {
+    if let Some(mut effective_true) =
+        undefined_equality_guard(checker, node.program_id, symbol, binary)
+    {
         effective_true = effective_true == assume_true;
         return narrow_by_undefined_equality(checker, node, current_type, effective_true);
     }
@@ -204,7 +206,7 @@ fn narrow_by_condition<'a>(
     };
     effective_true = effective_true == assume_true;
 
-    if !expression_matches_symbol(checker, symbol, target) {
+    if !expression_matches_symbol(checker, node.program_id, symbol, target) {
         return current_type;
     }
 
@@ -214,6 +216,7 @@ fn narrow_by_condition<'a>(
 /// Recognize `x === undefined` / `x !== undefined` and reversed-operand equivalents.
 fn undefined_equality_guard(
     checker: &CheckerReturn<'_, '_>,
+    program_id: program::ProgramId,
     symbol: SymbolRef,
     binary: &oxc_ast::ast::BinaryExpression<'_>,
 ) -> Option<bool> {
@@ -225,13 +228,13 @@ fn undefined_equality_guard(
 
     let left = skip_parentheses(&binary.left);
     let right = skip_parentheses(&binary.right);
-    if expression_matches_symbol(checker, symbol, left)
-        && checker.is_global_undefined_expression(symbol.program_id, right)
+    if expression_matches_symbol(checker, program_id, symbol, left)
+        && checker.is_global_undefined_expression(program_id, right)
     {
         return Some(equality);
     }
-    if expression_matches_symbol(checker, symbol, right)
-        && checker.is_global_undefined_expression(symbol.program_id, left)
+    if expression_matches_symbol(checker, program_id, symbol, right)
+        && checker.is_global_undefined_expression(program_id, left)
     {
         return Some(equality);
     }
@@ -353,9 +356,14 @@ fn skip_parentheses<'a>(expression: &'a Expression<'a>) -> &'a Expression<'a> {
 /// Check whether an expression is an identifier reference to the target symbol.
 fn expression_matches_symbol(
     checker: &CheckerReturn<'_, '_>,
+    program_id: program::ProgramId,
     symbol: SymbolRef,
     expression: &Expression<'_>,
 ) -> bool {
+    if symbol.program_id != program_id {
+        return false;
+    }
+
     let expression = skip_parentheses(expression);
     let Expression::Identifier(identifier) = expression else {
         return false;
@@ -363,7 +371,7 @@ fn expression_matches_symbol(
 
     identifier.reference_id.get().and_then(|reference_id| {
         checker
-            .semantic(symbol.program_id)
+            .semantic(program_id)
             .scoping()
             .get_reference(reference_id)
             .symbol_id()
@@ -465,6 +473,10 @@ fn has_intervening_write(
     symbol: SymbolRef,
     fact: BranchFact<'_>,
 ) -> bool {
+    if symbol.program_id != node.program_id {
+        return false;
+    }
+
     let query_span = checker.node_kind(node).span();
     checker
         .semantic(symbol.program_id)
