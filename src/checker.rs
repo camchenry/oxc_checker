@@ -5,11 +5,18 @@ use oxc_index::IndexVec;
 use oxc_semantic::{NodeId, SymbolId};
 
 use crate::{
-    ClassMemberResolution,
     global_types::GlobalSymbolTable,
     program::{ProgramId, ProgramStore},
     types::{CheckerArena, IndexInfo, Signature, SignatureKind, Ty},
 };
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct ClassMemberResolution {
+    pub(crate) program_id: ProgramId,
+    pub(crate) class_name: String,
+    pub(crate) property_name: String,
+    pub(crate) is_static: bool,
+}
 
 pub struct CheckerReturn<'a, 'store> {
     pub store: &'store ProgramStore<'a>,

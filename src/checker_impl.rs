@@ -23,8 +23,8 @@ use oxc_syntax::{
 use std::collections::{HashMap, HashSet};
 
 use crate::{
-    ClassMemberResolution, FunctionKind, ReturnExpressionVisitor,
-    binding_pattern_default_initializer_symbol_id,
+    FunctionKind, ReturnExpressionVisitor, binding_pattern_default_initializer_symbol_id,
+    checker::ClassMemberResolution,
     checker::{Checker, CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,

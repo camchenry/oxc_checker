@@ -197,14 +197,6 @@ fn for_statement_left_contains_declarator(
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-struct ClassMemberResolution {
-    program_id: program::ProgramId,
-    class_name: String,
-    property_name: String,
-    is_static: bool,
-}
-
 fn is_promise_like_type_reference(name: &str) -> bool {
     matches!(name, "Promise" | "PromiseLike")
 }
