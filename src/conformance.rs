@@ -1311,7 +1311,11 @@ fn actual_identifier_record<'a>(
             (
                 statement.span,
                 expression_text,
-                checker.get_type_of_expression_at_node(program_id, &statement.expression, node_id),
+                checker.get_type_of_expression_with_node(
+                    program_id,
+                    &statement.expression,
+                    Some(node_id),
+                ),
             )
         }
         _ => return None,

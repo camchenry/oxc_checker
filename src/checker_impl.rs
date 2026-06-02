@@ -124,16 +124,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.get_type_of_expression_with_node(program_id, expression, None)
     }
 
-    // TODO: This should not be public
-    pub fn get_type_of_expression_at_node(
-        &self,
-        program_id: program::ProgramId,
-        expression: &'a Expression<'a>,
-        node_id: NodeId,
-    ) -> Ty<'a> {
-        self.get_type_of_expression_with_node(program_id, expression, Some(node_id))
-    }
-
     /// Resolve an expression type with a semantic context node when ancestor context is needed.
     /// This keeps `this` and member expressions tied to the class or call site they appear in.
     pub(crate) fn get_type_of_expression_with_node(
@@ -259,7 +249,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     ),
                 }
             }
-            _ => self.get_type_of_expression_at_node(program_id, expression, node_id),
+            _ => self.get_type_of_expression_with_node(program_id, expression, Some(node_id)),
         }
     }
 
@@ -4437,7 +4427,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     {
                         self.get_type_of_const_initializer(program_id, expression, declaration)
                     } else {
-                        self.get_type_of_expression_at_node(program_id, expression, declaration)
+                        self.get_type_of_expression_with_node(
+                            program_id,
+                            expression,
+                            Some(declaration),
+                        )
                     }
                 },
             )
@@ -5173,10 +5167,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 {
                     self.get_type_of_boolean_literal(literal)
                 } else {
-                    self.get_type_of_expression_at_node(
+                    self.get_type_of_expression_with_node(
                         node.program_id,
                         &property.value,
-                        node.node_id,
+                        Some(node.node_id),
                     )
                 }
             }
