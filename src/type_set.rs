@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use crate::types::{CheckerArena, Ty, TyTemplateLiteral, TyUnion};
 
-pub(crate) fn reduce_union_type<'a>(
+pub fn reduce_union_type<'a>(
     arena: CheckerArena<'a>,
     types: impl IntoIterator<Item = Ty<'a>>,
 ) -> Ty<'a> {

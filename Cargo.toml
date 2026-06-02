@@ -28,7 +28,10 @@ criterion = { version = "0.5", features = ["html_reports"] }
 [[bench]]
 name = "check_es5_lib"
 harness = false
-required-features = ["bench"]
+
+[[bench]]
+name = "type_set"
+harness = false
 
 [profile.bench]
 debug = true

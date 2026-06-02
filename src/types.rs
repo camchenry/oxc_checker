@@ -8,12 +8,12 @@ use std::collections::HashMap;
 use crate::type_set::reduce_union_type;
 
 #[derive(Clone, Copy)]
-pub(crate) struct CheckerArena<'a> {
+pub struct CheckerArena<'a> {
     allocator: &'a Allocator,
 }
 
 impl<'a> CheckerArena<'a> {
-    pub(crate) fn new(allocator: &'a Allocator) -> Self {
+    pub fn new(allocator: &'a Allocator) -> Self {
         Self { allocator }
     }
 
@@ -32,7 +32,7 @@ impl<'a> CheckerArena<'a> {
 
 #[repr(C, u8)]
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) enum Ty<'a> {
+pub enum Ty<'a> {
     None,
     Number,
     String,
@@ -73,7 +73,7 @@ pub(crate) enum Ty<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyObject<'a> {
+pub struct TyObject<'a> {
     pub(crate) properties: ArenaVec<'a, TyProperty<'a>>,
     pub(crate) signatures: ArenaVec<'a, Signature<'a>>,
     pub(crate) index_infos: ArenaVec<'a, IndexInfo<'a>>,
@@ -87,13 +87,13 @@ impl<'a> TyObject<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyModuleNamespace<'a> {
+pub struct TyModuleNamespace<'a> {
     pub(crate) name: &'a str,
     pub(crate) properties: ArenaVec<'a, TyProperty<'a>>,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyProperty<'a> {
+pub struct TyProperty<'a> {
     pub(crate) name: &'a str,
     pub(crate) ty: Ty<'a>,
     pub(crate) computed: bool,
@@ -103,7 +103,7 @@ pub(crate) struct TyProperty<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyFunction<'a> {
+pub struct TyFunction<'a> {
     pub(crate) type_parameters: ArenaVec<'a, TyTypeParameter<'a>>,
     pub(crate) parameters: ArenaVec<'a, TyParameter<'a>>,
     pub(crate) return_type: Ty<'a>,
@@ -125,7 +125,7 @@ impl TyTypePredicateKind {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyTypePredicate<'a> {
+pub struct TyTypePredicate<'a> {
     pub(crate) kind: TyTypePredicateKind,
     pub(crate) parameter_name: Option<&'a str>,
     pub(crate) parameter_index: Option<usize>,
@@ -150,7 +150,7 @@ impl<'a> TyTypePredicate<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyTypeParameter<'a> {
+pub struct TyTypeParameter<'a> {
     pub(crate) name: &'a str,
     /// constraint type (e.g., `U` in `T extends U`)
     pub(crate) constraint_type: Option<Ty<'a>>,
@@ -162,7 +162,7 @@ pub(crate) struct TyTypeParameter<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyParameter<'a> {
+pub struct TyParameter<'a> {
     pub(crate) name: &'a str,
     pub(crate) ty: Ty<'a>,
     pub(crate) optional: bool,
@@ -170,7 +170,7 @@ pub(crate) struct TyParameter<'a> {
 }
 
 #[derive(Debug, Eq)]
-pub(crate) struct TyTypeReference<'a> {
+pub struct TyTypeReference<'a> {
     pub(crate) name: &'a str,
     pub(crate) type_arguments: ArenaVec<'a, Ty<'a>>,
     pub(crate) explicit_type_argument_count: usize,
@@ -183,7 +183,7 @@ impl PartialEq for TyTypeReference<'_> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyTypeQuery<'a> {
+pub struct TyTypeQuery<'a> {
     /// Display name of the queried entity (e.g. `"Foo"`, `"Foo.Bar"`, `"this"`).
     pub(crate) name: &'a str,
     /// The type of the queried symbol.
@@ -193,29 +193,29 @@ pub(crate) struct TyTypeQuery<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyStringLiteral<'a> {
+pub struct TyStringLiteral<'a> {
     pub(crate) value: &'a str,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyNumberLiteral<'a> {
+pub struct TyNumberLiteral<'a> {
     // TODO(ast): use a number type?
     pub(crate) value: &'a str,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyBigIntLiteral<'a> {
+pub struct TyBigIntLiteral<'a> {
     // TODO(ast): use a number type?
     pub(crate) value: &'a str,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TyUniqueSymbol<'a> {
+pub struct TyUniqueSymbol<'a> {
     pub(crate) name: Option<&'a str>,
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyTemplateLiteral<'a> {
+pub struct TyTemplateLiteral<'a> {
     pub(crate) quasis: ArenaVec<'a, TemplateLiteralElement<'a>>,
     pub(crate) expressions: ArenaVec<'a, Ty<'a>>,
 }
@@ -226,14 +226,14 @@ pub(crate) struct TemplateLiteralElement<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyArray<'a> {
+pub struct TyArray<'a> {
     pub(crate) element_type: Ty<'a>,
     /// `true` when produced from `readonly T[]` or `ReadonlyArray<T>`.
     pub(crate) readonly: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyTuple<'a> {
+pub struct TyTuple<'a> {
     pub(crate) elements: ArenaVec<'a, TupleElement<'a>>,
     /// `true` when produced from a `readonly` tuple literal.
     pub(crate) readonly: bool,
@@ -260,30 +260,30 @@ impl<'a> TupleElement<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyUnion<'a> {
+pub struct TyUnion<'a> {
     pub(crate) types: ArenaVec<'a, Ty<'a>>,
     // TODO: Add flags
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyIntersection<'a> {
+pub struct TyIntersection<'a> {
     pub(crate) types: ArenaVec<'a, Ty<'a>>,
     // TODO: Add flags
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyKeyof<'a> {
+pub struct TyKeyof<'a> {
     pub(crate) target: Ty<'a>,
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyIndexedAccess<'a> {
+pub struct TyIndexedAccess<'a> {
     pub(crate) object_type: Ty<'a>,
     pub(crate) index_type: Ty<'a>,
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyConditional<'a> {
+pub struct TyConditional<'a> {
     /// The type being checked
     pub(crate) check_type: Ty<'a>,
     /// The type that the check type extends
@@ -299,13 +299,13 @@ pub(crate) struct TyConditional<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyInfer<'a> {
+pub struct TyInfer<'a> {
     pub(crate) type_parameter: TyTypeParameter<'a>,
 }
 
 /// Mapped type, mirroring typescript-go's `MappedType` shape.
 #[derive(Debug, PartialEq, Eq)]
-pub(crate) struct TyMapped<'a> {
+pub struct TyMapped<'a> {
     /// Name of the key type parameter (the `P` in `[P in K]`).
     pub(crate) key: &'a str,
     /// Constraint of the key (the `K` in `[P in K]`).
@@ -341,37 +341,37 @@ impl MappedModifier {
 }
 
 impl<'a> Ty<'a> {
-    pub(crate) fn none() -> Self {
+    pub fn none() -> Self {
         Self::None
     }
 
-    pub(crate) fn number() -> Self {
+    pub fn number() -> Self {
         Self::Number
     }
 
-    pub(crate) fn number_literal(arena: CheckerArena<'a>, num: &'a str) -> Self {
+    pub fn number_literal(arena: CheckerArena<'a>, num: &'a str) -> Self {
         Self::NumberLiteral(arena.alloc(TyNumberLiteral { value: num }))
     }
 
-    pub(crate) fn string() -> Self {
+    pub fn string() -> Self {
         Self::String
     }
 
-    pub(crate) fn symbol() -> Self {
+    pub fn symbol() -> Self {
         Self::Symbol
     }
 
-    pub(crate) fn unique_symbol(arena: CheckerArena<'a>, name: Option<&'a str>) -> Self {
+    pub fn unique_symbol(arena: CheckerArena<'a>, name: Option<&'a str>) -> Self {
         Self::UniqueSymbol(arena.alloc(TyUniqueSymbol { name }))
     }
 
     /// General `boolean` type (true or false)
-    pub(crate) fn boolean() -> Self {
+    pub fn boolean() -> Self {
         Self::Boolean
     }
 
     /// Literal `boolean` type (`true` or `false`), subtype of `boolean`
-    pub(crate) fn boolean_literal(value: bool) -> Self {
+    pub fn boolean_literal(value: bool) -> Self {
         if value {
             Self::boolean_true()
         } else {
@@ -380,24 +380,24 @@ impl<'a> Ty<'a> {
     }
 
     /// Literal `true` type (subtype of `boolean`)
-    pub(crate) fn boolean_true() -> Self {
+    pub fn boolean_true() -> Self {
         Self::BooleanLiteral(true)
     }
 
     /// Literal `false` type (subtype of `boolean`)
-    pub(crate) fn boolean_false() -> Self {
+    pub fn boolean_false() -> Self {
         Self::BooleanLiteral(false)
     }
 
-    pub(crate) fn bigint() -> Self {
+    pub fn bigint() -> Self {
         Self::Bigint
     }
 
-    pub(crate) fn bigint_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
+    pub fn bigint_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
         Self::BigIntLiteral(arena.alloc(TyBigIntLiteral { value: name }))
     }
 
-    pub(crate) fn template_literal(
+    pub fn template_literal(
         arena: CheckerArena<'a>,
         template: &oxc_ast::ast::TemplateLiteral<'a>,
     ) -> Self {
@@ -418,7 +418,7 @@ impl<'a> Ty<'a> {
         )
     }
 
-    pub(crate) fn ts_template_literal(
+    pub fn ts_template_literal(
         arena: CheckerArena<'a>,
         template: &TSTemplateLiteralType<'a>,
         expressions: impl IntoIterator<Item = Ty<'a>>,
@@ -431,39 +431,39 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn undefined() -> Self {
+    pub fn undefined() -> Self {
         Self::Undefined
     }
 
-    pub(crate) fn null() -> Self {
+    pub fn null() -> Self {
         Self::Null
     }
 
-    pub(crate) fn any() -> Self {
+    pub fn any() -> Self {
         Self::Any
     }
 
-    pub(crate) fn unknown() -> Self {
+    pub fn unknown() -> Self {
         Self::Unknown
     }
 
-    pub(crate) fn void() -> Self {
+    pub fn void() -> Self {
         Self::Void
     }
 
-    pub(crate) fn never() -> Self {
+    pub fn never() -> Self {
         Self::Never
     }
 
-    pub(crate) fn primitive_object() -> Self {
+    pub fn primitive_object() -> Self {
         Self::PrimitiveObject
     }
 
-    pub(crate) fn this() -> Self {
+    pub fn this() -> Self {
         Self::This
     }
 
-    pub(crate) fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
+    pub fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty {
             name,
             computed: false,
@@ -474,7 +474,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub(crate) fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+    pub fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
         TyParameter {
             name,
             ty,
@@ -483,7 +483,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub(crate) fn optional_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+    pub fn optional_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
         TyParameter {
             name,
             ty,
@@ -492,7 +492,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub(crate) fn rest_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+    pub fn rest_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
         TyParameter {
             name,
             ty,
@@ -501,7 +501,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub(crate) fn type_parameter(
+    pub fn type_parameter(
         name: &'a str,
         constraint_type: Option<Ty<'a>>,
         default_type: Option<Ty<'a>>,
@@ -509,7 +509,7 @@ impl<'a> Ty<'a> {
         Self::type_parameter_with_display_default(name, constraint_type, default_type, true)
     }
 
-    pub(crate) fn type_parameter_with_display_default(
+    pub fn type_parameter_with_display_default(
         name: &'a str,
         constraint_type: Option<Ty<'a>>,
         default_type: Option<Ty<'a>>,
@@ -523,7 +523,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub(crate) fn object(
+    pub fn object(
         arena: CheckerArena<'a>,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
     ) -> Self {
@@ -534,7 +534,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn object_with_signatures(
+    pub fn object_with_signatures(
         arena: CheckerArena<'a>,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         signatures: impl IntoIterator<Item = Signature<'a>>,
@@ -546,7 +546,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn object_with_index_infos(
+    pub fn object_with_index_infos(
         arena: CheckerArena<'a>,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
@@ -558,7 +558,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn module_namespace(
+    pub fn module_namespace(
         arena: CheckerArena<'a>,
         name: &'a str,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
@@ -570,7 +570,7 @@ impl<'a> Ty<'a> {
     }
 
     #[cfg(test)]
-    pub(crate) fn function(
+    pub fn function(
         arena: CheckerArena<'a>,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         parameters: impl IntoIterator<Item = TyParameter<'a>>,
@@ -579,7 +579,7 @@ impl<'a> Ty<'a> {
         Self::function_with_type_predicate(arena, type_parameters, parameters, return_type, None)
     }
 
-    pub(crate) fn function_with_type_predicate(
+    pub fn function_with_type_predicate(
         arena: CheckerArena<'a>,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         parameters: impl IntoIterator<Item = TyParameter<'a>>,
@@ -594,7 +594,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn type_reference(
+    pub fn type_reference(
         arena: CheckerArena<'a>,
         name: &'a str,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
@@ -608,7 +608,7 @@ impl<'a> Ty<'a> {
         )
     }
 
-    pub(crate) fn type_reference_with_explicit_type_argument_count(
+    pub fn type_reference_with_explicit_type_argument_count(
         arena: CheckerArena<'a>,
         name: &'a str,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
@@ -622,7 +622,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn type_query(
+    pub fn type_query(
         arena: CheckerArena<'a>,
         name: &'a str,
         resolved: Ty<'a>,
@@ -635,57 +635,51 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn string_literal(arena: CheckerArena<'a>, value: &'a str) -> Self {
+    pub fn string_literal(arena: CheckerArena<'a>, value: &'a str) -> Self {
         Self::StringLiteral(arena.alloc(TyStringLiteral { value }))
     }
 
-    pub(crate) fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
+    pub fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
         Self::Array(arena.alloc(TyArray {
             element_type,
             readonly: false,
         }))
     }
 
-    pub(crate) fn readonly_array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
+    pub fn readonly_array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
         Self::Array(arena.alloc(TyArray {
             element_type,
             readonly: true,
         }))
     }
 
-    pub(crate) fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
+    pub fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
         Self::Tuple(arena.alloc(TyTuple {
             elements: arena.vec_from_iter(elements),
             readonly: false,
         }))
     }
 
-    pub(crate) fn readonly_tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
+    pub fn readonly_tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
         Self::Tuple(arena.alloc(TyTuple {
             elements: arena.vec_from_iter(elements),
             readonly: true,
         }))
     }
 
-    pub(crate) fn r#union(
-        arena: CheckerArena<'a>,
-        types: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
+    pub fn r#union(arena: CheckerArena<'a>, types: impl IntoIterator<Item = Ty<'a>>) -> Self {
         reduce_union_type(arena, types)
     }
 
-    pub(crate) fn intersection(
-        arena: CheckerArena<'a>,
-        types: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
+    pub fn intersection(arena: CheckerArena<'a>, types: impl IntoIterator<Item = Ty<'a>>) -> Self {
         reduce_intersection_type(arena, types)
     }
 
-    pub(crate) fn keyof(arena: CheckerArena<'a>, target: Ty<'a>) -> Self {
+    pub fn keyof(arena: CheckerArena<'a>, target: Ty<'a>) -> Self {
         Self::Keyof(arena.alloc(TyKeyof { target }))
     }
 
-    pub(crate) fn indexed_access(
+    pub fn indexed_access(
         arena: CheckerArena<'a>,
         object_type: Ty<'a>,
         index_type: Ty<'a>,
@@ -696,7 +690,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    pub(crate) fn conditional(
+    pub fn conditional(
         arena: CheckerArena<'a>,
         check_type: Ty<'a>,
         extends_type: Ty<'a>,
@@ -714,11 +708,11 @@ impl<'a> Ty<'a> {
         )
     }
 
-    pub(crate) fn infer(arena: CheckerArena<'a>, type_parameter: TyTypeParameter<'a>) -> Self {
+    pub fn infer(arena: CheckerArena<'a>, type_parameter: TyTypeParameter<'a>) -> Self {
         Self::Infer(arena.alloc(TyInfer { type_parameter }))
     }
 
-    pub(crate) fn mapped(
+    pub fn mapped(
         arena: CheckerArena<'a>,
         key: &'a str,
         constraint: Ty<'a>,
@@ -739,22 +733,22 @@ impl<'a> Ty<'a> {
 
     /// Returns `true` if the type is `none`, indicating that we have no information about this type.
     /// This is normally a bug and should be investigated.
-    pub(crate) fn is_none(&self) -> bool {
+    pub fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
 
     /// Returns `true` if the type is `any`.
-    pub(crate) fn is_any(&self) -> bool {
+    pub fn is_any(&self) -> bool {
         matches!(self, Self::Any)
     }
 
     /// Returns `true` if the type is `never`.
-    pub(crate) fn is_never(&self) -> bool {
+    pub fn is_never(&self) -> bool {
         matches!(self, Self::Never)
     }
 
     /// Returns `true` if the type is a numerical index type.
-    pub(crate) fn is_number_index_type(&self) -> bool {
+    pub fn is_number_index_type(&self) -> bool {
         matches!(self, Ty::Number | Ty::NumberLiteral(_))
     }
 
@@ -2442,13 +2436,13 @@ fn type_parameter_to_type_string(type_parameter: &TyTypeParameter<'_>) -> String
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) enum SignatureKind {
+pub enum SignatureKind {
     Call,
     Construct,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct Signature<'a> {
+pub struct Signature<'a> {
     pub(crate) kind: SignatureKind,
     pub(crate) function: &'a TyFunction<'a>,
 }
@@ -2482,7 +2476,7 @@ impl<'a> Signature<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct IndexInfo<'a> {
+pub struct IndexInfo<'a> {
     /// The type of the index key. The `K` in `{ [k: K]: V }` or `string` in `{ [k: string]: number }`
     pub(crate) key_type: Ty<'a>,
     /// The type of the index value. The `V` in `{ [k: K]: V }` or `string` in `{ [k: string]: number }`

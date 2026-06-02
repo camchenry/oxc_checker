@@ -8,7 +8,7 @@ use oxc_ast::{
 use oxc_semantic::SymbolId;
 use oxc_span::{GetSpan, Span};
 
-mod checker;
+pub mod checker;
 mod checker_impl;
 mod evolving_arrays;
 mod flow;
@@ -17,10 +17,10 @@ mod global_types;
 mod infer;
 pub mod program;
 mod relations;
-mod type_set;
+pub mod type_set;
 mod types;
 
-use types::*;
+pub use types::*;
 
 // TODO: Move all the utility functions to a separate module.
 
@@ -249,7 +249,6 @@ fn index_signature_key_types<'a>(constraint: Ty<'a>) -> Option<Vec<Ty<'a>>> {
     }
 }
 
-#[cfg(feature = "bench")]
 #[doc(hidden)]
 pub mod benchmark_support {
     use crate::checker::{Checker, CheckerBuilder, NodeRef};

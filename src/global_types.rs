@@ -28,7 +28,7 @@ struct GlobalSymbolEntry {
 }
 
 #[derive(Debug)]
-pub(crate) struct GlobalSymbolTable {
+pub struct GlobalSymbolTable {
     symbols: HashMap<String, GlobalSymbolEntry>,
 }
 

@@ -11,7 +11,7 @@ use crate::{
 };
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub(crate) struct ClassMemberResolution {
+pub struct ClassMemberResolution {
     pub(crate) program_id: ProgramId,
     pub(crate) class_name: String,
     pub(crate) property_name: String,
