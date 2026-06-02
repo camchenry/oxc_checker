@@ -58,6 +58,9 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     if checker.semantic(node.program_id).cfg().is_none() {
         return base_type;
     }
+    if symbol.program_id != node.program_id {
+        return base_type;
+    }
 
     let mut narrowed_type =
         evolving_arrays::get_flow_type_of_reference(checker, node, symbol, base_type)
