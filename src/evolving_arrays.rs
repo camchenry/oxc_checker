@@ -254,7 +254,7 @@ fn argument_expression<'a>(argument: &'a Argument<'a>) -> Option<&'a Expression<
 
 fn finalized_empty_element_type(base_type: Ty<'_>) -> Ty<'_> {
     match base_type {
-        Ty::Array(array) if matches!(array.element_type, Ty::Never) => Ty::any(),
+        Ty::Array(array) if array.element_type.is_never() => Ty::any(),
         Ty::Array(array) => array.element_type,
         _ => Ty::any(),
     }

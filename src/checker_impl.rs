@@ -116,14 +116,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.arena
     }
 
-    fn get_type_of_expression(
-        &self,
-        program_id: program::ProgramId,
-        expression: &'a Expression<'a>,
-    ) -> Ty<'a> {
-        self.get_type_of_expression_with_node(program_id, expression, None)
-    }
-
     /// Resolve an expression type with a semantic context node when ancestor context is needed.
     /// This keeps `this` and member expressions tied to the class or call site they appear in.
     pub(crate) fn get_type_of_expression_with_node(
@@ -1147,7 +1139,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let property_name = if let Some(name_type) = mapped.name_type {
                 let name_type = name_type.substitute_type_parameters(self.arena(), &substitutions);
                 let name_type = self.expand_type_at_use(program_id, name_type, depth + 1);
-                if matches!(name_type, Ty::Never) {
+                if name_type.is_never() {
                     continue;
                 }
                 index_type_to_property_name(self.arena(), name_type)?
@@ -2625,7 +2617,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(argument) = argument.as_expression() else {
                 continue;
             };
-            let argument_type = self.get_type_of_expression(program_id, argument);
+            let argument_type = self.get_type_of_expression_with_node(program_id, argument, None);
             infer_type_parameter_from_types(
                 &parameter.ty,
                 &argument_type,

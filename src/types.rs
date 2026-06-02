@@ -746,6 +746,11 @@ impl<'a> Ty<'a> {
         matches!(self, Self::Any)
     }
 
+    /// Returns `true` if the type is `never`.
+    pub(crate) fn is_never(&self) -> bool {
+        matches!(self, Self::Never)
+    }
+
     /// Returns `true` if the type is a numerical index type.
     pub(crate) fn is_number_index_type(&self) -> bool {
         matches!(self, Ty::Number | Ty::NumberLiteral(_))
@@ -2356,7 +2361,7 @@ pub(crate) fn reduce_union_type<'a>(
     remove_redundant_literal_types(&mut type_set);
 
     if type_set.len() > 1 {
-        type_set.retain(|ty| !matches!(ty, Ty::Never));
+        type_set.retain(|ty| !ty.is_never());
     }
 
     // TODO(perf): this is just for nicer display purposes but we
