@@ -1846,6 +1846,9 @@ interface RegExpMatchArray extends Array<string> {
     input?: string;
 >   ^^^^^: string | undefined   (TyUnion)
 
+    0: string;
+>   ^: string   (TyString)
+
 interface RegExpExecArray extends Array<string> {
 >         ^^^^^^^^^^^^^^^: any   (TyAny)
 
@@ -1860,6 +1863,9 @@ interface RegExpExecArray extends Array<string> {
 
     input: string;
 >   ^^^^^: string   (TyString)
+
+    0: string;
+>   ^: string   (TyString)
 
 interface RegExp {
 >         ^^^^^^: RegExpConstructor   (TyTypeReference)
@@ -1964,10 +1970,70 @@ interface RegExpConstructor {
 >                                      ^^^^^^: RegExpConstructor   (TyTypeReference)
 
     readonly "prototype": RegExp;
+>            ^^^^^^^^^^^: RegExp   (TyTypeReference)
+
+    readonly "prototype": RegExp;
 >                         ^^^^^^: RegExpConstructor   (TyTypeReference)
 
     readonly "prototype": RegExp;
 >                         ^^^^^^: RegExpConstructor   (TyTypeReference)
+
+    "$1": string;
+>   ^^^^: string   (TyString)
+
+    "$2": string;
+>   ^^^^: string   (TyString)
+
+    "$3": string;
+>   ^^^^: string   (TyString)
+
+    "$4": string;
+>   ^^^^: string   (TyString)
+
+    "$5": string;
+>   ^^^^: string   (TyString)
+
+    "$6": string;
+>   ^^^^: string   (TyString)
+
+    "$7": string;
+>   ^^^^: string   (TyString)
+
+    "$8": string;
+>   ^^^^: string   (TyString)
+
+    "$9": string;
+>   ^^^^: string   (TyString)
+
+    "input": string;
+>   ^^^^^^^: string   (TyString)
+
+    "$_": string;
+>   ^^^^: string   (TyString)
+
+    "lastMatch": string;
+>   ^^^^^^^^^^^: string   (TyString)
+
+    "$&": string;
+>   ^^^^: string   (TyString)
+
+    "lastParen": string;
+>   ^^^^^^^^^^^: string   (TyString)
+
+    "$+": string;
+>   ^^^^: string   (TyString)
+
+    "leftContext": string;
+>   ^^^^^^^^^^^^^: string   (TyString)
+
+    "$`": string;
+>   ^^^^: string   (TyString)
+
+    "rightContext": string;
+>   ^^^^^^^^^^^^^^: string   (TyString)
+
+    "$'": string;
+>   ^^^^: string   (TyString)
 
 declare var RegExp: RegExpConstructor;
 >           ^^^^^^: RegExpConstructor   (TyTypeReference)

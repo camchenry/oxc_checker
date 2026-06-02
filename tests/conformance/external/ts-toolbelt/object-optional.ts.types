@@ -233,6 +233,9 @@ export type Optional<
 >               ^^^^^: "flat" | "deep"   (TyUnion)
 
   1: OptionalPart<O, depth>
+> ^: OptionalPart<O, depth>   (TyTypeReference)
+
+  1: OptionalPart<O, depth>
 >    ^^^^^^^^^^^^: any   (TyAny)
 
   1: OptionalPart<O, depth>
@@ -240,6 +243,9 @@ export type Optional<
 
   1: OptionalPart<O, depth>
 >                    ^^^^^: any   (TyAny)
+
+  0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
+> ^: { [K in keyof (OptionalPart<Pick<O, K>, depth> & O)]: K extends keyof OptionalPart<Pick<O, K>, depth> ? OptionalPart<Pick<O, K>, depth>[K] : K extends keyof O ? O[K] : never; }   (TyMapped)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
 >    ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (TyMapped)

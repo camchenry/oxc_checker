@@ -38,7 +38,13 @@ export type AnyDataTag = {
 >           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject)
 
 	[dataTagSymbol]: any;
+> ^^^^^^^^^^^^^: any   (TyAny)
+
+	[dataTagSymbol]: any;
 > ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+	[dataTagErrorSymbol]: any;
+> ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 	[dataTagErrorSymbol]: any;
 > ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)

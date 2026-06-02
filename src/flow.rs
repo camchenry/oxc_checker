@@ -2,7 +2,6 @@ use oxc_ast::{
     AstKind,
     ast::{ConditionalExpression, Expression, IfStatement},
 };
-use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
 

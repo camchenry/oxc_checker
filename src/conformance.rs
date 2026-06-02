@@ -391,20 +391,17 @@ impl fmt::Debug for ConformanceError {
 enum ComparisonError {
     TypeMismatch {
         start: u32,
-        end: u32,
         text: String,
         expected: String,
         actual: String,
     },
     MissingFromOxc {
         start: u32,
-        end: u32,
         text: String,
         expected: String,
     },
     ExtraInOxc {
         start: u32,
-        end: u32,
         text: String,
         actual: String,
     },
@@ -1383,14 +1380,12 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                     }
                     Some(oxc_type) => errors.push(ComparisonError::TypeMismatch {
                         start: key.start,
-                        end: key.end,
                         text: key.text.clone(),
                         expected: tsc_type.clone(),
                         actual: oxc_type.clone(),
                     }),
                     None => errors.push(ComparisonError::MissingFromOxc {
                         start: key.start,
-                        end: key.end,
                         text: key.text.clone(),
                         expected: tsc_type.clone(),
                     }),
@@ -1401,7 +1396,6 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                 if !tsc_by_key.contains_key(key) {
                     errors.push(ComparisonError::ExtraInOxc {
                         start: key.start,
-                        end: key.end,
                         text: key.text.clone(),
                         actual: oxc_type.clone(),
                     });
@@ -2037,7 +2031,6 @@ fn write_snapshot_error(
     match error {
         ComparisonError::TypeMismatch {
             start,
-            end: _,
             text,
             expected,
             actual,
@@ -2052,7 +2045,6 @@ fn write_snapshot_error(
         }
         ComparisonError::MissingFromOxc {
             start,
-            end: _,
             text,
             expected,
         } => {
@@ -2066,7 +2058,6 @@ fn write_snapshot_error(
         }
         ComparisonError::ExtraInOxc {
             start,
-            end: _,
             text,
             actual,
         } => {

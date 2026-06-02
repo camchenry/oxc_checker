@@ -80,7 +80,13 @@ export type AnyDataTag = {
 >           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject)
 
   [dataTagSymbol]: any
+>  ^^^^^^^^^^^^^: any   (TyAny)
+
+  [dataTagSymbol]: any
 >  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+  [dataTagErrorSymbol]: any
+>  ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
   [dataTagErrorSymbol]: any
 >  ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -116,10 +122,16 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 >   ^^^^^: any   (TyAny)
 
       [dataTagSymbol]: TValue
+>      ^^^^^^^^^^^^^: TValue   (TyTypeReference)
+
+      [dataTagSymbol]: TValue
 >      ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
       [dataTagSymbol]: TValue
 >                      ^^^^^^: any   (TyAny)
+
+      [dataTagErrorSymbol]: TError
+>      ^^^^^^^^^^^^^^^^^^: TError   (TyTypeReference)
 
       [dataTagErrorSymbol]: TError
 >      ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
