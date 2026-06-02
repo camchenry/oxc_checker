@@ -1,15 +1,12 @@
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrowFunctionExpression, BindingPattern, Expression, ForStatementLeft, Function,
-        FunctionBody, PropertyKey, ReturnStatement, TSType, TSTypeName, TSTypeQueryExprName,
-        VariableDeclarator,
+        BindingPattern, Expression, ForStatementLeft, PropertyKey, TSType, TSTypeName,
+        TSTypeQueryExprName, VariableDeclarator,
     },
 };
-use oxc_ast_visit::Visit;
 use oxc_semantic::SymbolId;
 use oxc_span::{GetSpan, Span};
-use oxc_syntax::scope::ScopeFlags;
 
 mod checker;
 mod checker_impl;
@@ -24,47 +21,7 @@ mod types;
 
 use types::*;
 
-#[derive(Debug, Clone, Copy)]
-enum FunctionKind<'a> {
-    Function(&'a Function<'a>),
-    ArrowFunction(&'a ArrowFunctionExpression<'a>),
-}
-
-impl<'a> FunctionKind<'a> {
-    fn returns_promise(self) -> bool {
-        match self {
-            FunctionKind::Function(function) => function.r#async && !function.generator,
-            FunctionKind::ArrowFunction(function) => function.r#async,
-        }
-    }
-}
-
-struct ReturnExpressionVisitor<'a> {
-    expressions: Vec<&'a Expression<'a>>,
-}
-
-impl<'a> ReturnExpressionVisitor<'a> {
-    /// Collect return expressions from this function body, ignoring nested functions.
-    fn expressions_in_body(body: &'a FunctionBody<'a>) -> Vec<&'a Expression<'a>> {
-        let mut visitor = Self {
-            expressions: Vec::new(),
-        };
-        visitor.visit_function_body(body);
-        visitor.expressions
-    }
-}
-
-impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
-    fn visit_return_statement(&mut self, statement: &ReturnStatement<'a>) {
-        if let Some(argument) = statement.argument.as_ref() {
-            self.expressions.push(self.alloc(argument));
-        }
-    }
-
-    fn visit_function(&mut self, _function: &Function<'a>, _flags: ScopeFlags) {}
-
-    fn visit_arrow_function_expression(&mut self, _function: &ArrowFunctionExpression<'a>) {}
-}
+// TODO: Move all the utility functions to a separate module.
 
 fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {

@@ -1,19 +1,20 @@
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrayExpression, ArrayExpressionElement, AssignmentExpression, AwaitExpression,
-        BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class, ClassElement,
-        ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
-        FormalParameterRest, FormalParameters, Function, IdentifierReference, MethodDefinition,
-        MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression, ObjectPropertyKind,
-        PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
-        TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
-        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
-        VariableDeclarationKind, VariableDeclarator,
+        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
+        AwaitExpression, BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class,
+        ClassElement, ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
+        FormalParameterRest, FormalParameters, Function, FunctionBody, IdentifierReference,
+        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
+        ObjectPropertyKind, PropertyDefinition, ReturnStatement, StaticMemberExpression,
+        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName,
+        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        UnaryExpression, VariableDeclarationKind, VariableDeclarator,
     },
 };
-use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
+use oxc_ast_visit::Visit;
+use oxc_semantic::{AstNodes, NodeId, ScopeFlags, Semantic, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
 use oxc_syntax::{
@@ -23,7 +24,7 @@ use oxc_syntax::{
 use std::collections::{HashMap, HashSet};
 
 use crate::{
-    FunctionKind, ReturnExpressionVisitor, binding_pattern_default_initializer_symbol_id,
+    binding_pattern_default_initializer_symbol_id,
     checker::ClassMemberResolution,
     checker::{Checker, CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
@@ -44,6 +45,48 @@ use crate::{
 
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
+
+#[derive(Debug, Clone, Copy)]
+enum FunctionKind<'a> {
+    Function(&'a Function<'a>),
+    ArrowFunction(&'a ArrowFunctionExpression<'a>),
+}
+
+impl<'a> FunctionKind<'a> {
+    fn returns_promise(self) -> bool {
+        match self {
+            FunctionKind::Function(function) => function.r#async && !function.generator,
+            FunctionKind::ArrowFunction(function) => function.r#async,
+        }
+    }
+}
+
+struct ReturnExpressionVisitor<'a> {
+    expressions: Vec<&'a Expression<'a>>,
+}
+
+impl<'a> ReturnExpressionVisitor<'a> {
+    /// Collect return expressions from this function body, ignoring nested functions.
+    fn expressions_in_body(body: &'a FunctionBody<'a>) -> Vec<&'a Expression<'a>> {
+        let mut visitor = Self {
+            expressions: Vec::new(),
+        };
+        visitor.visit_function_body(body);
+        visitor.expressions
+    }
+}
+
+impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
+    fn visit_return_statement(&mut self, statement: &ReturnStatement<'a>) {
+        if let Some(argument) = statement.argument.as_ref() {
+            self.expressions.push(self.alloc(argument));
+        }
+    }
+
+    fn visit_function(&mut self, _function: &Function<'a>, _flags: ScopeFlags) {}
+
+    fn visit_arrow_function_expression(&mut self, _function: &ArrowFunctionExpression<'a>) {}
+}
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
     #[inline]
