@@ -33,5 +33,13 @@ harness = false
 name = "type_set"
 harness = false
 
+[[example]]
+name = "type_counts"
+path = "src/examples/type_counts.rs"
+
 [profile.bench]
+debug = true
+
+[profile.release-with-debug]
+inherits = "release"
 debug = true

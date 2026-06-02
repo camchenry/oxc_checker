@@ -1052,8 +1052,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    #[cfg(test)]
-    pub(crate) fn enum_variant_name(self) -> &'static str {
+    pub fn enum_variant_name(self) -> &'static str {
         match self {
             Self::None => "TyNone",
             Self::Number => "TyNumber",
