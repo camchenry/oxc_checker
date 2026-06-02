@@ -28,7 +28,7 @@ use crate::{
     checker::{Checker, CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name, infer_type_parameter_from_types, is_iterable_type_reference,
-    is_mapped_empty_object_intersection, is_number_index_type, is_promise_like_type_reference,
+    is_mapped_empty_object_intersection, is_promise_like_type_reference,
     program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_contains_infer,
     ts_type_name_to_str, ts_type_query_expr_name_to_str, tuple_element_type_at_index,
@@ -898,7 +898,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         index_type: Ty<'a>,
     ) -> Option<Ty<'a>> {
         if let Ty::Array(array) = object_type
-            && is_number_index_type(index_type)
+            && index_type.is_number_index_type()
         {
             return Some(array.element_type);
         }

@@ -735,12 +735,20 @@ impl<'a> Ty<'a> {
         }))
     }
 
+    /// Returns `true` if the type is `none`, indicating that we have no information about this type.
+    /// This is normally a bug and should be investigated.
     pub(crate) fn is_none(&self) -> bool {
         matches!(self, Self::None)
     }
 
+    /// Returns `true` if the type is `any`.
     pub(crate) fn is_any(&self) -> bool {
         matches!(self, Self::Any)
+    }
+
+    /// Returns `true` if the type is a numerical index type.
+    pub(crate) fn is_number_index_type(&self) -> bool {
+        matches!(self, Ty::Number | Ty::NumberLiteral(_))
     }
 
     pub(crate) fn from_expression(expression: &Expression<'_>) -> Self {

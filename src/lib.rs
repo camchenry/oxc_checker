@@ -452,10 +452,6 @@ struct ClassMemberResolution {
     is_static: bool,
 }
 
-fn is_number_index_type(ty: Ty<'_>) -> bool {
-    matches!(ty, Ty::Number | Ty::NumberLiteral(_))
-}
-
 fn is_promise_like_type_reference(name: &str) -> bool {
     matches!(name, "Promise" | "PromiseLike")
 }
