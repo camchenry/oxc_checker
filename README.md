@@ -44,7 +44,7 @@ At the moment, this is not a collaborative project. I'm still rearchitecting hug
 
 ### What is the performance like?
 
-I'm not currently comparing performance to typescript-go or tsc or anything type checkers at this point, since they support way more functionality and are much more optimized. There is a lot of room for performance improvement still, but I am more focused on making the types accurate right now. There are some simple benchmarks you can run with `cargo bench`.
+I'm not currently comparing performance to typescript-go or tsc or any other type checkers at this point, since they support way more functionality and are much more optimized. There is a lot of room for performance improvement still, but I am more focused on making the types accurate right now. There are some simple benchmarks you can run with `cargo bench`.
 
 ### Will this be integrated into oxc?
 
