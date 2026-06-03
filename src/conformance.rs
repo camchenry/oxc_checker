@@ -14,7 +14,10 @@ use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, Resol
 use oxc_semantic::NodeId;
 use oxc_span::GetSpan;
 
-use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef};
+use crate::{
+    checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef},
+    checker_impl::GetTypeFlags,
+};
 
 use super::*;
 
@@ -1315,6 +1318,7 @@ fn actual_identifier_record<'a>(
                     program_id,
                     &statement.expression,
                     Some(node_id),
+                    GetTypeFlags::NONE,
                 ),
             )
         }
