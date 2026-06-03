@@ -65,7 +65,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let return_type = if let FunctionKind::ArrowFunction(arrow_function) = function
             && let Some(expression) = arrow_function.get_expression()
         {
-            self.get_return_expression_type(program_id, expression, node_id, false)
+            self.infer_expression_type(program_id, expression, node_id, false)
         } else {
             let body = match function {
                 FunctionKind::Function(f) => f.body.as_deref(),
@@ -82,7 +82,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Ty::union(
                     self.arena(),
                     return_expressions.into_iter().map(|argument| {
-                        self.get_return_expression_type(
+                        self.infer_expression_type(
                             program_id,
                             argument,
                             node_id,
@@ -142,8 +142,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         substitutions
     }
 
-    // TODO: Can this be simplified or reduced down to just `get_type_of_expression_with_node`?
-    fn get_return_expression_type(
+    pub(crate) fn infer_expression_type(
         &self,
         program_id: ProgramId,
         expression: &'a Expression<'a>,

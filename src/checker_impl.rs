@@ -186,41 +186,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    // TODO: Combine with `get_return_expression_type`
-    fn get_type_of_const_initializer(
-        &self,
-        program_id: program::ProgramId,
-        expression: &'a Expression<'a>,
-        node_id: NodeId,
-    ) -> Ty<'a> {
-        match expression {
-            Expression::NumericLiteral(literal) => {
-                let name = self.arena().str(&literal.raw_str());
-                Ty::number_literal(self.arena(), name)
-            }
-            Expression::StringLiteral(literal) => {
-                Ty::string_literal(self.arena(), self.get_string_literal_value(literal))
-            }
-            Expression::BooleanLiteral(literal) => Ty::boolean_literal(literal.value),
-            Expression::UnaryExpression(unary_expression)
-                if unary_expression.operator == UnaryOperator::UnaryNegation =>
-            {
-                match &unary_expression.argument {
-                    Expression::NumericLiteral(literal) => {
-                        let name = self.arena().str(&format!("-{}", &literal.raw_str()));
-                        Ty::number_literal(self.arena(), name)
-                    }
-                    _ => self.get_type_of_unary_expression(
-                        program_id,
-                        unary_expression,
-                        Some(node_id),
-                    ),
-                }
-            }
-            _ => self.get_type_of_expression_with_node(program_id, expression, Some(node_id)),
-        }
-    }
-
     fn identifier_node_ref(
         &self,
         program_id: program::ProgramId,
@@ -4206,7 +4171,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     if declarator.kind == VariableDeclarationKind::Const
                         && !self.is_in_exported_declaration(program_id, declaration)
                     {
-                        self.get_type_of_const_initializer(program_id, expression, declaration)
+                        self.infer_expression_type(program_id, expression, Some(declaration), true)
                     } else {
                         self.get_type_of_expression_with_node(
                             program_id,
