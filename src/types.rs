@@ -241,7 +241,7 @@ pub struct TyTuple<'a> {
 
 /// A tuple element is either: a regular type [`Ty`], a rest type, or an optional type.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) enum TupleElement<'a> {
+pub enum TupleElement<'a> {
     /// A regular tuple element, like `string` in `[string, number]`.
     Regular(Ty<'a>),
     /// A rest tuple element, like `string[]` in `[string, ...string[]]`.
@@ -322,7 +322,7 @@ pub struct TyMapped<'a> {
 
 /// Presence/polarity of a `readonly` or `?` modifier on a mapped type.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) enum MappedModifier {
+pub enum MappedModifier {
     None,
     True,
     Plus,
