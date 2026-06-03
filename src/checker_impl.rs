@@ -2,19 +2,18 @@ use oxc_ast::{
     AstKind,
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
-        AwaitExpression, BinaryExpression, BindingPattern, BooleanLiteral, CallExpression, Class,
-        ClassElement, ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
-        FormalParameterRest, FormalParameters, Function, FunctionBody, IdentifierReference,
-        MethodDefinition, MethodDefinitionKind, NewExpression, NumericLiteral, ObjectExpression,
-        ObjectPropertyKind, PropertyDefinition, ReturnStatement, StaticMemberExpression,
-        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName,
-        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        UnaryExpression, VariableDeclarationKind, VariableDeclarator,
+        AwaitExpression, BinaryExpression, BindingPattern, CallExpression, Class, ClassElement,
+        ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
+        FormalParameterRest, FormalParameters, Function, IdentifierReference, MethodDefinition,
+        MethodDefinitionKind, NewExpression, ObjectExpression, ObjectPropertyKind,
+        PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
+        TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
+        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
+        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
+        VariableDeclarationKind, VariableDeclarator,
     },
 };
-use oxc_ast_visit::Visit;
-use oxc_semantic::{AstNodes, NodeId, ScopeFlags, Semantic, SymbolId};
+use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
 use oxc_syntax::{
@@ -29,7 +28,7 @@ use crate::{
     checker::{Checker, CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
-    infer::{infer_type_parameter_from_types, ts_type_contains_infer},
+    infer::ts_type_contains_infer,
     is_iterable_type_reference, is_mapped_empty_object_intersection,
     is_promise_like_type_reference,
     program::{self},
@@ -47,45 +46,18 @@ pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
 
 #[derive(Debug, Clone, Copy)]
-enum FunctionKind<'a> {
+pub(crate) enum FunctionKind<'a> {
     Function(&'a Function<'a>),
     ArrowFunction(&'a ArrowFunctionExpression<'a>),
 }
 
 impl<'a> FunctionKind<'a> {
-    fn returns_promise(self) -> bool {
+    pub(crate) fn returns_promise(self) -> bool {
         match self {
             FunctionKind::Function(function) => function.r#async && !function.generator,
             FunctionKind::ArrowFunction(function) => function.r#async,
         }
     }
-}
-
-struct ReturnExpressionVisitor<'a> {
-    expressions: Vec<&'a Expression<'a>>,
-}
-
-impl<'a> ReturnExpressionVisitor<'a> {
-    /// Collect return expressions from this function body, ignoring nested functions.
-    fn expressions_in_body(body: &'a FunctionBody<'a>) -> Vec<&'a Expression<'a>> {
-        let mut visitor = Self {
-            expressions: Vec::new(),
-        };
-        visitor.visit_function_body(body);
-        visitor.expressions
-    }
-}
-
-impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
-    fn visit_return_statement(&mut self, statement: &ReturnStatement<'a>) {
-        if let Some(argument) = statement.argument.as_ref() {
-            self.expressions.push(self.alloc(argument));
-        }
-    }
-
-    fn visit_function(&mut self, _function: &Function<'a>, _flags: ScopeFlags) {}
-
-    fn visit_arrow_function_expression(&mut self, _function: &ArrowFunctionExpression<'a>) {}
 }
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
@@ -214,6 +186,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    // TODO: Combine with `get_return_expression_type`
     fn get_type_of_const_initializer(
         &self,
         program_id: program::ProgramId,
@@ -221,17 +194,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: NodeId,
     ) -> Ty<'a> {
         match expression {
-            Expression::NumericLiteral(literal) => self.get_type_of_numeric_literal(literal),
-            Expression::StringLiteral(literal) => self.get_type_of_string_literal(literal),
-            Expression::BooleanLiteral(literal) => self.get_type_of_boolean_literal(literal),
+            Expression::NumericLiteral(literal) => {
+                let name = self.arena().str(&literal.raw_str());
+                Ty::number_literal(self.arena(), name)
+            }
+            Expression::StringLiteral(literal) => {
+                Ty::string_literal(self.arena(), self.get_string_literal_value(literal))
+            }
+            Expression::BooleanLiteral(literal) => Ty::boolean_literal(literal.value),
             Expression::UnaryExpression(unary_expression)
                 if unary_expression.operator == UnaryOperator::UnaryNegation =>
             {
                 match &unary_expression.argument {
                     Expression::NumericLiteral(literal) => {
-                        let name = self
-                            .arena()
-                            .str(&format!("-{}", self.numeric_literal_name(literal)));
+                        let name = self.arena().str(&format!("-{}", &literal.raw_str()));
                         Ty::number_literal(self.arena(), name)
                     }
                     _ => self.get_type_of_unary_expression(
@@ -264,28 +240,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         })
     }
 
-    fn get_type_of_numeric_literal(&self, literal: &NumericLiteral<'a>) -> Ty<'a> {
-        let name = self.numeric_literal_name(literal);
-        Ty::number_literal(self.arena(), name)
-    }
-
-    fn numeric_literal_name(&self, literal: &NumericLiteral<'a>) -> &'a str {
+    pub(crate) fn get_string_literal_value(&self, literal: &StringLiteral<'a>) -> &'a str {
         literal.raw.as_ref().map_or_else(
-            || self.arena().str(&literal.value.to_string()),
-            |raw| raw.as_str(),
-        )
-    }
-
-    fn get_type_of_string_literal(&self, literal: &StringLiteral<'a>) -> Ty<'a> {
-        let name = literal.raw.as_ref().map_or_else(
             || self.arena().str(&format!("{:?}", literal.value.as_str())),
             |raw| raw.as_str(),
-        );
-        Ty::string_literal(self.arena(), name)
-    }
-
-    fn get_type_of_boolean_literal(&self, literal: &BooleanLiteral) -> Ty<'a> {
-        Ty::boolean_literal(literal.value)
+        )
     }
 
     fn get_type_of_binary_expression(
@@ -2318,50 +2277,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Some(instantiated)
     }
 
-    fn infer_call_type_parameter_substitutions(
-        &self,
-        program_id: program::ProgramId,
-        function: &TyFunction<'a>,
-        call_expression: &'a CallExpression<'a>,
-        node_id: Option<NodeId>,
-    ) -> HashMap<&'a str, Ty<'a>> {
-        let (mut substitutions, explicit_type_parameters) = self
-            .explicit_type_parameter_substitutions(
-                program_id,
-                function,
-                call_expression.type_arguments.as_deref(),
-            );
-
-        let inferable_type_parameters = function
-            .type_parameters
-            .iter()
-            .map(|type_parameter| type_parameter.name)
-            .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
-            .collect::<Vec<_>>();
-
-        for (argument, parameter) in call_expression
-            .arguments
-            .iter()
-            .zip(function.parameters.iter())
-        {
-            let Some(argument) = argument.as_expression() else {
-                continue;
-            };
-            let argument_type =
-                self.get_type_of_expression_with_node(program_id, argument, node_id);
-            infer_type_parameter_from_types(
-                &parameter.ty,
-                &argument_type,
-                &inferable_type_parameters,
-                &mut substitutions,
-            );
-        }
-
-        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, false);
-
-        substitutions
-    }
-
     fn explicit_call_type_parameter_substitutions(
         &self,
         program_id: program::ProgramId,
@@ -2378,7 +2293,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         substitutions
     }
 
-    fn explicit_type_parameter_substitutions(
+    pub(crate) fn explicit_type_parameter_substitutions(
         &self,
         program_id: program::ProgramId,
         function: &TyFunction<'a>,
@@ -2404,7 +2319,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         (substitutions, explicit_type_parameters)
     }
 
-    fn add_type_parameter_fallback_substitutions(
+    pub(crate) fn add_type_parameter_fallback_substitutions(
         &self,
         function: &TyFunction<'a>,
         substitutions: &mut HashMap<&'a str, Ty<'a>>,
@@ -2587,48 +2502,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .return_type
                 .substitute_type_parameters(self.arena(), &substitutions),
         )
-    }
-
-    fn infer_construct_type_parameter_substitutions(
-        &self,
-        program_id: program::ProgramId,
-        function: &TyFunction<'a>,
-        new_expression: &'a NewExpression<'a>,
-    ) -> HashMap<&'a str, Ty<'a>> {
-        let (mut substitutions, explicit_type_parameters) = self
-            .explicit_type_parameter_substitutions(
-                program_id,
-                function,
-                new_expression.type_arguments.as_deref(),
-            );
-
-        let inferable_type_parameters = function
-            .type_parameters
-            .iter()
-            .map(|type_parameter| type_parameter.name)
-            .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
-            .collect::<Vec<_>>();
-
-        for (argument, parameter) in new_expression
-            .arguments
-            .iter()
-            .zip(function.parameters.iter())
-        {
-            let Some(argument) = argument.as_expression() else {
-                continue;
-            };
-            let argument_type = self.get_type_of_expression_with_node(program_id, argument, None);
-            infer_type_parameter_from_types(
-                &parameter.ty,
-                &argument_type,
-                &inferable_type_parameters,
-                &mut substitutions,
-            );
-        }
-
-        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, true);
-
-        substitutions
     }
 
     fn explicit_construct_type_parameter_substitutions(
@@ -3926,51 +3799,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.get_apparent_type_at_use(program_id, ty, 0)
     }
 
-    fn infer_function_return_type(
-        &self,
-        program_id: program::ProgramId,
-        function: FunctionKind<'a>,
-        node_id: Option<NodeId>,
-    ) -> Ty<'a> {
-        let return_type = if let FunctionKind::ArrowFunction(arrow_function) = function
-            && let Some(expression) = arrow_function.get_expression()
-        {
-            self.get_return_expression_type(program_id, expression, node_id, false)
-        } else {
-            let body = match function {
-                FunctionKind::Function(f) => f.body.as_deref(),
-                FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
-            };
-            let Some(body) = body else {
-                return Ty::any();
-            };
-            let return_expressions = ReturnExpressionVisitor::expressions_in_body(body);
-            if return_expressions.is_empty() {
-                Ty::void()
-            } else {
-                let preserve_literal_returns = return_expressions.len() > 1;
-                Ty::union(
-                    self.arena(),
-                    return_expressions.into_iter().map(|argument| {
-                        self.get_return_expression_type(
-                            program_id,
-                            argument,
-                            node_id,
-                            preserve_literal_returns,
-                        )
-                    }),
-                )
-            }
-        };
-
-        if function.returns_promise() {
-            self.get_async_function_return_type(program_id, return_type)
-        } else {
-            return_type
-        }
-    }
-
-    fn get_async_function_return_type(
+    pub(crate) fn get_async_function_return_type(
         &self,
         program_id: program::ProgramId,
         return_type: Ty<'a>,
@@ -3982,46 +3811,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Ty::type_reference(self.arena(), reference.name, [return_type])
             }
             _ => Ty::type_reference(self.arena(), "Promise", [return_type]),
-        }
-    }
-
-    fn get_return_expression_type(
-        &self,
-        program_id: program::ProgramId,
-        expression: &'a Expression<'a>,
-        node_id: Option<NodeId>,
-        preserve_literals: bool,
-    ) -> Ty<'a> {
-        if preserve_literals {
-            match expression {
-                Expression::NumericLiteral(literal) => {
-                    return self.get_type_of_numeric_literal(literal);
-                }
-                Expression::StringLiteral(literal) => {
-                    return self.get_type_of_string_literal(literal);
-                }
-                Expression::BooleanLiteral(literal) => {
-                    return self.get_type_of_boolean_literal(literal);
-                }
-                Expression::UnaryExpression(unary_expression)
-                    if unary_expression.operator == UnaryOperator::UnaryNegation =>
-                {
-                    if let Expression::NumericLiteral(literal) = &unary_expression.argument {
-                        let name = self
-                            .arena()
-                            .str(&format!("-{}", self.numeric_literal_name(literal)));
-                        return Ty::number_literal(self.arena(), name);
-                    }
-                }
-                _ => {}
-            }
-        }
-
-        match expression {
-            Expression::NewExpression(new_expression) => {
-                self.get_type_of_new_expression(program_id, new_expression)
-            }
-            _ => self.get_type_of_expression_with_node(program_id, expression, node_id),
         }
     }
 
@@ -5157,7 +4946,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 if self.is_in_contextually_typed_initializer(node.program_id, node.node_id)
                     && let Expression::BooleanLiteral(literal) = &property.value
                 {
-                    self.get_type_of_boolean_literal(literal)
+                    Ty::boolean_literal(literal.value)
                 } else {
                     self.get_type_of_expression_with_node(
                         node.program_id,
