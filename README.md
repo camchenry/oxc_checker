@@ -1,6 +1,6 @@
 # Oxc type checker
 
-This is a proof-of-concept, experimental, do-not-use-in-production type checker based on oxc.
+This is a proof-of-concept, experimental, do-not-use-in-production type checker based on oxc. This is not an official oxc project.
 
 ## Philosophy
 
@@ -22,17 +22,34 @@ What we are _not_ doing is almost as important as what we are doing. In order to
 | Feature | Status |
 | ---- |------- |
 | Parsing/scanning | ✅ Implemented with oxc |
-| Type resolution | 📋 Will be supported |
-| Type checking | 📋 Will be supported |
-| Multi-file analysis | 📋 Will be supported |
-| Programmatic API | 📋 Will be supported |
+| Type resolution and inference | ✅ Mostly works |
+| Multi-file analysis | ✅ Mostly works  |
+| Programmatic API | 🟠 Core APIs work, but niche APIs (like getting method signature / index access info) are underdeveloped |
 | JSX | 📋 Will be supported |
 | Project references | 📋 Will be supported |
 | JSDoc | ❓ May be supported (not sure yet) |
-| Declaration emit | ❓ Probably allow via API, but not directly supported here |
+| Declaration emit | ❌ Not directly supported, but possible to implement with API hopefully |
 | Language server (LSP) | ❌ Will not be supported |
 | Build mode | ❌ Will not be supported |
 | Incremental build | ❌ Will not be supported |
 | CLI | ❌ Will not be supported |
 | Emit (JS output) | ❌ Will not be supported |
 | Watch mode | ❌ Will not be supported |
+
+## FAQ
+
+### How can I contribute?
+
+At the moment, this is not a collaborative project. I'm still rearchitecting huge portions of the checker and accepting external contributions would be incompatible with that.
+
+### What is the performance like?
+
+I'm not currently comparing performance to typescript-go or tsc or anything type checkers at this point, since they support way more functionality and are much more optimized. There is a lot of room for performance improvement still, but I am more focused on making the types accurate right now. There are some simple benchmarks you can run with `cargo bench`.
+
+### Will this be integrated into oxc?
+
+Not something I'm planning right now, but it could be possible in the future.
+
+### Why does this exist?
+
+I think it's possible for a simple type checker to exist independently of `tsc`/`tsgo`. I believe there's value in having multiple implementations of the same type system. I want to learn more about type checking and what it looks like in a practical codebase, so I decided to try implementing it myself.
