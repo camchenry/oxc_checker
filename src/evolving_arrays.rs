@@ -8,6 +8,7 @@ use oxc_syntax::operator::AssignmentOperator;
 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
+    checker_impl::GetTypeFlags,
     program,
     types::{TupleElement, Ty},
 };
@@ -168,7 +169,12 @@ fn push_call_element_events<'a>(
         .iter()
         .filter_map(|argument| argument_expression(argument))
         .map(|argument| {
-            checker.get_type_of_expression_with_node(program_id, argument, Some(call_id))
+            checker.get_type_of_expression_with_node(
+                program_id,
+                argument,
+                Some(call_id),
+                GetTypeFlags::NONE,
+            )
         })
         .collect::<Vec<_>>();
     if element_types.is_empty() {
@@ -208,6 +214,7 @@ fn indexed_assignment_element_event<'a>(
             program_id,
             &assignment.right,
             Some(assignment_id),
+            GetTypeFlags::NONE,
         ),
     ))
 }
@@ -232,6 +239,7 @@ fn direct_assignment_event<'a>(
         program_id,
         &assignment.right,
         Some(assignment_id),
+        GetTypeFlags::NONE,
     );
 
     match assigned_type {

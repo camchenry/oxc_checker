@@ -1,3 +1,4 @@
+use bitflags::bitflags;
 use oxc_ast::{
     AstKind,
     ast::{
@@ -9,7 +10,7 @@ use oxc_ast::{
         PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
         TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
         TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference, UnaryExpression,
+        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         VariableDeclarationKind, VariableDeclarator,
     },
 };
@@ -60,6 +61,23 @@ impl<'a> FunctionKind<'a> {
     }
 }
 
+bitflags! {
+    /// Flags for changing behavior when getting the types of expressions or nodes.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+    pub(crate) struct GetTypeFlags: u8 {
+        const NONE = 0;
+        /// Indicates that when literals are encountered, they should be preserved instead of widened
+        /// to a more general type. For example: prefer `123` over `number`, `"foo"` over `string`.
+        const PRESERVE_LITERALS = 1 << 0;
+    }
+}
+
+impl GetTypeFlags {
+    pub fn preserve_literals(&self) -> bool {
+        self.contains(GetTypeFlags::PRESERVE_LITERALS)
+    }
+}
+
 impl<'a, 'store> CheckerReturn<'a, 'store> {
     #[inline]
     pub fn entry(&self, program_id: program::ProgramId) -> &program::ProgramEntry<'a> {
@@ -95,6 +113,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         expression: &'a Expression<'a>,
         node_id: Option<NodeId>,
+        flags: GetTypeFlags,
     ) -> Ty<'a> {
         match expression {
             Expression::Identifier(identifier) => {
@@ -137,9 +156,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ConditionalExpression(conditional) => {
                 self.get_type_of_conditional_expression(program_id, conditional, node_id)
             }
-            Expression::UnaryExpression(unary_expression) => {
-                self.get_type_of_unary_expression(program_id, unary_expression, node_id)
-            }
+            Expression::UnaryExpression(unary_expression) => match unary_expression.operator {
+                UnaryOperator::UnaryPlus
+                | UnaryOperator::UnaryNegation
+                | UnaryOperator::BitwiseNot => match &unary_expression.argument {
+                    Expression::NumericLiteral(literal) if flags.preserve_literals() => {
+                        let name = self.arena().str(&format!("-{}", literal.raw_str()));
+                        Ty::number_literal(self.arena(), name)
+                    }
+                    _ => Ty::number(),
+                },
+                UnaryOperator::LogicalNot => Ty::boolean(),
+                UnaryOperator::Typeof => Ty::string(),
+                UnaryOperator::Void => Ty::undefined(),
+                _ => Ty::any(),
+            },
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
             }
@@ -156,7 +187,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_static_member_expression(program_id, member, node_id)
             }
             Expression::ParenthesizedExpression(parenthesized) => self
-                .get_type_of_expression_with_node(program_id, &parenthesized.expression, node_id),
+                .get_type_of_expression_with_node(
+                    program_id,
+                    &parenthesized.expression,
+                    node_id,
+                    GetTypeFlags::NONE,
+                ),
             Expression::TSTypeAssertion(assertion) => {
                 self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
             }
@@ -181,6 +217,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::NullLiteral(_) => Ty::null(),
             Expression::AwaitExpression(await_expr) => {
                 self.get_type_of_await_expression(program_id, await_expr, node_id)
+            }
+            Expression::NumericLiteral(literal) => {
+                if flags.preserve_literals() {
+                    Ty::number_literal(self.arena(), self.arena().str(&literal.raw_str()))
+                } else {
+                    Ty::number()
+                }
+            }
+            Expression::StringLiteral(literal) => {
+                if flags.preserve_literals() {
+                    Ty::string_literal(self.arena(), self.get_string_literal_value(literal))
+                } else {
+                    Ty::string()
+                }
+            }
+            Expression::BooleanLiteral(literal) => {
+                if flags.preserve_literals() {
+                    Ty::boolean_literal(literal.value)
+                } else {
+                    Ty::boolean()
+                }
             }
             _ => Ty::from_expression(expression),
         }
@@ -218,10 +275,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         binary_expression: &'a BinaryExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let left =
-            self.get_type_of_expression_with_node(program_id, &binary_expression.left, node_id);
-        let right =
-            self.get_type_of_expression_with_node(program_id, &binary_expression.right, node_id);
+        let left = self.get_type_of_expression_with_node(
+            program_id,
+            &binary_expression.left,
+            node_id,
+            GetTypeFlags::NONE,
+        );
+        let right = self.get_type_of_expression_with_node(
+            program_id,
+            &binary_expression.right,
+            node_id,
+            GetTypeFlags::NONE,
+        );
 
         match binary_expression.operator {
             BinaryOperator::Addition
@@ -260,6 +325,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             program_id,
             &assignment_expression.right,
             node_id,
+            GetTypeFlags::NONE,
         );
         match assignment_expression.operator {
             AssignmentOperator::Assign => right,
@@ -284,33 +350,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         conditional: &'a ConditionalExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let consequent =
-            self.get_type_of_expression_with_node(program_id, &conditional.consequent, node_id);
-        let alternate =
-            self.get_type_of_expression_with_node(program_id, &conditional.alternate, node_id);
+        let consequent = self.get_type_of_expression_with_node(
+            program_id,
+            &conditional.consequent,
+            node_id,
+            GetTypeFlags::NONE,
+        );
+        let alternate = self.get_type_of_expression_with_node(
+            program_id,
+            &conditional.alternate,
+            node_id,
+            GetTypeFlags::NONE,
+        );
 
         Ty::union(self.arena(), [consequent, alternate])
-    }
-
-    fn get_type_of_unary_expression(
-        &self,
-        program_id: program::ProgramId,
-        unary_expression: &'a UnaryExpression<'a>,
-        node_id: Option<NodeId>,
-    ) -> Ty<'a> {
-        let argument =
-            self.get_type_of_expression_with_node(program_id, &unary_expression.argument, node_id);
-        match unary_expression.operator {
-            UnaryOperator::UnaryPlus | UnaryOperator::UnaryNegation | UnaryOperator::BitwiseNot
-                if self.is_number_like_for_arithmetic(argument) =>
-            {
-                Ty::number()
-            }
-            UnaryOperator::LogicalNot => Ty::boolean(),
-            UnaryOperator::Typeof => Ty::string(),
-            UnaryOperator::Void => Ty::undefined(),
-            _ => Ty::any(),
-        }
     }
 
     fn is_number_like_for_arithmetic(&self, ty: Ty<'a>) -> bool {
@@ -1833,8 +1886,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     return None;
                 };
                 let name = property_key_name_str(&property.key)?;
-                let ty =
-                    self.get_type_of_expression_with_node(program_id, &property.value, node_id);
+                let ty = self.get_type_of_expression_with_node(
+                    program_id,
+                    &property.value,
+                    node_id,
+                    GetTypeFlags::NONE,
+                );
                 Some(Ty::property(name, ty))
             }),
         )
@@ -1846,8 +1903,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         member: &'a StaticMemberExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let object_type =
-            self.get_type_of_expression_with_node(program_id, &member.object, node_id);
+        let object_type = self.get_type_of_expression_with_node(
+            program_id,
+            &member.object,
+            node_id,
+            GetTypeFlags::NONE,
+        );
         let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
         let property_name = member.property.name.as_str();
         let ty = object_type
@@ -1894,8 +1955,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         member: &'a ComputedMemberExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let object_type =
-            self.get_type_of_expression_with_node(program_id, &member.object, node_id);
+        let object_type = self.get_type_of_expression_with_node(
+            program_id,
+            &member.object,
+            node_id,
+            GetTypeFlags::NONE,
+        );
         let Some(index) = tuple_index_from_expression(&member.expression) else {
             return Ty::any();
         };
@@ -1948,8 +2013,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let callee_type =
-            self.get_type_of_expression_with_node(program_id, &call_expression.callee, node_id);
+        let callee_type = self.get_type_of_expression_with_node(
+            program_id,
+            &call_expression.callee,
+            node_id,
+            GetTypeFlags::NONE,
+        );
         let candidates =
             self.get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call);
         if candidates.is_empty() {
@@ -2558,8 +2627,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
             let parameter_type =
                 parameter_type.substitute_type_parameters(self.arena(), substitutions);
-            let argument_type =
-                self.get_type_of_expression_with_node(program_id, argument, node_id);
+            let argument_type = self.get_type_of_expression_with_node(
+                program_id,
+                argument,
+                node_id,
+                GetTypeFlags::NONE,
+            );
             if !self.is_assignable_to(argument_type, parameter_type) {
                 return false;
             }
@@ -3167,7 +3240,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property.type_annotation.as_deref().map_or_else(
             || {
                 property.value.as_ref().map_or_else(Ty::any, |value| {
-                    self.get_type_of_expression_with_node(program_id, value, node_id)
+                    self.get_type_of_expression_with_node(
+                        program_id,
+                        value,
+                        node_id,
+                        GetTypeFlags::NONE,
+                    )
                 })
             },
             |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
@@ -3404,6 +3482,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             program_id,
             &call_expression.callee,
             Some(node_id),
+            GetTypeFlags::NONE,
         );
         let callee_signature = self
             .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
@@ -3444,6 +3523,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             program_id,
             &new_expression.callee,
             Some(node_id),
+            GetTypeFlags::NONE,
         );
         let construct_signature = self
             .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Construct)
@@ -3968,14 +4048,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         match element {
             ArrayExpressionElement::SpreadElement(spread) => {
-                let argument_type =
-                    self.get_type_of_expression_with_node(program_id, &spread.argument, node_id);
+                let argument_type = self.get_type_of_expression_with_node(
+                    program_id,
+                    &spread.argument,
+                    node_id,
+                    GetTypeFlags::NONE,
+                );
                 argument_type.array_element_type().unwrap_or_else(Ty::any)
             }
             ArrayExpressionElement::Elision(_) => Ty::any(),
-            _ => {
-                self.get_type_of_expression_with_node(program_id, element.to_expression(), node_id)
-            }
+            _ => self.get_type_of_expression_with_node(
+                program_id,
+                element.to_expression(),
+                node_id,
+                GetTypeFlags::NONE,
+            ),
         }
     }
 
@@ -4168,17 +4255,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         .unwrap_or_else(Ty::any)
                 },
                 |expression| {
-                    if declarator.kind == VariableDeclarationKind::Const
+                    let flags = if declarator.kind == VariableDeclarationKind::Const
                         && !self.is_in_exported_declaration(program_id, declaration)
                     {
-                        self.infer_expression_type(program_id, expression, Some(declaration), true)
+                        GetTypeFlags::PRESERVE_LITERALS
                     } else {
-                        self.get_type_of_expression_with_node(
-                            program_id,
-                            expression,
-                            Some(declaration),
-                        )
-                    }
+                        GetTypeFlags::NONE
+                    };
+                    self.get_type_of_expression_with_node(
+                        program_id,
+                        expression,
+                        Some(declaration),
+                        flags,
+                    )
                 },
             )
         }
@@ -4202,8 +4291,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 _ => None,
             })?;
 
-        let iterable_type =
-            self.get_type_of_expression_with_node(program_id, &for_of.right, Some(for_of_node_id));
+        let iterable_type = self.get_type_of_expression_with_node(
+            program_id,
+            &for_of.right,
+            Some(for_of_node_id),
+            GetTypeFlags::NONE,
+        );
         self.get_iteration_element_type(program_id, for_of_node_id, iterable_type, for_of.r#await)
     }
 
@@ -4566,7 +4659,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         await_expr: &'a AwaitExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let ty = self.get_type_of_expression_with_node(program_id, &await_expr.argument, node_id);
+        let ty = self.get_type_of_expression_with_node(
+            program_id,
+            &await_expr.argument,
+            node_id,
+            GetTypeFlags::NONE,
+        );
         self.get_awaited_type(program_id, ty)
     }
 
@@ -4917,6 +5015,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         node.program_id,
                         &property.value,
                         Some(node.node_id),
+                        GetTypeFlags::NONE,
                     )
                 }
             }

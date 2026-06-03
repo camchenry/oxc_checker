@@ -21,6 +21,7 @@ oxc_span =  "0.132.0"
 oxc_syntax = "0.132.0"
 oxc_index = "4.1.0"
 oxc_str = "0.132.0"
+bitflags = "2.12.1"
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
