@@ -1,7 +1,7 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
-    BindingPattern, Expression, PropertyKey, TSMappedTypeModifierOperator, TSTemplateLiteralType,
-    TSType, TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
+    BindingPattern, PropertyKey, TSMappedTypeModifierOperator, TSTemplateLiteralType, TSType,
+    TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
 };
 use std::collections::HashMap;
 
@@ -221,7 +221,7 @@ pub struct TyTemplateLiteral<'a> {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub(crate) struct TemplateLiteralElement<'a> {
+pub struct TemplateLiteralElement<'a> {
     pub(crate) value: &'a str,
 }
 
@@ -2542,8 +2542,8 @@ fn function_type_head_to_string(function: &TyFunction<'_>) -> (String, String) {
 
 pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(
     parameters: &[TyParameter<'a>],
-    return_type: Option<&TSTypeAnnotation<'a>>,
-    resolve_type_annotation: impl Fn(&TSTypeAnnotation<'a>) -> Ty<'a>,
+    return_type: Option<&'a TSTypeAnnotation<'a>>,
+    resolve_type_annotation: impl Fn(&'a TSTypeAnnotation<'a>) -> Ty<'a>,
 ) -> (Ty<'a>, Option<TyTypePredicate<'a>>) {
     let Some(return_type) = return_type else {
         return (Ty::any(), None);

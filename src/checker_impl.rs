@@ -3,8 +3,8 @@ use oxc_ast::{
     AstKind,
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
-        AwaitExpression, BinaryExpression, BindingPattern, CallExpression, Class, ClassElement,
-        ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
+        AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern, CallExpression, Class,
+        ClassElement, ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
         FormalParameterRest, FormalParameters, Function, IdentifierReference, MethodDefinition,
         MethodDefinitionKind, NewExpression, ObjectExpression, ObjectPropertyKind,
         PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
@@ -2281,7 +2281,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         parameters: &[TyParameter<'a>],
-        return_type: Option<&TSTypeAnnotation<'a>>,
+        return_type: Option<&'a TSTypeAnnotation<'a>>,
     ) -> (Ty<'a>, Option<TyTypePredicate<'a>>) {
         return_type_and_type_predicate_from_annotation_with_resolver(
             parameters,
