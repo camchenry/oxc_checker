@@ -648,6 +648,24 @@ impl<'a> Ty<'a> {
         reduce_union_type(arena, types)
     }
 
+    /// Returns the constant union type of all possible `typeof` values.
+    /// `"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"`
+    pub fn typeof_string_values(arena: CheckerArena<'a>) -> Self {
+        Self::r#union(
+            arena,
+            [
+                Self::string_literal(arena, "string"),
+                Self::string_literal(arena, "number"),
+                Self::string_literal(arena, "bigint"),
+                Self::string_literal(arena, "boolean"),
+                Self::string_literal(arena, "symbol"),
+                Self::string_literal(arena, "undefined"),
+                Self::string_literal(arena, "object"),
+                Self::string_literal(arena, "function"),
+            ],
+        )
+    }
+
     pub fn intersection(arena: CheckerArena<'a>, types: impl IntoIterator<Item = Ty<'a>>) -> Self {
         reduce_intersection_type(arena, types)
     }

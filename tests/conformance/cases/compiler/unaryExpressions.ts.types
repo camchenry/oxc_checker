@@ -1,0 +1,32 @@
+const x1 = +0;
+>     ^^: -0   (TyNumberLiteral)
+
+const x2 = -0;
+>     ^^: -0   (TyNumberLiteral)
+
+const x3 = ~0;
+>     ^^: -0   (TyNumberLiteral)
+
+const x4 = !0;
+>     ^^: boolean   (TyBoolean)
+
+const x5 = void 0
+>     ^^: undefined   (TyUndefined)
+
+const x6 = typeof 0
+>     ^^: "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"   (TyUnion)
+
+const foo = { bar: 'baz' as string | undefined }
+>     ^^^: { bar: string | undefined; }   (TyObject)
+
+const foo = { bar: 'baz' as string | undefined }
+>             ^^^: string | undefined   (TyUnion)
+
+const x7 = delete foo.bar
+>     ^^: boolean   (TyBoolean)
+
+const x7 = delete foo.bar
+>                 ^^^: { bar: string | undefined; }   (TyObject)
+
+const x7 = delete foo.bar
+>                     ^^^: string | undefined   (TyUnion)

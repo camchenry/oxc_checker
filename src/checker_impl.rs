@@ -165,10 +165,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     }
                     _ => Ty::number(),
                 },
+                // TODO(correctness): add const eval for `!` expressions to boolean literals
                 UnaryOperator::LogicalNot => Ty::boolean(),
-                UnaryOperator::Typeof => Ty::string(),
+                UnaryOperator::Typeof => Ty::typeof_string_values(self.arena()),
                 UnaryOperator::Void => Ty::undefined(),
-                _ => Ty::any(),
+                UnaryOperator::Delete => Ty::boolean(),
             },
             Expression::TSNonNullExpression(non_null_expr) => {
                 let ty = self.get_type_of_expression_with_node(
