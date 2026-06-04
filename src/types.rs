@@ -408,20 +408,6 @@ impl<'a> Ty<'a> {
         }))
     }
 
-    // TODO: Remove in favor of `template_literal`
-    pub fn ts_template_literal(
-        arena: CheckerArena<'a>,
-        template: &TSTemplateLiteralType<'a>,
-        expressions: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
-        Self::TemplateLiteral(arena.alloc(TyTemplateLiteral {
-            quasis: arena.vec_from_iter(template.quasis.iter().map(|q| TemplateLiteralElement {
-                value: q.value.raw.as_str(),
-            })),
-            expressions: arena.vec_from_iter(expressions),
-        }))
-    }
-
     pub fn undefined() -> Self {
         Self::Undefined
     }

@@ -622,9 +622,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TSType::TSParenthesizedType(parenthesized) => {
                 self.get_type_from_ts_type(program_id, &parenthesized.type_annotation)
             }
-            TSType::TSTemplateLiteralType(template_literal) => Ty::ts_template_literal(
+            TSType::TSTemplateLiteralType(template_literal) => Ty::template_literal(
                 self.arena(),
-                template_literal,
+                template_literal
+                    .quasis
+                    .iter()
+                    .map(|q| TemplateLiteralElement {
+                        value: q.value.raw.as_str(),
+                    }),
                 template_literal
                     .types
                     .iter()
