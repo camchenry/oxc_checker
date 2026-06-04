@@ -1,7 +1,7 @@
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
-    BindingPattern, PropertyKey, TSMappedTypeModifierOperator, TSTemplateLiteralType, TSType,
-    TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
+    BindingPattern, PropertyKey, TSMappedTypeModifierOperator, TSType, TSTypeAnnotation,
+    TSTypePredicate, TSTypePredicateName,
 };
 use std::collections::HashMap;
 
