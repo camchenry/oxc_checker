@@ -14,4 +14,4 @@ function returnsBig() {
 >        ^^^^^^^^^^: () => bigint   (TyFunction)
 
 function returnsBig2() {
->        ^^^^^^^^^^^: () => 0nn | 1nn   (TyFunction)
+>        ^^^^^^^^^^^: () => 0n | 1n   (TyFunction)

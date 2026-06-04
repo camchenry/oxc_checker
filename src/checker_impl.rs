@@ -238,7 +238,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::boolean()
                 }
             }
-            _ => Ty::from_expression(expression),
+            Expression::BigIntLiteral(literal) => {
+                if flags.preserve_literals() {
+                    Ty::bigint_literal(self.arena(), self.get_bigint_literal_value(literal))
+                } else {
+                    Ty::bigint()
+                }
+            }
+            _ => Ty::any(),
         }
     }
 
@@ -266,6 +273,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             || self.arena().str(&format!("{:?}", literal.value.as_str())),
             |raw| raw.as_str(),
         )
+    }
+
+    // TODO(cleanup): just allow bigint literals to store all the info instead of just str
+    pub(crate) fn get_bigint_literal_value(&self, literal: &BigIntLiteral<'a>) -> &'a str {
+        literal
+            .raw
+            .as_ref()
+            .map_or_else(
+                || self.arena().str(&format!("{:?}", literal.value)),
+                |raw| raw.as_str(),
+            )
+            .trim_end_matches('n')
     }
 
     fn get_type_of_binary_expression(
