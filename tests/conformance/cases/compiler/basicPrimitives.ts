@@ -22,3 +22,6 @@ const _null3 = null;
 const _undefined3 = undefined;
 const template3 = `Hello`;
 const template4 = `Count: ${count3}`;
+
+const never = null!
+const never2 = _undefined3!

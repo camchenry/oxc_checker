@@ -90,3 +90,39 @@ const y2 = foo2(y.x, y.y);
 
 const y2 = foo2(y.x, y.y);
 >                      ^: number   (TyNumber)
+
+function foo3<T>(x: T | undefined | null) {
+>        ^^^^: <T>(x: T | null | undefined) => T   (TyFunction)
+
+function foo3<T>(x: T | undefined | null) {
+>             ^: any   (TyAny)
+
+function foo3<T>(x: T | undefined | null) {
+>                ^: T | null | undefined   (TyUnion)
+
+function foo3<T>(x: T | undefined | null) {
+>                   ^: any   (TyAny)
+
+  return x!
+>        ^: T | null | undefined   (TyUnion)
+
+const f3_1 = foo3("hello");
+>     ^^^^: string   (TyString)
+
+const f3_1 = foo3("hello");
+>            ^^^^: <T>(x: T | null | undefined) => T   (TyFunction)
+
+const f3_2 = foo3(undefined);
+>     ^^^^: undefined   (TyUndefined)
+
+const f3_2 = foo3(undefined);
+>            ^^^^: <T>(x: T | null | undefined) => T   (TyFunction)
+
+const f3_2 = foo3(undefined);
+>                 ^^^^^^^^^: undefined   (TyUndefined)
+
+const f3_3 = foo3(123 as number);
+>     ^^^^: number   (TyNumber)
+
+const f3_3 = foo3(123 as number);
+>            ^^^^: <T>(x: T | null | undefined) => T   (TyFunction)

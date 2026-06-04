@@ -170,6 +170,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 UnaryOperator::Void => Ty::undefined(),
                 _ => Ty::any(),
             },
+            Expression::TSNonNullExpression(non_null_expr) => {
+                let ty = self.get_type_of_expression_with_node(
+                    program_id,
+                    &non_null_expr.expression,
+                    node_id,
+                    flags,
+                );
+                // Remove `null` and `undefined` from the type
+                self.remove_null_or_undefined(ty)
+            }
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
             }
@@ -287,7 +297,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::JSXElement(_) => Ty::any(),
             Expression::JSXFragment(_) => Ty::any(),
             Expression::TSSatisfiesExpression(_) => Ty::any(),
-            Expression::TSNonNullExpression(_) => Ty::any(),
             Expression::TSInstantiationExpression(_) => Ty::any(),
             Expression::V8IntrinsicExpression(_) => Ty::any(),
             Expression::PrivateFieldExpression(_) => Ty::any(),
@@ -311,6 +320,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     | AstKind::ExportAllDeclaration(_)
             )
         })
+    }
+
+    /// Removes `null` and `undefined` from the type, like when using `!` or `NonNullable<T>`.
+    pub(crate) fn remove_null_or_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
+        match ty {
+            Ty::Null => Ty::never(),
+            Ty::Undefined => Ty::never(),
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .filter_map(|t| Some(self.remove_null_or_undefined(*t))),
+            ),
+            _ => ty,
+        }
     }
 
     pub(crate) fn get_string_literal_value(&self, literal: &StringLiteral<'a>) -> &'a str {

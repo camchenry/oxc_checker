@@ -72,3 +72,12 @@ const template4 = `Count: ${count3}`;
 
 const template4 = `Count: ${count3}`;
 >                           ^^^^^^: 1   (TyNumberLiteral)
+
+const never = null!
+>     ^^^^^: never   (TyNever)
+
+const never2 = _undefined3!
+>     ^^^^^^: never   (TyNever)
+
+const never2 = _undefined3!
+>              ^^^^^^^^^^^: undefined   (TyUndefined)
