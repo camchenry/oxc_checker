@@ -156,15 +156,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_conditional_expression(program_id, conditional, node_id)
             }
             Expression::UnaryExpression(unary_expression) => match unary_expression.operator {
-                UnaryOperator::UnaryPlus
-                | UnaryOperator::UnaryNegation
-                | UnaryOperator::BitwiseNot => match &unary_expression.argument {
+                UnaryOperator::UnaryNegation => match &unary_expression.argument {
                     Expression::NumericLiteral(literal) if flags.preserve_literals() => {
                         let name = self.arena().str(&format!("-{}", literal.raw_str()));
                         Ty::number_literal(self.arena(), name)
                     }
                     _ => Ty::number(),
                 },
+                UnaryOperator::UnaryPlus => match &unary_expression.argument {
+                    Expression::NumericLiteral(literal) if flags.preserve_literals() => {
+                        let name = self.arena().str(&literal.raw_str());
+                        Ty::number_literal(self.arena(), name)
+                    }
+                    _ => Ty::number(),
+                },
+                UnaryOperator::BitwiseNot => Ty::number(),
                 // TODO(correctness): add const eval for `!` expressions to boolean literals
                 UnaryOperator::LogicalNot => Ty::boolean(),
                 UnaryOperator::Typeof => Ty::typeof_string_values(self.arena()),

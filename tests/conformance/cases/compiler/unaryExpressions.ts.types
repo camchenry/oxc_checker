@@ -1,11 +1,11 @@
 const x1 = +0;
->     ^^: -0   (TyNumberLiteral)
+>     ^^: 0   (TyNumberLiteral)
 
 const x2 = -0;
 >     ^^: -0   (TyNumberLiteral)
 
 const x3 = ~0;
->     ^^: -0   (TyNumberLiteral)
+>     ^^: number   (TyNumber)
 
 const x4 = !0;
 >     ^^: boolean   (TyBoolean)
