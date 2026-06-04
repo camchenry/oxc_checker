@@ -401,7 +401,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             {
                 Ty::number()
             }
-            _ => Ty::any(),
+            // TODO(correctness): handle all of these cases.
+            BinaryOperator::Equality => Ty::any(),
+            BinaryOperator::Inequality => Ty::any(),
+            BinaryOperator::StrictEquality => Ty::any(),
+            BinaryOperator::StrictInequality => Ty::any(),
+            BinaryOperator::LessThan => Ty::any(),
+            BinaryOperator::LessEqualThan => Ty::any(),
+            BinaryOperator::GreaterThan => Ty::any(),
+            BinaryOperator::GreaterEqualThan => Ty::any(),
+            BinaryOperator::Addition => Ty::any(),
+            BinaryOperator::Subtraction => Ty::any(),
+            BinaryOperator::Multiplication => Ty::any(),
+            BinaryOperator::Division => Ty::any(),
+            BinaryOperator::Remainder => Ty::any(),
+            BinaryOperator::Exponential => Ty::any(),
+            BinaryOperator::ShiftLeft => Ty::any(),
+            BinaryOperator::ShiftRight => Ty::any(),
+            BinaryOperator::ShiftRightZeroFill => Ty::any(),
+            BinaryOperator::BitwiseOR => Ty::any(),
+            BinaryOperator::BitwiseXOR => Ty::any(),
+            BinaryOperator::BitwiseAnd => Ty::any(),
+            BinaryOperator::In => Ty::any(),
+            BinaryOperator::Instanceof => Ty::any(),
         }
     }
 
