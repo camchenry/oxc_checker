@@ -178,6 +178,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     flags,
                 );
                 // Remove `null` and `undefined` from the type
+                // TODO(correctness): instead of just directly evaluating, we should map to
+                // the `NonNullable<T>` type and then evaluate that
                 self.remove_null_or_undefined(ty)
             }
             Expression::NewExpression(new_expression) => {
