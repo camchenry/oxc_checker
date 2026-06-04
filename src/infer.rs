@@ -19,7 +19,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     pub(crate) fn infer_call_type_parameter_substitutions(
         &self,
         program_id: ProgramId,
-        function: &TyFunction<'a>,
+        function: &'a TyFunction<'a>,
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
     ) -> HashMap<&'a str, Ty<'a>> {
@@ -115,7 +115,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     pub(crate) fn infer_construct_type_parameter_substitutions(
         &self,
         program_id: ProgramId,
-        function: &TyFunction<'a>,
+        function: &'a TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
         let (mut substitutions, explicit_type_parameters) = self

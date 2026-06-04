@@ -399,23 +399,13 @@ impl<'a> Ty<'a> {
 
     pub fn template_literal(
         arena: CheckerArena<'a>,
-        template: &oxc_ast::ast::TemplateLiteral<'a>,
+        quasis: impl IntoIterator<Item = TemplateLiteralElement<'a>>,
+        expressions: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
-        Self::TemplateLiteral(
-            arena.alloc(TyTemplateLiteral {
-                quasis: arena.vec_from_iter(template.quasis.iter().map(|q| {
-                    TemplateLiteralElement {
-                        value: q.value.raw.as_str(),
-                    }
-                })),
-                expressions: arena.vec_from_iter(
-                    template
-                        .expressions
-                        .iter()
-                        .map(|expression| Self::from_expression(expression)),
-                ),
-            }),
-        )
+        Self::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+            quasis: arena.vec_from_iter(quasis),
+            expressions: arena.vec_from_iter(expressions),
+        }))
     }
 
     pub fn ts_template_literal(

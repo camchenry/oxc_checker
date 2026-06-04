@@ -9,3 +9,9 @@ class EmptyGetter {
 
   public get x() {
 >            ^: void   (TyVoid)
+
+function returnsBig() {
+>        ^^^^^^^^^^: () => bigint   (TyFunction)
+
+function returnsBig2() {
+>        ^^^^^^^^^^^: () => 0nn | 1nn   (TyFunction)

@@ -18,3 +18,24 @@ let _unknown: unknown;
 
 let _any: any;
 >   ^^^^: any   (TyAny)
+
+let count2 = 1;
+>   ^^^^^^: number   (TyNumber)
+
+let label2 = "ready";
+>   ^^^^^^: string   (TyString)
+
+let big2 = 1n
+>   ^^^^: bigint   (TyBigint)
+
+let _null2 = null
+>   ^^^^^^: null   (TyNull)
+
+let _undefined2 = undefined;
+>   ^^^^^^^^^^^: undefined   (TyUndefined)
+
+let _undefined2 = undefined;
+>                 ^^^^^^^^^: undefined   (TyUndefined)
+
+let template = `Hello`
+>   ^^^^^^^^: any   (TyAny)

@@ -13,3 +13,14 @@ class EmptyGetter {
 
   }
 }
+
+function returnsBig() {
+  return 1n
+}
+
+function returnsBig2() {
+  if (1 + 1 === 4) {
+    return 0n;
+  }
+  return 1n
+}

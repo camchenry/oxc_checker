@@ -24,9 +24,8 @@ use oxc_syntax::{
 use std::collections::{HashMap, HashSet};
 
 use crate::{
-    binding_pattern_default_initializer_symbol_id,
-    checker::ClassMemberResolution,
-    checker::{Checker, CheckerReturn, NodeRef, SymbolRef},
+    TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
+    checker::{Checker, CheckerReturn, ClassMemberResolution, NodeRef, SymbolRef},
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
     infer::ts_type_contains_infer,
@@ -378,7 +377,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_ts_type_annotation(
         &self,
         program_id: program::ProgramId,
-        type_annotation: Option<&TSTypeAnnotation<'a>>,
+        type_annotation: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Ty<'a> {
         type_annotation.map_or_else(Ty::any, |type_annotation| {
             self.get_type_from_ts_type(program_id, &type_annotation.type_annotation)
@@ -388,7 +387,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_property_signature_annotation(
         &self,
         program_id: program::ProgramId,
-        type_annotation: &TSTypeAnnotation<'a>,
+        type_annotation: &'a TSTypeAnnotation<'a>,
     ) -> Ty<'a> {
         if let TSType::TSTypeReference(reference) = &type_annotation.type_annotation
             && let Some(expanded) =
@@ -449,7 +448,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
-    fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &TSType<'a>) -> Ty<'a> {
+    fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
         match ty {
             TSType::TSNumberKeyword(_) => Ty::number(),
             TSType::TSStringKeyword(_) => Ty::string(),
@@ -597,7 +596,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::bigint_literal(self.arena(), bigint_literal.value.as_str())
                 }
                 TSLiteral::TemplateLiteral(template_literal) => {
-                    Ty::template_literal(self.arena(), template_literal.as_ref())
+                    let quasis = template_literal
+                        .quasis
+                        .iter()
+                        .map(|q| TemplateLiteralElement {
+                            value: q.value.raw.as_str(),
+                        });
+                    let expressions = template_literal.expressions.iter().map(|expr| {
+                        self.get_type_of_expression_with_node(
+                            program_id,
+                            expr,
+                            None,
+                            GetTypeFlags::NONE,
+                        )
+                    });
+                    Ty::template_literal(self.arena(), quasis, expressions)
                 }
                 TSLiteral::UnaryExpression(_) => Ty::none(),
             },
@@ -724,7 +737,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_ts_mapped_type(
         &self,
         program_id: program::ProgramId,
-        mapped: &TSMappedType<'a>,
+        mapped: &'a TSMappedType<'a>,
     ) -> Ty<'a> {
         let constraint = self.get_type_from_ts_type(program_id, &mapped.constraint);
         let name_type = mapped
@@ -762,7 +775,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_ts_type_query(
         &self,
         program_id: program::ProgramId,
-        query: &TSTypeQuery<'a>,
+        query: &'a TSTypeQuery<'a>,
     ) -> Ty<'a> {
         let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name) else {
             return Ty::any();
@@ -811,7 +824,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     pub(crate) fn get_type_of_type_alias_declaration(
         &self,
         program_id: program::ProgramId,
-        alias: &oxc_ast::ast::TSTypeAliasDeclaration<'a>,
+        alias: &'a oxc_ast::ast::TSTypeAliasDeclaration<'a>,
     ) -> Ty<'a> {
         if let TSType::TSTypeQuery(query) = &alias.type_annotation
             && let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name)
@@ -845,7 +858,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_ts_type_expanding_top_level_aliases(
         &self,
         program_id: program::ProgramId,
-        ty: &TSType<'a>,
+        ty: &'a TSType<'a>,
     ) -> Ty<'a> {
         self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(program_id, ty, 0)
     }
@@ -853,7 +866,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_ts_type_expanding_top_level_aliases_at_depth(
         &self,
         program_id: program::ProgramId,
-        ty: &TSType<'a>,
+        ty: &'a TSType<'a>,
         depth: usize,
     ) -> Ty<'a> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
@@ -1247,7 +1260,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_expanded_type_alias_reference(
         &self,
         program_id: program::ProgramId,
-        reference: &TSTypeReference<'a>,
+        reference: &'a TSTypeReference<'a>,
         depth: usize,
     ) -> Option<Ty<'a>> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
@@ -1271,7 +1284,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_flat_mapped_intersection_alias_reference(
         &self,
         program_id: program::ProgramId,
-        reference: &TSTypeReference<'a>,
+        reference: &'a TSTypeReference<'a>,
         depth: usize,
     ) -> Option<Ty<'a>> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
@@ -1473,7 +1486,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_ts_type_reference(
         &self,
         program_id: program::ProgramId,
-        reference: &TSTypeReference<'a>,
+        reference: &'a TSTypeReference<'a>,
     ) -> Ty<'a> {
         self.get_type_from_ts_type_reference_with_default_display(program_id, reference, false)
     }
@@ -1481,7 +1494,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_type_assertion(
         &self,
         program_id: program::ProgramId,
-        ty: &TSType<'a>,
+        ty: &'a TSType<'a>,
     ) -> Ty<'a> {
         match ty {
             TSType::TSTypeReference(reference) => self
@@ -1493,7 +1506,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_from_ts_type_reference_with_default_display(
         &self,
         program_id: program::ProgramId,
-        reference: &TSTypeReference<'a>,
+        reference: &'a TSTypeReference<'a>,
         display_default_type_arguments: bool,
     ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
@@ -1530,7 +1543,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn type_arguments_from_reference(
         &self,
         program_id: program::ProgramId,
-        reference: &TSTypeReference<'a>,
+        reference: &'a TSTypeReference<'a>,
     ) -> Vec<Ty<'a>> {
         reference
             .type_arguments
@@ -1547,7 +1560,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_type_argument_from_ts_type(
         &self,
         program_id: program::ProgramId,
-        ty: &TSType<'a>,
+        ty: &'a TSType<'a>,
     ) -> Ty<'a> {
         match self.get_type_from_ts_type(program_id, ty) {
             Ty::TypeQuery(query) if query.type_arguments.is_empty() && !query.resolved.is_any() => {
@@ -2155,7 +2168,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn signature_from_ts_signature(
         &self,
         program_id: program::ProgramId,
-        signature: &TSSignature<'a>,
+        signature: &'a TSSignature<'a>,
         expected_kind: SignatureKind,
     ) -> Option<Signature<'a>> {
         let signature = match signature {
@@ -2189,7 +2202,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn signature_from_type_literal_signature(
         &self,
         program_id: program::ProgramId,
-        signature: &TSSignature<'a>,
+        signature: &'a TSSignature<'a>,
     ) -> Option<Signature<'a>> {
         let (kind, type_parameters, this_param, parameters, return_type) = match signature {
             TSSignature::TSCallSignatureDeclaration(signature) => (
@@ -2223,9 +2236,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         kind: SignatureKind,
-        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
-        parameters: &FormalParameters<'a>,
-        return_type: Option<&TSTypeAnnotation<'a>>,
+        type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        parameters: &'a FormalParameters<'a>,
+        return_type: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Signature<'a> {
         self.signature_from_function_parts_with_this(
             program_id,
@@ -2241,10 +2254,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         kind: SignatureKind,
-        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
-        this_param: Option<&TSThisParameter<'a>>,
-        parameters: &FormalParameters<'a>,
-        return_type: Option<&TSTypeAnnotation<'a>>,
+        type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        this_param: Option<&'a TSThisParameter<'a>>,
+        parameters: &'a FormalParameters<'a>,
+        return_type: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Signature<'a> {
         let parameters = self.function_type_parameters(program_id, this_param, parameters);
         let (return_type, type_predicate) = self.return_type_and_type_predicate_from_annotation(
@@ -2314,7 +2327,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn explicit_call_type_parameter_substitutions(
         &self,
         program_id: program::ProgramId,
-        function: &TyFunction<'a>,
+        function: &'a TyFunction<'a>,
         call_expression: &'a CallExpression<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
         let (mut substitutions, _) = self.explicit_type_parameter_substitutions(
@@ -2330,8 +2343,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     pub(crate) fn explicit_type_parameter_substitutions(
         &self,
         program_id: program::ProgramId,
-        function: &TyFunction<'a>,
-        type_arguments: Option<&oxc_ast::ast::TSTypeParameterInstantiation<'a>>,
+        function: &'a TyFunction<'a>,
+        type_arguments: Option<&'a oxc_ast::ast::TSTypeParameterInstantiation<'a>>,
     ) -> (HashMap<&'a str, Ty<'a>>, Vec<&'a str>) {
         let mut substitutions = HashMap::new();
         let mut explicit_type_parameters = Vec::new();
@@ -2541,7 +2554,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn explicit_construct_type_parameter_substitutions(
         &self,
         program_id: program::ProgramId,
-        function: &TyFunction<'a>,
+        function: &'a TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
         let (mut substitutions, _) = self.explicit_type_parameter_substitutions(
@@ -2934,7 +2947,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn type_parameter_substitutions_for_reference(
         &self,
         program_id: program::ProgramId,
-        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         reference: &TyTypeReference<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
         self.type_parameter_substitutions_for_type_arguments(
@@ -2947,7 +2960,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn type_parameter_substitutions_for_type_arguments(
         &self,
         program_id: program::ProgramId,
-        type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         type_arguments: &[Ty<'a>],
     ) -> HashMap<&'a str, Ty<'a>> {
         let type_parameters = self.type_parameters_from_declaration(program_id, type_parameters);
@@ -2991,7 +3004,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn type_parameters_from_declaration(
         &self,
         program_id: program::ProgramId,
-        declaration: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        declaration: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
     ) -> Vec<TyTypeParameter<'a>> {
         declaration.map_or_else(Vec::new, |declaration| {
             declaration
@@ -3005,7 +3018,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn type_parameter_from_ts_type_parameter(
         &self,
         program_id: program::ProgramId,
-        parameter: &TSTypeParameter<'a>,
+        parameter: &'a TSTypeParameter<'a>,
     ) -> TyTypeParameter<'a> {
         Ty::type_parameter(
             parameter.name.name.as_str(),
@@ -3724,7 +3737,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn function_signature_parameters(
         &self,
         program_id: program::ProgramId,
-        params: &FormalParameters<'a>,
+        params: &'a FormalParameters<'a>,
     ) -> Vec<TyParameter<'a>> {
         self.function_signature_parameters_with_context(program_id, params, None)
     }
@@ -3732,8 +3745,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn function_type_parameters(
         &self,
         program_id: program::ProgramId,
-        this_param: Option<&TSThisParameter<'a>>,
-        params: &FormalParameters<'a>,
+        this_param: Option<&'a TSThisParameter<'a>>,
+        params: &'a FormalParameters<'a>,
     ) -> Vec<TyParameter<'a>> {
         this_param
             .iter()
@@ -3764,7 +3777,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn function_signature_parameters_with_context(
         &self,
         program_id: program::ProgramId,
-        params: &FormalParameters<'a>,
+        params: &'a FormalParameters<'a>,
         contextual_function: Option<&'a TyFunction<'a>>,
     ) -> Vec<TyParameter<'a>> {
         params
@@ -3790,7 +3803,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn function_signature_parameter(
         &self,
         program_id: program::ProgramId,
-        parameter: &FormalParameter<'a>,
+        parameter: &'a FormalParameter<'a>,
     ) -> TyParameter<'a> {
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.pattern);
         let ty =
@@ -3805,7 +3818,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn function_signature_parameter_with_context(
         &self,
         program_id: program::ProgramId,
-        parameter: &FormalParameter<'a>,
+        parameter: &'a FormalParameter<'a>,
         contextual_parameter: Option<&TyParameter<'a>>,
     ) -> TyParameter<'a> {
         if parameter.type_annotation.is_some() {
@@ -3826,7 +3839,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn function_signature_rest_parameter(
         &self,
         program_id: program::ProgramId,
-        parameter: &FormalParameterRest<'a>,
+        parameter: &'a FormalParameterRest<'a>,
     ) -> TyParameter<'a> {
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.rest.argument);
         Ty::rest_parameter(
@@ -3838,7 +3851,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_parameter_type_from_ts_type_annotation(
         &self,
         program_id: program::ProgramId,
-        type_annotation: Option<&TSTypeAnnotation<'a>>,
+        type_annotation: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Ty<'a> {
         let ty = self.get_type_from_ts_type_annotation(program_id, type_annotation);
         self.get_apparent_type_at_use(program_id, ty, 0)
@@ -4593,8 +4606,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_declared_type_of_formal_parameter(
         &self,
         program_id: program::ProgramId,
-        parameter: &FormalParameter<'a>,
-        annotation: &TSTypeAnnotation<'a>,
+        parameter: &'a FormalParameter<'a>,
+        annotation: &'a TSTypeAnnotation<'a>,
     ) -> Ty<'a> {
         let annotated_type =
             self.get_parameter_type_from_ts_type_annotation(program_id, Some(annotation));
