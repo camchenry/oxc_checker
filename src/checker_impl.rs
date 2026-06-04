@@ -379,51 +379,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
 
         match binary_expression.operator {
+            BinaryOperator::Equality => Ty::boolean(),
+            BinaryOperator::Inequality => Ty::boolean(),
+            BinaryOperator::StrictEquality => Ty::boolean(),
+            BinaryOperator::StrictInequality => Ty::boolean(),
+            BinaryOperator::LessThan => Ty::boolean(),
+            BinaryOperator::LessEqualThan => Ty::boolean(),
+            BinaryOperator::GreaterThan => Ty::boolean(),
+            BinaryOperator::GreaterEqualThan => Ty::boolean(),
             BinaryOperator::Addition
                 if self.is_string_like_for_addition(left)
                     || self.is_string_like_for_addition(right) =>
             {
                 Ty::string()
             }
-            BinaryOperator::Addition
-                if self.is_number_like_for_arithmetic(left)
-                    && self.is_number_like_for_arithmetic(right) =>
-            {
-                Ty::number()
-            }
-            BinaryOperator::Subtraction
-            | BinaryOperator::Multiplication
-            | BinaryOperator::Division
-            | BinaryOperator::Remainder
-            | BinaryOperator::Exponential
-                if self.is_number_like_for_arithmetic(left)
-                    && self.is_number_like_for_arithmetic(right) =>
-            {
-                Ty::number()
-            }
-            // TODO(correctness): handle all of these cases.
-            BinaryOperator::Equality => Ty::any(),
-            BinaryOperator::Inequality => Ty::any(),
-            BinaryOperator::StrictEquality => Ty::any(),
-            BinaryOperator::StrictInequality => Ty::any(),
-            BinaryOperator::LessThan => Ty::any(),
-            BinaryOperator::LessEqualThan => Ty::any(),
-            BinaryOperator::GreaterThan => Ty::any(),
-            BinaryOperator::GreaterEqualThan => Ty::any(),
-            BinaryOperator::Addition => Ty::any(),
-            BinaryOperator::Subtraction => Ty::any(),
-            BinaryOperator::Multiplication => Ty::any(),
-            BinaryOperator::Division => Ty::any(),
-            BinaryOperator::Remainder => Ty::any(),
-            BinaryOperator::Exponential => Ty::any(),
-            BinaryOperator::ShiftLeft => Ty::any(),
-            BinaryOperator::ShiftRight => Ty::any(),
-            BinaryOperator::ShiftRightZeroFill => Ty::any(),
-            BinaryOperator::BitwiseOR => Ty::any(),
-            BinaryOperator::BitwiseXOR => Ty::any(),
-            BinaryOperator::BitwiseAnd => Ty::any(),
-            BinaryOperator::In => Ty::any(),
-            BinaryOperator::Instanceof => Ty::any(),
+            BinaryOperator::Addition => Ty::number(),
+            BinaryOperator::Subtraction => Ty::number(),
+            BinaryOperator::Multiplication => Ty::number(),
+            BinaryOperator::Division => Ty::number(),
+            BinaryOperator::Remainder => Ty::number(),
+            BinaryOperator::Exponential => Ty::number(),
+            BinaryOperator::ShiftLeft => Ty::number(),
+            BinaryOperator::ShiftRight => Ty::number(),
+            BinaryOperator::ShiftRightZeroFill => Ty::number(),
+            BinaryOperator::BitwiseOR => Ty::number(),
+            BinaryOperator::BitwiseXOR => Ty::number(),
+            BinaryOperator::BitwiseAnd => Ty::number(),
+            BinaryOperator::In => Ty::boolean(),
+            BinaryOperator::Instanceof => Ty::boolean(),
         }
     }
 

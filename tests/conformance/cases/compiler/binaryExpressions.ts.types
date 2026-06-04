@@ -20,52 +20,52 @@ const x7 = 1 ** 2
 >     ^^: number   (TyNumber)
 
 const x8 = "a" == 2
->     ^^: any   (TyAny)
+>     ^^: boolean   (TyBoolean)
 
 const x9 = 2 != "a"
->     ^^: any   (TyAny)
+>     ^^: boolean   (TyBoolean)
 
 const x10 = "a" === 2
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x11 = 2 !== "a"
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x12 = "a" > 2
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x13 = "a" < 2
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x14 = "a" >= 2
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x15 = "a" <= 2
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x16 = 1 << 2
->     ^^^: any   (TyAny)
+>     ^^^: number   (TyNumber)
 
 const x17 = 1 >> 2
->     ^^^: any   (TyAny)
+>     ^^^: number   (TyNumber)
 
 const x18 = 1 >>> 2
->     ^^^: any   (TyAny)
+>     ^^^: number   (TyNumber)
 
 const x19 = 1 & 2
->     ^^^: any   (TyAny)
+>     ^^^: number   (TyNumber)
 
 const x20 = 1 | 2
->     ^^^: any   (TyAny)
+>     ^^^: number   (TyNumber)
 
 const x21 = 1 ^ 2
->     ^^^: any   (TyAny)
+>     ^^^: number   (TyNumber)
 
 const x22 = 'x' in {}
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x23 = 'x' instanceof Object
->     ^^^: any   (TyAny)
+>     ^^^: boolean   (TyBoolean)
 
 const x23 = 'x' instanceof Object
 >                          ^^^^^^: ObjectConstructor   (TyTypeReference)
