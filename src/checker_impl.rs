@@ -329,10 +329,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::Undefined => Ty::never(),
             Ty::Union(union) => Ty::union(
                 self.arena(),
-                union
-                    .types
-                    .iter()
-                    .filter_map(|t| Some(self.remove_null_or_undefined(*t))),
+                union.types.iter().filter_map(|t| {
+                    let t = self.remove_null_or_undefined(*t);
+                    if t.is_never() { None } else { Some(t) }
+                }),
             ),
             _ => ty,
         }
