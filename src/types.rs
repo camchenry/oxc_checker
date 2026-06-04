@@ -742,17 +742,6 @@ impl<'a> Ty<'a> {
         matches!(self, Ty::Number | Ty::NumberLiteral(_))
     }
 
-    pub(crate) fn from_expression(expression: &Expression<'_>) -> Self {
-        match expression {
-            Expression::BooleanLiteral(_) => Self::boolean(),
-            Expression::NumericLiteral(_) => Self::number(),
-            Expression::BigIntLiteral(_) => Self::bigint(),
-            Expression::StringLiteral(_) => Self::string(),
-            Expression::NullLiteral(_) => Self::any(),
-            _ => Self::any(),
-        }
-    }
-
     pub(crate) fn property_type(&self, name: &str) -> Option<Self> {
         match self {
             Self::Object(object) => object.properties.iter().find_map(|property| {
