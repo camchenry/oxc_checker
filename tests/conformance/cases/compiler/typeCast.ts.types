@@ -1,6 +1,15 @@
 declare const x: any;
 >             ^: any   (TyAny)
 
+type G<T> = T;
+>    ^: T   (TyTypeReference)
+
+type G<T> = T;
+>      ^: any   (TyAny)
+
+type G<T> = T;
+>           ^: any   (TyAny)
+
 const xs = <string>x;
 >     ^^: string   (TyString)
 
@@ -23,6 +32,66 @@ const xa = <any>x;
 >     ^^: any   (TyAny)
 
 const xa = <any>x;
+>               ^: any   (TyAny)
+
+const ys = x as string;
+>     ^^: string   (TyString)
+
+const ys = x as string;
+>          ^: any   (TyAny)
+
+const yu = x as unknown;
+>     ^^: unknown   (TyUnknown)
+
+const yu = x as unknown;
+>          ^: any   (TyAny)
+
+const yn = x as number;
+>     ^^: number   (TyNumber)
+
+const yn = x as number;
+>          ^: any   (TyAny)
+
+const ya = x as any;
+>     ^^: any   (TyAny)
+
+const ya = x as any;
+>          ^: any   (TyAny)
+
+const gs = x as G<string>;
+>     ^^: G<string>   (TyTypeReference)
+
+const gs = x as G<string>;
+>          ^: any   (TyAny)
+
+const gs = x as G<string>;
+>               ^: any   (TyAny)
+
+const gu = x as G<unknown>;
+>     ^^: G<unknown>   (TyTypeReference)
+
+const gu = x as G<unknown>;
+>          ^: any   (TyAny)
+
+const gu = x as G<unknown>;
+>               ^: any   (TyAny)
+
+const gn = x as G<number>;
+>     ^^: G<number>   (TyTypeReference)
+
+const gn = x as G<number>;
+>          ^: any   (TyAny)
+
+const gn = x as G<number>;
+>               ^: any   (TyAny)
+
+const ga = x as G<any>;
+>     ^^: G<any>   (TyTypeReference)
+
+const ga = x as G<any>;
+>          ^: any   (TyAny)
+
+const ga = x as G<any>;
 >               ^: any   (TyAny)
 
 interface i00<T = number> { a: T; }
