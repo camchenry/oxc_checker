@@ -245,7 +245,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::bigint()
                 }
             }
-            _ => Ty::any(),
+            // TODO(correctness): Handle all of these cases.
+            Expression::RegExpLiteral(_) => Ty::any(),
+            Expression::TemplateLiteral(_) => Ty::any(),
+            Expression::MetaProperty(_) => Ty::any(),
+            Expression::Super(_) => Ty::any(),
+            Expression::ChainExpression(_) => Ty::any(),
+            Expression::ClassExpression(_) => Ty::any(),
+            Expression::ImportExpression(_) => Ty::any(),
+            Expression::LogicalExpression(_) => Ty::any(),
+            Expression::SequenceExpression(_) => Ty::any(),
+            Expression::TaggedTemplateExpression(_) => Ty::any(),
+            Expression::UpdateExpression(_) => Ty::any(),
+            Expression::YieldExpression(_) => Ty::any(),
+            Expression::PrivateInExpression(_) => Ty::any(),
+            Expression::JSXElement(_) => Ty::any(),
+            Expression::JSXFragment(_) => Ty::any(),
+            Expression::TSSatisfiesExpression(_) => Ty::any(),
+            Expression::TSNonNullExpression(_) => Ty::any(),
+            Expression::TSInstantiationExpression(_) => Ty::any(),
+            Expression::V8IntrinsicExpression(_) => Ty::any(),
+            Expression::PrivateFieldExpression(_) => Ty::any(),
         }
     }
 
