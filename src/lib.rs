@@ -517,9 +517,9 @@ mod test {
         ret: &ParseAndCheck<'a>,
         program_id: program::ProgramId,
         name: &str,
-    ) -> Ty<'a> {
+    ) -> Option<Ty<'a>> {
         let checker = CheckerBuilder::new().build(&ret.store);
-        checker.get_global_type(program_id, name)
+        checker.get_global_type_reference(program_id, name, std::iter::empty())
     }
 
     fn get_object_property_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
@@ -2819,11 +2819,19 @@ declare function acceptsPredicate<T, S extends T>(
         // Now test things that should be in the global environment:
         assert_eq!(
             get_global_type(&ret, ret.program_id, "Promise"),
-            Ty::type_reference(arena(&ret), "Promise", std::iter::empty())
+            Some(Ty::type_reference(
+                arena(&ret),
+                "Promise",
+                std::iter::empty()
+            ))
         );
         assert_eq!(
             checker.get_global_promise_type(ret.program_id),
-            Ty::type_reference(arena(&ret), "Promise", std::iter::empty())
+            Some(Ty::type_reference(
+                arena(&ret),
+                "Promise",
+                std::iter::empty()
+            ))
         );
     }
 }

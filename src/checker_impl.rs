@@ -2096,7 +2096,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::Bigint | Ty::BigIntLiteral(_) => self.get_global_bigint_type(program_id),
             _ => return None,
         };
-        let Ty::TypeReference(reference) = interface_type else {
+        let Some(Ty::TypeReference(reference)) = interface_type else {
             return None;
         };
         self.get_property_type_of_interface_type(program_id, reference, property_name)
@@ -3959,12 +3959,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         return_type: Ty<'a>,
     ) -> Ty<'a> {
         match self.get_global_promise_type(program_id) {
-            Ty::Any => Ty::any(),
-            Ty::TypeReference(reference) => {
+            Some(Ty::TypeReference(reference)) => {
                 // TODO(correctness): TypeScript wraps async returns with Promise<Awaited<T>>.
                 Ty::type_reference(self.arena(), reference.name, [return_type])
             }
-            _ => Ty::type_reference(self.arena(), "Promise", [return_type]),
+            _ => Ty::any(),
         }
     }
 

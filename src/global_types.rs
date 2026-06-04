@@ -216,7 +216,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         element_type: Ty<'a>,
-    ) -> Ty<'a> {
+    ) -> Option<Ty<'a>> {
         self.get_global_type_reference(program_id, ARRAY_TYPE_NAME, [element_type])
     }
 
@@ -224,40 +224,43 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         element_type: Ty<'a>,
-    ) -> Ty<'a> {
+    ) -> Option<Ty<'a>> {
         self.get_global_type_reference(program_id, READONLY_ARRAY_TYPE_NAME, [element_type])
     }
 
-    pub(crate) fn get_global_object_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, OBJECT_TYPE_NAME)
+    pub(crate) fn get_global_object_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, OBJECT_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_function_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, FUNCTION_TYPE_NAME)
+    pub(crate) fn get_global_function_type(
+        &self,
+        program_id: program::ProgramId,
+    ) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, FUNCTION_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_string_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, STRING_TYPE_NAME)
+    pub(crate) fn get_global_string_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, STRING_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_boolean_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, BOOLEAN_TYPE_NAME)
+    pub(crate) fn get_global_boolean_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, BOOLEAN_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_number_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, NUMBER_TYPE_NAME)
+    pub(crate) fn get_global_number_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, NUMBER_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_symbol_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, SYMBOL_TYPE_NAME)
+    pub(crate) fn get_global_symbol_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, SYMBOL_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_bigint_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, BIGINT_TYPE_NAME)
+    pub(crate) fn get_global_bigint_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, BIGINT_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type(program_id, "Promise")
+    pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, "Promise", std::iter::empty())
     }
 
     pub(crate) fn get_global_awaited_type(
@@ -290,20 +293,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
     }
 
-    pub(crate) fn get_global_type(&self, program_id: program::ProgramId, name: &str) -> Ty<'a> {
-        self.get_global_type_reference(program_id, name, std::iter::empty())
-    }
-
-    fn get_global_type_reference(
+    pub(crate) fn get_global_type_reference(
         &self,
         program_id: program::ProgramId,
         name: &str,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Ty<'a> {
-        if self.get_type_symbol_for_name(program_id, name).is_none() {
-            return Ty::any();
-        }
+    ) -> Option<Ty<'a>> {
+        self.get_type_symbol_for_name(program_id, name)?;
 
-        Ty::type_reference(self.arena(), self.arena().str(name), type_arguments)
+        Some(Ty::type_reference(
+            self.arena(),
+            self.arena().str(name),
+            type_arguments,
+        ))
     }
 }
