@@ -38,4 +38,37 @@ let _undefined2 = undefined;
 >                 ^^^^^^^^^: undefined   (TyUndefined)
 
 let template = `Hello`
->   ^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^: string   (TyString)
+
+let template2 = `Count: ${count}`
+>   ^^^^^^^^^: string   (TyString)
+
+let template2 = `Count: ${count}`
+>                         ^^^^^: number   (TyNumber)
+
+const count3 = 1;
+>     ^^^^^^: 1   (TyNumberLiteral)
+
+const label3 = "ready";
+>     ^^^^^^: "ready"   (TyStringLiteral)
+
+const big3 = 1n;
+>     ^^^^: 1n   (TyBigIntLiteral)
+
+const _null3 = null;
+>     ^^^^^^: null   (TyNull)
+
+const _undefined3 = undefined;
+>     ^^^^^^^^^^^: undefined   (TyUndefined)
+
+const _undefined3 = undefined;
+>                   ^^^^^^^^^: undefined   (TyUndefined)
+
+const template3 = `Hello`;
+>     ^^^^^^^^^: "Hello"   (TyStringLiteral)
+
+const template4 = `Count: ${count3}`;
+>     ^^^^^^^^^: `Count: ${1}`   (TyTemplateLiteral)
+
+const template4 = `Count: ${count3}`;
+>                           ^^^^^^: 1   (TyNumberLiteral)

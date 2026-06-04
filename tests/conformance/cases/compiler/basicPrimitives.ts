@@ -13,3 +13,12 @@ let big2 = 1n
 let _null2 = null
 let _undefined2 = undefined;
 let template = `Hello`
+let template2 = `Count: ${count}`
+
+const count3 = 1;
+const label3 = "ready";
+const big3 = 1n;
+const _null3 = null;
+const _undefined3 = undefined;
+const template3 = `Hello`;
+const template4 = `Count: ${count3}`;

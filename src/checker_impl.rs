@@ -245,9 +245,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::bigint()
                 }
             }
+            Expression::TemplateLiteral(literal) => {
+                if flags.preserve_literals() {
+                    if literal.expressions.is_empty()
+                        && let Some(quasi) = literal.single_quasi()
+                    {
+                        Ty::string_literal(self.arena(), quasi.as_str())
+                    } else {
+                        Ty::template_literal(
+                            self.arena(),
+                            literal.quasis.iter().map(|q| TemplateLiteralElement {
+                                value: q.value.raw.as_str(),
+                            }),
+                            literal.expressions.iter().map(|e| {
+                                self.get_type_of_expression_with_node(
+                                    program_id,
+                                    e,
+                                    node_id,
+                                    GetTypeFlags::NONE,
+                                )
+                            }),
+                        )
+                    }
+                } else {
+                    Ty::string()
+                }
+            }
             // TODO(correctness): Handle all of these cases.
             Expression::RegExpLiteral(_) => Ty::any(),
-            Expression::TemplateLiteral(_) => Ty::any(),
             Expression::MetaProperty(_) => Ty::any(),
             Expression::Super(_) => Ty::any(),
             Expression::ChainExpression(_) => Ty::any(),

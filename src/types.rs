@@ -408,6 +408,7 @@ impl<'a> Ty<'a> {
         }))
     }
 
+    // TODO: Remove in favor of `template_literal`
     pub fn ts_template_literal(
         arena: CheckerArena<'a>,
         template: &TSTemplateLiteralType<'a>,
