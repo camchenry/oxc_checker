@@ -5212,15 +5212,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             return ty;
         }
 
-        let ty = (|| {
-            if let Some((declaration, declarator)) = self.variable_declarator_for_symbol(sym) {
-                return self.get_type_of_variable_declarator(
-                    sym.program_id,
-                    declaration,
-                    declarator,
-                );
-            }
-
+        let ty = if let Some((declaration, declarator)) = self.variable_declarator_for_symbol(sym) {
+            return self.get_type_of_variable_declarator(sym.program_id, declaration, declarator);
+        } else {
             let declaration = self
                 .semantic(sym.program_id)
                 .scoping()
@@ -5363,7 +5357,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
                 _ => Ty::none(),
             }
-        })();
+        };
 
         if let Some(slot) = self
             .declared_type_cache
@@ -5408,14 +5402,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         ty
     }
 
+    // TODO(completeness): Implement this method
     fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty<'a> {
         self.get_type_at_location(node)
     }
 
+    // TODO(completeness): Implement this method
     fn get_properties_of_type(&self, _t: Ty<'a>) -> Vec<SymbolRef> {
         Vec::new()
     }
 
+    // TODO(completeness): Implement this method
     fn get_property_of_type(&self, _t: Ty<'a>, _name: &str) -> Option<SymbolRef> {
         None
     }
@@ -5454,6 +5451,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
     }
 
+    // TODO(completeness): Implement this method
     fn get_index_infos_of_type(&self, _t: Ty<'a>) -> Vec<IndexInfo<'a>> {
         Vec::new()
     }
