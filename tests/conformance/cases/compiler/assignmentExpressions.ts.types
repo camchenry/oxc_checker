@@ -1,0 +1,140 @@
+let x: any = 5;
+>   ^: any   (TyAny)
+
+const x1 = x = 5;
+>     ^^: number   (TyNumber)
+
+const x1 = x = 5;
+>          ^: any   (TyAny)
+
+const x2 = x += 1;
+>     ^^: number   (TyNumber)
+
+const x2 = x += 1;
+>          ^: any   (TyAny)
+
+const x3 = x += "hello"
+>     ^^: string   (TyString)
+
+const x3 = x += "hello"
+>          ^: any   (TyAny)
+
+const x4 = x -= 1;
+>     ^^: number   (TyNumber)
+
+const x4 = x -= 1;
+>          ^: any   (TyAny)
+
+const x5 = x *= 2;
+>     ^^: number   (TyNumber)
+
+const x5 = x *= 2;
+>          ^: any   (TyAny)
+
+const x6 = x /= 2;
+>     ^^: number   (TyNumber)
+
+const x6 = x /= 2;
+>          ^: any   (TyAny)
+
+const x7 = x %= 2;
+>     ^^: number   (TyNumber)
+
+const x7 = x %= 2;
+>          ^: any   (TyAny)
+
+const x8 = x |= 1;
+>     ^^: number   (TyNumber)
+
+const x8 = x |= 1;
+>          ^: any   (TyAny)
+
+const x9 = x ^= 1;
+>     ^^: number   (TyNumber)
+
+const x9 = x ^= 1;
+>          ^: any   (TyAny)
+
+const x10 = x &= 1;
+>     ^^^: number   (TyNumber)
+
+const x10 = x &= 1;
+>           ^: any   (TyAny)
+
+const x11 = x >>= 1;
+>     ^^^: number   (TyNumber)
+
+const x11 = x >>= 1;
+>           ^: any   (TyAny)
+
+const x12 = x <<= 1;
+>     ^^^: number   (TyNumber)
+
+const x12 = x <<= 1;
+>           ^: any   (TyAny)
+
+const x13 = x >>= 1;
+>     ^^^: number   (TyNumber)
+
+const x13 = x >>= 1;
+>           ^: any   (TyAny)
+
+const x14 = x >>>= 1;
+>     ^^^: number   (TyNumber)
+
+const x14 = x >>>= 1;
+>           ^: any   (TyAny)
+
+const x15 = x **= 2;
+>     ^^^: number   (TyNumber)
+
+const x15 = x **= 2;
+>           ^: any   (TyAny)
+
+let y: string | undefined | null = "test"
+>   ^: string | null | undefined   (TyUnion)
+
+const x16 = y ??= "foo"
+>     ^^^: any   (TyAny)
+
+const x16 = y ??= "foo"
+>           ^: string | null | undefined   (TyUnion)
+
+const x17 = y ??= undefined
+>     ^^^: any   (TyAny)
+
+const x17 = y ??= undefined
+>           ^: string | null | undefined   (TyUnion)
+
+const x17 = y ??= undefined
+>                 ^^^^^^^^^: undefined   (TyUndefined)
+
+const x18 = y &&= "foo"
+>     ^^^: any   (TyAny)
+
+const x18 = y &&= "foo"
+>           ^: string | null | undefined   (TyUnion)
+
+const x19 = y &&= undefined
+>     ^^^: any   (TyAny)
+
+const x19 = y &&= undefined
+>           ^: string | null | undefined   (TyUnion)
+
+const x19 = y &&= undefined
+>                 ^^^^^^^^^: undefined   (TyUndefined)
+
+const x20 = y ||= "foo"
+>     ^^^: any   (TyAny)
+
+const x20 = y ||= "foo"
+>           ^: string | null | undefined   (TyUnion)
+
+const x21 = y ||= undefined
+>     ^^^: any   (TyAny)
+
+const x21 = y ||= undefined
+>           ^: string | null | undefined   (TyUnion)
+
+const x21 = y ||= undefined
+>                 ^^^^^^^^^: undefined   (TyUndefined)

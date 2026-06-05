@@ -431,18 +431,28 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
         match assignment_expression.operator {
             AssignmentOperator::Assign => right,
-            AssignmentOperator::Addition if self.is_string_like_for_addition(right) => Ty::string(),
-            AssignmentOperator::Addition
-            | AssignmentOperator::Subtraction
+            AssignmentOperator::Addition => {
+                if self.is_string_like_for_addition(right) {
+                    Ty::string()
+                } else {
+                    Ty::number()
+                }
+            }
+            AssignmentOperator::Subtraction
             | AssignmentOperator::Multiplication
             | AssignmentOperator::Division
             | AssignmentOperator::Remainder
-            | AssignmentOperator::Exponential
-                if self.is_number_like_for_arithmetic(right) =>
-            {
-                Ty::number()
-            }
-            _ => Ty::any(),
+            | AssignmentOperator::Exponential => Ty::number(),
+            AssignmentOperator::ShiftLeft => Ty::number(),
+            AssignmentOperator::ShiftRight => Ty::number(),
+            AssignmentOperator::ShiftRightZeroFill => Ty::number(),
+            AssignmentOperator::BitwiseOR => Ty::number(),
+            AssignmentOperator::BitwiseXOR => Ty::number(),
+            AssignmentOperator::BitwiseAnd => Ty::number(),
+            // TODO(correctness): assume the correct type for logical assignment expressions
+            AssignmentOperator::LogicalOr => Ty::any(),
+            AssignmentOperator::LogicalAnd => Ty::any(),
+            AssignmentOperator::LogicalNullish => Ty::any(),
         }
     }
 
@@ -466,10 +476,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
 
         Ty::union(self.arena(), [consequent, alternate])
-    }
-
-    fn is_number_like_for_arithmetic(&self, ty: Ty<'a>) -> bool {
-        matches!(ty, Ty::Number | Ty::NumberLiteral(_))
     }
 
     fn is_string_like_for_addition(&self, ty: Ty<'a>) -> bool {
