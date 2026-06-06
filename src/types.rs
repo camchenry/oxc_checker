@@ -5,6 +5,7 @@ use oxc_ast::ast::{
 };
 use std::collections::HashMap;
 
+use crate::mapper::TypeMapper;
 use crate::type_set::{reduce_intersection_type, reduce_union_type};
 
 #[derive(Clone, Copy)]
@@ -110,6 +111,28 @@ pub struct TyFunction<'a> {
     pub(crate) type_predicate: Option<&'a TyTypePredicate<'a>>,
 }
 
+impl TyFunction<'_> {
+    fn could_contain_type_variables(&self) -> bool {
+        !self.type_parameters.is_empty()
+            || self.type_parameters.iter().any(|type_parameter| {
+                type_parameter
+                    .constraint_type
+                    .is_some_and(|ty| ty.could_contain_type_variables())
+                    || type_parameter
+                        .default_type
+                        .is_some_and(|ty| ty.could_contain_type_variables())
+            })
+            || self
+                .parameters
+                .iter()
+                .any(|parameter| parameter.ty.could_contain_type_variables())
+            || self.return_type.could_contain_type_variables()
+            || self
+                .type_predicate
+                .is_some_and(|predicate| predicate.could_contain_type_variables())
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) enum TyTypePredicateKind {
     This,
@@ -133,19 +156,20 @@ pub struct TyTypePredicate<'a> {
 }
 
 impl<'a> TyTypePredicate<'a> {
-    pub(crate) fn substitute_type_parameters(
-        self,
-        arena: CheckerArena<'a>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
-    ) -> Self {
+    pub(crate) fn instantiate_type(self, arena: CheckerArena<'a>, mapper: &TypeMapper<'a>) -> Self {
         Self {
             kind: self.kind,
             parameter_name: self.parameter_name,
             parameter_index: self.parameter_index,
             target_type: self
                 .target_type
-                .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+                .map(|ty| ty.instantiate_type(arena, mapper)),
         }
+    }
+
+    fn could_contain_type_variables(self) -> bool {
+        self.target_type
+            .is_some_and(|ty| ty.could_contain_type_variables())
     }
 }
 
@@ -747,6 +771,22 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         substitutions: &HashMap<&'a str, Ty<'a>>,
     ) -> Self {
+        self.instantiate_type(arena, &TypeMapper::from_substitutions(arena, substitutions))
+    }
+
+    pub(crate) fn instantiate_type(
+        &self,
+        arena: CheckerArena<'a>,
+        mapper: &TypeMapper<'a>,
+    ) -> Self {
+        if mapper.is_empty() || !self.could_contain_type_variables() {
+            return *self;
+        }
+
+        self.instantiate_type_worker(arena, mapper)
+    }
+
+    fn instantiate_type_worker(&self, arena: CheckerArena<'a>, mapper: &TypeMapper<'a>) -> Self {
         match self {
             Self::Object(object) => Self::object(
                 arena,
@@ -756,18 +796,14 @@ impl<'a> Ty<'a> {
                     optional: property.optional,
                     method: property.method,
                     readonly: property.readonly,
-                    ty: property.ty.substitute_type_parameters(arena, substitutions),
+                    ty: property.ty.instantiate_type(arena, mapper),
                 }),
             )
             .with_index_infos(
                 arena,
                 object.index_infos.iter().map(|info| IndexInfo {
-                    key_type: info
-                        .key_type
-                        .substitute_type_parameters(arena, substitutions),
-                    value_type: info
-                        .value_type
-                        .substitute_type_parameters(arena, substitutions),
+                    key_type: info.key_type.instantiate_type(arena, mapper),
+                    value_type: info.value_type.instantiate_type(arena, mapper),
                     readonly: info.readonly,
                 }),
             )
@@ -776,7 +812,7 @@ impl<'a> Ty<'a> {
                 object
                     .signatures
                     .iter()
-                    .map(|signature| signature.substitute_type_parameters(arena, substitutions)),
+                    .map(|signature| signature.instantiate_type(arena, mapper)),
             ),
             Self::ModuleNamespace(namespace) => Self::module_namespace(
                 arena,
@@ -787,45 +823,36 @@ impl<'a> Ty<'a> {
                     optional: property.optional,
                     method: property.method,
                     readonly: property.readonly,
-                    ty: property.ty.substitute_type_parameters(arena, substitutions),
+                    ty: property.ty.instantiate_type(arena, mapper),
                 }),
             ),
             Self::Function(function) => {
-                let has_non_identity_outer_substitution = substitutions.iter().any(|(name, ty)| {
-                    !function
-                        .type_parameters
-                        .iter()
-                        .any(|type_parameter| type_parameter.name == *name)
-                        && !is_identity_type_parameter_substitution(name, *ty)
-                });
-                let substitutions = substitutions
+                let type_parameter_names = function
+                    .type_parameters
                     .iter()
-                    .filter(|(name, _)| {
-                        !function
-                            .type_parameters
-                            .iter()
-                            .any(|type_parameter| type_parameter.name == **name)
-                    })
-                    .map(|(name, ty)| (*name, *ty))
-                    .collect::<HashMap<_, _>>();
+                    .map(|type_parameter| type_parameter.name)
+                    .collect::<Vec<_>>();
+                let has_non_identity_outer_substitution = mapper
+                    .has_non_identity_mapping_outside_names(type_parameter_names.iter().copied());
+                let mapper = mapper
+                    .without_type_parameter_names(arena, type_parameter_names.iter().copied());
+
                 Self::function_with_type_predicate(
                     arena,
                     function.type_parameters.iter().map(|type_parameter| {
                         Self::type_parameter_with_display_default(
                             type_parameter.name,
-                            type_parameter.constraint_type.map(|constraint_type| {
-                                constraint_type.substitute_type_parameters(arena, &substitutions)
-                            }),
-                            type_parameter.default_type.map(|default_type| {
-                                default_type.substitute_type_parameters(arena, &substitutions)
-                            }),
+                            type_parameter
+                                .constraint_type
+                                .map(|ty| ty.instantiate_type(arena, &mapper)),
+                            type_parameter
+                                .default_type
+                                .map(|ty| ty.instantiate_type(arena, &mapper)),
                             type_parameter.display_default && !has_non_identity_outer_substitution,
                         )
                     }),
                     function.parameters.iter().map(|parameter| {
-                        let ty = parameter
-                            .ty
-                            .substitute_type_parameters(arena, &substitutions);
+                        let ty = parameter.ty.instantiate_type(arena, &mapper);
                         if parameter.rest {
                             Self::rest_parameter(parameter.name, ty)
                         } else if parameter.optional {
@@ -834,19 +861,16 @@ impl<'a> Ty<'a> {
                             Self::parameter(parameter.name, ty)
                         }
                     }),
+                    function.return_type.instantiate_type(arena, &mapper),
                     function
-                        .return_type
-                        .substitute_type_parameters(arena, &substitutions),
-                    function.type_predicate.map(|predicate| {
-                        predicate.substitute_type_parameters(arena, &substitutions)
-                    }),
+                        .type_predicate
+                        .map(|predicate| predicate.instantiate_type(arena, &mapper)),
                 )
             }
             Self::TypeReference(reference) => {
-                if reference.type_arguments.is_empty()
-                    && let Some(substitution) = substitutions.get(reference.name)
-                {
-                    *substitution
+                let mapped = mapper.map(*self);
+                if mapped != *self {
+                    mapped
                 } else {
                     Self::type_reference(
                         arena,
@@ -854,39 +878,33 @@ impl<'a> Ty<'a> {
                         reference
                             .type_arguments
                             .iter()
-                            .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+                            .map(|ty| ty.instantiate_type(arena, mapper)),
                     )
                 }
             }
             Self::TypeQuery(query) => Self::type_query(
                 arena,
                 query.name,
-                query
-                    .resolved
-                    .substitute_type_parameters(arena, substitutions),
+                query.resolved.instantiate_type(arena, mapper),
                 query
                     .type_arguments
                     .iter()
-                    .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+                    .map(|ty| ty.instantiate_type(arena, mapper)),
             ),
-            Self::Array(array) => Self::Array(
-                arena.alloc(TyArray {
-                    element_type: array
-                        .element_type
-                        .substitute_type_parameters(arena, substitutions),
-                    readonly: array.readonly,
-                }),
-            ),
+            Self::Array(array) => Self::Array(arena.alloc(TyArray {
+                element_type: array.element_type.instantiate_type(arena, mapper),
+                readonly: array.readonly,
+            })),
             Self::Tuple(tuple) => Self::Tuple(arena.alloc(TyTuple {
                 elements: arena.vec_from_iter(tuple.elements.iter().map(|element| match element {
                     TupleElement::Regular(ty) => {
-                        TupleElement::Regular(ty.substitute_type_parameters(arena, substitutions))
+                        TupleElement::Regular(ty.instantiate_type(arena, mapper))
                     }
                     TupleElement::Rest(ty) => {
-                        TupleElement::Rest(ty.substitute_type_parameters(arena, substitutions))
+                        TupleElement::Rest(ty.instantiate_type(arena, mapper))
                     }
                     TupleElement::Optional(ty) => {
-                        TupleElement::Optional(ty.substitute_type_parameters(arena, substitutions))
+                        TupleElement::Optional(ty.instantiate_type(arena, mapper))
                     }
                 })),
                 readonly: tuple.readonly,
@@ -896,49 +914,36 @@ impl<'a> Ty<'a> {
                 union
                     .types
                     .iter()
-                    .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+                    .map(|ty| ty.instantiate_type(arena, mapper)),
             ),
             Self::Intersection(intersection) => Self::intersection(
                 arena,
                 intersection
                     .types
                     .iter()
-                    .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
+                    .map(|ty| ty.instantiate_type(arena, mapper)),
             ),
-            Self::Keyof(keyof) => Self::keyof(
-                arena,
-                keyof
-                    .target
-                    .substitute_type_parameters(arena, substitutions),
-            ),
+            Self::Keyof(keyof) => Self::keyof(arena, keyof.target.instantiate_type(arena, mapper)),
             Self::IndexedAccess(indexed_access) => Self::indexed_access(
                 arena,
-                indexed_access
-                    .object_type
-                    .substitute_type_parameters(arena, substitutions),
-                indexed_access
-                    .index_type
-                    .substitute_type_parameters(arena, substitutions),
+                indexed_access.object_type.instantiate_type(arena, mapper),
+                indexed_access.index_type.instantiate_type(arena, mapper),
             ),
             Self::Conditional(conditional) => {
                 let infer_type_parameters = infer_type_parameter_names(conditional.extends_type);
-                let infer_substitutions = substitutions_without_names(
-                    substitutions,
-                    infer_type_parameters.iter().copied(),
-                );
+                let infer_mapper = mapper
+                    .without_type_parameter_names(arena, infer_type_parameters.iter().copied());
 
                 if conditional.is_distributive
-                    && let Ty::TypeReference(reference) = conditional.check_type
-                    && reference.type_arguments.is_empty()
-                    && let Some(Ty::Union(union)) = substitutions.get(reference.name)
+                    && let Ty::Union(union) = mapper.map(conditional.check_type)
                 {
                     return Self::r#union(
                         arena,
                         union.types.iter().map(|ty| {
-                            let mut substitutions = substitutions.clone();
-                            substitutions.insert(reference.name, *ty);
-                            let infer_substitutions = substitutions_without_names(
-                                &substitutions,
+                            let member_mapper =
+                                mapper.with_prepend_mapping(arena, conditional.check_type, *ty);
+                            let infer_member_mapper = member_mapper.without_type_parameter_names(
+                                arena,
                                 infer_type_parameters.iter().copied(),
                             );
                             Self::conditional(
@@ -946,13 +951,13 @@ impl<'a> Ty<'a> {
                                 *ty,
                                 conditional
                                     .extends_type
-                                    .substitute_type_parameters(arena, &infer_substitutions),
+                                    .instantiate_type(arena, &infer_member_mapper),
                                 conditional
                                     .true_type
-                                    .substitute_type_parameters(arena, &infer_substitutions),
+                                    .instantiate_type(arena, &infer_member_mapper),
                                 conditional
                                     .false_type
-                                    .substitute_type_parameters(arena, &substitutions),
+                                    .instantiate_type(arena, &member_mapper),
                                 false,
                             )
                         }),
@@ -961,60 +966,127 @@ impl<'a> Ty<'a> {
 
                 Self::conditional(
                     arena,
-                    conditional
-                        .check_type
-                        .substitute_type_parameters(arena, substitutions),
+                    conditional.check_type.instantiate_type(arena, mapper),
                     conditional
                         .extends_type
-                        .substitute_type_parameters(arena, &infer_substitutions),
-                    conditional
-                        .true_type
-                        .substitute_type_parameters(arena, &infer_substitutions),
-                    conditional
-                        .false_type
-                        .substitute_type_parameters(arena, substitutions),
+                        .instantiate_type(arena, &infer_mapper),
+                    conditional.true_type.instantiate_type(arena, &infer_mapper),
+                    conditional.false_type.instantiate_type(arena, mapper),
                     conditional.is_distributive,
                 )
             }
             Self::Infer(infer) => {
-                let substitutions = substitutions_without_names(
-                    substitutions,
+                let mapper = mapper.without_type_parameter_names(
+                    arena,
                     std::iter::once(infer.type_parameter.name),
                 );
                 Self::infer(
                     arena,
                     Self::type_parameter_with_display_default(
                         infer.type_parameter.name,
-                        infer.type_parameter.constraint_type.map(|constraint_type| {
-                            constraint_type.substitute_type_parameters(arena, &substitutions)
-                        }),
-                        infer.type_parameter.default_type.map(|default_type| {
-                            default_type.substitute_type_parameters(arena, &substitutions)
-                        }),
+                        infer
+                            .type_parameter
+                            .constraint_type
+                            .map(|ty| ty.instantiate_type(arena, &mapper)),
+                        infer
+                            .type_parameter
+                            .default_type
+                            .map(|ty| ty.instantiate_type(arena, &mapper)),
                         infer.type_parameter.display_default,
                     ),
                 )
             }
             Self::Mapped(mapped) => {
-                // TODO(correctness): The mapped key `P` shadows outer type parameters; this
-                // does not currently scrub it from `substitutions` when recursing.
+                let mapper =
+                    mapper.without_type_parameter_names(arena, std::iter::once(mapped.key));
                 Self::mapped(
                     arena,
                     mapped.key,
-                    mapped
-                        .constraint
-                        .substitute_type_parameters(arena, substitutions),
+                    mapped.constraint.instantiate_type(arena, &mapper),
                     mapped
                         .name_type
-                        .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
-                    mapped
-                        .template
-                        .substitute_type_parameters(arena, substitutions),
+                        .map(|ty| ty.instantiate_type(arena, &mapper)),
+                    mapped.template.instantiate_type(arena, &mapper),
                     mapped.optional,
                     mapped.readonly,
                 )
             }
             _ => *self,
+        }
+    }
+
+    fn could_contain_type_variables(&self) -> bool {
+        match self {
+            Self::TypeReference(reference) => {
+                reference.type_arguments.is_empty()
+                    || reference
+                        .type_arguments
+                        .iter()
+                        .any(|ty| ty.could_contain_type_variables())
+            }
+            Self::Object(object) => {
+                object
+                    .properties
+                    .iter()
+                    .any(|property| property.ty.could_contain_type_variables())
+                    || object
+                        .signatures
+                        .iter()
+                        .any(|signature| signature.could_contain_type_variables())
+                    || object.index_infos.iter().any(|info| {
+                        info.key_type.could_contain_type_variables()
+                            || info.value_type.could_contain_type_variables()
+                    })
+            }
+            Self::ModuleNamespace(namespace) => namespace
+                .properties
+                .iter()
+                .any(|property| property.ty.could_contain_type_variables()),
+            Self::Function(function) => function.could_contain_type_variables(),
+            Self::TypeQuery(query) => {
+                query.resolved.could_contain_type_variables()
+                    || query
+                        .type_arguments
+                        .iter()
+                        .any(|ty| ty.could_contain_type_variables())
+            }
+            Self::TemplateLiteral(template_literal) => template_literal
+                .expressions
+                .iter()
+                .any(|ty| ty.could_contain_type_variables()),
+            Self::Array(array) => array.element_type.could_contain_type_variables(),
+            Self::Tuple(tuple) => tuple
+                .elements
+                .iter()
+                .any(|element| element.ty().could_contain_type_variables()),
+            Self::Union(union) => union
+                .types
+                .iter()
+                .any(|ty| ty.could_contain_type_variables()),
+            Self::Intersection(intersection) => intersection
+                .types
+                .iter()
+                .any(|ty| ty.could_contain_type_variables()),
+            Self::Keyof(keyof) => keyof.target.could_contain_type_variables(),
+            Self::IndexedAccess(indexed_access) => {
+                indexed_access.object_type.could_contain_type_variables()
+                    || indexed_access.index_type.could_contain_type_variables()
+            }
+            Self::Conditional(conditional) => {
+                conditional.check_type.could_contain_type_variables()
+                    || conditional.extends_type.could_contain_type_variables()
+                    || conditional.true_type.could_contain_type_variables()
+                    || conditional.false_type.could_contain_type_variables()
+            }
+            Self::Infer(_) => true,
+            Self::Mapped(mapped) => {
+                mapped.constraint.could_contain_type_variables()
+                    || mapped
+                        .name_type
+                        .is_some_and(|ty| ty.could_contain_type_variables())
+                    || mapped.template.could_contain_type_variables()
+            }
+            _ => false,
         }
     }
 
@@ -2143,18 +2215,6 @@ fn collect_infer_types<'a>(ty: Ty<'a>, f: &mut impl FnMut(&TyInfer<'a>)) {
     }
 }
 
-fn substitutions_without_names<'a>(
-    substitutions: &HashMap<&'a str, Ty<'a>>,
-    names: impl IntoIterator<Item = &'a str>,
-) -> HashMap<&'a str, Ty<'a>> {
-    let names = names.into_iter().collect::<Vec<_>>();
-    substitutions
-        .iter()
-        .filter(|(name, _)| !names.contains(name))
-        .map(|(name, ty)| (*name, *ty))
-        .collect()
-}
-
 fn contains_unresolved_type_variable(ty: Ty<'_>) -> bool {
     match ty {
         Ty::TypeReference(reference) => {
@@ -2301,10 +2361,6 @@ fn contains_infer(ty: Ty<'_>) -> bool {
     }
 }
 
-fn is_identity_type_parameter_substitution(name: &str, ty: Ty<'_>) -> bool {
-    matches!(ty, Ty::TypeReference(reference) if reference.name == name && reference.type_arguments.is_empty())
-}
-
 fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
     match element {
         TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
@@ -2356,6 +2412,18 @@ impl<'a> Signature<'a> {
             unreachable!("signature substitution preserves function type")
         };
         Self::new(self.kind, function)
+    }
+
+    pub(crate) fn instantiate_type(self, arena: CheckerArena<'a>, mapper: &TypeMapper<'a>) -> Self {
+        let Ty::Function(function) = Ty::Function(self.function).instantiate_type(arena, mapper)
+        else {
+            unreachable!("signature instantiation preserves function type")
+        };
+        Self::new(self.kind, function)
+    }
+
+    fn could_contain_type_variables(self) -> bool {
+        self.function.could_contain_type_variables()
     }
 
     pub(crate) fn to_type_string(self) -> String {

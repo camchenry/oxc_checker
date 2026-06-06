@@ -31,6 +31,7 @@ use crate::{
     infer::ts_type_contains_infer,
     is_iterable_type_reference, is_mapped_empty_object_intersection,
     is_promise_like_type_reference,
+    mapper::TypeMapper,
     program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_name_to_str,
     ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
@@ -1587,12 +1588,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &TyFunction<'a>,
         type_arguments: &[Ty<'a>],
     ) -> Ty<'a> {
-        let substitutions = function
-            .type_parameters
-            .iter()
-            .zip(type_arguments.iter())
-            .map(|(type_parameter, type_argument)| (type_parameter.name, *type_argument))
-            .collect::<HashMap<_, _>>();
+        let mapper = TypeMapper::from_type_parameters_and_arguments(
+            self.arena(),
+            function.type_parameters.iter().copied(),
+            type_arguments.iter().copied(),
+        );
         let remaining_type_parameters = function
             .type_parameters
             .iter()
@@ -1603,9 +1603,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena(),
             remaining_type_parameters,
             function.parameters.iter().map(|parameter| {
-                let ty = parameter
-                    .ty
-                    .substitute_type_parameters(self.arena(), &substitutions);
+                let ty = parameter.ty.instantiate_type(self.arena(), &mapper);
                 if parameter.rest {
                     Ty::rest_parameter(parameter.name, ty)
                 } else if parameter.optional {
@@ -1614,12 +1612,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::parameter(parameter.name, ty)
                 }
             }),
+            function.return_type.instantiate_type(self.arena(), &mapper),
             function
-                .return_type
-                .substitute_type_parameters(self.arena(), &substitutions),
-            function.type_predicate.map(|predicate| {
-                predicate.substitute_type_parameters(self.arena(), &substitutions)
-            }),
+                .type_predicate
+                .map(|predicate| predicate.instantiate_type(self.arena(), &mapper)),
         )
     }
 
@@ -2450,10 +2446,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             call_expression,
             node_id,
         );
+        let mapper = TypeMapper::from_substitutions(self.arena(), &substitutions);
         let instantiated = signature
             .function
             .return_type
-            .substitute_type_parameters(self.arena(), &substitutions);
+            .instantiate_type(self.arena(), &mapper);
 
         if require_applicable
             && !self.is_call_signature_applicable(
@@ -4312,6 +4309,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if declarator.type_annotation.is_some() {
             self.get_type_from_ts_type_annotation(program_id, declarator.type_annotation.as_deref())
         } else {
+            // TODO: Rework this to not use map_or_else and check if we are in for-loop context first
             declarator.init.as_ref().map_or_else(
                 || {
                     self.get_type_of_for_of_declarator(program_id, declaration, declarator)

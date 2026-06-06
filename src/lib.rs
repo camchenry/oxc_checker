@@ -15,6 +15,7 @@ mod flow;
 mod global_lib;
 mod global_types;
 mod infer;
+mod mapper;
 pub mod program;
 mod relations;
 pub mod type_set;
