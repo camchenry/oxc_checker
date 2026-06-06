@@ -2228,6 +2228,22 @@ mod test {
     }
 
     #[test]
+    fn generic_overloads_use_candidate_inference_for_applicability() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function pick<T>(x: T[]): T;
+        declare function pick<T>(x: T): T;
+
+        const value = pick("ready");
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "value"), Ty::string());
+    }
+
+    #[test]
     fn interface_method_overloads_select_matching_signature() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

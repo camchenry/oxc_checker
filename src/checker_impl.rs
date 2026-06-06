@@ -28,7 +28,7 @@ use crate::{
     checker::{Checker, CheckerReturn, ClassMemberResolution, NodeRef, SymbolRef},
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
-    infer::ts_type_contains_infer,
+    infer::{InferenceResolution, ts_type_contains_infer},
     is_iterable_type_reference, is_mapped_empty_object_intersection,
     is_promise_like_type_reference,
     mapper::{TypeMapper, TypeParameterSubstitutions},
@@ -103,6 +103,25 @@ impl<'a> CallKind<'a> {
             CallKind::Call(call_expression) => call_expression.type_arguments.as_deref(),
             CallKind::New(new_expression) => new_expression.type_arguments.as_deref(),
         }
+    }
+}
+
+struct ResolvedSignatureCandidate<'a> {
+    signature: Signature<'a>,
+    inference: InferenceResolution<'a>,
+    return_type: Ty<'a>,
+}
+
+impl<'a> ResolvedSignatureCandidate<'a> {
+    fn into_return_type(self) -> Ty<'a> {
+        let Self {
+            signature,
+            inference,
+            return_type,
+        } = self;
+        let _ = signature.kind;
+        let _ = inference.mapper().is_empty();
+        return_type
     }
 }
 
@@ -2589,7 +2608,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         candidates
             .iter()
             .find_map(|signature| {
-                self.resolve_call_signature_return_type(
+                self.resolve_call_signature_candidate(
                     program_id,
                     *signature,
                     call_expression,
@@ -2601,7 +2620,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 // TODO(overloads): mirror TypeScript Go's overload failure candidate diagnostics
                 // instead of falling back to the first signature return type.
                 candidates.first().and_then(|signature| {
-                    self.resolve_call_signature_return_type(
+                    self.resolve_call_signature_candidate(
                         program_id,
                         *signature,
                         call_expression,
@@ -2610,6 +2629,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     )
                 })
             })
+            .map(ResolvedSignatureCandidate::into_return_type)
             .unwrap_or_else(Ty::any)
     }
 
@@ -2838,14 +2858,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         )
     }
 
-    fn resolve_call_signature_return_type(
+    fn resolve_call_signature_candidate(
         &self,
         program_id: program::ProgramId,
         signature: Signature<'a>,
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
         require_applicable: bool,
-    ) -> Option<Ty<'a>> {
+    ) -> Option<ResolvedSignatureCandidate<'a>> {
         let inference = self.infer_call_type_parameter_resolution(
             program_id,
             signature.function,
@@ -2867,7 +2887,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        Some(instantiated)
+        Some(ResolvedSignatureCandidate {
+            signature,
+            inference,
+            return_type: instantiated,
+        })
     }
 
     fn explicit_call_type_parameter_substitutions(
@@ -3077,6 +3101,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     )
                 })
             })
+            .map(ResolvedSignatureCandidate::into_return_type)
     }
 
     fn resolve_construct_signature_candidate(
@@ -3085,7 +3110,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         signature: Signature<'a>,
         new_expression: &'a NewExpression<'a>,
         require_applicable: bool,
-    ) -> Option<Ty<'a>> {
+    ) -> Option<ResolvedSignatureCandidate<'a>> {
         let inference = self.infer_construct_type_parameter_resolution(
             program_id,
             signature.function,
@@ -3104,7 +3129,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        Some(self.instantiate_type(signature.function.return_type, inference.mapper()))
+        let instantiated =
+            self.instantiate_type(signature.function.return_type, inference.mapper());
+        Some(ResolvedSignatureCandidate {
+            signature,
+            inference,
+            return_type: instantiated,
+        })
     }
 
     fn arguments_are_assignable_to_parameters(
