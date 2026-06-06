@@ -1295,7 +1295,14 @@ impl<'a> Ty<'a> {
             ),
             Self::Mapped(mapped) => {
                 let mut s = String::from("{ ");
-                s.push_str(mapped_modifier_prefix(mapped.readonly, "readonly "));
+                let prefix = match mapped.readonly {
+                    MappedModifier::None => "",
+                    MappedModifier::True => "readonly ",
+                    MappedModifier::Plus => "+readonly ",
+                    MappedModifier::Minus => "-readonly ",
+                    _ => "",
+                };
+                s.push_str(prefix);
                 s.push('[');
                 s.push_str(mapped.key);
                 s.push_str(" in ");
@@ -1305,7 +1312,13 @@ impl<'a> Ty<'a> {
                     s.push_str(&name_type.to_type_string());
                 }
                 s.push(']');
-                s.push_str(mapped_modifier_suffix(mapped.optional, "?"));
+                let suffix = match mapped.optional {
+                    MappedModifier::None => "",
+                    MappedModifier::True => "?",
+                    MappedModifier::Plus => "+?",
+                    MappedModifier::Minus => "-?",
+                };
+                s.push_str(suffix);
                 s.push_str(": ");
                 s.push_str(&mapped.template.to_type_string());
                 s.push_str("; }");
@@ -2345,29 +2358,6 @@ fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
         TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
             ty.display_needs_parentheses()
         }
-    }
-}
-
-/// Render the `+`/`-`/none polarity for a mapped readonly-style modifier, with a trailing space.
-fn mapped_modifier_prefix(modifier: MappedModifier, keyword: &'static str) -> &'static str {
-    match (modifier, keyword) {
-        (MappedModifier::None, _) => "",
-        (MappedModifier::True, "readonly ") => "readonly ",
-        (MappedModifier::Plus, "readonly ") => "+readonly ",
-        (MappedModifier::Minus, "readonly ") => "-readonly ",
-        // Only `readonly` is rendered as a prefix today.
-        _ => "",
-    }
-}
-
-/// Render the `+`/`-`/none polarity for a mapped optional-style modifier suffix.
-fn mapped_modifier_suffix(modifier: MappedModifier, keyword: &'static str) -> &'static str {
-    match (modifier, keyword) {
-        (MappedModifier::None, _) => "",
-        (MappedModifier::True, "?") => "?",
-        (MappedModifier::Plus, "?") => "+?",
-        (MappedModifier::Minus, "?") => "-?",
-        _ => "",
     }
 }
 
