@@ -137,7 +137,7 @@ interface AsyncGeneratorFunction {
 >            ^^^^: string   (TyString)
 
     readonly prototype: AsyncGenerator;
->            ^^^^^^^^^: AsyncGenerator   (TyTypeReference)
+>            ^^^^^^^^^: AsyncGenerator<unknown, any, any>   (TyTypeReference)
 
     readonly prototype: AsyncGenerator;
 >                       ^^^^^^^^^^^^^^: any   (TyAny)

@@ -320,7 +320,7 @@ type User = {
 >     ^^^^: string   (TyString)
 
 type OptionalName = Optional<User, 'name'>
->    ^^^^^^^^^^^^: { name: string | undefined; id: string; profile: { email: string; address: { city: string; }; }; }   (TyObject)
+>    ^^^^^^^^^^^^: { [K in keyof (OptionalPart<Pick<User, "name">, "flat"> & User)]: K extends keyof OptionalPart<Pick<User, "name">, "flat"> ? OptionalPart<Pick<User, "name">, "flat">[K] : K extends keyof User ? User[K] : never; }   (TyMapped)
 
 type OptionalName = Optional<User, 'name'>
 >                   ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess)
@@ -332,7 +332,7 @@ type OptionalName = Optional<User, 'name'>
 >                            ^^^^: any   (TyAny)
 
 type OptionalEverything = Optional<User>
->    ^^^^^^^^^^^^^^^^^^: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }   (TyObject)
+>    ^^^^^^^^^^^^^^^^^^: { [K in keyof User]?: User[K] | undefined; }   (TyMapped)
 
 type OptionalEverything = Optional<User>
 >                         ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess)
@@ -344,7 +344,7 @@ type OptionalEverything = Optional<User>
 >                                  ^^^^: any   (TyAny)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
->    ^^^^^^^^^^^^^^^^^^^: { profile: "profile" extends keyof { profile?: { email?: { [K in keyof Pick<User, "profile">["profile"]["email"]]?: OptionalDeep<Pick<User, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<User, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<User, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { email?: { [K in keyof Pick<User, "profile">["profile"]["email"]]?: OptionalDeep<Pick<User, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<User, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<User, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined : { email: string; address: { city: string; }; }; id: "id" extends keyof { profile?: { email?: { [K in keyof Pick<User, "profile">["profile"]["email"]]?: OptionalDeep<Pick<User, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<User, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<User, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { profile?: { email?: { [K in keyof Pick<User, "profile">["profile"]["email"]]?: OptionalDeep<Pick<User, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<User, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<User, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; }["id"] : string; name: "name" extends keyof { profile?: { email?: { [K in keyof Pick<User, "profile">["profile"]["email"]]?: OptionalDeep<Pick<User, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<User, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<User, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { profile?: { email?: { [K in keyof Pick<User, "profile">["profile"]["email"]]?: OptionalDeep<Pick<User, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<User, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<User, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; }["name"] : string; }   (TyObject)
+>    ^^^^^^^^^^^^^^^^^^^: { [K in keyof (OptionalPart<Pick<User, "profile">, "deep"> & User)]: K extends keyof OptionalPart<Pick<User, "profile">, "deep"> ? OptionalPart<Pick<User, "profile">, "deep">[K] : K extends keyof User ? User[K] : never; }   (TyMapped)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >                          ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess)
@@ -356,7 +356,7 @@ type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >                                   ^^^^: any   (TyAny)
 
 type DirectFlat = OptionalFlat<User>
->    ^^^^^^^^^^: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }   (TyObject)
+>    ^^^^^^^^^^: { [K in keyof User]?: User[K] | undefined; }   (TyMapped)
 
 type DirectFlat = OptionalFlat<User>
 >                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped)
@@ -368,7 +368,7 @@ type DirectFlat = OptionalFlat<User>
 >                              ^^^^: any   (TyAny)
 
 type DirectDeep = OptionalDeep<User>
->    ^^^^^^^^^^: { id?: { [K in keyof User["id"]]?: OptionalDeep<User["id"][K]> | undefined; } | undefined; name?: { [K in keyof User["name"]]?: OptionalDeep<User["name"][K]> | undefined; } | undefined; profile?: { email?: { [K in keyof User["profile"]["email"]]?: OptionalDeep<User["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof User["profile"]["address"]["city"]]?: OptionalDeep<User["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; }   (TyObject)
+>    ^^^^^^^^^^: { [K in keyof User]?: OptionalDeep<User[K]> | undefined; }   (TyMapped)
 
 type DirectDeep = OptionalDeep<User>
 >                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (TyMapped)

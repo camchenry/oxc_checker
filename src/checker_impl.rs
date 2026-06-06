@@ -1250,12 +1250,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1))
                     .collect::<Vec<_>>();
-                let reference_ty = Ty::type_reference_with_explicit_type_argument_count(
-                    self.arena(),
-                    reference.name,
-                    expanded_arguments,
-                    reference.explicit_type_argument_count,
-                );
+                let reference_ty =
+                    Ty::type_reference(self.arena(), reference.name, expanded_arguments);
                 let Ty::TypeReference(reference) = reference_ty else {
                     return reference_ty;
                 };
@@ -1660,42 +1656,28 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         ))
     }
 
-    fn get_type_from_ts_type_reference(
-        &self,
-        program_id: program::ProgramId,
-        reference: &'a TSTypeReference<'a>,
-    ) -> Ty<'a> {
-        self.get_type_from_ts_type_reference_with_default_display(program_id, reference, false)
-    }
-
     fn get_type_from_type_assertion(
         &self,
         program_id: program::ProgramId,
         ty: &'a TSType<'a>,
     ) -> Ty<'a> {
         match ty {
-            TSType::TSTypeReference(reference) => self
-                .get_type_from_ts_type_reference_with_default_display(program_id, reference, true),
+            TSType::TSTypeReference(reference) => {
+                self.get_type_from_ts_type_reference(program_id, reference)
+            }
             _ => self.get_type_from_ts_type(program_id, ty),
         }
     }
 
-    fn get_type_from_ts_type_reference_with_default_display(
+    fn get_type_from_ts_type_reference(
         &self,
         program_id: program::ProgramId,
         reference: &'a TSTypeReference<'a>,
-        display_default_type_arguments: bool,
     ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
-        let explicit_type_argument_count = type_arguments.len();
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
-        let type_argument_display_count = if display_default_type_arguments {
-            type_arguments.len()
-        } else {
-            explicit_type_argument_count
-        };
 
         if let Some(array_type) =
             self.get_global_array_type_reference_type(program_id, name, type_arguments.as_slice())
@@ -1709,12 +1691,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return alias_type;
         }
 
-        Ty::type_reference_with_explicit_type_argument_count(
-            self.arena(),
-            name,
-            type_arguments.iter().copied(),
-            type_argument_display_count,
-        )
+        Ty::type_reference(self.arena(), name, type_arguments.iter().copied())
     }
 
     fn type_arguments_from_reference(

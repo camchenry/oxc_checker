@@ -173,7 +173,6 @@ pub struct TyParameter<'a> {
 pub struct TyTypeReference<'a> {
     pub(crate) name: &'a str,
     pub(crate) type_arguments: ArenaVec<'a, Ty<'a>>,
-    pub(crate) explicit_type_argument_count: usize,
 }
 
 impl PartialEq for TyTypeReference<'_> {
@@ -576,25 +575,9 @@ impl<'a> Ty<'a> {
         name: &'a str,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
-        let type_arguments = type_arguments.into_iter().collect::<Vec<_>>();
-        Self::type_reference_with_explicit_type_argument_count(
-            arena,
-            name,
-            type_arguments.iter().copied(),
-            type_arguments.len(),
-        )
-    }
-
-    pub fn type_reference_with_explicit_type_argument_count(
-        arena: CheckerArena<'a>,
-        name: &'a str,
-        type_arguments: impl IntoIterator<Item = Ty<'a>>,
-        explicit_type_argument_count: usize,
-    ) -> Self {
         let type_arguments = arena.vec_from_iter(type_arguments);
         Self::TypeReference(arena.alloc(TyTypeReference {
             name,
-            explicit_type_argument_count: explicit_type_argument_count.min(type_arguments.len()),
             type_arguments,
         }))
     }
@@ -865,14 +848,13 @@ impl<'a> Ty<'a> {
                 {
                     *substitution
                 } else {
-                    Self::type_reference_with_explicit_type_argument_count(
+                    Self::type_reference(
                         arena,
                         reference.name,
                         reference
                             .type_arguments
                             .iter()
                             .map(|ty| ty.substitute_type_parameters(arena, substitutions)),
-                        reference.explicit_type_argument_count,
                     )
                 }
             }
@@ -1144,13 +1126,12 @@ impl<'a> Ty<'a> {
             Self::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
             Self::Function(function) => function_type_to_string(function),
             Self::TypeReference(reference) => {
-                if reference.explicit_type_argument_count == 0 {
+                if reference.type_arguments.is_empty() {
                     reference.name.to_string()
                 } else {
                     let type_arguments = reference
                         .type_arguments
                         .iter()
-                        .take(reference.explicit_type_argument_count)
                         .map(|ty| ty.to_type_string())
                         .collect::<Vec<_>>()
                         .join(", ");
