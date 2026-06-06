@@ -60,6 +60,12 @@ impl<'a> FunctionKind<'a> {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
+pub(crate) enum CallKind<'a> {
+    Call(&'a CallExpression<'a>),
+    New(&'a NewExpression<'a>),
+}
+
 bitflags! {
     /// Flags for changing behavior when getting the types of expressions or nodes.
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -74,6 +80,23 @@ bitflags! {
 impl GetTypeFlags {
     pub fn preserve_literals(&self) -> bool {
         self.contains(GetTypeFlags::PRESERVE_LITERALS)
+    }
+}
+
+bitflags! {
+    /// Flags for changing behavior when substituting type parameters.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+    pub(crate) struct SubstituteTypeFlags: u8 {
+        const NONE = 0;
+        /// Indicates that when substituting type parameters, unresolved type parameters should be filled with `unknown`.
+        const FILL_UNRESOLVED_WITH_UNKNOWN = 1 << 0;
+    }
+}
+
+impl SubstituteTypeFlags {
+    /// Whether to fill unresolved type parameters with `unknown`.
+    pub fn fill_unresolved_with_unknown(&self) -> bool {
+        self.contains(SubstituteTypeFlags::FILL_UNRESOLVED_WITH_UNKNOWN)
     }
 }
 
@@ -2442,14 +2465,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         function: &'a TyFunction<'a>,
-        call_expression: &'a CallExpression<'a>,
+        call_kind: CallKind<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
-        let (mut substitutions, _) = self.explicit_type_parameter_substitutions(
-            program_id,
-            function,
-            call_expression.type_arguments.as_deref(),
-        );
-        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, false);
+        let type_arguments = match call_kind {
+            CallKind::Call(call_expression) => call_expression.type_arguments.as_deref(),
+            CallKind::New(new_expression) => new_expression.type_arguments.as_deref(),
+        };
+        let flags = match call_kind {
+            CallKind::Call(_) => SubstituteTypeFlags::NONE,
+            CallKind::New(_) => SubstituteTypeFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
+        };
+
+        let (mut substitutions, _) =
+            self.explicit_type_parameter_substitutions(program_id, function, type_arguments);
+        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, flags);
 
         substitutions
     }
@@ -2484,7 +2513,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         function: &TyFunction<'a>,
         substitutions: &mut HashMap<&'a str, Ty<'a>>,
-        fill_unresolved_with_unknown: bool,
+        flags: SubstituteTypeFlags,
     ) {
         for type_parameter in &function.type_parameters {
             if substitutions.contains_key(type_parameter.name) {
@@ -2501,7 +2530,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
 
-        if fill_unresolved_with_unknown {
+        if flags.fill_unresolved_with_unknown() {
             for type_parameter in &function.type_parameters {
                 substitutions
                     .entry(type_parameter.name)
@@ -2663,22 +2692,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .return_type
                 .substitute_type_parameters(self.arena(), &substitutions),
         )
-    }
-
-    fn explicit_construct_type_parameter_substitutions(
-        &self,
-        program_id: program::ProgramId,
-        function: &'a TyFunction<'a>,
-        new_expression: &'a NewExpression<'a>,
-    ) -> HashMap<&'a str, Ty<'a>> {
-        let (mut substitutions, _) = self.explicit_type_parameter_substitutions(
-            program_id,
-            function,
-            new_expression.type_arguments.as_deref(),
-        );
-        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, true);
-
-        substitutions
     }
 
     fn is_construct_signature_applicable(
@@ -3622,7 +3635,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             &self.explicit_call_type_parameter_substitutions(
                 program_id,
                 callee_signature.function,
-                call_expression,
+                CallKind::Call(call_expression),
             ),
         ))
     }
@@ -3660,10 +3673,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.get_call_parameter_type_at(construct_signature.function, argument_index)?;
         Some(parameter_type.substitute_type_parameters(
             self.arena(),
-            &self.explicit_construct_type_parameter_substitutions(
+            &self.explicit_call_type_parameter_substitutions(
                 program_id,
                 construct_signature.function,
-                new_expression,
+                CallKind::New(new_expression),
             ),
         ))
     }

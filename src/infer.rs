@@ -10,7 +10,7 @@ use oxc_semantic::{NodeId, ScopeFlags};
 use crate::{
     TyFunction,
     checker::CheckerReturn,
-    checker_impl::{FunctionKind, GetTypeFlags},
+    checker_impl::{FunctionKind, GetTypeFlags, SubstituteTypeFlags},
     program::ProgramId,
     types::Ty,
 };
@@ -59,7 +59,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         }
 
-        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, false);
+        self.add_type_parameter_fallback_substitutions(
+            function,
+            &mut substitutions,
+            SubstituteTypeFlags::NONE,
+        );
 
         substitutions
     }
@@ -154,7 +158,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         }
 
-        self.add_type_parameter_fallback_substitutions(function, &mut substitutions, true);
+        self.add_type_parameter_fallback_substitutions(
+            function,
+            &mut substitutions,
+            SubstituteTypeFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
+        );
 
         substitutions
     }
