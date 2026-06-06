@@ -10,8 +10,8 @@ use oxc_ast::{
         PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
         TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
         TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, VariableDeclarationKind, VariableDeclarator,
+        TSTypeParameter, TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery,
+        TSTypeQueryExprName, TSTypeReference, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -56,6 +56,36 @@ impl<'a> FunctionKind<'a> {
         match self {
             FunctionKind::Function(function) => function.r#async && !function.generator,
             FunctionKind::ArrowFunction(function) => function.r#async,
+        }
+    }
+
+    pub(crate) fn annotated_return_type(self) -> Option<&'a TSTypeAnnotation<'a>> {
+        match self {
+            FunctionKind::Function(function) => function.return_type.as_deref(),
+            FunctionKind::ArrowFunction(function) => function.return_type.as_deref(),
+        }
+    }
+
+    pub(crate) fn parameters(self) -> &'a FormalParameters<'a> {
+        match self {
+            FunctionKind::Function(function) => &function.params,
+            FunctionKind::ArrowFunction(function) => &function.params,
+        }
+    }
+
+    pub(crate) fn type_parameters(self) -> Option<&'a TSTypeParameterDeclaration<'a>> {
+        match self {
+            FunctionKind::Function(function) => function.type_parameters.as_deref(),
+            FunctionKind::ArrowFunction(function) => function.type_parameters.as_deref(),
+        }
+    }
+}
+
+impl<'a> GetSpan for FunctionKind<'a> {
+    fn span(&self) -> Span {
+        match self {
+            FunctionKind::Function(function) => function.span,
+            FunctionKind::ArrowFunction(function) => function.span,
         }
     }
 }
@@ -3751,13 +3781,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: FunctionKind<'a>,
         node_id: Option<NodeId>,
     ) -> Ty<'a> {
-        let function_span = match function {
-            FunctionKind::Function(f) => f.span,
-            FunctionKind::ArrowFunction(f) => f.span,
-        };
         let contextual_function = node_id
             .and_then(|node_id| {
-                self.get_contextual_type_of_function_expression(program_id, node_id, function_span)
+                self.get_contextual_type_of_function_expression(
+                    program_id,
+                    node_id,
+                    function.span(),
+                )
             })
             .and_then(|contextual_type| {
                 self.get_signatures_of_type_in_program(
@@ -3769,42 +3799,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .next()
             })
             .map(|signature| signature.function);
-        let type_parameters = match function {
-            FunctionKind::Function(f) => {
-                self.type_parameters_from_declaration(program_id, f.type_parameters.as_deref())
-            }
-            FunctionKind::ArrowFunction(f) => {
-                self.type_parameters_from_declaration(program_id, f.type_parameters.as_deref())
-            }
-        };
-        let parameters = match function {
-            FunctionKind::Function(f) => self.function_signature_parameters_with_context(
-                program_id,
-                &f.params,
-                contextual_function,
-            ),
-            FunctionKind::ArrowFunction(f) => self.function_signature_parameters_with_context(
-                program_id,
-                &f.params,
-                contextual_function,
-            ),
-        };
-        let return_type = match function {
-            FunctionKind::Function(f) => f.return_type.as_deref().map_or_else(
-                || self.infer_function_return_type(program_id, function, node_id),
-                |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
-            ),
-            FunctionKind::ArrowFunction(f) => f.return_type.as_deref().map_or_else(
-                || self.infer_function_return_type(program_id, function, node_id),
-                |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
-            ),
+        let type_parameters =
+            self.type_parameters_from_declaration(program_id, function.type_parameters());
+        let parameters = self.function_signature_parameters_with_context(
+            program_id,
+            function.parameters(),
+            contextual_function,
+        );
+        let annotated_return_type = function.annotated_return_type();
+        let return_type = match annotated_return_type {
+            Some(annotation) => self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
+            None => self.infer_function_return_type(program_id, function, node_id),
         };
 
-        let explicit_return_type = match function {
-            FunctionKind::Function(f) => f.return_type.as_deref(),
-            FunctionKind::ArrowFunction(f) => f.return_type.as_deref(),
-        };
-        let (return_type, type_predicate) = match explicit_return_type {
+        let (return_type, type_predicate) = match annotated_return_type {
             Some(annotation) => self.return_type_and_type_predicate_from_annotation(
                 program_id,
                 &parameters,
