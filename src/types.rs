@@ -1576,7 +1576,7 @@ impl<'a> InferInferences<'a> {
             }
         }
 
-        match self.substitutions.get(infer.type_parameter.name) {
+        match self.substitutions.get(infer.type_parameter) {
             Some(existing) if existing == candidate => InferMatchResult::Matched,
             Some(existing) => {
                 let candidate = Ty::r#union(self.arena, [existing, candidate]);

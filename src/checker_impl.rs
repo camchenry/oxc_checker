@@ -2000,7 +2000,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
             let mut default_substitutions = substitutions.clone();
             for unresolved in &type_parameters {
-                if !default_substitutions.contains(unresolved.name) {
+                if !default_substitutions.contains(*unresolved) {
                     default_substitutions.insert(*unresolved, Ty::any());
                 }
             }
@@ -2526,7 +2526,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         flags: SubstituteTypeFlags,
     ) {
         for type_parameter in &function.type_parameters {
-            if substitutions.contains(type_parameter.name) {
+            if substitutions.contains(*type_parameter) {
                 continue;
             }
             if let Some(fallback_type) = type_parameter
@@ -2543,7 +2543,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         if flags.fill_unresolved_with_unknown() {
             for type_parameter in &function.type_parameters {
-                if !substitutions.contains(type_parameter.name) {
+                if !substitutions.contains(*type_parameter) {
                     substitutions.insert(*type_parameter, Ty::unknown());
                 }
             }
@@ -3067,7 +3067,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
             let mut default_substitutions = substitutions.clone();
             for unresolved in &type_parameters {
-                if !default_substitutions.contains(unresolved.name) {
+                if !default_substitutions.contains(*unresolved) {
                     default_substitutions.insert(*unresolved, Ty::any());
                 }
             }

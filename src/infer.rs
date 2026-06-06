@@ -208,19 +208,18 @@ pub fn infer_type_parameter_from_types<'a>(
                 substitutions,
             );
         }
-        (Ty::TypeReference(reference), _)
-            if reference.type_arguments.is_empty()
-                && type_parameters
-                    .iter()
-                    .any(|type_parameter| type_parameter.name == reference.name) =>
-        {
-            match substitutions.get(reference.name) {
+        (Ty::TypeReference(reference), _) if reference.type_arguments.is_empty() => {
+            let Some(type_parameter) = type_parameter_by_name(type_parameters, reference.name)
+            else {
+                return;
+            };
+            match substitutions.get(type_parameter) {
                 Some(existing) if existing != *argument_type => {
-                    substitutions.insert_by_name(type_parameters, reference.name, Ty::any());
+                    substitutions.insert(type_parameter, Ty::any());
                 }
                 Some(_) => {}
                 None => {
-                    substitutions.insert_by_name(type_parameters, reference.name, *argument_type);
+                    substitutions.insert(type_parameter, *argument_type);
                 }
             }
         }
@@ -279,6 +278,16 @@ pub fn infer_type_parameter_from_types<'a>(
         }
         _ => {}
     }
+}
+
+fn type_parameter_by_name<'a>(
+    type_parameters: &[TyTypeParameter<'a>],
+    name: &str,
+) -> Option<TyTypeParameter<'a>> {
+    type_parameters
+        .iter()
+        .find(|type_parameter| type_parameter.name == name)
+        .copied()
 }
 
 fn infer_type_parameter_from_union<'a>(

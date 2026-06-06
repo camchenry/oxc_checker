@@ -16,7 +16,7 @@ impl<'a> TypeParameterSubstitutions<'a> {
         if let Some((_, existing)) = self
             .pairs
             .iter_mut()
-            .find(|(existing, _)| existing.name == type_parameter.name)
+            .find(|(existing, _)| *existing == type_parameter)
         {
             *existing = ty;
         } else {
@@ -24,28 +24,14 @@ impl<'a> TypeParameterSubstitutions<'a> {
         }
     }
 
-    pub(crate) fn insert_by_name(
-        &mut self,
-        type_parameters: &[TyTypeParameter<'a>],
-        name: &str,
-        ty: Ty<'a>,
-    ) {
-        if let Some(type_parameter) = type_parameters
-            .iter()
-            .find(|type_parameter| type_parameter.name == name)
-        {
-            self.insert(*type_parameter, ty);
-        }
-    }
-
-    pub(crate) fn get(&self, name: &str) -> Option<Ty<'a>> {
+    pub(crate) fn get(&self, type_parameter: TyTypeParameter<'a>) -> Option<Ty<'a>> {
         self.pairs
             .iter()
-            .find_map(|(type_parameter, ty)| (type_parameter.name == name).then_some(*ty))
+            .find_map(|(existing, ty)| (*existing == type_parameter).then_some(*ty))
     }
 
-    pub(crate) fn contains(&self, name: &str) -> bool {
-        self.get(name).is_some()
+    pub(crate) fn contains(&self, type_parameter: TyTypeParameter<'a>) -> bool {
+        self.get(type_parameter).is_some()
     }
 
     pub(crate) fn to_mapper(&self, arena: CheckerArena<'a>) -> TypeMapper<'a> {
