@@ -7,7 +7,7 @@ use oxc_semantic::{NodeId, ScopeFlags};
 
 use crate::{
     checker::{Checker, CheckerReturn},
-    checker_impl::{FunctionKind, GetTypeFlags, SubstituteTypeFlags},
+    checker_impl::{FunctionKind, GetTypeFlags},
     mapper::TypeParameterSubstitutions,
     program::ProgramId,
     types::{TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyProperty, TyTypeParameter},
@@ -32,23 +32,29 @@ impl ConditionalInferMatchResult {
     }
 }
 
-#[derive(Clone)]
-struct ConditionalInferInferences<'a> {
-    substitutions: TypeParameterSubstitutions<'a>,
-}
-
-impl ConditionalInferInferences<'_> {
-    fn new() -> Self {
-        Self {
-            substitutions: TypeParameterSubstitutions::new(),
-        }
-    }
-}
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) enum InferencePriority {
     None,
     NakedTypeVariable,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct InferenceResolutionFlags {
+    fill_unresolved_with_unknown: bool,
+}
+
+impl InferenceResolutionFlags {
+    pub(crate) const NONE: Self = Self {
+        fill_unresolved_with_unknown: false,
+    };
+
+    pub(crate) const FILL_UNRESOLVED_WITH_UNKNOWN: Self = Self {
+        fill_unresolved_with_unknown: true,
+    };
+
+    fn fill_unresolved_with_unknown(self) -> bool {
+        self.fill_unresolved_with_unknown
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -171,7 +177,7 @@ impl<'a> InferenceContext<'a> {
     pub(crate) fn resolve_inferences(
         mut self,
         arena: crate::types::CheckerArena<'a>,
-        flags: SubstituteTypeFlags,
+        flags: InferenceResolutionFlags,
         mut instantiate_fallback: impl FnMut(Ty<'a>, &TypeParameterSubstitutions<'a>) -> Ty<'a>,
     ) -> TypeParameterSubstitutions<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
@@ -196,6 +202,19 @@ impl<'a> InferenceContext<'a> {
             }
 
             if let Some(inferred_type) = inferred_type {
+                substitutions.insert(self.inferences[index].type_parameter, inferred_type);
+            }
+        }
+        substitutions
+    }
+
+    fn candidate_substitutions(
+        &mut self,
+        arena: crate::types::CheckerArena<'a>,
+    ) -> TypeParameterSubstitutions<'a> {
+        let mut substitutions = TypeParameterSubstitutions::new();
+        for index in 0..self.inferences.len() {
+            if let Some(inferred_type) = self.get_inferred_type(index, arena) {
                 substitutions.insert(self.inferences[index].type_parameter, inferred_type);
             }
         }
@@ -362,15 +381,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if !self.infer_type_parameter_names(check_type).is_empty()
             || !self.infer_type_parameter_names(extends_type).is_empty()
         {
-            let mut inferences = ConditionalInferInferences::new();
+            let mut inferences = self.conditional_inference_context(check_type, extends_type);
             return match self.infer_conditional_from_types(
                 check_type,
                 extends_type,
                 &mut inferences,
                 0,
             ) {
-                ConditionalInferMatchResult::Matched => self
-                    .instantiate_type(true_type, &inferences.substitutions.to_mapper(self.arena())),
+                ConditionalInferMatchResult::Matched => {
+                    let substitutions = inferences.resolve_inferences(
+                        self.arena(),
+                        InferenceResolutionFlags::NONE,
+                        |fallback_type, substitutions| {
+                            self.instantiate_type(
+                                fallback_type,
+                                &substitutions.to_mapper(self.arena()),
+                            )
+                        },
+                    );
+                    self.instantiate_type(true_type, &substitutions.to_mapper(self.arena()))
+                }
                 ConditionalInferMatchResult::NoMatch => false_type,
                 ConditionalInferMatchResult::Deferred => {
                     Ty::Conditional(self.arena().alloc(TyConditional {
@@ -394,17 +424,37 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         )
     }
 
+    fn conditional_inference_context(
+        &self,
+        check_type: Ty<'a>,
+        extends_type: Ty<'a>,
+    ) -> InferenceContext<'a> {
+        let mut type_parameters = Vec::new();
+        for ty in [check_type, extends_type] {
+            self.collect_infer_types(ty, &mut |infer| {
+                if !type_parameters
+                    .iter()
+                    .any(|type_parameter: &TyTypeParameter<'a>| {
+                        type_parameter.name == infer.type_parameter.name
+                    })
+                {
+                    type_parameters.push(infer.type_parameter);
+                }
+            });
+        }
+        InferenceContext::with_substitutions(type_parameters, &TypeParameterSubstitutions::new())
+    }
+
     fn add_conditional_inference(
         &self,
-        inferences: &mut ConditionalInferInferences<'a>,
+        inferences: &mut InferenceContext<'a>,
         infer: &TyInfer<'a>,
         candidate: Ty<'a>,
     ) -> ConditionalInferMatchResult {
         if let Some(constraint_type) = infer.type_parameter.constraint_type {
-            let constraint_type = self.instantiate_type(
-                constraint_type,
-                &inferences.substitutions.to_mapper(self.arena()),
-            );
+            let substitutions = inferences.candidate_substitutions(self.arena());
+            let constraint_type =
+                self.instantiate_type(constraint_type, &substitutions.to_mapper(self.arena()));
             if !self.infer_type_parameter_names(constraint_type).is_empty()
                 || self.could_contain_type_variables(constraint_type)
             {
@@ -415,29 +465,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
 
-        match inferences.substitutions.get(infer.type_parameter) {
-            Some(existing) if existing == candidate => ConditionalInferMatchResult::Matched,
-            Some(existing) => {
-                inferences.substitutions.insert(
-                    infer.type_parameter,
-                    Ty::union(self.arena(), [existing, candidate]),
-                );
-                ConditionalInferMatchResult::Matched
-            }
-            None => {
-                inferences
-                    .substitutions
-                    .insert(infer.type_parameter, candidate);
-                ConditionalInferMatchResult::Matched
-            }
-        }
+        inferences.add_candidate(
+            infer.type_parameter,
+            candidate,
+            InferencePriority::NakedTypeVariable,
+        );
+        ConditionalInferMatchResult::Matched
     }
 
     fn infer_conditional_from_types(
         &self,
         source: Ty<'a>,
         target: Ty<'a>,
-        inferences: &mut ConditionalInferInferences<'a>,
+        inferences: &mut InferenceContext<'a>,
         depth: usize,
     ) -> ConditionalInferMatchResult {
         if depth >= CONDITIONAL_INFER_MATCH_MAX_DEPTH {
@@ -557,7 +597,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         source_properties: impl IntoIterator<Item = TyProperty<'a>>,
         target_properties: impl IntoIterator<Item = TyProperty<'a>>,
-        inferences: &mut ConditionalInferInferences<'a>,
+        inferences: &mut InferenceContext<'a>,
         depth: usize,
     ) -> ConditionalInferMatchResult {
         let source_properties = source_properties.into_iter().collect::<Vec<_>>();
@@ -592,7 +632,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         source_elements: &oxc_allocator::Vec<'a, TupleElement<'a>>,
         target_elements: &oxc_allocator::Vec<'a, TupleElement<'a>>,
-        inferences: &mut ConditionalInferInferences<'a>,
+        inferences: &mut InferenceContext<'a>,
         depth: usize,
     ) -> ConditionalInferMatchResult {
         if let Some((rest_index, TupleElement::Rest(rest_type))) = target_elements
@@ -645,7 +685,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn infer_conditional_from_type_pairs(
         &self,
         pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
-        inferences: &mut ConditionalInferInferences<'a>,
+        inferences: &mut InferenceContext<'a>,
         depth: usize,
     ) -> ConditionalInferMatchResult {
         pairs.into_iter().fold(
@@ -782,7 +822,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         context.resolve_inferences(
             self.arena(),
-            SubstituteTypeFlags::NONE,
+            InferenceResolutionFlags::NONE,
             |fallback_type, substitutions| {
                 self.instantiate_type(fallback_type, &substitutions.to_mapper(self.arena()))
             },
@@ -872,7 +912,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         context.resolve_inferences(
             self.arena(),
-            SubstituteTypeFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
+            InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
             |fallback_type, substitutions| {
                 self.instantiate_type(fallback_type, &substitutions.to_mapper(self.arena()))
             },

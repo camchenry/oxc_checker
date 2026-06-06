@@ -1721,6 +1721,22 @@ mod test {
     }
 
     #[test]
+    fn conditional_infer_merges_repeated_constrained_candidates() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const value: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value").to_type_string(),
+            "\"ready\" | \"set\""
+        );
+    }
+
+    #[test]
     fn conditional_infer_extracts_tuple_rest() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -2584,10 +2600,12 @@ mod test {
         declare const fn: <T = A>(x: T) => T;
         declare function foo<T = A>(x?: T): T;
         declare function dependent<T, U = T>(x: T): U;
+        declare function unresolved<T>(): T;
 
         const fromDefault = foo();
         const fromInference = foo(a);
         const fromDependentDefault = dependent("ready");
+        const unresolvedValue = unresolved();
         "#,
         );
 
@@ -2610,6 +2628,10 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "fromDependentDefault"),
             Ty::string()
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "unresolvedValue"),
+            Ty::type_reference(arena(&ret), "T", std::iter::empty())
         );
     }
 
@@ -2697,6 +2719,21 @@ mod test {
             get_global_symbol_type(&ret, "x"),
             Ty::object(arena(&ret), [Ty::property("b", Ty::number())])
         );
+    }
+
+    #[test]
+    fn new_expression_fills_unresolved_construct_inference_with_unknown() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const Factory: { new <T>(): T };
+
+        const value = new Factory();
+        ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "value"), Ty::unknown());
     }
 
     #[test]
