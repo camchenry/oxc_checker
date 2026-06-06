@@ -64,6 +64,10 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::Array(source), Ty::Array(target)) => {
             is_assignable_to(source.element_type, target.element_type)
         }
+        (Ty::Tuple(source), Ty::Array(target)) => source
+            .elements
+            .iter()
+            .all(|element| is_assignable_to(element.ty(), target.element_type)),
         (Ty::Tuple(source), Ty::Tuple(target)) => {
             source.elements.len() == target.elements.len()
                 && source.elements.iter().zip(target.elements.iter()).all(

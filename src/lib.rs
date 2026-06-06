@@ -2038,9 +2038,16 @@ mod test {
         "#,
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "x"), Ty::number());
-        assert_eq!(get_global_symbol_type(&ret, "y"), Ty::string());
-        assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean());
+        let arena = arena(&ret);
+        assert_eq!(
+            get_global_symbol_type(&ret, "x"),
+            Ty::number_literal(arena, "123")
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "y"),
+            Ty::string_literal(arena, "\"test\"")
+        );
+        assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean_true());
     }
 
     #[test]
@@ -2057,10 +2064,9 @@ mod test {
         "#,
         );
 
-        let arena = arena(&ret);
         assert_eq!(
             get_global_symbol_type(&ret, "value"),
-            Ty::union(arena, [Ty::string(), Ty::number()])
+            Ty::string_literal(arena(&ret), "\"ready\"")
         );
     }
 
@@ -2079,7 +2085,10 @@ mod test {
         "#,
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "result"), Ty::string());
+        assert_eq!(
+            get_global_symbol_type(&ret, "result"),
+            Ty::string_literal(arena(&ret), "\"ready\"")
+        );
     }
 
     #[test]
@@ -2240,7 +2249,10 @@ mod test {
         "#,
         );
 
-        assert_eq!(get_global_symbol_type(&ret, "value"), Ty::string());
+        assert_eq!(
+            get_global_symbol_type(&ret, "value"),
+            Ty::string_literal(arena(&ret), "\"ready\"")
+        );
     }
 
     #[test]

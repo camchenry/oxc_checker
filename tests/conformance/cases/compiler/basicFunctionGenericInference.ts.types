@@ -107,7 +107,7 @@ function foo3<T>(x: T | undefined | null) {
 >        ^: T | null | undefined   (TyUnion)
 
 const f3_1 = foo3("hello");
->     ^^^^: string   (TyString)
+>     ^^^^: "hello"   (TyStringLiteral)
 
 const f3_1 = foo3("hello");
 >            ^^^^: <T>(x: T | null | undefined) => T   (TyFunction)

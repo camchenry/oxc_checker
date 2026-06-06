@@ -11,6 +11,7 @@ use crate::{
     checker_impl::{FunctionKind, GetTypeFlags},
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
+    relations,
     types::{
         TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyMapped, TyProperty,
         TyTypeParameter, visit_type,
@@ -111,6 +112,7 @@ impl<'a> InferenceInfo<'a> {
 #[derive(Clone, Debug)]
 pub(crate) struct InferenceContext<'a> {
     inferences: Vec<InferenceInfo<'a>>,
+    return_type: Option<Ty<'a>>,
 }
 
 pub(crate) struct InferenceResolution<'a> {
@@ -158,7 +160,13 @@ impl<'a> InferenceContext<'a> {
                     InferenceInfo::new(type_parameter, substitutions.get(type_parameter))
                 })
                 .collect(),
+            return_type: None,
         }
+    }
+
+    pub(crate) fn with_return_type(mut self, return_type: Ty<'a>) -> Self {
+        self.return_type = Some(return_type);
+        self
     }
 
     fn inference_by_name_mut(&mut self, name: &str) -> Option<&mut InferenceInfo<'a>> {
@@ -324,7 +332,7 @@ impl<'a> InferenceContext<'a> {
                 .or(self.inferences[index].type_parameter.constraint_type)
         {
             for dependency_index in self.fallback_dependency_indices(fallback_type) {
-                if dependency_index != index {
+                if dependency_index < index {
                     self.resolve_inference_at_index(
                         dependency_index,
                         arena,
@@ -334,11 +342,23 @@ impl<'a> InferenceContext<'a> {
                     );
                 }
             }
-            let substitutions = self.resolved_substitutions();
+            let substitutions = self.fallback_substitutions(index, fallback_type);
             let fallback_type =
                 instantiate_inference_fallback_type(fallback_type, &substitutions, arena);
             self.inferences[index].inferred_type = Some(fallback_type);
             inferred_type = Some(fallback_type);
+        }
+
+        if let Some(current_inferred_type) = inferred_type
+            && let Some(constraint_type) = self.inferences[index].type_parameter.constraint_type
+        {
+            let substitutions = self.resolved_substitutions();
+            let constraint_type =
+                instantiate_inference_fallback_type(constraint_type, &substitutions, arena);
+            if !relations::is_assignable_to(current_inferred_type, constraint_type) {
+                self.inferences[index].inferred_type = Some(constraint_type);
+                inferred_type = Some(constraint_type);
+            }
         }
 
         if inferred_type.is_none() && flags.fill_unresolved_with_unknown() {
@@ -358,6 +378,25 @@ impl<'a> InferenceContext<'a> {
         for inference in &self.inferences {
             if let Some(inferred_type) = inference.inferred_type {
                 substitutions.insert(inference.type_parameter, inferred_type);
+            }
+        }
+        substitutions
+    }
+
+    fn fallback_substitutions(
+        &self,
+        current_index: usize,
+        fallback_type: Ty<'a>,
+    ) -> TypeParameterSubstitutions<'a> {
+        let mut substitutions = self.resolved_substitutions();
+        for dependency_index in self.fallback_dependency_indices(fallback_type) {
+            if dependency_index >= current_index
+                && self.inferences[dependency_index].inferred_type.is_none()
+            {
+                substitutions.insert(
+                    self.inferences[dependency_index].type_parameter,
+                    Ty::unknown(),
+                );
             }
         }
         substitutions
@@ -401,11 +440,9 @@ impl<'a> InferenceContext<'a> {
         arena: crate::types::CheckerArena<'a>,
     ) -> Option<Ty<'a>> {
         if self.inferences[index].inferred_type.is_none() {
-            self.inferences[index].inferred_type = inferred_type_from_candidates(
-                arena,
-                &self.inferences[index].candidates,
-                &self.inferences[index].contra_candidates,
-            );
+            let inference = &self.inferences[index];
+            self.inferences[index].inferred_type =
+                inferred_type_from_candidates(arena, inference, self.return_type);
         }
         self.inferences[index].inferred_type
     }
@@ -421,16 +458,253 @@ fn instantiate_inference_fallback_type<'a>(
 
 fn inferred_type_from_candidates<'a>(
     arena: crate::types::CheckerArena<'a>,
-    candidates: &[Ty<'a>],
-    contra_candidates: &[Ty<'a>],
+    inference: &InferenceInfo<'a>,
+    return_type: Option<Ty<'a>>,
 ) -> Option<Ty<'a>> {
-    if !candidates.is_empty() {
-        return Some(Ty::union(arena, candidates.iter().copied()));
+    let covariant = resolve_covariant_candidates(arena, inference, return_type);
+    let contravariant = resolve_contravariant_candidates(arena, inference);
+
+    match (covariant, contravariant) {
+        (Some(covariant), Some(contravariant)) => {
+            if covariant.is_never() || covariant.is_any() {
+                return Some(contravariant);
+            }
+            if inference
+                .contra_candidates
+                .iter()
+                .any(|candidate| relations::is_assignable_to(covariant, *candidate))
+            {
+                Some(covariant)
+            } else {
+                Some(contravariant)
+            }
+        }
+        (Some(covariant), None) => Some(covariant),
+        (None, Some(contravariant)) => Some(contravariant),
+        (None, None) => None,
     }
-    if !contra_candidates.is_empty() {
-        return Some(Ty::intersection(arena, contra_candidates.iter().copied()));
+}
+
+fn resolve_covariant_candidates<'a>(
+    arena: crate::types::CheckerArena<'a>,
+    inference: &InferenceInfo<'a>,
+    return_type: Option<Ty<'a>>,
+) -> Option<Ty<'a>> {
+    if inference.candidates.is_empty() {
+        return None;
     }
-    None
+
+    if return_type.is_none() {
+        return Some(Ty::union(arena, inference.candidates.iter().copied()));
+    }
+
+    let candidates = if should_widen_literal_inference(inference, return_type) {
+        inference
+            .candidates
+            .iter()
+            .map(|candidate| get_widened_literal_type(arena, *candidate))
+            .collect::<Vec<_>>()
+    } else {
+        inference.candidates.clone()
+    };
+
+    if inference_priority_implies_combination(inference.priority) {
+        Some(Ty::union(arena, candidates))
+    } else {
+        Some(get_common_supertype(arena, &candidates))
+    }
+}
+
+fn resolve_contravariant_candidates<'a>(
+    arena: crate::types::CheckerArena<'a>,
+    inference: &InferenceInfo<'a>,
+) -> Option<Ty<'a>> {
+    if inference.contra_candidates.is_empty() {
+        return None;
+    }
+
+    if inference_priority_implies_combination(inference.priority) {
+        Some(Ty::intersection(
+            arena,
+            inference.contra_candidates.iter().copied(),
+        ))
+    } else {
+        Some(get_common_subtype(&inference.contra_candidates))
+    }
+}
+
+fn inference_priority_implies_combination(priority: InferencePriority) -> bool {
+    matches!(
+        priority,
+        InferencePriority::MappedTypeConstraint
+            | InferencePriority::PartialSameShapeMappedType
+            | InferencePriority::SameShapeMappedType
+    )
+}
+
+fn should_widen_literal_inference<'a>(
+    inference: &InferenceInfo<'a>,
+    return_type: Option<Ty<'a>>,
+) -> bool {
+    !has_primitive_constraint(inference.type_parameter)
+        && inference.top_level
+        && return_type.is_some_and(|return_type| {
+            !is_type_parameter_at_top_level(return_type, inference.type_parameter, 0)
+        })
+}
+
+fn has_primitive_constraint(type_parameter: TyTypeParameter<'_>) -> bool {
+    type_parameter
+        .constraint_type
+        .is_some_and(type_maybe_contains_primitive_or_literal)
+}
+
+fn type_maybe_contains_primitive_or_literal(ty: Ty<'_>) -> bool {
+    match ty {
+        Ty::String
+        | Ty::Number
+        | Ty::Bigint
+        | Ty::Boolean
+        | Ty::Symbol
+        | Ty::StringLiteral(_)
+        | Ty::NumberLiteral(_)
+        | Ty::BigIntLiteral(_)
+        | Ty::BooleanLiteral(_)
+        | Ty::UniqueSymbol(_)
+        | Ty::Keyof(_)
+        | Ty::TemplateLiteral(_) => true,
+        Ty::Union(union) => union
+            .types
+            .iter()
+            .any(|ty| type_maybe_contains_primitive_or_literal(*ty)),
+        Ty::Intersection(intersection) => intersection
+            .types
+            .iter()
+            .any(|ty| type_maybe_contains_primitive_or_literal(*ty)),
+        Ty::Conditional(conditional) => {
+            type_maybe_contains_primitive_or_literal(conditional.true_type)
+                || type_maybe_contains_primitive_or_literal(conditional.false_type)
+        }
+        _ => false,
+    }
+}
+
+fn is_type_parameter_at_top_level<'a>(
+    ty: Ty<'a>,
+    type_parameter: TyTypeParameter<'a>,
+    depth: usize,
+) -> bool {
+    match ty {
+        Ty::TypeReference(reference) => {
+            reference.type_arguments.is_empty() && reference.name == type_parameter.name
+        }
+        Ty::Union(union) => union
+            .types
+            .iter()
+            .any(|ty| is_type_parameter_at_top_level(*ty, type_parameter, depth)),
+        Ty::Intersection(intersection) => intersection
+            .types
+            .iter()
+            .any(|ty| is_type_parameter_at_top_level(*ty, type_parameter, depth)),
+        Ty::Conditional(conditional) if depth < 3 => {
+            is_type_parameter_at_top_level(conditional.true_type, type_parameter, depth + 1)
+                || is_type_parameter_at_top_level(conditional.false_type, type_parameter, depth + 1)
+        }
+        _ => false,
+    }
+}
+
+fn get_widened_literal_type<'a>(arena: crate::types::CheckerArena<'a>, ty: Ty<'a>) -> Ty<'a> {
+    match ty {
+        Ty::StringLiteral(_) | Ty::TemplateLiteral(_) => Ty::string(),
+        Ty::NumberLiteral(_) => Ty::number(),
+        Ty::BigIntLiteral(_) => Ty::bigint(),
+        Ty::BooleanLiteral(_) => Ty::boolean(),
+        Ty::Union(union) => Ty::union(
+            arena,
+            union
+                .types
+                .iter()
+                .map(|ty| get_widened_literal_type(arena, *ty)),
+        ),
+        _ => ty,
+    }
+}
+
+fn get_common_supertype<'a>(
+    arena: crate::types::CheckerArena<'a>,
+    candidates: &[Ty<'a>],
+) -> Ty<'a> {
+    if candidates.len() == 1 {
+        return candidates[0];
+    }
+    if literal_types_with_same_base_type(candidates) {
+        return Ty::union(arena, candidates.iter().copied());
+    }
+
+    get_single_common_supertype(candidates, relations::is_assignable_to)
+}
+
+fn get_single_common_supertype<'a>(
+    candidates: &[Ty<'a>],
+    is_subtype_of: impl Fn(Ty<'a>, Ty<'a>) -> bool,
+) -> Ty<'a> {
+    let candidate = find_leftmost_type(candidates, &is_subtype_of);
+    if candidates
+        .iter()
+        .all(|ty| *ty == candidate || is_subtype_of(*ty, candidate))
+    {
+        return candidate;
+    }
+    find_leftmost_type(candidates, &relations::is_assignable_to)
+}
+
+fn get_common_subtype<'a>(candidates: &[Ty<'a>]) -> Ty<'a> {
+    let mut subtype = candidates[0];
+    for candidate in candidates.iter().skip(1) {
+        if relations::is_assignable_to(*candidate, subtype) {
+            subtype = *candidate;
+        }
+    }
+    subtype
+}
+
+fn find_leftmost_type<'a>(
+    candidates: &[Ty<'a>],
+    is_left_subtype_of_right: &impl Fn(Ty<'a>, Ty<'a>) -> bool,
+) -> Ty<'a> {
+    let mut candidate = candidates[0];
+    for ty in candidates.iter().skip(1) {
+        if is_left_subtype_of_right(candidate, *ty) {
+            candidate = *ty;
+        }
+    }
+    candidate
+}
+
+fn literal_types_with_same_base_type(candidates: &[Ty<'_>]) -> bool {
+    let mut common_base = None;
+    for candidate in candidates {
+        let Some(base) = literal_base_type(*candidate) else {
+            return false;
+        };
+        if common_base.is_none() {
+            common_base = Some(base);
+        } else if common_base != Some(base) {
+            return false;
+        }
+    }
+    true
+}
+
+fn literal_base_type(ty: Ty<'_>) -> Option<Ty<'static>> {
+    match ty {
+        Ty::StringLiteral(_) => Some(Ty::String),
+        Ty::NumberLiteral(_) => Some(Ty::Number),
+        Ty::BigIntLiteral(_) => Some(Ty::Bigint),
+        Ty::BooleanLiteral(_) => Some(Ty::Boolean),
+        _ => None,
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -808,7 +1082,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let mut context = InferenceContext::with_substitutions(
             function.type_parameters.iter().copied(),
             &substitutions,
-        );
+        )
+        .with_return_type(function.return_type);
 
         for (argument, parameter) in call_expression
             .arguments
@@ -818,12 +1093,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(argument) = argument.as_expression() else {
                 continue;
             };
-            let argument_type = self.get_type_of_expression_with_node(
-                program_id,
-                argument,
-                node_id,
-                GetTypeFlags::NONE,
-            );
+            let flags = if self.could_contain_type_variables(parameter.ty) {
+                GetTypeFlags::PRESERVE_LITERALS
+            } else {
+                GetTypeFlags::NONE
+            };
+            let argument_type =
+                self.get_type_of_expression_with_node(program_id, argument, node_id, flags);
             infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
@@ -892,7 +1168,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let mut context = InferenceContext::with_substitutions(
             function.type_parameters.iter().copied(),
             &substitutions,
-        );
+        )
+        .with_return_type(function.return_type);
 
         for (argument, parameter) in new_expression
             .arguments
@@ -902,12 +1179,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(argument) = argument.as_expression() else {
                 continue;
             };
-            let argument_type = self.get_type_of_expression_with_node(
-                program_id,
-                argument,
-                None,
-                GetTypeFlags::NONE,
-            );
+            let flags = if self.could_contain_type_variables(parameter.ty) {
+                GetTypeFlags::PRESERVE_LITERALS
+            } else {
+                GetTypeFlags::NONE
+            };
+            let argument_type =
+                self.get_type_of_expression_with_node(program_id, argument, None, flags);
             infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
@@ -1620,5 +1898,133 @@ mod tests {
                 .map(Ty::type_reference(arena, "U", std::iter::empty())),
             Ty::string(),
         );
+    }
+
+    #[test]
+    fn covariant_candidates_use_common_supertype_without_combination_priority() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter = Ty::type_parameter("T", None, None);
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter],
+            &TypeParameterSubstitutions::new(),
+        )
+        .with_return_type(Ty::type_reference(arena, "Result", std::iter::empty()));
+        context.add_candidate(
+            type_parameter,
+            Ty::string_literal(arena, "ready"),
+            InferencePriority::Low,
+        );
+        context.add_candidate(
+            type_parameter,
+            Ty::number_literal(arena, "1"),
+            InferencePriority::Low,
+        );
+
+        assert_eq!(
+            context.get_inferred_type(0, arena),
+            Some(Ty::string_literal(arena, "ready"))
+        );
+    }
+
+    #[test]
+    fn covariant_candidates_combine_for_naked_type_variable_priority() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter = Ty::type_parameter("T", None, None);
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter],
+            &TypeParameterSubstitutions::new(),
+        );
+        context.add_candidate(
+            type_parameter,
+            Ty::string_literal(arena, "ready"),
+            InferencePriority::NakedTypeVariable,
+        );
+        context.add_candidate(
+            type_parameter,
+            Ty::number_literal(arena, "1"),
+            InferencePriority::NakedTypeVariable,
+        );
+
+        assert_eq!(
+            context.get_inferred_type(0, arena),
+            Some(Ty::union(
+                arena,
+                [
+                    Ty::string_literal(arena, "ready"),
+                    Ty::number_literal(arena, "1"),
+                ],
+            )),
+        );
+    }
+
+    #[test]
+    fn top_level_literal_candidates_widen_when_not_top_level_in_return() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter = Ty::type_parameter("T", None, None);
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter],
+            &TypeParameterSubstitutions::new(),
+        )
+        .with_return_type(Ty::object(
+            arena,
+            [Ty::property(
+                "value",
+                Ty::type_reference(arena, "T", std::iter::empty()),
+            )],
+        ));
+        context.add_candidate(
+            type_parameter,
+            Ty::string_literal(arena, "ready"),
+            InferencePriority::NakedTypeVariable,
+        );
+
+        assert_eq!(context.get_inferred_type(0, arena), Some(Ty::string()));
+    }
+
+    #[test]
+    fn top_level_literal_candidates_are_preserved_for_top_level_return() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter = Ty::type_parameter("T", None, None);
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter],
+            &TypeParameterSubstitutions::new(),
+        )
+        .with_return_type(Ty::type_reference(arena, "T", std::iter::empty()));
+        context.add_candidate(
+            type_parameter,
+            Ty::string_literal(arena, "ready"),
+            InferencePriority::NakedTypeVariable,
+        );
+
+        assert_eq!(
+            context.get_inferred_type(0, arena),
+            Some(Ty::string_literal(arena, "ready")),
+        );
+    }
+
+    #[test]
+    fn forward_default_references_resolve_to_unknown() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter_t = Ty::type_parameter(
+            "T",
+            None,
+            Some(Ty::type_reference(arena, "U", std::iter::empty())),
+        );
+        let type_parameter_u = Ty::type_parameter("U", None, None);
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter_t, type_parameter_u],
+            &TypeParameterSubstitutions::new(),
+        );
+
+        assert_eq!(
+            context.resolve_type_parameter_by_name("T", arena, InferenceResolutionFlags::NONE),
+            Some(Ty::unknown()),
+        );
+        assert!(!context.inferences[1].is_fixed);
     }
 }

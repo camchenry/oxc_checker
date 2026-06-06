@@ -3154,13 +3154,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
                 return false;
             };
+            let flags = if self.could_contain_type_variables(parameter_type) {
+                GetTypeFlags::PRESERVE_LITERALS
+            } else {
+                GetTypeFlags::NONE
+            };
             let parameter_type = self.instantiate_type(parameter_type, &mapper);
-            let argument_type = self.get_type_of_expression_with_node(
-                program_id,
-                argument,
-                node_id,
-                GetTypeFlags::NONE,
-            );
+            let argument_type =
+                self.get_type_of_expression_with_node(program_id, argument, node_id, flags);
             if !self.is_assignable_to(argument_type, parameter_type) {
                 return false;
             }

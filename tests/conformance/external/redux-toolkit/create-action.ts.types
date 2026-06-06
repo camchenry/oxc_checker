@@ -1151,7 +1151,7 @@ export const incrementPayload = incrementAction.payload
 >                                               ^^^^^^^: any   (TyAny)
 
 export const reset = createAction('counter/reset')
->            ^^^^^: PayloadActionCreator<void, string, void>   (TyTypeReference)
+>            ^^^^^: PayloadActionCreator<void, "counter/reset", void>   (TyTypeReference)
 
 export const reset = createAction('counter/reset')
 >                    ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T, void>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
@@ -1160,7 +1160,7 @@ export const resetAction = reset()
 >            ^^^^^^^^^^^: any   (TyAny)
 
 export const resetAction = reset()
->                          ^^^^^: PayloadActionCreator<void, string, void>   (TyTypeReference)
+>                          ^^^^^: PayloadActionCreator<void, "counter/reset", void>   (TyTypeReference)
 
 export const resetPayload = resetAction.payload
 >            ^^^^^^^^^^^^: any   (TyAny)
@@ -1190,7 +1190,7 @@ export const namedAction = setName('Ada')
 >                          ^^^^^^^: PayloadActionCreator<string | undefined, "user/nameChanged", void>   (TyTypeReference)
 
 export const addTodo = createAction(
->            ^^^^^^^: PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TyTypeReference)
+>            ^^^^^^^: PayloadActionCreator<void, "todos/add", void>   (TyTypeReference)
 
 export const addTodo = createAction(
 >                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T, void>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
@@ -1229,7 +1229,7 @@ export const preparedTodoAction = addTodo('read fixture', 2)
 >            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 export const preparedTodoAction = addTodo('read fixture', 2)
->                                 ^^^^^^^: PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TyTypeReference)
+>                                 ^^^^^^^: PayloadActionCreator<void, "todos/add", void>   (TyTypeReference)
 
 export const preparedPayload = preparedTodoAction.payload
 >            ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -1310,13 +1310,13 @@ export type IncrementAction = ReturnType<typeof increment>
 >                                               ^^^^^^^^^: PayloadActionCreator<number, "counter/increment", void>   (TyTypeReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
->           ^^^^^^^^^^: ReturnType<PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>>   (TyTypeReference)
+>           ^^^^^^^^^^: ReturnType<PayloadActionCreator<void, "todos/add", void>>   (TyTypeReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
 >                        ^^^^^^^^^^: any   (TyAny)
 
 export type TodoAction = ReturnType<typeof addTodo>
->                                          ^^^^^^^: PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TyTypeReference)
+>                                          ^^^^^^^: PayloadActionCreator<void, "todos/add", void>   (TyTypeReference)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
 >           ^^^^^^^^^^^^^^^^^^^^: PayloadActionCreator<number, "counter/increment", void> extends HasMatchFunction<infer T> | TypeGuard<infer T> ? T : never   (TyConditional)
@@ -1424,4 +1424,4 @@ export const creatorCheck = isActionCreator(addTodo)
 >                           ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string, never, never> & Function   (TyFunction)
 
 export const creatorCheck = isActionCreator(addTodo)
->                                           ^^^^^^^: PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TyTypeReference)
+>                                           ^^^^^^^: PayloadActionCreator<void, "todos/add", void>   (TyTypeReference)

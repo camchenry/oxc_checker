@@ -136,7 +136,7 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-act
       actual:   any
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:13 `reset` type mismatch
       expected: ActionCreatorWithoutPayload<"counter/reset">
-      actual:   PayloadActionCreator<void, string, void>
+      actual:   PayloadActionCreator<void, "counter/reset", void>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:13 `createAction` type mismatch
       expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
       actual:   { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T, void>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
@@ -145,7 +145,7 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-act
       actual:   any
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:14 `reset` type mismatch
       expected: ActionCreatorWithoutPayload<"counter/reset">
-      actual:   PayloadActionCreator<void, string, void>
+      actual:   PayloadActionCreator<void, "counter/reset", void>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:15 `resetPayload` type mismatch
       expected: undefined
       actual:   any
@@ -175,7 +175,7 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-act
       actual:   PayloadActionCreator<string | undefined, "user/nameChanged", void>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:23 `addTodo` type mismatch
       expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
-      actual:   PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>
+      actual:   PayloadActionCreator<void, "todos/add", void>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:23 `createAction` type mismatch
       expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
       actual:   { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T, void>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
@@ -184,7 +184,7 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-act
       actual:   any
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:31 `addTodo` type mismatch
       expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
-      actual:   PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>
+      actual:   PayloadActionCreator<void, "todos/add", void>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:32 `preparedPayload` type mismatch
       expected: { title: string; priority: any; }
       actual:   any
@@ -250,10 +250,10 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-act
       actual:   PayloadActionCreator<number, "counter/increment", void>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:46 `TodoAction` type mismatch
       expected: { payload: { title: string; priority: any; }; type: "todos/add"; } & { meta: { createdAt: number; }; } & { error: boolean; }
-      actual:   ReturnType<PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>>
+      actual:   ReturnType<PayloadActionCreator<void, "todos/add", void>>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:46 `addTodo` type mismatch
       expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
-      actual:   PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>
+      actual:   PayloadActionCreator<void, "todos/add", void>
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:47 `IncrementFromMatcher` type mismatch
       expected: { payload: number; type: "counter/increment"; }
       actual:   PayloadActionCreator<number, "counter/increment", void> extends HasMatchFunction<infer T> | TypeGuard<infer T> ? T : never
@@ -316,7 +316,7 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-act
       actual:   (action: unknown) => action is BaseActionCreator<unknown, string, never, never> & Function
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:62 `addTodo` type mismatch
       expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
-      actual:   PayloadActionCreator<ReturnType<(title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>["payload"], string, (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>
+      actual:   PayloadActionCreator<void, "todos/add", void>
 FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts matched_types=128 mismatched_types=9 total_types=137 match_percentage=93.43%
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts:2 `OmitKeyof` type mismatch
       expected: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }
