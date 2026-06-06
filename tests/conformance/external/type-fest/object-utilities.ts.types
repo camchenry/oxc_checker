@@ -401,7 +401,7 @@ type User = {
 >   ^^^^^: string[]   (TyArray)
 
 type PublicUser = Except<User, 'email'>
->    ^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; }   (TyMapped)
+>    ^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; } & (false extends true ? Partial<Record<"email", never>> : {})   (TyIntersection)
 
 type PublicUser = Except<User, 'email'>
 >                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
@@ -413,7 +413,7 @@ type PublicUser = Except<User, 'email'>
 >                        ^^^^: any   (TyAny)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->    ^^^^^^^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; }   (TyMapped)
+>    ^^^^^^^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; } & (NonNullable<{ requireExactProps: true; }["requireExactProps" & keyof { requireExactProps: true; }]> extends true ? Partial<Record<"email", never>> : {})   (TyIntersection)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)

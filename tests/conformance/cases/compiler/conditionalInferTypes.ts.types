@@ -1,5 +1,5 @@
 type DirectInfer = string extends infer U ? U : never;
->    ^^^^^^^^^^^: string extends infer U ? U : never   (TyConditional)
+>    ^^^^^^^^^^^: string   (TyString)
 
 type DirectInfer = string extends infer U ? U : never;
 >                                       ^: any   (TyAny)
@@ -8,7 +8,7 @@ type DirectInfer = string extends infer U ? U : never;
 >                                           ^: any   (TyAny)
 
 type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
->    ^^^^^^^^^^^^^: { value: number; } extends { value: infer U; } ? U : never   (TyConditional)
+>    ^^^^^^^^^^^^^: number   (TyNumber)
 
 type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
 >                      ^^^^^: number   (TyNumber)
@@ -23,7 +23,7 @@ type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
 >                                                                   ^: any   (TyAny)
 
 type MissingProperty = { other: string } extends { value: infer U } ? U : never;
->    ^^^^^^^^^^^^^^^: { other: string; } extends { value: infer U; } ? U : never   (TyConditional)
+>    ^^^^^^^^^^^^^^^: never   (TyNever)
 
 type MissingProperty = { other: string } extends { value: infer U } ? U : never;
 >                        ^^^^^: string   (TyString)
@@ -38,7 +38,7 @@ type MissingProperty = { other: string } extends { value: infer U } ? U : never;
 >                                                                     ^: any   (TyAny)
 
 type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
->    ^^^^^^^^^^^^^^^^^^^^: "ready" extends infer U extends string ? U : never   (TyConditional)
+>    ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral)
 
 type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
 >                                                 ^: any   (TyAny)
@@ -47,7 +47,7 @@ type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
 >                                                                    ^: any   (TyAny)
 
 type ConstrainedInferFalse = number extends infer U extends string ? U : never;
->    ^^^^^^^^^^^^^^^^^^^^^: number extends infer U extends string ? U : never   (TyConditional)
+>    ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
 
 type ConstrainedInferFalse = number extends infer U extends string ? U : never;
 >                                                 ^: any   (TyAny)
@@ -56,7 +56,7 @@ type ConstrainedInferFalse = number extends infer U extends string ? U : never;
 >                                                                    ^: any   (TyAny)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->    ^^^^^^^^^^^^^: { a: string; b: number; } extends { a: infer U; b: infer U; } ? U : never   (TyConditional)
+>    ^^^^^^^^^^^^^: string | number   (TyUnion)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
 >                      ^: string   (TyString)
@@ -80,7 +80,7 @@ type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U }
 >                                                                                  ^: any   (TyAny)
 
 type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->    ^^^^^^^^^^^^^^: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never   (TyConditional)
+>    ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple)
 
 type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
 >                                                              ^^^^: any   (TyAny)
@@ -92,7 +92,7 @@ type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Re
 >                                                                                     ^^^^: any   (TyAny)
 
 type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
->    ^^^^^^^^^^^^^^^^^: string[] extends infer T[] ? T : never   (TyConditional)
+>    ^^^^^^^^^^^^^^^^^: string   (TyString)
 
 type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
 >                                                ^: any   (TyAny)
@@ -101,7 +101,7 @@ type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
 >                                                       ^: any   (TyAny)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
->    ^^^^^^^^^^: ({ value: string; } | { value: number; }) extends { value: infer U; } ? U : never   (TyConditional)
+>    ^^^^^^^^^^: string | number   (TyUnion)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
 >                   ^^^^^: string   (TyString)
@@ -119,7 +119,7 @@ type UnionInfer = { value: string } | { value: number } extends { value: infer U
 >                                                                                    ^: any   (TyAny)
 
 declare const directInfer: string extends infer U ? U : never;
->             ^^^^^^^^^^^: string extends infer U ? U : never   (TyConditional)
+>             ^^^^^^^^^^^: string   (TyString)
 
 declare const directInfer: string extends infer U ? U : never;
 >                                               ^: any   (TyAny)
@@ -128,7 +128,7 @@ declare const directInfer: string extends infer U ? U : never;
 >                                                   ^: any   (TyAny)
 
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
->             ^^^^^^^^^^^^^: { value: number; } extends { value: infer U; } ? U : never   (TyConditional)
+>             ^^^^^^^^^^^^^: number   (TyNumber)
 
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
 >                              ^^^^^: number   (TyNumber)
@@ -143,7 +143,7 @@ declare const propertyInfer: { value: number } extends { value: infer U } ? U : 
 >                                                                           ^: any   (TyAny)
 
 declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
->             ^^^^^^^^^^^^^^^: { other: string; } extends { value: infer U; } ? U : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^: never   (TyNever)
 
 declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
 >                                ^^^^^: string   (TyString)
@@ -158,7 +158,7 @@ declare const missingProperty: { other: string } extends { value: infer U } ? U 
 >                                                                             ^: any   (TyAny)
 
 declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
->             ^^^^^^^^^^^^^^^^^^^^: "ready" extends infer U extends string ? U : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral)
 
 declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
 >                                                         ^: any   (TyAny)
@@ -167,7 +167,7 @@ declare const constrainedInferTrue: "ready" extends infer U extends string ? U :
 >                                                                            ^: any   (TyAny)
 
 declare const constrainedInferFalse: number extends infer U extends string ? U : never;
->             ^^^^^^^^^^^^^^^^^^^^^: number extends infer U extends string ? U : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
 
 declare const constrainedInferFalse: number extends infer U extends string ? U : never;
 >                                                         ^: any   (TyAny)
@@ -176,7 +176,7 @@ declare const constrainedInferFalse: number extends infer U extends string ? U :
 >                                                                            ^: any   (TyAny)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->             ^^^^^^^^^^^^^: { a: string; b: number; } extends { a: infer U; b: infer U; } ? U : never   (TyConditional)
+>             ^^^^^^^^^^^^^: string | number   (TyUnion)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
 >                              ^: string   (TyString)
@@ -200,7 +200,7 @@ declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: i
 >                                                                                          ^: any   (TyAny)
 
 declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->             ^^^^^^^^^^^^^^: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never   (TyConditional)
+>             ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple)
 
 declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
 >                                                                      ^^^^: any   (TyAny)
@@ -212,7 +212,7 @@ declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...
 >                                                                                             ^^^^: any   (TyAny)
 
 declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
->             ^^^^^^^^^^^^^^^^^: string[] extends infer T[] ? T : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^^^: string   (TyString)
 
 declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
 >                                                        ^: any   (TyAny)
@@ -221,7 +221,7 @@ declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
 >                                                               ^: any   (TyAny)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
->             ^^^^^^^^^^: ({ value: string; } | { value: number; }) extends { value: infer U; } ? U : never   (TyConditional)
+>             ^^^^^^^^^^: string | number   (TyUnion)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
 >                           ^^^^^: string   (TyString)

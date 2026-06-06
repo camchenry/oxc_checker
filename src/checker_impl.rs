@@ -37,15 +37,15 @@ use crate::{
     ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
-        TyArray, TyFunction, TyMapped, TyParameter, TyProperty, TyTuple, TyTypeParameter,
-        TyTypePredicate, TyTypeQuery, TyTypeReference, binding_pattern_to_parameter_name,
+        TyArray, TyConditional, TyFunction, TyMapped, TyParameter, TyProperty, TyTuple,
+        TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference,
+        binding_pattern_to_parameter_name,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
     },
 };
 
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
-
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum FunctionKind<'a> {
     Function(&'a Function<'a>),
@@ -389,8 +389,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 self.arena(),
                                 infer_type_parameters.iter().copied(),
                             );
-                            Ty::conditional(
-                                self.arena(),
+                            self.conditional_type(
                                 *ty,
                                 self.instantiate_type(
                                     conditional.extends_type,
@@ -404,8 +403,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     );
                 }
 
-                Ty::conditional(
-                    self.arena(),
+                self.conditional_type(
                     self.instantiate_type(conditional.check_type, mapper),
                     self.instantiate_type(conditional.extends_type, &infer_mapper),
                     self.instantiate_type(conditional.true_type, &infer_mapper),
@@ -453,7 +451,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn could_contain_type_variables(&self, ty: Ty<'a>) -> bool {
+    pub(crate) fn could_contain_type_variables(&self, ty: Ty<'a>) -> bool {
         match ty {
             Ty::TypeReference(reference) => {
                 reference.type_arguments.is_empty()
@@ -556,109 +554,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         predicate
             .target_type
             .is_some_and(|ty| self.could_contain_type_variables(ty))
-    }
-
-    fn infer_type_parameter_names(&self, ty: Ty<'a>) -> Vec<&'a str> {
-        let mut names = Vec::new();
-        self.collect_infer_type_parameter_names(ty, &mut names);
-        names
-    }
-
-    fn collect_infer_type_parameter_names(&self, ty: Ty<'a>, names: &mut Vec<&'a str>) {
-        match ty {
-            Ty::Infer(infer) => {
-                if !names.contains(&infer.type_parameter.name) {
-                    names.push(infer.type_parameter.name);
-                }
-            }
-            Ty::Object(object) => {
-                for property in &object.properties {
-                    self.collect_infer_type_parameter_names(property.ty, names);
-                }
-                for signature in &object.signatures {
-                    self.collect_infer_type_parameter_names(
-                        Ty::Function(signature.function),
-                        names,
-                    );
-                }
-            }
-            Ty::ModuleNamespace(namespace) => {
-                for property in &namespace.properties {
-                    self.collect_infer_type_parameter_names(property.ty, names);
-                }
-            }
-            Ty::Function(function) => {
-                for type_parameter in &function.type_parameters {
-                    if let Some(constraint_type) = type_parameter.constraint_type {
-                        self.collect_infer_type_parameter_names(constraint_type, names);
-                    }
-                    if let Some(default_type) = type_parameter.default_type {
-                        self.collect_infer_type_parameter_names(default_type, names);
-                    }
-                }
-                for parameter in &function.parameters {
-                    self.collect_infer_type_parameter_names(parameter.ty, names);
-                }
-                self.collect_infer_type_parameter_names(function.return_type, names);
-                if let Some(target_type) = function
-                    .type_predicate
-                    .and_then(|predicate| predicate.target_type)
-                {
-                    self.collect_infer_type_parameter_names(target_type, names);
-                }
-            }
-            Ty::TypeReference(reference) => {
-                for ty in &reference.type_arguments {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::TypeQuery(query) => {
-                self.collect_infer_type_parameter_names(query.resolved, names);
-                for ty in &query.type_arguments {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::TemplateLiteral(template_literal) => {
-                for ty in &template_literal.expressions {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::Array(array) => self.collect_infer_type_parameter_names(array.element_type, names),
-            Ty::Tuple(tuple) => {
-                for element in &tuple.elements {
-                    self.collect_infer_type_parameter_names(element.ty(), names);
-                }
-            }
-            Ty::Union(union) => {
-                for ty in &union.types {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::Intersection(intersection) => {
-                for ty in &intersection.types {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::Keyof(keyof) => self.collect_infer_type_parameter_names(keyof.target, names),
-            Ty::IndexedAccess(indexed_access) => {
-                self.collect_infer_type_parameter_names(indexed_access.object_type, names);
-                self.collect_infer_type_parameter_names(indexed_access.index_type, names);
-            }
-            Ty::Conditional(conditional) => {
-                self.collect_infer_type_parameter_names(conditional.check_type, names);
-                self.collect_infer_type_parameter_names(conditional.extends_type, names);
-                self.collect_infer_type_parameter_names(conditional.true_type, names);
-                self.collect_infer_type_parameter_names(conditional.false_type, names);
-            }
-            Ty::Mapped(mapped) => {
-                self.collect_infer_type_parameter_names(mapped.constraint, names);
-                if let Some(name_type) = mapped.name_type {
-                    self.collect_infer_type_parameter_names(name_type, names);
-                }
-                self.collect_infer_type_parameter_names(mapped.template, names);
-            }
-            _ => {}
-        }
     }
 
     /// Resolve an expression type with a semantic context node when ancestor context is needed.
@@ -1361,8 +1256,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 } else {
                     check_type
                 };
-                Ty::conditional(
-                    self.arena(),
+                self.conditional_type(
                     check_type,
                     extends_type,
                     self.get_type_from_ts_type(program_id, &conditional.true_type),
@@ -1704,14 +1598,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.expand_type_at_use(program_id, *ty, depth + 1)),
             ),
-            Ty::Conditional(conditional) => Ty::conditional(
-                self.arena(),
-                self.expand_type_at_use(program_id, conditional.check_type, depth + 1),
-                self.expand_type_at_use(program_id, conditional.extends_type, depth + 1),
-                self.expand_type_at_use(program_id, conditional.true_type, depth + 1),
-                self.expand_type_at_use(program_id, conditional.false_type, depth + 1),
-                conditional.is_distributive,
-            ),
+            Ty::Conditional(conditional) => Ty::Conditional(self.arena().alloc(TyConditional {
+                check_type: self.expand_type_at_use(program_id, conditional.check_type, depth + 1),
+                extends_type: self.expand_type_at_use(
+                    program_id,
+                    conditional.extends_type,
+                    depth + 1,
+                ),
+                true_type: self.expand_type_at_use(program_id, conditional.true_type, depth + 1),
+                false_type: self.expand_type_at_use(program_id, conditional.false_type, depth + 1),
+                is_distributive: conditional.is_distributive,
+            })),
             Ty::Keyof(keyof) => Ty::keyof(
                 self.arena(),
                 self.expand_type_at_use(program_id, keyof.target, depth + 1),
@@ -1748,14 +1645,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     })
                     .unwrap_or(reference_ty)
             }
-            Ty::Conditional(conditional) => Ty::conditional(
-                self.arena(),
-                self.expand_type_for_index_lookup(program_id, conditional.check_type, depth + 1),
-                self.expand_type_for_index_lookup(program_id, conditional.extends_type, depth + 1),
-                self.expand_type_for_index_lookup(program_id, conditional.true_type, depth + 1),
-                self.expand_type_for_index_lookup(program_id, conditional.false_type, depth + 1),
-                conditional.is_distributive,
-            ),
+            Ty::Conditional(conditional) => Ty::Conditional(self.arena().alloc(TyConditional {
+                check_type: self.expand_type_for_index_lookup(
+                    program_id,
+                    conditional.check_type,
+                    depth + 1,
+                ),
+                extends_type: self.expand_type_for_index_lookup(
+                    program_id,
+                    conditional.extends_type,
+                    depth + 1,
+                ),
+                true_type: self.expand_type_for_index_lookup(
+                    program_id,
+                    conditional.true_type,
+                    depth + 1,
+                ),
+                false_type: self.expand_type_for_index_lookup(
+                    program_id,
+                    conditional.false_type,
+                    depth + 1,
+                ),
+                is_distributive: conditional.is_distributive,
+            })),
             Ty::Keyof(keyof) => Ty::keyof(
                 self.arena(),
                 self.expand_type_for_index_lookup(program_id, keyof.target, depth + 1),

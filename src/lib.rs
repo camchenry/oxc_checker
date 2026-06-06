@@ -366,6 +366,7 @@ mod test {
     use super::*;
     use crate::checker::{Checker, CheckerBuilder, NodeRef, SymbolRef};
     use crate::checker_impl::UNDEFINED_IDENT;
+    use crate::mapper::TypeMapper;
     use crate::program::ProgramHost;
     use oxc_allocator::Allocator;
     use oxc_str::Ident;
@@ -1685,6 +1686,74 @@ mod test {
             get_global_symbol_type(&ret, "value").to_type_string(),
             "string"
         );
+    }
+
+    #[test]
+    fn conditional_infer_extracts_object_property_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const value: { value: number } extends { value: infer U } ? U : never;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value").to_type_string(),
+            "number"
+        );
+    }
+
+    #[test]
+    fn conditional_infer_merges_repeated_candidates() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const value: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value").to_type_string(),
+            "string | number"
+        );
+    }
+
+    #[test]
+    fn conditional_infer_extracts_tuple_rest() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const value: [string, number] extends [infer Head, ...infer Rest] ? Rest : never;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "value").to_type_string(),
+            "[number]"
+        );
+    }
+
+    #[test]
+    fn conditional_infer_shadows_outer_type_parameter_substitution() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "const x = 1;");
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let arena = arena(&ret);
+        let outer_array = Ty::array(arena, Ty::string());
+        let conditional = Ty::conditional(
+            arena,
+            Ty::type_reference(arena, "T", []),
+            Ty::array(arena, Ty::infer(arena, Ty::type_parameter("T", None, None))),
+            Ty::type_reference(arena, "T", []),
+            Ty::never(),
+            false,
+        );
+        let mapper = TypeMapper::single(Ty::type_reference(arena, "T", []), outer_array);
+
+        assert_eq!(checker.instantiate_type(conditional, &mapper), Ty::string());
     }
 
     #[test]
