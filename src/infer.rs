@@ -45,6 +45,185 @@ impl ConditionalInferInferences<'_> {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub(crate) enum InferencePriority {
+    None,
+    NakedTypeVariable,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct InferenceInfo<'a> {
+    pub(crate) type_parameter: TyTypeParameter<'a>,
+    pub(crate) candidates: Vec<Ty<'a>>,
+    pub(crate) contra_candidates: Vec<Ty<'a>>,
+    pub(crate) inferred_type: Option<Ty<'a>>,
+    pub(crate) priority: InferencePriority,
+    pub(crate) top_level: bool,
+    pub(crate) is_fixed: bool,
+}
+
+impl<'a> InferenceInfo<'a> {
+    fn new(type_parameter: TyTypeParameter<'a>, fixed_type: Option<Ty<'a>>) -> Self {
+        Self {
+            type_parameter,
+            candidates: Vec::new(),
+            contra_candidates: Vec::new(),
+            inferred_type: fixed_type,
+            priority: InferencePriority::None,
+            top_level: false,
+            is_fixed: fixed_type.is_some(),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct InferenceContext<'a> {
+    inferences: Vec<InferenceInfo<'a>>,
+}
+
+impl<'a> InferenceContext<'a> {
+    pub(crate) fn with_substitutions(
+        type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
+        substitutions: &TypeParameterSubstitutions<'a>,
+    ) -> Self {
+        Self {
+            inferences: type_parameters
+                .into_iter()
+                .map(|type_parameter| {
+                    InferenceInfo::new(type_parameter, substitutions.get(type_parameter))
+                })
+                .collect(),
+        }
+    }
+
+    fn inference_by_name_mut(&mut self, name: &str) -> Option<&mut InferenceInfo<'a>> {
+        self.inferences
+            .iter_mut()
+            .find(|inference| inference.type_parameter.name == name)
+    }
+
+    fn inference_for_type_parameter_mut(
+        &mut self,
+        type_parameter: TyTypeParameter<'a>,
+    ) -> Option<&mut InferenceInfo<'a>> {
+        self.inferences
+            .iter_mut()
+            .find(|inference| inference.type_parameter == type_parameter)
+    }
+
+    fn contains_type_parameter_name(&self, name: &str) -> bool {
+        self.inferences
+            .iter()
+            .any(|inference| inference.type_parameter.name == name)
+    }
+
+    pub(crate) fn add_candidate(
+        &mut self,
+        type_parameter: TyTypeParameter<'a>,
+        candidate: Ty<'a>,
+        priority: InferencePriority,
+    ) {
+        let Some(inference) = self.inference_for_type_parameter_mut(type_parameter) else {
+            return;
+        };
+        if inference.is_fixed {
+            return;
+        }
+        if priority > inference.priority {
+            inference.candidates.clear();
+            inference.priority = priority;
+        } else if priority < inference.priority {
+            return;
+        }
+        inference.top_level |= priority == InferencePriority::NakedTypeVariable;
+        if !inference.candidates.contains(&candidate) {
+            inference.candidates.push(candidate);
+            inference.inferred_type = None;
+        }
+    }
+
+    pub(crate) fn add_contra_candidate(
+        &mut self,
+        type_parameter: TyTypeParameter<'a>,
+        candidate: Ty<'a>,
+        priority: InferencePriority,
+    ) {
+        let Some(inference) = self.inference_for_type_parameter_mut(type_parameter) else {
+            return;
+        };
+        if inference.is_fixed {
+            return;
+        }
+        if priority > inference.priority {
+            inference.candidates.clear();
+            inference.contra_candidates.clear();
+            inference.priority = priority;
+        } else if priority < inference.priority {
+            return;
+        }
+        inference.top_level |= priority == InferencePriority::NakedTypeVariable;
+        if !inference.contra_candidates.contains(&candidate) {
+            inference.contra_candidates.push(candidate);
+            inference.inferred_type = None;
+        }
+    }
+
+    pub(crate) fn into_substitutions(
+        mut self,
+        arena: crate::types::CheckerArena<'a>,
+    ) -> TypeParameterSubstitutions<'a> {
+        let mut substitutions = TypeParameterSubstitutions::new();
+        for inference in &mut self.inferences {
+            let inferred_type = inference.inferred_type.unwrap_or_else(|| {
+                let inferred_type = inferred_type_from_candidates(
+                    arena,
+                    &inference.candidates,
+                    &inference.contra_candidates,
+                );
+                inference.inferred_type = inferred_type;
+                inferred_type.unwrap_or(Ty::any())
+            });
+            if inference.is_fixed
+                || inference.top_level
+                || !inference.candidates.is_empty()
+                || !inference.contra_candidates.is_empty()
+            {
+                substitutions.insert(inference.type_parameter, inferred_type);
+            }
+        }
+        substitutions
+    }
+}
+
+fn inferred_type_from_candidates<'a>(
+    arena: crate::types::CheckerArena<'a>,
+    candidates: &[Ty<'a>],
+    contra_candidates: &[Ty<'a>],
+) -> Option<Ty<'a>> {
+    if !candidates.is_empty() {
+        return Some(Ty::union(arena, candidates.iter().copied()));
+    }
+    if !contra_candidates.is_empty() {
+        return Some(Ty::intersection(arena, contra_candidates.iter().copied()));
+    }
+    None
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum InferenceVariance {
+    Covariant,
+    Contravariant,
+}
+
+impl InferenceVariance {
+    fn flip(self) -> Self {
+        match self {
+            Self::Covariant => Self::Contravariant,
+            Self::Contravariant => Self::Covariant,
+        }
+    }
+}
+
 impl<'a, 'store> CheckerReturn<'a, 'store> {
     pub(crate) fn infer_type_parameter_names(&self, ty: Ty<'a>) -> Vec<&'a str> {
         let mut names = Vec::new();
@@ -551,19 +730,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
     ) -> TypeParameterSubstitutions<'a> {
-        let (mut substitutions, explicit_type_parameters) = self
-            .explicit_type_parameter_substitutions(
-                program_id,
-                function,
-                call_expression.type_arguments.as_deref(),
-            );
-
-        let inferable_type_parameters = function
-            .type_parameters
-            .iter()
-            .copied()
-            .filter(|type_parameter| !explicit_type_parameters.contains(&type_parameter.name))
-            .collect::<Vec<_>>();
+        let (substitutions, _) = self.explicit_type_parameter_substitutions(
+            program_id,
+            function,
+            call_expression.type_arguments.as_deref(),
+        );
+        let mut context = InferenceContext::with_substitutions(
+            function.type_parameters.iter().copied(),
+            &substitutions,
+        );
 
         for (argument, parameter) in call_expression
             .arguments
@@ -579,14 +754,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 node_id,
                 GetTypeFlags::NONE,
             );
-            infer_type_parameter_from_types(
-                &parameter.ty,
-                &argument_type,
-                &inferable_type_parameters,
-                &mut substitutions,
-            );
+            infer_types(parameter.ty, argument_type, &mut context);
         }
 
+        let mut substitutions = context.into_substitutions(self.arena());
         self.add_type_parameter_fallback_substitutions(
             function,
             &mut substitutions,
@@ -650,19 +821,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &'a TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
     ) -> TypeParameterSubstitutions<'a> {
-        let (mut substitutions, explicit_type_parameters) = self
-            .explicit_type_parameter_substitutions(
-                program_id,
-                function,
-                new_expression.type_arguments.as_deref(),
-            );
-
-        let inferable_type_parameters = function
-            .type_parameters
-            .iter()
-            .copied()
-            .filter(|type_parameter| !explicit_type_parameters.contains(&type_parameter.name))
-            .collect::<Vec<_>>();
+        let (substitutions, _) = self.explicit_type_parameter_substitutions(
+            program_id,
+            function,
+            new_expression.type_arguments.as_deref(),
+        );
+        let mut context = InferenceContext::with_substitutions(
+            function.type_parameters.iter().copied(),
+            &substitutions,
+        );
 
         for (argument, parameter) in new_expression
             .arguments
@@ -678,14 +845,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 None,
                 GetTypeFlags::NONE,
             );
-            infer_type_parameter_from_types(
-                &parameter.ty,
-                &argument_type,
-                &inferable_type_parameters,
-                &mut substitutions,
-            );
+            infer_types(parameter.ty, argument_type, &mut context);
         }
 
+        let mut substitutions = context.into_substitutions(self.arena());
         self.add_type_parameter_fallback_substitutions(
             function,
             &mut substitutions,
@@ -723,34 +886,52 @@ impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
     fn visit_arrow_function_expression(&mut self, _function: &ArrowFunctionExpression<'a>) {}
 }
 
-pub fn infer_type_parameter_from_types<'a>(
-    parameter_type: &Ty<'a>,
-    argument_type: &Ty<'a>,
-    type_parameters: &[TyTypeParameter<'a>],
-    substitutions: &mut TypeParameterSubstitutions<'a>,
+fn infer_types<'a>(
+    parameter_type: Ty<'a>,
+    argument_type: Ty<'a>,
+    context: &mut InferenceContext<'a>,
+) {
+    infer_types_with_variance(
+        parameter_type,
+        argument_type,
+        context,
+        InferenceVariance::Covariant,
+    );
+}
+
+fn infer_types_with_variance<'a>(
+    parameter_type: Ty<'a>,
+    argument_type: Ty<'a>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
 ) {
     match (parameter_type, argument_type) {
         (Ty::Union(parameter_union), _) => {
             infer_type_parameter_from_union(
                 parameter_union.types.iter().copied(),
                 argument_type,
-                type_parameters,
-                substitutions,
+                context,
+                variance,
             );
         }
         (Ty::TypeReference(reference), _) if reference.type_arguments.is_empty() => {
-            let Some(type_parameter) = type_parameter_by_name(type_parameters, reference.name)
+            let Some(type_parameter) = context
+                .inference_by_name_mut(reference.name)
+                .map(|inference| inference.type_parameter)
             else {
                 return;
             };
-            match substitutions.get(type_parameter) {
-                Some(existing) if existing != *argument_type => {
-                    substitutions.insert(type_parameter, Ty::any());
-                }
-                Some(_) => {}
-                None => {
-                    substitutions.insert(type_parameter, *argument_type);
-                }
+            match variance {
+                InferenceVariance::Covariant => context.add_candidate(
+                    type_parameter,
+                    argument_type,
+                    InferencePriority::NakedTypeVariable,
+                ),
+                InferenceVariance::Contravariant => context.add_contra_candidate(
+                    type_parameter,
+                    argument_type,
+                    InferencePriority::NakedTypeVariable,
+                ),
             }
         }
         (Ty::TypeReference(parameter_reference), Ty::TypeReference(argument_reference))
@@ -761,12 +942,7 @@ pub fn infer_type_parameter_from_types<'a>(
                 .iter()
                 .zip(argument_reference.type_arguments.iter())
             {
-                infer_type_parameter_from_types(
-                    parameter_type,
-                    argument_type,
-                    type_parameters,
-                    substitutions,
-                );
+                infer_types_with_variance(*parameter_type, *argument_type, context, variance);
             }
         }
         (Ty::Object(parameter_object), Ty::Object(argument_object)) => {
@@ -777,11 +953,11 @@ pub fn infer_type_parameter_from_types<'a>(
                             && argument_property.computed == parameter_property.computed
                     })
                 {
-                    infer_type_parameter_from_types(
-                        &parameter_property.ty,
-                        &argument_property.ty,
-                        type_parameters,
-                        substitutions,
+                    infer_types_with_variance(
+                        parameter_property.ty,
+                        argument_property.ty,
+                        context,
+                        variance,
                     );
                 }
             }
@@ -792,39 +968,24 @@ pub fn infer_type_parameter_from_types<'a>(
                 .iter()
                 .zip(argument_function.parameters.iter())
             {
-                infer_type_parameter_from_types(
-                    &parameter.ty,
-                    &argument.ty,
-                    type_parameters,
-                    substitutions,
-                );
+                infer_types_with_variance(parameter.ty, argument.ty, context, variance.flip());
             }
-            infer_type_parameter_from_types(
-                &parameter_function.return_type,
-                &argument_function.return_type,
-                type_parameters,
-                substitutions,
+            infer_types_with_variance(
+                parameter_function.return_type,
+                argument_function.return_type,
+                context,
+                variance,
             );
         }
         _ => {}
     }
 }
 
-fn type_parameter_by_name<'a>(
-    type_parameters: &[TyTypeParameter<'a>],
-    name: &str,
-) -> Option<TyTypeParameter<'a>> {
-    type_parameters
-        .iter()
-        .find(|type_parameter| type_parameter.name == name)
-        .copied()
-}
-
 fn infer_type_parameter_from_union<'a>(
     parameter_types: impl IntoIterator<Item = Ty<'a>>,
-    argument_type: &Ty<'a>,
-    type_parameters: &[TyTypeParameter<'a>],
-    substitutions: &mut TypeParameterSubstitutions<'a>,
+    argument_type: Ty<'a>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
 ) {
     let parameter_types = parameter_types
         .into_iter()
@@ -852,7 +1013,7 @@ fn infer_type_parameter_from_union<'a>(
             .iter()
             .copied()
             .filter(|ty| {
-                matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && type_parameters.iter().any(|type_parameter| type_parameter.name == reference.name))
+                matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && context.contains_type_parameter_name(reference.name))
             })
             .collect::<Vec<_>>()
     } else {
@@ -866,7 +1027,7 @@ fn infer_type_parameter_from_union<'a>(
     };
 
     for candidate in candidates {
-        infer_type_parameter_from_types(&candidate, argument_type, type_parameters, substitutions);
+        infer_types_with_variance(candidate, argument_type, context, variance);
     }
 }
 

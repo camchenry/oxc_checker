@@ -2028,6 +2028,27 @@ mod test {
     }
 
     #[test]
+    fn generic_function_merges_repeated_inference_candidates() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function choose<T>(first: T, second: T) {
+            return first;
+        }
+
+        const value = choose("ready", 1);
+        "#,
+        );
+
+        let arena = arena(&ret);
+        assert_eq!(
+            get_global_symbol_type(&ret, "value"),
+            Ty::union(arena, [Ty::string(), Ty::number()])
+        );
+    }
+
+    #[test]
     fn function_overloads_select_matching_signature() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
