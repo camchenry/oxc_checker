@@ -38,3 +38,15 @@ This directory contains checked-in, trimmed TypeScript fixtures based on popular
   - `source/keys-of-union.d.ts`
   - minimal supporting shapes from `source/internal/index.d.ts`, `source/is-equal.d.ts`, and `source/union-to-intersection.d.ts`
 - Curation notes: copied the stricter object utility shapes with compact local support types and an object-model usage file. The fixture exercises key remapping, defaulted options, exact omitted keys, required-key reconstruction, intersection flattening, and key extraction across unions.
+
+## Redux Toolkit
+
+- Repository: https://github.com/reduxjs/redux-toolkit
+- Commit: 7c49510ff5dc6aad7cda24a59ec6c38a1af053be
+- License: MIT
+- Fixture: `redux-toolkit/create-action.ts`
+- Source paths:
+  - `packages/toolkit/src/createAction.ts`
+  - `packages/toolkit/src/tsHelpers.ts`
+  - minimal supporting shape from `packages/toolkit/src/reduxImports.ts`
+- Curation notes: copied the action creator and helper type shapes with a compact runtime body and focused usage file. The fixture exercises conditional action creator selection, prepared payload callbacks, inferred meta and error fields, optional and void payloads, type predicate matchers, and matcher-to-action extraction.
