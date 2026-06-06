@@ -117,6 +117,12 @@ impl CheckerBuilder {
     }
 }
 
+impl Default for CheckerBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct NodeRef {
     pub program_id: ProgramId,
