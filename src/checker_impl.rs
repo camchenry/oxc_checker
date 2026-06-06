@@ -10,8 +10,8 @@ use oxc_ast::{
         PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
         TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
         TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        VariableDeclarationKind, VariableDeclarator,
+        TSTypeParameter, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
+        TSTypeReference, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -64,6 +64,15 @@ impl<'a> FunctionKind<'a> {
 pub(crate) enum CallKind<'a> {
     Call(&'a CallExpression<'a>),
     New(&'a NewExpression<'a>),
+}
+
+impl<'a> CallKind<'a> {
+    pub(crate) fn type_arguments(self) -> Option<&'a TSTypeParameterInstantiation<'a>> {
+        match self {
+            CallKind::Call(call_expression) => call_expression.type_arguments.as_deref(),
+            CallKind::New(new_expression) => new_expression.type_arguments.as_deref(),
+        }
+    }
 }
 
 bitflags! {
@@ -2450,7 +2459,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && !self.is_call_signature_applicable(
                 program_id,
                 signature.function,
-                call_expression,
+                CallKind::Call(call_expression),
                 node_id,
                 &substitutions,
             )
@@ -2467,10 +2476,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &'a TyFunction<'a>,
         call_kind: CallKind<'a>,
     ) -> HashMap<&'a str, Ty<'a>> {
-        let type_arguments = match call_kind {
-            CallKind::Call(call_expression) => call_expression.type_arguments.as_deref(),
-            CallKind::New(new_expression) => new_expression.type_arguments.as_deref(),
-        };
+        let type_arguments = call_kind.type_arguments();
         let flags = match call_kind {
             CallKind::Call(_) => SubstituteTypeFlags::NONE,
             CallKind::New(_) => SubstituteTypeFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
@@ -2543,30 +2549,40 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         function: &TyFunction<'a>,
-        call_expression: &'a CallExpression<'a>,
+        call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
         substitutions: &HashMap<&'a str, Ty<'a>>,
     ) -> bool {
-        if !self.has_compatible_type_argument_count(
-            function,
-            call_expression
-                .type_arguments
-                .as_ref()
-                .map_or(0, |type_arguments| type_arguments.params.len()),
-        ) {
+        let type_arguments = call_kind.type_arguments();
+        let type_argument_count =
+            type_arguments.map_or(0, |type_arguments| type_arguments.params.len());
+        if type_argument_count > function.type_parameters.len() {
             return false;
         }
-        if !self.has_compatible_argument_count(function, call_expression.arguments.len()) {
+
+        let arguments = match call_kind {
+            CallKind::Call(call_expression) => &call_expression.arguments,
+            CallKind::New(new_expression) => &new_expression.arguments,
+        };
+        let argument_count = arguments.len();
+
+        let minimum_argument_count = function
+            .parameters
+            .iter()
+            .filter(|parameter| !parameter.optional && !parameter.rest)
+            .count();
+        let has_rest_parameter = function.parameters.iter().any(|parameter| parameter.rest);
+
+        let has_compatible_argument_count = argument_count >= minimum_argument_count
+            && (has_rest_parameter || argument_count <= function.parameters.len());
+        if !has_compatible_argument_count {
             return false;
         }
 
         self.arguments_are_assignable_to_parameters(
             program_id,
             function,
-            call_expression
-                .arguments
-                .iter()
-                .map(|argument| argument.as_expression()),
+            arguments.iter().map(|argument| argument.as_expression()),
             node_id,
             substitutions,
         )
@@ -2676,10 +2692,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
 
         if require_applicable
-            && !self.is_construct_signature_applicable(
+            && !self.is_call_signature_applicable(
                 program_id,
                 signature.function,
-                new_expression,
+                CallKind::New(new_expression),
+                None,
                 &substitutions,
             )
         {
@@ -2692,62 +2709,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .return_type
                 .substitute_type_parameters(self.arena(), &substitutions),
         )
-    }
-
-    fn is_construct_signature_applicable(
-        &self,
-        program_id: program::ProgramId,
-        function: &TyFunction<'a>,
-        new_expression: &'a NewExpression<'a>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
-    ) -> bool {
-        if !self.has_compatible_type_argument_count(
-            function,
-            new_expression
-                .type_arguments
-                .as_ref()
-                .map_or(0, |type_arguments| type_arguments.params.len()),
-        ) {
-            return false;
-        }
-        if !self.has_compatible_argument_count(function, new_expression.arguments.len()) {
-            return false;
-        }
-
-        self.arguments_are_assignable_to_parameters(
-            program_id,
-            function,
-            new_expression
-                .arguments
-                .iter()
-                .map(|argument| argument.as_expression()),
-            None,
-            substitutions,
-        )
-    }
-
-    fn has_compatible_type_argument_count(
-        &self,
-        function: &TyFunction<'a>,
-        type_argument_count: usize,
-    ) -> bool {
-        type_argument_count <= function.type_parameters.len()
-    }
-
-    fn has_compatible_argument_count(
-        &self,
-        function: &TyFunction<'a>,
-        argument_count: usize,
-    ) -> bool {
-        let minimum_argument_count = function
-            .parameters
-            .iter()
-            .filter(|parameter| !parameter.optional && !parameter.rest)
-            .count();
-        let has_rest_parameter = function.parameters.iter().any(|parameter| parameter.rest);
-
-        argument_count >= minimum_argument_count
-            && (has_rest_parameter || argument_count <= function.parameters.len())
     }
 
     fn arguments_are_assignable_to_parameters(
