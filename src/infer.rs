@@ -13,7 +13,7 @@ use crate::{
     program::ProgramId,
     relations,
     types::{
-        TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyMapped, TyProperty,
+        MappedModifier, TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyMapped, TyProperty,
         TyTypeParameter, visit_type,
     },
 };
@@ -179,6 +179,12 @@ impl<'a> InferenceContext<'a> {
         self.inferences
             .iter()
             .position(|inference| inference.type_parameter.name == name)
+    }
+
+    fn type_parameter_by_name(&self, name: &str) -> Option<TyTypeParameter<'a>> {
+        self.inferences.iter().find_map(|inference| {
+            (inference.type_parameter.name == name).then_some(inference.type_parameter)
+        })
     }
 
     fn inference_for_type_parameter_mut(
@@ -1403,6 +1409,26 @@ fn infer_to_mapped_type<'a>(
     priority: InferencePriority,
     arena: crate::types::CheckerArena<'a>,
 ) {
+    infer_to_mapped_type_with_constraint(
+        parameter_mapped,
+        parameter_mapped.constraint,
+        argument_type,
+        context,
+        variance,
+        priority,
+        arena,
+    );
+}
+
+fn infer_to_mapped_type_with_constraint<'a>(
+    parameter_mapped: &TyMapped<'a>,
+    constraint_type: Ty<'a>,
+    argument_type: Ty<'a>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    priority: InferencePriority,
+    arena: crate::types::CheckerArena<'a>,
+) {
     // A same-shape mapped type, also called a homomorphic mapped type in
     // TypeScript terminology, is the common utility-type shape that maps directly
     // over the keys of a source type, for example:
@@ -1420,13 +1446,14 @@ fn infer_to_mapped_type<'a>(
     // reconstruct a same-shaped source candidate for the mapped target. That is the
     // first reverse-mapped inference case: from `{ value: number }` and
     // `{ [P in keyof T]: T[P] }`, infer `T` as `{ value: number }`.
-    let Some(parameter_target) = same_shape_mapped_type_target(parameter_mapped) else {
-        return infer_types_with_variance(
-            parameter_mapped.constraint,
+    let Some(parameter_target) = same_shape_mapped_constraint_target(constraint_type) else {
+        return infer_to_non_homomorphic_mapped_type(
+            parameter_mapped,
+            constraint_type,
             argument_type,
             context,
             variance,
-            priority.structural(),
+            priority,
             arena,
         );
     };
@@ -1457,14 +1484,138 @@ fn infer_to_mapped_type<'a>(
             infer_reverse_mapped_source_type(
                 parameter_mapped,
                 parameter_target,
+                Ty::object(arena, argument_object.properties.iter().copied()),
                 argument_object.properties.iter().copied(),
                 context,
                 variance,
                 arena,
             );
         }
+        Ty::Array(argument_array) => {
+            let reverse_candidate = if argument_array.readonly {
+                Ty::readonly_array(arena, argument_array.element_type)
+            } else {
+                Ty::array(arena, argument_array.element_type)
+            };
+            infer_reverse_mapped_source_type(
+                parameter_mapped,
+                parameter_target,
+                reverse_candidate,
+                [Ty::property("0", argument_array.element_type)],
+                context,
+                variance,
+                arena,
+            );
+        }
+        Ty::Tuple(argument_tuple) => {
+            let elements = argument_tuple
+                .elements
+                .iter()
+                .map(|element| reverse_mapped_tuple_element(*element, parameter_mapped, arena))
+                .collect::<Vec<_>>();
+            let reverse_candidate = if argument_tuple.readonly {
+                Ty::readonly_tuple(arena, elements)
+            } else {
+                Ty::tuple(arena, elements)
+            };
+            let properties = argument_tuple
+                .elements
+                .iter()
+                .enumerate()
+                .map(|(index, element)| Ty::property(arena.str(&index.to_string()), element.ty()));
+            infer_reverse_mapped_source_type(
+                parameter_mapped,
+                parameter_target,
+                reverse_candidate,
+                properties,
+                context,
+                variance,
+                arena,
+            );
+        }
         _ => infer_types_with_variance(
-            parameter_mapped.constraint,
+            constraint_type,
+            argument_type,
+            context,
+            variance,
+            priority.structural(),
+            arena,
+        ),
+    }
+}
+
+fn infer_to_non_homomorphic_mapped_type<'a>(
+    parameter_mapped: &TyMapped<'a>,
+    constraint_type: Ty<'a>,
+    argument_type: Ty<'a>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    priority: InferencePriority,
+    arena: crate::types::CheckerArena<'a>,
+) {
+    match constraint_type {
+        Ty::Union(union) => {
+            for constraint in &union.types {
+                infer_to_mapped_type_with_constraint(
+                    parameter_mapped,
+                    *constraint,
+                    argument_type,
+                    context,
+                    variance,
+                    priority,
+                    arena,
+                );
+            }
+        }
+        Ty::Intersection(intersection) => {
+            for constraint in &intersection.types {
+                infer_to_mapped_type_with_constraint(
+                    parameter_mapped,
+                    *constraint,
+                    argument_type,
+                    context,
+                    variance,
+                    priority,
+                    arena,
+                );
+            }
+        }
+        Ty::TypeReference(reference) if reference.type_arguments.is_empty() => {
+            let key_type = Ty::keyof(arena, argument_type);
+            infer_types_with_variance(
+                constraint_type,
+                key_type,
+                context,
+                variance,
+                InferencePriority::MappedTypeConstraint,
+                arena,
+            );
+            if let Some(extended_constraint) = context
+                .type_parameter_by_name(reference.name)
+                .and_then(|type_parameter| type_parameter.constraint_type)
+            {
+                infer_to_mapped_type_with_constraint(
+                    parameter_mapped,
+                    extended_constraint,
+                    argument_type,
+                    context,
+                    variance,
+                    priority,
+                    arena,
+                );
+            } else if let Some(property_types) = inferable_property_types(argument_type) {
+                infer_types_with_variance(
+                    parameter_mapped.template,
+                    Ty::union(arena, property_types),
+                    context,
+                    variance,
+                    priority.structural(),
+                    arena,
+                );
+            }
+        }
+        _ => infer_types_with_variance(
+            constraint_type,
             argument_type,
             context,
             variance,
@@ -1477,13 +1628,13 @@ fn infer_to_mapped_type<'a>(
 fn infer_reverse_mapped_source_type<'a>(
     parameter_mapped: &TyMapped<'a>,
     parameter_target: Ty<'a>,
+    reverse_candidate: Ty<'a>,
     argument_properties: impl IntoIterator<Item = TyProperty<'a>>,
     context: &mut InferenceContext<'a>,
     variance: InferenceVariance,
     arena: crate::types::CheckerArena<'a>,
 ) {
     let argument_properties = argument_properties.into_iter().collect::<Vec<_>>();
-    let reverse_candidate = Ty::object(arena, argument_properties.iter().copied());
 
     infer_types_with_variance(
         parameter_target,
@@ -1511,6 +1662,53 @@ fn infer_reverse_mapped_source_type<'a>(
             InferencePriority::SameShapeMappedType,
             arena,
         );
+    }
+}
+
+fn reverse_mapped_tuple_element<'a>(
+    element: TupleElement<'a>,
+    mapped: &TyMapped<'a>,
+    arena: crate::types::CheckerArena<'a>,
+) -> TupleElement<'a> {
+    match element {
+        TupleElement::Optional(ty)
+            if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) =>
+        {
+            TupleElement::Regular(remove_undefined_from_type(ty, arena))
+        }
+        _ => element,
+    }
+}
+
+fn remove_undefined_from_type<'a>(ty: Ty<'a>, arena: crate::types::CheckerArena<'a>) -> Ty<'a> {
+    let Ty::Union(union) = ty else {
+        return ty;
+    };
+    let types = union
+        .types
+        .iter()
+        .copied()
+        .filter(|ty| !matches!(ty, Ty::Undefined))
+        .collect::<Vec<_>>();
+    if types.is_empty() {
+        Ty::never()
+    } else {
+        Ty::union(arena, types)
+    }
+}
+
+fn inferable_property_types<'a>(ty: Ty<'a>) -> Option<Vec<Ty<'a>>> {
+    match ty {
+        Ty::Object(object) => Some(
+            object
+                .properties
+                .iter()
+                .map(|property| property.ty)
+                .collect(),
+        ),
+        Ty::Array(array) => Some(vec![array.element_type]),
+        Ty::Tuple(tuple) => Some(tuple.elements.iter().map(TupleElement::ty).collect()),
+        _ => None,
     }
 }
 
@@ -1585,7 +1783,11 @@ fn same_shape_mapped_type_target<'a>(mapped: &TyMapped<'a>) -> Option<Ty<'a>> {
     if mapped.name_type.is_some() {
         return None;
     }
-    let Ty::Keyof(keyof) = mapped.constraint else {
+    same_shape_mapped_constraint_target(mapped.constraint)
+}
+
+fn same_shape_mapped_constraint_target<'a>(constraint: Ty<'a>) -> Option<Ty<'a>> {
+    let Ty::Keyof(keyof) = constraint else {
         return None;
     };
     Some(keyof.target)

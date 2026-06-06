@@ -1,0 +1,116 @@
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                       ^: any   (TyAny)
+
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                          ^^^^^: { [P in keyof T]: T[P]; }   (TyMapped)
+
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                                    ^: any   (TyAny)
+
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                                               ^: any   (TyAny)
+
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                                                   ^: any   (TyAny)
+
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                                                     ^: any   (TyAny)
+
+declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+>                                                            ^: any   (TyAny)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                ^^^^^^^^^^^^^^: <T>(value: { readonly [P in keyof T]: T[P]; }) => T   (TyFunction)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                               ^: any   (TyAny)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                                  ^^^^^: { readonly [P in keyof T]: T[P]; }   (TyMapped)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                                                     ^: any   (TyAny)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                                                                ^: any   (TyAny)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                                                                    ^: any   (TyAny)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                                                                      ^: any   (TyAny)
+
+declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+>                                                                             ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                ^^^^^^^: <T, K extends keyof T>(value: { [P in K]: T[P]; }) => T   (TyFunction)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                        ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                           ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                                           ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                                              ^^^^^: { [P in K]: T[P]; }   (TyMapped)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                                                        ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                                                             ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                                                                 ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                                                                   ^: any   (TyAny)
+
+declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+>                                                                          ^: any   (TyAny)
+
+const objectValue = unwrap({ value: 1, name: "ready" });
+>     ^^^^^^^^^^^: { value: number; name: string; }   (TyObject)
+
+const objectValue = unwrap({ value: 1, name: "ready" });
+>                   ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+
+const objectValue = unwrap({ value: 1, name: "ready" });
+>                            ^^^^^: number   (TyNumber)
+
+const objectValue = unwrap({ value: 1, name: "ready" });
+>                                      ^^^^: string   (TyString)
+
+const arrayValue = unwrap([1, 2] as number[]);
+>     ^^^^^^^^^^: number[]   (TyArray)
+
+const arrayValue = unwrap([1, 2] as number[]);
+>                  ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+
+const tupleValue = unwrap([1, "ready"] as [number, string]);
+>     ^^^^^^^^^^: [number, string]   (TyTuple)
+
+const tupleValue = unwrap([1, "ready"] as [number, string]);
+>                  ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+
+const readonlyTupleValue = unwrapReadonly([1, "ready"] as readonly [number, string]);
+>     ^^^^^^^^^^^^^^^^^^: readonly [number, string]   (TyTuple)
+
+const readonlyTupleValue = unwrapReadonly([1, "ready"] as readonly [number, string]);
+>                          ^^^^^^^^^^^^^^: <T>(value: { readonly [P in keyof T]: T[P]; }) => T   (TyFunction)
+
+const pickValue = pickish({ value: 1 });
+>     ^^^^^^^^^: { value: number; }   (TyObject)
+
+const pickValue = pickish({ value: 1 });
+>                 ^^^^^^^: <T, K extends keyof T>(value: { [P in K]: T[P]; }) => T   (TyFunction)
+
+const pickValue = pickish({ value: 1 });
+>                           ^^^^^: number   (TyNumber)

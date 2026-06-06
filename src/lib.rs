@@ -2197,6 +2197,53 @@ mod test {
     }
 
     #[test]
+    fn generic_function_infers_reverse_mapped_arrays_and_tuples() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+        declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
+
+        const arrayValue = unwrap([1, 2]);
+        const tupleValue = unwrap([1, "ready"] as [number, string]);
+        const readonlyTupleValue = unwrapReadonly([1, "ready"] as readonly [number, string]);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "arrayValue").to_type_string(),
+            "number[]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "tupleValue").to_type_string(),
+            "[number, string]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "readonlyTupleValue").to_type_string(),
+            "readonly [number, string]"
+        );
+    }
+
+    #[test]
+    fn generic_function_infers_through_mapped_type_parameter_constraints() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
+
+        const picked = pickish({ value: 1 });
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "picked").to_type_string(),
+            "{ value: number; }"
+        );
+    }
+
+    #[test]
     fn function_overloads_select_matching_signature() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
