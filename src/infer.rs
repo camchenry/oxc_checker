@@ -168,30 +168,53 @@ impl<'a> InferenceContext<'a> {
         }
     }
 
-    pub(crate) fn into_substitutions(
+    pub(crate) fn resolve_inferences(
         mut self,
         arena: crate::types::CheckerArena<'a>,
+        flags: SubstituteTypeFlags,
+        mut instantiate_fallback: impl FnMut(Ty<'a>, &TypeParameterSubstitutions<'a>) -> Ty<'a>,
     ) -> TypeParameterSubstitutions<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
-        for inference in &mut self.inferences {
-            let inferred_type = inference.inferred_type.unwrap_or_else(|| {
-                let inferred_type = inferred_type_from_candidates(
-                    arena,
-                    &inference.candidates,
-                    &inference.contra_candidates,
-                );
-                inference.inferred_type = inferred_type;
-                inferred_type.unwrap_or(Ty::any())
-            });
-            if inference.is_fixed
-                || inference.top_level
-                || !inference.candidates.is_empty()
-                || !inference.contra_candidates.is_empty()
+
+        for index in 0..self.inferences.len() {
+            let mut inferred_type = self.get_inferred_type(index, arena);
+
+            if inferred_type.is_none()
+                && let Some(fallback_type) = self.inferences[index]
+                    .type_parameter
+                    .default_type
+                    .or(self.inferences[index].type_parameter.constraint_type)
             {
-                substitutions.insert(inference.type_parameter, inferred_type);
+                let fallback_type = instantiate_fallback(fallback_type, &substitutions);
+                self.inferences[index].inferred_type = Some(fallback_type);
+                inferred_type = Some(fallback_type);
+            }
+
+            if inferred_type.is_none() && flags.fill_unresolved_with_unknown() {
+                self.inferences[index].inferred_type = Some(Ty::unknown());
+                inferred_type = Some(Ty::unknown());
+            }
+
+            if let Some(inferred_type) = inferred_type {
+                substitutions.insert(self.inferences[index].type_parameter, inferred_type);
             }
         }
         substitutions
+    }
+
+    fn get_inferred_type(
+        &mut self,
+        index: usize,
+        arena: crate::types::CheckerArena<'a>,
+    ) -> Option<Ty<'a>> {
+        if self.inferences[index].inferred_type.is_none() {
+            self.inferences[index].inferred_type = inferred_type_from_candidates(
+                arena,
+                &self.inferences[index].candidates,
+                &self.inferences[index].contra_candidates,
+            );
+        }
+        self.inferences[index].inferred_type
     }
 }
 
@@ -757,14 +780,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             infer_types(parameter.ty, argument_type, &mut context);
         }
 
-        let mut substitutions = context.into_substitutions(self.arena());
-        self.add_type_parameter_fallback_substitutions(
-            function,
-            &mut substitutions,
+        context.resolve_inferences(
+            self.arena(),
             SubstituteTypeFlags::NONE,
-        );
-
-        substitutions
+            |fallback_type, substitutions| {
+                self.instantiate_type(fallback_type, &substitutions.to_mapper(self.arena()))
+            },
+        )
     }
 
     pub(crate) fn infer_function_return_type(
@@ -848,14 +870,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             infer_types(parameter.ty, argument_type, &mut context);
         }
 
-        let mut substitutions = context.into_substitutions(self.arena());
-        self.add_type_parameter_fallback_substitutions(
-            function,
-            &mut substitutions,
+        context.resolve_inferences(
+            self.arena(),
             SubstituteTypeFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
-        );
-
-        substitutions
+            |fallback_type, substitutions| {
+                self.instantiate_type(fallback_type, &substitutions.to_mapper(self.arena()))
+            },
+        )
     }
 }
 

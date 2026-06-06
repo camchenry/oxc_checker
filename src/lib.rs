@@ -2583,9 +2583,11 @@ mod test {
         declare const a: A;
         declare const fn: <T = A>(x: T) => T;
         declare function foo<T = A>(x?: T): T;
+        declare function dependent<T, U = T>(x: T): U;
 
         const fromDefault = foo();
         const fromInference = foo(a);
+        const fromDependentDefault = dependent("ready");
         "#,
         );
 
@@ -2605,6 +2607,10 @@ mod test {
             get_global_symbol_type(&ret, "fromInference"),
             Ty::type_reference(arena(&ret), "A", std::iter::empty())
         );
+        assert_eq!(
+            get_global_symbol_type(&ret, "fromDependentDefault"),
+            Ty::string()
+        );
     }
 
     #[test]
@@ -2617,9 +2623,11 @@ mod test {
         declare const a: A;
         declare const fn: <T extends A>(x: T) => T;
         declare function foo<T extends A, U extends T = T>(x?: T, y?: U): [T, U];
+        declare function fallbackToConstraint<T extends string>(): T;
 
         const fromConstraint = foo();
         const fromInference = foo(a);
+        const stringConstraint = fallbackToConstraint();
         "#,
         );
 
@@ -2638,6 +2646,10 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "fromInference").to_type_string(),
             "[A, A]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "stringConstraint"),
+            Ty::string()
         );
     }
 
