@@ -1,0 +1,596 @@
+export type ApplyDefaultOptions<
+>           ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped)
+
+  Options extends object,
+> ^^^^^^^: any   (TyAny)
+
+  Defaults extends Required<Options>,
+> ^^^^^^^^: any   (TyAny)
+
+  Defaults extends Required<Options>,
+>                  ^^^^^^^^: any   (TyAny)
+
+  Defaults extends Required<Options>,
+>                           ^^^^^^^: any   (TyAny)
+
+  SpecifiedOptions extends Options,
+> ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  SpecifiedOptions extends Options,
+>                          ^^^^^^^: any   (TyAny)
+
+  [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
+>  ^^^: any   (TyAny)
+
+  [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
+>               ^^^^^^^^: any   (TyAny)
+
+  [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
+>                          ^^^: any   (TyAny)
+
+  [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
+>                                            ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
+>     ^^^^^^^^^^^: any   (TyAny)
+
+    ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
+>                 ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
+>                                  ^^^: any   (TyAny)
+
+    ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
+>                                              ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    : Defaults[Key]
+>     ^^^^^^^^: any   (TyAny)
+
+    : Defaults[Key]
+>              ^^^: any   (TyAny)
+
+export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
+>           ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped)
+
+export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
+>                           ^^^^^^^^: any   (TyAny)
+
+export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
+>                                     ^^^^: any   (TyAny)
+
+export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
+>                                                        ^^^^^^^^: any   (TyAny)
+
+  [Key in Keys]: BaseType[Key]
+>  ^^^: any   (TyAny)
+
+  [Key in Keys]: BaseType[Key]
+>         ^^^^: any   (TyAny)
+
+  [Key in Keys]: BaseType[Key]
+>                ^^^^^^^^: any   (TyAny)
+
+  [Key in Keys]: BaseType[Key]
+>                         ^^^: any   (TyAny)
+
+export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
+>           ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false   (TyConditional)
+
+export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
+>                   ^: any   (TyAny)
+
+export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
+>                      ^: any   (TyAny)
+
+export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
+>                             ^: any   (TyAny)
+
+export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
+>                                     ^: any   (TyAny)
+
+export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
+>                                               ^: any   (TyAny)
+
+export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
+>                                                                   ^: any   (TyAny)
+
+  G extends B ? 1 : 2
+> ^: any   (TyAny)
+
+  G extends B ? 1 : 2
+>           ^: any   (TyAny)
+
+export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
+>           ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
+
+export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
+>                    ^: any   (TyAny)
+
+export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
+>                            ^^^^^^^: any   (TyAny)
+
+export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
+>                                             ^: any   (TyAny)
+
+export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
+>                                                 ^: any   (TyAny)
+
+export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
+>                                                   ^^^^^^^: any   (TyAny)
+
+import type { ApplyDefaultOptions } from './internal/index'
+>             ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped)
+
+import type { IsEqual } from './is-equal'
+>             ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false   (TyConditional)
+
+type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
+>    ^^^^^^: IsEqual<KeyType, ExcludeType> extends true ? never : KeyType extends ExcludeType ? never : KeyType   (TyConditional)
+
+type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
+>           ^^^^^^^: any   (TyAny)
+
+type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
+>                    ^^^^^^^^^^^: any   (TyAny)
+
+type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
+>                                   ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false   (TyConditional)
+
+type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
+>                                   ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false   (TyConditional)
+
+type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
+>                                           ^^^^^^^: any   (TyAny)
+
+type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
+>                                                    ^^^^^^^^^^^: any   (TyAny)
+
+  : KeyType extends ExcludeType
+>   ^^^^^^^: any   (TyAny)
+
+  : KeyType extends ExcludeType
+>                   ^^^^^^^^^^^: any   (TyAny)
+
+    : KeyType
+>     ^^^^^^^: any   (TyAny)
+
+export type ExceptOptions = {
+>           ^^^^^^^^^^^^^: { requireExactProps?: boolean; }   (TyObject)
+
+  requireExactProps?: boolean
+> ^^^^^^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+type DefaultExceptOptions = {
+>    ^^^^^^^^^^^^^^^^^^^^: { requireExactProps: false; }   (TyObject)
+
+  requireExactProps: false
+> ^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral)
+
+export type Except<
+>           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+  ObjectType,
+> ^^^^^^^^^^: any   (TyAny)
+
+  KeysType extends keyof ObjectType,
+> ^^^^^^^^: any   (TyAny)
+
+  KeysType extends keyof ObjectType,
+>                        ^^^^^^^^^^: any   (TyAny)
+
+  Options extends ExceptOptions = {},
+> ^^^^^^^: any   (TyAny)
+
+  Options extends ExceptOptions = {},
+>                 ^^^^^^^^^^^^^: any   (TyAny)
+
+> = _Except<
+>   ^^^^^^^: any   (TyAny)
+
+  ObjectType,
+> ^^^^^^^^^^: any   (TyAny)
+
+  KeysType,
+> ^^^^^^^^: any   (TyAny)
+
+  ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
+> ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped)
+
+  ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
+> ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped)
+
+  ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
+>                     ^^^^^^^^^^^^^: any   (TyAny)
+
+  ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
+>                                    ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
+>                                                          ^^^^^^^: any   (TyAny)
+
+type _Except<
+>    ^^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (Options["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+  ObjectType,
+> ^^^^^^^^^^: any   (TyAny)
+
+  KeysType extends keyof ObjectType,
+> ^^^^^^^^: any   (TyAny)
+
+  KeysType extends keyof ObjectType,
+>                        ^^^^^^^^^^: any   (TyAny)
+
+  Options extends Required<ExceptOptions>,
+> ^^^^^^^: any   (TyAny)
+
+  Options extends Required<ExceptOptions>,
+>                 ^^^^^^^^: any   (TyAny)
+
+  Options extends Required<ExceptOptions>,
+>                          ^^^^^^^^^^^^^: any   (TyAny)
+
+  [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
+>  ^^^^^^^: any   (TyAny)
+
+  [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
+>                   ^^^^^^^^^^: any   (TyAny)
+
+  [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
+>                                 ^^^^^^: any   (TyAny)
+
+  [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
+>                                        ^^^^^^^: any   (TyAny)
+
+  [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
+>                                                 ^^^^^^^^: any   (TyAny)
+
+  [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
+>                                                             ^^^^^^^^^^: any   (TyAny)
+
+  [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
+>                                                                        ^^^^^^^: any   (TyAny)
+
+} & (Options['requireExactProps'] extends true
+>    ^^^^^^^: any   (TyAny)
+
+  ? Partial<Record<KeysType, never>>
+>   ^^^^^^^: any   (TyAny)
+
+  ? Partial<Record<KeysType, never>>
+>           ^^^^^^: any   (TyAny)
+
+  ? Partial<Record<KeysType, never>>
+>                  ^^^^^^^^: any   (TyAny)
+
+import type { Except } from './except'
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+import type { HomomorphicPick } from './internal/index'
+>             ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped)
+
+import type { Simplify } from './simplify'
+>             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
+
+export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
+>           ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+
+export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
+>                       ^^^^^^^^: any   (TyAny)
+
+export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
+>                                 ^^^^: any   (TyAny)
+
+export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
+>                                                    ^^^^^^^^: any   (TyAny)
+
+export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
+>                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
+
+export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
+>                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>        ^^^^^^^^: any   (TyAny)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>                  ^^^^: any   (TyAny)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>                          ^^^^^^^^: any   (TyAny)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>                                   ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>                                   ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>                                                   ^^^^^^^^: any   (TyAny)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>                                                             ^^^^: any   (TyAny)
+
+export type UnionToIntersection<Union> = (
+>           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional)
+
+export type UnionToIntersection<Union> = (
+>                               ^^^^^: any   (TyAny)
+
+  Union extends unknown ? (distributedUnion: Union) => void : never
+> ^^^^^: any   (TyAny)
+
+  Union extends unknown ? (distributedUnion: Union) => void : never
+>                          ^^^^^^^^^^^^^^^^: Union   (TyTypeReference)
+
+  Union extends unknown ? (distributedUnion: Union) => void : never
+>                                            ^^^^^: any   (TyAny)
+
+) extends (mergedIntersection: infer Intersection) => void
+>          ^^^^^^^^^^^^^^^^^^: infer Intersection   (TyInfer)
+
+) extends (mergedIntersection: infer Intersection) => void
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+  ? Intersection & Union
+>   ^^^^^^^^^^^^: any   (TyAny)
+
+  ? Intersection & Union
+>                  ^^^^^: any   (TyAny)
+
+import type { UnionToIntersection } from './union-to-intersection'
+>             ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional)
+
+export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
+>           ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
+
+export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
+>                       ^^^^^^^^^^: any   (TyAny)
+
+export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
+>                                           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional)
+
+export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
+>                                           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional)
+
+  ObjectType extends unknown ? Record<keyof ObjectType, never> : never
+> ^^^^^^^^^^: any   (TyAny)
+
+  ObjectType extends unknown ? Record<keyof ObjectType, never> : never
+>                              ^^^^^^: any   (TyAny)
+
+  ObjectType extends unknown ? Record<keyof ObjectType, never> : never
+>                                           ^^^^^^^^^^: any   (TyAny)
+
+import type { Except } from '../source/except'
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+import type { KeysOfUnion } from '../source/keys-of-union'
+>             ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
+
+import type { SetRequired } from '../source/set-required'
+>             ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+
+import type { Simplify } from '../source/simplify'
+>             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
+
+type User = {
+>    ^^^^: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject)
+
+  id: string
+> ^^: string   (TyString)
+
+  name?: string
+> ^^^^: string | undefined   (TyUnion)
+
+  email?: string
+> ^^^^^: string | undefined   (TyUnion)
+
+  profile: {
+> ^^^^^^^: { avatarUrl?: string; flags: string[]; }   (TyObject)
+
+    avatarUrl?: string
+>   ^^^^^^^^^: string | undefined   (TyUnion)
+
+    flags: string[]
+>   ^^^^^: string[]   (TyArray)
+
+type PublicUser = Except<User, 'email'>
+>    ^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; }   (TyMapped)
+
+type PublicUser = Except<User, 'email'>
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+type PublicUser = Except<User, 'email'>
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+type PublicUser = Except<User, 'email'>
+>                        ^^^^: any   (TyAny)
+
+type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
+>    ^^^^^^^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; }   (TyMapped)
+
+type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
+>                              ^^^^: any   (TyAny)
+
+type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
+>                                               ^^^^^^^^^^^^^^^^^: true   (TyBooleanLiteral)
+
+type ContactableUser = SetRequired<User, 'name' | 'email'>
+>    ^^^^^^^^^^^^^^^: { [KeyType in keyof (Except<User, "name" | "email", {}> & Required<HomomorphicPick<User, "name" | "email">>)]: (Except<User, "name" | "email", {}> & Required<HomomorphicPick<User, "name" | "email">>)[KeyType]; }   (TyMapped)
+
+type ContactableUser = SetRequired<User, 'name' | 'email'>
+>                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+
+type ContactableUser = SetRequired<User, 'name' | 'email'>
+>                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+
+type ContactableUser = SetRequired<User, 'name' | 'email'>
+>                                  ^^^^: any   (TyAny)
+
+type UserPreview = Simplify<
+>    ^^^^^^^^^^^: { [KeyType in keyof (Except<ContactableUser, "profile", {}> & { displayName: string; })]: (Except<ContactableUser, "profile", {}> & { displayName: string; })[KeyType]; }   (TyMapped)
+
+type UserPreview = Simplify<
+>                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
+
+type UserPreview = Simplify<
+>                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
+
+  Except<ContactableUser, 'profile'> & { displayName: string }
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+  Except<ContactableUser, 'profile'> & { displayName: string }
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+
+  Except<ContactableUser, 'profile'> & { displayName: string }
+>        ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  Except<ContactableUser, 'profile'> & { displayName: string }
+>                                        ^^^^^^^^^^^: string   (TyString)
+
+type CreatedEvent = {
+>    ^^^^^^^^^^^^: { type: "created"; user: User; }   (TyObject)
+
+  type: 'created'
+> ^^^^: "created"   (TyStringLiteral)
+
+  user: User
+> ^^^^: User   (TyTypeReference)
+
+  user: User
+>       ^^^^: any   (TyAny)
+
+type DeletedEvent = {
+>    ^^^^^^^^^^^^: { type: "deleted"; id: string; actor?: string; }   (TyObject)
+
+  type: 'deleted'
+> ^^^^: "deleted"   (TyStringLiteral)
+
+  id: string
+> ^^: string   (TyString)
+
+  actor?: string
+> ^^^^^: string | undefined   (TyUnion)
+
+type Event = CreatedEvent | DeletedEvent
+>    ^^^^^: CreatedEvent | DeletedEvent   (TyUnion)
+
+type Event = CreatedEvent | DeletedEvent
+>            ^^^^^^^^^^^^: any   (TyAny)
+
+type Event = CreatedEvent | DeletedEvent
+>                           ^^^^^^^^^^^^: any   (TyAny)
+
+type EventKey = KeysOfUnion<Event>
+>    ^^^^^^^^: keyof (((Event extends unknown ? Record<keyof Event, never> : never) extends unknown ? (distributedUnion: Event extends unknown ? Record<keyof Event, never> : never) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & (Event extends unknown ? Record<keyof Event, never> : never) : never)   (TyKeyof)
+
+type EventKey = KeysOfUnion<Event>
+>               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
+
+type EventKey = KeysOfUnion<Event>
+>               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
+
+type EventKey = KeysOfUnion<Event>
+>                           ^^^^^: any   (TyAny)
+
+const publicUser: PublicUser = {
+>     ^^^^^^^^^^: PublicUser   (TyTypeReference)
+
+const publicUser: PublicUser = {
+>                 ^^^^^^^^^^: any   (TyAny)
+
+  id: 'user-1',
+> ^^: string   (TyString)
+
+  name: 'Ada',
+> ^^^^: string   (TyString)
+
+  profile: {
+> ^^^^^^^: { flags: string[]; }   (TyObject)
+
+    flags: ['admin'],
+>   ^^^^^: string[]   (TyArray)
+
+const strictPublicUser: StrictPublicUser = {
+>     ^^^^^^^^^^^^^^^^: StrictPublicUser   (TyTypeReference)
+
+const strictPublicUser: StrictPublicUser = {
+>                       ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  id: 'user-2',
+> ^^: string   (TyString)
+
+  profile: {
+> ^^^^^^^: { avatarUrl: string; flags: never[]; }   (TyObject)
+
+    avatarUrl: '/avatars/user-2.png',
+>   ^^^^^^^^^: string   (TyString)
+
+    flags: [],
+>   ^^^^^: never[]   (TyArray)
+
+const contactableUser: ContactableUser = {
+>     ^^^^^^^^^^^^^^^: ContactableUser   (TyTypeReference)
+
+const contactableUser: ContactableUser = {
+>                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  id: 'user-3',
+> ^^: string   (TyString)
+
+  name: 'Grace',
+> ^^^^: string   (TyString)
+
+  email: 'grace@example.com',
+> ^^^^^: string   (TyString)
+
+  profile: {
+> ^^^^^^^: { flags: string[]; }   (TyObject)
+
+    flags: ['beta'],
+>   ^^^^^: string[]   (TyArray)
+
+const userPreview: UserPreview = {
+>     ^^^^^^^^^^^: UserPreview   (TyTypeReference)
+
+const userPreview: UserPreview = {
+>                  ^^^^^^^^^^^: any   (TyAny)
+
+  id: 'user-4',
+> ^^: string   (TyString)
+
+  name: 'Lin',
+> ^^^^: string   (TyString)
+
+  email: 'lin@example.com',
+> ^^^^^: string   (TyString)
+
+  displayName: 'Lin H.',
+> ^^^^^^^^^^^: string   (TyString)
+
+const eventKey: EventKey = 'actor'
+>     ^^^^^^^^: EventKey   (TyTypeReference)
+
+const eventKey: EventKey = 'actor'
+>               ^^^^^^^^: any   (TyAny)
+
+const omittedEmail = strictPublicUser.email
+>     ^^^^^^^^^^^^: any   (TyAny)
+
+const omittedEmail = strictPublicUser.email
+>                    ^^^^^^^^^^^^^^^^: StrictPublicUser   (TyTypeReference)
+
+const omittedEmail = strictPublicUser.email
+>                                     ^^^^^: any   (TyAny)
