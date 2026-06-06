@@ -2136,6 +2136,26 @@ mod test {
     }
 
     #[test]
+    fn generic_function_detects_same_shape_mapped_type_inference() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface Box<T> { value: T; }
+        declare const mappedBox: { [P in keyof Box<number>]: Box<number>[P] };
+        declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+
+        const unwrapped = unwrap(mappedBox);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "unwrapped").to_type_string(),
+            "Box<number>"
+        );
+    }
+
+    #[test]
     fn function_overloads_select_matching_signature() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

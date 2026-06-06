@@ -11,8 +11,8 @@ use crate::{
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
     types::{
-        TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyProperty, TyTypeParameter,
-        visit_type,
+        TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyMapped, TyProperty,
+        TyTypeParameter, visit_type,
     },
 };
 
@@ -42,8 +42,8 @@ pub(crate) enum InferencePriority {
     Low,
     ReturnType,
     MappedTypeConstraint,
-    PartialHomomorphicMappedType,
-    HomomorphicMappedType,
+    PartialSameShapeMappedType,
+    SameShapeMappedType,
     NakedTypeVariable,
 }
 
@@ -912,6 +912,16 @@ fn infer_types_with_variance<'a>(
                 arena,
             );
         }
+        (Ty::Mapped(parameter_mapped), Ty::Mapped(argument_mapped)) => {
+            infer_mapped_types(
+                parameter_mapped,
+                argument_mapped,
+                context,
+                variance,
+                priority,
+                arena,
+            );
+        }
         (Ty::TypeReference(reference), _) if reference.type_arguments.is_empty() => {
             let Some(type_parameter) = context
                 .inference_by_name_mut(reference.name)
@@ -991,6 +1001,68 @@ fn infer_types_with_variance<'a>(
         }
         _ => {}
     }
+}
+
+fn infer_mapped_types<'a>(
+    parameter_mapped: &TyMapped<'a>,
+    argument_mapped: &TyMapped<'a>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    priority: InferencePriority,
+    arena: crate::types::CheckerArena<'a>,
+) {
+    // A same-shape mapped type, also called a homomorphic mapped type in
+    // TypeScript terminology, is the common utility-type shape that maps directly
+    // over the keys of a source type, for example:
+    //
+    //     { [P in keyof T]: T[P] }
+    //     Partial<T>  // { [P in keyof T]?: T[P] }
+    //     Readonly<T> // { readonly [P in keyof T]: T[P] }
+    //
+    // The important part is the `keyof T` constraint: the mapped type preserves the
+    // source type's property set, so inference can recover information about `T`
+    // instead of treating the mapped object as unrelated structure.
+    //
+    // This is only the classification/priority step. If both sides are same-shape
+    // mapped types, infer from their `keyof` targets with `SameShapeMappedType`
+    // priority. The later reverse-mapped step will handle cases where the source is
+    // an ordinary object and the target is same-shape, such as inferring `T` from
+    // `Partial<T>`.
+    match (
+        same_shape_mapped_type_target(parameter_mapped),
+        same_shape_mapped_type_target(argument_mapped),
+    ) {
+        (Some(parameter_target), Some(argument_target)) => infer_types_with_variance(
+            parameter_target,
+            argument_target,
+            context,
+            variance,
+            InferencePriority::SameShapeMappedType,
+            arena,
+        ),
+        _ => infer_types_with_variance(
+            parameter_mapped.constraint,
+            argument_mapped.constraint,
+            context,
+            variance,
+            priority.structural(),
+            arena,
+        ),
+    }
+}
+
+fn same_shape_mapped_type_target<'a>(mapped: &TyMapped<'a>) -> Option<Ty<'a>> {
+    // In this checker's `TyMapped` representation, the TypeScript shape
+    // `{ [P in keyof T]: ... }` is represented as `constraint = Ty::Keyof(T)`.
+    // A key remapping clause (`as ...`) means the mapped type may no longer preserve
+    // exactly the source key set, so keep those out of the same-shape bucket for now.
+    if mapped.name_type.is_some() {
+        return None;
+    }
+    let Ty::Keyof(keyof) = mapped.constraint else {
+        return None;
+    };
+    Some(keyof.target)
 }
 
 fn infer_tuple_elements<'a>(
