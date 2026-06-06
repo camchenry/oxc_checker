@@ -2980,7 +2980,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: NodeId,
         method: &'a oxc_ast::ast::TSMethodSignature<'a>,
     ) -> Ty<'a> {
-        let Some(method_name) = property_key_name_str(&method.key) else {
+        let default_function = || {
             let signature = self.signature_from_function_parts(
                 program_id,
                 SignatureKind::Call,
@@ -2988,7 +2988,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 method.params.as_ref(),
                 method.return_type.as_deref(),
             );
-            return Ty::Function(signature.function);
+            Ty::Function(signature.function)
+        };
+        let Some(method_name) = property_key_name_str(&method.key) else {
+            return default_function();
         };
 
         let Some(current_interface) =
@@ -2999,14 +3002,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     _ => None,
                 })
         else {
-            let signature = self.signature_from_function_parts(
-                program_id,
-                SignatureKind::Call,
-                method.type_parameters.as_deref(),
-                method.params.as_ref(),
-                method.return_type.as_deref(),
-            );
-            return Ty::Function(signature.function);
+            return default_function();
         };
 
         let current_type_arguments = self
