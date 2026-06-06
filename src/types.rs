@@ -320,6 +320,108 @@ impl MappedModifier {
     }
 }
 
+pub(crate) fn visit_type<'a>(ty: Ty<'a>, f: &mut impl FnMut(Ty<'a>)) {
+    f(ty);
+    match ty {
+        Ty::Object(object) => {
+            for property in &object.properties {
+                visit_type(property.ty, f);
+            }
+            for signature in &object.signatures {
+                visit_type(Ty::Function(signature.function), f);
+            }
+            for info in &object.index_infos {
+                visit_type(info.key_type, f);
+                visit_type(info.value_type, f);
+            }
+        }
+        Ty::ModuleNamespace(namespace) => {
+            for property in &namespace.properties {
+                visit_type(property.ty, f);
+            }
+        }
+        Ty::Function(function) => {
+            for type_parameter in &function.type_parameters {
+                if let Some(constraint_type) = type_parameter.constraint_type {
+                    visit_type(constraint_type, f);
+                }
+                if let Some(default_type) = type_parameter.default_type {
+                    visit_type(default_type, f);
+                }
+            }
+            for parameter in &function.parameters {
+                visit_type(parameter.ty, f);
+            }
+            visit_type(function.return_type, f);
+            if let Some(target_type) = function
+                .type_predicate
+                .and_then(|predicate| predicate.target_type)
+            {
+                visit_type(target_type, f);
+            }
+        }
+        Ty::TypeReference(reference) => {
+            for ty in &reference.type_arguments {
+                visit_type(*ty, f);
+            }
+        }
+        Ty::TypeQuery(query) => {
+            visit_type(query.resolved, f);
+            for ty in &query.type_arguments {
+                visit_type(*ty, f);
+            }
+        }
+        Ty::TemplateLiteral(template_literal) => {
+            for ty in &template_literal.expressions {
+                visit_type(*ty, f);
+            }
+        }
+        Ty::Array(array) => visit_type(array.element_type, f),
+        Ty::Tuple(tuple) => {
+            for element in &tuple.elements {
+                visit_type(element.ty(), f);
+            }
+        }
+        Ty::Union(union) => {
+            for ty in &union.types {
+                visit_type(*ty, f);
+            }
+        }
+        Ty::Intersection(intersection) => {
+            for ty in &intersection.types {
+                visit_type(*ty, f);
+            }
+        }
+        Ty::Keyof(keyof) => visit_type(keyof.target, f),
+        Ty::IndexedAccess(indexed_access) => {
+            visit_type(indexed_access.object_type, f);
+            visit_type(indexed_access.index_type, f);
+        }
+        Ty::Conditional(conditional) => {
+            visit_type(conditional.check_type, f);
+            visit_type(conditional.extends_type, f);
+            visit_type(conditional.true_type, f);
+            visit_type(conditional.false_type, f);
+        }
+        Ty::Infer(infer) => {
+            if let Some(constraint_type) = infer.type_parameter.constraint_type {
+                visit_type(constraint_type, f);
+            }
+            if let Some(default_type) = infer.type_parameter.default_type {
+                visit_type(default_type, f);
+            }
+        }
+        Ty::Mapped(mapped) => {
+            visit_type(mapped.constraint, f);
+            if let Some(name_type) = mapped.name_type {
+                visit_type(name_type, f);
+            }
+            visit_type(mapped.template, f);
+        }
+        _ => {}
+    }
+}
+
 impl<'a> Ty<'a> {
     pub fn none() -> Self {
         Self::None
@@ -1159,149 +1261,22 @@ fn simplify_type_equality_function_extends(
 }
 
 fn contains_unresolved_type_variable(ty: Ty<'_>) -> bool {
-    match ty {
-        Ty::TypeReference(reference) => {
-            reference.type_arguments.is_empty()
-                || reference
-                    .type_arguments
-                    .iter()
-                    .any(|ty| contains_unresolved_type_variable(*ty))
-        }
-        Ty::Object(object) => {
-            object
-                .properties
-                .iter()
-                .any(|property| contains_unresolved_type_variable(property.ty))
-                || object.signatures.iter().any(|signature| {
-                    signature
-                        .function
-                        .parameters
-                        .iter()
-                        .any(|parameter| contains_unresolved_type_variable(parameter.ty))
-                        || contains_unresolved_type_variable(signature.function.return_type)
-                })
-        }
-        Ty::ModuleNamespace(namespace) => namespace
-            .properties
-            .iter()
-            .any(|property| contains_unresolved_type_variable(property.ty)),
-        Ty::Function(function) => {
-            function
-                .parameters
-                .iter()
-                .any(|parameter| contains_unresolved_type_variable(parameter.ty))
-                || contains_unresolved_type_variable(function.return_type)
-                || function
-                    .type_predicate
-                    .and_then(|predicate| predicate.target_type)
-                    .is_some_and(contains_unresolved_type_variable)
-        }
-        Ty::TemplateLiteral(template_literal) => template_literal
-            .expressions
-            .iter()
-            .any(|ty| contains_unresolved_type_variable(*ty)),
-        Ty::Array(array) => contains_unresolved_type_variable(array.element_type),
-        Ty::Tuple(tuple) => tuple.elements.iter().any(|element| match element {
-            TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
-                contains_unresolved_type_variable(*ty)
-            }
-        }),
-        Ty::Union(union) => union
-            .types
-            .iter()
-            .any(|ty| contains_unresolved_type_variable(*ty)),
-        Ty::Intersection(intersection) => intersection
-            .types
-            .iter()
-            .any(|ty| contains_unresolved_type_variable(*ty)),
-        Ty::Keyof(keyof) => contains_unresolved_type_variable(keyof.target),
-        Ty::IndexedAccess(indexed_access) => {
-            contains_unresolved_type_variable(indexed_access.object_type)
-                || contains_unresolved_type_variable(indexed_access.index_type)
-        }
-        Ty::Conditional(conditional) => {
-            contains_unresolved_type_variable(conditional.check_type)
-                || contains_unresolved_type_variable(conditional.extends_type)
-                || contains_unresolved_type_variable(conditional.true_type)
-                || contains_unresolved_type_variable(conditional.false_type)
-        }
-        Ty::Infer(_) => true,
-        Ty::Mapped(mapped) => {
-            contains_unresolved_type_variable(mapped.constraint)
-                || mapped
-                    .name_type
-                    .is_some_and(contains_unresolved_type_variable)
-                || contains_unresolved_type_variable(mapped.template)
-        }
-        _ => false,
-    }
+    let mut contains = false;
+    visit_type(ty, &mut |ty| match ty {
+        Ty::TypeReference(reference) if reference.type_arguments.is_empty() => contains = true,
+        Ty::Function(function) if !function.type_parameters.is_empty() => contains = true,
+        Ty::Infer(_) => contains = true,
+        _ => {}
+    });
+    contains
 }
 
 fn contains_infer(ty: Ty<'_>) -> bool {
-    match ty {
-        Ty::Infer(_) => true,
-        Ty::Object(object) => {
-            object
-                .properties
-                .iter()
-                .any(|property| contains_infer(property.ty))
-                || object.signatures.iter().any(|signature| {
-                    signature
-                        .function
-                        .parameters
-                        .iter()
-                        .any(|parameter| contains_infer(parameter.ty))
-                        || contains_infer(signature.function.return_type)
-                })
-        }
-        Ty::ModuleNamespace(namespace) => namespace
-            .properties
-            .iter()
-            .any(|property| contains_infer(property.ty)),
-        Ty::Function(function) => {
-            function
-                .parameters
-                .iter()
-                .any(|parameter| contains_infer(parameter.ty))
-                || contains_infer(function.return_type)
-                || function
-                    .type_predicate
-                    .and_then(|predicate| predicate.target_type)
-                    .is_some_and(contains_infer)
-        }
-        Ty::TypeReference(reference) => reference
-            .type_arguments
-            .iter()
-            .any(|ty| contains_infer(*ty)),
-        Ty::TemplateLiteral(template_literal) => template_literal
-            .expressions
-            .iter()
-            .any(|ty| contains_infer(*ty)),
-        Ty::Array(array) => contains_infer(array.element_type),
-        Ty::Tuple(tuple) => tuple.elements.iter().any(|element| match element {
-            TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
-                contains_infer(*ty)
-            }
-        }),
-        Ty::Union(union) => union.types.iter().any(|ty| contains_infer(*ty)),
-        Ty::Intersection(intersection) => intersection.types.iter().any(|ty| contains_infer(*ty)),
-        Ty::Keyof(keyof) => contains_infer(keyof.target),
-        Ty::IndexedAccess(indexed_access) => {
-            contains_infer(indexed_access.object_type) || contains_infer(indexed_access.index_type)
-        }
-        Ty::Conditional(conditional) => {
-            contains_infer(conditional.check_type)
-                || contains_infer(conditional.extends_type)
-                || contains_infer(conditional.true_type)
-                || contains_infer(conditional.false_type)
-        }
-        Ty::Mapped(mapped) => {
-            contains_infer(mapped.constraint)
-                || mapped.name_type.is_some_and(contains_infer)
-                || contains_infer(mapped.template)
-        }
-        _ => false,
-    }
+    let mut contains = false;
+    visit_type(ty, &mut |ty| {
+        contains |= matches!(ty, Ty::Infer(_));
+    });
+    contains
 }
 
 fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {

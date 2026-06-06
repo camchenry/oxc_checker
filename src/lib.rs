@@ -2065,6 +2065,59 @@ mod test {
     }
 
     #[test]
+    fn generic_function_infers_from_array_and_tuple_shapes() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function first<T>(values: T[]): T;
+        declare function pair<T, U>(value: [T, U]): [T, U];
+        declare function tail<T extends unknown[]>(value: [string, ...T]): T;
+
+        const firstValue = first([1, 2]);
+        const pairValue = pair([1, "ready"] as [number, string]);
+        const tailValue = tail(["start", 1, true] as [string, number, boolean]);
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "firstValue"), Ty::number());
+        assert_eq!(
+            get_global_symbol_type(&ret, "pairValue").to_type_string(),
+            "[number, string]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "tailValue").to_type_string(),
+            "[number, boolean]"
+        );
+    }
+
+    #[test]
+    fn generic_function_infers_from_keyof_and_indexed_access_shapes() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const key: keyof Box<number>;
+        declare const indexed: Box<number>[Key];
+        declare function targetOf<T>(key: keyof T): T;
+        declare function objectOf<T, K>(value: T[K]): T;
+
+        const target = targetOf(key);
+        const object = objectOf(indexed);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "target").to_type_string(),
+            "Box<number>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "object").to_type_string(),
+            "Box<number>"
+        );
+    }
+
+    #[test]
     fn function_overloads_select_matching_signature() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

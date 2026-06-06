@@ -10,7 +10,10 @@ use crate::{
     checker_impl::{FunctionKind, GetTypeFlags},
     mapper::TypeParameterSubstitutions,
     program::ProgramId,
-    types::{TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyProperty, TyTypeParameter},
+    types::{
+        TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyProperty, TyTypeParameter,
+        visit_type,
+    },
 };
 
 const CONDITIONAL_INFER_MATCH_MAX_DEPTH: usize = 64;
@@ -274,100 +277,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn collect_infer_type_parameter_names(&self, ty: Ty<'a>, names: &mut Vec<&'a str>) {
-        match ty {
-            Ty::Infer(infer) => {
-                if !names.contains(&infer.type_parameter.name) {
-                    names.push(infer.type_parameter.name);
-                }
+        visit_type(ty, &mut |ty| {
+            if let Ty::Infer(infer) = ty
+                && !names.contains(&infer.type_parameter.name)
+            {
+                names.push(infer.type_parameter.name);
             }
-            Ty::Object(object) => {
-                for property in &object.properties {
-                    self.collect_infer_type_parameter_names(property.ty, names);
-                }
-                for signature in &object.signatures {
-                    self.collect_infer_type_parameter_names(
-                        Ty::Function(signature.function),
-                        names,
-                    );
-                }
-            }
-            Ty::ModuleNamespace(namespace) => {
-                for property in &namespace.properties {
-                    self.collect_infer_type_parameter_names(property.ty, names);
-                }
-            }
-            Ty::Function(function) => {
-                for type_parameter in &function.type_parameters {
-                    if let Some(constraint_type) = type_parameter.constraint_type {
-                        self.collect_infer_type_parameter_names(constraint_type, names);
-                    }
-                    if let Some(default_type) = type_parameter.default_type {
-                        self.collect_infer_type_parameter_names(default_type, names);
-                    }
-                }
-                for parameter in &function.parameters {
-                    self.collect_infer_type_parameter_names(parameter.ty, names);
-                }
-                self.collect_infer_type_parameter_names(function.return_type, names);
-                if let Some(target_type) = function
-                    .type_predicate
-                    .and_then(|predicate| predicate.target_type)
-                {
-                    self.collect_infer_type_parameter_names(target_type, names);
-                }
-            }
-            Ty::TypeReference(reference) => {
-                for ty in &reference.type_arguments {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::TypeQuery(query) => {
-                self.collect_infer_type_parameter_names(query.resolved, names);
-                for ty in &query.type_arguments {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::TemplateLiteral(template_literal) => {
-                for ty in &template_literal.expressions {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::Array(array) => self.collect_infer_type_parameter_names(array.element_type, names),
-            Ty::Tuple(tuple) => {
-                for element in &tuple.elements {
-                    self.collect_infer_type_parameter_names(element.ty(), names);
-                }
-            }
-            Ty::Union(union) => {
-                for ty in &union.types {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::Intersection(intersection) => {
-                for ty in &intersection.types {
-                    self.collect_infer_type_parameter_names(*ty, names);
-                }
-            }
-            Ty::Keyof(keyof) => self.collect_infer_type_parameter_names(keyof.target, names),
-            Ty::IndexedAccess(indexed_access) => {
-                self.collect_infer_type_parameter_names(indexed_access.object_type, names);
-                self.collect_infer_type_parameter_names(indexed_access.index_type, names);
-            }
-            Ty::Conditional(conditional) => {
-                self.collect_infer_type_parameter_names(conditional.check_type, names);
-                self.collect_infer_type_parameter_names(conditional.extends_type, names);
-                self.collect_infer_type_parameter_names(conditional.true_type, names);
-                self.collect_infer_type_parameter_names(conditional.false_type, names);
-            }
-            Ty::Mapped(mapped) => {
-                self.collect_infer_type_parameter_names(mapped.constraint, names);
-                if let Some(name_type) = mapped.name_type {
-                    self.collect_infer_type_parameter_names(name_type, names);
-                }
-                self.collect_infer_type_parameter_names(mapped.template, names);
-            }
-            _ => {}
-        }
+        });
     }
 
     pub(crate) fn conditional_type(
@@ -697,93 +613,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn collect_infer_types(&self, ty: Ty<'a>, f: &mut impl FnMut(&TyInfer<'a>)) {
-        match ty {
-            Ty::Infer(infer) => f(infer),
-            Ty::Object(object) => {
-                for property in &object.properties {
-                    self.collect_infer_types(property.ty, f);
-                }
-                for signature in &object.signatures {
-                    self.collect_infer_types(Ty::Function(signature.function), f);
-                }
+        visit_type(ty, &mut |ty| {
+            if let Ty::Infer(infer) = ty {
+                f(infer);
             }
-            Ty::ModuleNamespace(namespace) => {
-                for property in &namespace.properties {
-                    self.collect_infer_types(property.ty, f);
-                }
-            }
-            Ty::Function(function) => {
-                for type_parameter in &function.type_parameters {
-                    if let Some(constraint_type) = type_parameter.constraint_type {
-                        self.collect_infer_types(constraint_type, f);
-                    }
-                    if let Some(default_type) = type_parameter.default_type {
-                        self.collect_infer_types(default_type, f);
-                    }
-                }
-                for parameter in &function.parameters {
-                    self.collect_infer_types(parameter.ty, f);
-                }
-                self.collect_infer_types(function.return_type, f);
-                if let Some(target_type) = function
-                    .type_predicate
-                    .and_then(|predicate| predicate.target_type)
-                {
-                    self.collect_infer_types(target_type, f);
-                }
-            }
-            Ty::TypeReference(reference) => {
-                for ty in &reference.type_arguments {
-                    self.collect_infer_types(*ty, f);
-                }
-            }
-            Ty::TypeQuery(query) => {
-                self.collect_infer_types(query.resolved, f);
-                for ty in &query.type_arguments {
-                    self.collect_infer_types(*ty, f);
-                }
-            }
-            Ty::TemplateLiteral(template_literal) => {
-                for ty in &template_literal.expressions {
-                    self.collect_infer_types(*ty, f);
-                }
-            }
-            Ty::Array(array) => self.collect_infer_types(array.element_type, f),
-            Ty::Tuple(tuple) => {
-                for element in &tuple.elements {
-                    self.collect_infer_types(element.ty(), f);
-                }
-            }
-            Ty::Union(union) => {
-                for ty in &union.types {
-                    self.collect_infer_types(*ty, f);
-                }
-            }
-            Ty::Intersection(intersection) => {
-                for ty in &intersection.types {
-                    self.collect_infer_types(*ty, f);
-                }
-            }
-            Ty::Keyof(keyof) => self.collect_infer_types(keyof.target, f),
-            Ty::IndexedAccess(indexed_access) => {
-                self.collect_infer_types(indexed_access.object_type, f);
-                self.collect_infer_types(indexed_access.index_type, f);
-            }
-            Ty::Conditional(conditional) => {
-                self.collect_infer_types(conditional.check_type, f);
-                self.collect_infer_types(conditional.extends_type, f);
-                self.collect_infer_types(conditional.true_type, f);
-                self.collect_infer_types(conditional.false_type, f);
-            }
-            Ty::Mapped(mapped) => {
-                self.collect_infer_types(mapped.constraint, f);
-                if let Some(name_type) = mapped.name_type {
-                    self.collect_infer_types(name_type, f);
-                }
-                self.collect_infer_types(mapped.template, f);
-            }
-            _ => {}
-        }
+        });
     }
 
     pub(crate) fn infer_call_type_parameter_substitutions(
@@ -817,7 +651,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 node_id,
                 GetTypeFlags::NONE,
             );
-            infer_types(parameter.ty, argument_type, &mut context);
+            infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
         context.resolve_inferences(
@@ -907,7 +741,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 None,
                 GetTypeFlags::NONE,
             );
-            infer_types(parameter.ty, argument_type, &mut context);
+            infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
         context.resolve_inferences(
@@ -951,12 +785,14 @@ fn infer_types<'a>(
     parameter_type: Ty<'a>,
     argument_type: Ty<'a>,
     context: &mut InferenceContext<'a>,
+    arena: crate::types::CheckerArena<'a>,
 ) {
     infer_types_with_variance(
         parameter_type,
         argument_type,
         context,
         InferenceVariance::Covariant,
+        arena,
     );
 }
 
@@ -965,6 +801,7 @@ fn infer_types_with_variance<'a>(
     argument_type: Ty<'a>,
     context: &mut InferenceContext<'a>,
     variance: InferenceVariance,
+    arena: crate::types::CheckerArena<'a>,
 ) {
     match (parameter_type, argument_type) {
         (Ty::Union(parameter_union), _) => {
@@ -973,6 +810,50 @@ fn infer_types_with_variance<'a>(
                 argument_type,
                 context,
                 variance,
+                arena,
+            );
+        }
+        (Ty::Array(parameter_array), Ty::Array(argument_array)) => {
+            infer_types_with_variance(
+                parameter_array.element_type,
+                argument_array.element_type,
+                context,
+                variance,
+                arena,
+            );
+        }
+        (Ty::Tuple(parameter_tuple), Ty::Tuple(argument_tuple)) => {
+            infer_tuple_elements(
+                &parameter_tuple.elements,
+                &argument_tuple.elements,
+                context,
+                variance,
+                arena,
+            );
+        }
+        (Ty::Keyof(parameter_keyof), Ty::Keyof(argument_keyof)) => {
+            infer_types_with_variance(
+                parameter_keyof.target,
+                argument_keyof.target,
+                context,
+                variance,
+                arena,
+            );
+        }
+        (Ty::IndexedAccess(parameter_indexed), Ty::IndexedAccess(argument_indexed)) => {
+            infer_types_with_variance(
+                parameter_indexed.object_type,
+                argument_indexed.object_type,
+                context,
+                variance,
+                arena,
+            );
+            infer_types_with_variance(
+                parameter_indexed.index_type,
+                argument_indexed.index_type,
+                context,
+                variance,
+                arena,
             );
         }
         (Ty::TypeReference(reference), _) if reference.type_arguments.is_empty() => {
@@ -1003,7 +884,13 @@ fn infer_types_with_variance<'a>(
                 .iter()
                 .zip(argument_reference.type_arguments.iter())
             {
-                infer_types_with_variance(*parameter_type, *argument_type, context, variance);
+                infer_types_with_variance(
+                    *parameter_type,
+                    *argument_type,
+                    context,
+                    variance,
+                    arena,
+                );
             }
         }
         (Ty::Object(parameter_object), Ty::Object(argument_object)) => {
@@ -1019,6 +906,7 @@ fn infer_types_with_variance<'a>(
                         argument_property.ty,
                         context,
                         variance,
+                        arena,
                     );
                 }
             }
@@ -1029,16 +917,66 @@ fn infer_types_with_variance<'a>(
                 .iter()
                 .zip(argument_function.parameters.iter())
             {
-                infer_types_with_variance(parameter.ty, argument.ty, context, variance.flip());
+                infer_types_with_variance(
+                    parameter.ty,
+                    argument.ty,
+                    context,
+                    variance.flip(),
+                    arena,
+                );
             }
             infer_types_with_variance(
                 parameter_function.return_type,
                 argument_function.return_type,
                 context,
                 variance,
+                arena,
             );
         }
         _ => {}
+    }
+}
+
+fn infer_tuple_elements<'a>(
+    parameter_elements: &[TupleElement<'a>],
+    argument_elements: &[TupleElement<'a>],
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    arena: crate::types::CheckerArena<'a>,
+) {
+    if let Some((rest_index, TupleElement::Rest(rest_type))) = parameter_elements
+        .iter()
+        .enumerate()
+        .find(|(_, element)| matches!(element, TupleElement::Rest(_)))
+    {
+        if rest_index + 1 != parameter_elements.len() || argument_elements.len() < rest_index {
+            return;
+        }
+        for (parameter, argument) in parameter_elements
+            .iter()
+            .take(rest_index)
+            .zip(argument_elements.iter())
+        {
+            infer_types_with_variance(parameter.ty(), argument.ty(), context, variance, arena);
+        }
+        let rest_tuple = Ty::tuple(
+            arena,
+            argument_elements
+                .iter()
+                .skip(rest_index)
+                .copied()
+                .collect::<Vec<_>>(),
+        );
+        infer_types_with_variance(*rest_type, rest_tuple, context, variance, arena);
+        return;
+    }
+
+    if parameter_elements.len() != argument_elements.len() {
+        return;
+    }
+
+    for (parameter, argument) in parameter_elements.iter().zip(argument_elements.iter()) {
+        infer_types_with_variance(parameter.ty(), argument.ty(), context, variance, arena);
     }
 }
 
@@ -1047,6 +985,7 @@ fn infer_type_parameter_from_union<'a>(
     argument_type: Ty<'a>,
     context: &mut InferenceContext<'a>,
     variance: InferenceVariance,
+    arena: crate::types::CheckerArena<'a>,
 ) {
     let parameter_types = parameter_types
         .into_iter()
@@ -1088,7 +1027,7 @@ fn infer_type_parameter_from_union<'a>(
     };
 
     for candidate in candidates {
-        infer_types_with_variance(candidate, argument_type, context, variance);
+        infer_types_with_variance(candidate, argument_type, context, variance, arena);
     }
 }
 
