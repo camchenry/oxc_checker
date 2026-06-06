@@ -1361,6 +1361,39 @@ mod test {
     }
 
     #[test]
+    fn printing_type_arguments() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            interface Box<T> {
+                value: T;
+            }
+
+            function box<T>(value: T): Box<T> {
+                return { value };
+            }
+
+            interface Iterable<T, TReturn = any, TNext = any> {
+                [Symbol.iterator](): Iterator<T, TReturn, TNext>;
+            }
+
+            function from<T>(iterable: Iterable<T>): Array<T> {
+            }
+            ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "box").to_type_string(),
+            "<T>(value: T) => Box<T>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "from").to_type_string(),
+            "<T>(iterable: Iterable<T>): Array<T>"
+        )
+    }
+
+    #[test]
     fn streamed_query_style_aliases_render_at_use_sites() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
