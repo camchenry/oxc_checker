@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use oxc_ast::ast::{
     ArrowFunctionExpression, CallExpression, Expression, FormalParameters, Function, FunctionBody,
     NewExpression, ReturnStatement, TSSignature, TSTupleElement, TSType,
@@ -8,11 +6,11 @@ use oxc_ast_visit::Visit;
 use oxc_semantic::{NodeId, ScopeFlags};
 
 use crate::{
-    TyFunction,
     checker::CheckerReturn,
     checker_impl::{FunctionKind, GetTypeFlags, SubstituteTypeFlags},
+    mapper::TypeParameterSubstitutions,
     program::ProgramId,
-    types::Ty,
+    types::{Ty, TyFunction, TyTypeParameter},
 };
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
@@ -22,7 +20,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &'a TyFunction<'a>,
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
-    ) -> HashMap<&'a str, Ty<'a>> {
+    ) -> TypeParameterSubstitutions<'a> {
         let (mut substitutions, explicit_type_parameters) = self
             .explicit_type_parameter_substitutions(
                 program_id,
@@ -33,8 +31,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let inferable_type_parameters = function
             .type_parameters
             .iter()
-            .map(|type_parameter| type_parameter.name)
-            .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
+            .copied()
+            .filter(|type_parameter| !explicit_type_parameters.contains(&type_parameter.name))
             .collect::<Vec<_>>();
 
         for (argument, parameter) in call_expression
@@ -121,7 +119,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: ProgramId,
         function: &'a TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
-    ) -> HashMap<&'a str, Ty<'a>> {
+    ) -> TypeParameterSubstitutions<'a> {
         let (mut substitutions, explicit_type_parameters) = self
             .explicit_type_parameter_substitutions(
                 program_id,
@@ -132,8 +130,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let inferable_type_parameters = function
             .type_parameters
             .iter()
-            .map(|type_parameter| type_parameter.name)
-            .filter(|type_parameter| !explicit_type_parameters.contains(type_parameter))
+            .copied()
+            .filter(|type_parameter| !explicit_type_parameters.contains(&type_parameter.name))
             .collect::<Vec<_>>();
 
         for (argument, parameter) in new_expression
@@ -198,8 +196,8 @@ impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
 pub fn infer_type_parameter_from_types<'a>(
     parameter_type: &Ty<'a>,
     argument_type: &Ty<'a>,
-    type_parameters: &[&'a str],
-    substitutions: &mut HashMap<&'a str, Ty<'a>>,
+    type_parameters: &[TyTypeParameter<'a>],
+    substitutions: &mut TypeParameterSubstitutions<'a>,
 ) {
     match (parameter_type, argument_type) {
         (Ty::Union(parameter_union), _) => {
@@ -211,15 +209,18 @@ pub fn infer_type_parameter_from_types<'a>(
             );
         }
         (Ty::TypeReference(reference), _)
-            if reference.type_arguments.is_empty() && type_parameters.contains(&reference.name) =>
+            if reference.type_arguments.is_empty()
+                && type_parameters
+                    .iter()
+                    .any(|type_parameter| type_parameter.name == reference.name) =>
         {
             match substitutions.get(reference.name) {
-                Some(existing) if existing != argument_type => {
-                    substitutions.insert(reference.name, Ty::any());
+                Some(existing) if existing != *argument_type => {
+                    substitutions.insert_by_name(type_parameters, reference.name, Ty::any());
                 }
                 Some(_) => {}
                 None => {
-                    substitutions.insert(reference.name, *argument_type);
+                    substitutions.insert_by_name(type_parameters, reference.name, *argument_type);
                 }
             }
         }
@@ -283,8 +284,8 @@ pub fn infer_type_parameter_from_types<'a>(
 fn infer_type_parameter_from_union<'a>(
     parameter_types: impl IntoIterator<Item = Ty<'a>>,
     argument_type: &Ty<'a>,
-    type_parameters: &[&'a str],
-    substitutions: &mut HashMap<&'a str, Ty<'a>>,
+    type_parameters: &[TyTypeParameter<'a>],
+    substitutions: &mut TypeParameterSubstitutions<'a>,
 ) {
     let parameter_types = parameter_types
         .into_iter()
@@ -312,7 +313,7 @@ fn infer_type_parameter_from_union<'a>(
             .iter()
             .copied()
             .filter(|ty| {
-                matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && type_parameters.contains(&reference.name))
+                matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && type_parameters.iter().any(|type_parameter| type_parameter.name == reference.name))
             })
             .collect::<Vec<_>>()
     } else {

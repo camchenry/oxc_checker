@@ -1,12 +1,10 @@
+use crate::mapper::{TypeMapper, TypeParameterSubstitutions};
+use crate::type_set::{reduce_intersection_type, reduce_union_type};
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, PropertyKey, TSMappedTypeModifierOperator, TSType, TSTypeAnnotation,
     TSTypePredicate, TSTypePredicateName,
 };
-use std::collections::HashMap;
-
-use crate::mapper::TypeMapper;
-use crate::type_set::{reduce_intersection_type, reduce_union_type};
 
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
@@ -766,14 +764,6 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub(crate) fn substitute_type_parameters(
-        &self,
-        arena: CheckerArena<'a>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
-    ) -> Self {
-        self.instantiate_type(arena, &TypeMapper::from_substitutions(arena, substitutions))
-    }
-
     pub(crate) fn instantiate_type(
         &self,
         arena: CheckerArena<'a>,
@@ -1471,7 +1461,7 @@ fn simplify_conditional_type<'a>(
         let mut inferences = InferInferences::new(arena);
         return match infer_from_types(arena, check_type, extends_type, &mut inferences, 0) {
             InferMatchResult::Matched => {
-                true_type.substitute_type_parameters(arena, &inferences.substitutions)
+                true_type.instantiate_type(arena, &inferences.substitutions.to_mapper(arena))
             }
             InferMatchResult::NoMatch => false_type,
             InferMatchResult::Deferred => Ty::Conditional(arena.alloc(TyConditional {
@@ -1562,21 +1552,21 @@ impl InferMatchResult {
 #[derive(Clone)]
 struct InferInferences<'a> {
     arena: CheckerArena<'a>,
-    substitutions: HashMap<&'a str, Ty<'a>>,
+    substitutions: TypeParameterSubstitutions<'a>,
 }
 
 impl<'a> InferInferences<'a> {
     fn new(arena: CheckerArena<'a>) -> Self {
         Self {
             arena,
-            substitutions: HashMap::new(),
+            substitutions: TypeParameterSubstitutions::new(),
         }
     }
 
     fn add(&mut self, infer: &TyInfer<'a>, candidate: Ty<'a>) -> InferMatchResult {
         if let Some(constraint_type) = infer.type_parameter.constraint_type {
-            let constraint_type =
-                constraint_type.substitute_type_parameters(self.arena, &self.substitutions);
+            let constraint_type = constraint_type
+                .instantiate_type(self.arena, &self.substitutions.to_mapper(self.arena));
             if contains_infer(constraint_type) || contains_unresolved_type_variable(constraint_type)
             {
                 return InferMatchResult::Deferred;
@@ -1586,17 +1576,15 @@ impl<'a> InferInferences<'a> {
             }
         }
 
-        match self.substitutions.get(infer.type_parameter.name).copied() {
+        match self.substitutions.get(infer.type_parameter.name) {
             Some(existing) if existing == candidate => InferMatchResult::Matched,
             Some(existing) => {
                 let candidate = Ty::r#union(self.arena, [existing, candidate]);
-                self.substitutions
-                    .insert(infer.type_parameter.name, candidate);
+                self.substitutions.insert(infer.type_parameter, candidate);
                 InferMatchResult::Matched
             }
             None => {
-                self.substitutions
-                    .insert(infer.type_parameter.name, candidate);
+                self.substitutions.insert(infer.type_parameter, candidate);
                 InferMatchResult::Matched
             }
         }
@@ -2401,19 +2389,6 @@ impl<'a> Signature<'a> {
         Self { kind, function }
     }
 
-    pub(crate) fn substitute_type_parameters(
-        self,
-        arena: CheckerArena<'a>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
-    ) -> Self {
-        let Ty::Function(function) =
-            Ty::Function(self.function).substitute_type_parameters(arena, substitutions)
-        else {
-            unreachable!("signature substitution preserves function type")
-        };
-        Self::new(self.kind, function)
-    }
-
     pub(crate) fn instantiate_type(self, arena: CheckerArena<'a>, mapper: &TypeMapper<'a>) -> Self {
         let Ty::Function(function) = Ty::Function(self.function).instantiate_type(arena, mapper)
         else {
@@ -2989,11 +2964,8 @@ mod tests {
             Ty::never(),
             false,
         );
-        let substitutions = HashMap::from([("T", outer_array)]);
+        let mapper = TypeMapper::single(Ty::type_reference(arena, "T", []), outer_array);
 
-        assert_eq!(
-            conditional.substitute_type_parameters(arena, &substitutions),
-            Ty::string()
-        );
+        assert_eq!(conditional.instantiate_type(arena, &mapper), Ty::string());
     }
 }

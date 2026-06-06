@@ -1,8 +1,68 @@
-use std::collections::HashMap;
-
 use oxc_allocator::Vec as ArenaVec;
 
 use crate::types::{CheckerArena, Ty, TyTypeParameter};
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct TypeParameterSubstitutions<'a> {
+    pairs: Vec<(TyTypeParameter<'a>, Ty<'a>)>,
+}
+
+impl<'a> TypeParameterSubstitutions<'a> {
+    pub(crate) fn new() -> Self {
+        Self { pairs: Vec::new() }
+    }
+
+    pub(crate) fn insert(&mut self, type_parameter: TyTypeParameter<'a>, ty: Ty<'a>) {
+        if let Some((_, existing)) = self
+            .pairs
+            .iter_mut()
+            .find(|(existing, _)| existing.name == type_parameter.name)
+        {
+            *existing = ty;
+        } else {
+            self.pairs.push((type_parameter, ty));
+        }
+    }
+
+    pub(crate) fn insert_by_name(
+        &mut self,
+        type_parameters: &[TyTypeParameter<'a>],
+        name: &str,
+        ty: Ty<'a>,
+    ) {
+        if let Some(type_parameter) = type_parameters
+            .iter()
+            .find(|type_parameter| type_parameter.name == name)
+        {
+            self.insert(*type_parameter, ty);
+        }
+    }
+
+    pub(crate) fn get(&self, name: &str) -> Option<Ty<'a>> {
+        self.pairs
+            .iter()
+            .find_map(|(type_parameter, ty)| (type_parameter.name == name).then_some(*ty))
+    }
+
+    pub(crate) fn contains(&self, name: &str) -> bool {
+        self.get(name).is_some()
+    }
+
+    pub(crate) fn to_mapper(&self, arena: CheckerArena<'a>) -> TypeMapper<'a> {
+        TypeMapper::from_pairs(
+            arena,
+            self.pairs
+                .iter()
+                .map(|(type_parameter, ty)| {
+                    (
+                        Ty::type_reference(arena, type_parameter.name, std::iter::empty()),
+                        *ty,
+                    )
+                })
+                .collect(),
+        )
+    }
+}
 
 pub(crate) enum TypeMapper<'a> {
     Empty,
@@ -17,28 +77,8 @@ pub(crate) enum TypeMapper<'a> {
 }
 
 impl<'a> TypeMapper<'a> {
-    pub(crate) fn from_substitutions(
-        arena: CheckerArena<'a>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
-    ) -> Self {
-        match substitutions.len() {
-            0 => Self::Empty,
-            1 => {
-                let (name, target) = substitutions.iter().next().expect("checked length");
-                Self::Simple {
-                    source: Ty::type_reference(arena, name, std::iter::empty()),
-                    target: *target,
-                }
-            }
-            _ => Self::Array {
-                sources: arena.vec_from_iter(
-                    substitutions
-                        .keys()
-                        .map(|name| Ty::type_reference(arena, name, std::iter::empty())),
-                ),
-                targets: arena.vec_from_iter(substitutions.values().copied()),
-            },
-        }
+    pub(crate) fn single(source: Ty<'a>, target: Ty<'a>) -> Self {
+        Self::Simple { source, target }
     }
 
     pub(crate) fn from_type_parameters_and_arguments(

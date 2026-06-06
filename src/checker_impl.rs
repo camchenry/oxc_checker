@@ -21,7 +21,7 @@ use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, UnaryOperator},
 };
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
@@ -31,7 +31,7 @@ use crate::{
     infer::ts_type_contains_infer,
     is_iterable_type_reference, is_mapped_empty_object_intersection,
     is_promise_like_type_reference,
-    mapper::TypeMapper,
+    mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_name_to_str,
     ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
@@ -1305,9 +1305,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         for property in properties {
             let key_type = Ty::string_literal(self.arena(), property.name);
-            let substitutions = HashMap::from([(mapped.key, key_type)]);
+            let mapper = TypeMapper::single(
+                Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                key_type,
+            );
             let property_name = if let Some(name_type) = mapped.name_type {
-                let name_type = name_type.substitute_type_parameters(self.arena(), &substitutions);
+                let name_type = name_type.instantiate_type(self.arena(), &mapper);
                 let name_type = self.expand_type_at_use(program_id, name_type, depth + 1);
                 if name_type.is_never() {
                     continue;
@@ -1316,9 +1319,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             } else {
                 property.name
             };
-            let ty = mapped
-                .template
-                .substitute_type_parameters(self.arena(), &substitutions);
+            let ty = mapped.template.instantiate_type(self.arena(), &mapper);
             let ty = self.expand_type_at_use(program_id, ty, depth + 1);
             expanded.push(TyProperty {
                 name: property_name,
@@ -1349,10 +1350,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        let substitutions = HashMap::from([(mapped.key, Ty::number())]);
-        let element_type = mapped
-            .template
-            .substitute_type_parameters(self.arena(), &substitutions);
+        let mapper = TypeMapper::single(
+            Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+            Ty::number(),
+        );
+        let element_type = mapped.template.instantiate_type(self.arena(), &mapper);
         let element_type = self.expand_type_at_use(program_id, element_type, depth + 1);
         Some(Ty::array(self.arena(), element_type))
     }
@@ -1369,10 +1371,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let key_types = index_signature_key_types(mapped.constraint)?;
         let index_infos = key_types.into_iter().map(|key_type| {
-            let substitutions = HashMap::from([(mapped.key, key_type)]);
-            let ty = mapped
-                .template
-                .substitute_type_parameters(self.arena(), &substitutions);
+            let mapper = TypeMapper::single(
+                Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                key_type,
+            );
+            let ty = mapped.template.instantiate_type(self.arena(), &mapper);
             let ty = self.expand_type_at_use(program_id, ty, depth + 1);
             IndexInfo {
                 key_type,
@@ -1505,7 +1508,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         &alias.type_annotation,
                         depth + 1,
                     )
-                    .substitute_type_parameters(self.arena(), &substitutions);
+                    .instantiate_type(self.arena(), &substitutions.to_mapper(self.arena()));
                 Some(self.expand_type_at_use(program_id, ty, depth + 1))
             }
             AstKind::BindingIdentifier(_) => {
@@ -1543,7 +1546,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         &alias.type_annotation,
                         depth + 1,
                     )
-                    .substitute_type_parameters(self.arena(), &substitutions);
+                    .instantiate_type(self.arena(), &substitutions.to_mapper(self.arena()));
                 Some(self.expand_type_at_use(program_id, ty, depth + 1))
             }
             AstKind::BindingIdentifier(_) => {
@@ -1819,9 +1822,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     alias.type_parameters.as_deref(),
                     reference,
                 );
+                let mapper = substitutions.to_mapper(self.arena());
                 let ty = self
                     .get_type_from_ts_type(program_id, &alias.type_annotation)
-                    .substitute_type_parameters(self.arena(), &substitutions);
+                    .instantiate_type(self.arena(), &mapper);
                 Some(self.apparent_type_for_conditional_match(program_id, ty, depth + 1))
             }
             AstKind::BindingIdentifier(_) => {
@@ -1855,6 +1859,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 interface.type_parameters.as_deref(),
                 reference,
             );
+            let mapper = substitutions.to_mapper(self.arena());
 
             for signature in &interface.body.body {
                 match signature {
@@ -1868,7 +1873,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                             },
                         );
-                        let ty = ty.substitute_type_parameters(self.arena(), &substitutions);
+                        let ty = ty.instantiate_type(self.arena(), &mapper);
                         properties.push(TyProperty {
                             name,
                             ty,
@@ -1889,8 +1894,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             method.params.as_ref(),
                             method.return_type.as_deref(),
                         );
-                        let signature =
-                            signature.substitute_type_parameters(self.arena(), &substitutions);
+                        let signature = signature.instantiate_type(self.arena(), &mapper);
                         properties.push(TyProperty {
                             name,
                             ty: Ty::Function(signature.function),
@@ -1907,9 +1911,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     if let Some(signature) =
                         self.signature_from_ts_signature(program_id, signature, kind)
                     {
-                        signatures.push(
-                            signature.substitute_type_parameters(self.arena(), &substitutions),
-                        );
+                        signatures.push(signature.instantiate_type(self.arena(), &mapper));
                     }
                 }
             }
@@ -1949,16 +1951,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::TSTypeAliasDeclaration(alias)
                 if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
             {
-                let type_parameters = self
-                    .type_parameters_from_declaration(program_id, alias.type_parameters.as_deref());
-                let substitutions = type_parameters
-                    .iter()
-                    .zip(type_arguments.iter())
-                    .map(|(type_parameter, type_argument)| (type_parameter.name, *type_argument))
-                    .collect::<HashMap<_, _>>();
+                let mapper = TypeMapper::from_type_parameters_and_arguments(
+                    self.arena(),
+                    self.type_parameters_from_declaration(
+                        program_id,
+                        alias.type_parameters.as_deref(),
+                    ),
+                    type_arguments.iter().copied(),
+                );
                 Some(
                     self.get_type_from_ts_type(program_id, &alias.type_annotation)
-                        .substitute_type_parameters(self.arena(), &substitutions),
+                        .instantiate_type(self.arena(), &mapper),
                 )
             }
             AstKind::BindingIdentifier(_) => {
@@ -1986,23 +1989,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return;
         }
 
-        let mut substitutions = HashMap::new();
+        let mut substitutions = TypeParameterSubstitutions::new();
         for (type_parameter, type_argument) in type_parameters.iter().zip(type_arguments.iter()) {
-            substitutions.insert(type_parameter.name, *type_argument);
+            substitutions.insert(*type_parameter, *type_argument);
         }
 
         for type_parameter in type_parameters.iter().skip(type_arguments.len()) {
             let Some(default_type) = type_parameter.default_type else {
                 break;
             };
-            let default_type = default_type.substitute_type_parameters(
-                self.arena(),
-                &self.substitutions_with_unresolved_type_parameters_as_any(
-                    &type_parameters,
-                    &substitutions,
-                ),
-            );
-            substitutions.insert(type_parameter.name, default_type);
+            let mut default_substitutions = substitutions.clone();
+            for unresolved in &type_parameters {
+                if !default_substitutions.contains(unresolved.name) {
+                    default_substitutions.insert(*unresolved, Ty::any());
+                }
+            }
+            let mapper = default_substitutions.to_mapper(self.arena());
+            let default_type = default_type.instantiate_type(self.arena(), &mapper);
+            substitutions.insert(*type_parameter, default_type);
             type_arguments.push(default_type);
         }
     }
@@ -2267,12 +2271,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             interface.type_parameters.as_deref(),
             reference,
         );
+        let mapper = substitutions.to_mapper(self.arena());
         interface
             .body
             .body
             .iter()
             .filter_map(|signature| self.signature_from_ts_signature(program_id, signature, kind))
-            .map(|signature| signature.substitute_type_parameters(self.arena(), &substitutions))
+            .map(|signature| signature.instantiate_type(self.arena(), &mapper))
             .collect()
     }
 
@@ -2289,13 +2294,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             AstKind::TSTypeAliasDeclaration(alias) => self.get_signatures_of_type(
                 self.get_type_from_ts_type(program_id, &alias.type_annotation)
-                    .substitute_type_parameters(
+                    .instantiate_type(
                         self.arena(),
-                        &self.type_parameter_substitutions_for_reference(
-                            program_id,
-                            alias.type_parameters.as_deref(),
-                            reference,
-                        ),
+                        &self
+                            .type_parameter_substitutions_for_reference(
+                                program_id,
+                                alias.type_parameters.as_deref(),
+                                reference,
+                            )
+                            .to_mapper(self.arena()),
                     ),
                 kind,
             ),
@@ -2446,7 +2453,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             call_expression,
             node_id,
         );
-        let mapper = TypeMapper::from_substitutions(self.arena(), &substitutions);
+        let mapper = substitutions.to_mapper(self.arena());
         let instantiated = signature
             .function
             .return_type
@@ -2472,7 +2479,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         function: &'a TyFunction<'a>,
         call_kind: CallKind<'a>,
-    ) -> HashMap<&'a str, Ty<'a>> {
+    ) -> TypeParameterSubstitutions<'a> {
         let type_arguments = call_kind.type_arguments();
         let flags = match call_kind {
             CallKind::Call(_) => SubstituteTypeFlags::NONE,
@@ -2491,8 +2498,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         function: &'a TyFunction<'a>,
         type_arguments: Option<&'a oxc_ast::ast::TSTypeParameterInstantiation<'a>>,
-    ) -> (HashMap<&'a str, Ty<'a>>, Vec<&'a str>) {
-        let mut substitutions = HashMap::new();
+    ) -> (TypeParameterSubstitutions<'a>, Vec<&'a str>) {
+        let mut substitutions = TypeParameterSubstitutions::new();
         let mut explicit_type_parameters = Vec::new();
 
         if let Some(type_arguments) = type_arguments {
@@ -2502,7 +2509,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .zip(type_arguments.params.iter())
             {
                 substitutions.insert(
-                    type_parameter.name,
+                    *type_parameter,
                     self.get_type_from_ts_type(program_id, type_argument),
                 );
                 explicit_type_parameters.push(type_parameter.name);
@@ -2515,29 +2522,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     pub(crate) fn add_type_parameter_fallback_substitutions(
         &self,
         function: &TyFunction<'a>,
-        substitutions: &mut HashMap<&'a str, Ty<'a>>,
+        substitutions: &mut TypeParameterSubstitutions<'a>,
         flags: SubstituteTypeFlags,
     ) {
         for type_parameter in &function.type_parameters {
-            if substitutions.contains_key(type_parameter.name) {
+            if substitutions.contains(type_parameter.name) {
                 continue;
             }
             if let Some(fallback_type) = type_parameter
                 .default_type
                 .or(type_parameter.constraint_type)
             {
+                let mapper = substitutions.to_mapper(self.arena());
                 substitutions.insert(
-                    type_parameter.name,
-                    fallback_type.substitute_type_parameters(self.arena(), substitutions),
+                    *type_parameter,
+                    fallback_type.instantiate_type(self.arena(), &mapper),
                 );
             }
         }
 
         if flags.fill_unresolved_with_unknown() {
             for type_parameter in &function.type_parameters {
-                substitutions
-                    .entry(type_parameter.name)
-                    .or_insert_with(Ty::unknown);
+                if !substitutions.contains(type_parameter.name) {
+                    substitutions.insert(*type_parameter, Ty::unknown());
+                }
             }
         }
     }
@@ -2548,7 +2556,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &TyFunction<'a>,
         call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
+        substitutions: &TypeParameterSubstitutions<'a>,
     ) -> bool {
         let type_arguments = call_kind.type_arguments();
         let type_argument_count =
@@ -2700,11 +2708,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
+        let mapper = substitutions.to_mapper(self.arena());
         Some(
             signature
                 .function
                 .return_type
-                .substitute_type_parameters(self.arena(), &substitutions),
+                .instantiate_type(self.arena(), &mapper),
         )
     }
 
@@ -2714,8 +2723,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &TyFunction<'a>,
         arguments: impl Iterator<Item = Option<&'a Expression<'a>>>,
         node_id: Option<NodeId>,
-        substitutions: &HashMap<&'a str, Ty<'a>>,
+        substitutions: &TypeParameterSubstitutions<'a>,
     ) -> bool {
+        let mapper = substitutions.to_mapper(self.arena());
         for (index, argument) in arguments.enumerate() {
             let Some(argument) = argument else {
                 continue;
@@ -2723,8 +2733,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
                 return false;
             };
-            let parameter_type =
-                parameter_type.substitute_type_parameters(self.arena(), substitutions);
+            let parameter_type = parameter_type.instantiate_type(self.arena(), &mapper);
             let argument_type = self.get_type_of_expression_with_node(
                 program_id,
                 argument,
@@ -2806,6 +2815,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 interface.type_parameters.as_deref(),
                 reference,
             );
+            let mapper = substitutions.to_mapper(self.arena());
             if let Some(property) = interface.body.body.iter().find_map(|signature| {
                 let TSSignature::TSPropertySignature(property) = signature else {
                     return None;
@@ -2818,7 +2828,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .map_or_else(Ty::any, |annotation| {
                         self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                     });
-                return Some(ty.substitute_type_parameters(self.arena(), &substitutions));
+                return Some(ty.instantiate_type(self.arena(), &mapper));
             }
         }
 
@@ -2831,6 +2841,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     interface.type_parameters.as_deref(),
                     reference,
                 );
+                let mapper = substitutions.to_mapper(self.arena());
                 interface.body.body.iter().filter_map(move |signature| {
                     let TSSignature::TSMethodSignature(method) = signature else {
                         return None;
@@ -2843,7 +2854,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             method.params.as_ref(),
                             method.return_type.as_deref(),
                         )
-                        .substitute_type_parameters(self.arena(), &substitutions)
+                        .instantiate_type(self.arena(), &mapper)
                     })
                 })
             })
@@ -2873,6 +2884,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     interface.type_parameters.as_deref(),
                     reference,
                 );
+                let mapper = substitutions.to_mapper(self.arena());
                 if let Some(property) = interface.body.body.iter().find_map(|signature| {
                     let TSSignature::TSPropertySignature(property) = signature else {
                         return None;
@@ -2887,7 +2899,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             .map_or_else(Ty::any, |annotation| {
                                 self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                             });
-                    return Some(ty.substitute_type_parameters(self.arena(), &substitutions));
+                    return Some(ty.instantiate_type(self.arena(), &mapper));
                 }
 
                 let method_signatures = interface
@@ -2906,7 +2918,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 method.params.as_ref(),
                                 method.return_type.as_deref(),
                             )
-                            .substitute_type_parameters(self.arena(), &substitutions)
+                            .instantiate_type(self.arena(), &mapper)
                         })
                     })
                     .collect::<Vec<_>>();
@@ -2988,6 +3000,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     interface.type_parameters.as_deref(),
                     &current_type_arguments,
                 );
+                let mapper = substitutions.to_mapper(self.arena());
                 interface.body.body.iter().filter_map(move |signature| {
                     let TSSignature::TSMethodSignature(candidate) = signature else {
                         return None;
@@ -3000,7 +3013,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             candidate.params.as_ref(),
                             candidate.return_type.as_deref(),
                         )
-                        .substitute_type_parameters(self.arena(), &substitutions)
+                        .instantiate_type(self.arena(), &mapper)
                     })
                 })
             })
@@ -3027,7 +3040,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         reference: &TyTypeReference<'a>,
-    ) -> HashMap<&'a str, Ty<'a>> {
+    ) -> TypeParameterSubstitutions<'a> {
         self.type_parameter_substitutions_for_type_arguments(
             program_id,
             type_parameters,
@@ -3040,42 +3053,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         type_arguments: &[Ty<'a>],
-    ) -> HashMap<&'a str, Ty<'a>> {
+    ) -> TypeParameterSubstitutions<'a> {
         let type_parameters = self.type_parameters_from_declaration(program_id, type_parameters);
-        let mut substitutions = HashMap::new();
+        let mut substitutions = TypeParameterSubstitutions::new();
 
         for (type_parameter, type_argument) in type_parameters.iter().zip(type_arguments.iter()) {
-            substitutions.insert(type_parameter.name, *type_argument);
+            substitutions.insert(*type_parameter, *type_argument);
         }
 
         for type_parameter in type_parameters.iter().skip(type_arguments.len()) {
             let Some(default_type) = type_parameter.default_type else {
                 break;
             };
-            let default_type = default_type.substitute_type_parameters(
-                self.arena(),
-                &self.substitutions_with_unresolved_type_parameters_as_any(
-                    &type_parameters,
-                    &substitutions,
-                ),
-            );
-            substitutions.insert(type_parameter.name, default_type);
+            let mut default_substitutions = substitutions.clone();
+            for unresolved in &type_parameters {
+                if !default_substitutions.contains(unresolved.name) {
+                    default_substitutions.insert(*unresolved, Ty::any());
+                }
+            }
+            let mapper = default_substitutions.to_mapper(self.arena());
+            let default_type = default_type.instantiate_type(self.arena(), &mapper);
+            substitutions.insert(*type_parameter, default_type);
         }
 
-        substitutions
-    }
-
-    fn substitutions_with_unresolved_type_parameters_as_any(
-        &self,
-        type_parameters: &[TyTypeParameter<'a>],
-        substitutions: &HashMap<&'a str, Ty<'a>>,
-    ) -> HashMap<&'a str, Ty<'a>> {
-        let mut substitutions = substitutions.clone();
-        for type_parameter in type_parameters {
-            substitutions
-                .entry(type_parameter.name)
-                .or_insert_with(Ty::any);
-        }
         substitutions
     }
 
@@ -3435,9 +3435,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     alias.type_parameters.as_deref(),
                     reference,
                 );
+                let mapper = substitutions.to_mapper(self.arena());
                 Some(
                     self.get_type_from_ts_type(program_id, &alias.type_annotation)
-                        .substitute_type_parameters(self.arena(), &substitutions),
+                        .instantiate_type(self.arena(), &mapper),
                 )
             }
             AstKind::BindingIdentifier(_) => {
@@ -3573,14 +3574,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .next()?;
         let parameter_type =
             self.get_call_parameter_type_at(callee_signature.function, argument_index)?;
-        Some(parameter_type.substitute_type_parameters(
-            self.arena(),
-            &self.explicit_call_type_parameter_substitutions(
-                program_id,
-                callee_signature.function,
-                CallKind::Call(call_expression),
-            ),
-        ))
+        let substitutions = self.explicit_call_type_parameter_substitutions(
+            program_id,
+            callee_signature.function,
+            CallKind::Call(call_expression),
+        );
+        let mapper = substitutions.to_mapper(self.arena());
+        Some(parameter_type.instantiate_type(self.arena(), &mapper))
     }
 
     fn get_contextual_type_of_construct_argument(
@@ -3614,14 +3614,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .next()?;
         let parameter_type =
             self.get_call_parameter_type_at(construct_signature.function, argument_index)?;
-        Some(parameter_type.substitute_type_parameters(
-            self.arena(),
-            &self.explicit_call_type_parameter_substitutions(
-                program_id,
-                construct_signature.function,
-                CallKind::New(new_expression),
-            ),
-        ))
+        let substitutions = self.explicit_call_type_parameter_substitutions(
+            program_id,
+            construct_signature.function,
+            CallKind::New(new_expression),
+        );
+        let mapper = substitutions.to_mapper(self.arena());
+        Some(parameter_type.instantiate_type(self.arena(), &mapper))
     }
 
     fn get_contextual_type_of_object_property_value(
