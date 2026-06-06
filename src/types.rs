@@ -1441,11 +1441,6 @@ fn simplify_type_equality_function_extends(
     let Ty::Conditional(extends_return) = extends_function.return_type else {
         return None;
     };
-    if !is_conditional_equality_probe(check_return, check_function.type_parameters[0].name)
-        || !is_conditional_equality_probe(extends_return, extends_function.type_parameters[0].name)
-    {
-        return None;
-    }
     if contains_unresolved_type_variable(check_return.extends_type)
         || contains_unresolved_type_variable(extends_return.extends_type)
     {
@@ -1461,14 +1456,6 @@ fn simplify_type_equality_function_extends(
     )
 }
 
-fn is_conditional_equality_probe(
-    conditional: &TyConditional<'_>,
-    type_parameter_name: &str,
-) -> bool {
-    matches!(conditional.check_type, Ty::TypeReference(reference) if reference.name == type_parameter_name && reference.type_arguments.is_empty())
-        && matches!(conditional.true_type, Ty::NumberLiteral(literal) if literal.value == "1")
-        && matches!(conditional.false_type, Ty::NumberLiteral(literal) if literal.value == "0")
-}
 const INFER_MATCH_MAX_DEPTH: usize = 64;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
