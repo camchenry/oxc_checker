@@ -4,6 +4,7 @@ use oxc_ast::ast::{
 };
 use oxc_ast_visit::Visit;
 use oxc_semantic::{NodeId, ScopeFlags};
+use std::cell::RefCell;
 
 use crate::{
     checker::{Checker, CheckerReturn},
@@ -123,6 +124,13 @@ impl<'a> InferenceResolution<'a> {
         arena: crate::types::CheckerArena<'a>,
     ) -> Self {
         let mapper = substitutions.to_inference_mapper(arena);
+        Self::new_with_mapper(substitutions, mapper)
+    }
+
+    fn new_with_mapper(
+        substitutions: TypeParameterSubstitutions<'a>,
+        mapper: TypeMapper<'a>,
+    ) -> Self {
         Self {
             substitutions,
             mapper,
@@ -157,6 +165,12 @@ impl<'a> InferenceContext<'a> {
         self.inferences
             .iter_mut()
             .find(|inference| inference.type_parameter.name == name)
+    }
+
+    fn inference_index_by_name(&self, name: &str) -> Option<usize> {
+        self.inferences
+            .iter()
+            .position(|inference| inference.type_parameter.name == name)
     }
 
     fn inference_for_type_parameter_mut(
@@ -229,34 +243,143 @@ impl<'a> InferenceContext<'a> {
         mut self,
         arena: crate::types::CheckerArena<'a>,
         flags: InferenceResolutionFlags,
-        mut instantiate_fallback: impl FnMut(Ty<'a>, &TypeParameterSubstitutions<'a>) -> Ty<'a>,
     ) -> InferenceResolution<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
 
         for index in 0..self.inferences.len() {
-            let mut inferred_type = self.get_inferred_type(index, arena);
-
-            if inferred_type.is_none()
-                && let Some(fallback_type) = self.inferences[index]
-                    .type_parameter
-                    .default_type
-                    .or(self.inferences[index].type_parameter.constraint_type)
+            if let Some(inferred_type) =
+                self.resolve_inference_at_index(index, arena, flags, &mut Vec::new(), false)
             {
-                let fallback_type = instantiate_fallback(fallback_type, &substitutions);
-                self.inferences[index].inferred_type = Some(fallback_type);
-                inferred_type = Some(fallback_type);
-            }
-
-            if inferred_type.is_none() && flags.fill_unresolved_with_unknown() {
-                self.inferences[index].inferred_type = Some(Ty::unknown());
-                inferred_type = Some(Ty::unknown());
-            }
-
-            if let Some(inferred_type) = inferred_type {
                 substitutions.insert(self.inferences[index].type_parameter, inferred_type);
             }
         }
         InferenceResolution::new(substitutions, arena)
+    }
+
+    pub(crate) fn resolve_with_contextual_mapper(
+        self,
+        arena: crate::types::CheckerArena<'a>,
+        flags: InferenceResolutionFlags,
+    ) -> InferenceResolution<'a> {
+        let contextual_context = self.clone();
+        let snapshot_resolution = self.resolve(arena, flags);
+        let contextual_pairs = contextual_context
+            .inferences
+            .iter()
+            .map(|inference| {
+                let source =
+                    Ty::type_reference(arena, inference.type_parameter.name, std::iter::empty());
+                let fallback_target = snapshot_resolution
+                    .substitutions
+                    .get(inference.type_parameter)
+                    .unwrap_or(source);
+                (source, fallback_target)
+            })
+            .collect::<Vec<_>>();
+        let contextual_context = RefCell::new(contextual_context);
+        let mapper =
+            TypeMapper::from_contextual_inference_pairs(arena, contextual_pairs, move |name| {
+                contextual_context
+                    .borrow_mut()
+                    .resolve_type_parameter_by_name(name, arena, flags)
+            });
+        InferenceResolution::new_with_mapper(snapshot_resolution.substitutions, mapper)
+    }
+
+    pub(crate) fn resolve_type_parameter_by_name(
+        &mut self,
+        name: &str,
+        arena: crate::types::CheckerArena<'a>,
+        flags: InferenceResolutionFlags,
+    ) -> Option<Ty<'a>> {
+        let index = self.inference_index_by_name(name)?;
+        self.resolve_inference_at_index(index, arena, flags, &mut Vec::new(), true)
+    }
+
+    fn resolve_inference_at_index(
+        &mut self,
+        index: usize,
+        arena: crate::types::CheckerArena<'a>,
+        flags: InferenceResolutionFlags,
+        resolving: &mut Vec<usize>,
+        fix: bool,
+    ) -> Option<Ty<'a>> {
+        if let Some(inferred_type) = self.inferences[index].inferred_type {
+            if fix {
+                self.inferences[index].is_fixed = true;
+            }
+            return Some(inferred_type);
+        }
+        if resolving.contains(&index) {
+            return None;
+        }
+
+        resolving.push(index);
+        let mut inferred_type = self.get_inferred_type(index, arena);
+
+        if inferred_type.is_none()
+            && let Some(fallback_type) = self.inferences[index]
+                .type_parameter
+                .default_type
+                .or(self.inferences[index].type_parameter.constraint_type)
+        {
+            for dependency_index in self.fallback_dependency_indices(fallback_type) {
+                if dependency_index != index {
+                    self.resolve_inference_at_index(
+                        dependency_index,
+                        arena,
+                        flags,
+                        resolving,
+                        true,
+                    );
+                }
+            }
+            let substitutions = self.resolved_substitutions();
+            let fallback_type =
+                instantiate_inference_fallback_type(fallback_type, &substitutions, arena);
+            self.inferences[index].inferred_type = Some(fallback_type);
+            inferred_type = Some(fallback_type);
+        }
+
+        if inferred_type.is_none() && flags.fill_unresolved_with_unknown() {
+            self.inferences[index].inferred_type = Some(Ty::unknown());
+            inferred_type = Some(Ty::unknown());
+        }
+
+        if fix && inferred_type.is_some() {
+            self.inferences[index].is_fixed = true;
+        }
+        resolving.pop();
+        inferred_type
+    }
+
+    fn resolved_substitutions(&self) -> TypeParameterSubstitutions<'a> {
+        let mut substitutions = TypeParameterSubstitutions::new();
+        for inference in &self.inferences {
+            if let Some(inferred_type) = inference.inferred_type {
+                substitutions.insert(inference.type_parameter, inferred_type);
+            }
+        }
+        substitutions
+    }
+
+    fn fallback_dependency_indices(&self, fallback_type: Ty<'a>) -> Vec<usize> {
+        let mut indices = Vec::new();
+        visit_type(fallback_type, &mut |ty| {
+            let Ty::TypeReference(reference) = ty else {
+                return;
+            };
+            if !reference.type_arguments.is_empty() {
+                return;
+            }
+            let Some(index) = self.inference_index_by_name(reference.name) else {
+                return;
+            };
+            if !indices.contains(&index) {
+                indices.push(index);
+            }
+        });
+        indices
     }
 
     fn candidate_substitutions(
@@ -286,6 +409,14 @@ impl<'a> InferenceContext<'a> {
         }
         self.inferences[index].inferred_type
     }
+}
+
+fn instantiate_inference_fallback_type<'a>(
+    fallback_type: Ty<'a>,
+    substitutions: &TypeParameterSubstitutions<'a>,
+    arena: crate::types::CheckerArena<'a>,
+) -> Ty<'a> {
+    substitute_type(fallback_type, &substitutions.to_mapper(arena), arena)
 }
 
 fn inferred_type_from_candidates<'a>(
@@ -353,15 +484,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 0,
             ) {
                 ConditionalInferMatchResult::Matched => {
-                    let resolution = inferences.resolve(
+                    let resolution = inferences.resolve_with_contextual_mapper(
                         self.arena(),
                         InferenceResolutionFlags::NONE,
-                        |fallback_type, substitutions| {
-                            self.instantiate_type(
-                                fallback_type,
-                                &substitutions.to_mapper(self.arena()),
-                            )
-                        },
                     );
                     self.instantiate_type(true_type, resolution.mapper())
                 }
@@ -702,13 +827,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
-        context.resolve(
-            self.arena(),
-            InferenceResolutionFlags::NONE,
-            |fallback_type, substitutions| {
-                self.instantiate_type(fallback_type, &substitutions.to_mapper(self.arena()))
-            },
-        )
+        context.resolve_with_contextual_mapper(self.arena(), InferenceResolutionFlags::NONE)
     }
 
     pub(crate) fn infer_function_return_type(
@@ -792,12 +911,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
-        context.resolve(
+        context.resolve_with_contextual_mapper(
             self.arena(),
             InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
-            |fallback_type, substitutions| {
-                self.instantiate_type(fallback_type, &substitutions.to_mapper(self.arena()))
-            },
         )
     }
 }
@@ -1416,5 +1532,93 @@ pub fn ts_type_contains_infer(ty: &TSType<'_>) -> bool {
             .as_deref()
             .is_some_and(|annotation| ts_type_contains_infer(&annotation.type_annotation)),
         _ => false,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use oxc_allocator::Allocator;
+
+    use super::*;
+    use crate::types::CheckerArena;
+
+    #[test]
+    fn resolves_dependent_default_when_only_dependent_parameter_is_read() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter_t = Ty::type_parameter("T", None, Some(Ty::string()));
+        let type_parameter_u = Ty::type_parameter(
+            "U",
+            None,
+            Some(Ty::type_reference(arena, "T", std::iter::empty())),
+        );
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter_t, type_parameter_u],
+            &TypeParameterSubstitutions::new(),
+        );
+
+        assert_eq!(
+            context.resolve_type_parameter_by_name("U", arena, InferenceResolutionFlags::NONE,),
+            Some(Ty::string()),
+        );
+        assert!(context.inferences[0].is_fixed);
+        assert!(context.inferences[1].is_fixed);
+    }
+
+    #[test]
+    fn resolving_type_parameter_fixes_it_before_dependent_default() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter_t = Ty::type_parameter("T", None, None);
+        let type_parameter_u = Ty::type_parameter(
+            "U",
+            None,
+            Some(Ty::type_reference(arena, "T", std::iter::empty())),
+        );
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter_t, type_parameter_u],
+            &TypeParameterSubstitutions::new(),
+        );
+        context.add_candidate(
+            type_parameter_t,
+            Ty::number(),
+            InferencePriority::NakedTypeVariable,
+        );
+
+        assert_eq!(
+            context.resolve_type_parameter_by_name("T", arena, InferenceResolutionFlags::NONE,),
+            Some(Ty::number()),
+        );
+        assert!(context.inferences[0].is_fixed);
+        assert_eq!(
+            context.resolve_type_parameter_by_name("U", arena, InferenceResolutionFlags::NONE,),
+            Some(Ty::number()),
+        );
+        assert!(context.inferences[1].is_fixed);
+    }
+
+    #[test]
+    fn contextual_mapper_resolves_dependent_default_on_read() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter_t = Ty::type_parameter("T", None, Some(Ty::string()));
+        let type_parameter_u = Ty::type_parameter(
+            "U",
+            None,
+            Some(Ty::type_reference(arena, "T", std::iter::empty())),
+        );
+        let context = InferenceContext::with_substitutions(
+            [type_parameter_t, type_parameter_u],
+            &TypeParameterSubstitutions::new(),
+        );
+        let resolution =
+            context.resolve_with_contextual_mapper(arena, InferenceResolutionFlags::NONE);
+
+        assert_eq!(
+            resolution
+                .mapper()
+                .map(Ty::type_reference(arena, "U", std::iter::empty())),
+            Ty::string(),
+        );
     }
 }

@@ -126,3 +126,54 @@ const f3_3 = foo3(123 as number);
 
 const f3_3 = foo3(123 as number);
 >            ^^^^: <T>(x: T | null | undefined) => T   (TyFunction)
+
+function defaultOnlyReadU<T = string, U = T>(): U {
+>        ^^^^^^^^^^^^^^^^: <T = string, U = T>() => U   (TyFunction)
+
+function defaultOnlyReadU<T = string, U = T>(): U {
+>                         ^: any   (TyAny)
+
+function defaultOnlyReadU<T = string, U = T>(): U {
+>                                     ^: any   (TyAny)
+
+function defaultOnlyReadU<T = string, U = T>(): U {
+>                                         ^: any   (TyAny)
+
+function defaultOnlyReadU<T = string, U = T>(): U {
+>                                               ^: any   (TyAny)
+
+  return undefined as any;
+>        ^^^^^^^^^: undefined   (TyUndefined)
+
+const defaultOnlyReadUValue = defaultOnlyReadU();
+>     ^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+const defaultOnlyReadUValue = defaultOnlyReadU();
+>                             ^^^^^^^^^^^^^^^^: <T = string, U = T>() => U   (TyFunction)
+
+function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
+>        ^^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (TyFunction)
+
+function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
+>                            ^: any   (TyAny)
+
+function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
+>                                        ^: any   (TyAny)
+
+function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
+>                                            ^: any   (TyAny)
+
+function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
+>                                                   ^: any   (TyAny)
+
+function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
+>                                                      ^: any   (TyAny)
+
+  return undefined as any;
+>        ^^^^^^^^^: undefined   (TyUndefined)
+
+const defaultReadTBeforeUValue = defaultReadTBeforeU();
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: [number, number]   (TyTuple)
+
+const defaultReadTBeforeUValue = defaultReadTBeforeU();
+>                                ^^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (TyFunction)

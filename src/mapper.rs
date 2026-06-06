@@ -1,8 +1,10 @@
-use std::cell::RefCell;
+use std::{cell::RefCell, rc::Rc};
 
 use oxc_allocator::Vec as ArenaVec;
 
 use crate::types::{CheckerArena, Ty, TyTypeParameter};
+
+type TypeParameterResolver<'a> = Rc<RefCell<dyn FnMut(&str) -> Option<Ty<'a>> + 'a>>;
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct TypeParameterSubstitutions<'a> {
@@ -82,6 +84,12 @@ pub(crate) enum TypeMapper<'a> {
         targets: ArenaVec<'a, Ty<'a>>,
         fixed: RefCell<Vec<bool>>,
     },
+    ContextualInference {
+        sources: ArenaVec<'a, Ty<'a>>,
+        fallback_targets: ArenaVec<'a, Ty<'a>>,
+        fixed: RefCell<Vec<bool>>,
+        resolver: TypeParameterResolver<'a>,
+    },
 }
 
 impl<'a> TypeMapper<'a> {
@@ -105,6 +113,26 @@ impl<'a> TypeMapper<'a> {
             })
             .collect::<Vec<_>>();
         Self::from_pairs(arena, pairs)
+    }
+
+    pub(crate) fn from_contextual_inference_pairs(
+        arena: CheckerArena<'a>,
+        pairs: Vec<(Ty<'a>, Ty<'a>)>,
+        resolver: impl FnMut(&str) -> Option<Ty<'a>> + 'a,
+    ) -> Self {
+        match pairs.len() {
+            0 => Self::Empty,
+            _ => {
+                let len = pairs.len();
+                Self::ContextualInference {
+                    sources: arena.vec_from_iter(pairs.iter().map(|(source, _)| *source)),
+                    fallback_targets: arena
+                        .vec_from_iter(pairs.into_iter().map(|(_, target)| target)),
+                    fixed: RefCell::new(vec![false; len]),
+                    resolver: Rc::new(RefCell::new(resolver)),
+                }
+            }
+        }
     }
 
     pub(crate) fn with_prepend_mapping(
@@ -178,6 +206,29 @@ impl<'a> TypeMapper<'a> {
                     }
                 })
                 .unwrap_or(ty),
+            Self::ContextualInference {
+                sources,
+                fallback_targets,
+                fixed,
+                resolver,
+            } => sources
+                .iter()
+                .zip(fallback_targets.iter())
+                .enumerate()
+                .find_map(|(index, (source, fallback_target))| {
+                    if ty != *source {
+                        return None;
+                    }
+                    fixed.borrow_mut()[index] = true;
+                    let resolved = match source {
+                        Ty::TypeReference(reference) if reference.type_arguments.is_empty() => {
+                            resolver.borrow_mut()(reference.name)
+                        }
+                        _ => None,
+                    };
+                    Some(resolved.unwrap_or(*fallback_target))
+                })
+                .unwrap_or(ty),
         }
     }
 
@@ -221,6 +272,18 @@ impl<'a> TypeMapper<'a> {
             } => {
                 pairs.extend(sources.iter().copied().zip(targets.iter().copied()));
             }
+            Self::ContextualInference {
+                sources,
+                fallback_targets,
+                ..
+            } => {
+                pairs.extend(
+                    sources
+                        .iter()
+                        .copied()
+                        .zip(fallback_targets.iter().copied()),
+                );
+            }
         }
     }
 
@@ -249,6 +312,19 @@ impl<'a> TypeMapper<'a> {
                         .iter()
                         .copied()
                         .zip(targets.iter().copied())
+                        .filter(|(source, _)| *source != excluded),
+                );
+            }
+            Self::ContextualInference {
+                sources,
+                fallback_targets,
+                ..
+            } => {
+                pairs.extend(
+                    sources
+                        .iter()
+                        .copied()
+                        .zip(fallback_targets.iter().copied())
                         .filter(|(source, _)| *source != excluded),
                 );
             }
@@ -281,6 +357,34 @@ mod tests {
 
         let TypeMapper::Inference { fixed, .. } = &mapper else {
             panic!("expected inference mapper");
+        };
+        assert_eq!(fixed.borrow().as_slice(), &[true]);
+    }
+
+    #[test]
+    fn contextual_inference_mapper_resolves_type_parameter_when_read() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let source = Ty::type_reference(arena, "T", std::iter::empty());
+        let resolved_names = Rc::new(RefCell::new(Vec::new()));
+        let resolved_names_for_mapper = Rc::clone(&resolved_names);
+
+        let mapper = TypeMapper::from_contextual_inference_pairs(
+            arena,
+            vec![(source, Ty::unknown())],
+            move |name| {
+                resolved_names_for_mapper
+                    .borrow_mut()
+                    .push(name.to_string());
+                Some(Ty::string())
+            },
+        );
+
+        assert_eq!(mapper.map(source), Ty::string());
+        assert_eq!(resolved_names.borrow().as_slice(), &["T".to_string()]);
+
+        let TypeMapper::ContextualInference { fixed, .. } = &mapper else {
+            panic!("expected contextual inference mapper");
         };
         assert_eq!(fixed.borrow().as_slice(), &[true]);
     }

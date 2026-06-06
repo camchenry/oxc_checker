@@ -21,3 +21,15 @@ function foo3<T>(x: T | undefined | null) {
 const f3_1 = foo3("hello");
 const f3_2 = foo3(undefined);
 const f3_3 = foo3(123 as number);
+
+function defaultOnlyReadU<T = string, U = T>(): U {
+  return undefined as any;
+}
+
+const defaultOnlyReadUValue = defaultOnlyReadU();
+
+function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
+  return undefined as any;
+}
+
+const defaultReadTBeforeUValue = defaultReadTBeforeU();
