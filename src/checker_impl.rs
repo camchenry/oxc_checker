@@ -37,8 +37,8 @@ use crate::{
     ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
-        TyFunction, TyMapped, TyParameter, TyProperty, TyTypeParameter, TyTypePredicate,
-        TyTypeQuery, TyTypeReference, binding_pattern_to_parameter_name,
+        TyArray, TyFunction, TyMapped, TyParameter, TyProperty, TyTuple, TyTypeParameter,
+        TyTypePredicate, TyTypeQuery, TyTypeReference, binding_pattern_to_parameter_name,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
     },
 };
@@ -173,6 +173,492 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     #[inline]
     pub fn arena(&self) -> CheckerArena<'a> {
         self.arena
+    }
+
+    #[inline]
+    pub(crate) fn instantiate_type(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>) -> Ty<'a> {
+        if mapper.is_empty() || !self.could_contain_type_variables(ty) {
+            return ty;
+        }
+
+        self.instantiate_type_worker(ty, mapper)
+    }
+
+    #[inline]
+    pub(crate) fn instantiate_signature(
+        &self,
+        signature: Signature<'a>,
+        mapper: &TypeMapper<'a>,
+    ) -> Signature<'a> {
+        let Ty::Function(function) =
+            self.instantiate_type(Ty::Function(signature.function), mapper)
+        else {
+            unreachable!("signature instantiation preserves function type")
+        };
+        Signature::new(signature.kind, function)
+    }
+
+    #[inline]
+    pub(crate) fn instantiate_type_predicate(
+        &self,
+        predicate: TyTypePredicate<'a>,
+        mapper: &TypeMapper<'a>,
+    ) -> TyTypePredicate<'a> {
+        TyTypePredicate {
+            kind: predicate.kind,
+            parameter_name: predicate.parameter_name,
+            parameter_index: predicate.parameter_index,
+            target_type: predicate
+                .target_type
+                .map(|ty| self.instantiate_type(ty, mapper)),
+        }
+    }
+
+    fn instantiate_type_worker(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>) -> Ty<'a> {
+        match ty {
+            Ty::Object(object) => Ty::object(
+                self.arena(),
+                object.properties.iter().map(|property| TyProperty {
+                    name: property.name,
+                    computed: property.computed,
+                    optional: property.optional,
+                    method: property.method,
+                    readonly: property.readonly,
+                    ty: self.instantiate_type(property.ty, mapper),
+                }),
+            )
+            .with_index_infos(
+                self.arena(),
+                object.index_infos.iter().map(|info| IndexInfo {
+                    key_type: self.instantiate_type(info.key_type, mapper),
+                    value_type: self.instantiate_type(info.value_type, mapper),
+                    readonly: info.readonly,
+                }),
+            )
+            .with_signatures(
+                self.arena(),
+                object
+                    .signatures
+                    .iter()
+                    .map(|signature| self.instantiate_signature(*signature, mapper)),
+            ),
+            Ty::ModuleNamespace(namespace) => Ty::module_namespace(
+                self.arena(),
+                namespace.name,
+                namespace.properties.iter().map(|property| TyProperty {
+                    name: property.name,
+                    computed: property.computed,
+                    optional: property.optional,
+                    method: property.method,
+                    readonly: property.readonly,
+                    ty: self.instantiate_type(property.ty, mapper),
+                }),
+            ),
+            Ty::Function(function) => {
+                let type_parameter_names = function
+                    .type_parameters
+                    .iter()
+                    .map(|type_parameter| type_parameter.name)
+                    .collect::<Vec<_>>();
+                let has_non_identity_outer_substitution = mapper
+                    .has_non_identity_mapping_outside_names(type_parameter_names.iter().copied());
+                let mapper = mapper.without_type_parameter_names(
+                    self.arena(),
+                    type_parameter_names.iter().copied(),
+                );
+
+                Ty::function_with_type_predicate(
+                    self.arena(),
+                    function.type_parameters.iter().map(|type_parameter| {
+                        Ty::type_parameter_with_display_default(
+                            type_parameter.name,
+                            type_parameter
+                                .constraint_type
+                                .map(|ty| self.instantiate_type(ty, &mapper)),
+                            type_parameter
+                                .default_type
+                                .map(|ty| self.instantiate_type(ty, &mapper)),
+                            type_parameter.display_default && !has_non_identity_outer_substitution,
+                        )
+                    }),
+                    function.parameters.iter().map(|parameter| {
+                        let ty = self.instantiate_type(parameter.ty, &mapper);
+                        if parameter.rest {
+                            Ty::rest_parameter(parameter.name, ty)
+                        } else if parameter.optional {
+                            Ty::optional_parameter(parameter.name, ty)
+                        } else {
+                            Ty::parameter(parameter.name, ty)
+                        }
+                    }),
+                    self.instantiate_type(function.return_type, &mapper),
+                    function
+                        .type_predicate
+                        .map(|predicate| self.instantiate_type_predicate(*predicate, &mapper)),
+                )
+            }
+            Ty::TypeReference(reference) => {
+                let mapped = mapper.map(ty);
+                if mapped != ty {
+                    mapped
+                } else {
+                    Ty::type_reference(
+                        self.arena(),
+                        reference.name,
+                        reference
+                            .type_arguments
+                            .iter()
+                            .map(|ty| self.instantiate_type(*ty, mapper)),
+                    )
+                }
+            }
+            Ty::TypeQuery(query) => Ty::type_query(
+                self.arena(),
+                query.name,
+                self.instantiate_type(query.resolved, mapper),
+                query
+                    .type_arguments
+                    .iter()
+                    .map(|ty| self.instantiate_type(*ty, mapper)),
+            ),
+            Ty::Array(array) => Ty::Array(self.arena().alloc(TyArray {
+                element_type: self.instantiate_type(array.element_type, mapper),
+                readonly: array.readonly,
+            })),
+            Ty::Tuple(tuple) => {
+                Ty::Tuple(self.arena().alloc(TyTuple {
+                    elements:
+                        self.arena().vec_from_iter(tuple.elements.iter().map(
+                            |element| match element {
+                                TupleElement::Regular(ty) => {
+                                    TupleElement::Regular(self.instantiate_type(*ty, mapper))
+                                }
+                                TupleElement::Rest(ty) => {
+                                    TupleElement::Rest(self.instantiate_type(*ty, mapper))
+                                }
+                                TupleElement::Optional(ty) => {
+                                    TupleElement::Optional(self.instantiate_type(*ty, mapper))
+                                }
+                            },
+                        )),
+                    readonly: tuple.readonly,
+                }))
+            }
+            Ty::Union(union) => Ty::r#union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.instantiate_type(*ty, mapper)),
+            ),
+            Ty::Intersection(intersection) => Ty::intersection(
+                self.arena(),
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| self.instantiate_type(*ty, mapper)),
+            ),
+            Ty::Keyof(keyof) => {
+                Ty::keyof(self.arena(), self.instantiate_type(keyof.target, mapper))
+            }
+            Ty::IndexedAccess(indexed_access) => Ty::indexed_access(
+                self.arena(),
+                self.instantiate_type(indexed_access.object_type, mapper),
+                self.instantiate_type(indexed_access.index_type, mapper),
+            ),
+            Ty::Conditional(conditional) => {
+                let infer_type_parameters =
+                    self.infer_type_parameter_names(conditional.extends_type);
+                let infer_mapper = mapper.without_type_parameter_names(
+                    self.arena(),
+                    infer_type_parameters.iter().copied(),
+                );
+
+                if conditional.is_distributive
+                    && let Ty::Union(union) = mapper.map(conditional.check_type)
+                {
+                    return Ty::r#union(
+                        self.arena(),
+                        union.types.iter().map(|ty| {
+                            let member_mapper = mapper.with_prepend_mapping(
+                                self.arena(),
+                                conditional.check_type,
+                                *ty,
+                            );
+                            let infer_member_mapper = member_mapper.without_type_parameter_names(
+                                self.arena(),
+                                infer_type_parameters.iter().copied(),
+                            );
+                            Ty::conditional(
+                                self.arena(),
+                                *ty,
+                                self.instantiate_type(
+                                    conditional.extends_type,
+                                    &infer_member_mapper,
+                                ),
+                                self.instantiate_type(conditional.true_type, &infer_member_mapper),
+                                self.instantiate_type(conditional.false_type, &member_mapper),
+                                false,
+                            )
+                        }),
+                    );
+                }
+
+                Ty::conditional(
+                    self.arena(),
+                    self.instantiate_type(conditional.check_type, mapper),
+                    self.instantiate_type(conditional.extends_type, &infer_mapper),
+                    self.instantiate_type(conditional.true_type, &infer_mapper),
+                    self.instantiate_type(conditional.false_type, mapper),
+                    conditional.is_distributive,
+                )
+            }
+            Ty::Infer(infer) => {
+                let mapper = mapper.without_type_parameter_names(
+                    self.arena(),
+                    std::iter::once(infer.type_parameter.name),
+                );
+                Ty::infer(
+                    self.arena(),
+                    Ty::type_parameter_with_display_default(
+                        infer.type_parameter.name,
+                        infer
+                            .type_parameter
+                            .constraint_type
+                            .map(|ty| self.instantiate_type(ty, &mapper)),
+                        infer
+                            .type_parameter
+                            .default_type
+                            .map(|ty| self.instantiate_type(ty, &mapper)),
+                        infer.type_parameter.display_default,
+                    ),
+                )
+            }
+            Ty::Mapped(mapped) => {
+                let mapper =
+                    mapper.without_type_parameter_names(self.arena(), std::iter::once(mapped.key));
+                Ty::mapped(
+                    self.arena(),
+                    mapped.key,
+                    self.instantiate_type(mapped.constraint, &mapper),
+                    mapped
+                        .name_type
+                        .map(|ty| self.instantiate_type(ty, &mapper)),
+                    self.instantiate_type(mapped.template, &mapper),
+                    mapped.optional,
+                    mapped.readonly,
+                )
+            }
+            _ => ty,
+        }
+    }
+
+    fn could_contain_type_variables(&self, ty: Ty<'a>) -> bool {
+        match ty {
+            Ty::TypeReference(reference) => {
+                reference.type_arguments.is_empty()
+                    || reference
+                        .type_arguments
+                        .iter()
+                        .any(|ty| self.could_contain_type_variables(*ty))
+            }
+            Ty::Object(object) => {
+                object
+                    .properties
+                    .iter()
+                    .any(|property| self.could_contain_type_variables(property.ty))
+                    || object
+                        .signatures
+                        .iter()
+                        .any(|signature| self.signature_could_contain_type_variables(*signature))
+                    || object.index_infos.iter().any(|info| {
+                        self.could_contain_type_variables(info.key_type)
+                            || self.could_contain_type_variables(info.value_type)
+                    })
+            }
+            Ty::ModuleNamespace(namespace) => namespace
+                .properties
+                .iter()
+                .any(|property| self.could_contain_type_variables(property.ty)),
+            Ty::Function(function) => self.function_could_contain_type_variables(function),
+            Ty::TypeQuery(query) => {
+                self.could_contain_type_variables(query.resolved)
+                    || query
+                        .type_arguments
+                        .iter()
+                        .any(|ty| self.could_contain_type_variables(*ty))
+            }
+            Ty::TemplateLiteral(template_literal) => template_literal
+                .expressions
+                .iter()
+                .any(|ty| self.could_contain_type_variables(*ty)),
+            Ty::Array(array) => self.could_contain_type_variables(array.element_type),
+            Ty::Tuple(tuple) => tuple
+                .elements
+                .iter()
+                .any(|element| self.could_contain_type_variables(element.ty())),
+            Ty::Union(union) => union
+                .types
+                .iter()
+                .any(|ty| self.could_contain_type_variables(*ty)),
+            Ty::Intersection(intersection) => intersection
+                .types
+                .iter()
+                .any(|ty| self.could_contain_type_variables(*ty)),
+            Ty::Keyof(keyof) => self.could_contain_type_variables(keyof.target),
+            Ty::IndexedAccess(indexed_access) => {
+                self.could_contain_type_variables(indexed_access.object_type)
+                    || self.could_contain_type_variables(indexed_access.index_type)
+            }
+            Ty::Conditional(conditional) => {
+                self.could_contain_type_variables(conditional.check_type)
+                    || self.could_contain_type_variables(conditional.extends_type)
+                    || self.could_contain_type_variables(conditional.true_type)
+                    || self.could_contain_type_variables(conditional.false_type)
+            }
+            Ty::Infer(_) => true,
+            Ty::Mapped(mapped) => {
+                self.could_contain_type_variables(mapped.constraint)
+                    || mapped
+                        .name_type
+                        .is_some_and(|ty| self.could_contain_type_variables(ty))
+                    || self.could_contain_type_variables(mapped.template)
+            }
+            _ => false,
+        }
+    }
+
+    fn function_could_contain_type_variables(&self, function: &TyFunction<'a>) -> bool {
+        !function.type_parameters.is_empty()
+            || function.type_parameters.iter().any(|type_parameter| {
+                type_parameter
+                    .constraint_type
+                    .is_some_and(|ty| self.could_contain_type_variables(ty))
+                    || type_parameter
+                        .default_type
+                        .is_some_and(|ty| self.could_contain_type_variables(ty))
+            })
+            || function
+                .parameters
+                .iter()
+                .any(|parameter| self.could_contain_type_variables(parameter.ty))
+            || self.could_contain_type_variables(function.return_type)
+            || function.type_predicate.is_some_and(|predicate| {
+                self.type_predicate_could_contain_type_variables(*predicate)
+            })
+    }
+
+    fn signature_could_contain_type_variables(&self, signature: Signature<'a>) -> bool {
+        self.function_could_contain_type_variables(signature.function)
+    }
+
+    fn type_predicate_could_contain_type_variables(&self, predicate: TyTypePredicate<'a>) -> bool {
+        predicate
+            .target_type
+            .is_some_and(|ty| self.could_contain_type_variables(ty))
+    }
+
+    fn infer_type_parameter_names(&self, ty: Ty<'a>) -> Vec<&'a str> {
+        let mut names = Vec::new();
+        self.collect_infer_type_parameter_names(ty, &mut names);
+        names
+    }
+
+    fn collect_infer_type_parameter_names(&self, ty: Ty<'a>, names: &mut Vec<&'a str>) {
+        match ty {
+            Ty::Infer(infer) => {
+                if !names.contains(&infer.type_parameter.name) {
+                    names.push(infer.type_parameter.name);
+                }
+            }
+            Ty::Object(object) => {
+                for property in &object.properties {
+                    self.collect_infer_type_parameter_names(property.ty, names);
+                }
+                for signature in &object.signatures {
+                    self.collect_infer_type_parameter_names(
+                        Ty::Function(signature.function),
+                        names,
+                    );
+                }
+            }
+            Ty::ModuleNamespace(namespace) => {
+                for property in &namespace.properties {
+                    self.collect_infer_type_parameter_names(property.ty, names);
+                }
+            }
+            Ty::Function(function) => {
+                for type_parameter in &function.type_parameters {
+                    if let Some(constraint_type) = type_parameter.constraint_type {
+                        self.collect_infer_type_parameter_names(constraint_type, names);
+                    }
+                    if let Some(default_type) = type_parameter.default_type {
+                        self.collect_infer_type_parameter_names(default_type, names);
+                    }
+                }
+                for parameter in &function.parameters {
+                    self.collect_infer_type_parameter_names(parameter.ty, names);
+                }
+                self.collect_infer_type_parameter_names(function.return_type, names);
+                if let Some(target_type) = function
+                    .type_predicate
+                    .and_then(|predicate| predicate.target_type)
+                {
+                    self.collect_infer_type_parameter_names(target_type, names);
+                }
+            }
+            Ty::TypeReference(reference) => {
+                for ty in &reference.type_arguments {
+                    self.collect_infer_type_parameter_names(*ty, names);
+                }
+            }
+            Ty::TypeQuery(query) => {
+                self.collect_infer_type_parameter_names(query.resolved, names);
+                for ty in &query.type_arguments {
+                    self.collect_infer_type_parameter_names(*ty, names);
+                }
+            }
+            Ty::TemplateLiteral(template_literal) => {
+                for ty in &template_literal.expressions {
+                    self.collect_infer_type_parameter_names(*ty, names);
+                }
+            }
+            Ty::Array(array) => self.collect_infer_type_parameter_names(array.element_type, names),
+            Ty::Tuple(tuple) => {
+                for element in &tuple.elements {
+                    self.collect_infer_type_parameter_names(element.ty(), names);
+                }
+            }
+            Ty::Union(union) => {
+                for ty in &union.types {
+                    self.collect_infer_type_parameter_names(*ty, names);
+                }
+            }
+            Ty::Intersection(intersection) => {
+                for ty in &intersection.types {
+                    self.collect_infer_type_parameter_names(*ty, names);
+                }
+            }
+            Ty::Keyof(keyof) => self.collect_infer_type_parameter_names(keyof.target, names),
+            Ty::IndexedAccess(indexed_access) => {
+                self.collect_infer_type_parameter_names(indexed_access.object_type, names);
+                self.collect_infer_type_parameter_names(indexed_access.index_type, names);
+            }
+            Ty::Conditional(conditional) => {
+                self.collect_infer_type_parameter_names(conditional.check_type, names);
+                self.collect_infer_type_parameter_names(conditional.extends_type, names);
+                self.collect_infer_type_parameter_names(conditional.true_type, names);
+                self.collect_infer_type_parameter_names(conditional.false_type, names);
+            }
+            Ty::Mapped(mapped) => {
+                self.collect_infer_type_parameter_names(mapped.constraint, names);
+                if let Some(name_type) = mapped.name_type {
+                    self.collect_infer_type_parameter_names(name_type, names);
+                }
+                self.collect_infer_type_parameter_names(mapped.template, names);
+            }
+            _ => {}
+        }
     }
 
     /// Resolve an expression type with a semantic context node when ancestor context is needed.
@@ -1310,7 +1796,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 key_type,
             );
             let property_name = if let Some(name_type) = mapped.name_type {
-                let name_type = name_type.instantiate_type(self.arena(), &mapper);
+                let name_type = self.instantiate_type(name_type, &mapper);
                 let name_type = self.expand_type_at_use(program_id, name_type, depth + 1);
                 if name_type.is_never() {
                     continue;
@@ -1319,7 +1805,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             } else {
                 property.name
             };
-            let ty = mapped.template.instantiate_type(self.arena(), &mapper);
+            let ty = self.instantiate_type(mapped.template, &mapper);
             let ty = self.expand_type_at_use(program_id, ty, depth + 1);
             expanded.push(TyProperty {
                 name: property_name,
@@ -1354,7 +1840,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
             Ty::number(),
         );
-        let element_type = mapped.template.instantiate_type(self.arena(), &mapper);
+        let element_type = self.instantiate_type(mapped.template, &mapper);
         let element_type = self.expand_type_at_use(program_id, element_type, depth + 1);
         Some(Ty::array(self.arena(), element_type))
     }
@@ -1375,7 +1861,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
                 key_type,
             );
-            let ty = mapped.template.instantiate_type(self.arena(), &mapper);
+            let ty = self.instantiate_type(mapped.template, &mapper);
             let ty = self.expand_type_at_use(program_id, ty, depth + 1);
             IndexInfo {
                 key_type,
@@ -1502,13 +1988,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     alias.type_parameters.as_deref(),
                     type_arguments,
                 );
-                let ty = self
-                    .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
-                        program_id,
-                        &alias.type_annotation,
-                        depth + 1,
-                    )
-                    .instantiate_type(self.arena(), &substitutions.to_mapper(self.arena()));
+                let ty = self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                    program_id,
+                    &alias.type_annotation,
+                    depth + 1,
+                );
+                let ty = self.instantiate_type(ty, &substitutions.to_mapper(self.arena()));
                 Some(self.expand_type_at_use(program_id, ty, depth + 1))
             }
             AstKind::BindingIdentifier(_) => {
@@ -1540,13 +2025,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     alias.type_parameters.as_deref(),
                     type_arguments,
                 );
-                let ty = self
-                    .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
-                        program_id,
-                        &alias.type_annotation,
-                        depth + 1,
-                    )
-                    .instantiate_type(self.arena(), &substitutions.to_mapper(self.arena()));
+                let ty = self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                    program_id,
+                    &alias.type_annotation,
+                    depth + 1,
+                );
+                let ty = self.instantiate_type(ty, &substitutions.to_mapper(self.arena()));
                 Some(self.expand_type_at_use(program_id, ty, depth + 1))
             }
             AstKind::BindingIdentifier(_) => {
@@ -1606,7 +2090,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena(),
             remaining_type_parameters,
             function.parameters.iter().map(|parameter| {
-                let ty = parameter.ty.instantiate_type(self.arena(), &mapper);
+                let ty = self.instantiate_type(parameter.ty, &mapper);
                 if parameter.rest {
                     Ty::rest_parameter(parameter.name, ty)
                 } else if parameter.optional {
@@ -1615,10 +2099,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::parameter(parameter.name, ty)
                 }
             }),
-            function.return_type.instantiate_type(self.arena(), &mapper),
+            self.instantiate_type(function.return_type, &mapper),
             function
                 .type_predicate
-                .map(|predicate| predicate.instantiate_type(self.arena(), &mapper)),
+                .map(|predicate| self.instantiate_type_predicate(*predicate, &mapper)),
         )
     }
 
@@ -1823,9 +2307,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     reference,
                 );
                 let mapper = substitutions.to_mapper(self.arena());
-                let ty = self
-                    .get_type_from_ts_type(program_id, &alias.type_annotation)
-                    .instantiate_type(self.arena(), &mapper);
+                let ty = self.instantiate_type(
+                    self.get_type_from_ts_type(program_id, &alias.type_annotation),
+                    &mapper,
+                );
                 Some(self.apparent_type_for_conditional_match(program_id, ty, depth + 1))
             }
             AstKind::BindingIdentifier(_) => {
@@ -1873,7 +2358,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                             },
                         );
-                        let ty = ty.instantiate_type(self.arena(), &mapper);
+                        let ty = self.instantiate_type(ty, &mapper);
                         properties.push(TyProperty {
                             name,
                             ty,
@@ -1894,7 +2379,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             method.params.as_ref(),
                             method.return_type.as_deref(),
                         );
-                        let signature = signature.instantiate_type(self.arena(), &mapper);
+                        let signature = self.instantiate_signature(signature, &mapper);
                         properties.push(TyProperty {
                             name,
                             ty: Ty::Function(signature.function),
@@ -1911,7 +2396,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     if let Some(signature) =
                         self.signature_from_ts_signature(program_id, signature, kind)
                     {
-                        signatures.push(signature.instantiate_type(self.arena(), &mapper));
+                        signatures.push(self.instantiate_signature(signature, &mapper));
                     }
                 }
             }
@@ -1959,10 +2444,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     ),
                     type_arguments.iter().copied(),
                 );
-                Some(
-                    self.get_type_from_ts_type(program_id, &alias.type_annotation)
-                        .instantiate_type(self.arena(), &mapper),
-                )
+                Some(self.instantiate_type(
+                    self.get_type_from_ts_type(program_id, &alias.type_annotation),
+                    &mapper,
+                ))
             }
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
@@ -2005,7 +2490,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             }
             let mapper = default_substitutions.to_mapper(self.arena());
-            let default_type = default_type.instantiate_type(self.arena(), &mapper);
+            let default_type = self.instantiate_type(default_type, &mapper);
             substitutions.insert(*type_parameter, default_type);
             type_arguments.push(default_type);
         }
@@ -2277,7 +2762,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .body
             .iter()
             .filter_map(|signature| self.signature_from_ts_signature(program_id, signature, kind))
-            .map(|signature| signature.instantiate_type(self.arena(), &mapper))
+            .map(|signature| self.instantiate_signature(signature, &mapper))
             .collect()
     }
 
@@ -2292,20 +2777,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::TSInterfaceDeclaration(interface) => {
                 self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
             }
-            AstKind::TSTypeAliasDeclaration(alias) => self.get_signatures_of_type(
-                self.get_type_from_ts_type(program_id, &alias.type_annotation)
-                    .instantiate_type(
-                        self.arena(),
-                        &self
-                            .type_parameter_substitutions_for_reference(
-                                program_id,
-                                alias.type_parameters.as_deref(),
-                                reference,
-                            )
-                            .to_mapper(self.arena()),
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                let mapper = self
+                    .type_parameter_substitutions_for_reference(
+                        program_id,
+                        alias.type_parameters.as_deref(),
+                        reference,
+                    )
+                    .to_mapper(self.arena());
+                self.get_signatures_of_type(
+                    self.instantiate_type(
+                        self.get_type_from_ts_type(program_id, &alias.type_annotation),
+                        &mapper,
                     ),
-                kind,
-            ),
+                    kind,
+                )
+            }
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
                 self.get_signatures_of_type_declaration(program_id, parent_id, reference, kind)
@@ -2454,10 +2941,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             node_id,
         );
         let mapper = substitutions.to_mapper(self.arena());
-        let instantiated = signature
-            .function
-            .return_type
-            .instantiate_type(self.arena(), &mapper);
+        let instantiated = self.instantiate_type(signature.function.return_type, &mapper);
 
         if require_applicable
             && !self.is_call_signature_applicable(
@@ -2536,7 +3020,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let mapper = substitutions.to_mapper(self.arena());
                 substitutions.insert(
                     *type_parameter,
-                    fallback_type.instantiate_type(self.arena(), &mapper),
+                    self.instantiate_type(fallback_type, &mapper),
                 );
             }
         }
@@ -2709,12 +3193,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let mapper = substitutions.to_mapper(self.arena());
-        Some(
-            signature
-                .function
-                .return_type
-                .instantiate_type(self.arena(), &mapper),
-        )
+        Some(self.instantiate_type(signature.function.return_type, &mapper))
     }
 
     fn arguments_are_assignable_to_parameters(
@@ -2733,7 +3212,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
                 return false;
             };
-            let parameter_type = parameter_type.instantiate_type(self.arena(), &mapper);
+            let parameter_type = self.instantiate_type(parameter_type, &mapper);
             let argument_type = self.get_type_of_expression_with_node(
                 program_id,
                 argument,
@@ -2828,7 +3307,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .map_or_else(Ty::any, |annotation| {
                         self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                     });
-                return Some(ty.instantiate_type(self.arena(), &mapper));
+                return Some(self.instantiate_type(ty, &mapper));
             }
         }
 
@@ -2847,14 +3326,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         return None;
                     };
                     (property_key_name_str(&method.key) == Some(property_name)).then(|| {
-                        self.signature_from_function_parts(
+                        let signature = self.signature_from_function_parts(
                             program_id,
                             SignatureKind::Call,
                             method.type_parameters.as_deref(),
                             method.params.as_ref(),
                             method.return_type.as_deref(),
-                        )
-                        .instantiate_type(self.arena(), &mapper)
+                        );
+                        self.instantiate_signature(signature, &mapper)
                     })
                 })
             })
@@ -2899,7 +3378,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             .map_or_else(Ty::any, |annotation| {
                                 self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                             });
-                    return Some(ty.instantiate_type(self.arena(), &mapper));
+                    return Some(self.instantiate_type(ty, &mapper));
                 }
 
                 let method_signatures = interface
@@ -2911,14 +3390,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             return None;
                         };
                         (property_key_name_str(&method.key) == Some(property_name)).then(|| {
-                            self.signature_from_function_parts(
+                            let signature = self.signature_from_function_parts(
                                 program_id,
                                 SignatureKind::Call,
                                 method.type_parameters.as_deref(),
                                 method.params.as_ref(),
                                 method.return_type.as_deref(),
-                            )
-                            .instantiate_type(self.arena(), &mapper)
+                            );
+                            self.instantiate_signature(signature, &mapper)
                         })
                     })
                     .collect::<Vec<_>>();
@@ -3006,14 +3485,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         return None;
                     };
                     (property_key_name_str(&candidate.key) == Some(method_name)).then(|| {
-                        self.signature_from_function_parts(
+                        let signature = self.signature_from_function_parts(
                             interface_program_id,
                             SignatureKind::Call,
                             candidate.type_parameters.as_deref(),
                             candidate.params.as_ref(),
                             candidate.return_type.as_deref(),
-                        )
-                        .instantiate_type(self.arena(), &mapper)
+                        );
+                        self.instantiate_signature(signature, &mapper)
                     })
                 })
             })
@@ -3072,7 +3551,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             }
             let mapper = default_substitutions.to_mapper(self.arena());
-            let default_type = default_type.instantiate_type(self.arena(), &mapper);
+            let default_type = self.instantiate_type(default_type, &mapper);
             substitutions.insert(*type_parameter, default_type);
         }
 
@@ -3436,10 +3915,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     reference,
                 );
                 let mapper = substitutions.to_mapper(self.arena());
-                Some(
-                    self.get_type_from_ts_type(program_id, &alias.type_annotation)
-                        .instantiate_type(self.arena(), &mapper),
-                )
+                Some(self.instantiate_type(
+                    self.get_type_from_ts_type(program_id, &alias.type_annotation),
+                    &mapper,
+                ))
             }
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
@@ -3580,7 +4059,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             CallKind::Call(call_expression),
         );
         let mapper = substitutions.to_mapper(self.arena());
-        Some(parameter_type.instantiate_type(self.arena(), &mapper))
+        Some(self.instantiate_type(parameter_type, &mapper))
     }
 
     fn get_contextual_type_of_construct_argument(
@@ -3620,7 +4099,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             CallKind::New(new_expression),
         );
         let mapper = substitutions.to_mapper(self.arena());
-        Some(parameter_type.instantiate_type(self.arena(), &mapper))
+        Some(self.instantiate_type(parameter_type, &mapper))
     }
 
     fn get_contextual_type_of_object_property_value(
