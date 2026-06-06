@@ -122,7 +122,7 @@ impl<'a> InferenceResolution<'a> {
         substitutions: TypeParameterSubstitutions<'a>,
         arena: crate::types::CheckerArena<'a>,
     ) -> Self {
-        let mapper = substitutions.to_mapper(arena);
+        let mapper = substitutions.to_inference_mapper(arena);
         Self {
             substitutions,
             mapper,
