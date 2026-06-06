@@ -5,7 +5,7 @@ use oxc_ast::ast::{
 };
 use std::collections::HashMap;
 
-use crate::type_set::reduce_union_type;
+use crate::type_set::{reduce_intersection_type, reduce_union_type};
 
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
@@ -81,7 +81,7 @@ pub struct TyObject<'a> {
 
 impl<'a> TyObject<'a> {
     /// Returns `true` if the object has no properties, signatures, or index infos.
-    fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.properties.is_empty() && self.signatures.is_empty() && self.index_infos.is_empty()
     }
 }
@@ -1300,7 +1300,6 @@ impl<'a> Ty<'a> {
                     MappedModifier::True => "readonly ",
                     MappedModifier::Plus => "+readonly ",
                     MappedModifier::Minus => "-readonly ",
-                    _ => "",
                 };
                 s.push_str(prefix);
                 s.push('[');
@@ -2304,53 +2303,6 @@ fn contains_infer(ty: Ty<'_>) -> bool {
 
 fn is_identity_type_parameter_substitution(name: &str, ty: Ty<'_>) -> bool {
     matches!(ty, Ty::TypeReference(reference) if reference.name == name && reference.type_arguments.is_empty())
-}
-
-fn reduce_intersection_type<'a>(
-    arena: CheckerArena<'a>,
-    types: impl IntoIterator<Item = Ty<'a>>,
-) -> Ty<'a> {
-    let mut type_set = Vec::new();
-    for ty in types {
-        add_type_to_intersection(&mut type_set, ty);
-    }
-
-    if type_set.len() > 1 {
-        type_set.retain(|ty| !matches!(ty, Ty::Unknown));
-    }
-
-    let has_object_like_member = type_set
-        .iter()
-        .any(|ty| is_empty_object_intersection_identity_target(*ty));
-    if has_object_like_member {
-        type_set.retain(|ty| !matches!(ty, Ty::Object(object) if object.is_empty()));
-    }
-
-    match type_set.as_slice() {
-        [] => Ty::object(arena, []),
-        [ty] => *ty,
-        _ => Ty::Intersection(arena.alloc(TyIntersection {
-            types: arena.vec_from_iter(type_set),
-        })),
-    }
-}
-
-fn add_type_to_intersection<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
-    if let Ty::Intersection(intersection) = ty {
-        for ty in &intersection.types {
-            add_type_to_intersection(type_set, *ty);
-        }
-    } else if !type_set.contains(&ty) {
-        type_set.push(ty);
-    }
-}
-
-fn is_empty_object_intersection_identity_target(ty: Ty<'_>) -> bool {
-    match ty {
-        Ty::Mapped(_) => true,
-        Ty::Object(object) => !object.is_empty(),
-        _ => false,
-    }
 }
 
 fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {

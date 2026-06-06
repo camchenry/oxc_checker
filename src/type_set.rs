@@ -1,6 +1,9 @@
 use std::collections::HashSet;
 
-use crate::types::{CheckerArena, Ty, TyTemplateLiteral, TyUnion};
+use crate::{
+    TyIntersection,
+    types::{CheckerArena, Ty, TyTemplateLiteral, TyUnion},
+};
 
 pub fn reduce_union_type<'a>(
     arena: CheckerArena<'a>,
@@ -44,6 +47,53 @@ fn add_type_to_union<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
         }
     } else if !type_set.contains(&ty) {
         type_set.push(ty);
+    }
+}
+
+pub(crate) fn reduce_intersection_type<'a>(
+    arena: CheckerArena<'a>,
+    types: impl IntoIterator<Item = Ty<'a>>,
+) -> Ty<'a> {
+    let mut type_set = Vec::new();
+    for ty in types {
+        add_type_to_intersection(&mut type_set, ty);
+    }
+
+    if type_set.len() > 1 {
+        type_set.retain(|ty| !matches!(ty, Ty::Unknown));
+    }
+
+    let has_object_like_member = type_set
+        .iter()
+        .any(|ty| is_empty_object_intersection_identity_target(*ty));
+    if has_object_like_member {
+        type_set.retain(|ty| !matches!(ty, Ty::Object(object) if object.is_empty()));
+    }
+
+    match type_set.as_slice() {
+        [] => Ty::object(arena, []),
+        [ty] => *ty,
+        _ => Ty::Intersection(arena.alloc(TyIntersection {
+            types: arena.vec_from_iter(type_set),
+        })),
+    }
+}
+
+fn add_type_to_intersection<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
+    if let Ty::Intersection(intersection) = ty {
+        for ty in &intersection.types {
+            add_type_to_intersection(type_set, *ty);
+        }
+    } else if !type_set.contains(&ty) {
+        type_set.push(ty);
+    }
+}
+
+fn is_empty_object_intersection_identity_target(ty: Ty<'_>) -> bool {
+    match ty {
+        Ty::Mapped(_) => true,
+        Ty::Object(object) => !object.is_empty(),
+        _ => false,
     }
 }
 
