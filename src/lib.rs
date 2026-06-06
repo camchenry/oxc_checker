@@ -2065,6 +2065,24 @@ mod test {
     }
 
     #[test]
+    fn generic_function_prefers_naked_type_variable_inference_candidate() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const values: any[];
+        function choose<T>(items: T[], value: T) {
+            return value;
+        }
+
+        const result = choose(values, "ready");
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "result"), Ty::string());
+    }
+
+    #[test]
     fn generic_function_infers_from_array_and_tuple_shapes() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

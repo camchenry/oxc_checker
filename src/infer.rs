@@ -35,10 +35,32 @@ impl ConditionalInferMatchResult {
     }
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) enum InferencePriority {
     None,
+    Low,
+    ReturnType,
+    MappedTypeConstraint,
+    PartialHomomorphicMappedType,
+    HomomorphicMappedType,
     NakedTypeVariable,
+}
+
+impl InferencePriority {
+    fn structural(self) -> Self {
+        match self {
+            Self::None => Self::None,
+            _ => Self::Low,
+        }
+    }
+
+    fn return_type(self) -> Self {
+        match self {
+            Self::None => Self::None,
+            _ => Self::ReturnType,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -818,6 +840,7 @@ fn infer_types<'a>(
         argument_type,
         context,
         InferenceVariance::Covariant,
+        InferencePriority::NakedTypeVariable,
         arena,
     );
 }
@@ -827,6 +850,7 @@ fn infer_types_with_variance<'a>(
     argument_type: Ty<'a>,
     context: &mut InferenceContext<'a>,
     variance: InferenceVariance,
+    priority: InferencePriority,
     arena: crate::types::CheckerArena<'a>,
 ) {
     match (parameter_type, argument_type) {
@@ -836,6 +860,7 @@ fn infer_types_with_variance<'a>(
                 argument_type,
                 context,
                 variance,
+                priority,
                 arena,
             );
         }
@@ -845,6 +870,7 @@ fn infer_types_with_variance<'a>(
                 argument_array.element_type,
                 context,
                 variance,
+                priority.structural(),
                 arena,
             );
         }
@@ -854,6 +880,7 @@ fn infer_types_with_variance<'a>(
                 &argument_tuple.elements,
                 context,
                 variance,
+                priority.structural(),
                 arena,
             );
         }
@@ -863,6 +890,7 @@ fn infer_types_with_variance<'a>(
                 argument_keyof.target,
                 context,
                 variance,
+                priority.structural(),
                 arena,
             );
         }
@@ -872,6 +900,7 @@ fn infer_types_with_variance<'a>(
                 argument_indexed.object_type,
                 context,
                 variance,
+                priority.structural(),
                 arena,
             );
             infer_types_with_variance(
@@ -879,6 +908,7 @@ fn infer_types_with_variance<'a>(
                 argument_indexed.index_type,
                 context,
                 variance,
+                priority.structural(),
                 arena,
             );
         }
@@ -890,16 +920,12 @@ fn infer_types_with_variance<'a>(
                 return;
             };
             match variance {
-                InferenceVariance::Covariant => context.add_candidate(
-                    type_parameter,
-                    argument_type,
-                    InferencePriority::NakedTypeVariable,
-                ),
-                InferenceVariance::Contravariant => context.add_contra_candidate(
-                    type_parameter,
-                    argument_type,
-                    InferencePriority::NakedTypeVariable,
-                ),
+                InferenceVariance::Covariant => {
+                    context.add_candidate(type_parameter, argument_type, priority)
+                }
+                InferenceVariance::Contravariant => {
+                    context.add_contra_candidate(type_parameter, argument_type, priority)
+                }
             }
         }
         (Ty::TypeReference(parameter_reference), Ty::TypeReference(argument_reference))
@@ -915,6 +941,7 @@ fn infer_types_with_variance<'a>(
                     *argument_type,
                     context,
                     variance,
+                    priority.structural(),
                     arena,
                 );
             }
@@ -932,6 +959,7 @@ fn infer_types_with_variance<'a>(
                         argument_property.ty,
                         context,
                         variance,
+                        priority.structural(),
                         arena,
                     );
                 }
@@ -948,6 +976,7 @@ fn infer_types_with_variance<'a>(
                     argument.ty,
                     context,
                     variance.flip(),
+                    priority.structural(),
                     arena,
                 );
             }
@@ -956,6 +985,7 @@ fn infer_types_with_variance<'a>(
                 argument_function.return_type,
                 context,
                 variance,
+                priority.return_type(),
                 arena,
             );
         }
@@ -968,6 +998,7 @@ fn infer_tuple_elements<'a>(
     argument_elements: &[TupleElement<'a>],
     context: &mut InferenceContext<'a>,
     variance: InferenceVariance,
+    priority: InferencePriority,
     arena: crate::types::CheckerArena<'a>,
 ) {
     if let Some((rest_index, TupleElement::Rest(rest_type))) = parameter_elements
@@ -983,7 +1014,14 @@ fn infer_tuple_elements<'a>(
             .take(rest_index)
             .zip(argument_elements.iter())
         {
-            infer_types_with_variance(parameter.ty(), argument.ty(), context, variance, arena);
+            infer_types_with_variance(
+                parameter.ty(),
+                argument.ty(),
+                context,
+                variance,
+                priority,
+                arena,
+            );
         }
         let rest_tuple = Ty::tuple(
             arena,
@@ -993,7 +1031,7 @@ fn infer_tuple_elements<'a>(
                 .copied()
                 .collect::<Vec<_>>(),
         );
-        infer_types_with_variance(*rest_type, rest_tuple, context, variance, arena);
+        infer_types_with_variance(*rest_type, rest_tuple, context, variance, priority, arena);
         return;
     }
 
@@ -1002,7 +1040,14 @@ fn infer_tuple_elements<'a>(
     }
 
     for (parameter, argument) in parameter_elements.iter().zip(argument_elements.iter()) {
-        infer_types_with_variance(parameter.ty(), argument.ty(), context, variance, arena);
+        infer_types_with_variance(
+            parameter.ty(),
+            argument.ty(),
+            context,
+            variance,
+            priority,
+            arena,
+        );
     }
 }
 
@@ -1011,6 +1056,7 @@ fn infer_type_parameter_from_union<'a>(
     argument_type: Ty<'a>,
     context: &mut InferenceContext<'a>,
     variance: InferenceVariance,
+    priority: InferencePriority,
     arena: crate::types::CheckerArena<'a>,
 ) {
     let parameter_types = parameter_types
@@ -1053,7 +1099,7 @@ fn infer_type_parameter_from_union<'a>(
     };
 
     for candidate in candidates {
-        infer_types_with_variance(candidate, argument_type, context, variance, arena);
+        infer_types_with_variance(candidate, argument_type, context, variance, priority, arena);
     }
 }
 
