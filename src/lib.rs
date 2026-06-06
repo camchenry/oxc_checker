@@ -2156,6 +2156,38 @@ mod test {
     }
 
     #[test]
+    fn generic_function_infers_reverse_same_shape_mapped_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
+        declare function unwrapPartial<T>(value: { [P in keyof T]?: T[P] }): T;
+
+        const unwrapped = unwrap({ value: 1, name: "ready" });
+        const partial = unwrapPartial({ value: 1 });
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "unwrapped").to_type_string(),
+            "{ value: number; name: string; }"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "partial").to_type_string(),
+            "{ value: number; }"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "unwrap").to_type_string(),
+            "<T>(value: { [P in keyof T]: T[P]; }) => T"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "unwrapPartial").to_type_string(),
+            "<T>(value: { [P in keyof T]?: T[P] | undefined; }) => T"
+        );
+    }
+
+    #[test]
     fn function_overloads_select_matching_signature() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

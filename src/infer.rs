@@ -912,16 +912,14 @@ fn infer_types_with_variance<'a>(
                 arena,
             );
         }
-        (Ty::Mapped(parameter_mapped), Ty::Mapped(argument_mapped)) => {
-            infer_mapped_types(
-                parameter_mapped,
-                argument_mapped,
-                context,
-                variance,
-                priority,
-                arena,
-            );
-        }
+        (Ty::Mapped(parameter_mapped), argument_type) => infer_to_mapped_type(
+            parameter_mapped,
+            argument_type,
+            context,
+            variance,
+            priority,
+            arena,
+        ),
         (Ty::TypeReference(reference), _) if reference.type_arguments.is_empty() => {
             let Some(type_parameter) = context
                 .inference_by_name_mut(reference.name)
@@ -1003,9 +1001,9 @@ fn infer_types_with_variance<'a>(
     }
 }
 
-fn infer_mapped_types<'a>(
+fn infer_to_mapped_type<'a>(
     parameter_mapped: &TyMapped<'a>,
-    argument_mapped: &TyMapped<'a>,
+    argument_type: Ty<'a>,
     context: &mut InferenceContext<'a>,
     variance: InferenceVariance,
     priority: InferencePriority,
@@ -1023,31 +1021,165 @@ fn infer_mapped_types<'a>(
     // source type's property set, so inference can recover information about `T`
     // instead of treating the mapped object as unrelated structure.
     //
-    // This is only the classification/priority step. If both sides are same-shape
-    // mapped types, infer from their `keyof` targets with `SameShapeMappedType`
-    // priority. The later reverse-mapped step will handle cases where the source is
-    // an ordinary object and the target is same-shape, such as inferring `T` from
-    // `Partial<T>`.
-    match (
-        same_shape_mapped_type_target(parameter_mapped),
-        same_shape_mapped_type_target(argument_mapped),
-    ) {
-        (Some(parameter_target), Some(argument_target)) => infer_types_with_variance(
-            parameter_target,
-            argument_target,
+    // If both sides are same-shape mapped types, infer from their `keyof` targets
+    // with `SameShapeMappedType` priority. If the argument is an ordinary object,
+    // reconstruct a same-shaped source candidate for the mapped target. That is the
+    // first reverse-mapped inference case: from `{ value: number }` and
+    // `{ [P in keyof T]: T[P] }`, infer `T` as `{ value: number }`.
+    let Some(parameter_target) = same_shape_mapped_type_target(parameter_mapped) else {
+        return infer_types_with_variance(
+            parameter_mapped.constraint,
+            argument_type,
             context,
             variance,
-            InferencePriority::SameShapeMappedType,
+            priority.structural(),
             arena,
-        ),
+        );
+    };
+
+    match argument_type {
+        Ty::Mapped(argument_mapped) => {
+            if let Some(argument_target) = same_shape_mapped_type_target(argument_mapped) {
+                infer_types_with_variance(
+                    parameter_target,
+                    argument_target,
+                    context,
+                    variance,
+                    InferencePriority::SameShapeMappedType,
+                    arena,
+                );
+            } else {
+                infer_types_with_variance(
+                    parameter_mapped.constraint,
+                    argument_mapped.constraint,
+                    context,
+                    variance,
+                    priority.structural(),
+                    arena,
+                );
+            }
+        }
+        Ty::Object(argument_object) => {
+            infer_reverse_mapped_source_type(
+                parameter_mapped,
+                parameter_target,
+                argument_object.properties.iter().copied(),
+                context,
+                variance,
+                arena,
+            );
+        }
         _ => infer_types_with_variance(
             parameter_mapped.constraint,
-            argument_mapped.constraint,
+            argument_type,
             context,
             variance,
             priority.structural(),
             arena,
         ),
+    }
+}
+
+fn infer_reverse_mapped_source_type<'a>(
+    parameter_mapped: &TyMapped<'a>,
+    parameter_target: Ty<'a>,
+    argument_properties: impl IntoIterator<Item = TyProperty<'a>>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    arena: crate::types::CheckerArena<'a>,
+) {
+    let argument_properties = argument_properties.into_iter().collect::<Vec<_>>();
+    let reverse_candidate = Ty::object(arena, argument_properties.iter().copied());
+
+    infer_types_with_variance(
+        parameter_target,
+        reverse_candidate,
+        context,
+        variance,
+        InferencePriority::SameShapeMappedType,
+        arena,
+    );
+
+    for property in argument_properties {
+        if property.computed {
+            continue;
+        }
+        let key_mapper = TypeMapper::single(
+            Ty::type_reference(arena, parameter_mapped.key, std::iter::empty()),
+            Ty::string_literal(arena, property.name),
+        );
+        let template_at_key = substitute_type(parameter_mapped.template, &key_mapper, arena);
+        infer_types_with_variance(
+            template_at_key,
+            property.ty,
+            context,
+            variance,
+            InferencePriority::SameShapeMappedType,
+            arena,
+        );
+    }
+}
+
+fn substitute_type<'a>(
+    ty: Ty<'a>,
+    mapper: &TypeMapper<'a>,
+    arena: crate::types::CheckerArena<'a>,
+) -> Ty<'a> {
+    match ty {
+        Ty::TypeReference(reference) => {
+            let mapped = mapper.map(ty);
+            if mapped != ty {
+                mapped
+            } else {
+                Ty::type_reference(
+                    arena,
+                    reference.name,
+                    reference
+                        .type_arguments
+                        .iter()
+                        .map(|ty| substitute_type(*ty, mapper, arena)),
+                )
+            }
+        }
+        Ty::IndexedAccess(indexed_access) => Ty::indexed_access(
+            arena,
+            substitute_type(indexed_access.object_type, mapper, arena),
+            substitute_type(indexed_access.index_type, mapper, arena),
+        ),
+        Ty::Array(array) => Ty::array(arena, substitute_type(array.element_type, mapper, arena)),
+        Ty::Tuple(tuple) => Ty::tuple(
+            arena,
+            tuple
+                .elements
+                .iter()
+                .map(|element| match element {
+                    TupleElement::Regular(ty) => {
+                        TupleElement::Regular(substitute_type(*ty, mapper, arena))
+                    }
+                    TupleElement::Rest(ty) => {
+                        TupleElement::Rest(substitute_type(*ty, mapper, arena))
+                    }
+                    TupleElement::Optional(ty) => {
+                        TupleElement::Optional(substitute_type(*ty, mapper, arena))
+                    }
+                })
+                .collect(),
+        ),
+        Ty::Union(union) => Ty::union(
+            arena,
+            union
+                .types
+                .iter()
+                .map(|ty| substitute_type(*ty, mapper, arena)),
+        ),
+        Ty::Intersection(intersection) => Ty::intersection(
+            arena,
+            intersection
+                .types
+                .iter()
+                .map(|ty| substitute_type(*ty, mapper, arena)),
+        ),
+        _ => mapper.map(ty),
     }
 }
 
