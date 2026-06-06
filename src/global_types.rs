@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use oxc_ast::{AstKind, ast::Expression};
+use oxc_semantic::NodeId;
 use oxc_syntax::symbol::SymbolFlags;
 
 use crate::{
@@ -92,6 +93,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<SymbolRef> {
         self.get_type_symbol_in_program(program_id, type_name)
             .or_else(|| self.global_symbols.type_symbol(type_name))
+    }
+
+    pub(crate) fn get_type_symbol_and_declaration_for_name(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+    ) -> Option<(SymbolRef, NodeId)> {
+        let symbol = self.get_type_symbol_in_program(program_id, type_name)?;
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        Some((symbol, declaration))
     }
 
     pub fn get_value_symbol_for_name(

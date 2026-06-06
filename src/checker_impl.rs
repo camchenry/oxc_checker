@@ -1451,11 +1451,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
-        let symbol = self.get_type_symbol_for_name(program_id, name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, name)?;
         self.get_expanded_type_alias_declaration(
             symbol.program_id,
             declaration,
@@ -1479,11 +1476,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
-        let symbol = self.get_type_symbol_for_name(program_id, name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, name)?;
         self.get_flat_mapped_intersection_alias_declaration(
             symbol.program_id,
             declaration,
@@ -1825,11 +1819,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference: &TyTypeReference<'a>,
         depth: usize,
     ) -> Option<Ty<'a>> {
-        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
         self.apparent_type_declaration_for_conditional_match(
             symbol.program_id,
             declaration,
@@ -1965,11 +1956,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_name: &str,
         type_arguments: &[Ty<'a>],
     ) -> Option<Ty<'a>> {
-        let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, type_name)?;
         self.get_expanded_type_query_alias_declaration(
             symbol.program_id,
             declaration,
@@ -2286,13 +2274,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return interface_signatures;
         }
 
-        let Some(symbol) = self.get_type_symbol_for_name(program_id, reference.name) else {
+        let Some((symbol, declaration)) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+        else {
             return Vec::new();
         };
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
         self.get_signatures_of_type_declaration(symbol.program_id, declaration, reference, kind)
     }
 
@@ -2820,11 +2806,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Some(ty);
         }
 
-        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
         self.get_property_type_of_interface_declaration(
             symbol.program_id,
             declaration,
@@ -3226,11 +3209,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         type_name: &str,
     ) -> Option<Vec<TyTypeParameter<'a>>> {
-        let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, type_name)?;
         self.get_type_parameters_for_declaration(symbol.program_id, declaration)
     }
 
@@ -3460,11 +3440,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         reference: &TyTypeReference<'a>,
     ) -> Option<(program::ProgramId, Ty<'a>)> {
-        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
         self.get_conditional_type_alias_declaration_type(symbol.program_id, declaration, reference)
             .map(|ty| (symbol.program_id, ty))
     }
@@ -3541,13 +3518,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         reference: &TyTypeReference<'a>,
     ) -> bool {
-        let Some(symbol) = self.get_type_symbol_for_name(program_id, reference.name) else {
+        let Some((symbol, declaration)) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+        else {
             return false;
         };
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
         self.is_conditional_type_alias_declaration(symbol.program_id, declaration)
     }
 
@@ -4678,11 +4653,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return None;
         }
-        let symbol = self.get_type_symbol_for_name(program_id, reference.name)?;
-        let declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declaration(symbol.symbol_id);
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
         self.get_expanded_type_alias_declaration(
             symbol.program_id,
             declaration,
