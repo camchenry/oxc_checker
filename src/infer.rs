@@ -8,7 +8,7 @@ use oxc_semantic::{NodeId, ScopeFlags};
 use crate::{
     checker::{Checker, CheckerReturn},
     checker_impl::{FunctionKind, GetTypeFlags},
-    mapper::TypeParameterSubstitutions,
+    mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
     types::{
         TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyProperty, TyTypeParameter,
@@ -88,6 +88,32 @@ impl<'a> InferenceInfo<'a> {
 #[derive(Clone, Debug)]
 pub(crate) struct InferenceContext<'a> {
     inferences: Vec<InferenceInfo<'a>>,
+}
+
+pub(crate) struct InferenceResolution<'a> {
+    substitutions: TypeParameterSubstitutions<'a>,
+    mapper: TypeMapper<'a>,
+}
+
+impl<'a> InferenceResolution<'a> {
+    fn new(
+        substitutions: TypeParameterSubstitutions<'a>,
+        arena: crate::types::CheckerArena<'a>,
+    ) -> Self {
+        let mapper = substitutions.to_mapper(arena);
+        Self {
+            substitutions,
+            mapper,
+        }
+    }
+
+    pub(crate) fn substitutions(&self) -> &TypeParameterSubstitutions<'a> {
+        &self.substitutions
+    }
+
+    pub(crate) fn mapper(&self) -> &TypeMapper<'a> {
+        &self.mapper
+    }
 }
 
 impl<'a> InferenceContext<'a> {
@@ -177,12 +203,12 @@ impl<'a> InferenceContext<'a> {
         }
     }
 
-    pub(crate) fn resolve_inferences(
+    pub(crate) fn resolve(
         mut self,
         arena: crate::types::CheckerArena<'a>,
         flags: InferenceResolutionFlags,
         mut instantiate_fallback: impl FnMut(Ty<'a>, &TypeParameterSubstitutions<'a>) -> Ty<'a>,
-    ) -> TypeParameterSubstitutions<'a> {
+    ) -> InferenceResolution<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
 
         for index in 0..self.inferences.len() {
@@ -208,7 +234,7 @@ impl<'a> InferenceContext<'a> {
                 substitutions.insert(self.inferences[index].type_parameter, inferred_type);
             }
         }
-        substitutions
+        InferenceResolution::new(substitutions, arena)
     }
 
     fn candidate_substitutions(
@@ -305,7 +331,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 0,
             ) {
                 ConditionalInferMatchResult::Matched => {
-                    let substitutions = inferences.resolve_inferences(
+                    let resolution = inferences.resolve(
                         self.arena(),
                         InferenceResolutionFlags::NONE,
                         |fallback_type, substitutions| {
@@ -315,7 +341,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             )
                         },
                     );
-                    self.instantiate_type(true_type, &substitutions.to_mapper(self.arena()))
+                    self.instantiate_type(true_type, resolution.mapper())
                 }
                 ConditionalInferMatchResult::NoMatch => false_type,
                 ConditionalInferMatchResult::Deferred => {
@@ -620,13 +646,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         });
     }
 
-    pub(crate) fn infer_call_type_parameter_substitutions(
+    pub(crate) fn infer_call_type_parameter_resolution(
         &self,
         program_id: ProgramId,
         function: &'a TyFunction<'a>,
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
-    ) -> TypeParameterSubstitutions<'a> {
+    ) -> InferenceResolution<'a> {
         let (substitutions, _) = self.explicit_type_parameter_substitutions(
             program_id,
             function,
@@ -654,7 +680,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
-        context.resolve_inferences(
+        context.resolve(
             self.arena(),
             InferenceResolutionFlags::NONE,
             |fallback_type, substitutions| {
@@ -711,12 +737,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    pub(crate) fn infer_construct_type_parameter_substitutions(
+    pub(crate) fn infer_construct_type_parameter_resolution(
         &self,
         program_id: ProgramId,
         function: &'a TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
-    ) -> TypeParameterSubstitutions<'a> {
+    ) -> InferenceResolution<'a> {
         let (substitutions, _) = self.explicit_type_parameter_substitutions(
             program_id,
             function,
@@ -744,7 +770,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             infer_types(parameter.ty, argument_type, &mut context, self.arena());
         }
 
-        context.resolve_inferences(
+        context.resolve(
             self.arena(),
             InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
             |fallback_type, substitutions| {

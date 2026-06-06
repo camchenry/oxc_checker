@@ -2846,14 +2846,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
         require_applicable: bool,
     ) -> Option<Ty<'a>> {
-        let substitutions = self.infer_call_type_parameter_substitutions(
+        let inference = self.infer_call_type_parameter_resolution(
             program_id,
             signature.function,
             call_expression,
             node_id,
         );
-        let mapper = substitutions.to_mapper(self.arena());
-        let instantiated = self.instantiate_type(signature.function.return_type, &mapper);
+        let instantiated =
+            self.instantiate_type(signature.function.return_type, inference.mapper());
 
         if require_applicable
             && !self.is_call_signature_applicable(
@@ -2861,7 +2861,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 signature.function,
                 CallKind::Call(call_expression),
                 node_id,
-                &substitutions,
+                inference.substitutions(),
             )
         {
             return None;
@@ -3086,7 +3086,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         new_expression: &'a NewExpression<'a>,
         require_applicable: bool,
     ) -> Option<Ty<'a>> {
-        let substitutions = self.infer_construct_type_parameter_substitutions(
+        let inference = self.infer_construct_type_parameter_resolution(
             program_id,
             signature.function,
             new_expression,
@@ -3098,14 +3098,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 signature.function,
                 CallKind::New(new_expression),
                 None,
-                &substitutions,
+                inference.substitutions(),
             )
         {
             return None;
         }
 
-        let mapper = substitutions.to_mapper(self.arena());
-        Some(self.instantiate_type(signature.function.return_type, &mapper))
+        Some(self.instantiate_type(signature.function.return_type, inference.mapper()))
     }
 
     fn arguments_are_assignable_to_parameters(
