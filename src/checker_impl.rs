@@ -5078,6 +5078,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let annotated_type =
             self.get_parameter_type_from_ts_type_annotation(program_id, Some(annotation));
+        let annotated_type = if let Ty::Infer(infer) = annotated_type {
+            Ty::type_reference(self.arena(), infer.type_parameter.name, [])
+        } else {
+            annotated_type
+        };
 
         if parameter.optional {
             return Ty::union(self.arena(), [annotated_type, Ty::undefined()]);

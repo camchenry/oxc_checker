@@ -7,6 +7,8 @@ type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U }
 type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
 type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
+type FunctionReturnInfer = (() => string) extends (() => infer R) ? R : never;
+type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
 
 declare const directInfer: string extends infer U ? U : never;
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
@@ -17,3 +19,5 @@ declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: i
 declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
 declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
+declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
+declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;

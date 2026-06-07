@@ -332,7 +332,7 @@ export type UnionToIntersection<Union> = (
 >                                            ^^^^^: any   (TyAny)
 
 ) extends (mergedIntersection: infer Intersection) => void
->          ^^^^^^^^^^^^^^^^^^: infer Intersection   (TyInfer)
+>          ^^^^^^^^^^^^^^^^^^: Intersection   (TyTypeReference)
 
 ) extends (mergedIntersection: infer Intersection) => void
 >                                    ^^^^^^^^^^^^: any   (TyAny)

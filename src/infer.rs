@@ -28,6 +28,12 @@ enum ConditionalInferMatchResult {
     Deferred,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum PropertyMatchMode {
+    ExistingOnly,
+    RequireTarget,
+}
+
 impl ConditionalInferMatchResult {
     fn and(self, other: Self) -> Self {
         match (self, other) {
@@ -885,6 +891,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 inferences,
                 depth + 1,
             ),
+            (Ty::Function(source), Ty::Function(target)) => {
+                self.infer_conditional_from_function_types(source, target, inferences, depth + 1)
+            }
+            (Ty::IndexedAccess(source), Ty::IndexedAccess(target)) => self
+                .infer_conditional_from_type_pairs(
+                    [
+                        (source.object_type, target.object_type),
+                        (source.index_type, target.index_type),
+                    ],
+                    inferences,
+                    depth + 1,
+                ),
             (Ty::TypeReference(source), Ty::TypeReference(target))
                 if source.name == target.name
                     && source.type_arguments.len() == target.type_arguments.len() =>
@@ -970,32 +988,36 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         inferences: &mut InferenceContext<'a>,
         depth: usize,
     ) -> ConditionalInferMatchResult {
-        let source_properties = source_properties.into_iter().collect::<Vec<_>>();
-        let mut result = ConditionalInferMatchResult::Matched;
-        for target_property in target_properties {
-            let Some(source_property) = source_properties.iter().find(|source_property| {
-                source_property.name == target_property.name
-                    && source_property.computed == target_property.computed
-            }) else {
-                if target_property.optional {
-                    continue;
-                }
-                return ConditionalInferMatchResult::NoMatch;
-            };
-            if source_property.optional && !target_property.optional {
-                return ConditionalInferMatchResult::NoMatch;
-            }
-            result = result.and(self.infer_conditional_from_types(
-                source_property.ty,
-                target_property.ty,
-                inferences,
-                depth + 1,
-            ));
-            if result == ConditionalInferMatchResult::NoMatch {
-                return result;
-            }
+        match_property_type_pairs(
+            source_properties,
+            target_properties,
+            PropertyMatchMode::RequireTarget,
+        )
+        .map(|pairs| self.infer_conditional_from_type_pairs(pairs, inferences, depth + 1))
+        .unwrap_or(ConditionalInferMatchResult::NoMatch)
+    }
+
+    fn infer_conditional_from_function_types(
+        &self,
+        source: &TyFunction<'a>,
+        target: &TyFunction<'a>,
+        inferences: &mut InferenceContext<'a>,
+        depth: usize,
+    ) -> ConditionalInferMatchResult {
+        if source.parameters.len() != target.parameters.len() {
+            return ConditionalInferMatchResult::NoMatch;
         }
-        result
+
+        let parameter_pairs = source
+            .parameters
+            .iter()
+            .zip(target.parameters.iter())
+            .map(|(source, target)| (source.ty, target.ty));
+        self.infer_conditional_from_type_pairs(
+            parameter_pairs.chain(std::iter::once((source.return_type, target.return_type))),
+            inferences,
+            depth + 1,
+        )
     }
 
     fn infer_conditional_from_tuple_elements(
@@ -1230,6 +1252,60 @@ impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
     fn visit_arrow_function_expression(&mut self, _function: &ArrowFunctionExpression<'a>) {}
 }
 
+fn match_property_type_pairs<'a>(
+    source_properties: impl IntoIterator<Item = TyProperty<'a>>,
+    target_properties: impl IntoIterator<Item = TyProperty<'a>>,
+    mode: PropertyMatchMode,
+) -> Option<Vec<(Ty<'a>, Ty<'a>)>> {
+    let source_properties = source_properties.into_iter().collect::<Vec<_>>();
+    let mut pairs = Vec::new();
+
+    for target_property in target_properties {
+        let Some(source_property) = source_properties.iter().find(|source_property| {
+            source_property.name == target_property.name
+                && source_property.computed == target_property.computed
+        }) else {
+            match mode {
+                PropertyMatchMode::ExistingOnly | PropertyMatchMode::RequireTarget
+                    if target_property.optional =>
+                {
+                    continue;
+                }
+                PropertyMatchMode::ExistingOnly => continue,
+                PropertyMatchMode::RequireTarget => return None,
+            }
+        };
+        if mode == PropertyMatchMode::RequireTarget
+            && source_property.optional
+            && !target_property.optional
+        {
+            return None;
+        }
+        pairs.push((source_property.ty, target_property.ty));
+    }
+
+    Some(pairs)
+}
+
+fn infer_type_pairs_with_variance<'a>(
+    pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    priority: InferencePriority,
+    arena: crate::types::CheckerArena<'a>,
+) {
+    for (parameter_type, argument_type) in pairs {
+        infer_types_with_variance(
+            parameter_type,
+            argument_type,
+            context,
+            variance,
+            priority,
+            arena,
+        );
+    }
+}
+
 fn infer_types<'a>(
     parameter_type: Ty<'a>,
     argument_type: Ty<'a>,
@@ -1357,38 +1433,33 @@ fn infer_types_with_variance<'a>(
         (Ty::TypeReference(parameter_reference), Ty::TypeReference(argument_reference))
             if parameter_reference.name == argument_reference.name =>
         {
-            for (parameter_type, argument_type) in parameter_reference
-                .type_arguments
-                .iter()
-                .zip(argument_reference.type_arguments.iter())
-            {
-                infer_types_with_variance(
-                    *parameter_type,
-                    *argument_type,
+            infer_type_pairs_with_variance(
+                parameter_reference
+                    .type_arguments
+                    .iter()
+                    .copied()
+                    .zip(argument_reference.type_arguments.iter().copied()),
+                context,
+                variance,
+                priority.structural(),
+                arena,
+            );
+        }
+        (Ty::Object(parameter_object), Ty::Object(argument_object)) => {
+            if let Some(pairs) = match_property_type_pairs(
+                argument_object.properties.iter().copied(),
+                parameter_object.properties.iter().copied(),
+                PropertyMatchMode::ExistingOnly,
+            ) {
+                infer_type_pairs_with_variance(
+                    pairs
+                        .into_iter()
+                        .map(|(argument, parameter)| (parameter, argument)),
                     context,
                     variance,
                     priority.structural(),
                     arena,
                 );
-            }
-        }
-        (Ty::Object(parameter_object), Ty::Object(argument_object)) => {
-            for parameter_property in &parameter_object.properties {
-                if let Some(argument_property) =
-                    argument_object.properties.iter().find(|argument_property| {
-                        argument_property.name == parameter_property.name
-                            && argument_property.computed == parameter_property.computed
-                    })
-                {
-                    infer_types_with_variance(
-                        parameter_property.ty,
-                        argument_property.ty,
-                        context,
-                        variance,
-                        priority.structural(),
-                        arena,
-                    );
-                }
             }
         }
         (Ty::Function(parameter_function), Ty::Function(argument_function)) => {

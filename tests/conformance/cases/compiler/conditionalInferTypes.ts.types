@@ -118,6 +118,30 @@ type UnionInfer = { value: string } | { value: number } extends { value: infer U
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
 >                                                                                    ^: any   (TyAny)
 
+type FunctionReturnInfer = (() => string) extends (() => infer R) ? R : never;
+>    ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type FunctionReturnInfer = (() => string) extends (() => infer R) ? R : never;
+>                                                              ^: any   (TyAny)
+
+type FunctionReturnInfer = (() => string) extends (() => infer R) ? R : never;
+>                                                                   ^: any   (TyAny)
+
+type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>    ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                               ^^^^^: string   (TyString)
+
+type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                                                                 ^^^^^: P   (TyTypeReference)
+
+type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                                                                              ^: any   (TyAny)
+
+type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                                                                                            ^: any   (TyAny)
+
 declare const directInfer: string extends infer U ? U : never;
 >             ^^^^^^^^^^^: string   (TyString)
 
@@ -237,3 +261,27 @@ declare const unionInfer: { value: string } | { value: number } extends { value:
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
 >                                                                                            ^: any   (TyAny)
+
+declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
+>             ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
+>                                                                      ^: any   (TyAny)
+
+declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
+>                                                                           ^: any   (TyAny)
+
+declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>             ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                                       ^^^^^: string   (TyString)
+
+declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                                                                         ^^^^^: P   (TyTypeReference)
+
+declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                                                                                      ^: any   (TyAny)
+
+declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+>                                                                                                    ^: any   (TyAny)

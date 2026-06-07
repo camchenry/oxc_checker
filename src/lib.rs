@@ -1766,6 +1766,27 @@ mod test {
     }
 
     #[test]
+    fn conditional_infer_extracts_function_signature_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        declare const returnValue: (() => string) extends (() => infer R) ? R : never;
+        declare const parameterValue: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "returnValue").to_type_string(),
+            "string"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "parameterValue").to_type_string(),
+            "string"
+        );
+    }
+
+    #[test]
     fn conditional_infer_shadows_outer_type_parameter_substitution() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "const x = 1;");

@@ -3953,7 +3953,7 @@ type Awaited<T> = T extends null | undefined ? T : // special case for `null | u
 >                        ^^^^: (onfulfilled: infer F, ...args: infer _) => any   (TyFunction)
 
     T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
->                             ^^^^^^^^^^^: infer F   (TyInfer)
+>                             ^^^^^^^^^^^: F   (TyTypeReference)
 
     T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
 >                                                ^: any   (TyAny)
@@ -3968,7 +3968,7 @@ type Awaited<T> = T extends null | undefined ? T : // special case for `null | u
 >       ^: any   (TyAny)
 
         F extends ((value: infer V, ...args: infer _) => any) ? // if the argument to `then` is callable, extracts the first argument
->                   ^^^^^: infer V   (TyInfer)
+>                   ^^^^^: V   (TyTypeReference)
 
         F extends ((value: infer V, ...args: infer _) => any) ? // if the argument to `then` is callable, extracts the first argument
 >                                ^: any   (TyAny)
