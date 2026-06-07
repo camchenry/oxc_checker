@@ -1,0 +1,50 @@
+declare function useCallback<T>(callback: () => T): T;
+>                ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction)
+
+declare function useCallback<T>(callback: () => T): T;
+>                            ^: any   (TyAny)
+
+declare function useCallback<T>(callback: () => T): T;
+>                               ^^^^^^^^: () => T   (TyFunction)
+
+declare function useCallback<T>(callback: () => T): T;
+>                                               ^: any   (TyAny)
+
+declare function useCallback<T>(callback: () => T): T;
+>                                                   ^: any   (TyAny)
+
+declare function configure<T>(options: { create: () => T }): T;
+>                ^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction)
+
+declare function configure<T>(options: { create: () => T }): T;
+>                          ^: any   (TyAny)
+
+declare function configure<T>(options: { create: () => T }): T;
+>                             ^^^^^^^: { create: () => T; }   (TyObject)
+
+declare function configure<T>(options: { create: () => T }): T;
+>                                        ^^^^^^: () => T   (TyFunction)
+
+declare function configure<T>(options: { create: () => T }): T;
+>                                                      ^: any   (TyAny)
+
+declare function configure<T>(options: { create: () => T }): T;
+>                                                            ^: any   (TyAny)
+
+const callbackValue = useCallback(() => 1);
+>     ^^^^^^^^^^^^^: number   (TyNumber)
+
+const callbackValue = useCallback(() => 1);
+>                     ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction)
+
+const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
+>     ^^^^^^^^^^^^^^^^^^^: { value: number; }   (TyObject)
+
+const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
+>                           ^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction)
+
+const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
+>                                       ^^^^^^: () => { value: number; }   (TyFunction)
+
+const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
+>                                                        ^^^^^: number   (TyNumber)

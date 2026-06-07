@@ -2783,6 +2783,27 @@ mod test {
     }
 
     #[test]
+    fn generic_function_infers_from_callback_return_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function useCallback<T>(callback: () => T): T;
+        declare function configure<T>(options: { create: () => T }): T;
+
+        const callbackValue = useCallback(() => 1);
+        const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "callbackValue"), Ty::number());
+        assert_eq!(
+            get_global_symbol_type(&ret, "objectCallbackValue").to_type_string(),
+            "{ value: number; }"
+        );
+    }
+
+    #[test]
     fn awaited_special_handling_requires_global_awaited_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

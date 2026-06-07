@@ -1473,31 +1473,65 @@ fn infer_types_with_variance<'a>(
             }
         }
         (Ty::Function(parameter_function), Ty::Function(argument_function)) => {
-            for (parameter, argument) in parameter_function
-                .parameters
-                .iter()
-                .zip(argument_function.parameters.iter())
-            {
-                infer_types_with_variance(
-                    parameter.ty,
-                    argument.ty,
-                    context,
-                    variance.flip(),
-                    priority.structural(),
-                    arena,
-                );
-            }
-            infer_types_with_variance(
-                parameter_function.return_type,
-                argument_function.return_type,
+            infer_from_signature_types(
+                parameter_function,
+                argument_function,
                 context,
                 variance,
-                priority.return_type(),
+                priority,
                 arena,
             );
         }
         _ => {}
     }
+}
+
+fn infer_from_signature_types<'a>(
+    parameter_function: &TyFunction<'a>,
+    argument_function: &TyFunction<'a>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    priority: InferencePriority,
+    arena: crate::types::CheckerArena<'a>,
+) {
+    for (parameter, argument) in parameter_function
+        .parameters
+        .iter()
+        .zip(argument_function.parameters.iter())
+    {
+        infer_types_with_variance(
+            parameter.ty,
+            argument.ty,
+            context,
+            variance.flip(),
+            priority.structural(),
+            arena,
+        );
+    }
+
+    if type_contains_inference_variable(parameter_function.return_type, context) {
+        infer_types_with_variance(
+            parameter_function.return_type,
+            argument_function.return_type,
+            context,
+            variance,
+            priority.return_type(),
+            arena,
+        );
+    }
+}
+
+fn type_contains_inference_variable<'a>(ty: Ty<'a>, context: &InferenceContext<'a>) -> bool {
+    let mut contains = false;
+    visit_type(ty, &mut |ty| {
+        if let Ty::TypeReference(reference) = ty
+            && reference.type_arguments.is_empty()
+            && context.contains_type_parameter_name(reference.name)
+        {
+            contains = true;
+        }
+    });
+    contains
 }
 
 fn infer_to_mapped_type<'a>(
