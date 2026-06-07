@@ -2093,6 +2093,34 @@ mod test {
     }
 
     #[test]
+    fn generic_function_non_null_assertion_returns_non_nullable_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        function foo3<T>(x: T | undefined | null) {
+            return x!
+        }
+
+        const stringValue = foo3("hello");
+        const undefinedValue = foo3(undefined);
+        const numberValue = foo3(123 as number);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "foo3").to_type_string(),
+            "<T>(x: T | null | undefined) => NonNullable<T>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "stringValue").to_type_string(),
+            "\"hello\""
+        );
+        assert_eq!(get_global_symbol_type(&ret, "undefinedValue"), Ty::never());
+        assert_eq!(get_global_symbol_type(&ret, "numberValue"), Ty::number());
+    }
+
+    #[test]
     fn generic_function_merges_repeated_inference_candidates() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

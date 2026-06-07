@@ -561,10 +561,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     node_id,
                     flags,
                 );
-                // Remove `null` and `undefined` from the type
-                // TODO(correctness): instead of just directly evaluating, we should map to
-                // the `NonNullable<T>` type and then evaluate that
-                self.remove_null_or_undefined(ty)
+                self.get_non_null_assertion_type(program_id, ty)
             }
             Expression::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression)
@@ -721,6 +718,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }),
             ),
             _ => ty,
+        }
+    }
+
+    fn get_non_null_assertion_type(&self, program_id: program::ProgramId, ty: Ty<'a>) -> Ty<'a> {
+        let non_nullish = self.remove_null_or_undefined(ty);
+        if self.could_contain_type_variables(non_nullish)
+            && let Some(non_nullable) = self.get_global_non_nullable_type(program_id, non_nullish)
+        {
+            return non_nullable;
+        }
+        non_nullish
+    }
+
+    fn get_non_nullable_type(&self, program_id: program::ProgramId, ty: Ty<'a>) -> Ty<'a> {
+        let Ty::TypeReference(reference) = ty else {
+            return ty;
+        };
+        if self.is_global_non_nullable_type_reference(program_id, reference) {
+            self.remove_null_or_undefined(reference.type_arguments[0])
+        } else {
+            ty
         }
     }
 
@@ -2827,8 +2845,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             call_expression,
             node_id,
         );
-        let instantiated =
-            self.instantiate_type(signature.function.return_type, inference.mapper());
+        let instantiated = self.get_non_nullable_type(
+            program_id,
+            self.instantiate_type(signature.function.return_type, inference.mapper()),
+        );
         let instantiated = if matches!(instantiated, Ty::IndexedAccess(_)) {
             self.expand_type_at_use(program_id, instantiated, 0)
         } else {
@@ -3092,8 +3112,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        let instantiated =
-            self.instantiate_type(signature.function.return_type, inference.mapper());
+        let instantiated = self.get_non_nullable_type(
+            program_id,
+            self.instantiate_type(signature.function.return_type, inference.mapper()),
+        );
         let instantiated = if matches!(instantiated, Ty::IndexedAccess(_)) {
             self.expand_type_at_use(program_id, instantiated, 0)
         } else {

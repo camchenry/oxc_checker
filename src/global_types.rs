@@ -21,6 +21,7 @@ const NUMBER_TYPE_NAME: &str = "Number";
 const SYMBOL_TYPE_NAME: &str = "Symbol";
 const BIGINT_TYPE_NAME: &str = "BigInt";
 const AWAITED_TYPE_NAME: &str = "Awaited";
+const NON_NULLABLE_TYPE_NAME: &str = "NonNullable";
 
 #[derive(Clone, Copy, Debug, Default)]
 struct GlobalSymbolEntry {
@@ -288,6 +289,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Ty::type_reference(self.arena(), AWAITED_TYPE_NAME, [awaited_type])
     }
 
+    pub(crate) fn get_global_non_nullable_type(
+        &self,
+        program_id: program::ProgramId,
+        target_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
+            .then(|| Ty::type_reference(self.arena(), NON_NULLABLE_TYPE_NAME, [target_type]))
+    }
+
     pub(crate) fn is_global_awaited_type_reference(
         &self,
         program_id: program::ProgramId,
@@ -296,6 +306,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference.name == AWAITED_TYPE_NAME
             && reference.type_arguments.len() == 1
             && self.is_default_lib_type(program_id, AWAITED_TYPE_NAME)
+    }
+
+    pub(crate) fn is_global_non_nullable_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> bool {
+        reference.name == NON_NULLABLE_TYPE_NAME
+            && reference.type_arguments.len() == 1
+            && self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
     }
 
     fn is_default_lib_type(&self, program_id: program::ProgramId, name: &str) -> bool {

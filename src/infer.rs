@@ -1112,7 +1112,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             function.type_parameters.iter().copied(),
             &substitutions,
         )
-        .with_return_type(function.return_type);
+        .with_return_type(
+            self.inference_return_type_for_literal_widening(program_id, function.return_type),
+        );
 
         for (argument, parameter) in call_expression
             .arguments
@@ -1198,7 +1200,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             function.type_parameters.iter().copied(),
             &substitutions,
         )
-        .with_return_type(function.return_type);
+        .with_return_type(
+            self.inference_return_type_for_literal_widening(program_id, function.return_type),
+        );
 
         for (argument, parameter) in new_expression
             .arguments
@@ -1222,6 +1226,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena(),
             InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
         )
+    }
+
+    fn inference_return_type_for_literal_widening(
+        &self,
+        program_id: ProgramId,
+        return_type: Ty<'a>,
+    ) -> Ty<'a> {
+        match return_type {
+            Ty::TypeReference(reference)
+                if self.is_global_non_nullable_type_reference(program_id, reference) =>
+            {
+                reference.type_arguments[0]
+            }
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.inference_return_type_for_literal_widening(program_id, *ty)),
+            ),
+            Ty::Intersection(intersection) => Ty::intersection(
+                self.arena(),
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| self.inference_return_type_for_literal_widening(program_id, *ty)),
+            ),
+            _ => return_type,
+        }
     }
 }
 
