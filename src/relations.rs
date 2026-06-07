@@ -79,6 +79,10 @@ pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
         (Ty::UniqueSymbol(_), Ty::Symbol) => true,
         (Ty::NumberLiteral(_), Ty::Number) => true,
         (Ty::StringLiteral(_), Ty::String) => true,
+        (Ty::StringLiteral(source), Ty::StringLiteral(target)) => {
+            string_literal_type_to_property_name(source.value)
+                == string_literal_type_to_property_name(target.value)
+        }
         (Ty::BooleanLiteral(_), Ty::Boolean) => true,
         (source, Ty::Keyof(target)) => is_assignable_to_keyof(source, target.target),
         _ => false,

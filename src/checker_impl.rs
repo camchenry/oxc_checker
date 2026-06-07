@@ -2602,12 +2602,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::any();
         }
 
-        // TODO(overloads): TypeScript Go's `checker.go` ranks candidates with a more nuanced
-        // specificity pass. This first pass preserves declaration order and picks the first
-        // arity/assignability-compatible signature.
-        candidates
+        let applicable = candidates
             .iter()
-            .find_map(|signature| {
+            .filter_map(|signature| {
                 self.resolve_call_signature_candidate(
                     program_id,
                     *signature,
@@ -2616,6 +2613,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     true,
                 )
             })
+            .collect::<Vec<_>>();
+
+        self.choose_best_signature_candidate(applicable)
             .or_else(|| {
                 // TODO(overloads): mirror TypeScript Go's overload failure candidate diagnostics
                 // instead of falling back to the first signature return type.
@@ -2631,6 +2631,66 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .map(ResolvedSignatureCandidate::into_return_type)
             .unwrap_or_else(Ty::any)
+    }
+
+    fn choose_best_signature_candidate(
+        &self,
+        mut candidates: Vec<ResolvedSignatureCandidate<'a>>,
+    ) -> Option<ResolvedSignatureCandidate<'a>> {
+        if candidates.is_empty() {
+            return None;
+        }
+
+        let mut best_index = 0;
+        for index in 1..candidates.len() {
+            if self
+                .signature_candidate_is_more_specific(&candidates[index], &candidates[best_index])
+            {
+                best_index = index;
+            }
+        }
+
+        Some(candidates.swap_remove(best_index))
+    }
+
+    fn signature_candidate_is_more_specific(
+        &self,
+        left: &ResolvedSignatureCandidate<'a>,
+        right: &ResolvedSignatureCandidate<'a>,
+    ) -> bool {
+        let parameter_count = left
+            .signature
+            .function
+            .parameters
+            .len()
+            .min(right.signature.function.parameters.len());
+        let mut left_better = false;
+        let mut right_better = false;
+
+        for index in 0..parameter_count {
+            let Some(left_type) = self.candidate_parameter_type_at(left, index) else {
+                continue;
+            };
+            let Some(right_type) = self.candidate_parameter_type_at(right, index) else {
+                continue;
+            };
+            if left_type == right_type {
+                continue;
+            }
+            left_better |= self.is_assignable_to(left_type, right_type);
+            right_better |= self.is_assignable_to(right_type, left_type);
+        }
+
+        left_better && !right_better
+    }
+
+    fn candidate_parameter_type_at(
+        &self,
+        candidate: &ResolvedSignatureCandidate<'a>,
+        index: usize,
+    ) -> Option<Ty<'a>> {
+        self.get_call_parameter_type_at(candidate.signature.function, index)
+            .map(|ty| self.instantiate_type(ty, candidate.inference.mapper()))
     }
 
     fn get_signatures_of_type_in_program(
@@ -3086,9 +3146,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             constructor_type,
             SignatureKind::Construct,
         );
-        candidates
+        let applicable = candidates
             .iter()
-            .find_map(|signature| {
+            .filter_map(|signature| {
                 self.resolve_construct_signature_candidate(
                     program_id,
                     *signature,
@@ -3096,6 +3156,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     true,
                 )
             })
+            .collect::<Vec<_>>();
+
+        self.choose_best_signature_candidate(applicable)
             .or_else(|| {
                 candidates.first().and_then(|signature| {
                     self.resolve_construct_signature_candidate(
@@ -3164,7 +3227,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
                 return false;
             };
-            let flags = if self.could_contain_type_variables(parameter_type) {
+            let flags = if self.should_preserve_argument_literals_for_parameter_type(parameter_type)
+            {
                 GetTypeFlags::PRESERVE_LITERALS
             } else {
                 GetTypeFlags::NONE
@@ -3178,6 +3242,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         true
+    }
+
+    fn should_preserve_argument_literals_for_parameter_type(&self, parameter_type: Ty<'a>) -> bool {
+        self.could_contain_type_variables(parameter_type)
+            || match parameter_type {
+                Ty::StringLiteral(_)
+                | Ty::NumberLiteral(_)
+                | Ty::BooleanLiteral(_)
+                | Ty::BigIntLiteral(_) => true,
+                Ty::Union(union) => union
+                    .types
+                    .iter()
+                    .any(|ty| self.should_preserve_argument_literals_for_parameter_type(*ty)),
+                _ => false,
+            }
     }
 
     fn get_property_type_of_named_type(

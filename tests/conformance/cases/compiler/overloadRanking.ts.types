@@ -1,0 +1,65 @@
+declare function literalOverload(x: string): "wide";
+>                ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (TyObject)
+
+declare function literalOverload(x: string): "wide";
+>                                ^: string   (TyString)
+
+declare function literalOverload(x: "ready"): "literal";
+>                ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (TyObject)
+
+declare function literalOverload(x: "ready"): "literal";
+>                                ^: "ready"   (TyStringLiteral)
+
+declare function genericOverload<T>(x: T): T[];
+>                ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (TyObject)
+
+declare function genericOverload<T>(x: T): T[];
+>                                ^: any   (TyAny)
+
+declare function genericOverload<T>(x: T): T[];
+>                                   ^: T   (TyTypeReference)
+
+declare function genericOverload<T>(x: T): T[];
+>                                      ^: any   (TyAny)
+
+declare function genericOverload<T>(x: T): T[];
+>                                          ^: any   (TyAny)
+
+declare function genericOverload(x: string): string;
+>                ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (TyObject)
+
+declare function genericOverload(x: string): string;
+>                                ^: string   (TyString)
+
+declare function tiedOverload(x: string, y?: number): "first";
+>                ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (TyObject)
+
+declare function tiedOverload(x: string, y?: number): "first";
+>                             ^: string   (TyString)
+
+declare function tiedOverload(x: string, y?: number): "first";
+>                                        ^: number | undefined   (TyUnion)
+
+declare function tiedOverload(x: string): "second";
+>                ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (TyObject)
+
+declare function tiedOverload(x: string): "second";
+>                             ^: string   (TyString)
+
+const literalResult = literalOverload("ready");
+>     ^^^^^^^^^^^^^: "literal"   (TyStringLiteral)
+
+const literalResult = literalOverload("ready");
+>                     ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (TyObject)
+
+const genericResult = genericOverload("ready");
+>     ^^^^^^^^^^^^^: string[]   (TyArray)
+
+const genericResult = genericOverload("ready");
+>                     ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (TyObject)
+
+const tiedResult = tiedOverload("ready");
+>     ^^^^^^^^^^: "first"   (TyStringLiteral)
+
+const tiedResult = tiedOverload("ready");
+>                  ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (TyObject)

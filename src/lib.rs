@@ -2377,6 +2377,41 @@ mod test {
     }
 
     #[test]
+    fn function_overloads_rank_more_specific_applicable_signature() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function literalOverload(x: string): "wide";
+        declare function literalOverload(x: "ready"): "literal";
+
+        declare function genericOverload<T>(x: T): T[];
+        declare function genericOverload(x: string): string;
+
+        declare function tiedOverload(x: string, y?: number): "first";
+        declare function tiedOverload(x: string): "second";
+
+        const literalResult = literalOverload("ready");
+        const genericResult = genericOverload("ready");
+        const tiedResult = tiedOverload("ready");
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "literalResult").to_type_string(),
+            "\"literal\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "genericResult").to_type_string(),
+            "string[]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "tiedResult").to_type_string(),
+            "\"first\""
+        );
+    }
+
+    #[test]
     fn function_overloads_skip_signatures_with_too_many_type_arguments() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
