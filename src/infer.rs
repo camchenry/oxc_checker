@@ -9,6 +9,7 @@ use std::cell::RefCell;
 use crate::{
     checker::{Checker, CheckerReturn},
     checker_impl::{FunctionKind, GetTypeFlags},
+    index_type_to_property_name,
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
     relations,
@@ -1312,6 +1313,23 @@ fn infer_types_with_variance<'a>(
                 arena,
             );
         }
+        (Ty::IndexedAccess(parameter_indexed), argument_type) => {
+            if let Some(simplified) = simplify_indexed_access_for_inference(
+                parameter_indexed.object_type,
+                parameter_indexed.index_type,
+                context,
+                arena,
+            ) {
+                infer_types_with_variance(
+                    simplified,
+                    argument_type,
+                    context,
+                    variance,
+                    priority.structural(),
+                    arena,
+                );
+            }
+        }
         (Ty::Mapped(parameter_mapped), argument_type) => infer_to_mapped_type(
             parameter_mapped,
             argument_type,
@@ -1418,6 +1436,94 @@ fn infer_to_mapped_type<'a>(
         priority,
         arena,
     );
+}
+
+fn simplify_indexed_access_for_inference<'a>(
+    object_type: Ty<'a>,
+    index_type: Ty<'a>,
+    context: &mut InferenceContext<'a>,
+    arena: crate::types::CheckerArena<'a>,
+) -> Option<Ty<'a>> {
+    let substitutions = context.candidate_substitutions(arena);
+    let mapper = substitutions.to_mapper(arena);
+    let object_type = substitute_type(object_type, &mapper, arena);
+    let index_type = substitute_type(index_type, &mapper, arena);
+
+    resolve_indexed_access_for_inference(object_type, index_type, arena)
+}
+
+fn resolve_indexed_access_for_inference<'a>(
+    object_type: Ty<'a>,
+    index_type: Ty<'a>,
+    arena: crate::types::CheckerArena<'a>,
+) -> Option<Ty<'a>> {
+    if let Ty::Array(array) = object_type
+        && index_type.is_number_index_type()
+    {
+        return Some(array.element_type);
+    }
+
+    if let Ty::Tuple(tuple) = object_type
+        && let Some(index) = tuple_index_from_index_type(index_type)
+    {
+        return tuple.elements.get(index).map(TupleElement::ty);
+    }
+
+    match index_type {
+        Ty::Union(union) => {
+            let property_types = union
+                .types
+                .iter()
+                .map(|index_type| {
+                    resolve_indexed_access_for_inference(object_type, *index_type, arena)
+                })
+                .collect::<Option<Vec<_>>>()?;
+            Some(Ty::union(arena, property_types))
+        }
+        _ => {
+            let property_name = index_type_to_property_name(arena, index_type)?;
+            property_type_for_inference_index(object_type, property_name, arena)
+        }
+    }
+}
+
+fn tuple_index_from_index_type(index_type: Ty<'_>) -> Option<usize> {
+    match index_type {
+        Ty::NumberLiteral(literal) => literal.value.parse().ok(),
+        _ => None,
+    }
+}
+
+fn property_type_for_inference_index<'a>(
+    object_type: Ty<'a>,
+    property_name: &str,
+    arena: crate::types::CheckerArena<'a>,
+) -> Option<Ty<'a>> {
+    match object_type {
+        Ty::Object(object) => object.properties.iter().find_map(|property| {
+            if property.computed || property.name != property_name {
+                return None;
+            }
+            Some(if property.optional {
+                Ty::union(arena, [property.ty, Ty::undefined()])
+            } else {
+                property.ty
+            })
+        }),
+        Ty::Union(union) => {
+            let property_types = union
+                .types
+                .iter()
+                .map(|ty| property_type_for_inference_index(*ty, property_name, arena))
+                .collect::<Option<Vec<_>>>()?;
+            Some(Ty::union(arena, property_types))
+        }
+        Ty::Intersection(intersection) => intersection
+            .types
+            .iter()
+            .find_map(|ty| property_type_for_inference_index(*ty, property_name, arena)),
+        _ => None,
+    }
 }
 
 fn infer_to_mapped_type_with_constraint<'a>(
@@ -1738,6 +1844,7 @@ fn substitute_type<'a>(
             substitute_type(indexed_access.object_type, mapper, arena),
             substitute_type(indexed_access.index_type, mapper, arena),
         ),
+        Ty::Keyof(keyof) => Ty::keyof(arena, substitute_type(keyof.target, mapper, arena)),
         Ty::Array(array) => Ty::array(arena, substitute_type(array.element_type, mapper, arena)),
         Ty::Tuple(tuple) => Ty::tuple(
             arena,
@@ -2100,6 +2207,80 @@ mod tests {
                 .map(Ty::type_reference(arena, "U", std::iter::empty())),
             Ty::string(),
         );
+    }
+
+    #[test]
+    fn indexed_access_inference_simplifies_when_index_candidate_is_known() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter_t = Ty::type_parameter("T", None, None);
+        let type_parameter_k =
+            Ty::type_parameter("K", Some(Ty::string_literal(arena, "value")), None);
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter_t, type_parameter_k],
+            &TypeParameterSubstitutions::new(),
+        )
+        .with_return_type(Ty::type_reference(arena, "T", std::iter::empty()));
+        context.add_candidate(
+            type_parameter_k,
+            Ty::string_literal(arena, "value"),
+            InferencePriority::NakedTypeVariable,
+        );
+
+        infer_types(
+            Ty::indexed_access(
+                arena,
+                Ty::object(
+                    arena,
+                    [Ty::property(
+                        "value",
+                        Ty::type_reference(arena, "T", std::iter::empty()),
+                    )],
+                ),
+                Ty::type_reference(arena, "K", std::iter::empty()),
+            ),
+            Ty::number(),
+            &mut context,
+            arena,
+        );
+
+        assert_eq!(
+            context.resolve_type_parameter_by_name("T", arena, InferenceResolutionFlags::NONE),
+            Some(Ty::number()),
+        );
+    }
+
+    #[test]
+    fn indexed_access_inference_preserves_unresolved_shape_without_index_candidate() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let type_parameter_t = Ty::type_parameter("T", None, None);
+        let type_parameter_k =
+            Ty::type_parameter("K", Some(Ty::string_literal(arena, "value")), None);
+        let mut context = InferenceContext::with_substitutions(
+            [type_parameter_t, type_parameter_k],
+            &TypeParameterSubstitutions::new(),
+        )
+        .with_return_type(Ty::type_reference(arena, "T", std::iter::empty()));
+
+        infer_types(
+            Ty::indexed_access(
+                arena,
+                Ty::object(
+                    arena,
+                    [Ty::property(
+                        "value",
+                        Ty::type_reference(arena, "T", std::iter::empty()),
+                    )],
+                ),
+                Ty::type_reference(arena, "K", std::iter::empty()),
+            ),
+            Ty::number(),
+            &mut context,
+            arena,
+        );
+
+        assert_eq!(context.inferences[0].candidates, Vec::<Ty<'_>>::new());
     }
 
     #[test]

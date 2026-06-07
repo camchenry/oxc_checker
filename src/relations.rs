@@ -94,11 +94,24 @@ fn is_assignable_to_keyof<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
 
 fn property_name_from_key_type(ty: Ty<'_>) -> Option<&str> {
     match ty {
-        Ty::StringLiteral(literal) => Some(literal.value),
+        Ty::StringLiteral(literal) => Some(string_literal_type_to_property_name(literal.value)),
         Ty::NumberLiteral(literal) => Some(literal.value),
         Ty::BooleanLiteral(true) => Some("true"),
         Ty::BooleanLiteral(false) => Some("false"),
         _ => None,
+    }
+}
+
+// TODO: There is a better way to do this. We should avoid storing the quotes
+// in the string literal type to begin with.
+fn string_literal_type_to_property_name(value: &str) -> &str {
+    if value.len() >= 2
+        && ((value.starts_with('"') && value.ends_with('"'))
+            || (value.starts_with('\'') && value.ends_with('\'')))
+    {
+        &value[1..value.len() - 1]
+    } else {
+        value
     }
 }
 

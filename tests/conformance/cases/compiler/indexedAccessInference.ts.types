@@ -1,0 +1,53 @@
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                    ^: any   (TyAny)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                       ^: any   (TyAny)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                                       ^: any   (TyAny)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                                          ^^^: T   (TyTypeReference)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                                               ^: any   (TyAny)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                                                  ^^^: K   (TyTypeReference)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                                                       ^: any   (TyAny)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                                                           ^: any   (TyAny)
+
+declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+>                                                             ^: any   (TyAny)
+
+const value = get({ value: 1, name: "ready" }, "value");
+>     ^^^^^: number   (TyNumber)
+
+const value = get({ value: 1, name: "ready" }, "value");
+>             ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction)
+
+const value = get({ value: 1, name: "ready" }, "value");
+>                   ^^^^^: number   (TyNumber)
+
+const value = get({ value: 1, name: "ready" }, "value");
+>                             ^^^^: string   (TyString)
+
+const name = get({ value: 1, name: "ready" }, "name");
+>     ^^^^: string   (TyString)
+
+const name = get({ value: 1, name: "ready" }, "name");
+>            ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction)
+
+const name = get({ value: 1, name: "ready" }, "name");
+>                  ^^^^^: number   (TyNumber)
+
+const name = get({ value: 1, name: "ready" }, "name");
+>                            ^^^^: string   (TyString)

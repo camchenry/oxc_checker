@@ -2874,6 +2874,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
         let instantiated =
             self.instantiate_type(signature.function.return_type, inference.mapper());
+        let instantiated = if matches!(instantiated, Ty::IndexedAccess(_)) {
+            self.expand_type_at_use(program_id, instantiated, 0)
+        } else {
+            instantiated
+        };
 
         if require_applicable
             && !self.is_call_signature_applicable(
@@ -3131,6 +3136,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let instantiated =
             self.instantiate_type(signature.function.return_type, inference.mapper());
+        let instantiated = if matches!(instantiated, Ty::IndexedAccess(_)) {
+            self.expand_type_at_use(program_id, instantiated, 0)
+        } else {
+            instantiated
+        };
         Some(ResolvedSignatureCandidate {
             signature,
             inference,

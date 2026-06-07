@@ -37,7 +37,9 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
 
 fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
     match ty {
-        Ty::StringLiteral(literal) => Some(literal.value),
+        Ty::StringLiteral(literal) => {
+            Some(string_literal_type_to_property_name(arena, literal.value))
+        }
         Ty::NumberLiteral(literal) => Some(literal.value),
         Ty::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
         Ty::TemplateLiteral(template) if template.expressions.is_empty() => {
@@ -47,6 +49,17 @@ fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
         Ty::String => Some(arena.str("string")),
         Ty::Number => Some(arena.str("number")),
         _ => None,
+    }
+}
+
+fn string_literal_type_to_property_name<'a>(arena: CheckerArena<'a>, value: &'a str) -> &'a str {
+    if value.len() >= 2
+        && ((value.starts_with('"') && value.ends_with('"'))
+            || (value.starts_with('\'') && value.ends_with('\'')))
+    {
+        arena.str(&value[1..value.len() - 1])
+    } else {
+        value
     }
 }
 
@@ -2142,6 +2155,23 @@ mod test {
             get_global_symbol_type(&ret, "object").to_type_string(),
             "Box<number>"
         );
+    }
+
+    #[test]
+    fn generic_function_resolves_indexed_access_return_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
+
+        const value = get({ value: 1, name: "ready" }, "value");
+        const name = get({ value: 1, name: "ready" }, "name");
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "value"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "name"), Ty::string());
     }
 
     #[test]
