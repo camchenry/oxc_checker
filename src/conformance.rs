@@ -849,7 +849,11 @@ fn discover_case_files(root: &Path, paths: &mut Vec<PathBuf>) {
 
 fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeRecord> {
     let mut records = Vec::new();
+    let trace_progress = std::env::var_os("OXC_CONFORMANCE_PROGRESS").is_some();
     for path in discover_compiler_cases(suite, cases_root) {
+        if trace_progress {
+            eprintln!("collecting {}", relative_path(cases_root, &path));
+        }
         let source_text = match std::fs::read_to_string(&path) {
             Ok(source_text) => source_text,
             Err(_) => continue,

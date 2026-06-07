@@ -214,7 +214,7 @@ fn indexed_assignment_element_event<'a>(
             program_id,
             &assignment.right,
             Some(assignment_id),
-            GetTypeFlags::NONE,
+            GetTypeFlags::CONTEXT_FREE,
         ),
     ))
 }
@@ -239,7 +239,7 @@ fn direct_assignment_event<'a>(
         program_id,
         &assignment.right,
         Some(assignment_id),
-        GetTypeFlags::NONE,
+        GetTypeFlags::CONTEXT_FREE,
     );
 
     match assigned_type {

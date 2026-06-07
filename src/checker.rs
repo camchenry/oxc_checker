@@ -3,6 +3,7 @@ use std::{cell::RefCell, collections::HashMap};
 use oxc_ast::ast::TSInterfaceDeclaration;
 use oxc_index::IndexVec;
 use oxc_semantic::{NodeId, SymbolId};
+use oxc_span::Span;
 
 use crate::{
     global_types::GlobalSymbolTable,
@@ -27,7 +28,15 @@ pub struct CheckerReturn<'a, 'store> {
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
+    pub resolving_type_aliases: RefCell<Vec<(ProgramId, NodeId)>>,
+    pub resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
     pub resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TypeParameterResolution {
+    Symbol(SymbolRef),
+    Span(ProgramId, Span),
 }
 
 /*
@@ -112,6 +121,8 @@ impl CheckerBuilder {
             ),
             interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
+            resolving_type_aliases: RefCell::new(Vec::new()),
+            resolving_type_parameters: RefCell::new(Vec::new()),
             resolving_class_members: RefCell::new(Vec::new()),
         }
     }

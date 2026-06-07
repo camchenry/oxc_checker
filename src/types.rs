@@ -4,6 +4,14 @@ use oxc_ast::ast::{
     BindingPattern, PropertyKey, TSMappedTypeModifierOperator, TSType, TSTypeAnnotation,
     TSTypePredicate, TSTypePredicateName,
 };
+use std::cell::Cell;
+
+const TYPE_STRING_MAX_DEPTH: usize = 64;
+
+// TODO: Replace with mutable state in checker.
+thread_local! {
+    static TYPE_STRING_DEPTH: Cell<usize> = const { Cell::new(0) };
+}
 
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
@@ -867,6 +875,20 @@ impl<'a> Ty<'a> {
 
     #[allow(dead_code)]
     pub(crate) fn to_type_string(self) -> String {
+        TYPE_STRING_DEPTH.with(|depth| {
+            let current = depth.get();
+            if current >= TYPE_STRING_MAX_DEPTH {
+                return "...".to_string();
+            }
+
+            depth.set(current + 1);
+            let result = self.to_type_string_inner();
+            depth.set(current);
+            result
+        })
+    }
+
+    fn to_type_string_inner(self) -> String {
         match self {
             Self::None => "none".to_string(),
             Self::Number => "number".to_string(),
