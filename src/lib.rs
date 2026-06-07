@@ -2024,6 +2024,7 @@ mod test {
         declare const x: any;
         interface Box<T = number> { value: T; }
         interface SelfDefault<T = T> { value: T; }
+        interface ForwardDefault<T = U, U = string> { t: T; u: U; }
 
         const xs = <string>x;
         const xu = <unknown>x;
@@ -2033,6 +2034,8 @@ mod test {
         const boxedValue = (<Box>x).value;
         const explicitBoxedValue = (<Box<string>>x).value;
         const selfDefaultValue = (<SelfDefault>x).value;
+        const forwardDefaultT = (<ForwardDefault>x).t;
+        const forwardDefaultU = (<ForwardDefault>x).u;
         "#,
         );
 
@@ -2054,6 +2057,11 @@ mod test {
             Ty::string()
         );
         assert_eq!(get_global_symbol_type(&ret, "selfDefaultValue"), Ty::any());
+        assert_eq!(get_global_symbol_type(&ret, "forwardDefaultT"), Ty::any());
+        assert_eq!(
+            get_global_symbol_type(&ret, "forwardDefaultU"),
+            Ty::string()
+        );
     }
 
     #[test]

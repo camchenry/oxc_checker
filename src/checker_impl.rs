@@ -2405,26 +2405,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return;
         }
 
-        let mut substitutions = TypeParameterSubstitutions::new();
-        for (type_parameter, type_argument) in type_parameters.iter().zip(type_arguments.iter()) {
-            substitutions.insert(*type_parameter, *type_argument);
-        }
-
-        for type_parameter in type_parameters.iter().skip(type_arguments.len()) {
-            let Some(default_type) = type_parameter.default_type else {
-                break;
-            };
-            let mut default_substitutions = substitutions.clone();
-            for unresolved in &type_parameters {
-                if !default_substitutions.contains(*unresolved) {
-                    default_substitutions.insert(*unresolved, Ty::any());
-                }
-            }
-            let mapper = default_substitutions.to_mapper(self.arena());
-            let default_type = self.instantiate_type(default_type, &mapper);
-            substitutions.insert(*type_parameter, default_type);
-            type_arguments.push(default_type);
-        }
+        let mut substitutions =
+            self.explicit_type_argument_substitutions(&type_parameters, type_arguments.as_slice());
+        self.add_default_type_argument_substitutions(
+            &type_parameters,
+            type_arguments.len(),
+            &mut substitutions,
+            |default_type| type_arguments.push(default_type),
+        );
     }
 
     /// Return the instance type for the nearest enclosing class.
@@ -3566,28 +3554,68 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_arguments: &[Ty<'a>],
     ) -> TypeParameterSubstitutions<'a> {
         let type_parameters = self.type_parameters_from_declaration(program_id, type_parameters);
+        let mut substitutions =
+            self.explicit_type_argument_substitutions(&type_parameters, type_arguments);
+
+        self.add_default_type_argument_substitutions(
+            &type_parameters,
+            type_arguments.len(),
+            &mut substitutions,
+            |_| {},
+        );
+
+        substitutions
+    }
+
+    fn explicit_type_argument_substitutions(
+        &self,
+        type_parameters: &[TyTypeParameter<'a>],
+        type_arguments: &[Ty<'a>],
+    ) -> TypeParameterSubstitutions<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
 
         for (type_parameter, type_argument) in type_parameters.iter().zip(type_arguments.iter()) {
             substitutions.insert(*type_parameter, *type_argument);
         }
 
-        for type_parameter in type_parameters.iter().skip(type_arguments.len()) {
+        substitutions
+    }
+
+    fn add_default_type_argument_substitutions(
+        &self,
+        type_parameters: &[TyTypeParameter<'a>],
+        explicit_count: usize,
+        substitutions: &mut TypeParameterSubstitutions<'a>,
+        mut on_default: impl FnMut(Ty<'a>),
+    ) {
+        for type_parameter in type_parameters.iter().skip(explicit_count) {
             let Some(default_type) = type_parameter.default_type else {
                 break;
             };
-            let mut default_substitutions = substitutions.clone();
-            for unresolved in &type_parameters {
-                if !default_substitutions.contains(*unresolved) {
-                    default_substitutions.insert(*unresolved, Ty::any());
-                }
-            }
-            let mapper = default_substitutions.to_mapper(self.arena());
-            let default_type = self.instantiate_type(default_type, &mapper);
+            let default_type = self.instantiate_type_parameter_default(
+                default_type,
+                type_parameters,
+                substitutions,
+            );
             substitutions.insert(*type_parameter, default_type);
+            on_default(default_type);
         }
+    }
 
-        substitutions
+    fn instantiate_type_parameter_default(
+        &self,
+        default_type: Ty<'a>,
+        type_parameters: &[TyTypeParameter<'a>],
+        substitutions: &TypeParameterSubstitutions<'a>,
+    ) -> Ty<'a> {
+        let mut default_substitutions = substitutions.clone();
+        for unresolved in type_parameters {
+            if !default_substitutions.contains(*unresolved) {
+                default_substitutions.insert(*unresolved, Ty::any());
+            }
+        }
+        let mapper = default_substitutions.to_mapper(self.arena());
+        self.instantiate_type(default_type, &mapper)
     }
 
     fn type_parameters_from_declaration(

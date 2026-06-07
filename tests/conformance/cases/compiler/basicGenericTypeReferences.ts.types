@@ -10,6 +10,81 @@ type Box<T> = { value: T };
 type Box<T> = { value: T };
 >                      ^: any   (TyAny)
 
+type DefaultBox<T = number> = { value: T };
+>    ^^^^^^^^^^: { value: T; }   (TyObject)
+
+type DefaultBox<T = number> = { value: T };
+>               ^: any   (TyAny)
+
+type DefaultBox<T = number> = { value: T };
+>                               ^^^^^: T   (TyTypeReference)
+
+type DefaultBox<T = number> = { value: T };
+>                                      ^: any   (TyAny)
+
+type SelfDefault<T = T> = { value: T };
+>    ^^^^^^^^^^^: { value: T; }   (TyObject)
+
+type SelfDefault<T = T> = { value: T };
+>                ^: any   (TyAny)
+
+type SelfDefault<T = T> = { value: T };
+>                    ^: any   (TyAny)
+
+type SelfDefault<T = T> = { value: T };
+>                           ^^^^^: T   (TyTypeReference)
+
+type SelfDefault<T = T> = { value: T };
+>                                  ^: any   (TyAny)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>    ^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>                   ^: any   (TyAny)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>                       ^: any   (TyAny)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>                          ^: any   (TyAny)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>                                          ^: T   (TyTypeReference)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>                                             ^: any   (TyAny)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>                                                ^: U   (TyTypeReference)
+
+type ForwardDefault<T = U, U = string> = { t: T; u: U };
+>                                                   ^: any   (TyAny)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>    ^^^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>                     ^: any   (TyAny)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>                                 ^: any   (TyAny)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>                                     ^: any   (TyAny)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>                                            ^: T   (TyTypeReference)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>                                               ^: any   (TyAny)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>                                                  ^: U   (TyTypeReference)
+
+type DependentDefault<T = string, U = T> = { t: T; u: U };
+>                                                     ^: any   (TyAny)
+
 function box<T>(x: T): Box<T> {
 >        ^^^: <T>(x: T) => Box<T>   (TyFunction)
 
@@ -54,3 +129,27 @@ const fromExplicitCall = box<string>("test");
 
 const fromExplicitCall = box<string>("test");
 >                        ^^^: <T>(x: T) => Box<T>   (TyFunction)
+
+declare const defaultBox: DefaultBox;
+>             ^^^^^^^^^^: DefaultBox<number>   (TyTypeReference)
+
+declare const defaultBox: DefaultBox;
+>                         ^^^^^^^^^^: any   (TyAny)
+
+declare const selfDefault: SelfDefault;
+>             ^^^^^^^^^^^: SelfDefault<any>   (TyTypeReference)
+
+declare const selfDefault: SelfDefault;
+>                          ^^^^^^^^^^^: any   (TyAny)
+
+declare const forwardDefault: ForwardDefault;
+>             ^^^^^^^^^^^^^^: ForwardDefault<any, string>   (TyTypeReference)
+
+declare const forwardDefault: ForwardDefault;
+>                             ^^^^^^^^^^^^^^: any   (TyAny)
+
+declare const dependentDefault: DependentDefault;
+>             ^^^^^^^^^^^^^^^^: DependentDefault<string, string>   (TyTypeReference)
+
+declare const dependentDefault: DependentDefault;
+>                               ^^^^^^^^^^^^^^^^: any   (TyAny)
