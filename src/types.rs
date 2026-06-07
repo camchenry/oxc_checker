@@ -320,6 +320,7 @@ impl MappedModifier {
     }
 }
 
+// TODO: Allow early return so we don't visit unnecessary nodes
 pub(crate) fn visit_type<'a>(ty: Ty<'a>, f: &mut impl FnMut(Ty<'a>)) {
     f(ty);
     match ty {

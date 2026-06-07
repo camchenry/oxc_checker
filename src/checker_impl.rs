@@ -41,6 +41,7 @@ use crate::{
         TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference,
         binding_pattern_to_parameter_name,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
+        visit_type,
     },
 };
 
@@ -471,108 +472,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     pub(crate) fn could_contain_type_variables(&self, ty: Ty<'a>) -> bool {
-        match ty {
-            Ty::TypeReference(reference) => {
-                reference.type_arguments.is_empty()
-                    || reference
-                        .type_arguments
-                        .iter()
-                        .any(|ty| self.could_contain_type_variables(*ty))
-            }
-            Ty::Object(object) => {
-                object
-                    .properties
-                    .iter()
-                    .any(|property| self.could_contain_type_variables(property.ty))
-                    || object
-                        .signatures
-                        .iter()
-                        .any(|signature| self.signature_could_contain_type_variables(*signature))
-                    || object.index_infos.iter().any(|info| {
-                        self.could_contain_type_variables(info.key_type)
-                            || self.could_contain_type_variables(info.value_type)
-                    })
-            }
-            Ty::ModuleNamespace(namespace) => namespace
-                .properties
-                .iter()
-                .any(|property| self.could_contain_type_variables(property.ty)),
-            Ty::Function(function) => self.function_could_contain_type_variables(function),
-            Ty::TypeQuery(query) => {
-                self.could_contain_type_variables(query.resolved)
-                    || query
-                        .type_arguments
-                        .iter()
-                        .any(|ty| self.could_contain_type_variables(*ty))
-            }
-            Ty::TemplateLiteral(template_literal) => template_literal
-                .expressions
-                .iter()
-                .any(|ty| self.could_contain_type_variables(*ty)),
-            Ty::Array(array) => self.could_contain_type_variables(array.element_type),
-            Ty::Tuple(tuple) => tuple
-                .elements
-                .iter()
-                .any(|element| self.could_contain_type_variables(element.ty())),
-            Ty::Union(union) => union
-                .types
-                .iter()
-                .any(|ty| self.could_contain_type_variables(*ty)),
-            Ty::Intersection(intersection) => intersection
-                .types
-                .iter()
-                .any(|ty| self.could_contain_type_variables(*ty)),
-            Ty::Keyof(keyof) => self.could_contain_type_variables(keyof.target),
-            Ty::IndexedAccess(indexed_access) => {
-                self.could_contain_type_variables(indexed_access.object_type)
-                    || self.could_contain_type_variables(indexed_access.index_type)
-            }
-            Ty::Conditional(conditional) => {
-                self.could_contain_type_variables(conditional.check_type)
-                    || self.could_contain_type_variables(conditional.extends_type)
-                    || self.could_contain_type_variables(conditional.true_type)
-                    || self.could_contain_type_variables(conditional.false_type)
-            }
-            Ty::Infer(_) => true,
-            Ty::Mapped(mapped) => {
-                self.could_contain_type_variables(mapped.constraint)
-                    || mapped
-                        .name_type
-                        .is_some_and(|ty| self.could_contain_type_variables(ty))
-                    || self.could_contain_type_variables(mapped.template)
-            }
-            _ => false,
-        }
-    }
-
-    fn function_could_contain_type_variables(&self, function: &TyFunction<'a>) -> bool {
-        !function.type_parameters.is_empty()
-            || function.type_parameters.iter().any(|type_parameter| {
-                type_parameter
-                    .constraint_type
-                    .is_some_and(|ty| self.could_contain_type_variables(ty))
-                    || type_parameter
-                        .default_type
-                        .is_some_and(|ty| self.could_contain_type_variables(ty))
-            })
-            || function
-                .parameters
-                .iter()
-                .any(|parameter| self.could_contain_type_variables(parameter.ty))
-            || self.could_contain_type_variables(function.return_type)
-            || function.type_predicate.is_some_and(|predicate| {
-                self.type_predicate_could_contain_type_variables(*predicate)
-            })
-    }
-
-    fn signature_could_contain_type_variables(&self, signature: Signature<'a>) -> bool {
-        self.function_could_contain_type_variables(signature.function)
-    }
-
-    fn type_predicate_could_contain_type_variables(&self, predicate: TyTypePredicate<'a>) -> bool {
-        predicate
-            .target_type
-            .is_some_and(|ty| self.could_contain_type_variables(ty))
+        let mut contains = false;
+        visit_type(ty, &mut |ty| match ty {
+            Ty::TypeReference(reference) if reference.type_arguments.is_empty() => contains = true,
+            Ty::Function(function) if !function.type_parameters.is_empty() => contains = true,
+            Ty::Infer(_) => contains = true,
+            _ => {}
+        });
+        contains
     }
 
     /// Resolve an expression type with a semantic context node when ancestor context is needed.
