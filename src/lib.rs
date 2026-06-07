@@ -2196,6 +2196,67 @@ mod test {
     }
 
     #[test]
+    fn generic_function_infers_from_union_parameter_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function maybe<T>(value: T | undefined): T;
+        declare function nullable<T>(value: T | null): T;
+        declare function falsy<T>(value: T | false): T;
+        declare function unwrapPromise<T>(value: Promise<T> | T): T;
+        declare const promiseString: Promise<string>;
+
+        const maybeValue = maybe("ready");
+        const nullableValue = nullable("ready");
+        const falsyValue = falsy("ready");
+        const promiseValue = unwrapPromise(promiseString);
+        const directValue = unwrapPromise("ready");
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "maybeValue").to_type_string(),
+            "\"ready\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "nullableValue").to_type_string(),
+            "\"ready\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "falsyValue").to_type_string(),
+            "\"ready\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "promiseValue").to_type_string(),
+            "string"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "directValue").to_type_string(),
+            "\"ready\""
+        );
+    }
+
+    #[test]
+    fn generic_function_infers_from_intersection_parameter_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const source: string[] & { extra: number };
+        declare function extra<T>(value: string[] & T): T;
+
+        const extraValue = extra(source);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "extraValue").to_type_string(),
+            "{ extra: number; }"
+        );
+    }
+
+    #[test]
     fn generic_function_detects_same_shape_mapped_type_inference() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

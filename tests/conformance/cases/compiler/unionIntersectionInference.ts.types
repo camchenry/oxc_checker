@@ -1,0 +1,140 @@
+declare function maybe<T>(value: T | undefined): T;
+>                ^^^^^: <T>(value: T | undefined) => T   (TyFunction)
+
+declare function maybe<T>(value: T | undefined): T;
+>                      ^: any   (TyAny)
+
+declare function maybe<T>(value: T | undefined): T;
+>                         ^^^^^: T | undefined   (TyUnion)
+
+declare function maybe<T>(value: T | undefined): T;
+>                                ^: any   (TyAny)
+
+declare function maybe<T>(value: T | undefined): T;
+>                                                ^: any   (TyAny)
+
+declare function nullable<T>(value: T | null): T;
+>                ^^^^^^^^: <T>(value: T | null) => T   (TyFunction)
+
+declare function nullable<T>(value: T | null): T;
+>                         ^: any   (TyAny)
+
+declare function nullable<T>(value: T | null): T;
+>                            ^^^^^: T | null   (TyUnion)
+
+declare function nullable<T>(value: T | null): T;
+>                                   ^: any   (TyAny)
+
+declare function nullable<T>(value: T | null): T;
+>                                              ^: any   (TyAny)
+
+declare function falsy<T>(value: T | false): T;
+>                ^^^^^: <T>(value: T | false) => T   (TyFunction)
+
+declare function falsy<T>(value: T | false): T;
+>                      ^: any   (TyAny)
+
+declare function falsy<T>(value: T | false): T;
+>                         ^^^^^: T | false   (TyUnion)
+
+declare function falsy<T>(value: T | false): T;
+>                                ^: any   (TyAny)
+
+declare function falsy<T>(value: T | false): T;
+>                                            ^: any   (TyAny)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (TyFunction)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                              ^: any   (TyAny)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                                 ^^^^^: Promise<T> | T   (TyUnion)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                                        ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                                        ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                                                ^: any   (TyAny)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                                                     ^: any   (TyAny)
+
+declare function unwrapPromise<T>(value: Promise<T> | T): T;
+>                                                         ^: any   (TyAny)
+
+declare const promiseString: Promise<string>;
+>             ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference)
+
+declare const promiseString: Promise<string>;
+>                            ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+declare const promiseString: Promise<string>;
+>                            ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+declare const intersectionSource: string[] & { extra: number };
+>             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (TyIntersection)
+
+declare const intersectionSource: string[] & { extra: number };
+>                                              ^^^^^: number   (TyNumber)
+
+declare function extra<T>(value: string[] & T): T;
+>                ^^^^^: <T>(value: string[] & T) => T   (TyFunction)
+
+declare function extra<T>(value: string[] & T): T;
+>                      ^: any   (TyAny)
+
+declare function extra<T>(value: string[] & T): T;
+>                         ^^^^^: string[] & T   (TyIntersection)
+
+declare function extra<T>(value: string[] & T): T;
+>                                           ^: any   (TyAny)
+
+declare function extra<T>(value: string[] & T): T;
+>                                               ^: any   (TyAny)
+
+const maybeValue = maybe("ready");
+>     ^^^^^^^^^^: "ready"   (TyStringLiteral)
+
+const maybeValue = maybe("ready");
+>                  ^^^^^: <T>(value: T | undefined) => T   (TyFunction)
+
+const nullableValue = nullable("ready");
+>     ^^^^^^^^^^^^^: "ready"   (TyStringLiteral)
+
+const nullableValue = nullable("ready");
+>                     ^^^^^^^^: <T>(value: T | null) => T   (TyFunction)
+
+const falsyValue = falsy("ready");
+>     ^^^^^^^^^^: "ready"   (TyStringLiteral)
+
+const falsyValue = falsy("ready");
+>                  ^^^^^: <T>(value: T | false) => T   (TyFunction)
+
+const promiseValue = unwrapPromise(promiseString);
+>     ^^^^^^^^^^^^: string   (TyString)
+
+const promiseValue = unwrapPromise(promiseString);
+>                    ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (TyFunction)
+
+const promiseValue = unwrapPromise(promiseString);
+>                                  ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference)
+
+const directValue = unwrapPromise("ready");
+>     ^^^^^^^^^^^: "ready"   (TyStringLiteral)
+
+const directValue = unwrapPromise("ready");
+>                   ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (TyFunction)
+
+const extraValue = extra(intersectionSource);
+>     ^^^^^^^^^^: { extra: number; }   (TyObject)
+
+const extraValue = extra(intersectionSource);
+>                  ^^^^^: <T>(value: string[] & T) => T   (TyFunction)
+
+const extraValue = extra(intersectionSource);
+>                        ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (TyIntersection)

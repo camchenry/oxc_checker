@@ -1341,6 +1341,16 @@ fn infer_types_with_variance<'a>(
                 arena,
             );
         }
+        (Ty::Intersection(parameter_intersection), argument_type) => {
+            infer_type_parameter_from_intersection(
+                parameter_intersection.types.iter().copied(),
+                argument_type,
+                context,
+                variance,
+                priority,
+                arena,
+            );
+        }
         (Ty::Array(parameter_array), Ty::Array(argument_array)) => {
             infer_types_with_variance(
                 parameter_array.element_type,
@@ -2042,43 +2052,125 @@ fn infer_type_parameter_from_union<'a>(
         .filter(|ty| !matches!(ty, Ty::Null | Ty::Undefined | Ty::Never))
         .collect::<Vec<_>>();
 
-    let candidates = match argument_type {
+    let candidates = select_union_inference_candidates(&parameter_types, argument_type, context);
+
+    for candidate in candidates {
+        infer_types_with_variance(candidate, argument_type, context, variance, priority, arena);
+    }
+}
+
+fn select_union_inference_candidates<'a>(
+    parameter_types: &[Ty<'a>],
+    argument_type: Ty<'a>,
+    context: &InferenceContext<'a>,
+) -> Vec<Ty<'a>> {
+    let structurally_matching = select_matching_union_constituents(parameter_types, argument_type);
+    if !structurally_matching.is_empty() {
+        return structurally_matching;
+    }
+
+    let naked_type_variables = select_naked_type_variable_constituents(parameter_types, context);
+    if !naked_type_variables.is_empty() {
+        return naked_type_variables;
+    }
+
+    parameter_types.to_vec()
+}
+
+fn select_matching_union_constituents<'a>(
+    parameter_types: &[Ty<'a>],
+    argument_type: Ty<'a>,
+) -> Vec<Ty<'a>> {
+    match argument_type {
         Ty::Function(_) => parameter_types
             .iter()
             .copied()
             .filter(|ty| matches!(ty, Ty::Function(_)))
-            .collect::<Vec<_>>(),
+            .collect(),
         Ty::TypeReference(argument_reference) => parameter_types
             .iter()
             .copied()
             .filter(|ty| {
                 matches!(ty, Ty::TypeReference(parameter_reference) if parameter_reference.name == argument_reference.name)
             })
-            .collect::<Vec<_>>(),
-        _ => Vec::new(),
-    };
-
-    let candidates = if candidates.is_empty() {
-        parameter_types
+            .collect(),
+        Ty::Array(_) => parameter_types
             .iter()
             .copied()
-            .filter(|ty| {
-                matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && context.contains_type_parameter_name(reference.name))
-            })
-            .collect::<Vec<_>>()
-    } else {
-        candidates
-    };
-
-    let candidates = if candidates.is_empty() {
-        parameter_types
-    } else {
-        candidates
-    };
-
-    for candidate in candidates {
-        infer_types_with_variance(candidate, argument_type, context, variance, priority, arena);
+            .filter(|ty| matches!(ty, Ty::Array(_)))
+            .collect(),
+        Ty::Tuple(_) => parameter_types
+            .iter()
+            .copied()
+            .filter(|ty| matches!(ty, Ty::Tuple(_)))
+            .collect(),
+        _ => Vec::new(),
     }
+}
+
+fn select_naked_type_variable_constituents<'a>(
+    parameter_types: &[Ty<'a>],
+    context: &InferenceContext<'a>,
+) -> Vec<Ty<'a>> {
+    parameter_types
+        .iter()
+        .copied()
+        .filter(|ty| {
+            matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && context.contains_type_parameter_name(reference.name))
+        })
+        .collect()
+}
+
+fn infer_type_parameter_from_intersection<'a>(
+    parameter_types: impl IntoIterator<Item = Ty<'a>>,
+    argument_type: Ty<'a>,
+    context: &mut InferenceContext<'a>,
+    variance: InferenceVariance,
+    priority: InferencePriority,
+    arena: crate::types::CheckerArena<'a>,
+) {
+    let parameter_types = parameter_types.into_iter().collect::<Vec<_>>();
+    let argument_types = match argument_type {
+        Ty::Intersection(intersection) => intersection.types.iter().copied().collect::<Vec<_>>(),
+        _ => vec![argument_type],
+    };
+
+    let (unmatched_arguments, unmatched_parameters, removed_match) =
+        remove_matching_intersection_constituents(argument_types, parameter_types);
+
+    if !removed_match || unmatched_arguments.is_empty() || unmatched_parameters.is_empty() {
+        return;
+    }
+
+    let argument_remainder = Ty::intersection(arena, unmatched_arguments);
+    let parameter_remainder = Ty::intersection(arena, unmatched_parameters);
+    infer_types_with_variance(
+        parameter_remainder,
+        argument_remainder,
+        context,
+        variance,
+        priority.structural(),
+        arena,
+    );
+}
+
+fn remove_matching_intersection_constituents<'a>(
+    mut source_types: Vec<Ty<'a>>,
+    target_types: Vec<Ty<'a>>,
+) -> (Vec<Ty<'a>>, Vec<Ty<'a>>, bool) {
+    let mut unmatched_targets = Vec::new();
+    let mut removed_match = false;
+
+    for target in target_types {
+        if let Some(index) = source_types.iter().position(|source| *source == target) {
+            source_types.remove(index);
+            removed_match = true;
+        } else {
+            unmatched_targets.push(target);
+        }
+    }
+
+    (source_types, unmatched_targets, removed_match)
 }
 
 pub fn ts_signature_contains_infer(signature: &TSSignature<'_>) -> bool {
