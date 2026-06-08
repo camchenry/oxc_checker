@@ -2275,10 +2275,75 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         ty: &'a TSType<'a>,
     ) -> Ty<'a> {
         match ty {
-            TSType::TSTypeReference(reference) => {
-                self.get_type_from_ts_type_reference(program_id, reference)
-            }
+            TSType::TSTypeReference(reference) => self
+                .get_transparent_type_alias_assertion_type(program_id, reference, 0)
+                .unwrap_or_else(|| self.get_type_from_ts_type_reference(program_id, reference)),
             _ => self.get_type_from_ts_type(program_id, ty),
+        }
+    }
+
+    fn get_transparent_type_alias_assertion_type(
+        &self,
+        program_id: program::ProgramId,
+        reference: &'a TSTypeReference<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        let name = ts_type_name_to_str(self.arena(), &reference.type_name);
+        let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
+
+        self.fill_default_type_arguments(program_id, name, &mut type_arguments);
+
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, name)?;
+        self.get_transparent_type_alias_declaration_assertion_type(
+            symbol.program_id,
+            declaration,
+            &type_arguments,
+            depth + 1,
+        )
+    }
+
+    fn get_transparent_type_alias_declaration_assertion_type(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+        type_arguments: &[Ty<'a>],
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                let type_parameter_name =
+                    transparent_type_alias_type_parameter_name(&alias.type_annotation)?;
+                let type_parameters = self
+                    .type_parameters_from_declaration(program_id, alias.type_parameters.as_deref());
+                let type_parameter = type_parameters
+                    .iter()
+                    .find(|type_parameter| type_parameter.name == type_parameter_name)?;
+                let substitutions = self.type_parameter_substitutions_for_type_arguments(
+                    program_id,
+                    alias.type_parameters.as_deref(),
+                    type_arguments,
+                );
+                Some(substitutions.get(*type_parameter).unwrap_or_else(Ty::any))
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.get_transparent_type_alias_declaration_assertion_type(
+                    program_id,
+                    parent_id,
+                    type_arguments,
+                    depth + 1,
+                )
+            }
+            _ => None,
         }
     }
 
@@ -5720,6 +5785,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
         names
+    }
+}
+
+fn transparent_type_alias_type_parameter_name<'a>(ty: &'a TSType<'a>) -> Option<&'a str> {
+    match ty {
+        TSType::TSTypeReference(reference)
+            if reference
+                .type_arguments
+                .as_ref()
+                .is_none_or(|arguments| arguments.params.is_empty()) =>
+        {
+            match &reference.type_name {
+                TSTypeName::IdentifierReference(identifier) => Some(identifier.name.as_str()),
+                _ => None,
+            }
+        }
+        TSType::TSParenthesizedType(parenthesized) => {
+            transparent_type_alias_type_parameter_name(&parenthesized.type_annotation)
+        }
+        _ => None,
     }
 }
 

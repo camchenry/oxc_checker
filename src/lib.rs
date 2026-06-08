@@ -2028,11 +2028,18 @@ mod test {
         interface Box<T = number> { value: T; }
         interface SelfDefault<T = T> { value: T; }
         interface ForwardDefault<T = U, U = string> { t: T; u: U; }
+        type Identity<T> = T;
+        type DefaultIdentity<T = string> = T;
+        type AliasBox<T> = { value: T };
 
         const xs = <string>x;
         const xu = <unknown>x;
         const xn = <number>x;
         const xa = <any>x;
+        const identityString = x as Identity<string>;
+        const identityAny = <Identity<any>>x;
+        const defaultIdentity = x as DefaultIdentity;
+        const aliasBox = x as AliasBox<string>;
         const boxed = (<Box>x);
         const boxedValue = (<Box>x).value;
         const explicitBoxedValue = (<Box<string>>x).value;
@@ -2046,6 +2053,16 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "xu"), Ty::unknown());
         assert_eq!(get_global_symbol_type(&ret, "xn"), Ty::number());
         assert_eq!(get_global_symbol_type(&ret, "xa"), Ty::any());
+        assert_eq!(get_global_symbol_type(&ret, "identityString"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "identityAny"), Ty::any());
+        assert_eq!(
+            get_global_symbol_type(&ret, "defaultIdentity"),
+            Ty::string()
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "aliasBox").to_type_string(),
+            "AliasBox<string>"
+        );
         assert_eq!(
             get_global_symbol_type(&ret, "boxed"),
             Ty::type_reference(arena(&ret), "Box", [Ty::number()])

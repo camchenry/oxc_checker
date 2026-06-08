@@ -59,7 +59,7 @@ const ya = x as any;
 >          ^: any   (TyAny)
 
 const gs = x as G<string>;
->     ^^: G<string>   (TyTypeReference)
+>     ^^: string   (TyString)
 
 const gs = x as G<string>;
 >          ^: any   (TyAny)
@@ -68,7 +68,7 @@ const gs = x as G<string>;
 >               ^: any   (TyAny)
 
 const gu = x as G<unknown>;
->     ^^: G<unknown>   (TyTypeReference)
+>     ^^: unknown   (TyUnknown)
 
 const gu = x as G<unknown>;
 >          ^: any   (TyAny)
@@ -77,7 +77,7 @@ const gu = x as G<unknown>;
 >               ^: any   (TyAny)
 
 const gn = x as G<number>;
->     ^^: G<number>   (TyTypeReference)
+>     ^^: number   (TyNumber)
 
 const gn = x as G<number>;
 >          ^: any   (TyAny)
@@ -86,7 +86,7 @@ const gn = x as G<number>;
 >               ^: any   (TyAny)
 
 const ga = x as G<any>;
->     ^^: G<any>   (TyTypeReference)
+>     ^^: any   (TyAny)
 
 const ga = x as G<any>;
 >          ^: any   (TyAny)
