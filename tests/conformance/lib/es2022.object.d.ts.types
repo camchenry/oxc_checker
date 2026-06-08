@@ -1,0 +1,14 @@
+interface ObjectConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    hasOwn(o: object, v: PropertyKey): boolean;
+>   ^^^^^^: (o: object, v: PropertyKey) => boolean   (TyFunction)
+
+    hasOwn(o: object, v: PropertyKey): boolean;
+>          ^: object   (TyPrimitiveObject)
+
+    hasOwn(o: object, v: PropertyKey): boolean;
+>                     ^: PropertyKey   (TyTypeReference)
+
+    hasOwn(o: object, v: PropertyKey): boolean;
+>                        ^^^^^^^^^^^: any   (TyAny)

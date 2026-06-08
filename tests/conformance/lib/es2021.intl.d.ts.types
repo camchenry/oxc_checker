@@ -1,0 +1,239 @@
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery)
+
+    interface DateTimeFormatPartTypesRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        fractionalSecond: any;
+>       ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface DateTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        formatMatcher?: "basic" | "best fit" | "best fit" | undefined;
+>       ^^^^^^^^^^^^^: "basic" | "best fit" | undefined   (TyUnion)
+
+        dateStyle?: "full" | "long" | "medium" | "short" | undefined;
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion)
+
+        timeStyle?: "full" | "long" | "medium" | "short" | undefined;
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion)
+
+        dayPeriod?: "narrow" | "short" | "long" | undefined;
+>       ^^^^^^^^^: "narrow" | "short" | "long" | undefined   (TyUnion)
+
+        fractionalSecondDigits?: 1 | 2 | 3 | undefined;
+>       ^^^^^^^^^^^^^^^^^^^^^^: 1 | 2 | 3 | undefined   (TyUnion)
+
+    interface DateTimeRangeFormatPart extends DateTimeFormatPart {
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface DateTimeRangeFormatPart extends DateTimeFormatPart {
+>                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        source: "startRange" | "endRange" | "shared";
+>       ^^^^^^: "startRange" | "endRange" | "shared"   (TyUnion)
+
+    interface DateTimeFormat {
+>             ^^^^^^^^^^^^^^: any   (TyAny)
+
+        formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
+>       ^^^^^^^^^^^: (startDate: Date | number | bigint, endDate: Date | number | bigint) => string   (TyFunction)
+
+        formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
+>                   ^^^^^^^^^: Date | number | bigint   (TyUnion)
+
+        formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
+>                              ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
+>                              ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
+>                                                      ^^^^^^^: Date | number | bigint   (TyUnion)
+
+        formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
+>                                                               ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
+>                                                               ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>       ^^^^^^^^^^^^^^^^^^: (startDate: Date | number | bigint, endDate: Date | number | bigint) => DateTimeRangeFormatPart[]   (TyFunction)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                          ^^^^^^^^^: Date | number | bigint   (TyUnion)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                                     ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                                     ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                                                             ^^^^^^^: Date | number | bigint   (TyUnion)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                                                                      ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                                                                      ^^^^: DateConstructor   (TyTypeReference)
+
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface ResolvedDateTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        formatMatcher?: "basic" | "best fit" | "best fit";
+>       ^^^^^^^^^^^^^: "basic" | "best fit" | undefined   (TyUnion)
+
+        dateStyle?: "full" | "long" | "medium" | "short";
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion)
+
+        timeStyle?: "full" | "long" | "medium" | "short";
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion)
+
+        hourCycle?: "h11" | "h12" | "h23" | "h24";
+>       ^^^^^^^^^: "h11" | "h12" | "h23" | "h24" | undefined   (TyUnion)
+
+        dayPeriod?: "narrow" | "short" | "long";
+>       ^^^^^^^^^: "narrow" | "short" | "long" | undefined   (TyUnion)
+
+        fractionalSecondDigits?: 1 | 2 | 3;
+>       ^^^^^^^^^^^^^^^^^^^^^^: 1 | 2 | 3 | undefined   (TyUnion)
+
+    type ListFormatLocaleMatcher = "lookup" | "best fit";
+>        ^^^^^^^^^^^^^^^^^^^^^^^: "lookup" | "best fit"   (TyUnion)
+
+    type ListFormatType = "conjunction" | "disjunction" | "unit";
+>        ^^^^^^^^^^^^^^: "conjunction" | "disjunction" | "unit"   (TyUnion)
+
+    type ListFormatStyle = "long" | "short" | "narrow";
+>        ^^^^^^^^^^^^^^^: "long" | "short" | "narrow"   (TyUnion)
+
+    interface ListFormatOptions {
+>             ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        localeMatcher?: ListFormatLocaleMatcher | undefined;
+>       ^^^^^^^^^^^^^: ListFormatLocaleMatcher | undefined   (TyUnion)
+
+        localeMatcher?: ListFormatLocaleMatcher | undefined;
+>                       ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        type?: ListFormatType | undefined;
+>       ^^^^: ListFormatType | undefined   (TyUnion)
+
+        type?: ListFormatType | undefined;
+>              ^^^^^^^^^^^^^^: any   (TyAny)
+
+        style?: ListFormatStyle | undefined;
+>       ^^^^^: ListFormatStyle | undefined   (TyUnion)
+
+        style?: ListFormatStyle | undefined;
+>               ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface ResolvedListFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        locale: string;
+>       ^^^^^^: string   (TyString)
+
+        style: ListFormatStyle;
+>       ^^^^^: ListFormatStyle   (TyTypeReference)
+
+        style: ListFormatStyle;
+>              ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        type: ListFormatType;
+>       ^^^^: ListFormatType   (TyTypeReference)
+
+        type: ListFormatType;
+>             ^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface ListFormat {
+>             ^^^^^^^^^^: any   (TyAny)
+
+    interface ListFormat {
+>             ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        format(list: Iterable<string>): string;
+>       ^^^^^^: (list: Iterable<string>) => string   (TyFunction)
+
+        format(list: Iterable<string>): string;
+>              ^^^^: Iterable<string>   (TyTypeReference)
+
+        format(list: Iterable<string>): string;
+>                    ^^^^^^^^: any   (TyAny)
+
+        formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
+>       ^^^^^^^^^^^^^: (list: Iterable<string>) => { type: "element" | "literal"; value: string; }[]   (TyFunction)
+
+        formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
+>                     ^^^^: Iterable<string>   (TyTypeReference)
+
+        formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
+>                           ^^^^^^^^: any   (TyAny)
+
+        formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
+>                                                ^^^^: "element" | "literal"   (TyUnion)
+
+        formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
+>                                                                             ^^^^^: string   (TyString)
+
+        resolvedOptions(): ResolvedListFormatOptions;
+>       ^^^^^^^^^^^^^^^: () => ResolvedListFormatOptions   (TyFunction)
+
+        resolvedOptions(): ResolvedListFormatOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    const ListFormat: {
+>         ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        prototype: ListFormat;
+>       ^^^^^^^^^: ListFormat   (TyTypeReference)
+
+        prototype: ListFormat;
+>                  ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        prototype: ListFormat;
+>                  ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>                                       ^^^^^^^: ListFormatOptions | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>                                                 ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>                                                                     ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>                                                                     ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">) => UnicodeBCP47LocaleIdentifier[]   (TyFunction)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                          ^^^^^^^: LocalesArgument   (TyTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                    ^^^^^^^: Pick<ListFormatOptions, "localeMatcher"> | undefined   (TyUnion)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                              ^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                   ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

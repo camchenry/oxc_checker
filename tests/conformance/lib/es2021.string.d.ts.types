@@ -1,0 +1,38 @@
+interface String {
+>         ^^^^^^: any   (TyAny)
+
+    replaceAll(searchValue: string | RegExp, replaceValue: string): string;
+>   ^^^^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject)
+
+    replaceAll(searchValue: string | RegExp, replaceValue: string): string;
+>              ^^^^^^^^^^^: string | RegExp   (TyUnion)
+
+    replaceAll(searchValue: string | RegExp, replaceValue: string): string;
+>                                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+
+    replaceAll(searchValue: string | RegExp, replaceValue: string): string;
+>                                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+
+    replaceAll(searchValue: string | RegExp, replaceValue: string): string;
+>                                            ^^^^^^^^^^^^: string   (TyString)
+
+    replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
+>   ^^^^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject)
+
+    replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
+>              ^^^^^^^^^^^: string | RegExp   (TyUnion)
+
+    replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
+>                                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+
+    replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
+>                                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+
+    replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
+>                                            ^^^^^^^^: (substring: string, ...args: any[]) => string   (TyFunction)
+
+    replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                       ^^^^^^^^^: string   (TyString)
+
+    replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
+>                                                                             ^^^^: any[]   (TyArray)

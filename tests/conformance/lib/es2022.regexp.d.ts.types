@@ -1,0 +1,35 @@
+interface RegExpMatchArray {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    indices?: RegExpIndicesArray;
+>   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion)
+
+    indices?: RegExpIndicesArray;
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface RegExpExecArray {
+>         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    indices?: RegExpIndicesArray;
+>   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion)
+
+    indices?: RegExpIndicesArray;
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface RegExpIndicesArray extends Array<[number, number] | undefined> {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface RegExpIndicesArray extends Array<[number, number] | undefined> {
+>                                    ^^^^^: ArrayConstructor   (TyTypeReference)
+
+interface RegExpIndicesArray extends Array<[number, number] | undefined> {
+>                                    ^^^^^: any   (TyAny)
+
+    groups?: {
+>   ^^^^^^: {} | undefined   (TyUnion)
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny)
+
+    readonly hasIndices: boolean;
+>            ^^^^^^^^^^: boolean   (TyBoolean)

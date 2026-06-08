@@ -1,0 +1,194 @@
+interface Array<T> {
+>         ^^^^^: any   (TyAny)
+
+interface Array<T> {
+>               ^: any   (TyAny)
+
+    at(index: number): T | undefined;
+>   ^^: (index: number) => T | undefined   (TyFunction)
+
+    at(index: number): T | undefined;
+>      ^^^^^: number   (TyNumber)
+
+    at(index: number): T | undefined;
+>                      ^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny)
+
+interface ReadonlyArray<T> {
+>                       ^: any   (TyAny)
+
+    at(index: number): T | undefined;
+>   ^^: (index: number) => T | undefined   (TyFunction)
+
+    at(index: number): T | undefined;
+>      ^^^^^: number   (TyNumber)
+
+    at(index: number): T | undefined;
+>                      ^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                   ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                           ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): number | undefined;
+>   ^^: (index: number) => number | undefined   (TyFunction)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>                       ^^^^^^^^^^^^: any   (TyAny)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                            ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): bigint | undefined;
+>   ^^: (index: number) => bigint | undefined   (TyFunction)
+
+    at(index: number): bigint | undefined;
+>      ^^^^^: number   (TyNumber)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>                        ^^^^^^^^^^^^: any   (TyAny)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                             ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    at(index: number): bigint | undefined;
+>   ^^: (index: number) => bigint | undefined   (TyFunction)
+
+    at(index: number): bigint | undefined;
+>      ^^^^^: number   (TyNumber)

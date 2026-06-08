@@ -1,0 +1,8 @@
+interface String {
+>         ^^^^^^: any   (TyAny)
+
+    at(index: number): string | undefined;
+>   ^^: (index: number) => string | undefined   (TyFunction)
+
+    at(index: number): string | undefined;
+>      ^^^^^: number   (TyNumber)

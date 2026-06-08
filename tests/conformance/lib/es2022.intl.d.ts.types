@@ -1,0 +1,164 @@
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery)
+
+    interface SegmenterOptions {
+>             ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        localeMatcher?: "best fit" | "lookup" | undefined;
+>       ^^^^^^^^^^^^^: "best fit" | "lookup" | undefined   (TyUnion)
+
+        granularity?: "grapheme" | "word" | "sentence" | undefined;
+>       ^^^^^^^^^^^: "grapheme" | "word" | "sentence" | undefined   (TyUnion)
+
+    interface Segmenter {
+>             ^^^^^^^^^: any   (TyAny)
+
+    interface Segmenter {
+>             ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        segment(input: string): Segments;
+>       ^^^^^^^: (input: string) => Segments   (TyFunction)
+
+        segment(input: string): Segments;
+>               ^^^^^: string   (TyString)
+
+        segment(input: string): Segments;
+>                               ^^^^^^^^: any   (TyAny)
+
+        resolvedOptions(): ResolvedSegmenterOptions;
+>       ^^^^^^^^^^^^^^^: () => ResolvedSegmenterOptions   (TyFunction)
+
+        resolvedOptions(): ResolvedSegmenterOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface ResolvedSegmenterOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        locale: string;
+>       ^^^^^^: string   (TyString)
+
+        granularity: "grapheme" | "word" | "sentence";
+>       ^^^^^^^^^^^: "grapheme" | "word" | "sentence"   (TyUnion)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>             ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                             ^: any   (TyAny)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                        ^^^^^^^^^^^^^^: any   (TyAny)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                       ^: any   (TyAny)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        [Symbol.iterator](): SegmentIterator<T>;
+>        ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+        [Symbol.iterator](): SegmentIterator<T>;
+>               ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+        [Symbol.iterator](): SegmentIterator<T>;
+>                            ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        [Symbol.iterator](): SegmentIterator<T>;
+>                                            ^: any   (TyAny)
+
+    interface Segments {
+>             ^^^^^^^^: any   (TyAny)
+
+        containing(codeUnitIndex?: number): SegmentData | undefined;
+>       ^^^^^^^^^^: (codeUnitIndex?: number) => SegmentData | undefined   (TyFunction)
+
+        containing(codeUnitIndex?: number): SegmentData | undefined;
+>                  ^^^^^^^^^^^^^: number | undefined   (TyUnion)
+
+        containing(codeUnitIndex?: number): SegmentData | undefined;
+>                                           ^^^^^^^^^^^: any   (TyAny)
+
+        [Symbol.iterator](): SegmentIterator<SegmentData>;
+>        ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+        [Symbol.iterator](): SegmentIterator<SegmentData>;
+>               ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+        [Symbol.iterator](): SegmentIterator<SegmentData>;
+>                            ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        [Symbol.iterator](): SegmentIterator<SegmentData>;
+>                                            ^^^^^^^^^^^: any   (TyAny)
+
+    interface SegmentData {
+>             ^^^^^^^^^^^: any   (TyAny)
+
+        segment: string;
+>       ^^^^^^^: string   (TyString)
+
+        index: number;
+>       ^^^^^: number   (TyNumber)
+
+        input: string;
+>       ^^^^^: string   (TyString)
+
+        isWordLike?: boolean;
+>       ^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+    const Segmenter: {
+>         ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        prototype: Segmenter;
+>       ^^^^^^^^^: Segmenter   (TyTypeReference)
+
+        prototype: Segmenter;
+>                  ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        prototype: Segmenter;
+>                  ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>                                       ^^^^^^^: SegmenterOptions | undefined   (TyUnion)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>                                                 ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>                                                                    ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>                                                                    ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">) => UnicodeBCP47LocaleIdentifier[]   (TyFunction)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                          ^^^^^^^: LocalesArgument   (TyTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                    ^^^^^^^: Pick<SegmenterOptions, "localeMatcher"> | undefined   (TyUnion)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                              ^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                   ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
+>            ^^^^^^^^^^^^^^^^^: (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit") => string[]   (TyFunction)
+
+    function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
+>                              ^^^: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"   (TyUnion)

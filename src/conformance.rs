@@ -1355,6 +1355,19 @@ fn parse_fixture_program<'a>(
 ) -> Result<ParsedFixture<'a>, String> {
     let host = FixtureProgramHost::new(&compiler_case.files);
     let mut builder = program::ProgramStoreBuilder::new(allocator, host);
+    if compiler_case
+        .settings
+        .get("nolib")
+        .is_some_and(|value| compiler_directive_bool(value))
+    {
+        builder = builder.without_default_lib();
+    } else if let Some(lib) = compiler_case.settings.get("lib") {
+        builder = builder.with_lib_names(parse_compiler_lib_names(lib));
+    } else if let Some(target) = compiler_case.settings.get("target") {
+        builder = builder
+            .with_default_lib_target_name(target)
+            .map_err(|err| err.to_string())?;
+    }
     for source_file in &compiler_case.files {
         if !is_compilable_fixture_file(Path::new(&source_file.name)) {
             continue;
@@ -1364,6 +1377,19 @@ fn parse_fixture_program<'a>(
     let store = builder.build().map_err(|err| err.to_string())?;
 
     Ok(ParsedFixture { store })
+}
+
+fn compiler_directive_bool(value: &str) -> bool {
+    value.trim().eq_ignore_ascii_case("true")
+}
+
+fn parse_compiler_lib_names(value: &str) -> Vec<String> {
+    value
+        .split(',')
+        .map(str::trim)
+        .filter(|item| !item.is_empty())
+        .map(ToString::to_string)
+        .collect()
 }
 
 fn parse_single_fixture_program<'a>(

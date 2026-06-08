@@ -1,0 +1,122 @@
+interface AggregateError extends Error {
+>         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+interface AggregateError extends Error {
+>         ^^^^^^^^^^^^^^: any   (TyAny)
+
+interface AggregateError extends Error {
+>                                ^^^^^: ErrorConstructor   (TyTypeReference)
+
+interface AggregateError extends Error {
+>                                ^^^^^: any   (TyAny)
+
+    errors: any[];
+>   ^^^^^^: any[]   (TyArray)
+
+interface AggregateErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (errors: Iterable<any>, message?: string): AggregateError;
+>        ^^^^^^: Iterable<any>   (TyTypeReference)
+
+    new (errors: Iterable<any>, message?: string): AggregateError;
+>                ^^^^^^^^: any   (TyAny)
+
+    new (errors: Iterable<any>, message?: string): AggregateError;
+>                               ^^^^^^^: string | undefined   (TyUnion)
+
+    new (errors: Iterable<any>, message?: string): AggregateError;
+>                                                  ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+    new (errors: Iterable<any>, message?: string): AggregateError;
+>                                                  ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+    (errors: Iterable<any>, message?: string): AggregateError;
+>    ^^^^^^: Iterable<any>   (TyTypeReference)
+
+    (errors: Iterable<any>, message?: string): AggregateError;
+>            ^^^^^^^^: any   (TyAny)
+
+    (errors: Iterable<any>, message?: string): AggregateError;
+>                           ^^^^^^^: string | undefined   (TyUnion)
+
+    (errors: Iterable<any>, message?: string): AggregateError;
+>                                              ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+    (errors: Iterable<any>, message?: string): AggregateError;
+>                                              ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+    readonly prototype: AggregateError;
+>            ^^^^^^^^^: AggregateError   (TyTypeReference)
+
+    readonly prototype: AggregateError;
+>                       ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+    readonly prototype: AggregateError;
+>                       ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+declare var AggregateError: AggregateErrorConstructor;
+>           ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+
+declare var AggregateError: AggregateErrorConstructor;
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>       ^: any   (TyAny)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>                                          ^^^^^^: T   (TyTypeReference)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>                                                  ^: any   (TyAny)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>                                                              ^^^^^^^: any   (TyAny)
+
+    any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>                                                                      ^: any   (TyAny)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>       ^: any   (TyAny)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>          ^^^^^^: Iterable<T | PromiseLike<T>>   (TyTypeReference)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                  ^^^^^^^^: any   (TyAny)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                           ^: any   (TyAny)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                               ^^^^^^^^^^^: any   (TyAny)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                           ^: any   (TyAny)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                 ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                 ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                         ^^^^^^^: any   (TyAny)
+
+    any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                                 ^: any   (TyAny)

@@ -197,6 +197,7 @@ pub struct ProgramStoreBuilder<'a, H> {
     host: H,
     root_files: Vec<PathBuf>,
     load_default_lib: bool,
+    lib_selection: crate::global_lib::LibSelection,
 }
 
 impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
@@ -206,6 +207,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             host,
             root_files: Vec::new(),
             load_default_lib: true,
+            lib_selection: crate::global_lib::LibSelection::default(),
         }
     }
 
@@ -214,7 +216,28 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         self
     }
 
-    /// Disable injecting the embedded default standard library (es2015) files.
+    pub fn with_default_lib_target_name(mut self, target: &str) -> ProgramStoreResult<Self> {
+        let Some(target) = crate::global_lib::LibTarget::parse(target) else {
+            return Err(ProgramStoreError::LibSelection {
+                message: format!("unsupported target `{}`", target.trim()),
+            });
+        };
+        self.lib_selection = crate::global_lib::LibSelection::DefaultTarget(target);
+        Ok(self)
+    }
+
+    pub fn with_lib_names<I, S>(mut self, lib_names: I) -> Self
+    where
+        I: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        self.lib_selection = crate::global_lib::LibSelection::Explicit(
+            lib_names.into_iter().map(Into::into).collect(),
+        );
+        self
+    }
+
+    /// Disable injecting embedded default standard library files.
     pub fn without_default_lib(mut self) -> Self {
         self.load_default_lib = false;
         self
@@ -238,15 +261,14 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     /// Parse and store the embedded default standard library files as ambient
     /// lib entries.
     ///
-    /// TODO: make the library year/target configurable instead of always
-    /// loading es2015.
-    ///
     /// TODO(perf): these files are reparsed for every `ProgramStore`. Consider
     /// sharing or caching parsed lib programs across builds.
     fn inject_default_libs(&self, store: &mut ProgramStore<'a>) -> ProgramStoreResult<()> {
-        for (virtual_path, contents) in crate::global_lib::DEFAULT_LIB_FILES {
-            let path = PathBuf::from(virtual_path);
-            let source_text = self.allocator.alloc_str(contents);
+        let lib_files = crate::global_lib::resolve_lib_files(&self.lib_selection)
+            .map_err(|message| ProgramStoreError::LibSelection { message })?;
+        for lib_file in lib_files {
+            let path = PathBuf::from(lib_file.virtual_path);
+            let source_text = self.allocator.alloc_str(lib_file.contents);
             self.build_entry_from_source(store, path, source_text, SourceType::d_ts(), true)?;
         }
         Ok(())
@@ -437,6 +459,9 @@ pub type ProgramStoreResult<T> = Result<T, ProgramStoreError>;
 
 #[derive(Debug)]
 pub enum ProgramStoreError {
+    LibSelection {
+        message: String,
+    },
     ReadSource {
         path: PathBuf,
         message: String,
@@ -454,6 +479,12 @@ pub enum ProgramStoreError {
 impl fmt::Display for ProgramStoreError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::LibSelection { message } => {
+                write!(
+                    formatter,
+                    "failed to select standard library files: {message}"
+                )
+            }
             Self::ReadSource { path, message } => {
                 write!(formatter, "failed to read {}: {message}", path.display())
             }

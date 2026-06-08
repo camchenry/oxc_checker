@@ -1,0 +1,275 @@
+interface ErrorOptions {
+>         ^^^^^^^^^^^^: any   (TyAny)
+
+    cause?: unknown;
+>   ^^^^^: unknown   (TyUnknown)
+
+interface Error {
+>         ^^^^^: any   (TyAny)
+
+    cause?: unknown;
+>   ^^^^^: unknown   (TyUnknown)
+
+interface ErrorConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): Error;
+>        ^^^^^^^: string | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): Error;
+>                          ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): Error;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): Error;
+>                                                   ^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): Error;
+>    ^^^^^^^: string | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): Error;
+>                      ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): Error;
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): Error;
+>                                               ^^^^^: any   (TyAny)
+
+interface EvalErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): EvalError;
+>        ^^^^^^^: string | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): EvalError;
+>                          ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): EvalError;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): EvalError;
+>                                                   ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference)
+
+    new (message?: string, options?: ErrorOptions): EvalError;
+>                                                   ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): EvalError;
+>    ^^^^^^^: string | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): EvalError;
+>                      ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): EvalError;
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): EvalError;
+>                                               ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): EvalError;
+>                                               ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference)
+
+interface RangeErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): RangeError;
+>        ^^^^^^^: string | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): RangeError;
+>                          ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): RangeError;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): RangeError;
+>                                                   ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference)
+
+    new (message?: string, options?: ErrorOptions): RangeError;
+>                                                   ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): RangeError;
+>    ^^^^^^^: string | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): RangeError;
+>                      ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): RangeError;
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): RangeError;
+>                                               ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): RangeError;
+>                                               ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference)
+
+interface ReferenceErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): ReferenceError;
+>        ^^^^^^^: string | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): ReferenceError;
+>                          ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): ReferenceError;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): ReferenceError;
+>                                                   ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference)
+
+    new (message?: string, options?: ErrorOptions): ReferenceError;
+>                                                   ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): ReferenceError;
+>    ^^^^^^^: string | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): ReferenceError;
+>                      ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): ReferenceError;
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): ReferenceError;
+>                                               ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): ReferenceError;
+>                                               ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference)
+
+interface SyntaxErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): SyntaxError;
+>        ^^^^^^^: string | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): SyntaxError;
+>                          ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): SyntaxError;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): SyntaxError;
+>                                                   ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference)
+
+    new (message?: string, options?: ErrorOptions): SyntaxError;
+>                                                   ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): SyntaxError;
+>    ^^^^^^^: string | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): SyntaxError;
+>                      ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): SyntaxError;
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): SyntaxError;
+>                                               ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): SyntaxError;
+>                                               ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference)
+
+interface TypeErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): TypeError;
+>        ^^^^^^^: string | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): TypeError;
+>                          ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): TypeError;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): TypeError;
+>                                                   ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference)
+
+    new (message?: string, options?: ErrorOptions): TypeError;
+>                                                   ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): TypeError;
+>    ^^^^^^^: string | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): TypeError;
+>                      ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): TypeError;
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): TypeError;
+>                                               ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): TypeError;
+>                                               ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference)
+
+interface URIErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): URIError;
+>        ^^^^^^^: string | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): URIError;
+>                          ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    new (message?: string, options?: ErrorOptions): URIError;
+>                                    ^^^^^^^^^^^^: any   (TyAny)
+
+    new (message?: string, options?: ErrorOptions): URIError;
+>                                                   ^^^^^^^^: URIErrorConstructor   (TyTypeReference)
+
+    new (message?: string, options?: ErrorOptions): URIError;
+>                                                   ^^^^^^^^: URIErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): URIError;
+>    ^^^^^^^: string | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): URIError;
+>                      ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+    (message?: string, options?: ErrorOptions): URIError;
+>                                ^^^^^^^^^^^^: any   (TyAny)
+
+    (message?: string, options?: ErrorOptions): URIError;
+>                                               ^^^^^^^^: URIErrorConstructor   (TyTypeReference)
+
+    (message?: string, options?: ErrorOptions): URIError;
+>                                               ^^^^^^^^: URIErrorConstructor   (TyTypeReference)
+
+interface AggregateErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        errors: Iterable<any>,
+>       ^^^^^^: Iterable<any>   (TyTypeReference)
+
+        errors: Iterable<any>,
+>               ^^^^^^^^: any   (TyAny)
+
+        message?: string,
+>       ^^^^^^^: string | undefined   (TyUnion)
+
+        options?: ErrorOptions,
+>       ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+        options?: ErrorOptions,
+>                 ^^^^^^^^^^^^: any   (TyAny)
+
+    ): AggregateError;
+>      ^^^^^^^^^^^^^^: any   (TyAny)
+
+        errors: Iterable<any>,
+>       ^^^^^^: Iterable<any>   (TyTypeReference)
+
+        errors: Iterable<any>,
+>               ^^^^^^^^: any   (TyAny)
+
+        message?: string,
+>       ^^^^^^^: string | undefined   (TyUnion)
+
+        options?: ErrorOptions,
+>       ^^^^^^^: ErrorOptions | undefined   (TyUnion)
+
+        options?: ErrorOptions,
+>                 ^^^^^^^^^^^^: any   (TyAny)
+
+    ): AggregateError;
+>      ^^^^^^^^^^^^^^: any   (TyAny)

@@ -1,0 +1,146 @@
+interface WeakRef<T extends WeakKey> {
+>         ^^^^^^^: WeakRefConstructor   (TyTypeReference)
+
+interface WeakRef<T extends WeakKey> {
+>         ^^^^^^^: any   (TyAny)
+
+interface WeakRef<T extends WeakKey> {
+>                 ^: any   (TyAny)
+
+interface WeakRef<T extends WeakKey> {
+>                           ^^^^^^^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "WeakRef";
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "WeakRef";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    deref(): T | undefined;
+>   ^^^^^: () => T | undefined   (TyFunction)
+
+    deref(): T | undefined;
+>            ^: any   (TyAny)
+
+interface WeakRefConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly prototype: WeakRef<any>;
+>            ^^^^^^^^^: WeakRef<any>   (TyTypeReference)
+
+    readonly prototype: WeakRef<any>;
+>                       ^^^^^^^: WeakRefConstructor   (TyTypeReference)
+
+    readonly prototype: WeakRef<any>;
+>                       ^^^^^^^: WeakRefConstructor   (TyTypeReference)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>        ^: any   (TyAny)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>                  ^^^^^^^: any   (TyAny)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>                           ^^^^^^: T   (TyTypeReference)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>                                   ^: any   (TyAny)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>                                       ^^^^^^^: WeakRefConstructor   (TyTypeReference)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>                                       ^^^^^^^: WeakRefConstructor   (TyTypeReference)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>                                               ^: any   (TyAny)
+
+declare var WeakRef: WeakRefConstructor;
+>           ^^^^^^^: WeakRefConstructor   (TyTypeReference)
+
+declare var WeakRef: WeakRefConstructor;
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface FinalizationRegistry<T> {
+>         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference)
+
+interface FinalizationRegistry<T> {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+interface FinalizationRegistry<T> {
+>                              ^: any   (TyAny)
+
+    readonly [Symbol.toStringTag]: "FinalizationRegistry";
+>             ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    readonly [Symbol.toStringTag]: "FinalizationRegistry";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>   ^^^^^^^^: (target: WeakKey, heldValue: T, unregisterToken?: WeakKey) => void   (TyFunction)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>            ^^^^^^: WeakKey   (TyTypeReference)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>                    ^^^^^^^: any   (TyAny)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>                             ^^^^^^^^^: T   (TyTypeReference)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>                                        ^: any   (TyAny)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>                                           ^^^^^^^^^^^^^^^: WeakKey | undefined   (TyUnion)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>                                                             ^^^^^^^: any   (TyAny)
+
+    unregister(unregisterToken: WeakKey): boolean;
+>   ^^^^^^^^^^: (unregisterToken: WeakKey) => boolean   (TyFunction)
+
+    unregister(unregisterToken: WeakKey): boolean;
+>              ^^^^^^^^^^^^^^^: WeakKey   (TyTypeReference)
+
+    unregister(unregisterToken: WeakKey): boolean;
+>                               ^^^^^^^: any   (TyAny)
+
+interface FinalizationRegistryConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    readonly prototype: FinalizationRegistry<any>;
+>            ^^^^^^^^^: FinalizationRegistry<any>   (TyTypeReference)
+
+    readonly prototype: FinalizationRegistry<any>;
+>                       ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference)
+
+    readonly prototype: FinalizationRegistry<any>;
+>                       ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference)
+
+    new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+>        ^: any   (TyAny)
+
+    new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+>           ^^^^^^^^^^^^^^^: (heldValue: T) => void   (TyFunction)
+
+    new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+>                             ^^^^^^^^^: T   (TyTypeReference)
+
+    new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+>                                        ^: any   (TyAny)
+
+    new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+>                                                     ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference)
+
+    new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+>                                                     ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference)
+
+    new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+>                                                                          ^: any   (TyAny)
+
+declare var FinalizationRegistry: FinalizationRegistryConstructor;
+>           ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference)
+
+declare var FinalizationRegistry: FinalizationRegistryConstructor;
+>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

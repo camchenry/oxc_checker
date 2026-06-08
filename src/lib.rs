@@ -917,7 +917,7 @@ mod test {
             .iter()
             .filter(|entry| entry.is_lib())
             .count();
-        assert_eq!(lib_count, crate::global_lib::DEFAULT_LIB_FILES.len());
+        assert_eq!(lib_count, crate::global_lib::default_lib_files().len());
 
         let user_entry = ret.store.entry(ret.program_id).unwrap();
         assert!(!user_entry.is_lib());

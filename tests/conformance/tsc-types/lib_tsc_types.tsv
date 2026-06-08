@@ -39578,6 +39578,384 @@ es2020.symbol.wellknown.d.ts	697	700	str	string
 es2020.symbol.wellknown.d.ts	711	731	RegExpStringIterator	any
 es2020.symbol.wellknown.d.ts	732	747	RegExpExecArray	any
 es2020.symbol.wellknown.d.ts	89	106	SymbolConstructor	any
+es2021.intl.d.ts	1041	1050	timeStyle	"full" | "long" | "medium" | "short" | undefined
+es2021.intl.d.ts	1099	1108	hourCycle	"h11" | "h12" | "h23" | "h24" | undefined
+es2021.intl.d.ts	1150	1159	dayPeriod	"long" | "short" | "narrow" | undefined
+es2021.intl.d.ts	1199	1221	fractionalSecondDigits	1 | 2 | 3 | undefined
+es2021.intl.d.ts	125	146	DateTimeFormatOptions	any
+es2021.intl.d.ts	1447	1470	ListFormatLocaleMatcher	"best fit" | "lookup"
+es2021.intl.d.ts	157	170	formatMatcher	"best fit" | "basic" | undefined
+es2021.intl.d.ts	1694	1708	ListFormatType	"conjunction" | "disjunction" | "unit"
+es2021.intl.d.ts	18	22	Intl	typeof Intl
+es2021.intl.d.ts	1956	1971	ListFormatStyle	"long" | "short" | "narrow"
+es2021.intl.d.ts	2272	2289	ListFormatOptions	any
+es2021.intl.d.ts	228	237	dateStyle	"full" | "long" | "medium" | "short" | undefined
+es2021.intl.d.ts	2505	2518	localeMatcher	ListFormatLocaleMatcher | undefined
+es2021.intl.d.ts	2521	2544	ListFormatLocaleMatcher	any
+es2021.intl.d.ts	2611	2615	type	ListFormatType | undefined
+es2021.intl.d.ts	2618	2632	ListFormatType	any
+es2021.intl.d.ts	2714	2719	style	ListFormatStyle | undefined
+es2021.intl.d.ts	2722	2737	ListFormatStyle	any
+es2021.intl.d.ts	2772	2797	ResolvedListFormatOptions	any
+es2021.intl.d.ts	2808	2814	locale	string
+es2021.intl.d.ts	2832	2837	style	ListFormatStyle
+es2021.intl.d.ts	2839	2854	ListFormatStyle	any
+es2021.intl.d.ts	2864	2868	type	ListFormatType
+es2021.intl.d.ts	2870	2884	ListFormatType	any
+es2021.intl.d.ts	2907	2917	ListFormat	{ new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2021.intl.d.ts	298	307	timeStyle	"full" | "long" | "medium" | "short" | undefined
+es2021.intl.d.ts	3538	3544	format	(list: Iterable<string>) => string
+es2021.intl.d.ts	3545	3549	list	Iterable<string>
+es2021.intl.d.ts	3551	3559	Iterable	any
+es2021.intl.d.ts	368	377	dayPeriod	"long" | "short" | "narrow" | undefined
+es2021.intl.d.ts	39	70	DateTimeFormatPartTypesRegistry	any
+es2021.intl.d.ts	429	451	fractionalSecondDigits	1 | 2 | 3 | undefined
+es2021.intl.d.ts	4350	4363	formatToParts	(list: Iterable<string>) => { type: "element" | "literal"; value: string; }[]
+es2021.intl.d.ts	4364	4368	list	Iterable<string>
+es2021.intl.d.ts	4370	4378	Iterable	any
+es2021.intl.d.ts	4391	4395	type	"element" | "literal"
+es2021.intl.d.ts	4420	4425	value	string
+es2021.intl.d.ts	4805	4820	resolvedOptions	() => ResolvedListFormatOptions
+es2021.intl.d.ts	4824	4849	ResolvedListFormatOptions	any
+es2021.intl.d.ts	4868	4878	ListFormat	{ new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2021.intl.d.ts	4890	4899	prototype	ListFormat
+es2021.intl.d.ts	4901	4911	ListFormat	{ new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2021.intl.d.ts	498	521	DateTimeRangeFormatPart	any
+es2021.intl.d.ts	530	548	DateTimeFormatPart	any
+es2021.intl.d.ts	559	565	source	"startRange" | "endRange" | "shared"
+es2021.intl.d.ts	6026	6033	locales	LocalesArgument
+es2021.intl.d.ts	6036	6051	LocalesArgument	any
+es2021.intl.d.ts	6053	6060	options	ListFormatOptions | undefined
+es2021.intl.d.ts	6063	6080	ListFormatOptions	any
+es2021.intl.d.ts	6083	6093	ListFormat	{ new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2021.intl.d.ts	626	640	DateTimeFormat	DateTimeFormatConstructor
+es2021.intl.d.ts	651	662	formatRange	{ (startDate: Date | number | bigint, endDate: Date | number | bigint): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; (startDate: Date | number | bigint, endDate: Date | number | bigint): string; }
+es2021.intl.d.ts	663	672	startDate	number | bigint | Date
+es2021.intl.d.ts	674	678	Date	DateConstructor
+es2021.intl.d.ts	698	705	endDate	number | bigint | Date
+es2021.intl.d.ts	707	711	Date	DateConstructor
+es2021.intl.d.ts	7253	7271	supportedLocalesOf	(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">) => UnicodeBCP47LocaleIdentifier[]
+es2021.intl.d.ts	7272	7279	locales	LocalesArgument
+es2021.intl.d.ts	7281	7296	LocalesArgument	any
+es2021.intl.d.ts	7298	7305	options	Pick<ListFormatOptions, "localeMatcher"> | undefined
+es2021.intl.d.ts	7308	7312	Pick	any
+es2021.intl.d.ts	7313	7330	ListFormatOptions	any
+es2021.intl.d.ts	7351	7379	UnicodeBCP47LocaleIdentifier	any
+es2021.intl.d.ts	748	766	formatRangeToParts	{ (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; }
+es2021.intl.d.ts	767	776	startDate	number | bigint | Date
+es2021.intl.d.ts	778	782	Date	DateConstructor
+es2021.intl.d.ts	802	809	endDate	number | bigint | Date
+es2021.intl.d.ts	81	97	fractionalSecond	any
+es2021.intl.d.ts	811	815	Date	DateConstructor
+es2021.intl.d.ts	836	859	DateTimeRangeFormatPart	any
+es2021.intl.d.ts	884	913	ResolvedDateTimeFormatOptions	any
+es2021.intl.d.ts	924	937	formatMatcher	"best fit" | "basic" | undefined
+es2021.intl.d.ts	983	992	dateStyle	"full" | "long" | "medium" | "short" | undefined
+es2021.promise.d.ts	10	24	AggregateError	AggregateErrorConstructor
+es2021.promise.d.ts	110	116	errors	Iterable<any>
+es2021.promise.d.ts	118	126	Iterable	any
+es2021.promise.d.ts	133	140	message	string | undefined
+es2021.promise.d.ts	1340	1343	any	{ <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }
+es2021.promise.d.ts	1344	1345	T	any
+es2021.promise.d.ts	1347	1353	values	Iterable<T | PromiseLike<T>>
+es2021.promise.d.ts	1355	1363	Iterable	any
+es2021.promise.d.ts	1364	1365	T	any
+es2021.promise.d.ts	1368	1379	PromiseLike	any
+es2021.promise.d.ts	1380	1381	T	any
+es2021.promise.d.ts	1386	1393	Promise	PromiseConstructor
+es2021.promise.d.ts	1394	1401	Awaited	any
+es2021.promise.d.ts	1402	1403	T	any
+es2021.promise.d.ts	152	166	AggregateError	AggregateErrorConstructor
+es2021.promise.d.ts	173	179	errors	Iterable<any>
+es2021.promise.d.ts	181	189	Iterable	any
+es2021.promise.d.ts	196	203	message	string | undefined
+es2021.promise.d.ts	215	229	AggregateError	AggregateErrorConstructor
+es2021.promise.d.ts	244	253	prototype	AggregateError
+es2021.promise.d.ts	255	269	AggregateError	AggregateErrorConstructor
+es2021.promise.d.ts	286	300	AggregateError	AggregateErrorConstructor
+es2021.promise.d.ts	302	327	AggregateErrorConstructor	any
+es2021.promise.d.ts	33	38	Error	ErrorConstructor
+es2021.promise.d.ts	406	424	PromiseConstructor	any
+es2021.promise.d.ts	45	51	errors	any[]
+es2021.promise.d.ts	73	98	AggregateErrorConstructor	any
+es2021.promise.d.ts	843	846	any	{ <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }
+es2021.promise.d.ts	847	848	T	any
+es2021.promise.d.ts	882	888	values	T
+es2021.promise.d.ts	890	891	T	any
+es2021.promise.d.ts	894	901	Promise	PromiseConstructor
+es2021.promise.d.ts	902	909	Awaited	any
+es2021.promise.d.ts	910	911	T	any
+es2021.string.d.ts	10	16	String	StringConstructor
+es2021.string.d.ts	316	326	replaceAll	{ (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
+es2021.string.d.ts	327	338	searchValue	string | RegExp
+es2021.string.d.ts	349	355	RegExp	RegExpConstructor
+es2021.string.d.ts	357	369	replaceValue	string
+es2021.string.d.ts	630	640	replaceAll	{ (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
+es2021.string.d.ts	641	652	searchValue	string | RegExp
+es2021.string.d.ts	663	669	RegExp	RegExpConstructor
+es2021.string.d.ts	671	679	replacer	(substring: string, ...args: any[]) => string
+es2021.string.d.ts	682	691	substring	string
+es2021.string.d.ts	704	708	args	any[]
+es2021.weakref.d.ts	102	108	Symbol	SymbolConstructor
+es2021.weakref.d.ts	109	120	toStringTag	unique symbol
+es2021.weakref.d.ts	1432	1440	register	{ (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; }
+es2021.weakref.d.ts	1441	1447	target	WeakKey
+es2021.weakref.d.ts	1449	1456	WeakKey	any
+es2021.weakref.d.ts	1458	1467	heldValue	T
+es2021.weakref.d.ts	1469	1470	T	any
+es2021.weakref.d.ts	1472	1487	unregisterToken	WeakKey | undefined
+es2021.weakref.d.ts	1490	1497	WeakKey	any
+es2021.weakref.d.ts	1831	1841	unregister	{ (unregisterToken: WeakKey): boolean; (unregisterToken: WeakKey): boolean; }
+es2021.weakref.d.ts	1842	1857	unregisterToken	WeakKey
+es2021.weakref.d.ts	1859	1866	WeakKey	any
+es2021.weakref.d.ts	1891	1922	FinalizationRegistryConstructor	any
+es2021.weakref.d.ts	1938	1947	prototype	FinalizationRegistry<any>
+es2021.weakref.d.ts	1949	1969	FinalizationRegistry	FinalizationRegistryConstructor
+es2021.weakref.d.ts	2178	2179	T	any
+es2021.weakref.d.ts	2181	2196	cleanupCallback	(heldValue: T) => void
+es2021.weakref.d.ts	2199	2208	heldValue	T
+es2021.weakref.d.ts	2210	2211	T	any
+es2021.weakref.d.ts	2223	2243	FinalizationRegistry	FinalizationRegistryConstructor
+es2021.weakref.d.ts	2244	2245	T	any
+es2021.weakref.d.ts	2263	2283	FinalizationRegistry	FinalizationRegistryConstructor
+es2021.weakref.d.ts	2285	2316	FinalizationRegistryConstructor	any
+es2021.weakref.d.ts	380	385	deref	{ (): T | undefined; (): T | undefined; }
+es2021.weakref.d.ts	389	390	T	any
+es2021.weakref.d.ts	417	435	WeakRefConstructor	any
+es2021.weakref.d.ts	451	460	prototype	WeakRef<any>
+es2021.weakref.d.ts	462	469	WeakRef	WeakRefConstructor
+es2021.weakref.d.ts	59	66	WeakRef	WeakRefConstructor
+es2021.weakref.d.ts	67	68	T	any
+es2021.weakref.d.ts	741	742	T	any
+es2021.weakref.d.ts	751	758	WeakKey	any
+es2021.weakref.d.ts	760	766	target	T
+es2021.weakref.d.ts	768	769	T	any
+es2021.weakref.d.ts	77	84	WeakKey	any
+es2021.weakref.d.ts	772	779	WeakRef	WeakRefConstructor
+es2021.weakref.d.ts	780	781	T	any
+es2021.weakref.d.ts	799	806	WeakRef	WeakRefConstructor
+es2021.weakref.d.ts	808	826	WeakRefConstructor	any
+es2021.weakref.d.ts	839	859	FinalizationRegistry	FinalizationRegistryConstructor
+es2021.weakref.d.ts	860	861	T	any
+es2021.weakref.d.ts	879	885	Symbol	SymbolConstructor
+es2021.weakref.d.ts	886	897	toStringTag	unique symbol
+es2022.array.d.ts	10	15	Array	ArrayConstructor
+es2022.array.d.ts	1071	1073	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	1074	1079	index	number
+es2022.array.d.ts	1123	1140	Uint8ClampedArray	Uint8ClampedArrayConstructor
+es2022.array.d.ts	1141	1153	TArrayBuffer	any
+es2022.array.d.ts	1162	1177	ArrayBufferLike	any
+es2022.array.d.ts	1377	1379	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	1380	1385	index	number
+es2022.array.d.ts	1429	1439	Int16Array	Int16ArrayConstructor
+es2022.array.d.ts	1440	1452	TArrayBuffer	any
+es2022.array.d.ts	1461	1476	ArrayBufferLike	any
+es2022.array.d.ts	16	17	T	any
+es2022.array.d.ts	1676	1678	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	1679	1684	index	number
+es2022.array.d.ts	1728	1739	Uint16Array	Uint16ArrayConstructor
+es2022.array.d.ts	1740	1752	TArrayBuffer	any
+es2022.array.d.ts	1761	1776	ArrayBufferLike	any
+es2022.array.d.ts	1976	1978	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	1979	1984	index	number
+es2022.array.d.ts	2028	2038	Int32Array	Int32ArrayConstructor
+es2022.array.d.ts	2039	2051	TArrayBuffer	any
+es2022.array.d.ts	2060	2075	ArrayBufferLike	any
+es2022.array.d.ts	217	219	at	{ (index: number): T | undefined; (index: number): T | undefined; }
+es2022.array.d.ts	220	225	index	number
+es2022.array.d.ts	2275	2277	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	2278	2283	index	number
+es2022.array.d.ts	2327	2338	Uint32Array	Uint32ArrayConstructor
+es2022.array.d.ts	2339	2351	TArrayBuffer	any
+es2022.array.d.ts	236	237	T	any
+es2022.array.d.ts	2360	2375	ArrayBufferLike	any
+es2022.array.d.ts	2575	2577	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	2578	2583	index	number
+es2022.array.d.ts	2627	2639	Float32Array	Float32ArrayConstructor
+es2022.array.d.ts	264	277	ReadonlyArray	any
+es2022.array.d.ts	2640	2652	TArrayBuffer	any
+es2022.array.d.ts	2661	2676	ArrayBufferLike	any
+es2022.array.d.ts	278	279	T	any
+es2022.array.d.ts	2876	2878	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	2879	2884	index	number
+es2022.array.d.ts	2928	2940	Float64Array	Float64ArrayConstructor
+es2022.array.d.ts	2941	2953	TArrayBuffer	any
+es2022.array.d.ts	2962	2977	ArrayBufferLike	any
+es2022.array.d.ts	3177	3179	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	3180	3185	index	number
+es2022.array.d.ts	3229	3242	BigInt64Array	BigInt64ArrayConstructor
+es2022.array.d.ts	3243	3255	TArrayBuffer	any
+es2022.array.d.ts	3264	3279	ArrayBufferLike	any
+es2022.array.d.ts	3479	3481	at	{ (index: number): bigint | undefined; (index: number): bigint | undefined; }
+es2022.array.d.ts	3482	3487	index	number
+es2022.array.d.ts	3531	3545	BigUint64Array	BigUint64ArrayConstructor
+es2022.array.d.ts	3546	3558	TArrayBuffer	any
+es2022.array.d.ts	3567	3582	ArrayBufferLike	any
+es2022.array.d.ts	3782	3784	at	{ (index: number): bigint | undefined; (index: number): bigint | undefined; }
+es2022.array.d.ts	3785	3790	index	number
+es2022.array.d.ts	479	481	at	{ (index: number): T | undefined; (index: number): T | undefined; }
+es2022.array.d.ts	482	487	index	number
+es2022.array.d.ts	498	499	T	any
+es2022.array.d.ts	526	535	Int8Array	Int8ArrayConstructor
+es2022.array.d.ts	536	548	TArrayBuffer	any
+es2022.array.d.ts	557	572	ArrayBufferLike	any
+es2022.array.d.ts	772	774	at	{ (index: number): number | undefined; (index: number): number | undefined; }
+es2022.array.d.ts	775	780	index	number
+es2022.array.d.ts	824	834	Uint8Array	Uint8ArrayConstructor
+es2022.array.d.ts	835	847	TArrayBuffer	any
+es2022.array.d.ts	856	871	ArrayBufferLike	any
+es2022.error.d.ts	1003	1015	ErrorOptions	any
+es2022.error.d.ts	1018	1027	TypeError	TypeErrorConstructor
+es2022.error.d.ts	1034	1041	message	string | undefined
+es2022.error.d.ts	1052	1059	options	ErrorOptions | undefined
+es2022.error.d.ts	1062	1074	ErrorOptions	any
+es2022.error.d.ts	1077	1086	TypeError	TypeErrorConstructor
+es2022.error.d.ts	1101	1120	URIErrorConstructor	any
+es2022.error.d.ts	111	116	cause	unknown
+es2022.error.d.ts	1132	1139	message	string | undefined
+es2022.error.d.ts	1150	1157	options	ErrorOptions | undefined
+es2022.error.d.ts	1160	1172	ErrorOptions	any
+es2022.error.d.ts	1175	1183	URIError	URIErrorConstructor
+es2022.error.d.ts	1190	1197	message	string | undefined
+es2022.error.d.ts	1208	1215	options	ErrorOptions | undefined
+es2022.error.d.ts	1218	1230	ErrorOptions	any
+es2022.error.d.ts	1233	1241	URIError	URIErrorConstructor
+es2022.error.d.ts	1256	1281	AggregateErrorConstructor	any
+es2022.error.d.ts	1302	1308	errors	Iterable<any>
+es2022.error.d.ts	1310	1318	Iterable	any
+es2022.error.d.ts	1333	1340	message	string | undefined
+es2022.error.d.ts	1359	1366	options	ErrorOptions | undefined
+es2022.error.d.ts	1369	1381	ErrorOptions	any
+es2022.error.d.ts	1390	1404	AggregateError	AggregateErrorConstructor
+es2022.error.d.ts	141	157	ErrorConstructor	any
+es2022.error.d.ts	1420	1426	errors	Iterable<any>
+es2022.error.d.ts	1428	1436	Iterable	any
+es2022.error.d.ts	1451	1458	message	string | undefined
+es2022.error.d.ts	1477	1484	options	ErrorOptions | undefined
+es2022.error.d.ts	1487	1499	ErrorOptions	any
+es2022.error.d.ts	1508	1522	AggregateError	AggregateErrorConstructor
+es2022.error.d.ts	169	176	message	string | undefined
+es2022.error.d.ts	187	194	options	ErrorOptions | undefined
+es2022.error.d.ts	197	209	ErrorOptions	any
+es2022.error.d.ts	212	217	Error	ErrorConstructor
+es2022.error.d.ts	224	231	message	string | undefined
+es2022.error.d.ts	242	249	options	ErrorOptions | undefined
+es2022.error.d.ts	252	264	ErrorOptions	any
+es2022.error.d.ts	267	272	Error	ErrorConstructor
+es2022.error.d.ts	287	307	EvalErrorConstructor	any
+es2022.error.d.ts	319	326	message	string | undefined
+es2022.error.d.ts	337	344	options	ErrorOptions | undefined
+es2022.error.d.ts	347	359	ErrorOptions	any
+es2022.error.d.ts	362	371	EvalError	EvalErrorConstructor
+es2022.error.d.ts	378	385	message	string | undefined
+es2022.error.d.ts	396	403	options	ErrorOptions | undefined
+es2022.error.d.ts	406	418	ErrorOptions	any
+es2022.error.d.ts	421	430	EvalError	EvalErrorConstructor
+es2022.error.d.ts	445	466	RangeErrorConstructor	any
+es2022.error.d.ts	478	485	message	string | undefined
+es2022.error.d.ts	496	503	options	ErrorOptions | undefined
+es2022.error.d.ts	50	62	ErrorOptions	any
+es2022.error.d.ts	506	518	ErrorOptions	any
+es2022.error.d.ts	521	531	RangeError	RangeErrorConstructor
+es2022.error.d.ts	538	545	message	string | undefined
+es2022.error.d.ts	556	563	options	ErrorOptions | undefined
+es2022.error.d.ts	566	578	ErrorOptions	any
+es2022.error.d.ts	581	591	RangeError	RangeErrorConstructor
+es2022.error.d.ts	606	631	ReferenceErrorConstructor	any
+es2022.error.d.ts	643	650	message	string | undefined
+es2022.error.d.ts	661	668	options	ErrorOptions | undefined
+es2022.error.d.ts	671	683	ErrorOptions	any
+es2022.error.d.ts	686	700	ReferenceError	ReferenceErrorConstructor
+es2022.error.d.ts	69	74	cause	unknown
+es2022.error.d.ts	707	714	message	string | undefined
+es2022.error.d.ts	725	732	options	ErrorOptions | undefined
+es2022.error.d.ts	735	747	ErrorOptions	any
+es2022.error.d.ts	750	764	ReferenceError	ReferenceErrorConstructor
+es2022.error.d.ts	779	801	SyntaxErrorConstructor	any
+es2022.error.d.ts	813	820	message	string | undefined
+es2022.error.d.ts	831	838	options	ErrorOptions | undefined
+es2022.error.d.ts	841	853	ErrorOptions	any
+es2022.error.d.ts	856	867	SyntaxError	SyntaxErrorConstructor
+es2022.error.d.ts	874	881	message	string | undefined
+es2022.error.d.ts	892	899	options	ErrorOptions | undefined
+es2022.error.d.ts	902	914	ErrorOptions	any
+es2022.error.d.ts	917	928	SyntaxError	SyntaxErrorConstructor
+es2022.error.d.ts	943	963	TypeErrorConstructor	any
+es2022.error.d.ts	975	982	message	string | undefined
+es2022.error.d.ts	99	104	Error	ErrorConstructor
+es2022.error.d.ts	993	1000	options	ErrorOptions | undefined
+es2022.intl.d.ts	1525	1532	segment	(input: string) => Segments
+es2022.intl.d.ts	1533	1538	input	string
+es2022.intl.d.ts	1549	1557	Segments	any
+es2022.intl.d.ts	18	22	Intl	typeof Intl
+es2022.intl.d.ts	1917	1932	resolvedOptions	() => ResolvedSegmenterOptions
+es2022.intl.d.ts	1936	1960	ResolvedSegmenterOptions	any
+es2022.intl.d.ts	1983	2007	ResolvedSegmenterOptions	any
+es2022.intl.d.ts	2018	2024	locale	string
+es2022.intl.d.ts	2042	2053	granularity	"grapheme" | "word" | "sentence"
+es2022.intl.d.ts	2110	2125	SegmentIterator	any
+es2022.intl.d.ts	2126	2127	T	any
+es2022.intl.d.ts	2137	2151	IteratorObject	any
+es2022.intl.d.ts	2152	2153	T	any
+es2022.intl.d.ts	2155	2176	BuiltinIteratorReturn	any
+es2022.intl.d.ts	2198	2204	Symbol	SymbolConstructor
+es2022.intl.d.ts	2205	2213	iterator	unique symbol
+es2022.intl.d.ts	2218	2233	SegmentIterator	any
+es2022.intl.d.ts	2234	2235	T	any
+es2022.intl.d.ts	2572	2580	Segments	any
+es2022.intl.d.ts	289	305	SegmenterOptions	any
+es2022.intl.d.ts	3054	3064	containing	{ (codeUnitIndex?: number): SegmentData | undefined; (codeUnitIndex?: number): SegmentData | undefined; }
+es2022.intl.d.ts	3065	3078	codeUnitIndex	number | undefined
+es2022.intl.d.ts	3090	3101	SegmentData	any
+es2022.intl.d.ts	3190	3196	Symbol	SymbolConstructor
+es2022.intl.d.ts	3197	3205	iterator	unique symbol
+es2022.intl.d.ts	3210	3225	SegmentIterator	any
+es2022.intl.d.ts	3226	3237	SegmentData	any
+es2022.intl.d.ts	3261	3272	SegmentData	any
+es2022.intl.d.ts	3372	3379	segment	string
+es2022.intl.d.ts	3490	3495	index	number
+es2022.intl.d.ts	3574	3579	input	string
+es2022.intl.d.ts	3863	3873	isWordLike	boolean | undefined
+es2022.intl.d.ts	4192	4201	Segmenter	{ new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2022.intl.d.ts	4213	4222	prototype	Segmenter
+es2022.intl.d.ts	4224	4233	Segmenter	{ new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2022.intl.d.ts	5188	5195	locales	LocalesArgument
+es2022.intl.d.ts	5198	5213	LocalesArgument	any
+es2022.intl.d.ts	521	534	localeMatcher	"best fit" | "lookup" | undefined
+es2022.intl.d.ts	5215	5222	options	SegmenterOptions | undefined
+es2022.intl.d.ts	5225	5241	SegmenterOptions	any
+es2022.intl.d.ts	5244	5253	Segmenter	{ new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2022.intl.d.ts	6169	6187	supportedLocalesOf	(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">) => UnicodeBCP47LocaleIdentifier[]
+es2022.intl.d.ts	6188	6195	locales	LocalesArgument
+es2022.intl.d.ts	6197	6212	LocalesArgument	any
+es2022.intl.d.ts	6214	6221	options	Pick<SegmenterOptions, "localeMatcher"> | undefined
+es2022.intl.d.ts	6224	6228	Pick	any
+es2022.intl.d.ts	6229	6245	SegmenterOptions	any
+es2022.intl.d.ts	625	636	granularity	"grapheme" | "word" | "sentence" | undefined
+es2022.intl.d.ts	6266	6294	UnicodeBCP47LocaleIdentifier	any
+es2022.intl.d.ts	6722	6739	supportedValuesOf	{ (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }
+es2022.intl.d.ts	6740	6743	key	"calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"
+es2022.intl.d.ts	996	1005	Segmenter	{ new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }
+es2022.object.d.ts	10	27	ObjectConstructor	any
+es2022.object.d.ts	186	192	hasOwn	{ (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }
+es2022.object.d.ts	193	194	o	object
+es2022.object.d.ts	204	205	v	PropertyKey
+es2022.object.d.ts	207	218	PropertyKey	any
+es2022.regexp.d.ts	10	26	RegExpMatchArray	any
+es2022.regexp.d.ts	108	126	RegExpIndicesArray	any
+es2022.regexp.d.ts	141	159	RegExpIndicesArray	any
+es2022.regexp.d.ts	168	173	Array	ArrayConstructor
+es2022.regexp.d.ts	210	216	groups	{ [key: string]: [number, number]; } | undefined
+es2022.regexp.d.ts	230	233	key	string
+es2022.regexp.d.ts	282	288	RegExp	RegExpConstructor
+es2022.regexp.d.ts	33	40	indices	RegExpIndicesArray | undefined
+es2022.regexp.d.ts	43	61	RegExpIndicesArray	any
+es2022.regexp.d.ts	467	477	hasIndices	boolean
+es2022.regexp.d.ts	76	91	RegExpExecArray	any
+es2022.regexp.d.ts	98	105	indices	RegExpIndicesArray | undefined
+es2022.string.d.ts	10	16	String	StringConstructor
+es2022.string.d.ts	261	263	at	{ (index: number): string | undefined; (index: number): string | undefined; }
+es2022.string.d.ts	264	269	index	number
 es5.d.ts	100115	100121	filter	{ (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Uint8Array<ArrayBuffer>; (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Uint8Array<ArrayBuffer>; }
 es5.d.ts	100122	100131	predicate	(value: number, index: number, array: this) => any
 es5.d.ts	100134	100139	value	number
