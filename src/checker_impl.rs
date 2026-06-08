@@ -21,7 +21,10 @@ use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, UnaryOperator},
 };
-use std::collections::HashSet;
+use std::{
+    cell::{Cell, RefCell},
+    collections::HashSet,
+};
 
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
@@ -49,6 +52,15 @@ use crate::{
 
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
+const TYPE_INSTANTIATION_MAX_DEPTH: usize = 64;
+const TS_TYPE_RESOLUTION_MAX_DEPTH: usize = 128;
+
+thread_local! {
+    static TS_TYPE_RESOLUTION_DEPTH: Cell<usize> = const { Cell::new(0) };
+    static INTERFACE_PROPERTY_RESOLUTION_STACK: RefCell<Vec<InterfacePropertyResolutionKey>> = const { RefCell::new(Vec::new()) };
+}
+
+type InterfacePropertyResolutionKey = (usize, String, String);
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum FunctionKind<'a> {
     Function(&'a Function<'a>),
@@ -205,11 +217,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     #[inline]
     pub(crate) fn instantiate_type(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>) -> Ty<'a> {
+        self.instantiate_type_at_depth(ty, mapper, 0)
+    }
+
+    fn instantiate_type_at_depth(
+        &self,
+        ty: Ty<'a>,
+        mapper: &TypeMapper<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_INSTANTIATION_MAX_DEPTH {
+            return ty;
+        }
         if mapper.is_empty() || !self.could_contain_type_variables(ty) {
             return ty;
         }
 
-        self.instantiate_type_worker(ty, mapper)
+        self.instantiate_type_worker(ty, mapper, depth + 1)
     }
 
     #[inline]
@@ -218,8 +242,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         signature: Signature<'a>,
         mapper: &TypeMapper<'a>,
     ) -> Signature<'a> {
+        self.instantiate_signature_at_depth(signature, mapper, 0)
+    }
+
+    fn instantiate_signature_at_depth(
+        &self,
+        signature: Signature<'a>,
+        mapper: &TypeMapper<'a>,
+        depth: usize,
+    ) -> Signature<'a> {
         let Ty::Function(function) =
-            self.instantiate_type(Ty::Function(signature.function), mapper)
+            self.instantiate_type_at_depth(Ty::Function(signature.function), mapper, depth)
         else {
             unreachable!("signature instantiation preserves function type")
         };
@@ -232,17 +265,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         predicate: TyTypePredicate<'a>,
         mapper: &TypeMapper<'a>,
     ) -> TyTypePredicate<'a> {
+        self.instantiate_type_predicate_at_depth(predicate, mapper, 0)
+    }
+
+    fn instantiate_type_predicate_at_depth(
+        &self,
+        predicate: TyTypePredicate<'a>,
+        mapper: &TypeMapper<'a>,
+        depth: usize,
+    ) -> TyTypePredicate<'a> {
         TyTypePredicate {
             kind: predicate.kind,
             parameter_name: predicate.parameter_name,
             parameter_index: predicate.parameter_index,
             target_type: predicate
                 .target_type
-                .map(|ty| self.instantiate_type(ty, mapper)),
+                .map(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1)),
         }
     }
 
-    fn instantiate_type_worker(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>) -> Ty<'a> {
+    fn instantiate_type_worker(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>, depth: usize) -> Ty<'a> {
         match ty {
             Ty::Object(object) => Ty::object(
                 self.arena(),
@@ -252,23 +294,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     optional: property.optional,
                     method: property.method,
                     readonly: property.readonly,
-                    ty: self.instantiate_type(property.ty, mapper),
+                    ty: self.instantiate_type_at_depth(property.ty, mapper, depth + 1),
                 }),
             )
             .with_index_infos(
                 self.arena(),
                 object.index_infos.iter().map(|info| IndexInfo {
-                    key_type: self.instantiate_type(info.key_type, mapper),
-                    value_type: self.instantiate_type(info.value_type, mapper),
+                    key_type: self.instantiate_type_at_depth(info.key_type, mapper, depth + 1),
+                    value_type: self.instantiate_type_at_depth(info.value_type, mapper, depth + 1),
                     readonly: info.readonly,
                 }),
             )
             .with_signatures(
                 self.arena(),
-                object
-                    .signatures
-                    .iter()
-                    .map(|signature| self.instantiate_signature(*signature, mapper)),
+                object.signatures.iter().map(|signature| {
+                    self.instantiate_signature_at_depth(*signature, mapper, depth + 1)
+                }),
             ),
             Ty::ModuleNamespace(namespace) => Ty::module_namespace(
                 self.arena(),
@@ -279,7 +320,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     optional: property.optional,
                     method: property.method,
                     readonly: property.readonly,
-                    ty: self.instantiate_type(property.ty, mapper),
+                    ty: self.instantiate_type_at_depth(property.ty, mapper, depth + 1),
                 }),
             ),
             Ty::Function(function) => {
@@ -302,15 +343,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             type_parameter.name,
                             type_parameter
                                 .constraint_type
-                                .map(|ty| self.instantiate_type(ty, &mapper)),
+                                .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
                             type_parameter
                                 .default_type
-                                .map(|ty| self.instantiate_type(ty, &mapper)),
+                                .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
                             type_parameter.display_default && !has_non_identity_outer_substitution,
                         )
                     }),
                     function.parameters.iter().map(|parameter| {
-                        let ty = self.instantiate_type(parameter.ty, &mapper);
+                        let ty = self.instantiate_type_at_depth(parameter.ty, &mapper, depth + 1);
                         if parameter.rest {
                             Ty::rest_parameter(parameter.name, ty)
                         } else if parameter.optional {
@@ -319,10 +360,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             Ty::parameter(parameter.name, ty)
                         }
                     }),
-                    self.instantiate_type(function.return_type, &mapper),
-                    function
-                        .type_predicate
-                        .map(|predicate| self.instantiate_type_predicate(*predicate, &mapper)),
+                    self.instantiate_type_at_depth(function.return_type, &mapper, depth + 1),
+                    function.type_predicate.map(|predicate| {
+                        self.instantiate_type_predicate_at_depth(*predicate, &mapper, depth + 1)
+                    }),
                 )
             }
             Ty::TypeReference(reference) => {
@@ -336,21 +377,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         reference
                             .type_arguments
                             .iter()
-                            .map(|ty| self.instantiate_type(*ty, mapper)),
+                            .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
                     )
                 }
             }
             Ty::TypeQuery(query) => Ty::type_query(
                 self.arena(),
                 query.name,
-                self.instantiate_type(query.resolved, mapper),
+                self.instantiate_type_at_depth(query.resolved, mapper, depth + 1),
                 query
                     .type_arguments
                     .iter()
-                    .map(|ty| self.instantiate_type(*ty, mapper)),
+                    .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
             ),
             Ty::Array(array) => Ty::Array(self.arena().alloc(TyArray {
-                element_type: self.instantiate_type(array.element_type, mapper),
+                element_type: self.instantiate_type_at_depth(array.element_type, mapper, depth + 1),
                 readonly: array.readonly,
             })),
             Ty::Tuple(tuple) => {
@@ -358,15 +399,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     elements:
                         self.arena().vec_from_iter(tuple.elements.iter().map(
                             |element| match element {
-                                TupleElement::Regular(ty) => {
-                                    TupleElement::Regular(self.instantiate_type(*ty, mapper))
-                                }
-                                TupleElement::Rest(ty) => {
-                                    TupleElement::Rest(self.instantiate_type(*ty, mapper))
-                                }
-                                TupleElement::Optional(ty) => {
-                                    TupleElement::Optional(self.instantiate_type(*ty, mapper))
-                                }
+                                TupleElement::Regular(ty) => TupleElement::Regular(
+                                    self.instantiate_type_at_depth(*ty, mapper, depth + 1),
+                                ),
+                                TupleElement::Rest(ty) => TupleElement::Rest(
+                                    self.instantiate_type_at_depth(*ty, mapper, depth + 1),
+                                ),
+                                TupleElement::Optional(ty) => TupleElement::Optional(
+                                    self.instantiate_type_at_depth(*ty, mapper, depth + 1),
+                                ),
                             },
                         )),
                     readonly: tuple.readonly,
@@ -377,22 +418,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 union
                     .types
                     .iter()
-                    .map(|ty| self.instantiate_type(*ty, mapper)),
+                    .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
             ),
             Ty::Intersection(intersection) => Ty::intersection(
                 self.arena(),
                 intersection
                     .types
                     .iter()
-                    .map(|ty| self.instantiate_type(*ty, mapper)),
+                    .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
             ),
-            Ty::Keyof(keyof) => {
-                Ty::keyof(self.arena(), self.instantiate_type(keyof.target, mapper))
-            }
+            Ty::Keyof(keyof) => Ty::keyof(
+                self.arena(),
+                self.instantiate_type_at_depth(keyof.target, mapper, depth + 1),
+            ),
             Ty::IndexedAccess(indexed_access) => Ty::indexed_access(
                 self.arena(),
-                self.instantiate_type(indexed_access.object_type, mapper),
-                self.instantiate_type(indexed_access.index_type, mapper),
+                self.instantiate_type_at_depth(indexed_access.object_type, mapper, depth + 1),
+                self.instantiate_type_at_depth(indexed_access.index_type, mapper, depth + 1),
             ),
             Ty::Conditional(conditional) => {
                 let infer_type_parameters =
@@ -419,12 +461,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             );
                             self.conditional_type(
                                 *ty,
-                                self.instantiate_type(
+                                self.instantiate_type_at_depth(
                                     conditional.extends_type,
                                     &infer_member_mapper,
+                                    depth + 1,
                                 ),
-                                self.instantiate_type(conditional.true_type, &infer_member_mapper),
-                                self.instantiate_type(conditional.false_type, &member_mapper),
+                                self.instantiate_type_at_depth(
+                                    conditional.true_type,
+                                    &infer_member_mapper,
+                                    depth + 1,
+                                ),
+                                self.instantiate_type_at_depth(
+                                    conditional.false_type,
+                                    &member_mapper,
+                                    depth + 1,
+                                ),
                                 false,
                             )
                         }),
@@ -432,10 +483,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
 
                 self.conditional_type(
-                    self.instantiate_type(conditional.check_type, mapper),
-                    self.instantiate_type(conditional.extends_type, &infer_mapper),
-                    self.instantiate_type(conditional.true_type, &infer_mapper),
-                    self.instantiate_type(conditional.false_type, mapper),
+                    self.instantiate_type_at_depth(conditional.check_type, mapper, depth + 1),
+                    self.instantiate_type_at_depth(
+                        conditional.extends_type,
+                        &infer_mapper,
+                        depth + 1,
+                    ),
+                    self.instantiate_type_at_depth(conditional.true_type, &infer_mapper, depth + 1),
+                    self.instantiate_type_at_depth(conditional.false_type, mapper, depth + 1),
                     conditional.is_distributive,
                 )
             }
@@ -451,11 +506,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         infer
                             .type_parameter
                             .constraint_type
-                            .map(|ty| self.instantiate_type(ty, &mapper)),
+                            .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
                         infer
                             .type_parameter
                             .default_type
-                            .map(|ty| self.instantiate_type(ty, &mapper)),
+                            .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
                         infer.type_parameter.display_default,
                     ),
                 )
@@ -466,11 +521,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Ty::mapped(
                     self.arena(),
                     mapped.key,
-                    self.instantiate_type(mapped.constraint, &mapper),
+                    self.instantiate_type_at_depth(mapped.constraint, &mapper, depth + 1),
                     mapped
                         .name_type
-                        .map(|ty| self.instantiate_type(ty, &mapper)),
-                    self.instantiate_type(mapped.template, &mapper),
+                        .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
+                    self.instantiate_type_at_depth(mapped.template, &mapper, depth + 1),
                     mapped.optional,
                     mapped.readonly,
                 )
@@ -585,7 +640,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_call_expression(program_id, call_expression, node_id)
             }
             Expression::ArrayExpression(array_expression) => {
-                self.get_type_of_array_expression(program_id, array_expression, node_id)
+                self.get_type_of_array_expression(program_id, array_expression, node_id, flags)
             }
             Expression::ComputedMemberExpression(member) => {
                 self.get_type_of_computed_member_expression(program_id, member, node_id, flags)
@@ -598,7 +653,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     program_id,
                     &parenthesized.expression,
                     node_id,
-                    GetTypeFlags::NONE,
+                    flags & GetTypeFlags::CONTEXT_FREE,
                 ),
             Expression::TSTypeAssertion(assertion) => {
                 self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
@@ -970,6 +1025,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
+        TS_TYPE_RESOLUTION_DEPTH.with(|depth| {
+            let current = depth.get();
+            if current >= TS_TYPE_RESOLUTION_MAX_DEPTH {
+                return Ty::any();
+            }
+
+            depth.set(current + 1);
+            let result = self.get_type_from_ts_type_inner(program_id, ty);
+            depth.set(current);
+            result
+        })
+    }
+
+    fn get_type_from_ts_type_inner(
+        &self,
+        program_id: program::ProgramId,
+        ty: &'a TSType<'a>,
+    ) -> Ty<'a> {
         match ty {
             TSType::TSNumberKeyword(_) => Ty::number(),
             TSType::TSStringKeyword(_) => Ty::string(),
@@ -3235,19 +3308,44 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference: &TyTypeReference<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        if let Some(ty) = self.get_property_type_of_merged_interface_type(reference, property_name)
-        {
-            return Some(ty);
+        let key = (
+            program_id.index(),
+            reference.name.to_string(),
+            property_name.to_string(),
+        );
+        if INTERFACE_PROPERTY_RESOLUTION_STACK.with(|stack| {
+            let mut stack = stack.borrow_mut();
+            if stack.contains(&key) {
+                true
+            } else {
+                stack.push(key.clone());
+                false
+            }
+        }) {
+            return Some(Ty::any());
         }
 
-        let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
-        self.get_property_type_of_interface_declaration(
-            symbol.program_id,
-            declaration,
-            reference,
-            property_name,
-        )
+        let result = self
+            .get_property_type_of_merged_interface_type(reference, property_name)
+            .or_else(|| {
+                let (symbol, declaration) =
+                    self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+                self.get_property_type_of_interface_declaration(
+                    symbol.program_id,
+                    declaration,
+                    reference,
+                    property_name,
+                )
+            });
+
+        INTERFACE_PROPERTY_RESOLUTION_STACK.with(|stack| {
+            let mut stack = stack.borrow_mut();
+            if let Some(position) = stack.iter().rposition(|active| active == &key) {
+                stack.remove(position);
+            }
+        });
+
+        result
     }
 
     fn get_property_type_of_merged_interface_type(
@@ -4565,6 +4663,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         array_expression: &'a ArrayExpression<'a>,
         node_id: Option<NodeId>,
+        flags: GetTypeFlags,
     ) -> Ty<'a> {
         match array_expression.elements.len() {
             0 => Ty::array(
@@ -4579,17 +4678,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // For 1 element: infer the type of the first element
             1 => {
                 let first_element = &array_expression.elements[0];
-                let element_type =
-                    self.get_type_of_array_expression_element(program_id, first_element, node_id);
+                let element_flags = flags & GetTypeFlags::CONTEXT_FREE;
+                let element_type = self.get_type_of_array_expression_element(
+                    program_id,
+                    first_element,
+                    node_id,
+                    element_flags,
+                );
                 Ty::array(self.arena, element_type)
             }
             // For 2+ elements: try to create a union type if there are mixed types
             _ => {
                 // TODO(perf): avoid allocating here somehow?
                 let mut element_types = Vec::default();
+                let element_flags = flags & GetTypeFlags::CONTEXT_FREE;
                 for element in &array_expression.elements {
-                    let element_type =
-                        self.get_type_of_array_expression_element(program_id, element, node_id);
+                    let element_type = self.get_type_of_array_expression_element(
+                        program_id,
+                        element,
+                        node_id,
+                        element_flags,
+                    );
                     // TODO(perf): avoid re-iterating elements? use a hash set?
                     if !element_types.contains(&element_type) {
                         element_types.push(element_type);
@@ -4610,6 +4719,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         element: &'a ArrayExpressionElement<'a>,
         node_id: Option<NodeId>,
+        flags: GetTypeFlags,
     ) -> Ty<'a> {
         match element {
             ArrayExpressionElement::SpreadElement(spread) => {
@@ -4617,7 +4727,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     program_id,
                     &spread.argument,
                     node_id,
-                    GetTypeFlags::NONE,
+                    flags,
                 );
                 argument_type.array_element_type().unwrap_or_else(Ty::any)
             }
@@ -4626,7 +4736,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 program_id,
                 element.to_expression(),
                 node_id,
-                GetTypeFlags::NONE,
+                flags,
             ),
         }
     }
@@ -5817,6 +5927,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
+        if let Some(ty) = self
+            .value_type_cache
+            .borrow()
+            .get(sym.program_id.index())
+            .and_then(|cache| cache.get(sym.symbol_id))
+            .copied()
+            .flatten()
+        {
+            return ty;
+        }
+
         {
             let mut resolving_symbols = self.resolving_symbols.borrow_mut();
             if resolving_symbols.contains(&sym) {
@@ -5845,6 +5966,14 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         };
 
         self.resolving_symbols.borrow_mut().pop();
+        if let Some(slot) = self
+            .value_type_cache
+            .borrow_mut()
+            .get_mut(sym.program_id.index())
+            .and_then(|cache| cache.get_mut(sym.symbol_id))
+        {
+            *slot = Some(ty);
+        }
         ty
     }
 

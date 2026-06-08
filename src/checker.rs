@@ -25,6 +25,7 @@ pub struct CheckerReturn<'a, 'store> {
     pub global_symbols: GlobalSymbolTable,
     // TODO(perf): these should use the Arena Vec/HashMap?
     pub declared_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
+    pub value_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
@@ -111,6 +112,15 @@ impl CheckerBuilder {
             arena: CheckerArena::new(store.allocator()),
             global_symbols: GlobalSymbolTable::new(store),
             declared_type_cache: RefCell::new(
+                store
+                    .entries()
+                    .iter()
+                    .map(|entry| {
+                        IndexVec::from_vec(vec![None; entry.semantic().scoping().symbols_len()])
+                    })
+                    .collect(),
+            ),
+            value_type_cache: RefCell::new(
                 store
                     .entries()
                     .iter()

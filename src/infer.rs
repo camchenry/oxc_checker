@@ -4,7 +4,7 @@ use oxc_ast::ast::{
 };
 use oxc_ast_visit::Visit;
 use oxc_semantic::{NodeId, ScopeFlags};
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 
 use crate::{
     checker::{Checker, CheckerReturn},
@@ -20,6 +20,11 @@ use crate::{
 };
 
 const CONDITIONAL_INFER_MATCH_MAX_DEPTH: usize = 64;
+const CONDITIONAL_TYPE_MAX_DEPTH: usize = 64;
+
+thread_local! {
+    static CONDITIONAL_TYPE_DEPTH: Cell<usize> = const { Cell::new(0) };
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum ConditionalInferMatchResult {
@@ -753,6 +758,39 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     pub(crate) fn conditional_type(
+        &self,
+        check_type: Ty<'a>,
+        extends_type: Ty<'a>,
+        true_type: Ty<'a>,
+        false_type: Ty<'a>,
+        is_distributive: bool,
+    ) -> Ty<'a> {
+        CONDITIONAL_TYPE_DEPTH.with(|depth| {
+            let current = depth.get();
+            if current >= CONDITIONAL_TYPE_MAX_DEPTH {
+                return Ty::Conditional(self.arena().alloc(TyConditional {
+                    check_type,
+                    extends_type,
+                    true_type,
+                    false_type,
+                    is_distributive,
+                }));
+            }
+
+            depth.set(current + 1);
+            let result = self.conditional_type_inner(
+                check_type,
+                extends_type,
+                true_type,
+                false_type,
+                is_distributive,
+            );
+            depth.set(current);
+            result
+        })
+    }
+
+    fn conditional_type_inner(
         &self,
         check_type: Ty<'a>,
         extends_type: Ty<'a>,

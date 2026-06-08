@@ -5,6 +5,11 @@ use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     fmt, io,
     path::{Component, Path, PathBuf},
+    sync::{
+        Arc, Mutex,
+        atomic::{AtomicUsize, Ordering},
+        mpsc,
+    },
 };
 
 use oxc_allocator::Allocator;
@@ -29,6 +34,8 @@ struct ConformanceSuite {
     write_type_outputs: bool,
     type_outputs_root: Option<&'static str>,
 }
+
+const CONFORMANCE_THREAD_STACK_SIZE: usize = 256 * 1024 * 1024;
 
 const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     name: "TypeScript compiler case",
@@ -651,7 +658,7 @@ fn run_type_record_conformance_on_thread(
 ) -> ConformanceResult {
     std::thread::Builder::new()
         .name(test_name.to_string())
-        .stack_size(256 * 1024 * 1024)
+        .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
         .spawn(move || run_type_record_conformance(suite))
         .map_err(|err| {
             ConformanceError::new(format!("failed to spawn conformance test thread: {err}"))
@@ -667,7 +674,7 @@ fn run_single_file_conformance_on_thread(
 ) -> ConformanceResult {
     std::thread::Builder::new()
         .name(test_name.to_string())
-        .stack_size(256 * 1024 * 1024)
+        .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
         .spawn(move || run_single_file_conformance(&case_path, refresh_tsc))
         .map_err(|err| {
             ConformanceError::new(format!("failed to spawn conformance test thread: {err}"))
@@ -976,24 +983,59 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
     let mut records = Vec::new();
     let paths = discover_compiler_cases(suite, cases_root);
     let total_paths = paths.len();
-    for (index, path) in paths.into_iter().enumerate() {
-        use std::io::Write as _;
+    let worker_count = conformance_worker_count(total_paths);
+    let paths = Arc::new(Mutex::new(paths));
+    let completed_paths = Arc::new(AtomicUsize::new(0));
+    let (records_sender, records_receiver) = mpsc::channel();
 
-        eprint!("\rcollecting {}/{}", index + 1, total_paths);
-        let _ = io::stderr().flush();
-        let source_text = match read_to_string_simd_utf8(&path) {
-            Ok(source_text) => source_text,
-            Err(_) => continue,
-        };
-        records.extend(collect_oxc_records_from_source(
-            cases_root,
-            &path,
-            &source_text,
-        ));
+    std::thread::scope(|scope| {
+        for worker_index in 0..worker_count {
+            let paths = Arc::clone(&paths);
+            let completed_paths = Arc::clone(&completed_paths);
+            let records_sender = records_sender.clone();
+            std::thread::Builder::new()
+                .name(format!("conformance-worker-{worker_index}"))
+                .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
+                .spawn_scoped(scope, move || {
+                    loop {
+                        let Some(path) = paths.lock().unwrap().pop() else {
+                            break;
+                        };
+
+                        let source_text = match read_to_string_simd_utf8(&path) {
+                            Ok(source_text) => source_text,
+                            Err(_) => {
+                                report_collection_progress(
+                                    completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
+                                    total_paths,
+                                );
+                                continue;
+                            }
+                        };
+                        let file_records =
+                            collect_oxc_records_from_source(cases_root, &path, &source_text);
+                        report_collection_progress(
+                            completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
+                            total_paths,
+                        );
+                        if records_sender.send(file_records).is_err() {
+                            break;
+                        }
+                    }
+                })
+                .unwrap_or_else(|err| panic!("failed to spawn conformance worker thread: {err}"));
+        }
+
+        drop(records_sender);
+        for file_records in records_receiver {
+            records.extend(file_records);
+        }
+    });
+
+    if total_paths == 0 {
+        return records;
     }
-    if total_paths > 0 {
-        eprintln!();
-    }
+    eprintln!();
     records.sort_by(|left, right| {
         left.path
             .cmp(&right.path)
@@ -1003,6 +1045,27 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
             .then_with(|| left.ty_repr.cmp(&right.ty_repr))
     });
     records
+}
+
+fn conformance_worker_count(total_paths: usize) -> usize {
+    if total_paths == 0 {
+        return 0;
+    }
+
+    std::env::var("OXC_CONFORMANCE_WORKERS")
+        .ok()
+        .and_then(|value| value.parse::<usize>().ok())
+        .filter(|&count| count > 0)
+        .unwrap_or_else(|| std::thread::available_parallelism().map_or(1, usize::from))
+        .min(total_paths)
+}
+
+fn report_collection_progress(current: usize, total: usize) {
+    use std::io::Write as _;
+
+    let mut stderr = io::stderr().lock();
+    let _ = write!(stderr, "\rcollecting {current}/{total}");
+    let _ = stderr.flush();
 }
 
 fn collect_oxc_records_for_case(
@@ -1483,13 +1546,16 @@ fn actual_identifier_record<'a>(
         return None;
     }
 
+    let ty_variant = ty.enum_variant_name();
+    let ty_repr = checker.type_to_string(ty, node_ref);
+
     Some(TypeRecord {
         path: path.to_string(),
         start: span.start,
         end: span.end,
         text: sanitize(text),
-        ty_variant: Some(ty.enum_variant_name()),
-        ty_repr: sanitize(&checker.type_to_string(ty, node_ref)),
+        ty_variant: Some(ty_variant),
+        ty_repr: sanitize(&ty_repr),
     })
 }
 

@@ -7,6 +7,7 @@ use oxc_ast::ast::{
 use std::cell::Cell;
 
 const TYPE_STRING_MAX_DEPTH: usize = 64;
+const TYPE_VISIT_MAX_DEPTH: usize = 256;
 
 // TODO: Replace with mutable state in checker.
 thread_local! {
@@ -330,102 +331,111 @@ impl MappedModifier {
 
 // TODO: Allow early return so we don't visit unnecessary nodes
 pub(crate) fn visit_type<'a>(ty: Ty<'a>, f: &mut impl FnMut(Ty<'a>)) {
+    visit_type_at_depth(ty, f, 0);
+}
+
+fn visit_type_at_depth<'a>(ty: Ty<'a>, f: &mut impl FnMut(Ty<'a>), depth: usize) {
+    if depth >= TYPE_VISIT_MAX_DEPTH {
+        return;
+    }
+
     f(ty);
+    let next_depth = depth + 1;
     match ty {
         Ty::Object(object) => {
             for property in &object.properties {
-                visit_type(property.ty, f);
+                visit_type_at_depth(property.ty, f, next_depth);
             }
             for signature in &object.signatures {
-                visit_type(Ty::Function(signature.function), f);
+                visit_type_at_depth(Ty::Function(signature.function), f, next_depth);
             }
             for info in &object.index_infos {
-                visit_type(info.key_type, f);
-                visit_type(info.value_type, f);
+                visit_type_at_depth(info.key_type, f, next_depth);
+                visit_type_at_depth(info.value_type, f, next_depth);
             }
         }
         Ty::ModuleNamespace(namespace) => {
             for property in &namespace.properties {
-                visit_type(property.ty, f);
+                visit_type_at_depth(property.ty, f, next_depth);
             }
         }
         Ty::Function(function) => {
             for type_parameter in &function.type_parameters {
                 if let Some(constraint_type) = type_parameter.constraint_type {
-                    visit_type(constraint_type, f);
+                    visit_type_at_depth(constraint_type, f, next_depth);
                 }
                 if let Some(default_type) = type_parameter.default_type {
-                    visit_type(default_type, f);
+                    visit_type_at_depth(default_type, f, next_depth);
                 }
             }
             for parameter in &function.parameters {
-                visit_type(parameter.ty, f);
+                visit_type_at_depth(parameter.ty, f, next_depth);
             }
-            visit_type(function.return_type, f);
+            visit_type_at_depth(function.return_type, f, next_depth);
             if let Some(target_type) = function
                 .type_predicate
                 .and_then(|predicate| predicate.target_type)
             {
-                visit_type(target_type, f);
+                visit_type_at_depth(target_type, f, next_depth);
             }
         }
         Ty::TypeReference(reference) => {
             for ty in &reference.type_arguments {
-                visit_type(*ty, f);
+                visit_type_at_depth(*ty, f, next_depth);
             }
         }
         Ty::TypeQuery(query) => {
-            visit_type(query.resolved, f);
+            visit_type_at_depth(query.resolved, f, next_depth);
             for ty in &query.type_arguments {
-                visit_type(*ty, f);
+                visit_type_at_depth(*ty, f, next_depth);
             }
         }
         Ty::TemplateLiteral(template_literal) => {
             for ty in &template_literal.expressions {
-                visit_type(*ty, f);
+                visit_type_at_depth(*ty, f, next_depth);
             }
         }
-        Ty::Array(array) => visit_type(array.element_type, f),
+        Ty::Array(array) => visit_type_at_depth(array.element_type, f, next_depth),
         Ty::Tuple(tuple) => {
             for element in &tuple.elements {
-                visit_type(element.ty(), f);
+                visit_type_at_depth(element.ty(), f, next_depth);
             }
         }
         Ty::Union(union) => {
             for ty in &union.types {
-                visit_type(*ty, f);
+                visit_type_at_depth(*ty, f, next_depth);
             }
         }
         Ty::Intersection(intersection) => {
             for ty in &intersection.types {
-                visit_type(*ty, f);
+                visit_type_at_depth(*ty, f, next_depth);
             }
         }
-        Ty::Keyof(keyof) => visit_type(keyof.target, f),
+        Ty::Keyof(keyof) => visit_type_at_depth(keyof.target, f, next_depth),
         Ty::IndexedAccess(indexed_access) => {
-            visit_type(indexed_access.object_type, f);
-            visit_type(indexed_access.index_type, f);
+            visit_type_at_depth(indexed_access.object_type, f, next_depth);
+            visit_type_at_depth(indexed_access.index_type, f, next_depth);
         }
         Ty::Conditional(conditional) => {
-            visit_type(conditional.check_type, f);
-            visit_type(conditional.extends_type, f);
-            visit_type(conditional.true_type, f);
-            visit_type(conditional.false_type, f);
+            visit_type_at_depth(conditional.check_type, f, next_depth);
+            visit_type_at_depth(conditional.extends_type, f, next_depth);
+            visit_type_at_depth(conditional.true_type, f, next_depth);
+            visit_type_at_depth(conditional.false_type, f, next_depth);
         }
         Ty::Infer(infer) => {
             if let Some(constraint_type) = infer.type_parameter.constraint_type {
-                visit_type(constraint_type, f);
+                visit_type_at_depth(constraint_type, f, next_depth);
             }
             if let Some(default_type) = infer.type_parameter.default_type {
-                visit_type(default_type, f);
+                visit_type_at_depth(default_type, f, next_depth);
             }
         }
         Ty::Mapped(mapped) => {
-            visit_type(mapped.constraint, f);
+            visit_type_at_depth(mapped.constraint, f, next_depth);
             if let Some(name_type) = mapped.name_type {
-                visit_type(name_type, f);
+                visit_type_at_depth(name_type, f, next_depth);
             }
-            visit_type(mapped.template, f);
+            visit_type_at_depth(mapped.template, f, next_depth);
         }
         _ => {}
     }
