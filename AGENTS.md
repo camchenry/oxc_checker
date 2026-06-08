@@ -26,13 +26,27 @@ The conformance extractor needs the TypeScript compiler API. Install the checked
 npm --prefix tests/conformance install
 ```
 
-Regenerate the TypeScript compiler API record cache and run the default type record comparison with:
+Run the default type record comparison with the checked-in TypeScript compiler API record cache:
 
 ```sh
 cargo conformance
 ```
 
+Regenerate the checked-in TypeScript compiler API record cache and then run the selected comparison with:
+
+```sh
+cargo conformance-refresh
+```
+
+Use the refresh command when TypeScript extractor behavior, compiler options, fixtures, or the TypeScript compiler version change. The default conformance command intentionally skips Node/TypeScript extraction and only runs the Rust checker against stored records.
+
 The default conformance run currently covers local custom cases and checked-in external library fixtures. It does not run the upstream TypeScript compiler suite, keeping the normal loop fast while real-world project fixtures are still ramping up.
+
+Run every suite, including the upstream TypeScript compiler suite, with:
+
+```sh
+cargo conformance full
+```
 
 Run only the checked-in external library fixture suite with:
 
@@ -54,6 +68,6 @@ Run a single conformance test file for quick iteration:
 cargo conformance <file path>
 ```
 
-The TypeScript extractor iterates over every `*.ts` and `*.tsx` file in the selected suites: `tests/conformance/cases`, `tests/conformance/external`, and, when explicitly selected, `vendor/TypeScript/tests/cases/compiler`. It writes `target/conformance/cases_tsc_types.tsv` for local cases, `target/conformance/external_tsc_types.tsv` for external library fixtures, and `target/conformance/tsc_types.tsv` for upstream cases. The Rust harness collects matching OXC records in process, compares records by source location and identifier text, and prints compact pass/fail summaries for selected suites.
+The TypeScript extractor iterates over every `*.ts` and `*.tsx` file in the selected suites: `tests/conformance/cases`, `tests/conformance/external`, `src/lib`, and, when explicitly selected, `vendor/TypeScript/tests/cases/compiler`. It writes checked-in TSV caches under `tests/conformance/tsc-types`. The Rust harness collects matching OXC records in process, compares records by source location and identifier text, and prints compact pass/fail summaries for selected suites.
 
-Each run writes the snapshot for each selected suite: `tests/conformance/cases_snapshot.txt`, `tests/conformance/external_snapshot.txt`, and, when the upstream suite is selected, `tests/conformance/types_snapshot.txt`. These snapshots record every case file, whether it passed or failed, and any errors or mismatches for that file. Local custom cases and external library fixtures also generate sibling `.ts.types` files. Commit those snapshots and `.types` files to track conformance progress over time. External fixtures should include provenance notes with the source repository, commit SHA, copied paths, and any trimming or stubbing performed.
+Each run writes the snapshot for each selected suite: `tests/conformance/cases_snapshot.txt`, `tests/conformance/external_snapshot.txt`, `tests/conformance/lib_snapshot.txt`, and, when the upstream suite is selected, `tests/conformance/types_snapshot.txt`. These snapshots record every case file, whether it passed or failed, and any errors or mismatches for that file. Local custom cases, external library fixtures, and standard library declarations also generate `.ts.types` files. Commit those snapshots, `.types` files, and `tests/conformance/tsc-types/*.tsv` files to track conformance progress over time. External fixtures should include provenance notes with the source repository, commit SHA, copied paths, and any trimming or stubbing performed.

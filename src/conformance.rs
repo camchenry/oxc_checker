@@ -5,7 +5,6 @@ use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     fmt, io,
     path::{Component, Path, PathBuf},
-    process::Command,
 };
 
 use oxc_allocator::Allocator;
@@ -35,7 +34,7 @@ const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     name: "TypeScript compiler case",
     cases_root: "vendor/TypeScript/tests/cases",
     snapshot_path: "tests/conformance/types_snapshot.txt",
-    tsc_types_path: "target/conformance/tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/typescript_tsc_types.tsv",
     compiler_cases_only: true,
     write_type_outputs: false,
     type_outputs_root: None,
@@ -45,7 +44,7 @@ const CASES_SUITE: ConformanceSuite = ConformanceSuite {
     name: "local conformance case",
     cases_root: "tests/conformance/cases",
     snapshot_path: "tests/conformance/cases_snapshot.txt",
-    tsc_types_path: "target/conformance/cases_tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/cases_tsc_types.tsv",
     compiler_cases_only: false,
     write_type_outputs: true,
     type_outputs_root: None,
@@ -55,7 +54,7 @@ const EXTERNAL_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
     name: "external library fixture",
     cases_root: "tests/conformance/external",
     snapshot_path: "tests/conformance/external_snapshot.txt",
-    tsc_types_path: "target/conformance/external_tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/external_tsc_types.tsv",
     compiler_cases_only: false,
     write_type_outputs: true,
     type_outputs_root: None,
@@ -65,7 +64,7 @@ const STANDARD_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
     name: "standard library declaration",
     cases_root: "src/lib",
     snapshot_path: "tests/conformance/lib_snapshot.txt",
-    tsc_types_path: "target/conformance/lib_tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/lib_tsc_types.tsv",
     compiler_cases_only: false,
     write_type_outputs: true,
     type_outputs_root: Some("tests/conformance/lib"),
@@ -86,6 +85,10 @@ fn default_conformance_suites() -> [&'static ConformanceSuite; 3] {
         &EXTERNAL_LIBRARY_SUITE,
         &STANDARD_LIBRARY_SUITE,
     ]
+}
+
+fn full_conformance_suites() -> [&'static ConformanceSuite; 4] {
+    all_conformance_suites()
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -281,8 +284,7 @@ impl FileSystem for FixtureResolverFileSystem {
     }
 
     fn read_to_string(&self, path: &Path) -> io::Result<String> {
-        String::from_utf8(self.read(path)?)
-            .map_err(|err| io::Error::new(io::ErrorKind::InvalidData, err))
+        string_from_utf8_bytes_simd(self.read(path)?)
     }
 
     fn metadata(&self, path: &Path) -> io::Result<FileMetadata> {
@@ -314,6 +316,22 @@ impl FileSystem for FixtureResolverFileSystem {
         self.metadata(&path)?;
         Ok(path)
     }
+}
+
+fn read_to_string_simd_utf8(path: &Path) -> io::Result<String> {
+    string_from_utf8_bytes_simd(std::fs::read(path)?)
+}
+
+fn string_from_utf8_bytes_simd(bytes: Vec<u8>) -> io::Result<String> {
+    simdutf8::basic::from_utf8(&bytes).map_err(|err| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            format!("invalid UTF-8: {err:?}"),
+        )
+    })?;
+
+    // SAFETY: simdutf8 validated the complete byte buffer above.
+    Ok(unsafe { String::from_utf8_unchecked(bytes) })
 }
 
 impl program::ProgramHost for FixtureProgramHost {
@@ -424,6 +442,12 @@ fn custom_case_type_extractor() -> ConformanceResult {
 
 #[cfg(feature = "conformance-tsc")]
 #[test]
+fn external_library_type_extractor() -> ConformanceResult {
+    extract_tsc_type_records(&EXTERNAL_LIBRARY_SUITE)
+}
+
+#[cfg(feature = "conformance-tsc")]
+#[test]
 fn standard_library_type_extractor() -> ConformanceResult {
     extract_tsc_type_records(&STANDARD_LIBRARY_SUITE)
 }
@@ -452,21 +476,27 @@ fn standard_library_type_records() -> ConformanceResult {
     run_type_record_conformance_on_thread("standard_library_type_records", &STANDARD_LIBRARY_SUITE)
 }
 
-#[cfg(all(feature = "conformance", feature = "conformance-tsc"))]
+#[cfg(feature = "conformance")]
 #[test]
 fn full_conformance() -> ConformanceResult {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let target = conformance_target_argument(&repo_root)?;
     if let Some(case_path) = target.case_path {
-        return run_single_file_conformance_on_thread("full_conformance", case_path);
+        return run_single_file_conformance_on_thread(
+            "full_conformance",
+            case_path,
+            target.refresh_tsc,
+        );
     }
 
     let mut failures = Vec::new();
 
     for suite in target.suites {
-        if let Err(err) = extract_tsc_type_records(suite) {
+        if target.refresh_tsc
+            && let Err(err) = refresh_tsc_type_records(suite)
+        {
             failures.push(format!(
-                "{} TypeScript record extraction failed:\n{}",
+                "{} TypeScript record refresh failed:\n{}",
                 suite.name,
                 err.into_message()
             ));
@@ -496,12 +526,36 @@ fn full_conformance() -> ConformanceResult {
 struct ConformanceTarget {
     case_path: Option<PathBuf>,
     suites: Vec<&'static ConformanceSuite>,
+    refresh_tsc: bool,
 }
 
 fn conformance_target_argument(repo_root: &Path) -> ConformanceResult<ConformanceTarget> {
+    conformance_target_from_arguments(repo_root, std::env::args_os().skip(1))
+}
+
+fn conformance_target_from_arguments(
+    repo_root: &Path,
+    arguments: impl IntoIterator<Item = std::ffi::OsString>,
+) -> ConformanceResult<ConformanceTarget> {
     let mut case_paths = Vec::new();
     let mut suites = Vec::new();
-    for argument in std::env::args_os().skip(1) {
+    let mut refresh_tsc = false;
+    for argument in arguments {
+        if argument == "refresh-tsc"
+            || argument == "--refresh-tsc"
+            || argument == "update-tsc"
+            || argument == "--update-tsc"
+        {
+            refresh_tsc = true;
+            continue;
+        }
+
+        if let Some(argument) = argument.to_str()
+            && conformance_test_harness_argument(argument)
+        {
+            continue;
+        }
+
         let path = PathBuf::from(&argument);
         if is_supported_case_extension(&path) {
             let candidate = if path.is_absolute() {
@@ -523,7 +577,20 @@ fn conformance_target_argument(repo_root: &Path) -> ConformanceResult<Conformanc
             && let Some(suite) = conformance_suite_for_argument(argument)
         {
             suites.push(suite);
+            continue;
         }
+
+        if let Some(argument) = argument.to_str()
+            && conformance_full_argument(argument)
+        {
+            suites.extend(full_conformance_suites());
+            continue;
+        }
+
+        return Err(ConformanceError::new(format!(
+            "unknown conformance target argument: {}",
+            argument.to_string_lossy()
+        )));
     }
 
     let case_path = match case_paths.len() {
@@ -545,7 +612,11 @@ fn conformance_target_argument(repo_root: &Path) -> ConformanceResult<Conformanc
         suites.extend(default_conformance_suites());
     }
 
-    Ok(ConformanceTarget { case_path, suites })
+    Ok(ConformanceTarget {
+        case_path,
+        suites,
+        refresh_tsc,
+    })
 }
 
 fn conformance_suite_for_argument(argument: &str) -> Option<&'static ConformanceSuite> {
@@ -556,6 +627,17 @@ fn conformance_suite_for_argument(argument: &str) -> Option<&'static Conformance
         "typescript" | "ts" | "upstream" => Some(&TYPESCRIPT_SUITE),
         _ => None,
     }
+}
+
+fn conformance_full_argument(argument: &str) -> bool {
+    matches!(argument, "all" | "full")
+}
+
+fn conformance_test_harness_argument(argument: &str) -> bool {
+    matches!(
+        argument,
+        "conformance::full_conformance" | "--exact" | "--nocapture"
+    )
 }
 
 fn is_supported_case_extension(path: &Path) -> bool {
@@ -581,11 +663,12 @@ fn run_type_record_conformance_on_thread(
 fn run_single_file_conformance_on_thread(
     test_name: &'static str,
     case_path: PathBuf,
+    refresh_tsc: bool,
 ) -> ConformanceResult {
     std::thread::Builder::new()
         .name(test_name.to_string())
         .stack_size(256 * 1024 * 1024)
-        .spawn(move || run_single_file_conformance(&case_path))
+        .spawn(move || run_single_file_conformance(&case_path, refresh_tsc))
         .map_err(|err| {
             ConformanceError::new(format!("failed to spawn conformance test thread: {err}"))
         })?
@@ -593,6 +676,7 @@ fn run_single_file_conformance_on_thread(
         .map_err(thread_panic_error)?
 }
 
+#[cfg(feature = "conformance-tsc")]
 fn extract_tsc_type_records(suite: &ConformanceSuite) -> ConformanceResult {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let cases_root = repo_root.join(suite.cases_root);
@@ -603,6 +687,19 @@ fn extract_tsc_type_records(suite: &ConformanceSuite) -> ConformanceResult {
     Ok(())
 }
 
+#[cfg(feature = "conformance-tsc")]
+fn refresh_tsc_type_records(suite: &ConformanceSuite) -> ConformanceResult {
+    extract_tsc_type_records(suite)
+}
+
+#[cfg(not(feature = "conformance-tsc"))]
+fn refresh_tsc_type_records(_suite: &ConformanceSuite) -> ConformanceResult {
+    Err(ConformanceError::new(
+        "refresh-tsc requires the conformance-tsc feature; use `cargo conformance-refresh`",
+    ))
+}
+
+#[cfg(feature = "conformance-tsc")]
 fn extract_tsc_type_records_for_case(
     repo_root: &Path,
     suite: &ConformanceSuite,
@@ -611,14 +708,40 @@ fn extract_tsc_type_records_for_case(
 ) -> ConformanceResult<Vec<TypeRecord>> {
     ensure_cases_root(suite, cases_root)?;
     let output = run_tsc_extractor_to_stdout(repo_root, suite, cases_root, case_path)?;
-    Ok(parse_records(&output, "TypeScript extractor stdout"))
+    parse_records(&output, "TypeScript extractor stdout")
 }
 
-fn run_single_file_conformance(case_path: &Path) -> ConformanceResult {
+#[cfg(feature = "conformance-tsc")]
+fn refresh_tsc_type_records_for_case(
+    repo_root: &Path,
+    suite: &ConformanceSuite,
+    cases_root: &Path,
+    case_path: &Path,
+) -> ConformanceResult<Vec<TypeRecord>> {
+    extract_tsc_type_records_for_case(repo_root, suite, cases_root, case_path)
+}
+
+#[cfg(not(feature = "conformance-tsc"))]
+fn refresh_tsc_type_records_for_case(
+    _repo_root: &Path,
+    _suite: &ConformanceSuite,
+    _cases_root: &Path,
+    _case_path: &Path,
+) -> ConformanceResult<Vec<TypeRecord>> {
+    Err(ConformanceError::new(
+        "refresh-tsc requires the conformance-tsc feature; use `cargo conformance-refresh`",
+    ))
+}
+
+fn run_single_file_conformance(case_path: &Path, refresh_tsc: bool) -> ConformanceResult {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let (suite, cases_root) = suite_for_case_path(&repo_root, case_path)?;
 
-    let tsc_records = extract_tsc_type_records_for_case(&repo_root, suite, &cases_root, case_path)?;
+    let tsc_records = if refresh_tsc {
+        refresh_tsc_type_records_for_case(&repo_root, suite, &cases_root, case_path)?
+    } else {
+        read_tsc_records_for_case(&repo_root, suite, &cases_root, case_path)?
+    };
     let oxc_records = collect_oxc_records_for_case(&cases_root, case_path)?;
     let results = compare_records(&tsc_records, &oxc_records);
     let stats = ComparisonStats::from_results(&results);
@@ -686,7 +809,7 @@ fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
     let oxc_records = collect_oxc_records(suite, &cases_root);
     write_type_outputs(suite, &cases_root, &oxc_records);
 
-    let tsc_records = read_records(&tsc_types_path);
+    let tsc_records = read_records(&tsc_types_path)?;
     let results = compare_records(&tsc_records, &oxc_records);
     let stats = ComparisonStats::from_results(&results);
     write_snapshot(&snapshot_path, suite, &stats, &results);
@@ -725,6 +848,7 @@ fn thread_panic_error(payload: Box<dyn Any + Send>) -> ConformanceError {
     ConformanceError::new(format!("conformance test thread panicked: {message}"))
 }
 
+#[cfg(feature = "conformance-tsc")]
 fn run_tsc_extractor(
     repo_root: &Path,
     suite: &ConformanceSuite,
@@ -737,7 +861,7 @@ fn run_tsc_extractor(
     } else {
         "all"
     };
-    let output = Command::new("node")
+    let output = std::process::Command::new("node")
         .arg(&extractor_path)
         .arg("--repo-root")
         .arg(repo_root)
@@ -764,6 +888,7 @@ fn run_tsc_extractor(
     Ok(())
 }
 
+#[cfg(feature = "conformance-tsc")]
 fn run_tsc_extractor_to_stdout(
     repo_root: &Path,
     suite: &ConformanceSuite,
@@ -776,7 +901,7 @@ fn run_tsc_extractor_to_stdout(
     } else {
         "all"
     };
-    let output = Command::new("node")
+    let output = std::process::Command::new("node")
         .arg(&extractor_path)
         .arg("--repo-root")
         .arg(repo_root)
@@ -849,12 +974,14 @@ fn discover_case_files(root: &Path, paths: &mut Vec<PathBuf>) {
 
 fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeRecord> {
     let mut records = Vec::new();
-    let trace_progress = std::env::var_os("OXC_CONFORMANCE_PROGRESS").is_some();
-    for path in discover_compiler_cases(suite, cases_root) {
-        if trace_progress {
-            eprintln!("collecting {}", relative_path(cases_root, &path));
-        }
-        let source_text = match std::fs::read_to_string(&path) {
+    let paths = discover_compiler_cases(suite, cases_root);
+    let total_paths = paths.len();
+    for (index, path) in paths.into_iter().enumerate() {
+        use std::io::Write as _;
+
+        eprint!("\rcollecting {}/{}", index + 1, total_paths);
+        let _ = io::stderr().flush();
+        let source_text = match read_to_string_simd_utf8(&path) {
             Ok(source_text) => source_text,
             Err(_) => continue,
         };
@@ -863,6 +990,9 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
             &path,
             &source_text,
         ));
+    }
+    if total_paths > 0 {
+        eprintln!();
     }
     records.sort_by(|left, right| {
         left.path
@@ -879,7 +1009,7 @@ fn collect_oxc_records_for_case(
     cases_root: &Path,
     case_path: &Path,
 ) -> ConformanceResult<Vec<TypeRecord>> {
-    let source_text = std::fs::read_to_string(case_path).map_err(|err| {
+    let source_text = read_to_string_simd_utf8(case_path).map_err(|err| {
         ConformanceError::new(format!(
             "failed to read conformance case {}: {err}",
             case_path.display()
@@ -895,6 +1025,26 @@ fn collect_oxc_records_for_case(
             .then_with(|| left.ty_repr.cmp(&right.ty_repr))
     });
     Ok(records)
+}
+
+fn read_tsc_records_for_case(
+    repo_root: &Path,
+    suite: &ConformanceSuite,
+    cases_root: &Path,
+    case_path: &Path,
+) -> ConformanceResult<Vec<TypeRecord>> {
+    let relative_path = relative_path(cases_root, case_path);
+    let tsc_records_path = repo_root.join(suite.tsc_types_path);
+    Ok(read_records(&tsc_records_path)?
+        .into_iter()
+        .filter(|record| {
+            record.path == relative_path
+                || record
+                    .path
+                    .strip_prefix(relative_path.as_str())
+                    .is_some_and(|suffix| suffix.starts_with("::"))
+        })
+        .collect())
 }
 
 fn collect_oxc_records_from_source(
@@ -1737,18 +1887,23 @@ fn records_by_file(records: &[TypeRecord]) -> BTreeMap<String, TypeRecordMap> {
     by_file
 }
 
-fn read_records(path: &Path) -> Vec<TypeRecord> {
-    let text = std::fs::read_to_string(path)
-        .unwrap_or_else(|err| panic!("failed to read type records {}: {err}", path.display()));
+fn read_records(path: &Path) -> ConformanceResult<Vec<TypeRecord>> {
+    let text = read_to_string_simd_utf8(path).map_err(|err| {
+        ConformanceError::new(format!(
+            "failed to read checked-in TypeScript type records {}: {err}\nrun `cargo conformance-refresh` to regenerate them",
+            path.display()
+        ))
+    })?;
     parse_records(&text, &path.display().to_string())
 }
 
-fn parse_records(text: &str, source: &str) -> Vec<TypeRecord> {
+fn parse_records(text: &str, source: &str) -> ConformanceResult<Vec<TypeRecord>> {
     text.lines()
         .filter(|line| !line.trim().is_empty())
         .map(|line| {
-            TypeRecord::from_tsv(line)
-                .unwrap_or_else(|err| panic!("invalid type record in {source}: {err}: {line}"))
+            TypeRecord::from_tsv(line).map_err(|err| {
+                ConformanceError::new(format!("invalid type record in {source}: {err}: {line}"))
+            })
         })
         .collect()
 }
@@ -1768,7 +1923,7 @@ fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[Ty
 
     for path in discover_compiler_cases(suite, cases_root) {
         let relative_path = relative_path(cases_root, &path);
-        let source_text = match std::fs::read_to_string(&path) {
+        let source_text = match read_to_string_simd_utf8(&path) {
             Ok(source_text) => source_text,
             Err(_) => continue,
         };
@@ -2007,7 +2162,7 @@ fn source_line_starts(suite: &ConformanceSuite, path: &str) -> Vec<u32> {
         });
     let source_path =
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(case_snapshot_path(suite, fixture_path));
-    let Ok(source_text) = std::fs::read_to_string(source_path) else {
+    let Ok(source_text) = read_to_string_simd_utf8(&source_path) else {
         return vec![0];
     };
     let compiler_case = parse_compiler_test_case(&source_text, fixture_path);
@@ -2087,6 +2242,57 @@ fn write_snapshot_error(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn target_from_args(args: &[&str]) -> ConformanceResult<ConformanceTarget> {
+        conformance_target_from_arguments(
+            Path::new(env!("CARGO_MANIFEST_DIR")),
+            args.iter().map(std::ffi::OsString::from),
+        )
+    }
+
+    fn suite_names(target: &ConformanceTarget) -> Vec<&'static str> {
+        target.suites.iter().map(|suite| suite.name).collect()
+    }
+
+    #[test]
+    fn conformance_target_full_selects_all_suites() {
+        let target = target_from_args(&["full"]).unwrap();
+
+        assert_eq!(
+            suite_names(&target),
+            suite_names(&ConformanceTarget {
+                case_path: None,
+                suites: all_conformance_suites().to_vec(),
+                refresh_tsc: false,
+            })
+        );
+    }
+
+    #[test]
+    fn conformance_target_ignores_test_harness_arguments() {
+        let target = target_from_args(&[
+            "conformance::full_conformance",
+            "--exact",
+            "--nocapture",
+            "typescript",
+        ])
+        .unwrap();
+
+        assert_eq!(suite_names(&target), vec![TYPESCRIPT_SUITE.name]);
+    }
+
+    #[test]
+    fn conformance_target_rejects_unknown_arguments() {
+        let error = match target_from_args(&["typecript"]) {
+            Ok(_) => panic!("expected unknown argument error"),
+            Err(error) => error,
+        };
+
+        assert_eq!(
+            error.into_message(),
+            "unknown conformance target argument: typecript"
+        );
+    }
 
     #[test]
     fn compiler_test_case_parser_collects_directives() {

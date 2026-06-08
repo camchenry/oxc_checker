@@ -2,7 +2,7 @@ let x: any = 5;
 >   ^: any   (TyAny)
 
 const x1 = x = 5;
->     ^^: number   (TyNumber)
+>     ^^: 5   (TyNumberLiteral)
 
 const x1 = x = 5;
 >          ^: any   (TyAny)

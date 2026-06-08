@@ -1,0 +1,1105 @@
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1009	1013	meta	M
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1021	1022	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1027	1028	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1065	1082	BaseActionCreator	{ type: T; match: (action: unknown) => action is PayloadAction<P, T, M, E>; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1083	1084	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1086	1087	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1104	1105	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1115	1116	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1132	1136	type	T
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1138	1139	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1142	1147	match	(action: unknown) => action is PayloadAction<P, T, M, E>
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1150	1156	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1170	1176	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1180	1193	PayloadAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1194	1195	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1197	1198	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1200	1201	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1203	1204	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1226	1258	ActionCreatorWithPreparedPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1262	1266	Args	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1288	1289	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1293	1294	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1322	1323	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1335	1336	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1356	1373	BaseActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1374	1375	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1377	1378	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1380	1381	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1383	1384	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1394	1398	args	Args
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1400	1404	Args	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1407	1420	PayloadAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1421	1422	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1424	1425	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1427	1428	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1430	1431	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1453	1485	ActionCreatorWithOptionalPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1486	1487	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1489	1490	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1526	1543	BaseActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	153	169	hasMatchFunction	<T>(value: Matcher<T>) => value is HasMatchFunction<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1544	1545	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1547	1548	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1555	1562	payload	P | undefined
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1565	1566	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1569	1582	PayloadAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1583	1584	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1586	1587	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1609	1636	ActionCreatorWithoutPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1637	1638	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1674	1691	BaseActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1703	1704	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1711	1721	noArgument	void | undefined
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1731	1744	PayloadAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1756	1757	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1779	1803	ActionCreatorWithPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1804	1805	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1807	1808	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1844	1861	BaseActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1862	1863	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1865	1866	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1873	1880	payload	P
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1882	1883	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1886	1899	PayloadAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1900	1901	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1903	1904	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1926	1963	ActionCreatorWithNonInferrablePayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1967	1968	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2004	2021	BaseActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2031	2032	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2039	2041	PT	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	204	217	PayloadAction	{ payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2059	2066	payload	PT
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2068	2070	PT	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2073	2086	PayloadAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2087	2089	PT	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2091	2092	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2109	2129	PayloadActionCreator	PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2133	2134	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2145	2146	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2174	2176	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2185	2198	PrepareAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2199	2200	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	221	222	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2221	2250	IfPrepareActionMethodProvided	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2254	2256	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2260	2293	_ActionCreatorWithPreparedPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2294	2296	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2298	2299	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2304	2309	IsAny	boolean extends (T extends never ? true : false) ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2315	2316	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2322	2346	ActionCreatorWithPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	233	234	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2352	2353	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2360	2384	IsUnknownOrNonInferrable	unknown extends T ? IsAny<T, False, True> : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2392	2393	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2401	2438	ActionCreatorWithNonInferrablePayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2439	2440	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2449	2455	IfVoid	[void] extends [P] ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2465	2466	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2476	2503	ActionCreatorWithoutPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2504	2505	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2516	2532	IfMaybeUndefined	[undefined] extends [P] ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2544	2545	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2557	2589	ActionCreatorWithOptionalPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2590	2591	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2593	2594	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2607	2631	ActionCreatorWithPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	262	263	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2632	2633	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2635	2636	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2685	2697	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2698	2699	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2708	2709	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2738	2742	type	T
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2744	2745	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	275	276	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2750	2770	PayloadActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2771	2772	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2774	2775	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2794	2806	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2810	2812	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2821	2834	PrepareAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2843	2844	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2872	2876	type	T
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2878	2879	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2881	2894	prepareAction	PA
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2896	2898	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2901	2921	PayloadActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2922	2932	ReturnType	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2933	2935	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	294	301	payload	P
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2949	2950	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2952	2954	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2973	2985	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2986	2990	type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3000	3013	prepareAction	Function | undefined
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3016	3024	Function	FunctionConstructor
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	303	304	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3044	3057	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3061	3065	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	307	311	type	T
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3084	3097	prepareAction	Function | undefined
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3113	3121	prepared	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3124	3137	prepareAction	Function
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	313	314	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3141	3145	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3171	3175	type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3185	3192	payload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3194	3202	prepared	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3203	3210	payload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	321	322	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3234	3242	prepared	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3248	3252	meta	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3254	3262	prepared	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3263	3267	meta	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3295	3303	prepared	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3309	3314	error	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3316	3324	prepared	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3325	3330	error	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3363	3367	type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3369	3376	payload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3378	3382	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3395	3408	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3395	3420	actionCreator.type = type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3409	3413	type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3416	3420	type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3423	3436	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3423	3535	actionCreator.match = (action: unknown): action is PayloadAction =>     isAction(action) && action.type === type	(action: unknown) => action is PayloadAction
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3437	3442	match	(action: unknown) => action is PayloadAction
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3446	3452	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3464	3470	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3474	3487	PayloadAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3495	3503	isAction	(action: unknown) => action is Action
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3504	3510	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3515	3521	action	Action<string>
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3522	3526	type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3531	3535	type	string
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3546	3559	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3579	3594	isActionCreator	(action: unknown) => action is BaseActionCreator<unknown, string> & Function
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	359	363	meta	M
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3598	3604	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3618	3624	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3628	3645	BaseActionCreator	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	365	366	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3665	3673	Function	FunctionConstructor
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3692	3698	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3727	3733	action	Function
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3737	3753	hasMatchFunction	<T>(value: Matcher<T>) => value is HasMatchFunction<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3754	3760	action	Function & Record<"type", unknown>
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3777	3806	IfPrepareActionMethodProvided	PA extends (...args: any[]) => any ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	380	381	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3810	3812	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3821	3834	PrepareAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3850	3854	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3858	3863	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3869	3871	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3884	3888	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3906	3910	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3913	3918	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	424	429	error	E
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	431	432	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	455	468	PrepareAction	((...args: any[]) => { payload: P; }) | ((...args: any[]) => { payload: P; meta: any; }) | ((...args: any[]) => { payload: P; error: any; }) | ((...args: any[]) => { payload: P; meta: any; error: any; })
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	469	470	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	483	487	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	501	508	payload	P
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	510	511	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	524	528	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	542	549	payload	P
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	551	552	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	554	558	meta	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	576	580	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	58	74	IfMaybeUndefined	[undefined] extends [P] ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	594	601	payload	P
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	603	604	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	606	611	error	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	629	633	args	any[]
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	647	654	payload	P
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	656	657	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	659	663	meta	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	670	675	error	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	697	730	_ActionCreatorWithPreparedPayload	PA extends PrepareAction<infer P> ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	734	736	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	745	758	PrepareAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	774	775	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	78	84	IfVoid	[void] extends [P] ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	805	807	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	816	829	PrepareAction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	836	837	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	843	875	ActionCreatorWithPreparedPayload	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	88	93	IsAny	boolean extends (T extends never ? true : false) ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	883	893	Parameters	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	894	896	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	9	17	isAction	(action: unknown) => action is Action
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	905	906	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	914	915	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	923	933	ReturnType	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	934	936	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	948	953	error	E
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	961	962	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	967	968	E	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	97	121	IsUnknownOrNonInferrable	unknown extends T ? IsAny<T, False, True> : False
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	984	994	ReturnType	any
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	995	997	PA	any
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	109	115	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	119	125	Action	any
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	144	150	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	167	173	action	object | null
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	17	23	Action	any
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	196	202	action	object
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	24	25	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	55	59	type	T
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	61	62	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	82	90	isAction	(action: unknown) => action is Action
+redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts	91	97	action	unknown
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1003	1012	TypeGuard	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1013	1014	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1029	1046	ActionFromMatcher	M extends Matcher<infer T> ? T : never
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1047	1048	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1057	1064	Matcher	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	106	110	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1073	1074	M	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1083	1090	Matcher	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1100	1101	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1108	1109	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1137	1153	hasMatchFunction	<T>(value: Matcher<T>) => value is HasMatchFunction<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	115	120	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1154	1155	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1157	1162	value	Matcher<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1164	1171	Matcher	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1172	1173	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1177	1182	value	Matcher<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1186	1202	HasMatchFunction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	12	17	IsAny	boolean extends (T extends never ? true : false) ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1203	1204	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1219	1224	value	Matcher<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1236	1241	value	Matcher<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1245	1261	HasMatchFunction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1262	1263	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	1266	1271	match	TypeGuard<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	134	143	IsUnknown	unknown extends T ? IsAny<T, False, True> : False
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	144	145	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	147	151	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	153	158	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	18	19	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	186	187	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	192	197	IsAny	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	198	199	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	201	206	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	208	212	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	21	25	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	218	223	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	237	253	IfMaybeUndefined	[undefined] extends [P] ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	254	255	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	257	261	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	263	268	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	27	32	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	293	294	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	300	304	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	309	314	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	328	334	IfVoid	[void] extends [P] ? True : False
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	335	336	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	338	342	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	344	349	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	369	370	P	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	374	378	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	381	386	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	400	410	IsEmptyObj	T extends any ? keyof T extends never ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>> : False : never
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	411	412	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	414	418	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	420	425	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	437	438	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	461	462	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	483	492	IsUnknown	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	493	494	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	496	501	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	503	519	IfMaybeUndefined	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	520	521	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	523	528	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	530	536	IfVoid	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	537	538	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	540	545	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	547	551	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	561	566	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	590	601	AtLeastTS35	True
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	602	606	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	608	613	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	618	622	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	624	629	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	631	640	IsUnknown	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	644	654	ReturnType	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	656	657	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	66	67	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	664	665	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	693	717	IsUnknownOrNonInferrable	unknown extends T ? IsAny<T, False, True> : False
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	718	719	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	721	725	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	727	732	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	736	747	AtLeastTS35	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	751	760	IsUnknown	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	761	762	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	764	768	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	770	775	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	780	790	IsEmptyObj	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	791	792	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	794	798	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	800	809	IsUnknown	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	810	811	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	813	817	True	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	819	824	False	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	847	856	TypeGuard	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	857	858	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	865	870	value	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	878	883	value	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	887	888	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	909	925	HasMatchFunction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	926	927	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	933	938	match	TypeGuard<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	940	949	TypeGuard	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	950	951	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	968	975	Matcher	HasMatchFunction<T> | TypeGuard<T>
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	976	977	T	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	981	997	HasMatchFunction	any
+redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts	998	999	T	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	101	138	ActionCreatorWithNonInferrablePayload	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1016	1034	preparedTodoAction	PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1037	1044	addTodo	ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1077	1092	preparedPayload	{ title: string; priority: any; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1095	1113	preparedTodoAction	PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1114	1121	payload	{ title: string; priority: any; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1135	1147	preparedMeta	{ createdAt: number; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1150	1168	preparedTodoAction	PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1169	1173	meta	{ createdAt: number; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1187	1200	preparedError	boolean
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1203	1221	preparedTodoAction	PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1222	1227	error	boolean
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1243	1256	unknownAction	unknown
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1271	1280	increment	ActionCreatorWithPayload<number, "counter/increment">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1281	1286	match	(action: unknown) => action is { payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1287	1300	unknownAction	unknown
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1313	1327	matchedPayload	number
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1330	1343	unknownAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1344	1351	payload	number
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1360	1371	matchedType	"counter/increment"
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1374	1387	unknownAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1388	1392	type	"counter/increment"
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1395	1414	void matchedPayload	undefined
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1400	1414	matchedPayload	number
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1417	1433	void matchedType	undefined
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	142	155	PayloadAction	{ payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1422	1433	matchedType	"counter/increment"
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1449	1464	IncrementAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1467	1477	ReturnType	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1485	1494	increment	ActionCreatorWithPayload<number, "counter/increment">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1508	1518	TodoAction	{ payload: { title: string; priority: any; }; type: "todos/add"; } & { meta: { createdAt: number; }; } & { error: boolean; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1521	1531	ReturnType	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1539	1546	addTodo	ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1560	1580	IncrementFromMatcher	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1583	1600	ActionFromMatcher	M extends Matcher<infer T> ? T : never
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	159	179	PayloadActionCreator	PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1608	1617	increment	ActionCreatorWithPayload<number, "counter/increment">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1631	1645	UnknownCreator	ActionCreatorWithNonInferrablePayload<"unknown/value">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1648	1668	PayloadActionCreator	PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1707	1722	AnythingCreator	ActionCreatorWithPayload<any, "anything/value">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1725	1745	PayloadActionCreator	PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1781	1795	GenericCreator	ActionCreatorWithNonInferrablePayload<"generic/value">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1798	1835	ActionCreatorWithNonInferrablePayload	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1868	1882	unknownCreator	ActionCreatorWithNonInferrablePayload<"unknown/value">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1884	1898	UnknownCreator	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1913	1928	anythingCreator	ActionCreatorWithPayload<any, "anything/value">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1930	1945	AnythingCreator	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1960	1974	genericCreator	GenericCreator
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	1976	1990	GenericCreator	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2005	2023	unknownValueAction	{ payload: { nested: boolean; }; type: "unknown/value"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2026	2040	unknownCreator	ActionCreatorWithNonInferrablePayload<"unknown/value">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2043	2049	nested	true
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2072	2091	anythingValueAction	{ payload: any; type: "anything/value"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2094	2109	anythingCreator	ActionCreatorWithPayload<any, "anything/value">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2112	2117	count	number
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2137	2155	genericValueAction	{ payload: string[]; type: "generic/value"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2158	2172	genericCreator	GenericCreator
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2199	2212	matcherAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2214	2234	IncrementFromMatcher	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2237	2246	increment	ActionCreatorWithPayload<number, "counter/increment">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2263	2277	explicitAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2279	2292	PayloadAction	{ payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	23	38	isActionCreator	(action: unknown) => action is BaseActionCreator<unknown, string> & Function
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2324	2339	incrementAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2353	2365	creatorCheck	boolean
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2368	2383	isActionCreator	(action: unknown) => action is BaseActionCreator<unknown, string> & Function
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	2384	2391	addTodo	ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	241	258	ActionFromMatcher	M extends Matcher<infer T> ? T : never
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	316	325	increment	ActionCreatorWithPayload<number, "counter/increment">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	328	340	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	404	419	incrementAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	422	431	increment	ActionCreatorWithPayload<number, "counter/increment">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	448	464	incrementPayload	number
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	467	482	incrementAction	{ payload: number; type: "counter/increment"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	483	490	payload	number
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	505	510	reset	ActionCreatorWithoutPayload<"counter/reset">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	513	525	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	556	567	resetAction	{ payload: undefined; type: "counter/reset"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	570	575	reset	ActionCreatorWithoutPayload<"counter/reset">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	591	603	resetPayload	undefined
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	606	617	resetAction	{ payload: undefined; type: "counter/reset"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	618	625	payload	undefined
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	640	647	setName	ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	650	662	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	741	758	missingNameAction	{ payload: string | undefined; type: "user/nameChanged"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	761	768	setName	ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	784	795	namedAction	{ payload: string | undefined; type: "user/nameChanged"; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	798	805	setName	ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	827	834	addTodo	ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	837	849	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	869	874	title	string
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	884	892	priority	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	9	21	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	908	915	payload	{ title: string; priority: any; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	919	924	title	string
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	926	934	priority	any
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	942	946	meta	{ createdAt: number; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	950	959	createdAt	number
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	970	975	error	boolean
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1001	1013	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1027	1032	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	103	126	BaseStreamedQueryParams	{ streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: "append" | "reset" | "replace"; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1035	1040	Array	ArrayConstructor
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1041	1053	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1058	1067	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1076	1084	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1087	1095	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1103	1111	streamFn	(context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1115	1126	refetchMode	"append" | "reset" | "replace"
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1140	1147	reducer	(acc: TData, chunk: TQueryFnData) => TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1151	1156	items	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1158	1163	chunk	TQueryFnData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1173	1178	items	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1182	1187	Array	ArrayConstructor
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1188	1200	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1204	1209	chunk	TQueryFnData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1214	1219	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1223	1235	initialValue	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1244	1249	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1254	1273	StreamedQueryParams	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	127	139	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1274	1286	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1288	1293	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1295	1304	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1308	1321	QueryFunction	(context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1325	1330	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1334	1343	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1364	1371	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1388	1405	signalLessContext	OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1407	1416	OmitKeyof	{ [P in Exclude<keyof TObject, TKey>]: TObject[P]; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	141	150	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1424	1431	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1453	1459	client	QueryClient
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1461	1468	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1469	1475	client	QueryClient
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1483	1487	meta	Record<string, unknown> | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1489	1496	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1497	1501	meta	Record<string, unknown> | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1509	1517	queryKey	TQueryKey
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1519	1526	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1527	1535	queryKey	TQueryKey
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1543	1552	pageParam	unknown
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1554	1561	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1562	1571	pageParam	unknown
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1579	1588	direction	unknown
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	159	167	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1590	1597	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1598	1607	direction	unknown
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	16	25	OmitKeyof	{ [P in Exclude<keyof TObject, TKey>]: TObject[P]; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1625	1631	stream	AsyncIterable<TQueryFnData>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1640	1648	streamFn	(context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1649	1666	signalLessContext	OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1670	1690	QueryFunctionContext	[TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1691	1700	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1711	1717	result	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1720	1732	initialValue	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	175	183	streamFn	(context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1755	1760	chunk	Awaited<TQueryFnData>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1764	1770	stream	AsyncIterable<TQueryFnData>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1784	1795	refetchMode	"append" | "reset" | "replace"
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1821	1827	result	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1821	1852	result = reducer(result, chunk)	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1830	1837	reducer	(acc: TData, chunk: TQueryFnData) => TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1838	1844	result	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1846	1851	chunk	Awaited<TQueryFnData>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1876	1883	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1876	2028	context.client.setQueryData<TData>(context.queryKey, (previous) =>           reducer(previous === undefined ? initialValue : previous, chunk),         )	void
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1884	1890	client	QueryClient
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1891	1903	setQueryData	<TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1904	1909	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	191	198	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1911	1918	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1919	1927	queryKey	TQueryKey
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1930	1938	previous	TData | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1953	1960	reducer	(acc: TData, chunk: TQueryFnData) => TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1961	1969	previous	TData | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1974	1983	undefined	undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1986	1998	initialValue	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	200	220	QueryFunctionContext	[TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2001	2009	previous	TData & ({} | null)
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2011	2016	chunk	Awaited<TQueryFnData>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2055	2062	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2063	2069	client	QueryClient
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2070	2082	getQueryData	<TData>(queryKey: QueryKey) => TData | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2083	2088	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2090	2097	context	{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2098	2106	queryKey	TQueryKey
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	2111	2117	result	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	221	230	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	240	253	AsyncIterable	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	254	266	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	270	277	Promise	PromiseConstructor
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	278	291	AsyncIterable	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	29	42	QueryFunction	(context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	292	304	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	309	320	refetchMode	"append" | "reset" | "replace" | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	362	387	SimpleStreamedQueryParams	BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer?: never; initialValue?: never; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	391	403	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	407	416	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	425	433	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	439	462	BaseStreamedQueryParams	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	46	66	QueryFunctionContext	[TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	463	475	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	477	486	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	494	501	reducer	undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	512	524	initialValue	undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	541	569	ReducibleStreamedQueryParams	BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer: (acc: TData, chunk: TQueryFnData) => TData; initialValue: TData; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	573	585	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	589	594	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	598	607	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	616	624	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	630	653	BaseStreamedQueryParams	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	654	666	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	668	677	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	685	692	reducer	(acc: TData, chunk: TQueryFnData) => TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	695	698	acc	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	70	78	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	700	705	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	707	712	chunk	TQueryFnData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	714	726	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	731	736	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	739	751	initialValue	TData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	753	758	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	767	786	StreamedQueryParams	SimpleStreamedQueryParams<TQueryFnData, TQueryKey> | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	790	802	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	806	811	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	815	824	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	833	841	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	851	876	SimpleStreamedQueryParams	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	877	889	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	891	900	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	906	934	ReducibleStreamedQueryParams	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	935	947	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	949	954	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	956	965	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	984	997	streamedQuery	<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1014	1025	TaggedValue	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1042	1053	TaggedValue	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1060	1072	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1091	1102	QueryClient	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1107	1119	getQueryData	<TData>(queryKey: QueryKey) => TData | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1120	1125	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1127	1135	queryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	113	121	queryKey	TQueryKey
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1137	1145	QueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1148	1153	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1168	1180	setQueryData	<TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1181	1186	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1193	1201	queryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1203	1211	QueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1217	1224	updater	TData | ((previous: TData | undefined) => TData)
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1226	1231	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1236	1244	previous	TData | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1246	1251	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1268	1273	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	129	138	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1301	1310	QueryMeta	{ [x: string]: unknown; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1313	1321	Register	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1334	1343	queryMeta	TQueryMeta
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1351	1361	TQueryMeta	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1368	1378	TQueryMeta	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1387	1393	Record	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1417	1427	TQueryMeta	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1434	1440	Record	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	145	154	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1462	1468	Record	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1499	1513	FetchDirection	"forward" | "backward"
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1552	1572	QueryFunctionContext	[TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1576	1585	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1594	1602	QueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1605	1613	QueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1617	1627	TPageParam	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	163	176	ReadonlyArray	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1642	1652	TPageParam	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1682	1688	client	QueryClient
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1690	1701	QueryClient	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	17	25	Register	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1708	1716	queryKey	TQueryKey
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1718	1727	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1734	1740	signal	AbortSignal
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1742	1753	AbortSignal	{ new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1760	1764	meta	Record<string, unknown> | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1766	1775	QueryMeta	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1794	1803	pageParam	unknown
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1820	1829	direction	unknown
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1858	1864	client	QueryClient
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1866	1877	QueryClient	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1884	1892	queryKey	TQueryKey
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1894	1903	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1910	1916	signal	AbortSignal
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1918	1929	AbortSignal	{ new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	192	201	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1936	1945	pageParam	TPageParam
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1947	1957	TPageParam	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1964	1973	direction	FetchDirection
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1975	1989	FetchDirection	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1996	2000	meta	Record<string, unknown> | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2002	2011	QueryMeta	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2043	2056	QueryFunction	(context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2060	2061	T	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2075	2084	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	208	217	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2093	2101	QueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2104	2112	QueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2116	2126	TPageParam	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2141	2148	context	QueryFunctionContext<TQueryKey, TPageParam>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2150	2170	QueryFunctionContext	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2171	2180	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2182	2192	TPageParam	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2198	2199	T	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2202	2209	Promise	PromiseConstructor
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2210	2211	T	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2231	2243	InfiniteData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2244	2249	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2251	2261	TPageParam	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	226	231	Array	ArrayConstructor
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2277	2282	pages	TData[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2284	2289	Array	ArrayConstructor
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2290	2295	TData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2299	2309	pageParams	TPageParam[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2311	2316	Array	ArrayConstructor
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2317	2327	TPageParam	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2344	2353	OmitKeyof	{ [P in Exclude<keyof TObject, TKey>]: TObject[P]; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2357	2364	TObject	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2368	2372	TKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2381	2390	TStrictly	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2420	2427	TObject	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2440	2446	Record	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2474	2481	TObject	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2485	2494	TStrictly	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	249	258	TQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2543	2547	Omit	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2548	2555	TObject	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	2557	2561	TKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	267	280	ReadonlyArray	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	294	307	ReadonlyArray	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	339	352	dataTagSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	380	393	dataTagSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	403	416	dataTagSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	438	456	dataTagErrorSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	484	502	dataTagErrorSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	512	530	dataTagErrorSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	552	563	unsetMarker	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	591	602	UnsetMarker	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	612	623	unsetMarker	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	637	647	AnyDataTag	{ [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	655	668	dataTagSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	678	696	dataTagErrorSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	718	725	DataTag	TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	726	731	TType	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	733	739	TValue	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	741	747	TError	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	750	761	UnsetMarker	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	765	770	TType	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	779	789	AnyDataTag	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	794	799	TType	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	804	809	TType	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	81	89	QueryKey	readonly unknown[]
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	821	834	dataTagSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	837	843	TValue	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	851	869	dataTagErrorSymbol	unique symbol
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	872	878	TError	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	898	914	InferDataFromTag	TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	915	927	TQueryFnData	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	92	100	Register	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	929	944	TTaggedQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	953	961	QueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	967	982	TTaggedQueryKey	any
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	991	998	DataTag	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	100	116	InferDataFromTag	TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	120	132	InfiniteData	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	136	156	QueryFunctionContext	[TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	206	210	Todo	{ id: number; title: string; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	217	219	id	number
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	230	235	title	string
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	252	264	TodoQueryKey	readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	267	274	DataTag	TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	295	299	Todo	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	303	308	Error	ErrorConstructor
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	315	329	TaggedTodoData	Todo[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	332	348	InferDataFromTag	TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	357	369	TodoQueryKey	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	386	396	todoStream	AsyncIterable<Todo>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	398	411	AsyncIterable	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	412	416	Todo	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	432	439	context	{ client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	441	461	QueryFunctionContext	[TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	497	506	pageParam	number
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	509	516	context	{ client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	517	526	pageParam	number
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	533	540	queryFn	QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	543	556	streamedQuery	<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	557	561	Todo	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	563	575	InfiniteData	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	576	580	Todo	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	615	623	streamFn	() => AsyncIterable<Todo>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	631	641	todoStream	AsyncIterable<Todo>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	645	652	reducer	(data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	655	659	data	InfiniteData<Todo, number>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	661	665	todo	Todo
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	677	682	pages	Todo[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	688	692	data	InfiniteData<Todo, number>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	693	698	pages	Todo[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	700	704	todo	Todo
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	711	721	pageParams	number[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	727	731	data	InfiniteData<Todo, number>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	732	742	pageParams	number[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	744	753	pageParam	number
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	764	776	initialValue	{ pages: never[]; pageParams: never[]; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	780	785	pages	never[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	791	801	pageParams	never[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	811	822	refetchMode	"append"
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	844	854	taggedData	Todo[]
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	856	870	TaggedTodoData	any
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	876	878	id	number
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	883	888	title	string
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	89	96	DataTag	TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	9	22	streamedQuery	<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	914	925	queryResult	InfiniteData<Todo, number> | Promise<InfiniteData<Todo, number>>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	928	935	queryFn	QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>
+tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	936	943	context	{ client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	105	106	A	any
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	115	117	A1	any
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	12	18	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	19	21	A1	any
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	35	37	A2	any
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	57	58	A	any
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	65	66	A	any
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	75	77	A2	any
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	97	98	A	any
+ts-toolbelt/object-optional.ts::sources/Any/Key.ts	12	15	Key	string | number | symbol
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	128	137	PatchFlat	{ [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	14	18	Pick	{ [P in keyof O as P extends K ? P : never]: O[P]; }
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	169	175	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	212	224	OptionalFlat	{ [K in keyof O]?: O[K] | undefined; }
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	225	226	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	235	236	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	246	247	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	251	252	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	253	254	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	276	288	OptionalDeep	{ [K in keyof O]?: OptionalDeep<O[K]> | undefined; }
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	289	290	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	299	300	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	310	311	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	315	327	OptionalDeep	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	328	329	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	330	331	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	349	361	OptionalPart	{ flat: OptionalFlat<O>; deep: OptionalDeep<O>; }[depth]
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	362	363	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	380	385	depth	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	394	399	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	407	411	flat	{ [K in keyof O]?: O[K] | undefined; }
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	413	425	OptionalFlat	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	426	427	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	431	435	deep	OptionalDeep<O>
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	437	449	OptionalDeep	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	450	451	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	455	460	depth	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	475	483	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	487	488	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	49	54	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	507	508	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	517	520	Key	string | number | symbol
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	523	526	Key	string | number | symbol
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	530	535	depth	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	544	549	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	571	583	OptionalPart	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	584	585	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	587	592	depth	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	599	608	PatchFlat	{ [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	609	621	OptionalPart	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	622	626	Pick	{ [P in keyof O as P extends K ? P : never]: O[P]; }
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	627	628	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	630	631	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	634	639	depth	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	642	643	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	647	653	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	654	657	Key	string | number | symbol
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	659	660	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	90	93	Key	string | number | symbol
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	104	105	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	112	113	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	114	115	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	12	21	PatchFlat	{ [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	123	124	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	139	141	O1	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	150	152	O1	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	153	154	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	22	23	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	40	42	O1	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	66	67	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	78	79	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	82	84	O1	any
+ts-toolbelt/object-optional.ts::sources/Object/Patch.ts	88	89	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	107	108	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	112	113	P	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	122	123	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	126	127	P	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	138	139	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	14	17	Key	string | number | symbol
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	140	141	P	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	51	55	Pick	{ [P in keyof O as P extends K ? P : never]: O[P]; }
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	56	57	O	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	74	75	K	any
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	84	87	Key	string | number | symbol
+ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	96	97	P	any
+ts-toolbelt/object-optional.ts::sources/Object/_Internal.ts	12	17	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	100	104	User	{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	111	113	id	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	124	128	name	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	139	146	profile	{ email: string; address: { city: string; }; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	154	159	email	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	16	24	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	172	179	address	{ city: string; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	189	193	city	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	220	232	OptionalName	{ name: string | undefined; id: string; profile: { email: string; address: { city: string; }; }; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	235	243	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	244	248	User	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	263	281	OptionalEverything	{ id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	28	40	OptionalDeep	{ [K in keyof O]?: OptionalDeep<O[K]> | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	284	292	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	293	297	User	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	304	323	OptionalProfileDeep	{ profile: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; id: string; name: string; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	326	334	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	335	339	User	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	365	375	DirectFlat	{ id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	378	390	OptionalFlat	{ [K in keyof O]?: O[K] | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	391	395	User	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	402	412	DirectDeep	{ id?: string | undefined; name?: string | undefined; profile?: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	415	427	OptionalDeep	{ [K in keyof O]?: OptionalDeep<O[K]> | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	428	432	User	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	44	56	OptionalFlat	{ [K in keyof O]?: O[K] | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	441	453	optionalName	PatchFlat<{ name?: string | undefined; }, User>
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	455	467	OptionalName	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	474	476	id	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	490	497	profile	{ email: string; address: { city: string; }; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	505	510	email	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	536	543	address	{ city: string; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	553	557	city	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	590	608	optionalEverything	{ id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	610	628	OptionalEverything	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	640	659	optionalProfileDeep	PatchFlat<OptionalDeep<{ profile: { email: string; address: { city: string; }; }; }>, User>
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	661	680	OptionalProfileDeep	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	687	689	id	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	703	707	name	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	718	725	profile	{ address: {}; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	733	740	address	{}
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	760	770	directFlat	{ id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	772	782	DirectFlat	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	789	791	id	string
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	811	821	directDeep	OptionalDeep<User>
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	823	833	DirectDeep	any
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	840	847	profile	{ address: {}; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	855	862	address	{}
+type-fest/object-utilities.ts::source/except.ts	108	114	Filter	IsEqual<KeyType, ExcludeType> extends true ? never : KeyType extends ExcludeType ? never : KeyType
+type-fest/object-utilities.ts::source/except.ts	115	122	KeyType	any
+type-fest/object-utilities.ts::source/except.ts	124	135	ExcludeType	any
+type-fest/object-utilities.ts::source/except.ts	139	146	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false
+type-fest/object-utilities.ts::source/except.ts	14	33	ApplyDefaultOptions	{ [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }
+type-fest/object-utilities.ts::source/except.ts	147	154	KeyType	any
+type-fest/object-utilities.ts::source/except.ts	156	167	ExcludeType	any
+type-fest/object-utilities.ts::source/except.ts	196	203	KeyType	any
+type-fest/object-utilities.ts::source/except.ts	212	223	ExcludeType	any
+type-fest/object-utilities.ts::source/except.ts	242	249	KeyType	any
+type-fest/object-utilities.ts::source/except.ts	263	276	ExceptOptions	{ requireExactProps?: boolean; }
+type-fest/object-utilities.ts::source/except.ts	283	300	requireExactProps	boolean | undefined
+type-fest/object-utilities.ts::source/except.ts	319	339	DefaultExceptOptions	{ requireExactProps: false; }
+type-fest/object-utilities.ts::source/except.ts	346	363	requireExactProps	false
+type-fest/object-utilities.ts::source/except.ts	386	392	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::source/except.ts	396	406	ObjectType	any
+type-fest/object-utilities.ts::source/except.ts	410	418	KeysType	any
+type-fest/object-utilities.ts::source/except.ts	433	443	ObjectType	any
+type-fest/object-utilities.ts::source/except.ts	447	454	Options	any
+type-fest/object-utilities.ts::source/except.ts	463	476	ExceptOptions	any
+type-fest/object-utilities.ts::source/except.ts	487	494	_Except	any
+type-fest/object-utilities.ts::source/except.ts	498	508	ObjectType	any
+type-fest/object-utilities.ts::source/except.ts	512	520	KeysType	any
+type-fest/object-utilities.ts::source/except.ts	524	543	ApplyDefaultOptions	{ [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }
+type-fest/object-utilities.ts::source/except.ts	544	557	ExceptOptions	any
+type-fest/object-utilities.ts::source/except.ts	559	579	DefaultExceptOptions	any
+type-fest/object-utilities.ts::source/except.ts	581	588	Options	any
+type-fest/object-utilities.ts::source/except.ts	598	605	_Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (Options["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::source/except.ts	609	619	ObjectType	any
+type-fest/object-utilities.ts::source/except.ts	623	631	KeysType	any
+type-fest/object-utilities.ts::source/except.ts	646	656	ObjectType	any
+type-fest/object-utilities.ts::source/except.ts	660	667	Options	any
+type-fest/object-utilities.ts::source/except.ts	676	684	Required	any
+type-fest/object-utilities.ts::source/except.ts	685	698	ExceptOptions	any
+type-fest/object-utilities.ts::source/except.ts	710	717	KeyType	any
+type-fest/object-utilities.ts::source/except.ts	727	737	ObjectType	any
+type-fest/object-utilities.ts::source/except.ts	74	81	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false
+type-fest/object-utilities.ts::source/except.ts	741	747	Filter	any
+type-fest/object-utilities.ts::source/except.ts	748	755	KeyType	any
+type-fest/object-utilities.ts::source/except.ts	757	765	KeysType	any
+type-fest/object-utilities.ts::source/except.ts	769	779	ObjectType	any
+type-fest/object-utilities.ts::source/except.ts	780	787	KeyType	any
+type-fest/object-utilities.ts::source/except.ts	794	801	Options	any
+type-fest/object-utilities.ts::source/except.ts	840	847	Partial	any
+type-fest/object-utilities.ts::source/except.ts	848	854	Record	any
+type-fest/object-utilities.ts::source/except.ts	855	863	KeysType	any
+type-fest/object-utilities.ts::source/internal/index.ts	12	31	ApplyDefaultOptions	{ [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }
+type-fest/object-utilities.ts::source/internal/index.ts	124	131	Options	any
+type-fest/object-utilities.ts::source/internal/index.ts	142	145	Key	any
+type-fest/object-utilities.ts::source/internal/index.ts	155	163	Defaults	any
+type-fest/object-utilities.ts::source/internal/index.ts	166	169	Key	any
+type-fest/object-utilities.ts::source/internal/index.ts	184	200	SpecifiedOptions	any
+type-fest/object-utilities.ts::source/internal/index.ts	207	218	NonNullable	any
+type-fest/object-utilities.ts::source/internal/index.ts	219	235	SpecifiedOptions	any
+type-fest/object-utilities.ts::source/internal/index.ts	236	239	Key	any
+type-fest/object-utilities.ts::source/internal/index.ts	248	264	SpecifiedOptions	any
+type-fest/object-utilities.ts::source/internal/index.ts	273	281	Defaults	any
+type-fest/object-utilities.ts::source/internal/index.ts	282	285	Key	any
+type-fest/object-utilities.ts::source/internal/index.ts	302	317	HomomorphicPick	{ [Key in Keys]: BaseType[Key]; }
+type-fest/object-utilities.ts::source/internal/index.ts	318	326	BaseType	any
+type-fest/object-utilities.ts::source/internal/index.ts	328	332	Keys	any
+type-fest/object-utilities.ts::source/internal/index.ts	347	355	BaseType	any
+type-fest/object-utilities.ts::source/internal/index.ts	35	42	Options	any
+type-fest/object-utilities.ts::source/internal/index.ts	364	367	Key	any
+type-fest/object-utilities.ts::source/internal/index.ts	371	375	Keys	any
+type-fest/object-utilities.ts::source/internal/index.ts	378	386	BaseType	any
+type-fest/object-utilities.ts::source/internal/index.ts	387	390	Key	any
+type-fest/object-utilities.ts::source/internal/index.ts	61	69	Defaults	any
+type-fest/object-utilities.ts::source/internal/index.ts	78	86	Required	any
+type-fest/object-utilities.ts::source/internal/index.ts	87	94	Options	any
+type-fest/object-utilities.ts::source/internal/index.ts	99	115	SpecifiedOptions	any
+type-fest/object-utilities.ts::source/is-equal.ts	12	19	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false
+type-fest/object-utilities.ts::source/is-equal.ts	20	21	A	any
+type-fest/object-utilities.ts::source/is-equal.ts	23	24	B	any
+type-fest/object-utilities.ts::source/is-equal.ts	30	31	G	any
+type-fest/object-utilities.ts::source/is-equal.ts	38	39	G	any
+type-fest/object-utilities.ts::source/is-equal.ts	48	49	A	any
+type-fest/object-utilities.ts::source/is-equal.ts	68	69	G	any
+type-fest/object-utilities.ts::source/is-equal.ts	78	79	G	any
+type-fest/object-utilities.ts::source/is-equal.ts	88	89	B	any
+type-fest/object-utilities.ts::source/keys-of-union.ts	112	131	UnionToIntersection	(Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never
+type-fest/object-utilities.ts::source/keys-of-union.ts	135	145	ObjectType	any
+type-fest/object-utilities.ts::source/keys-of-union.ts	14	33	UnionToIntersection	(Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never
+type-fest/object-utilities.ts::source/keys-of-union.ts	164	170	Record	any
+type-fest/object-utilities.ts::source/keys-of-union.ts	177	187	ObjectType	any
+type-fest/object-utilities.ts::source/keys-of-union.ts	80	91	KeysOfUnion	keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>
+type-fest/object-utilities.ts::source/keys-of-union.ts	92	102	ObjectType	any
+type-fest/object-utilities.ts::source/set-required.ts	109	117	Simplify	{ [KeyType in keyof T]: T[KeyType]; }
+type-fest/object-utilities.ts::source/set-required.ts	14	20	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::source/set-required.ts	151	162	SetRequired	{ [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }
+type-fest/object-utilities.ts::source/set-required.ts	163	171	BaseType	any
+type-fest/object-utilities.ts::source/set-required.ts	173	177	Keys	any
+type-fest/object-utilities.ts::source/set-required.ts	192	200	BaseType	any
+type-fest/object-utilities.ts::source/set-required.ts	204	212	Simplify	{ [KeyType in keyof T]: T[KeyType]; }
+type-fest/object-utilities.ts::source/set-required.ts	216	222	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::source/set-required.ts	223	231	BaseType	any
+type-fest/object-utilities.ts::source/set-required.ts	233	237	Keys	any
+type-fest/object-utilities.ts::source/set-required.ts	241	249	Required	any
+type-fest/object-utilities.ts::source/set-required.ts	250	265	HomomorphicPick	{ [Key in Keys]: BaseType[Key]; }
+type-fest/object-utilities.ts::source/set-required.ts	266	274	BaseType	any
+type-fest/object-utilities.ts::source/set-required.ts	276	280	Keys	any
+type-fest/object-utilities.ts::source/set-required.ts	53	68	HomomorphicPick	{ [Key in Keys]: BaseType[Key]; }
+type-fest/object-utilities.ts::source/simplify.ts	12	20	Simplify	{ [KeyType in keyof T]: T[KeyType]; }
+type-fest/object-utilities.ts::source/simplify.ts	21	22	T	any
+type-fest/object-utilities.ts::source/simplify.ts	29	36	KeyType	any
+type-fest/object-utilities.ts::source/simplify.ts	46	47	T	any
+type-fest/object-utilities.ts::source/simplify.ts	50	51	T	any
+type-fest/object-utilities.ts::source/simplify.ts	52	59	KeyType	any
+type-fest/object-utilities.ts::source/union-to-intersection.ts	12	31	UnionToIntersection	(Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never
+type-fest/object-utilities.ts::source/union-to-intersection.ts	122	140	mergedIntersection	Intersection
+type-fest/object-utilities.ts::source/union-to-intersection.ts	148	160	Intersection	any
+type-fest/object-utilities.ts::source/union-to-intersection.ts	174	186	Intersection	any
+type-fest/object-utilities.ts::source/union-to-intersection.ts	189	194	Union	any
+type-fest/object-utilities.ts::source/union-to-intersection.ts	32	37	Union	any
+type-fest/object-utilities.ts::source/union-to-intersection.ts	45	50	Union	any
+type-fest/object-utilities.ts::source/union-to-intersection.ts	70	86	distributedUnion	Union
+type-fest/object-utilities.ts::source/union-to-intersection.ts	88	93	Union	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1037	1042	flags	never[]
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1062	1077	contactableUser	{ id: string; profile: { avatarUrl?: string; flags: string[]; }; email: string; name: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1079	1094	ContactableUser	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1101	1103	id	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1117	1121	name	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1134	1139	email	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1164	1171	profile	{ flags: string[]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1179	1184	flags	string[]
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	120	131	SetRequired	{ [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1210	1221	userPreview	{ id: string; email: string; name: string; displayName: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1223	1234	UserPreview	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1241	1243	id	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1257	1261	name	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1272	1277	email	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1300	1311	displayName	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1332	1340	eventKey	"id" | "type" | "user" | "actor"
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1342	1350	EventKey	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1367	1379	omittedEmail	undefined
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1382	1398	strictPublicUser	StrictPublicUser
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1399	1404	email	undefined
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	14	20	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	178	186	Simplify	{ [KeyType in keyof T]: T[KeyType]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	221	225	User	{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	232	234	id	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	245	249	name	string | undefined
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	261	266	email	string | undefined
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	278	285	profile	{ avatarUrl?: string; flags: string[]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	293	302	avatarUrl	string | undefined
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	316	321	flags	string[]
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	344	354	PublicUser	{ id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	357	363	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	364	368	User	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	384	400	StrictPublicUser	{ id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; } & Partial<Record<"email", never>>
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	403	409	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	410	414	User	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	427	444	requireExactProps	true
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	459	474	ContactableUser	{ id: string; profile: { avatarUrl?: string; flags: string[]; }; email: string; name: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	477	488	SetRequired	{ [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	489	493	User	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	518	529	UserPreview	{ id: string; email: string; name: string; displayName: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	532	540	Simplify	{ [KeyType in keyof T]: T[KeyType]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	544	550	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	551	566	ContactableUser	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	583	594	displayName	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	61	72	KeysOfUnion	keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	613	625	CreatedEvent	{ type: "created"; user: User; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	632	636	type	"created"
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	650	654	user	User
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	656	660	User	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	669	681	DeletedEvent	{ type: "deleted"; id: string; actor?: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	688	692	type	"deleted"
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	706	708	id	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	719	724	actor	string | undefined
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	742	747	Event	CreatedEvent | DeletedEvent
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	750	762	CreatedEvent	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	765	777	DeletedEvent	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	783	791	EventKey	"id" | "type" | "user" | "actor"
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	794	805	KeysOfUnion	keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	806	811	Event	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	820	830	publicUser	{ id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	832	842	PublicUser	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	849	851	id	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	865	869	name	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	880	887	profile	{ flags: string[]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	895	900	flags	string[]
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	927	943	strictPublicUser	StrictPublicUser
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	945	961	StrictPublicUser	any
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	968	970	id	string
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	984	991	profile	{ avatarUrl: string; flags: never[]; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	999	1008	avatarUrl	string

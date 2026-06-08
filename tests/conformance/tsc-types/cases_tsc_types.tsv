@@ -1,0 +1,798 @@
+compiler/arrayTypes.ts	101	110	undefined	undefined
+compiler/arrayTypes.ts	119	121	a6	string[]
+compiler/arrayTypes.ts	136	138	a7	string[]
+compiler/arrayTypes.ts	164	166	a8	(number | number[])[]
+compiler/arrayTypes.ts	185	187	a9	(number | (string | { bar: number; }[])[])[]
+compiler/arrayTypes.ts	205	208	bar	number
+compiler/arrayTypes.ts	39	41	a2	number[]
+compiler/arrayTypes.ts	61	63	a3	any[]
+compiler/arrayTypes.ts	7	9	a1	number[]
+compiler/arrayTypes.ts	76	78	a4	null[]
+compiler/arrayTypes.ts	95	97	a5	undefined[]
+compiler/assignmentExpressions.ts	102	104	x5	number
+compiler/assignmentExpressions.ts	107	108	x	any
+compiler/assignmentExpressions.ts	121	123	x6	number
+compiler/assignmentExpressions.ts	126	127	x	any
+compiler/assignmentExpressions.ts	140	142	x7	number
+compiler/assignmentExpressions.ts	145	146	x	any
+compiler/assignmentExpressions.ts	159	161	x8	number
+compiler/assignmentExpressions.ts	164	165	x	any
+compiler/assignmentExpressions.ts	178	180	x9	number
+compiler/assignmentExpressions.ts	183	184	x	any
+compiler/assignmentExpressions.ts	197	200	x10	number
+compiler/assignmentExpressions.ts	203	204	x	any
+compiler/assignmentExpressions.ts	217	220	x11	number
+compiler/assignmentExpressions.ts	22	24	x1	5
+compiler/assignmentExpressions.ts	223	224	x	any
+compiler/assignmentExpressions.ts	238	241	x12	number
+compiler/assignmentExpressions.ts	244	245	x	any
+compiler/assignmentExpressions.ts	259	262	x13	number
+compiler/assignmentExpressions.ts	265	266	x	any
+compiler/assignmentExpressions.ts	27	28	x	any
+compiler/assignmentExpressions.ts	280	283	x14	number
+compiler/assignmentExpressions.ts	286	287	x	any
+compiler/assignmentExpressions.ts	302	305	x15	number
+compiler/assignmentExpressions.ts	308	309	x	any
+compiler/assignmentExpressions.ts	322	323	y	string | null | undefined
+compiler/assignmentExpressions.ts	366	369	x16	string
+compiler/assignmentExpressions.ts	372	373	y	string | null | undefined
+compiler/assignmentExpressions.ts	390	393	x17	string | undefined
+compiler/assignmentExpressions.ts	396	397	y	string | null | undefined
+compiler/assignmentExpressions.ts	4	5	x	any
+compiler/assignmentExpressions.ts	40	42	x2	any
+compiler/assignmentExpressions.ts	402	411	undefined	undefined
+compiler/assignmentExpressions.ts	418	421	x18	"" | "foo" | null | undefined
+compiler/assignmentExpressions.ts	424	425	y	string | null | undefined
+compiler/assignmentExpressions.ts	442	445	x19	"" | null | undefined
+compiler/assignmentExpressions.ts	448	449	y	string | null | undefined
+compiler/assignmentExpressions.ts	45	46	x	any
+compiler/assignmentExpressions.ts	454	463	undefined	undefined
+compiler/assignmentExpressions.ts	470	473	x20	string
+compiler/assignmentExpressions.ts	476	477	y	string | null | undefined
+compiler/assignmentExpressions.ts	494	497	x21	string | undefined
+compiler/assignmentExpressions.ts	500	501	y	string | null | undefined
+compiler/assignmentExpressions.ts	506	515	undefined	undefined
+compiler/assignmentExpressions.ts	59	61	x3	string
+compiler/assignmentExpressions.ts	64	65	x	any
+compiler/assignmentExpressions.ts	83	85	x4	number
+compiler/assignmentExpressions.ts	88	89	x	any
+compiler/basicClassProperties.ts	111	116	count	number
+compiler/basicClassProperties.ts	124	128	item	ClassPropertyItem
+compiler/basicClassProperties.ts	130	147	ClassPropertyItem	typeof ClassPropertyItem
+compiler/basicClassProperties.ts	154	171	ClassPropertyItem	typeof ClassPropertyItem
+compiler/basicClassProperties.ts	184	191	enabled	boolean
+compiler/basicClassProperties.ts	212	220	getReady	() => boolean
+compiler/basicClassProperties.ts	241	246	ready	boolean
+compiler/basicClassProperties.ts	255	263	getCount	() => number
+compiler/basicClassProperties.ts	28	32	name	string
+compiler/basicClassProperties.ts	284	289	count	number
+compiler/basicClassProperties.ts	298	309	getItemName	() => string
+compiler/basicClassProperties.ts	330	334	item	ClassPropertyItem
+compiler/basicClassProperties.ts	335	339	name	string
+compiler/basicClassProperties.ts	355	365	getEnabled	() => boolean
+compiler/basicClassProperties.ts	381	401	ClassPropertyExample	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	402	409	enabled	boolean
+compiler/basicClassProperties.ts	424	446	_classPropertyInstance	ClassPropertyExample
+compiler/basicClassProperties.ts	453	473	ClassPropertyExample	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	483	502	_classPropertyReady	boolean
+compiler/basicClassProperties.ts	505	527	_classPropertyInstance	ClassPropertyExample
+compiler/basicClassProperties.ts	528	533	ready	boolean
+compiler/basicClassProperties.ts	541	560	_classPropertyCount	number
+compiler/basicClassProperties.ts	563	585	_classPropertyInstance	ClassPropertyExample
+compiler/basicClassProperties.ts	586	591	count	number
+compiler/basicClassProperties.ts	599	621	_classPropertyItemName	string
+compiler/basicClassProperties.ts	6	23	ClassPropertyItem	typeof ClassPropertyItem
+compiler/basicClassProperties.ts	60	80	ClassPropertyExample	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	624	646	_classPropertyInstance	ClassPropertyExample
+compiler/basicClassProperties.ts	647	651	item	ClassPropertyItem
+compiler/basicClassProperties.ts	652	656	name	string
+compiler/basicClassProperties.ts	664	691	_classPropertyReadyFromThis	boolean
+compiler/basicClassProperties.ts	694	716	_classPropertyInstance	ClassPropertyExample
+compiler/basicClassProperties.ts	717	725	getReady	() => boolean
+compiler/basicClassProperties.ts	735	762	_classPropertyCountFromThis	number
+compiler/basicClassProperties.ts	765	787	_classPropertyInstance	ClassPropertyExample
+compiler/basicClassProperties.ts	788	796	getCount	() => number
+compiler/basicClassProperties.ts	806	832	_classPropertyNameFromThis	string
+compiler/basicClassProperties.ts	835	857	_classPropertyInstance	ClassPropertyExample
+compiler/basicClassProperties.ts	85	90	ready	boolean
+compiler/basicClassProperties.ts	858	869	getItemName	() => string
+compiler/basicClassProperties.ts	879	900	_classPropertyEnabled	boolean
+compiler/basicClassProperties.ts	903	923	ClassPropertyExample	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	924	931	enabled	boolean
+compiler/basicClassProperties.ts	939	970	_classPropertyEnabledFromMethod	boolean
+compiler/basicClassProperties.ts	973	993	ClassPropertyExample	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	994	1004	getEnabled	() => boolean
+compiler/basicFunctionGenericInference.ts	114	118	foo2	<T, U>(x: T, y: U) => { x: T; y: U; }
+compiler/basicFunctionGenericInference.ts	119	120	T	any
+compiler/basicFunctionGenericInference.ts	122	123	U	any
+compiler/basicFunctionGenericInference.ts	125	126	x	T
+compiler/basicFunctionGenericInference.ts	128	129	T	any
+compiler/basicFunctionGenericInference.ts	13	14	T	any
+compiler/basicFunctionGenericInference.ts	131	132	y	U
+compiler/basicFunctionGenericInference.ts	134	135	U	any
+compiler/basicFunctionGenericInference.ts	150	151	x	T
+compiler/basicFunctionGenericInference.ts	153	154	y	U
+compiler/basicFunctionGenericInference.ts	16	17	x	T
+compiler/basicFunctionGenericInference.ts	167	168	y	{ x: string; y: number; }
+compiler/basicFunctionGenericInference.ts	171	175	foo2	<T, U>(x: T, y: U) => { x: T; y: U; }
+compiler/basicFunctionGenericInference.ts	19	20	T	any
+compiler/basicFunctionGenericInference.ts	197	199	y2	{ x: string; y: number; }
+compiler/basicFunctionGenericInference.ts	202	206	foo2	<T, U>(x: T, y: U) => { x: T; y: U; }
+compiler/basicFunctionGenericInference.ts	207	208	y	{ x: string; y: number; }
+compiler/basicFunctionGenericInference.ts	209	210	x	string
+compiler/basicFunctionGenericInference.ts	212	213	y	{ x: string; y: number; }
+compiler/basicFunctionGenericInference.ts	214	215	y	number
+compiler/basicFunctionGenericInference.ts	228	232	foo3	<T>(x: T | undefined | null) => NonNullable<T>
+compiler/basicFunctionGenericInference.ts	233	234	T	any
+compiler/basicFunctionGenericInference.ts	236	237	x	T | null | undefined
+compiler/basicFunctionGenericInference.ts	239	240	T	any
+compiler/basicFunctionGenericInference.ts	272	273	x	T | null | undefined
+compiler/basicFunctionGenericInference.ts	284	288	f3_1	"hello"
+compiler/basicFunctionGenericInference.ts	291	295	foo3	<T>(x: T | undefined | null) => NonNullable<T>
+compiler/basicFunctionGenericInference.ts	312	316	f3_2	never
+compiler/basicFunctionGenericInference.ts	319	323	foo3	<T>(x: T | undefined | null) => NonNullable<T>
+compiler/basicFunctionGenericInference.ts	324	333	undefined	undefined
+compiler/basicFunctionGenericInference.ts	33	34	x	T
+compiler/basicFunctionGenericInference.ts	342	346	f3_3	number
+compiler/basicFunctionGenericInference.ts	349	353	foo3	<T>(x: T | undefined | null) => NonNullable<T>
+compiler/basicFunctionGenericInference.ts	380	396	defaultOnlyReadU	<T = string, U = T>() => U
+compiler/basicFunctionGenericInference.ts	397	398	T	any
+compiler/basicFunctionGenericInference.ts	409	410	U	any
+compiler/basicFunctionGenericInference.ts	413	414	T	any
+compiler/basicFunctionGenericInference.ts	419	420	U	any
+compiler/basicFunctionGenericInference.ts	432	441	undefined	undefined
+compiler/basicFunctionGenericInference.ts	45	46	x	string
+compiler/basicFunctionGenericInference.ts	459	480	defaultOnlyReadUValue	string
+compiler/basicFunctionGenericInference.ts	483	499	defaultOnlyReadU	<T = string, U = T>() => U
+compiler/basicFunctionGenericInference.ts	513	532	defaultReadTBeforeU	<T = number, U = T>() => [T, U]
+compiler/basicFunctionGenericInference.ts	533	534	T	any
+compiler/basicFunctionGenericInference.ts	545	546	U	any
+compiler/basicFunctionGenericInference.ts	549	550	T	any
+compiler/basicFunctionGenericInference.ts	556	557	T	any
+compiler/basicFunctionGenericInference.ts	559	560	U	any
+compiler/basicFunctionGenericInference.ts	573	582	undefined	undefined
+compiler/basicFunctionGenericInference.ts	600	624	defaultReadTBeforeUValue	[number, number]
+compiler/basicFunctionGenericInference.ts	627	646	defaultReadTBeforeU	<T = number, U = T>() => [T, U]
+compiler/basicFunctionGenericInference.ts	71	73	x1	string
+compiler/basicFunctionGenericInference.ts	76	79	foo	<T>(x: T) => T
+compiler/basicFunctionGenericInference.ts	80	81	x	string
+compiler/basicFunctionGenericInference.ts	9	12	foo	<T>(x: T) => T
+compiler/basicFunctionGenericInference.ts	90	92	x2	string
+compiler/basicFunctionGenericInference.ts	95	98	foo	<T>(x: T) => T
+compiler/basicFunctionGenericInference.ts	99	101	x1	string
+compiler/basicGenericTypeReferences.ts	100	105	value	T
+compiler/basicGenericTypeReferences.ts	107	108	T	any
+compiler/basicGenericTypeReferences.ts	117	131	ForwardDefault	{ t: T; u: U; }
+compiler/basicGenericTypeReferences.ts	132	133	T	any
+compiler/basicGenericTypeReferences.ts	136	137	U	any
+compiler/basicGenericTypeReferences.ts	139	140	U	any
+compiler/basicGenericTypeReferences.ts	155	156	t	T
+compiler/basicGenericTypeReferences.ts	158	159	T	any
+compiler/basicGenericTypeReferences.ts	16	21	value	T
+compiler/basicGenericTypeReferences.ts	161	162	u	U
+compiler/basicGenericTypeReferences.ts	164	165	U	any
+compiler/basicGenericTypeReferences.ts	174	190	DependentDefault	{ t: T; u: U; }
+compiler/basicGenericTypeReferences.ts	191	192	T	any
+compiler/basicGenericTypeReferences.ts	203	204	U	any
+compiler/basicGenericTypeReferences.ts	207	208	T	any
+compiler/basicGenericTypeReferences.ts	214	215	t	T
+compiler/basicGenericTypeReferences.ts	217	218	T	any
+compiler/basicGenericTypeReferences.ts	220	221	u	U
+compiler/basicGenericTypeReferences.ts	223	224	U	any
+compiler/basicGenericTypeReferences.ts	23	24	T	any
+compiler/basicGenericTypeReferences.ts	238	241	box	<T>(x: T) => Box<T>
+compiler/basicGenericTypeReferences.ts	242	243	T	any
+compiler/basicGenericTypeReferences.ts	245	246	x	T
+compiler/basicGenericTypeReferences.ts	248	249	T	any
+compiler/basicGenericTypeReferences.ts	252	255	Box	any
+compiler/basicGenericTypeReferences.ts	256	257	T	any
+compiler/basicGenericTypeReferences.ts	272	277	value	T
+compiler/basicGenericTypeReferences.ts	279	280	x	T
+compiler/basicGenericTypeReferences.ts	293	301	explicit	Box<string>
+compiler/basicGenericTypeReferences.ts	303	306	Box	any
+compiler/basicGenericTypeReferences.ts	319	324	value	string
+compiler/basicGenericTypeReferences.ts	33	43	DefaultBox	{ value: T; }
+compiler/basicGenericTypeReferences.ts	342	350	inferred	Box<number>
+compiler/basicGenericTypeReferences.ts	353	356	box	<T>(x: T) => Box<T>
+compiler/basicGenericTypeReferences.ts	369	385	fromExplicitCall	Box<string>
+compiler/basicGenericTypeReferences.ts	388	391	box	<T>(x: T) => Box<T>
+compiler/basicGenericTypeReferences.ts	423	433	defaultBox	DefaultBox<number>
+compiler/basicGenericTypeReferences.ts	435	445	DefaultBox	any
+compiler/basicGenericTypeReferences.ts	44	45	T	any
+compiler/basicGenericTypeReferences.ts	461	472	selfDefault	SelfDefault<any>
+compiler/basicGenericTypeReferences.ts	474	485	SelfDefault	any
+compiler/basicGenericTypeReferences.ts	5	8	Box	{ value: T; }
+compiler/basicGenericTypeReferences.ts	501	515	forwardDefault	ForwardDefault<any, string>
+compiler/basicGenericTypeReferences.ts	517	531	ForwardDefault	any
+compiler/basicGenericTypeReferences.ts	547	563	dependentDefault	DependentDefault<string, string>
+compiler/basicGenericTypeReferences.ts	565	581	DependentDefault	any
+compiler/basicGenericTypeReferences.ts	60	65	value	T
+compiler/basicGenericTypeReferences.ts	67	68	T	any
+compiler/basicGenericTypeReferences.ts	77	88	SelfDefault	{ value: T; }
+compiler/basicGenericTypeReferences.ts	89	90	T	any
+compiler/basicGenericTypeReferences.ts	9	10	T	any
+compiler/basicGenericTypeReferences.ts	93	94	T	any
+compiler/basicPrimitives.ts	102	112	_undefined	undefined
+compiler/basicPrimitives.ts	129	137	_unknown	unknown
+compiler/basicPrimitives.ts	152	156	_any	any
+compiler/basicPrimitives.ts	168	174	count2	number
+compiler/basicPrimitives.ts	184	190	label2	string
+compiler/basicPrimitives.ts	206	210	big2	bigint
+compiler/basicPrimitives.ts	220	226	_null2	any
+compiler/basicPrimitives.ts	238	249	_undefined2	any
+compiler/basicPrimitives.ts	252	261	undefined	undefined
+compiler/basicPrimitives.ts	267	275	template	string
+compiler/basicPrimitives.ts	27	32	label	string
+compiler/basicPrimitives.ts	290	299	template2	string
+compiler/basicPrimitives.ts	312	317	count	number
+compiler/basicPrimitives.ts	327	333	count3	1
+compiler/basicPrimitives.ts	345	351	label3	"ready"
+compiler/basicPrimitives.ts	369	373	big3	1n
+compiler/basicPrimitives.ts	386	392	_null3	null
+compiler/basicPrimitives.ts	4	9	count	number
+compiler/basicPrimitives.ts	407	418	_undefined3	undefined
+compiler/basicPrimitives.ts	421	430	undefined	undefined
+compiler/basicPrimitives.ts	438	447	template3	"Hello"
+compiler/basicPrimitives.ts	465	474	template4	"Count: 1"
+compiler/basicPrimitives.ts	487	493	count3	1
+compiler/basicPrimitives.ts	504	509	never	never
+compiler/basicPrimitives.ts	524	530	never2	never
+compiler/basicPrimitives.ts	533	544	_undefined3	undefined
+compiler/basicPrimitives.ts	56	59	big	bigint
+compiler/basicPrimitives.ts	78	83	_null	null
+compiler/binaryExpressions.ts	112	114	x7	number
+compiler/binaryExpressions.ts	130	132	x8	boolean
+compiler/binaryExpressions.ts	150	152	x9	boolean
+compiler/binaryExpressions.ts	170	173	x10	boolean
+compiler/binaryExpressions.ts	192	195	x11	boolean
+compiler/binaryExpressions.ts	214	217	x12	boolean
+compiler/binaryExpressions.ts	234	237	x13	boolean
+compiler/binaryExpressions.ts	254	257	x14	boolean
+compiler/binaryExpressions.ts	27	29	x2	number
+compiler/binaryExpressions.ts	275	278	x15	boolean
+compiler/binaryExpressions.ts	296	299	x16	number
+compiler/binaryExpressions.ts	315	318	x17	number
+compiler/binaryExpressions.ts	334	337	x18	number
+compiler/binaryExpressions.ts	354	357	x19	number
+compiler/binaryExpressions.ts	372	375	x20	number
+compiler/binaryExpressions.ts	390	393	x21	number
+compiler/binaryExpressions.ts	408	411	x22	boolean
+compiler/binaryExpressions.ts	430	433	x23	boolean
+compiler/binaryExpressions.ts	44	46	x3	number
+compiler/binaryExpressions.ts	451	457	Object	ObjectConstructor
+compiler/binaryExpressions.ts	6	8	x1	string
+compiler/binaryExpressions.ts	61	63	x4	number
+compiler/binaryExpressions.ts	78	80	x5	number
+compiler/binaryExpressions.ts	95	97	x6	number
+compiler/callbackReturnInference.ts	111	112	T	any
+compiler/callbackReturnInference.ts	117	118	T	any
+compiler/callbackReturnInference.ts	127	140	callbackValue	number
+compiler/callbackReturnInference.ts	143	154	useCallback	<T>(callback: () => T) => T
+compiler/callbackReturnInference.ts	171	190	objectCallbackValue	{ value: number; }
+compiler/callbackReturnInference.ts	18	29	useCallback	<T>(callback: () => T) => T
+compiler/callbackReturnInference.ts	193	202	configure	<T>(options: { create: () => T; }) => T
+compiler/callbackReturnInference.ts	205	211	create	() => { value: number; }
+compiler/callbackReturnInference.ts	222	227	value	number
+compiler/callbackReturnInference.ts	30	31	T	any
+compiler/callbackReturnInference.ts	33	41	callback	() => T
+compiler/callbackReturnInference.ts	49	50	T	any
+compiler/callbackReturnInference.ts	53	54	T	any
+compiler/callbackReturnInference.ts	73	82	configure	<T>(options: { create: () => T; }) => T
+compiler/callbackReturnInference.ts	83	84	T	any
+compiler/callbackReturnInference.ts	86	93	options	{ create: () => T; }
+compiler/callbackReturnInference.ts	97	103	create	() => T
+compiler/conditionalInferTypes.ts	1010	1015	value	number
+compiler/conditionalInferTypes.ts	1036	1041	value	U
+compiler/conditionalInferTypes.ts	104	109	value	U
+compiler/conditionalInferTypes.ts	1049	1050	U	any
+compiler/conditionalInferTypes.ts	1055	1056	U	any
+compiler/conditionalInferTypes.ts	1080	1095	missingProperty	never
+compiler/conditionalInferTypes.ts	1099	1104	other	string
+compiler/conditionalInferTypes.ts	1125	1130	value	U
+compiler/conditionalInferTypes.ts	1138	1139	U	any
+compiler/conditionalInferTypes.ts	1144	1145	U	any
+compiler/conditionalInferTypes.ts	1169	1189	constrainedInferTrue	"ready"
+compiler/conditionalInferTypes.ts	117	118	U	any
+compiler/conditionalInferTypes.ts	1213	1214	U	any
+compiler/conditionalInferTypes.ts	123	124	U	any
+compiler/conditionalInferTypes.ts	1232	1233	U	any
+compiler/conditionalInferTypes.ts	1257	1278	constrainedInferFalse	never
+compiler/conditionalInferTypes.ts	1301	1302	U	any
+compiler/conditionalInferTypes.ts	1320	1321	U	any
+compiler/conditionalInferTypes.ts	1345	1358	repeatedInfer	string | number
+compiler/conditionalInferTypes.ts	1362	1363	a	string
+compiler/conditionalInferTypes.ts	1373	1374	b	number
+compiler/conditionalInferTypes.ts	139	154	MissingProperty	never
+compiler/conditionalInferTypes.ts	1395	1396	a	U
+compiler/conditionalInferTypes.ts	1404	1405	U	any
+compiler/conditionalInferTypes.ts	1407	1408	b	U
+compiler/conditionalInferTypes.ts	1416	1417	U	any
+compiler/conditionalInferTypes.ts	1422	1423	U	any
+compiler/conditionalInferTypes.ts	1447	1461	tupleRestInfer	[number, boolean]
+compiler/conditionalInferTypes.ts	1504	1508	Head	any
+compiler/conditionalInferTypes.ts	1519	1523	Rest	any
+compiler/conditionalInferTypes.ts	1527	1531	Rest	any
+compiler/conditionalInferTypes.ts	1555	1572	arrayElementInfer	string
+compiler/conditionalInferTypes.ts	159	164	other	string
+compiler/conditionalInferTypes.ts	1598	1599	T	any
+compiler/conditionalInferTypes.ts	1605	1606	T	any
+compiler/conditionalInferTypes.ts	1630	1640	unionInfer	string | number
+compiler/conditionalInferTypes.ts	1644	1649	value	string
+compiler/conditionalInferTypes.ts	1664	1669	value	number
+compiler/conditionalInferTypes.ts	1690	1695	value	U
+compiler/conditionalInferTypes.ts	1703	1704	U	any
+compiler/conditionalInferTypes.ts	1709	1710	U	any
+compiler/conditionalInferTypes.ts	1734	1753	functionReturnInfer	string
+compiler/conditionalInferTypes.ts	1791	1792	R	any
+compiler/conditionalInferTypes.ts	1796	1797	R	any
+compiler/conditionalInferTypes.ts	1821	1843	functionParameterInfer	string
+compiler/conditionalInferTypes.ts	1847	1852	value	string
+compiler/conditionalInferTypes.ts	185	190	value	U
+compiler/conditionalInferTypes.ts	1881	1886	value	P
+compiler/conditionalInferTypes.ts	1894	1895	P	any
+compiler/conditionalInferTypes.ts	1908	1909	P	any
+compiler/conditionalInferTypes.ts	198	199	U	any
+compiler/conditionalInferTypes.ts	204	205	U	any
+compiler/conditionalInferTypes.ts	220	240	ConstrainedInferTrue	"ready"
+compiler/conditionalInferTypes.ts	265	266	U	any
+compiler/conditionalInferTypes.ts	284	285	U	any
+compiler/conditionalInferTypes.ts	300	321	ConstrainedInferFalse	never
+compiler/conditionalInferTypes.ts	345	346	U	any
+compiler/conditionalInferTypes.ts	364	365	U	any
+compiler/conditionalInferTypes.ts	380	393	RepeatedInfer	string | number
+compiler/conditionalInferTypes.ts	398	399	a	string
+compiler/conditionalInferTypes.ts	40	41	U	any
+compiler/conditionalInferTypes.ts	409	410	b	number
+compiler/conditionalInferTypes.ts	431	432	a	U
+compiler/conditionalInferTypes.ts	44	45	U	any
+compiler/conditionalInferTypes.ts	440	441	U	any
+compiler/conditionalInferTypes.ts	443	444	b	U
+compiler/conditionalInferTypes.ts	452	453	U	any
+compiler/conditionalInferTypes.ts	458	459	U	any
+compiler/conditionalInferTypes.ts	474	488	TupleRestInfer	[number, boolean]
+compiler/conditionalInferTypes.ts	5	16	DirectInfer	string
+compiler/conditionalInferTypes.ts	532	536	Head	any
+compiler/conditionalInferTypes.ts	547	551	Rest	any
+compiler/conditionalInferTypes.ts	555	559	Rest	any
+compiler/conditionalInferTypes.ts	574	591	ArrayElementInfer	string
+compiler/conditionalInferTypes.ts	60	73	PropertyInfer	number
+compiler/conditionalInferTypes.ts	618	619	T	any
+compiler/conditionalInferTypes.ts	625	626	T	any
+compiler/conditionalInferTypes.ts	641	651	UnionInfer	string | number
+compiler/conditionalInferTypes.ts	656	661	value	string
+compiler/conditionalInferTypes.ts	676	681	value	number
+compiler/conditionalInferTypes.ts	702	707	value	U
+compiler/conditionalInferTypes.ts	715	716	U	any
+compiler/conditionalInferTypes.ts	721	722	U	any
+compiler/conditionalInferTypes.ts	737	756	FunctionReturnInfer	string
+compiler/conditionalInferTypes.ts	78	83	value	number
+compiler/conditionalInferTypes.ts	795	796	R	any
+compiler/conditionalInferTypes.ts	800	801	R	any
+compiler/conditionalInferTypes.ts	816	838	FunctionParameterInfer	string
+compiler/conditionalInferTypes.ts	843	848	value	string
+compiler/conditionalInferTypes.ts	877	882	value	P
+compiler/conditionalInferTypes.ts	890	891	P	any
+compiler/conditionalInferTypes.ts	904	905	P	any
+compiler/conditionalInferTypes.ts	930	941	directInfer	string
+compiler/conditionalInferTypes.ts	964	965	U	any
+compiler/conditionalInferTypes.ts	968	969	U	any
+compiler/conditionalInferTypes.ts	993	1006	propertyInfer	number
+compiler/conditionalTypes.ts	140	152	concreteTrue	boolean
+compiler/conditionalTypes.ts	210	223	concreteFalse	string
+compiler/conditionalTypes.ts	285	291	choose	<T>() => T extends string ? boolean : number
+compiler/conditionalTypes.ts	292	293	T	any
+compiler/conditionalTypes.ts	298	299	T	any
+compiler/conditionalTypes.ts	341	352	distributed	number | boolean
+compiler/conditionalTypes.ts	355	361	choose	<T>() => T extends string ? boolean : number
+compiler/conditionalTypes.ts	5	17	ConcreteTrue	boolean
+compiler/conditionalTypes.ts	67	80	ConcreteFalse	string
+compiler/eslint_noFloatingPromises.ts::a.ts	132	146	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::a.ts	132	164	returnsPromise().then(() => {});	Promise<void>
+compiler/eslint_noFloatingPromises.ts::a.ts	149	153	then	<TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>
+compiler/eslint_noFloatingPromises.ts::a.ts	166	173	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::a.ts	166	198	Promise.reject('value').catch();	Promise<never>
+compiler/eslint_noFloatingPromises.ts::a.ts	174	180	reject	<T = never>(reason?: any) => Promise<T>
+compiler/eslint_noFloatingPromises.ts::a.ts	190	195	catch	<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>
+compiler/eslint_noFloatingPromises.ts::a.ts	20	27	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::a.ts	200	207	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::a.ts	200	234	Promise.reject('value').finally();	Promise<never>
+compiler/eslint_noFloatingPromises.ts::a.ts	208	214	reject	<T = never>(reason?: any) => Promise<T>
+compiler/eslint_noFloatingPromises.ts::a.ts	224	231	finally	(onfinally?: (() => void) | null | undefined) => Promise<never>
+compiler/eslint_noFloatingPromises.ts::a.ts	236	268	[1, 2, 3].map(async x => x + 1);	Promise<number>[]
+compiler/eslint_noFloatingPromises.ts::a.ts	246	249	map	<U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]
+compiler/eslint_noFloatingPromises.ts::a.ts	256	257	x	number
+compiler/eslint_noFloatingPromises.ts::a.ts	261	262	x	number
+compiler/eslint_noFloatingPromises.ts::a.ts	29	36	resolve	(value: unknown) => void
+compiler/eslint_noFloatingPromises.ts::a.ts	38	44	reject	(reason?: any) => void
+compiler/eslint_noFloatingPromises.ts::a.ts	49	56	resolve	(value: unknown) => void
+compiler/eslint_noFloatingPromises.ts::a.ts	6	13	promise	Promise<unknown>
+compiler/eslint_noFloatingPromises.ts::a.ts	68	75	promise	Promise<unknown>
+compiler/eslint_noFloatingPromises.ts::a.ts	68	76	promise;	Promise<unknown>
+compiler/eslint_noFloatingPromises.ts::a.ts	93	107	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::b.ts	139	161	void returnsPromise();	undefined
+compiler/eslint_noFloatingPromises.ts::b.ts	144	158	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::b.ts	163	177	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::b.ts	163	212	returnsPromise().then(   () => {},   () => {}, );	Promise<void>
+compiler/eslint_noFloatingPromises.ts::b.ts	180	184	then	<TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>
+compiler/eslint_noFloatingPromises.ts::b.ts	20	27	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::b.ts	214	221	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::b.ts	214	254	Promise.reject('value').catch(() => {});	Promise<void>
+compiler/eslint_noFloatingPromises.ts::b.ts	222	228	reject	<T = never>(reason?: any) => Promise<T>
+compiler/eslint_noFloatingPromises.ts::b.ts	238	243	catch	<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>
+compiler/eslint_noFloatingPromises.ts::b.ts	256	304	await Promise.reject('value').finally(() => {});	never
+compiler/eslint_noFloatingPromises.ts::b.ts	262	269	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::b.ts	270	276	reject	<T = never>(reason?: any) => Promise<T>
+compiler/eslint_noFloatingPromises.ts::b.ts	286	293	finally	(onfinally?: (() => void) | null | undefined) => Promise<never>
+compiler/eslint_noFloatingPromises.ts::b.ts	29	36	resolve	(value: unknown) => void
+compiler/eslint_noFloatingPromises.ts::b.ts	306	357	await Promise.all([1, 2, 3].map(async x => x + 1));	number[]
+compiler/eslint_noFloatingPromises.ts::b.ts	312	319	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::b.ts	320	323	all	{ <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }
+compiler/eslint_noFloatingPromises.ts::b.ts	334	337	map	<U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]
+compiler/eslint_noFloatingPromises.ts::b.ts	344	345	x	number
+compiler/eslint_noFloatingPromises.ts::b.ts	349	350	x	number
+compiler/eslint_noFloatingPromises.ts::b.ts	38	44	reject	(reason?: any) => void
+compiler/eslint_noFloatingPromises.ts::b.ts	49	56	resolve	(value: unknown) => void
+compiler/eslint_noFloatingPromises.ts::b.ts	6	13	promise	Promise<unknown>
+compiler/eslint_noFloatingPromises.ts::b.ts	68	82	await promise;	unknown
+compiler/eslint_noFloatingPromises.ts::b.ts	74	81	promise	Promise<unknown>
+compiler/eslint_noFloatingPromises.ts::b.ts	99	113	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::c.ts	111	121	MyThenable	any
+compiler/eslint_noFloatingPromises.ts::c.ts	126	130	then	{ (onFulfilled: () => void, onRejected: () => void): MyThenable; (onFulfilled: () => void, onRejected: () => void): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::c.ts	131	142	onFulfilled	() => void
+compiler/eslint_noFloatingPromises.ts::c.ts	156	166	onRejected	() => void
+compiler/eslint_noFloatingPromises.ts::c.ts	181	191	MyThenable	any
+compiler/eslint_noFloatingPromises.ts::c.ts	213	229	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::c.ts	233	243	MyThenable	any
+compiler/eslint_noFloatingPromises.ts::c.ts	246	262	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::c.ts	246	265	createMyThenable();	MyThenable
+compiler/eslint_noFloatingPromises.ts::c.ts	36	53	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
+compiler/eslint_noFloatingPromises.ts::c.ts	57	68	PromiseLike	any
+compiler/eslint_noFloatingPromises.ts::c.ts	79	96	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
+compiler/eslint_noFloatingPromises.ts::c.ts	79	99	createPromiseLike();	PromiseLike<string>
+compiler/eslint_noFloatingPromises.ts::d.ts	113	117	then	{ (onFulfilled: () => void, onRejected: () => void): MyThenable; (onFulfilled: () => void, onRejected: () => void): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::d.ts	118	129	onFulfilled	() => void
+compiler/eslint_noFloatingPromises.ts::d.ts	143	153	onRejected	() => void
+compiler/eslint_noFloatingPromises.ts::d.ts	168	178	MyThenable	any
+compiler/eslint_noFloatingPromises.ts::d.ts	17	34	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
+compiler/eslint_noFloatingPromises.ts::d.ts	200	216	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::d.ts	220	230	MyThenable	any
+compiler/eslint_noFloatingPromises.ts::d.ts	233	258	await createMyThenable();	never
+compiler/eslint_noFloatingPromises.ts::d.ts	239	255	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::d.ts	38	49	PromiseLike	any
+compiler/eslint_noFloatingPromises.ts::d.ts	60	86	await createPromiseLike();	string
+compiler/eslint_noFloatingPromises.ts::d.ts	66	83	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
+compiler/eslint_noFloatingPromises.ts::d.ts	98	108	MyThenable	any
+compiler/eslint_noFloatingPromises.ts::e.ts	106	112	reject	<T = never>(reason?: any) => Promise<T>
+compiler/eslint_noFloatingPromises.ts::e.ts	30	44	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::e.ts	69	91	void returnsPromise();	undefined
+compiler/eslint_noFloatingPromises.ts::e.ts	74	88	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::e.ts	93	122	void Promise.reject('value');	undefined
+compiler/eslint_noFloatingPromises.ts::e.ts	98	105	Promise	PromiseConstructor
+compiler/eslint_noFloatingPromises.ts::f.ts	15	63	await (async function () {   await res(1); })();	any
+compiler/eslint_noFloatingPromises.ts::f.ts	44	57	await res(1);	any
+compiler/eslint_noFloatingPromises.ts::f.ts	65	107	(async function () {   await res(1); })();	Promise<void>
+compiler/eslint_noFloatingPromises.ts::f.ts	88	101	await res(1);	any
+compiler/expressionInference.ts	118	120	x7	-5
+compiler/expressionInference.ts	133	135	x8	false
+compiler/expressionInference.ts	21	23	x2	number
+compiler/expressionInference.ts	39	41	x3	""
+compiler/expressionInference.ts	54	56	x4	string
+compiler/expressionInference.ts	7	9	x1	5
+compiler/expressionInference.ts	80	82	x5	string
+compiler/expressionInference.ts	99	101	x6	string
+compiler/flowTypes.ts	112	119	console	Console
+compiler/flowTypes.ts	112	127	console.log(x);	void
+compiler/flowTypes.ts	120	123	log	(...data: any[]) => void
+compiler/flowTypes.ts	124	125	x	string | undefined
+compiler/flowTypes.ts	14	15	x	string | undefined
+compiler/flowTypes.ts	145	146	y	string | number | boolean
+compiler/flowTypes.ts	207	208	z	string | undefined
+compiler/flowTypes.ts	218	219	y	string | number | boolean
+compiler/flowTypes.ts	235	236	y	string
+compiler/flowTypes.ts	239	248	undefined	undefined
+compiler/flowTypes.ts	262	263	y	string | number | boolean
+compiler/flowTypes.ts	294	301	console	Console
+compiler/flowTypes.ts	294	309	console.log(y);	void
+compiler/flowTypes.ts	302	305	log	(...data: any[]) => void
+compiler/flowTypes.ts	306	307	y	string
+compiler/flowTypes.ts	343	350	console	Console
+compiler/flowTypes.ts	343	357	console.log(y)	void
+compiler/flowTypes.ts	351	354	log	(...data: any[]) => void
+compiler/flowTypes.ts	355	356	y	number | boolean
+compiler/flowTypes.ts	42	43	x	string | undefined
+compiler/flowTypes.ts	61	68	console	Console
+compiler/flowTypes.ts	61	76	console.log(x);	void
+compiler/flowTypes.ts	69	72	log	(...data: any[]) => void
+compiler/flowTypes.ts	73	74	x	string
+compiler/functionReturnTypes.ts	10	15	empty	() => void
+compiler/functionReturnTypes.ts	115	125	returnsBig	() => bigint
+compiler/functionReturnTypes.ts	154	165	returnsBig2	() => 1n | 0n
+compiler/functionReturnTypes.ts	33	42	emptyVoid	() => void
+compiler/functionReturnTypes.ts	65	76	EmptyGetter	typeof EmptyGetter
+compiler/functionReturnTypes.ts	92	93	x	void
+compiler/genericInference1.ts	0	35	['a', 'b', 'c'].map(x => x.length);	number[]
+compiler/genericInference1.ts	16	19	map	<U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any) => U[]
+compiler/genericInference1.ts	20	21	x	string
+compiler/genericInference1.ts	25	26	x	string
+compiler/genericInference1.ts	27	33	length	number
+compiler/importTypes.ts::a.ts	105	112	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::a.ts	131	134	mod	{ process: <T>(x: T) => T | 1; }
+compiler/importTypes.ts::a.ts	17	18	T	any
+compiler/importTypes.ts::a.ts	20	21	x	T
+compiler/importTypes.ts::a.ts	23	24	T	any
+compiler/importTypes.ts::a.ts	34	35	x	T
+compiler/importTypes.ts::a.ts	66	67	x	T
+compiler/importTypes.ts::a.ts	77	80	mod	{ process: <T>(x: T) => T | 1; }
+compiler/importTypes.ts::a.ts	85	92	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::a.ts	9	16	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	106	109	num	number
+compiler/importTypes.ts::index.ts	117	123	i1_str	string | 1
+compiler/importTypes.ts::index.ts	126	133	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	134	137	str	string
+compiler/importTypes.ts::index.ts	147	157	modDefault	{ process: <T>(x: T) => T | 1; }
+compiler/importTypes.ts::index.ts	179	185	i2_num	number
+compiler/importTypes.ts::index.ts	188	198	modDefault	{ process: <T>(x: T) => T | 1; }
+compiler/importTypes.ts::index.ts	199	206	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	207	210	num	number
+compiler/importTypes.ts::index.ts	218	224	i2_str	string | 1
+compiler/importTypes.ts::index.ts	227	237	modDefault	{ process: <T>(x: T) => T | 1; }
+compiler/importTypes.ts::index.ts	238	245	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	246	249	str	string
+compiler/importTypes.ts::index.ts	264	276	modNamespace	typeof modNamespace
+compiler/importTypes.ts::index.ts	298	304	i3_num	number
+compiler/importTypes.ts::index.ts	307	319	modNamespace	typeof modNamespace
+compiler/importTypes.ts::index.ts	320	327	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	328	331	num	number
+compiler/importTypes.ts::index.ts	339	345	i3_str	string | 1
+compiler/importTypes.ts::index.ts	348	360	modNamespace	typeof modNamespace
+compiler/importTypes.ts::index.ts	361	368	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	369	372	str	string
+compiler/importTypes.ts::index.ts	40	43	num	number
+compiler/importTypes.ts::index.ts	62	65	str	string
+compiler/importTypes.ts::index.ts	89	95	i1_num	number
+compiler/importTypes.ts::index.ts	9	16	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	98	105	process	<T>(x: T) => T | 1
+compiler/indexedAccessInference.ts	131	135	name	string
+compiler/indexedAccessInference.ts	138	141	get	<T, K extends keyof T>(obj: T, key: K) => T[K]
+compiler/indexedAccessInference.ts	144	149	value	number
+compiler/indexedAccessInference.ts	154	158	name	string
+compiler/indexedAccessInference.ts	18	21	get	<T, K extends keyof T>(obj: T, key: K) => T[K]
+compiler/indexedAccessInference.ts	22	23	T	any
+compiler/indexedAccessInference.ts	25	26	K	any
+compiler/indexedAccessInference.ts	41	42	T	any
+compiler/indexedAccessInference.ts	44	47	obj	T
+compiler/indexedAccessInference.ts	49	50	T	any
+compiler/indexedAccessInference.ts	52	55	key	K
+compiler/indexedAccessInference.ts	57	58	K	any
+compiler/indexedAccessInference.ts	61	62	T	any
+compiler/indexedAccessInference.ts	63	64	K	any
+compiler/indexedAccessInference.ts	74	79	value	number
+compiler/indexedAccessInference.ts	82	85	get	<T, K extends keyof T>(obj: T, key: K) => T[K]
+compiler/indexedAccessInference.ts	88	93	value	number
+compiler/indexedAccessInference.ts	98	102	name	string
+compiler/mappedTypeInference.ts	100	105	value	{ readonly [P in keyof T]: T[P]; }
+compiler/mappedTypeInference.ts	119	120	P	any
+compiler/mappedTypeInference.ts	130	131	T	any
+compiler/mappedTypeInference.ts	134	135	T	any
+compiler/mappedTypeInference.ts	136	137	P	any
+compiler/mappedTypeInference.ts	143	144	T	any
+compiler/mappedTypeInference.ts	163	170	pickish	<T, K extends keyof T>(value: { [P in K]: T[P]; }) => T
+compiler/mappedTypeInference.ts	171	172	T	any
+compiler/mappedTypeInference.ts	174	175	K	any
+compiler/mappedTypeInference.ts	18	24	unwrap	<T>(value: { [P in keyof T]: T[P]; }) => T
+compiler/mappedTypeInference.ts	190	191	T	any
+compiler/mappedTypeInference.ts	193	198	value	{ [P in K]: T[P]; }
+compiler/mappedTypeInference.ts	203	204	P	any
+compiler/mappedTypeInference.ts	208	209	K	any
+compiler/mappedTypeInference.ts	212	213	T	any
+compiler/mappedTypeInference.ts	214	215	P	any
+compiler/mappedTypeInference.ts	221	222	T	any
+compiler/mappedTypeInference.ts	231	242	objectValue	{ value: number; name: string; }
+compiler/mappedTypeInference.ts	245	251	unwrap	<T>(value: { [P in keyof T]: T[P]; }) => T
+compiler/mappedTypeInference.ts	25	26	T	any
+compiler/mappedTypeInference.ts	254	259	value	number
+compiler/mappedTypeInference.ts	264	268	name	string
+compiler/mappedTypeInference.ts	28	33	value	{ [P in keyof T]: T[P]; }
+compiler/mappedTypeInference.ts	288	298	arrayValue	number[]
+compiler/mappedTypeInference.ts	301	307	unwrap	<T>(value: { [P in keyof T]: T[P]; }) => T
+compiler/mappedTypeInference.ts	335	345	tupleValue	[number, string]
+compiler/mappedTypeInference.ts	348	354	unwrap	<T>(value: { [P in keyof T]: T[P]; }) => T
+compiler/mappedTypeInference.ts	38	39	P	any
+compiler/mappedTypeInference.ts	396	414	readonlyTupleValue	readonly [number, string]
+compiler/mappedTypeInference.ts	417	431	unwrapReadonly	<T>(value: { readonly [P in keyof T]: T[P]; }) => T
+compiler/mappedTypeInference.ts	482	491	pickValue	{ value: number; }
+compiler/mappedTypeInference.ts	49	50	T	any
+compiler/mappedTypeInference.ts	494	501	pickish	<T, K extends keyof T>(value: { [P in K]: T[P]; }) => T
+compiler/mappedTypeInference.ts	504	509	value	number
+compiler/mappedTypeInference.ts	53	54	T	any
+compiler/mappedTypeInference.ts	55	56	P	any
+compiler/mappedTypeInference.ts	62	63	T	any
+compiler/mappedTypeInference.ts	82	96	unwrapReadonly	<T>(value: { readonly [P in keyof T]: T[P]; }) => T
+compiler/mappedTypeInference.ts	97	98	T	any
+compiler/overloadRanking.ts	129	144	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
+compiler/overloadRanking.ts	145	146	T	any
+compiler/overloadRanking.ts	148	149	x	T
+compiler/overloadRanking.ts	151	152	T	any
+compiler/overloadRanking.ts	155	156	T	any
+compiler/overloadRanking.ts	177	192	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
+compiler/overloadRanking.ts	18	33	literalOverload	{ (x: string): "wide"; (x: "ready"): "literal"; }
+compiler/overloadRanking.ts	193	194	x	string
+compiler/overloadRanking.ts	231	243	tiedOverload	{ (x: string, y?: number): "first"; (x: string): "second"; }
+compiler/overloadRanking.ts	244	245	x	string
+compiler/overloadRanking.ts	255	256	y	number | undefined
+compiler/overloadRanking.ts	294	306	tiedOverload	{ (x: string, y?: number): "first"; (x: string): "second"; }
+compiler/overloadRanking.ts	307	308	x	string
+compiler/overloadRanking.ts	336	349	literalResult	"literal"
+compiler/overloadRanking.ts	34	35	x	string
+compiler/overloadRanking.ts	352	367	literalOverload	{ (x: string): "wide"; (x: "ready"): "literal"; }
+compiler/overloadRanking.ts	384	397	genericResult	string[]
+compiler/overloadRanking.ts	400	415	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
+compiler/overloadRanking.ts	432	442	tiedResult	"first"
+compiler/overloadRanking.ts	445	457	tiedOverload	{ (x: string, y?: number): "first"; (x: string): "second"; }
+compiler/overloadRanking.ts	71	86	literalOverload	{ (x: string): "wide"; (x: "ready"): "literal"; }
+compiler/overloadRanking.ts	87	88	x	"ready"
+compiler/tupleTypes.ts	1264	1281	StringsThenConfig	[...string[], { huh: boolean; }]
+compiler/tupleTypes.ts	1300	1303	huh	boolean
+compiler/tupleTypes.ts	1324	1335	firstChorus	StringsThenConfig
+compiler/tupleTypes.ts	1337	1354	StringsThenConfig	any
+compiler/tupleTypes.ts	1393	1396	huh	true
+compiler/tupleTypes.ts	1413	1425	secondChorus	StringsThenConfig
+compiler/tupleTypes.ts	1427	1444	StringsThenConfig	any
+compiler/tupleTypes.ts	1481	1484	huh	false
+compiler/tupleTypes.ts	1502	1513	thirdChorus	StringsThenConfig
+compiler/tupleTypes.ts	1515	1532	StringsThenConfig	any
+compiler/tupleTypes.ts	1567	1570	huh	true
+compiler/tupleTypes.ts	347	358	stringArray	string[]
+compiler/tupleTypes.ts	402	419	singleStringTuple	[string]
+compiler/tupleTypes.ts	646	663	stringNumberTuple	[string, number]
+compiler/typeCast.ts	103	104	x	any
+compiler/typeCast.ts	112	114	xa	any
+compiler/typeCast.ts	122	123	x	any
+compiler/typeCast.ts	132	134	ys	string
+compiler/typeCast.ts	137	138	x	any
+compiler/typeCast.ts	14	15	x	any
+compiler/typeCast.ts	156	158	yu	unknown
+compiler/typeCast.ts	161	162	x	any
+compiler/typeCast.ts	181	183	yn	number
+compiler/typeCast.ts	186	187	x	any
+compiler/typeCast.ts	205	207	ya	any
+compiler/typeCast.ts	210	211	x	any
+compiler/typeCast.ts	227	229	gs	string
+compiler/typeCast.ts	232	233	x	any
+compiler/typeCast.ts	237	238	G	any
+compiler/typeCast.ts	254	256	gu	unknown
+compiler/typeCast.ts	259	260	x	any
+compiler/typeCast.ts	264	265	G	any
+compiler/typeCast.ts	28	29	G	T
+compiler/typeCast.ts	282	284	gn	number
+compiler/typeCast.ts	287	288	x	any
+compiler/typeCast.ts	292	293	G	any
+compiler/typeCast.ts	30	31	T	any
+compiler/typeCast.ts	309	311	ga	any
+compiler/typeCast.ts	314	315	x	any
+compiler/typeCast.ts	319	320	G	any
+compiler/typeCast.ts	338	341	i00	any
+compiler/typeCast.ts	342	343	T	any
+compiler/typeCast.ts	35	36	T	any
+compiler/typeCast.ts	356	357	a	T
+compiler/typeCast.ts	359	360	T	any
+compiler/typeCast.ts	370	376	i00c00	i00<number>
+compiler/typeCast.ts	381	384	i00	any
+compiler/typeCast.ts	385	386	x	any
+compiler/typeCast.ts	45	47	xs	string
+compiler/typeCast.ts	58	59	x	any
+compiler/typeCast.ts	67	69	xu	unknown
+compiler/typeCast.ts	81	82	x	any
+compiler/typeCast.ts	90	92	xn	number
+compiler/typePredicates.ts	101	106	value	unknown
+compiler/typePredicates.ts	123	134	AssertValue	(value: unknown) => asserts value
+compiler/typePredicates.ts	138	143	value	unknown
+compiler/typePredicates.ts	165	170	value	unknown
+compiler/typePredicates.ts	17	22	value	unknown
+compiler/typePredicates.ts	177	188	ThisIsReady	(this: { ready: boolean; }) => this is { ready: true; }
+compiler/typePredicates.ts	192	196	this	{ ready: boolean; }
+compiler/typePredicates.ts	200	205	ready	boolean
+compiler/typePredicates.ts	231	236	ready	true
+compiler/typePredicates.ts	257	271	PredicateArray	any
+compiler/typePredicates.ts	272	273	T	any
+compiler/typePredicates.ts	281	286	every	<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S) => this is readonly S[]
+compiler/typePredicates.ts	287	288	S	any
+compiler/typePredicates.ts	297	298	T	any
+compiler/typePredicates.ts	300	309	predicate	(value: T, index: number, array: readonly T[]) => value is S
+compiler/typePredicates.ts	312	317	value	T
+compiler/typePredicates.ts	319	320	T	any
+compiler/typePredicates.ts	322	327	index	number
+compiler/typePredicates.ts	337	342	array	readonly T[]
+compiler/typePredicates.ts	353	354	T	any
+compiler/typePredicates.ts	36	41	value	unknown
+compiler/typePredicates.ts	361	366	value	T
+compiler/typePredicates.ts	370	371	S	any
+compiler/typePredicates.ts	391	392	S	any
+compiler/typePredicates.ts	5	13	IsString	(value: unknown) => value is string
+compiler/typePredicates.ts	58	70	AssertString	(value: unknown) => asserts value is string
+compiler/typePredicates.ts	74	79	value	unknown
+compiler/unaryExpressions.ts	104	107	foo	{ bar: string | undefined; }
+compiler/unaryExpressions.ts	112	115	bar	string | undefined
+compiler/unaryExpressions.ts	153	155	x7	boolean
+compiler/unaryExpressions.ts	165	168	foo	{ bar: string | undefined; }
+compiler/unaryExpressions.ts	169	172	bar	string | undefined
+compiler/unaryExpressions.ts	21	23	x2	0
+compiler/unaryExpressions.ts	36	38	x3	number
+compiler/unaryExpressions.ts	51	53	x4	true
+compiler/unaryExpressions.ts	6	8	x1	0
+compiler/unaryExpressions.ts	66	68	x5	undefined
+compiler/unaryExpressions.ts	84	86	x6	"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"
+compiler/unionIntersectionInference.ts	100	101	T	any
+compiler/unionIntersectionInference.ts	120	125	falsy	<T>(value: T | false) => T
+compiler/unionIntersectionInference.ts	126	127	T	any
+compiler/unionIntersectionInference.ts	129	134	value	false | T
+compiler/unionIntersectionInference.ts	136	137	T	any
+compiler/unionIntersectionInference.ts	148	149	T	any
+compiler/unionIntersectionInference.ts	168	181	unwrapPromise	<T>(value: Promise<T> | T) => T
+compiler/unionIntersectionInference.ts	18	23	maybe	<T>(value: T | undefined) => T
+compiler/unionIntersectionInference.ts	182	183	T	any
+compiler/unionIntersectionInference.ts	185	190	value	T | Promise<T>
+compiler/unionIntersectionInference.ts	192	199	Promise	PromiseConstructor
+compiler/unionIntersectionInference.ts	200	201	T	any
+compiler/unionIntersectionInference.ts	205	206	T	any
+compiler/unionIntersectionInference.ts	209	210	T	any
+compiler/unionIntersectionInference.ts	226	239	promiseString	Promise<string>
+compiler/unionIntersectionInference.ts	24	25	T	any
+compiler/unionIntersectionInference.ts	241	248	Promise	PromiseConstructor
+compiler/unionIntersectionInference.ts	27	32	value	T | undefined
+compiler/unionIntersectionInference.ts	272	290	intersectionSource	string[] & { extra: number; }
+compiler/unionIntersectionInference.ts	305	310	extra	number
+compiler/unionIntersectionInference.ts	339	344	extra	<T>(value: string[] & T) => T
+compiler/unionIntersectionInference.ts	34	35	T	any
+compiler/unionIntersectionInference.ts	345	346	T	any
+compiler/unionIntersectionInference.ts	348	353	value	string[] & T
+compiler/unionIntersectionInference.ts	366	367	T	any
+compiler/unionIntersectionInference.ts	370	371	T	any
+compiler/unionIntersectionInference.ts	380	390	maybeValue	"ready"
+compiler/unionIntersectionInference.ts	393	398	maybe	<T>(value: T | undefined) => T
+compiler/unionIntersectionInference.ts	415	428	nullableValue	"ready"
+compiler/unionIntersectionInference.ts	431	439	nullable	<T>(value: T | null) => T
+compiler/unionIntersectionInference.ts	456	466	falsyValue	"ready"
+compiler/unionIntersectionInference.ts	469	474	falsy	<T>(value: T | false) => T
+compiler/unionIntersectionInference.ts	491	503	promiseValue	string
+compiler/unionIntersectionInference.ts	50	51	T	any
+compiler/unionIntersectionInference.ts	506	519	unwrapPromise	<T>(value: Promise<T> | T) => T
+compiler/unionIntersectionInference.ts	520	533	promiseString	Promise<string>
+compiler/unionIntersectionInference.ts	542	553	directValue	"ready"
+compiler/unionIntersectionInference.ts	556	569	unwrapPromise	<T>(value: Promise<T> | T) => T
+compiler/unionIntersectionInference.ts	586	596	extraValue	{ extra: number; }
+compiler/unionIntersectionInference.ts	599	604	extra	<T>(value: string[] & T) => T
+compiler/unionIntersectionInference.ts	605	623	intersectionSource	string[] & { extra: number; }
+compiler/unionIntersectionInference.ts	70	78	nullable	<T>(value: T | null) => T
+compiler/unionIntersectionInference.ts	79	80	T	any
+compiler/unionIntersectionInference.ts	82	87	value	T | null
+compiler/unionIntersectionInference.ts	89	90	T	any
+compiler/unionTypes.ts	10	19	unionized	(x: string | number | boolean) => string | number | boolean
+compiler/unionTypes.ts	116	123	padLeft	(value: string, padding: string | number) => string
+compiler/unionTypes.ts	124	129	value	string
+compiler/unionTypes.ts	139	146	padding	string | number
+compiler/unionTypes.ts	176	181	value	string
+compiler/unionTypes.ts	189	203	indentedString	string
+compiler/unionTypes.ts	20	21	x	string | number | boolean
+compiler/unionTypes.ts	206	213	padLeft	(value: string, padding: string | number) => string
+compiler/unionTypes.ts	249	259	Expression	BooleanLogicExpression | "true" | "false"
+compiler/unionTypes.ts	262	284	BooleanLogicExpression	any
+compiler/unionTypes.ts	317	339	BooleanLogicExpression	["and", ...Expression[]] | ["not", Expression]
+compiler/unionTypes.ts	353	363	Expression	any
+compiler/unionTypes.ts	377	387	Expression	any
+compiler/unionTypes.ts	397	408	AllLiterals	false | "string" | 123 | 123n | `test${string}`
+compiler/unionTypes.ts	61	62	x	string | number | boolean
+compiler/unionTypes.ts	72	83	unionReturn	string | number | boolean
+compiler/unionTypes.ts	86	95	unionized	(x: string | number | boolean) => string | number | boolean
+compiler/uniqueSymbolTypes.ts	122	140	dataTagErrorSymbol	unique symbol
+compiler/uniqueSymbolTypes.ts	169	187	dataTagErrorSymbol	unique symbol
+compiler/uniqueSymbolTypes.ts	197	215	dataTagErrorSymbol	unique symbol
+compiler/uniqueSymbolTypes.ts	21	34	dataTagSymbol	unique symbol
+compiler/uniqueSymbolTypes.ts	238	249	unsetMarker	unique symbol
+compiler/uniqueSymbolTypes.ts	278	289	UnsetMarker	unique symbol
+compiler/uniqueSymbolTypes.ts	299	310	unsetMarker	unique symbol
+compiler/uniqueSymbolTypes.ts	324	334	AnyDataTag	{ [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }
+compiler/uniqueSymbolTypes.ts	341	354	dataTagSymbol	unique symbol
+compiler/uniqueSymbolTypes.ts	364	382	dataTagErrorSymbol	unique symbol
+compiler/uniqueSymbolTypes.ts	63	76	dataTagSymbol	unique symbol
+compiler/uniqueSymbolTypes.ts	86	99	dataTagSymbol	unique symbol
