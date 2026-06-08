@@ -716,11 +716,32 @@ compiler/unaryExpressions.ts	112	115	bar	string | undefined
 compiler/unaryExpressions.ts	153	155	x7	boolean
 compiler/unaryExpressions.ts	165	168	foo	{ bar: string | undefined; }
 compiler/unaryExpressions.ts	169	172	bar	string | undefined
+compiler/unaryExpressions.ts	180	188	unary0_1	0
+compiler/unaryExpressions.ts	201	209	unary0_2	0
 compiler/unaryExpressions.ts	21	23	x2	0
+compiler/unaryExpressions.ts	222	230	unary0_3	number
+compiler/unaryExpressions.ts	243	251	unary1_1	1
+compiler/unaryExpressions.ts	264	272	unary1_2	-1
+compiler/unaryExpressions.ts	285	293	unary1_3	number
+compiler/unaryExpressions.ts	306	314	unary2_1	2
+compiler/unaryExpressions.ts	327	335	unary2_2	-2
+compiler/unaryExpressions.ts	348	356	unary2_3	number
 compiler/unaryExpressions.ts	36	38	x3	number
+compiler/unaryExpressions.ts	369	381	unaryLarge_1	99999999999
+compiler/unaryExpressions.ts	404	416	unaryLarge_2	-99999999999
+compiler/unaryExpressions.ts	439	451	unaryLarge_3	number
+compiler/unaryExpressions.ts	474	486	unaryParen_1	number
+compiler/unaryExpressions.ts	501	513	unaryParen_2	number
 compiler/unaryExpressions.ts	51	53	x4	true
+compiler/unaryExpressions.ts	528	540	unaryParen_3	number
+compiler/unaryExpressions.ts	555	565	unaryHex_1	1
+compiler/unaryExpressions.ts	580	590	unaryHex_2	-1
 compiler/unaryExpressions.ts	6	8	x1	0
+compiler/unaryExpressions.ts	605	615	unaryHex_3	number
+compiler/unaryExpressions.ts	630	643	unaryBinary_1	0
+compiler/unaryExpressions.ts	659	672	unaryBinary_2	0
 compiler/unaryExpressions.ts	66	68	x5	undefined
+compiler/unaryExpressions.ts	688	701	unaryBinary_3	number
 compiler/unaryExpressions.ts	84	86	x6	"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"
 compiler/unionIntersectionInference.ts	100	101	T	any
 compiler/unionIntersectionInference.ts	120	125	falsy	<T>(value: T | false) => T
