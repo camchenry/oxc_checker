@@ -4,12 +4,15 @@ use oxc_ast::ast::{
 };
 use oxc_ast_visit::Visit;
 use oxc_semantic::{NodeId, ScopeFlags};
-use std::cell::{Cell, RefCell};
+use std::cell::RefCell;
 
 use crate::{
     checker::{Checker, CheckerReturn},
     checker_impl::{FunctionKind, GetTypeFlags},
     index_type_to_property_name,
+    limits::{
+        CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH,
+    },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
     relations,
@@ -18,13 +21,6 @@ use crate::{
         TyTypeParameter, visit_type,
     },
 };
-
-const CONDITIONAL_INFER_MATCH_MAX_DEPTH: usize = 64;
-const CONDITIONAL_TYPE_MAX_DEPTH: usize = 64;
-
-thread_local! {
-    static CONDITIONAL_TYPE_DEPTH: Cell<usize> = const { Cell::new(0) };
-}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum ConditionalInferMatchResult {

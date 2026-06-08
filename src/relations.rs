@@ -1,6 +1,7 @@
-use crate::types::{Ty, TyTypePredicate};
-
-const ASSIGNABILITY_MAX_DEPTH: usize = 128;
+use crate::{
+    limits::ASSIGNABILITY_MAX_DEPTH,
+    types::{Ty, TyTypePredicate},
+};
 
 pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
     is_assignable_to_at_depth(source, target, 0)

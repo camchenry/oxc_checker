@@ -1,18 +1,12 @@
-use crate::type_set::{reduce_intersection_type, reduce_union_type};
+use crate::{
+    limits::{TYPE_STRING_DEPTH, TYPE_STRING_MAX_DEPTH, TYPE_VISIT_MAX_DEPTH},
+    type_set::{reduce_intersection_type, reduce_union_type},
+};
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
     BindingPattern, PropertyKey, TSMappedTypeModifierOperator, TSType, TSTypeAnnotation,
     TSTypePredicate, TSTypePredicateName,
 };
-use std::cell::Cell;
-
-const TYPE_STRING_MAX_DEPTH: usize = 64;
-const TYPE_VISIT_MAX_DEPTH: usize = 256;
-
-// TODO: Replace with mutable state in checker.
-thread_local! {
-    static TYPE_STRING_DEPTH: Cell<usize> = const { Cell::new(0) };
-}
 
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {

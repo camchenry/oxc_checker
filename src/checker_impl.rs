@@ -21,10 +21,7 @@ use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, UnaryOperator},
 };
-use std::{
-    cell::{Cell, RefCell},
-    collections::HashSet,
-};
+use std::collections::HashSet;
 
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
@@ -36,6 +33,10 @@ use crate::{
     infer::{InferenceResolution, ts_type_contains_infer},
     is_iterable_type_reference, is_mapped_empty_object_intersection,
     is_promise_like_type_reference,
+    limits::{
+        INTERFACE_PROPERTY_RESOLUTION_STACK, TS_TYPE_RESOLUTION_DEPTH,
+        TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_DEPTH,
+    },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_name_to_str,
@@ -51,16 +52,6 @@ use crate::{
 };
 
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
-const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
-const TYPE_INSTANTIATION_MAX_DEPTH: usize = 64;
-const TS_TYPE_RESOLUTION_MAX_DEPTH: usize = 128;
-
-thread_local! {
-    static TS_TYPE_RESOLUTION_DEPTH: Cell<usize> = const { Cell::new(0) };
-    static INTERFACE_PROPERTY_RESOLUTION_STACK: RefCell<Vec<InterfacePropertyResolutionKey>> = const { RefCell::new(Vec::new()) };
-}
-
-type InterfacePropertyResolutionKey = (usize, String, String);
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum FunctionKind<'a> {
     Function(&'a Function<'a>),
