@@ -22,6 +22,7 @@ const SYMBOL_TYPE_NAME: &str = "Symbol";
 const BIGINT_TYPE_NAME: &str = "BigInt";
 const AWAITED_TYPE_NAME: &str = "Awaited";
 const NON_NULLABLE_TYPE_NAME: &str = "NonNullable";
+const RECORD_TYPE_NAME: &str = "Record";
 
 #[derive(Clone, Copy, Debug, Default)]
 struct GlobalSymbolEntry {
@@ -298,6 +299,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .then(|| Ty::type_reference(self.arena(), NON_NULLABLE_TYPE_NAME, [target_type]))
     }
 
+    pub(crate) fn get_global_record_type(
+        &self,
+        program_id: program::ProgramId,
+        key_type: Ty<'a>,
+        value_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        self.is_default_lib_type(program_id, RECORD_TYPE_NAME)
+            .then(|| Ty::type_reference(self.arena(), RECORD_TYPE_NAME, [key_type, value_type]))
+    }
+
     pub(crate) fn is_global_awaited_type_reference(
         &self,
         program_id: program::ProgramId,
@@ -316,6 +327,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference.name == NON_NULLABLE_TYPE_NAME
             && reference.type_arguments.len() == 1
             && self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
+    }
+
+    pub(crate) fn is_global_record_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> bool {
+        reference.name == RECORD_TYPE_NAME
+            && reference.type_arguments.len() == 2
+            && self.is_default_lib_type(program_id, RECORD_TYPE_NAME)
     }
 
     fn is_default_lib_type(&self, program_id: program::ProgramId, name: &str) -> bool {

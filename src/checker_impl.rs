@@ -6,13 +6,13 @@ use oxc_ast::{
         AssignmentTarget, AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern,
         CallExpression, Class, ClassElement, ComputedMemberExpression, ConditionalExpression,
         Expression, FormalParameter, FormalParameterRest, FormalParameters, Function,
-        IdentifierReference, MethodDefinition, MethodDefinitionKind, NewExpression, NumberBase,
-        ObjectExpression, ObjectPropertyKind, PropertyDefinition, StaticMemberExpression,
-        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName,
-        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
-        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        IdentifierReference, LogicalExpression, MethodDefinition, MethodDefinitionKind,
+        NewExpression, NumberBase, ObjectExpression, ObjectPropertyKind, PropertyDefinition,
+        StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType,
+        TSModuleDeclarationName, TSSignature, TSThisParameter, TSTupleElement, TSType,
+        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
+        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
+        TSTypeReference, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -20,7 +20,7 @@ use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
 use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
-    operator::{AssignmentOperator, BinaryOperator, UnaryOperator},
+    operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator},
 };
 use std::collections::HashSet;
 
@@ -52,6 +52,24 @@ use crate::{
         visit_type,
     },
 };
+
+fn record_key_matches_property_name(key_type: Ty<'_>, property_name: &str) -> bool {
+    let Ty::StringLiteral(literal) = key_type else {
+        return false;
+    };
+    literal
+        .value
+        .strip_prefix('\'')
+        .and_then(|value| value.strip_suffix('\''))
+        .or_else(|| {
+            literal
+                .value
+                .strip_prefix('"')
+                .and_then(|value| value.strip_suffix('"'))
+        })
+        .unwrap_or(literal.value)
+        == property_name
+}
 
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 #[derive(Debug, Clone, Copy)]
@@ -739,7 +757,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ChainExpression(_) => Ty::any(),
             Expression::ClassExpression(_) => Ty::any(),
             Expression::ImportExpression(_) => Ty::any(),
-            Expression::LogicalExpression(_) => Ty::any(),
+            Expression::LogicalExpression(logical) => {
+                self.get_type_of_logical_expression(program_id, logical, node_id, flags)
+            }
             Expression::SequenceExpression(_) => Ty::any(),
             Expression::TaggedTemplateExpression(_) => Ty::any(),
             Expression::UpdateExpression(_) => Ty::any(),
@@ -930,6 +950,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Ty::union(self.arena(), [self.get_falsy_type(left), right])
             }
             AssignmentOperator::LogicalNullish => {
+                Ty::union(self.arena(), [self.remove_null_or_undefined(left), right])
+            }
+        }
+    }
+
+    fn get_type_of_logical_expression(
+        &self,
+        program_id: program::ProgramId,
+        logical: &'a LogicalExpression<'a>,
+        node_id: Option<NodeId>,
+        flags: GetTypeFlags,
+    ) -> Ty<'a> {
+        let left = self.get_type_of_expression_with_node(program_id, &logical.left, node_id, flags);
+        let right =
+            self.get_type_of_expression_with_node(program_id, &logical.right, node_id, flags);
+        match logical.operator {
+            LogicalOperator::Or => Ty::union(self.arena(), [self.get_truthy_type(left), right]),
+            LogicalOperator::And => Ty::union(self.arena(), [self.get_falsy_type(left), right]),
+            LogicalOperator::Coalesce => {
                 Ty::union(self.arena(), [self.remove_null_or_undefined(left), right])
             }
         }
@@ -2737,9 +2776,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
         let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
         let property_name = member.property.name.as_str();
-        let ty = object_type
-            .property_type(property_name)
-            .or_else(|| apparent_object_type.property_type(property_name))
+        let ty = self
+            .get_property_type_of_structural_type(program_id, object_type, property_name)
+            .or_else(|| {
+                self.get_property_type_of_structural_type(
+                    program_id,
+                    apparent_object_type,
+                    property_name,
+                )
+            })
             .or_else(|| {
                 self.get_property_type_of_global_interface_type(
                     program_id,
@@ -2773,6 +2818,38 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         } else {
             self.get_apparent_type_at_use(program_id, ty, 0)
         }
+    }
+
+    fn get_property_type_of_structural_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        match ty {
+            Ty::Object(_) | Ty::ModuleNamespace(_) => ty.property_type(property_name),
+            Ty::TypeReference(reference) => {
+                self.get_property_type_of_global_record_type(program_id, reference, property_name)
+            }
+            Ty::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
+                self.get_property_type_of_structural_type(program_id, *ty, property_name)
+            }),
+            _ => None,
+        }
+    }
+
+    fn get_property_type_of_global_record_type(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        if !self.is_global_record_type_reference(program_id, reference)
+            || !record_key_matches_property_name(reference.type_arguments[0], property_name)
+        {
+            return None;
+        }
+        Some(reference.type_arguments[1])
     }
 
     fn get_type_of_computed_member_expression(
@@ -3205,6 +3282,39 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             inference,
             return_type: instantiated,
         })
+    }
+
+    pub(crate) fn get_type_predicate_of_call_expression(
+        &self,
+        program_id: program::ProgramId,
+        call_expression: &'a CallExpression<'a>,
+    ) -> Option<TyTypePredicate<'a>> {
+        let callee_type = self.get_type_of_expression_with_node(
+            program_id,
+            &call_expression.callee,
+            Some(call_expression.node_id.get()),
+            GetTypeFlags::CONTEXT_FREE,
+        );
+        self.get_signatures_of_type(callee_type, SignatureKind::Call)
+            .into_iter()
+            .filter_map(|signature| {
+                self.resolve_call_signature_candidate(
+                    program_id,
+                    signature,
+                    call_expression,
+                    Some(call_expression.node_id.get()),
+                    true,
+                )
+            })
+            .find_map(|candidate| {
+                candidate
+                    .signature
+                    .function
+                    .type_predicate
+                    .map(|predicate| {
+                        self.instantiate_type_predicate(*predicate, candidate.inference.mapper())
+                    })
+            })
     }
 
     fn explicit_call_type_parameter_substitutions(
@@ -5431,7 +5541,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         depth: usize,
     ) -> Option<Ty<'a>> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return object_type.property_type(property_name);
+            return self.get_property_type_of_structural_type(
+                program_id,
+                object_type,
+                property_name,
+            );
         }
 
         match object_type {
@@ -5472,14 +5586,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             }),
             Ty::TypeReference(reference) => self
-                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
-                .and_then(|(expanded_program_id, expanded)| {
-                    self.get_destructured_property_type_at_depth(
-                        expanded_program_id,
-                        expanded,
-                        property_name,
-                        depth + 1,
-                    )
+                .get_property_type_of_global_record_type(program_id, reference, property_name)
+                .or_else(|| {
+                    self.get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                        .and_then(|(expanded_program_id, expanded)| {
+                            self.get_destructured_property_type_at_depth(
+                                expanded_program_id,
+                                expanded,
+                                property_name,
+                                depth + 1,
+                            )
+                        })
                 })
                 .or_else(|| {
                     self.get_property_type_of_interface_type(program_id, reference, property_name)

@@ -1,14 +1,14 @@
 use oxc_ast::{
     AstKind,
-    ast::{ConditionalExpression, Expression, IfStatement},
+    ast::{ConditionalExpression, Expression, IfStatement, LogicalExpression},
 };
 use oxc_span::{GetSpan, Span};
-use oxc_syntax::operator::{BinaryOperator, UnaryOperator};
+use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays, program,
-    types::Ty,
+    types::{Ty, TyTypePredicateKind},
 };
 
 /// A branch-local condition that may narrow identifier references inside an `if` arm.
@@ -110,6 +110,11 @@ fn collect_branch_facts<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef) -> V
                     facts.push(fact);
                 }
             }
+            AstKind::LogicalExpression(logical) => {
+                if let Some(fact) = branch_fact_for_logical(logical, query_span) {
+                    facts.push(fact);
+                }
+            }
             _ => {}
         }
     }
@@ -178,6 +183,30 @@ fn branch_fact_for_conditional<'a>(
     None
 }
 
+/// Return the branch fact for a logical expression when a query is inside the RHS.
+fn branch_fact_for_logical<'a>(
+    logical: &'a LogicalExpression<'a>,
+    query_span: Span,
+) -> Option<BranchFact<'a>> {
+    let right_span = logical.right.span();
+    if !right_span.contains_inclusive(query_span) {
+        return None;
+    }
+
+    let assume_true = match logical.operator {
+        LogicalOperator::And => true,
+        LogicalOperator::Or => false,
+        LogicalOperator::Coalesce => return None,
+    };
+
+    Some(BranchFact {
+        condition: &logical.left,
+        condition_span: logical.left.span(),
+        branch_span: right_span,
+        assume_true,
+    })
+}
+
 /// Narrow a type based on one condition expression and an assumed condition outcome.
 fn narrow_by_condition<'a>(
     checker: &CheckerReturn<'a, '_>,
@@ -193,6 +222,28 @@ fn narrow_by_condition<'a>(
         return narrow_by_truthiness(checker, current_type, assume_true);
     }
 
+    if let Expression::LogicalExpression(logical) = condition {
+        return narrow_by_logical_condition(
+            checker,
+            node,
+            symbol,
+            current_type,
+            logical,
+            assume_true,
+        );
+    }
+
+    if let Expression::CallExpression(call) = condition {
+        return narrow_by_call_type_predicate(
+            checker,
+            node,
+            symbol,
+            current_type,
+            call,
+            assume_true,
+        );
+    }
+
     let Expression::BinaryExpression(binary) = condition else {
         return current_type;
     };
@@ -204,6 +255,26 @@ fn narrow_by_condition<'a>(
         return narrow_by_undefined_equality(checker, node, current_type, effective_true);
     }
 
+    if let Some(mut effective_true) = null_equality_guard(checker, node.program_id, symbol, binary)
+    {
+        effective_true = effective_true == assume_true;
+        return narrow_by_null_equality(checker, node, current_type, effective_true);
+    }
+
+    if let Some((target, property_name, mut effective_true)) = in_guard(binary) {
+        effective_true = effective_true == assume_true;
+        if !expression_matches_symbol(checker, node.program_id, symbol, target) {
+            return current_type;
+        }
+        return narrow_by_in_property(
+            checker,
+            node.program_id,
+            current_type,
+            property_name,
+            effective_true,
+        );
+    }
+
     let Some((target, witness, mut effective_true)) = typeof_guard(binary) else {
         return current_type;
     };
@@ -213,7 +284,79 @@ fn narrow_by_condition<'a>(
         return current_type;
     }
 
-    narrow_by_typeof(checker, current_type, witness, effective_true)
+    narrow_by_typeof(
+        checker,
+        node.program_id,
+        current_type,
+        witness,
+        effective_true,
+    )
+}
+
+fn narrow_by_logical_condition<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    symbol: SymbolRef,
+    current_type: Ty<'a>,
+    logical: &'a LogicalExpression<'a>,
+    assume_true: bool,
+) -> Ty<'a> {
+    match (logical.operator, assume_true) {
+        (LogicalOperator::And, true) => {
+            let left_type =
+                narrow_by_condition(checker, node, symbol, current_type, &logical.left, true);
+            narrow_by_condition(checker, node, symbol, left_type, &logical.right, true)
+        }
+        (LogicalOperator::Or, false) => {
+            let left_type =
+                narrow_by_condition(checker, node, symbol, current_type, &logical.left, false);
+            narrow_by_condition(checker, node, symbol, left_type, &logical.right, false)
+        }
+        _ => current_type,
+    }
+}
+
+fn narrow_by_call_type_predicate<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    symbol: SymbolRef,
+    current_type: Ty<'a>,
+    call: &'a oxc_ast::ast::CallExpression<'a>,
+    assume_true: bool,
+) -> Ty<'a> {
+    if !assume_true {
+        return current_type;
+    }
+
+    let Some(predicate) = checker.get_type_predicate_of_call_expression(node.program_id, call)
+    else {
+        return current_type;
+    };
+    if !matches!(
+        predicate.kind,
+        TyTypePredicateKind::Identifier | TyTypePredicateKind::AssertsIdentifier
+    ) {
+        return current_type;
+    }
+
+    let Some(target_type) = predicate.target_type else {
+        return current_type;
+    };
+    let Some(parameter_index) = predicate.parameter_index else {
+        return current_type;
+    };
+    let Some(argument) = call
+        .arguments
+        .get(parameter_index)
+        .and_then(|argument| argument.as_expression())
+    else {
+        return current_type;
+    };
+    if !expression_matches_symbol(checker, node.program_id, symbol, argument) {
+        return current_type;
+    }
+
+    target_type
 }
 
 /// Recognize `x === undefined` / `x !== undefined` and reversed-operand equivalents.
@@ -259,6 +402,88 @@ fn narrow_by_undefined_equality<'a>(
     remove_undefined_from_type(checker, node, ty)
 }
 
+/// Recognize `x === null` / `x !== null` and reversed-operand equivalents.
+fn null_equality_guard(
+    checker: &CheckerReturn<'_, '_>,
+    program_id: program::ProgramId,
+    symbol: SymbolRef,
+    binary: &oxc_ast::ast::BinaryExpression<'_>,
+) -> Option<bool> {
+    let equality = match binary.operator {
+        BinaryOperator::Equality | BinaryOperator::StrictEquality => true,
+        BinaryOperator::Inequality | BinaryOperator::StrictInequality => false,
+        _ => return None,
+    };
+
+    let left = skip_parentheses(&binary.left);
+    let right = skip_parentheses(&binary.right);
+    if expression_matches_symbol(checker, program_id, symbol, left)
+        && matches!(right, Expression::NullLiteral(_))
+    {
+        return Some(equality);
+    }
+    if expression_matches_symbol(checker, program_id, symbol, right)
+        && matches!(left, Expression::NullLiteral(_))
+    {
+        return Some(equality);
+    }
+    None
+}
+
+fn narrow_by_null_equality<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    ty: Ty<'a>,
+    assume_null: bool,
+) -> Ty<'a> {
+    if matches!(ty, Ty::Any | Ty::Unknown) {
+        return ty;
+    }
+    if assume_null {
+        return filter_type(checker, ty, |ty| matches!(ty, Ty::Null));
+    }
+    remove_null_from_type(checker, node, ty)
+}
+
+fn in_guard<'a>(
+    binary: &'a oxc_ast::ast::BinaryExpression<'a>,
+) -> Option<(&'a Expression<'a>, &'a str, bool)> {
+    if binary.operator != BinaryOperator::In {
+        return None;
+    }
+    let property_name = string_literal_value(skip_parentheses(&binary.left))?;
+    Some((skip_parentheses(&binary.right), property_name, true))
+}
+
+fn narrow_by_in_property<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: program::ProgramId,
+    ty: Ty<'a>,
+    property_name: &'a str,
+    assume_true: bool,
+) -> Ty<'a> {
+    if !assume_true || matches!(ty, Ty::Any) {
+        return ty;
+    }
+
+    let property_key = Ty::string_literal(checker.arena(), property_name);
+    let property_record = checker
+        .get_global_record_type(program_id, property_key, Ty::unknown())
+        .unwrap_or_else(|| {
+            Ty::object(
+                checker.arena(),
+                [Ty::property(property_name, Ty::unknown())],
+            )
+        });
+    match ty {
+        Ty::Unknown => property_record,
+        Ty::PrimitiveObject | Ty::Function(_) | Ty::TypeReference(_) | Ty::Object(_) => {
+            Ty::intersection(checker.arena(), [ty, property_record])
+        }
+        _ => ty,
+    }
+}
+
 fn remove_undefined_from_type<'a>(
     checker: &CheckerReturn<'a, '_>,
     node: NodeRef,
@@ -296,6 +521,47 @@ fn non_undefined_constituent<'a>(
                     Ty::union(
                         checker.arena(),
                         [Ty::object(checker.arena(), []), Ty::null()],
+                    ),
+                ],
+            ))
+        }
+        _ => Some(ty),
+    }
+}
+
+fn remove_null_from_type<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
+    match ty {
+        Ty::Union(union) => {
+            let types = union
+                .types
+                .iter()
+                .filter_map(|ty| non_null_constituent(checker, node, *ty))
+                .collect::<Vec<_>>();
+            if types.is_empty() {
+                Ty::never()
+            } else {
+                Ty::union(checker.arena(), types)
+            }
+        }
+        _ => non_null_constituent(checker, node, ty).unwrap_or_else(Ty::never),
+    }
+}
+
+fn non_null_constituent<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    ty: Ty<'a>,
+) -> Option<Ty<'a>> {
+    match ty {
+        Ty::Null => None,
+        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => {
+            Some(Ty::intersection(
+                checker.arena(),
+                [
+                    ty,
+                    Ty::union(
+                        checker.arena(),
+                        [Ty::object(checker.arena(), []), Ty::undefined()],
                     ),
                 ],
             ))
@@ -397,17 +663,54 @@ fn narrow_by_truthiness<'a>(
 /// Apply a `typeof` witness or its negation to a type.
 fn narrow_by_typeof<'a>(
     checker: &CheckerReturn<'a, '_>,
+    program_id: program::ProgramId,
     ty: Ty<'a>,
     witness: TypeofWitness,
     assume_true: bool,
 ) -> Ty<'a> {
-    if matches!(ty, Ty::Any | Ty::Unknown) {
+    if matches!(ty, Ty::Any) {
         return ty;
+    }
+
+    if matches!(ty, Ty::Unknown) {
+        return if assume_true {
+            type_from_typeof_witness(checker, program_id, witness)
+        } else {
+            ty
+        };
     }
 
     filter_type(checker, ty, |ty| {
         type_matches_typeof(ty, witness) == assume_true
     })
+}
+
+fn type_from_typeof_witness<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: program::ProgramId,
+    witness: TypeofWitness,
+) -> Ty<'a> {
+    match witness {
+        TypeofWitness::String => Ty::string(),
+        TypeofWitness::Number => Ty::number(),
+        TypeofWitness::Boolean => Ty::boolean(),
+        TypeofWitness::Bigint => Ty::bigint(),
+        TypeofWitness::Undefined => Ty::undefined(),
+        TypeofWitness::Object => Ty::union(checker.arena(), [Ty::primitive_object(), Ty::null()]),
+        TypeofWitness::Function => {
+            checker
+                .get_global_function_type(program_id)
+                .unwrap_or_else(|| {
+                    Ty::function_with_type_predicate(
+                        checker.arena(),
+                        std::iter::empty(),
+                        std::iter::empty(),
+                        Ty::any(),
+                        None,
+                    )
+                })
+        }
+    }
 }
 
 /// Filter a type, distributing over union constituents and reducing the result.

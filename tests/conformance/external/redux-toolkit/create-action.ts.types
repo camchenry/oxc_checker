@@ -26,10 +26,10 @@ export function isAction(action: unknown): action is Action {
 >               ^^^^^^: unknown   (TyUnknown)
 
   return typeof action === 'object' && action !== null && 'type' in action
->                                      ^^^^^^: unknown   (TyUnknown)
+>                                      ^^^^^^: object | null   (TyUnion)
 
   return typeof action === 'object' && action !== null && 'type' in action
->                                                                   ^^^^^^: unknown   (TyUnknown)
+>                                                                   ^^^^^^: object   (TyPrimitiveObject)
 
 export type IsAny<T, True, False = never> = true | false extends (T extends never
 >           ^^^^^: (true | false) extends T extends never ? true : false ? True : False   (TyConditional)
@@ -1046,10 +1046,10 @@ export function createAction(type: string, prepareAction?: Function): any {
 >            ^^^^^^: unknown   (TyUnknown)
 
     isAction(action) && action.type === type
->                       ^^^^^^: unknown   (TyUnknown)
+>                       ^^^^^^: Action<string>   (TyTypeReference)
 
     isAction(action) && action.type === type
->                              ^^^^: any   (TyAny)
+>                              ^^^^: string   (TyString)
 
     isAction(action) && action.type === type
 >                                       ^^^^: string   (TyString)
@@ -1079,13 +1079,13 @@ export function isActionCreator(
 >               ^^^^^^: unknown   (TyUnknown)
 
   return typeof action === 'function' && 'type' in action && hasMatchFunction(action as any)
->                                                  ^^^^^^: unknown   (TyUnknown)
+>                                                  ^^^^^^: Function   (TyTypeReference)
 
   return typeof action === 'function' && 'type' in action && hasMatchFunction(action as any)
 >                                                            ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction)
 
   return typeof action === 'function' && 'type' in action && hasMatchFunction(action as any)
->                                                                             ^^^^^^: unknown   (TyUnknown)
+>                                                                             ^^^^^^: Function & Record<"type", unknown>   (TyIntersection)
 
 type IfPrepareActionMethodProvided<
 >    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? True : False   (TyConditional)

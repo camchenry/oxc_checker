@@ -69,3 +69,150 @@ if (typeof y === "string") {
 
   console.log(y)
 >             ^: number | boolean   (TyUnion)
+
+const andResult = x && x;
+>     ^^^^^^^^^: undefined | string   (TyUnion)
+
+const andResult = x && x;
+>                 ^: string | undefined   (TyUnion)
+
+const andResult = x && x;
+>                      ^: string   (TyString)
+
+const orResult = x || "fallback";
+>     ^^^^^^^^: string   (TyString)
+
+const orResult = x || "fallback";
+>                ^: string | undefined   (TyUnion)
+
+const coalesceResult = x ?? "fallback";
+>     ^^^^^^^^^^^^^^: string   (TyString)
+
+const coalesceResult = x ?? "fallback";
+>                      ^: string | undefined   (TyUnion)
+
+if (x && typeof y === "string") {
+>   ^: string | undefined   (TyUnion)
+
+if (x && typeof y === "string") {
+>               ^: string | number | boolean   (TyUnion)
+
+  console.log(x);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(x);
+> ^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(x);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(x);
+>             ^: string   (TyString)
+
+  console.log(y);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(y);
+> ^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(y);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(y);
+>             ^: string   (TyString)
+
+interface Action {
+>         ^^^^^^: any   (TyAny)
+
+  type: string;
+> ^^^^: string   (TyString)
+
+declare function isAction(action: unknown): action is Action;
+>                ^^^^^^^^: (action: unknown) => action is Action   (TyFunction)
+
+declare function isAction(action: unknown): action is Action;
+>                         ^^^^^^: unknown   (TyUnknown)
+
+declare function isAction(action: unknown): action is Action;
+>                                           ^^^^^^: unknown   (TyUnknown)
+
+declare function isAction(action: unknown): action is Action;
+>                                                     ^^^^^^: any   (TyAny)
+
+declare const maybeAction: unknown;
+>             ^^^^^^^^^^^: unknown   (TyUnknown)
+
+if (isAction(maybeAction) && maybeAction.type) {
+>   ^^^^^^^^: (action: unknown) => action is Action   (TyFunction)
+
+if (isAction(maybeAction) && maybeAction.type) {
+>            ^^^^^^^^^^^: unknown   (TyUnknown)
+
+if (isAction(maybeAction) && maybeAction.type) {
+>                            ^^^^^^^^^^^: Action   (TyTypeReference)
+
+if (isAction(maybeAction) && maybeAction.type) {
+>                                        ^^^^: string   (TyString)
+
+  console.log(maybeAction);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(maybeAction);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(maybeAction);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(maybeAction);
+>             ^^^^^^^^^^^: Action   (TyTypeReference)
+
+  console.log(maybeAction.type);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(maybeAction.type);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(maybeAction.type);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(maybeAction.type);
+>             ^^^^^^^^^^^: Action   (TyTypeReference)
+
+  console.log(maybeAction.type);
+>                         ^^^^: string   (TyString)
+
+if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
+>          ^^^^^^^^^^^: unknown   (TyUnknown)
+
+if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
+>                                      ^^^^^^^^^^^: object | null   (TyUnion)
+
+if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
+>                                                                        ^^^^^^^^^^^: object   (TyPrimitiveObject)
+
+  console.log(maybeAction);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(maybeAction);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(maybeAction);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(maybeAction);
+>             ^^^^^^^^^^^: object & Record<"type", unknown>   (TyIntersection)
+
+  console.log(maybeAction.type);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(maybeAction.type);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(maybeAction.type);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(maybeAction.type);
+>             ^^^^^^^^^^^: object & Record<"type", unknown>   (TyIntersection)
+
+  console.log(maybeAction.type);
+>                         ^^^^: unknown   (TyUnknown)

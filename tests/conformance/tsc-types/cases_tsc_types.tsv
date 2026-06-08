@@ -480,6 +480,15 @@ compiler/expressionInference.ts	54	56	x4	string
 compiler/expressionInference.ts	7	9	x1	5
 compiler/expressionInference.ts	80	82	x5	string
 compiler/expressionInference.ts	99	101	x6	string
+compiler/flowTypes.ts	1042	1049	console	Console
+compiler/flowTypes.ts	1042	1067	console.log(maybeAction);	void
+compiler/flowTypes.ts	1050	1053	log	(...data: any[]) => void
+compiler/flowTypes.ts	1054	1065	maybeAction	object & Record<"type", unknown>
+compiler/flowTypes.ts	1083	1090	console	Console
+compiler/flowTypes.ts	1083	1113	console.log(maybeAction.type);	void
+compiler/flowTypes.ts	1091	1094	log	(...data: any[]) => void
+compiler/flowTypes.ts	1095	1106	maybeAction	object & Record<"type", unknown>
+compiler/flowTypes.ts	1107	1111	type	unknown
 compiler/flowTypes.ts	112	119	console	Console
 compiler/flowTypes.ts	112	127	console.log(x);	void
 compiler/flowTypes.ts	120	123	log	(...data: any[]) => void
@@ -499,11 +508,51 @@ compiler/flowTypes.ts	343	350	console	Console
 compiler/flowTypes.ts	343	357	console.log(y)	void
 compiler/flowTypes.ts	351	354	log	(...data: any[]) => void
 compiler/flowTypes.ts	355	356	y	number | boolean
+compiler/flowTypes.ts	400	409	andResult	string | undefined
+compiler/flowTypes.ts	412	413	x	string | undefined
+compiler/flowTypes.ts	417	418	x	string
 compiler/flowTypes.ts	42	43	x	string | undefined
+compiler/flowTypes.ts	447	455	orResult	string
+compiler/flowTypes.ts	458	459	x	string | undefined
+compiler/flowTypes.ts	508	522	coalesceResult	string
+compiler/flowTypes.ts	525	526	x	string | undefined
+compiler/flowTypes.ts	547	548	x	string | undefined
+compiler/flowTypes.ts	559	560	y	string | number | boolean
+compiler/flowTypes.ts	591	598	console	Console
+compiler/flowTypes.ts	591	606	console.log(x);	void
+compiler/flowTypes.ts	599	602	log	(...data: any[]) => void
+compiler/flowTypes.ts	603	604	x	string
 compiler/flowTypes.ts	61	68	console	Console
 compiler/flowTypes.ts	61	76	console.log(x);	void
+compiler/flowTypes.ts	621	628	console	Console
+compiler/flowTypes.ts	621	636	console.log(y);	void
+compiler/flowTypes.ts	629	632	log	(...data: any[]) => void
+compiler/flowTypes.ts	633	634	y	string
+compiler/flowTypes.ts	650	656	Action	any
+compiler/flowTypes.ts	661	665	type	string
 compiler/flowTypes.ts	69	72	log	(...data: any[]) => void
+compiler/flowTypes.ts	695	703	isAction	(action: unknown) => action is Action
+compiler/flowTypes.ts	704	710	action	unknown
+compiler/flowTypes.ts	722	728	action	unknown
 compiler/flowTypes.ts	73	74	x	string
+compiler/flowTypes.ts	732	738	Action	any
+compiler/flowTypes.ts	754	765	maybeAction	unknown
+compiler/flowTypes.ts	781	789	isAction	(action: unknown) => action is Action
+compiler/flowTypes.ts	790	801	maybeAction	unknown
+compiler/flowTypes.ts	806	817	maybeAction	Action
+compiler/flowTypes.ts	818	822	type	string
+compiler/flowTypes.ts	840	847	console	Console
+compiler/flowTypes.ts	840	865	console.log(maybeAction);	void
+compiler/flowTypes.ts	848	851	log	(...data: any[]) => void
+compiler/flowTypes.ts	852	863	maybeAction	Action
+compiler/flowTypes.ts	880	887	console	Console
+compiler/flowTypes.ts	880	910	console.log(maybeAction.type);	void
+compiler/flowTypes.ts	888	891	log	(...data: any[]) => void
+compiler/flowTypes.ts	892	903	maybeAction	Action
+compiler/flowTypes.ts	904	908	type	string
+compiler/flowTypes.ts	925	936	maybeAction	unknown
+compiler/flowTypes.ts	953	964	maybeAction	object | null
+compiler/flowTypes.ts	987	998	maybeAction	object
 compiler/functionReturnTypes.ts	10	15	empty	() => void
 compiler/functionReturnTypes.ts	115	125	returnsBig	() => bigint
 compiler/functionReturnTypes.ts	154	165	returnsBig2	() => 1n | 0n

@@ -880,6 +880,10 @@ impl<'a> Ty<'a> {
             Self::ModuleNamespace(namespace) => namespace.properties.iter().find_map(|property| {
                 (property.name == name && !property.computed).then_some(property.ty)
             }),
+            Self::Intersection(intersection) => intersection
+                .types
+                .iter()
+                .find_map(|ty| ty.property_type(name)),
             _ => None,
         }
     }
