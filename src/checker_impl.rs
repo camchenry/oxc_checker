@@ -41,6 +41,7 @@ use crate::{
     program::{self},
     property_key_name_str, push_type_parameter_names, relations, ts_type_name_to_str,
     ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
+    type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyArray, TyConditional, TyFunction, TyMapped, TyParameter, TyProperty, TyTuple,
@@ -607,8 +608,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     }
                 }
                 UnaryOperator::BitwiseNot => Ty::number(),
-                // TODO(correctness): add const eval for `!` expressions to boolean literals
-                UnaryOperator::LogicalNot => Ty::boolean(),
+                UnaryOperator::LogicalNot => {
+                    let argument_type = self.get_type_of_expression_with_node(
+                        program_id,
+                        &unary_expression.argument,
+                        node_id,
+                        flags | GetTypeFlags::PRESERVE_LITERALS,
+                    );
+                    type_facts::get_logical_not_type(argument_type)
+                }
                 UnaryOperator::Typeof => Ty::typeof_string_values(self.arena()),
                 UnaryOperator::Void => Ty::undefined(),
                 UnaryOperator::Delete => Ty::boolean(),

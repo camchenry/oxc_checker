@@ -7,6 +7,18 @@ const x6 = typeof 0
 const foo = { bar: 'baz' as string | undefined }
 const x7 = delete foo.bar
 
+const eval_not_1 = !0;
+const eval_not_2 = !1;
+const eval_not_3 = !2;
+const eval_not_4 = !-0;
+const eval_not_5 = !+0;
+
+const eval_notnot_1 = !!0;
+const eval_notnot_2 = !!1;
+const eval_notnot_3 = !!2;
+const eval_notnot_4 = !!-0;
+const eval_notnot_5 = !!+0;
+
 const unary0_1 = +0;
 const unary0_2 = -0;
 const unary0_3 = ~0;

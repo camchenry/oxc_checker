@@ -8,7 +8,7 @@ const x3 = ~0;
 >     ^^: number   (TyNumber)
 
 const x4 = !0;
->     ^^: boolean   (TyBoolean)
+>     ^^: true   (TyBooleanLiteral)
 
 const x5 = void 0
 >     ^^: undefined   (TyUndefined)
@@ -30,6 +30,36 @@ const x7 = delete foo.bar
 
 const x7 = delete foo.bar
 >                     ^^^: string | undefined   (TyUnion)
+
+const eval_not_1 = !0;
+>     ^^^^^^^^^^: true   (TyBooleanLiteral)
+
+const eval_not_2 = !1;
+>     ^^^^^^^^^^: false   (TyBooleanLiteral)
+
+const eval_not_3 = !2;
+>     ^^^^^^^^^^: false   (TyBooleanLiteral)
+
+const eval_not_4 = !-0;
+>     ^^^^^^^^^^: true   (TyBooleanLiteral)
+
+const eval_not_5 = !+0;
+>     ^^^^^^^^^^: true   (TyBooleanLiteral)
+
+const eval_notnot_1 = !!0;
+>     ^^^^^^^^^^^^^: false   (TyBooleanLiteral)
+
+const eval_notnot_2 = !!1;
+>     ^^^^^^^^^^^^^: true   (TyBooleanLiteral)
+
+const eval_notnot_3 = !!2;
+>     ^^^^^^^^^^^^^: true   (TyBooleanLiteral)
+
+const eval_notnot_4 = !!-0;
+>     ^^^^^^^^^^^^^: false   (TyBooleanLiteral)
+
+const eval_notnot_5 = !!+0;
+>     ^^^^^^^^^^^^^: false   (TyBooleanLiteral)
 
 const unary0_1 = +0;
 >     ^^^^^^^^: 0   (TyNumberLiteral)

@@ -19,6 +19,7 @@ mod limits;
 mod mapper;
 pub mod program;
 mod relations;
+mod type_facts;
 pub mod type_set;
 mod types;
 
