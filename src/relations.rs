@@ -118,7 +118,7 @@ fn is_assignable_to_keyof<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -> b
 fn property_name_from_key_type(ty: Ty<'_>) -> Option<&str> {
     match ty {
         Ty::StringLiteral(literal) => Some(string_literal_type_to_property_name(literal.value)),
-        Ty::NumberLiteral(literal) => Some(literal.value),
+        Ty::NumberLiteral(literal) => literal.raw.as_ref().map(|s| s.as_str()),
         Ty::BooleanLiteral(true) => Some("true"),
         Ty::BooleanLiteral(false) => Some("false"),
         _ => None,

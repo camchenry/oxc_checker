@@ -594,20 +594,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_conditional_expression(program_id, conditional, node_id)
             }
             Expression::UnaryExpression(unary_expression) => match unary_expression.operator {
-                UnaryOperator::UnaryNegation => match &unary_expression.argument {
-                    Expression::NumericLiteral(literal) if flags.preserve_literals() => {
-                        let name = self.arena().str(&format!("-{}", literal.raw_str()));
-                        Ty::number_literal(self.arena(), name)
+                UnaryOperator::UnaryNegation | UnaryOperator::UnaryPlus => {
+                    match &unary_expression.argument {
+                        Expression::NumericLiteral(literal) if flags.preserve_literals() => {
+                            Ty::number_literal_from_ast(
+                                self.arena(),
+                                literal,
+                                unary_expression.operator == UnaryOperator::UnaryNegation,
+                            )
+                        }
+                        _ => Ty::number(),
                     }
-                    _ => Ty::number(),
-                },
-                UnaryOperator::UnaryPlus => match &unary_expression.argument {
-                    Expression::NumericLiteral(literal) if flags.preserve_literals() => {
-                        let name = self.arena().str(&literal.raw_str());
-                        Ty::number_literal(self.arena(), name)
-                    }
-                    _ => Ty::number(),
-                },
+                }
                 UnaryOperator::BitwiseNot => Ty::number(),
                 // TODO(correctness): add const eval for `!` expressions to boolean literals
                 UnaryOperator::LogicalNot => Ty::boolean(),
@@ -673,7 +671,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             Expression::NumericLiteral(literal) => {
                 if flags.preserve_literals() {
-                    Ty::number_literal(self.arena(), self.arena().str(&literal.raw_str()))
+                    Ty::number_literal_from_ast(self.arena(), literal, false)
                 } else {
                     Ty::number()
                 }
@@ -1173,11 +1171,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::boolean_literal(boolean_literal.value)
                 }
                 TSLiteral::NumericLiteral(numeric_literal) => {
-                    let name = numeric_literal.raw.as_ref().map_or_else(
-                        || self.arena().str(&numeric_literal.value.to_string()),
-                        |raw| raw.as_str(),
-                    );
-                    Ty::number_literal(self.arena(), name)
+                    Ty::number_literal_from_ast(self.arena(), numeric_literal, false)
                 }
                 TSLiteral::StringLiteral(string_literal) => {
                     Ty::string_literal(self.arena(), string_literal.value.as_str())

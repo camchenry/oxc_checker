@@ -2,11 +2,13 @@ use crate::{
     limits::{TYPE_STRING_DEPTH, TYPE_STRING_MAX_DEPTH, TYPE_VISIT_MAX_DEPTH},
     type_set::{reduce_intersection_type, reduce_union_type},
 };
+use num_traits::{Zero, cast::ToPrimitive};
 use oxc_allocator::{Allocator, Vec as ArenaVec};
 use oxc_ast::ast::{
-    BindingPattern, PropertyKey, TSMappedTypeModifierOperator, TSType, TSTypeAnnotation,
-    TSTypePredicate, TSTypePredicateName,
+    BindingPattern, NumberBase, PropertyKey, TSMappedTypeModifierOperator, TSType,
+    TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
 };
+use oxc_str::Str;
 
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
@@ -180,11 +182,32 @@ pub struct TyStringLiteral<'a> {
     pub(crate) value: &'a str,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub struct TyNumberLiteral<'a> {
-    // TODO(ast): use a number type?
-    pub(crate) value: &'a str,
+    /// Value of the number literal, converted to base-10 floating point.
+    pub(crate) value: f64,
+    /// The number as it appears in source code
+    ///
+    /// Can be `None` if the number literal is not directly from the source code
+    pub(crate) raw: Option<Str<'a>>,
+    /// The base representation used by the literal in source code
+    pub(crate) base: NumberBase,
 }
+
+impl<'a> TyNumberLiteral<'a> {
+    pub fn to_usize(&self) -> Option<usize> {
+        self.value.to_usize()
+    }
+}
+
+impl PartialEq for TyNumberLiteral<'_> {
+    fn eq(&self, other: &Self) -> bool {
+        self.value.total_cmp(&other.value) == std::cmp::Ordering::Equal
+            && self.raw == other.raw
+            && self.base == other.base
+    }
+}
+impl Eq for TyNumberLiteral<'_> {}
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct TyBigIntLiteral<'a> {
@@ -444,8 +467,31 @@ impl<'a> Ty<'a> {
         Self::Number
     }
 
-    pub fn number_literal(arena: CheckerArena<'a>, num: &'a str) -> Self {
-        Self::NumberLiteral(arena.alloc(TyNumberLiteral { value: num }))
+    pub fn number_literal(
+        arena: CheckerArena<'a>,
+        value: f64,
+        raw: &'a str,
+        base: NumberBase,
+    ) -> Self {
+        Self::NumberLiteral(arena.alloc(TyNumberLiteral {
+            value,
+            raw: Some(*arena.alloc(Str::from(raw))),
+            base,
+        }))
+    }
+
+    pub fn number_literal_from_ast(
+        arena: CheckerArena<'a>,
+        lit: &'a oxc_ast::ast::NumericLiteral,
+        negated: bool,
+    ) -> Self {
+        // TODO: Do we need to store `-` in the raw string?
+        let value = if negated { -lit.value } else { lit.value };
+        Self::NumberLiteral(arena.alloc(TyNumberLiteral {
+            value,
+            raw: lit.raw,
+            base: lit.base,
+        }))
     }
 
     pub fn string() -> Self {
@@ -999,7 +1045,15 @@ impl<'a> Ty<'a> {
                     .unwrap_or(string_literal.value);
                 format!("{content:?}")
             }
-            Self::NumberLiteral(number_literal) => number_literal.value.to_string(),
+            Self::NumberLiteral(number_literal) => {
+                // Print the base-10 representation of the number
+                if number_literal.value.is_zero() {
+                    // Treat +0 and -0 as the same when printing.
+                    "0".to_string()
+                } else {
+                    number_literal.value.to_string()
+                }
+            }
             Self::BooleanLiteral(value) => value.to_string(),
             Self::BigIntLiteral(big_int_literal) => format!("{}n", big_int_literal.value),
             Self::TemplateLiteral(template_literal) => {
@@ -1619,7 +1673,13 @@ mod tests {
         let arena = arena(&allocator);
 
         assert_eq!(
-            Ty::r#union(arena, [Ty::number_literal(arena, "1"), Ty::number()]),
+            Ty::r#union(
+                arena,
+                [
+                    Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
+                    Ty::number()
+                ]
+            ),
             Ty::number()
         );
         assert_eq!(

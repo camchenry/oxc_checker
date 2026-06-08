@@ -41,7 +41,7 @@ fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
         Ty::StringLiteral(literal) => {
             Some(string_literal_type_to_property_name(arena, literal.value))
         }
-        Ty::NumberLiteral(literal) => Some(literal.value),
+        Ty::NumberLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
         Ty::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
         Ty::TemplateLiteral(template) if template.expressions.is_empty() => {
             Some(template.quasis[0].value)
@@ -383,6 +383,7 @@ mod test {
     use crate::mapper::TypeMapper;
     use crate::program::ProgramHost;
     use oxc_allocator::Allocator;
+    use oxc_ast::ast::NumberBase;
     use oxc_str::Ident;
     use std::{
         collections::HashMap,
@@ -751,7 +752,7 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "value"),
-            Ty::number_literal(arena, "1")
+            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)
         );
     }
 
@@ -769,11 +770,11 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "value"),
-            Ty::number_literal(arena, "1")
+            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)
         );
         assert_eq!(
             get_identifier_reference_types(&ret, "undefined"),
-            vec![Ty::number_literal(arena, "1")]
+            vec![Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)]
         );
     }
 
@@ -1139,7 +1140,7 @@ mod test {
         assert!(relations::is_assignable_to(Ty::string(), Ty::unknown()));
         assert!(!relations::is_assignable_to(Ty::number(), Ty::string()));
         assert!(relations::is_assignable_to(
-            Ty::number_literal(arena, "1"),
+            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
             Ty::number()
         ));
         assert!(relations::is_assignable_to(
@@ -1956,7 +1957,7 @@ mod test {
 
         assert_eq!(
             get_global_symbol_type(&ret, "count"),
-            Ty::number_literal(arena(&ret), "1")
+            Ty::number_literal(arena(&ret), 1.0, "1", NumberBase::Decimal)
         );
         assert_eq!(
             get_global_symbol_type(&ret, "label"),
@@ -2084,7 +2085,7 @@ mod test {
         let arena = arena(&ret);
         assert_eq!(
             get_global_symbol_type(&ret, "x"),
-            Ty::number_literal(arena, "123")
+            Ty::number_literal(arena, 123.0, "123", NumberBase::Decimal)
         );
         assert_eq!(
             get_global_symbol_type(&ret, "y"),
@@ -2661,8 +2662,8 @@ mod test {
             Ty::union(
                 arena,
                 [
-                    Ty::number_literal(arena, "2"),
-                    Ty::number_literal(arena, "1"),
+                    Ty::number_literal(arena, 2.0, "2", NumberBase::Decimal),
+                    Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
                 ],
             )
         );

@@ -2,7 +2,7 @@ const x1 = +0;
 >     ^^: 0   (TyNumberLiteral)
 
 const x2 = -0;
->     ^^: -0   (TyNumberLiteral)
+>     ^^: 0   (TyNumberLiteral)
 
 const x3 = ~0;
 >     ^^: number   (TyNumber)
@@ -35,7 +35,7 @@ const unary0_1 = +0;
 >     ^^^^^^^^: 0   (TyNumberLiteral)
 
 const unary0_2 = -0;
->     ^^^^^^^^: -0   (TyNumberLiteral)
+>     ^^^^^^^^: 0   (TyNumberLiteral)
 
 const unary0_3 = ~0;
 >     ^^^^^^^^: number   (TyNumber)
@@ -77,19 +77,19 @@ const unaryParen_3 = ~(1);
 >     ^^^^^^^^^^^^: number   (TyNumber)
 
 const unaryHex_1 = +0x1;
->     ^^^^^^^^^^: 0x1   (TyNumberLiteral)
+>     ^^^^^^^^^^: 1   (TyNumberLiteral)
 
 const unaryHex_2 = -0x1;
->     ^^^^^^^^^^: -0x1   (TyNumberLiteral)
+>     ^^^^^^^^^^: -1   (TyNumberLiteral)
 
 const unaryHex_3 = ~0x1;
 >     ^^^^^^^^^^: number   (TyNumber)
 
 const unaryBinary_1 = +0b00;
->     ^^^^^^^^^^^^^: 0b00   (TyNumberLiteral)
+>     ^^^^^^^^^^^^^: 0   (TyNumberLiteral)
 
 const unaryBinary_2 = -0b00;
->     ^^^^^^^^^^^^^: -0b00   (TyNumberLiteral)
+>     ^^^^^^^^^^^^^: 0   (TyNumberLiteral)
 
 const unaryBinary_3 = ~0b00;
 >     ^^^^^^^^^^^^^: number   (TyNumber)

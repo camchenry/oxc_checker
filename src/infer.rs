@@ -1671,7 +1671,7 @@ fn resolve_indexed_access_for_inference<'a>(
 
 fn tuple_index_from_index_type(index_type: Ty<'_>) -> Option<usize> {
     match index_type {
-        Ty::NumberLiteral(literal) => literal.value.parse().ok(),
+        Ty::NumberLiteral(literal) => literal.to_usize(),
         _ => None,
     }
 }
@@ -2389,6 +2389,7 @@ pub fn ts_type_contains_infer(ty: &TSType<'_>) -> bool {
 #[cfg(test)]
 mod tests {
     use oxc_allocator::Allocator;
+    use oxc_ast::ast::NumberBase;
 
     use super::*;
     use crate::types::CheckerArena;
@@ -2564,7 +2565,7 @@ mod tests {
         );
         context.add_candidate(
             type_parameter,
-            Ty::number_literal(arena, "1"),
+            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
             InferencePriority::Low,
         );
 
@@ -2590,7 +2591,7 @@ mod tests {
         );
         context.add_candidate(
             type_parameter,
-            Ty::number_literal(arena, "1"),
+            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
             InferencePriority::NakedTypeVariable,
         );
 
@@ -2600,7 +2601,7 @@ mod tests {
                 arena,
                 [
                     Ty::string_literal(arena, "ready"),
-                    Ty::number_literal(arena, "1"),
+                    Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)
                 ],
             )),
         );
