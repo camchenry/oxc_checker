@@ -3,15 +3,16 @@ use oxc_ast::{
     AstKind,
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
-        AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern, CallExpression, Class,
-        ClassElement, ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
-        FormalParameterRest, FormalParameters, Function, IdentifierReference, MethodDefinition,
-        MethodDefinitionKind, NewExpression, ObjectExpression, ObjectPropertyKind,
-        PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
-        TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
-        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery,
-        TSTypeQueryExprName, TSTypeReference, VariableDeclarationKind, VariableDeclarator,
+        AssignmentTarget, AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern,
+        CallExpression, Class, ClassElement, ComputedMemberExpression, ConditionalExpression,
+        Expression, FormalParameter, FormalParameterRest, FormalParameters, Function,
+        IdentifierReference, MethodDefinition, MethodDefinitionKind, NewExpression, NumberBase,
+        ObjectExpression, ObjectPropertyKind, PropertyDefinition, StaticMemberExpression,
+        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName,
+        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -39,9 +40,9 @@ use crate::{
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self},
-    property_key_name_str, push_type_parameter_names, relations, ts_type_name_to_str,
-    ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
-    type_facts,
+    property_key_name_str, push_type_parameter_names, relations,
+    string_literal_type_to_property_name, ts_type_name_to_str, ts_type_query_expr_name_to_str,
+    tuple_element_type_at_index, tuple_index_from_expression, type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyArray, TyConditional, TyFunction, TyMapped, TyParameter, TyProperty, TyTuple,
@@ -707,10 +708,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             Expression::TemplateLiteral(literal) => {
                 if flags.preserve_literals() {
-                    if literal.expressions.is_empty()
-                        && let Some(quasi) = literal.single_quasi()
+                    if let Some(value) =
+                        self.get_template_literal_static_value(program_id, literal, node_id)
                     {
-                        Ty::string_literal(self.arena(), quasi.as_str())
+                        Ty::string_literal(self.arena(), value)
                     } else {
                         Ty::template_literal(
                             self.arena(),
@@ -887,6 +888,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
         flags: GetTypeFlags,
     ) -> Ty<'a> {
+        let left = self.get_type_of_assignment_target(
+            program_id,
+            &assignment_expression.left,
+            node_id,
+            flags | GetTypeFlags::CONTEXT_FREE,
+        );
         let right = self.get_type_of_expression_with_node(
             program_id,
             &assignment_expression.right,
@@ -896,8 +903,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         match assignment_expression.operator {
             AssignmentOperator::Assign => right,
             AssignmentOperator::Addition => {
-                if self.is_string_like_for_addition(right) {
+                if self.is_string_like_for_addition(left) || self.is_string_like_for_addition(right)
+                {
                     Ty::string()
+                } else if matches!(left, Ty::Any) {
+                    Ty::any()
                 } else {
                     Ty::number()
                 }
@@ -913,10 +923,179 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AssignmentOperator::BitwiseOR => Ty::number(),
             AssignmentOperator::BitwiseXOR => Ty::number(),
             AssignmentOperator::BitwiseAnd => Ty::number(),
-            // TODO(correctness): assume the correct type for logical assignment expressions
-            AssignmentOperator::LogicalOr => Ty::any(),
-            AssignmentOperator::LogicalAnd => Ty::any(),
-            AssignmentOperator::LogicalNullish => Ty::any(),
+            AssignmentOperator::LogicalOr => {
+                Ty::union(self.arena(), [self.get_truthy_type(left), right])
+            }
+            AssignmentOperator::LogicalAnd => {
+                Ty::union(self.arena(), [self.get_falsy_type(left), right])
+            }
+            AssignmentOperator::LogicalNullish => {
+                Ty::union(self.arena(), [self.remove_null_or_undefined(left), right])
+            }
+        }
+    }
+
+    fn get_type_of_assignment_target(
+        &self,
+        program_id: program::ProgramId,
+        target: &'a AssignmentTarget<'a>,
+        node_id: Option<NodeId>,
+        flags: GetTypeFlags,
+    ) -> Ty<'a> {
+        match target {
+            AssignmentTarget::AssignmentTargetIdentifier(identifier) => {
+                let symbol = identifier
+                    .reference_id
+                    .get()
+                    .and_then(|reference_id| {
+                        self.semantic(program_id)
+                            .scoping()
+                            .get_reference(reference_id)
+                            .symbol_id()
+                    })
+                    .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                    .or_else(|| {
+                        self.get_value_symbol_for_name(program_id, identifier.name.as_str())
+                    });
+                if let Some(symbol) = symbol {
+                    return self.get_type_of_symbol(symbol);
+                }
+                if identifier.name == UNDEFINED_IDENT {
+                    return Ty::undefined();
+                }
+                Ty::any()
+            }
+            AssignmentTarget::ComputedMemberExpression(member) => {
+                self.get_type_of_computed_member_expression(program_id, member, node_id, flags)
+            }
+            AssignmentTarget::StaticMemberExpression(member) => {
+                self.get_type_of_static_member_expression(program_id, member, node_id, flags)
+            }
+            AssignmentTarget::TSAsExpression(assertion) => self.get_type_of_expression_with_node(
+                program_id,
+                &assertion.expression,
+                node_id,
+                flags,
+            ),
+            AssignmentTarget::TSSatisfiesExpression(satisfies) => self
+                .get_type_of_expression_with_node(
+                    program_id,
+                    &satisfies.expression,
+                    node_id,
+                    flags,
+                ),
+            AssignmentTarget::TSNonNullExpression(non_null) => {
+                let ty = self.get_type_of_expression_with_node(
+                    program_id,
+                    &non_null.expression,
+                    node_id,
+                    flags,
+                );
+                self.get_non_null_assertion_type(program_id, ty)
+            }
+            AssignmentTarget::TSTypeAssertion(assertion) => self.get_type_of_expression_with_node(
+                program_id,
+                &assertion.expression,
+                node_id,
+                flags,
+            ),
+            AssignmentTarget::PrivateFieldExpression(_)
+            | AssignmentTarget::ArrayAssignmentTarget(_)
+            | AssignmentTarget::ObjectAssignmentTarget(_) => Ty::any(),
+        }
+    }
+
+    fn get_truthy_type(&self, ty: Ty<'a>) -> Ty<'a> {
+        match ty {
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union.types.iter().map(|ty| self.get_truthy_type(*ty)),
+            ),
+            Ty::Boolean => Ty::boolean_true(),
+            Ty::BooleanLiteral(false) | Ty::StringLiteral(_)
+                if type_facts::get_type_facts(ty, type_facts::TypeFacts::TRUTHY).is_empty() =>
+            {
+                Ty::never()
+            }
+            Ty::NumberLiteral(literal) if literal.value == 0.0 => Ty::never(),
+            Ty::BigIntLiteral(_)
+                if type_facts::get_type_facts(ty, type_facts::TypeFacts::TRUTHY).is_empty() =>
+            {
+                Ty::never()
+            }
+            Ty::Null | Ty::Undefined | Ty::Void => Ty::never(),
+            _ => ty,
+        }
+    }
+
+    fn get_falsy_type(&self, ty: Ty<'a>) -> Ty<'a> {
+        match ty {
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union.types.iter().map(|ty| self.get_falsy_type(*ty)),
+            ),
+            Ty::String => Ty::string_literal(self.arena(), ""),
+            Ty::Number => Ty::number_literal(self.arena(), 0.0, "0", NumberBase::Decimal),
+            Ty::Bigint => Ty::bigint_literal(self.arena(), "0"),
+            Ty::Boolean => Ty::boolean_false(),
+            Ty::StringLiteral(_)
+            | Ty::NumberLiteral(_)
+            | Ty::BooleanLiteral(_)
+            | Ty::BigIntLiteral(_)
+            | Ty::Null
+            | Ty::Undefined
+            | Ty::Void
+                if type_facts::get_type_facts(ty, type_facts::TypeFacts::FALSY).is_empty() =>
+            {
+                Ty::never()
+            }
+            _ if type_facts::get_type_facts(ty, type_facts::TypeFacts::FALSY).is_empty() => {
+                Ty::never()
+            }
+            _ => ty,
+        }
+    }
+
+    fn get_template_literal_static_value(
+        &self,
+        program_id: program::ProgramId,
+        literal: &'a TemplateLiteral<'a>,
+        node_id: Option<NodeId>,
+    ) -> Option<&'a str> {
+        let mut value = String::new();
+        for (index, quasi) in literal.quasis.iter().enumerate() {
+            value.push_str(quasi.value.cooked.as_ref()?.as_str());
+            if let Some(expression) = literal.expressions.get(index) {
+                let expression_type = self.get_type_of_expression_with_node(
+                    program_id,
+                    expression,
+                    node_id,
+                    GetTypeFlags::PRESERVE_LITERALS,
+                );
+                value.push_str(self.template_substitution_static_value(expression_type)?);
+            }
+        }
+        Some(self.arena().str(&value))
+    }
+
+    fn template_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {
+        match ty {
+            Ty::StringLiteral(literal) => Some(string_literal_type_to_property_name(
+                self.arena(),
+                literal.value,
+            )),
+            Ty::NumberLiteral(literal) => Some(if literal.value == 0.0 {
+                "0"
+            } else {
+                self.arena().str(&literal.value.to_string())
+            }),
+            Ty::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
+            Ty::Null => Some("null"),
+            Ty::Undefined | Ty::Void => Some("undefined"),
+            Ty::TemplateLiteral(template) if template.expressions.is_empty() => {
+                Some(template.quasis[0].value)
+            }
+            _ => None,
         }
     }
 
@@ -4931,14 +5110,31 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     } else {
                         GetTypeFlags::NONE
                     };
-                    self.get_type_of_expression_with_node(
+                    let ty = self.get_type_of_expression_with_node(
                         program_id,
                         expression,
                         Some(declaration),
                         flags,
-                    )
+                    );
+                    if declarator.kind != VariableDeclarationKind::Const
+                        && matches!(ty, Ty::Null | Ty::Undefined)
+                        && self.is_null_or_undefined_initializer(expression)
+                    {
+                        Ty::any()
+                    } else {
+                        ty
+                    }
                 },
             )
+        }
+    }
+
+    fn is_null_or_undefined_initializer(&self, expression: &Expression<'a>) -> bool {
+        match expression {
+            Expression::NullLiteral(_) => true,
+            Expression::Identifier(identifier) => identifier.name == UNDEFINED_IDENT,
+            Expression::UnaryExpression(unary) => unary.operator == UnaryOperator::Void,
+            _ => false,
         }
     }
 

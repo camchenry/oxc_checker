@@ -29,10 +29,10 @@ let big2 = 1n
 >   ^^^^: bigint   (TyBigint)
 
 let _null2 = null
->   ^^^^^^: null   (TyNull)
+>   ^^^^^^: any   (TyAny)
 
 let _undefined2 = undefined;
->   ^^^^^^^^^^^: undefined   (TyUndefined)
+>   ^^^^^^^^^^^: any   (TyAny)
 
 let _undefined2 = undefined;
 >                 ^^^^^^^^^: undefined   (TyUndefined)
@@ -68,7 +68,7 @@ const template3 = `Hello`;
 >     ^^^^^^^^^: "Hello"   (TyStringLiteral)
 
 const template4 = `Count: ${count3}`;
->     ^^^^^^^^^: `Count: ${1}`   (TyTemplateLiteral)
+>     ^^^^^^^^^: "Count: 1"   (TyStringLiteral)
 
 const template4 = `Count: ${count3}`;
 >                           ^^^^^^: 1   (TyNumberLiteral)
