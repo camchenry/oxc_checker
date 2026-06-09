@@ -1194,12 +1194,11 @@ impl<'a> Ty<'a> {
                 } else {
                     check_type
                 };
-                let extends_type =
-                    if conditional_extends_type_needs_parentheses(conditional.extends_type) {
-                        format!("({extends_type})")
-                    } else {
-                        extends_type
-                    };
+                let extends_type = if matches!(conditional.extends_type, Self::Conditional(_)) {
+                    format!("({extends_type})")
+                } else {
+                    extends_type
+                };
                 format!(
                     "{check_type} extends {extends_type} ? {} : {}",
                     conditional.true_type.to_type_string(),
@@ -1463,10 +1462,6 @@ fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
             ty.display_needs_parentheses()
         }
     }
-}
-
-fn conditional_extends_type_needs_parentheses(ty: Ty<'_>) -> bool {
-    matches!(ty, Ty::Union(_) | Ty::Conditional(_))
 }
 
 fn type_parameter_to_type_string(type_parameter: &TyTypeParameter<'_>) -> String {
