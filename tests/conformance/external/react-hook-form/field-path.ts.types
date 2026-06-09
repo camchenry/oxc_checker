@@ -1,0 +1,905 @@
+export type Primitive = null | undefined | string | number | boolean | symbol | bigint
+>           ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+export type BrowserNativeObject = Date | FileList | File
+>           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+export type BrowserNativeObject = Date | FileList | File
+>                                 ^^^^: DateConstructor   (TyTypeReference)
+
+export type BrowserNativeObject = Date | FileList | File
+>                                 ^^^^: DateConstructor   (TyTypeReference)
+
+export type BrowserNativeObject = Date | FileList | File
+>                                        ^^^^^^^^: { new (): FileList; prototype: FileList; }   (TyObject)
+
+export type BrowserNativeObject = Date | FileList | File
+>                                        ^^^^^^^^: { new (): FileList; prototype: FileList; }   (TyObject)
+
+export type BrowserNativeObject = Date | FileList | File
+>                                                   ^^^^: { new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }   (TyObject)
+
+export type BrowserNativeObject = Date | FileList | File
+>                                                   ^^^^: { new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }   (TyObject)
+
+export type IsAny<T> = 0 extends 1 & T ? true : false
+>           ^^^^^: 0 extends (1 & T) ? true : false   (TyConditional)
+
+export type IsAny<T> = 0 extends 1 & T ? true : false
+>                 ^: any   (TyAny)
+
+export type IsAny<T> = 0 extends 1 & T ? true : false
+>                                    ^: any   (TyAny)
+
+export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
+>           ^^^^^^^: number extends T["length"] ? false : true   (TyConditional)
+
+export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
+>                   ^: any   (TyAny)
+
+export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
+>                             ^^^^^^^^^^^^^: any   (TyAny)
+
+export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
+>                                                                  ^: any   (TyAny)
+
+export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
+>           ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
+>                     ^: any   (TyAny)
+
+export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
+>                               ^^^^^^^^^^^^^: any   (TyAny)
+
+export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
+>                                                     ^^^^^^^: any   (TyAny)
+
+export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
+>                                                                   ^: any   (TyAny)
+
+export type ArrayKey = number
+>           ^^^^^^^^: number   (TyNumber)
+
+export type AnyIsEqual<T1, T2> = T1 extends T2
+>           ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+export type AnyIsEqual<T1, T2> = T1 extends T2
+>                      ^^: any   (TyAny)
+
+export type AnyIsEqual<T1, T2> = T1 extends T2
+>                          ^^: any   (TyAny)
+
+export type AnyIsEqual<T1, T2> = T1 extends T2
+>                                ^^: any   (TyAny)
+
+export type AnyIsEqual<T1, T2> = T1 extends T2
+>                                           ^^: any   (TyAny)
+
+  ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
+>     ^: any   (TyAny)
+
+  ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
+>             ^: any   (TyAny)
+
+  ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
+>                       ^^: any   (TyAny)
+
+  ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
+>                                            ^: any   (TyAny)
+
+  ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
+>                                                    ^: any   (TyAny)
+
+  ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
+>                                                              ^^: any   (TyAny)
+
+  AnyIsEqual,
+> ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+  ArrayKey,
+> ^^^^^^^^: number   (TyNumber)
+
+  BrowserNativeObject,
+> ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+  IsAny,
+> ^^^^^: 0 extends (1 & T) ? true : false   (TyConditional)
+
+  IsTuple,
+> ^^^^^^^: number extends T["length"] ? false : true   (TyConditional)
+
+  Primitive,
+> ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+  TupleKeys,
+> ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+type PathImpl<K extends string | number, V, TraversedTypes> = V extends
+>    ^^^^^^^^: V extends (Primitive | BrowserNativeObject) ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`   (TyConditional)
+
+type PathImpl<K extends string | number, V, TraversedTypes> = V extends
+>             ^: any   (TyAny)
+
+type PathImpl<K extends string | number, V, TraversedTypes> = V extends
+>                                        ^: any   (TyAny)
+
+type PathImpl<K extends string | number, V, TraversedTypes> = V extends
+>                                           ^^^^^^^^^^^^^^: any   (TyAny)
+
+type PathImpl<K extends string | number, V, TraversedTypes> = V extends
+>                                                             ^: any   (TyAny)
+
+  | Primitive
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+  | Primitive
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+  | BrowserNativeObject
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+  | BrowserNativeObject
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+  ? `${K}`
+>      ^: any   (TyAny)
+
+  : true extends AnyIsEqual<TraversedTypes, V>
+>                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+  : true extends AnyIsEqual<TraversedTypes, V>
+>                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+  : true extends AnyIsEqual<TraversedTypes, V>
+>                           ^^^^^^^^^^^^^^: any   (TyAny)
+
+  : true extends AnyIsEqual<TraversedTypes, V>
+>                                           ^: any   (TyAny)
+
+    ? `${K}`
+>        ^: any   (TyAny)
+
+    : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
+>        ^: any   (TyAny)
+
+    : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
+>                 ^: any   (TyAny)
+
+    : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
+>                      ^^^^^^^^^^^^: any   (TyAny)
+
+    : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
+>                                   ^: any   (TyAny)
+
+    : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
+>                                      ^^^^^^^^^^^^^^: any   (TyAny)
+
+    : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
+>                                                       ^: any   (TyAny)
+
+type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>    ^^^^^^^^^^^^: T extends readonly infer V[] ? IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : PathImpl<ArrayKey, V, TraversedTypes> : { [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>; }[keyof T]   (TyConditional)
+
+type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                 ^: any   (TyAny)
+
+type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                    ^^^^^^^^^^^^^^: any   (TyAny)
+
+type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                     ^: any   (TyAny)
+
+type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                          ^: any   (TyAny)
+
+type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                                    ^^^^^^^^^^^^^: any   (TyAny)
+
+type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                                                        ^: any   (TyAny)
+
+  ? IsTuple<T> extends true
+>   ^^^^^^^: number extends T["length"] ? false : true   (TyConditional)
+
+  ? IsTuple<T> extends true
+>   ^^^^^^^: number extends T["length"] ? false : true   (TyConditional)
+
+  ? IsTuple<T> extends true
+>           ^: any   (TyAny)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>        ^: any   (TyAny)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>             ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>             ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                       ^: any   (TyAny)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                              ^^^^^^^^: any   (TyAny)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                       ^: any   (TyAny)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                                   ^: any   (TyAny)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                                     ^: any   (TyAny)
+
+        [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                                         ^^^^^^^^^^^^^^: any   (TyAny)
+
+      }[TupleKeys<T>]
+>       ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+      }[TupleKeys<T>]
+>       ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+      }[TupleKeys<T>]
+>                 ^: any   (TyAny)
+
+    : PathImpl<ArrayKey, V, TraversedTypes>
+>     ^^^^^^^^: any   (TyAny)
+
+    : PathImpl<ArrayKey, V, TraversedTypes>
+>              ^^^^^^^^: number   (TyNumber)
+
+    : PathImpl<ArrayKey, V, TraversedTypes>
+>              ^^^^^^^^: number   (TyNumber)
+
+    : PathImpl<ArrayKey, V, TraversedTypes>
+>                        ^: any   (TyAny)
+
+    : PathImpl<ArrayKey, V, TraversedTypes>
+>                           ^^^^^^^^^^^^^^: any   (TyAny)
+
+      [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
+>      ^: any   (TyAny)
+
+      [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                 ^: any   (TyAny)
+
+      [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                       ^^^^^^^^: any   (TyAny)
+
+      [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                ^: any   (TyAny)
+
+      [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                            ^: any   (TyAny)
+
+      [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                              ^: any   (TyAny)
+
+      [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
+>                                                  ^^^^^^^^^^^^^^: any   (TyAny)
+
+    }[keyof T]
+>           ^: any   (TyAny)
+
+export type Path<T> = T extends any ? PathInternal<T> : never
+>           ^^^^: T extends any ? PathInternal<T> : never   (TyConditional)
+
+export type Path<T> = T extends any ? PathInternal<T> : never
+>                ^: any   (TyAny)
+
+export type Path<T> = T extends any ? PathInternal<T> : never
+>                     ^: any   (TyAny)
+
+export type Path<T> = T extends any ? PathInternal<T> : never
+>                                     ^^^^^^^^^^^^: any   (TyAny)
+
+export type Path<T> = T extends any ? PathInternal<T> : never
+>                                                  ^: any   (TyAny)
+
+export type FieldPath<TFieldValues> = Path<TFieldValues>
+>           ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional)
+
+export type FieldPath<TFieldValues> = Path<TFieldValues>
+>                     ^^^^^^^^^^^^: any   (TyAny)
+
+export type FieldPath<TFieldValues> = Path<TFieldValues>
+>                                     ^^^^: any   (TyAny)
+
+export type FieldPath<TFieldValues> = Path<TFieldValues>
+>                                          ^^^^^^^^^^^^: any   (TyAny)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>    ^^^^^^^^^: T extends any ? P extends `${infer K}.${infer R}` ? K extends keyof T ? R extends Path<T[K]> ? PathValue<T[K], R> : never : K extends `${ArrayKey}` ? T extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : P extends keyof T ? T[P] : P extends `${ArrayKey}` ? T extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>              ^: any   (TyAny)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>                 ^: any   (TyAny)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>                           ^^^^: any   (TyAny)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>                                ^: any   (TyAny)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>                                     ^^^^^^^^^: any   (TyAny)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>                                               ^: any   (TyAny)
+
+type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
+>                                                     ^: any   (TyAny)
+
+  ? P extends `${infer K}.${infer R}`
+>   ^: any   (TyAny)
+
+  ? P extends `${infer K}.${infer R}`
+>                      ^: any   (TyAny)
+
+  ? P extends `${infer K}.${infer R}`
+>                                 ^: any   (TyAny)
+
+    ? K extends keyof T
+>     ^: any   (TyAny)
+
+    ? K extends keyof T
+>                     ^: any   (TyAny)
+
+      ? R extends Path<T[K]>
+>       ^: any   (TyAny)
+
+      ? R extends Path<T[K]>
+>                 ^^^^: any   (TyAny)
+
+      ? R extends Path<T[K]>
+>                      ^: any   (TyAny)
+
+      ? R extends Path<T[K]>
+>                        ^: any   (TyAny)
+
+        ? PathValue<T[K], R>
+>         ^^^^^^^^^: any   (TyAny)
+
+        ? PathValue<T[K], R>
+>                   ^: any   (TyAny)
+
+        ? PathValue<T[K], R>
+>                     ^: any   (TyAny)
+
+        ? PathValue<T[K], R>
+>                         ^: any   (TyAny)
+
+      : K extends `${ArrayKey}`
+>       ^: any   (TyAny)
+
+      : K extends `${ArrayKey}`
+>                    ^^^^^^^^: number   (TyNumber)
+
+      : K extends `${ArrayKey}`
+>                    ^^^^^^^^: number   (TyNumber)
+
+        ? T extends ReadonlyArray<infer V>
+>         ^: any   (TyAny)
+
+        ? T extends ReadonlyArray<infer V>
+>                   ^^^^^^^^^^^^^: any   (TyAny)
+
+        ? T extends ReadonlyArray<infer V>
+>                                       ^: any   (TyAny)
+
+          ? PathValue<V, R & Path<V>>
+>           ^^^^^^^^^: any   (TyAny)
+
+          ? PathValue<V, R & Path<V>>
+>                     ^: any   (TyAny)
+
+          ? PathValue<V, R & Path<V>>
+>                        ^: any   (TyAny)
+
+          ? PathValue<V, R & Path<V>>
+>                            ^^^^: any   (TyAny)
+
+          ? PathValue<V, R & Path<V>>
+>                                 ^: any   (TyAny)
+
+    : P extends keyof T
+>     ^: any   (TyAny)
+
+    : P extends keyof T
+>                     ^: any   (TyAny)
+
+      ? T[P]
+>       ^: any   (TyAny)
+
+      ? T[P]
+>         ^: any   (TyAny)
+
+      : P extends `${ArrayKey}`
+>       ^: any   (TyAny)
+
+      : P extends `${ArrayKey}`
+>                    ^^^^^^^^: number   (TyNumber)
+
+      : P extends `${ArrayKey}`
+>                    ^^^^^^^^: number   (TyNumber)
+
+        ? T extends ReadonlyArray<infer V>
+>         ^: any   (TyAny)
+
+        ? T extends ReadonlyArray<infer V>
+>                   ^^^^^^^^^^^^^: any   (TyAny)
+
+        ? T extends ReadonlyArray<infer V>
+>                                       ^: any   (TyAny)
+
+          ? V
+>           ^: any   (TyAny)
+
+type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
+>    ^^^^^^^^^^^^^: V extends (Primitive | BrowserNativeObject) ? never : V extends readonly infer U[] ? U extends (Primitive | BrowserNativeObject) ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`   (TyConditional)
+
+type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
+>                  ^: any   (TyAny)
+
+type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
+>                                             ^: any   (TyAny)
+
+type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
+>                                                ^^^^^^^^^^^^^^: any   (TyAny)
+
+type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
+>                                                                  ^: any   (TyAny)
+
+  | Primitive
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+  | Primitive
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+  | BrowserNativeObject
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+  | BrowserNativeObject
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+  : V extends ReadonlyArray<infer U>
+>   ^: any   (TyAny)
+
+  : V extends ReadonlyArray<infer U>
+>             ^^^^^^^^^^^^^: any   (TyAny)
+
+  : V extends ReadonlyArray<infer U>
+>                                 ^: any   (TyAny)
+
+    ? U extends Primitive | BrowserNativeObject
+>     ^: any   (TyAny)
+
+    ? U extends Primitive | BrowserNativeObject
+>               ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+    ? U extends Primitive | BrowserNativeObject
+>               ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion)
+
+    ? U extends Primitive | BrowserNativeObject
+>                           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+    ? U extends Primitive | BrowserNativeObject
+>                           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion)
+
+      : true extends AnyIsEqual<TraversedTypes, V>
+>                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+      : true extends AnyIsEqual<TraversedTypes, V>
+>                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+      : true extends AnyIsEqual<TraversedTypes, V>
+>                               ^^^^^^^^^^^^^^: any   (TyAny)
+
+      : true extends AnyIsEqual<TraversedTypes, V>
+>                                               ^: any   (TyAny)
+
+        : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>            ^: any   (TyAny)
+
+        : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                     ^: any   (TyAny)
+
+        : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                          ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                                            ^: any   (TyAny)
+
+        : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                                               ^^^^^^^^^^^^^^: any   (TyAny)
+
+        : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                                                                ^: any   (TyAny)
+
+    : true extends AnyIsEqual<TraversedTypes, V>
+>                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+    : true extends AnyIsEqual<TraversedTypes, V>
+>                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional)
+
+    : true extends AnyIsEqual<TraversedTypes, V>
+>                             ^^^^^^^^^^^^^^: any   (TyAny)
+
+    : true extends AnyIsEqual<TraversedTypes, V>
+>                                             ^: any   (TyAny)
+
+      : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>          ^: any   (TyAny)
+
+      : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>               ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+      : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                                 ^: any   (TyAny)
+
+      : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                                    ^^^^^^^^^^^^^^: any   (TyAny)
+
+      : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+>                                                     ^: any   (TyAny)
+
+type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>    ^^^^^^^^^^^^^^^^^: T extends readonly infer V[] ? IsAny<T> extends true ? string : IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : ArrayPathImpl<ArrayKey, V, TraversedTypes> : { [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[keyof T]   (TyConditional)
+
+type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                      ^: any   (TyAny)
+
+type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                         ^^^^^^^^^^^^^^: any   (TyAny)
+
+type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                          ^: any   (TyAny)
+
+type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                               ^: any   (TyAny)
+
+type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                                         ^^^^^^^^^^^^^: any   (TyAny)
+
+type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
+>                                                                             ^: any   (TyAny)
+
+  ? IsAny<T> extends true
+>   ^^^^^: 0 extends (1 & T) ? true : false   (TyConditional)
+
+  ? IsAny<T> extends true
+>   ^^^^^: 0 extends (1 & T) ? true : false   (TyConditional)
+
+  ? IsAny<T> extends true
+>         ^: any   (TyAny)
+
+    : IsTuple<T> extends true
+>     ^^^^^^^: number extends T["length"] ? false : true   (TyConditional)
+
+    : IsTuple<T> extends true
+>     ^^^^^^^: number extends T["length"] ? false : true   (TyConditional)
+
+    : IsTuple<T> extends true
+>             ^: any   (TyAny)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>          ^: any   (TyAny)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>               ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>               ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                         ^: any   (TyAny)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                ^^^^^^^^^^^^^: any   (TyAny)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                              ^: any   (TyAny)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                                          ^: any   (TyAny)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                                            ^: any   (TyAny)
+
+          [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                                                ^^^^^^^^^^^^^^: any   (TyAny)
+
+        }[TupleKeys<T>]
+>         ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+        }[TupleKeys<T>]
+>         ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional)
+
+        }[TupleKeys<T>]
+>                   ^: any   (TyAny)
+
+      : ArrayPathImpl<ArrayKey, V, TraversedTypes>
+>       ^^^^^^^^^^^^^: any   (TyAny)
+
+      : ArrayPathImpl<ArrayKey, V, TraversedTypes>
+>                     ^^^^^^^^: number   (TyNumber)
+
+      : ArrayPathImpl<ArrayKey, V, TraversedTypes>
+>                     ^^^^^^^^: number   (TyNumber)
+
+      : ArrayPathImpl<ArrayKey, V, TraversedTypes>
+>                               ^: any   (TyAny)
+
+      : ArrayPathImpl<ArrayKey, V, TraversedTypes>
+>                                  ^^^^^^^^^^^^^^: any   (TyAny)
+
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>      ^: any   (TyAny)
+
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                 ^: any   (TyAny)
+
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                       ^^^^^^^^^^^^^: any   (TyAny)
+
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                     ^: any   (TyAny)
+
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                                 ^: any   (TyAny)
+
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                                   ^: any   (TyAny)
+
+      [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
+>                                                       ^^^^^^^^^^^^^^: any   (TyAny)
+
+    }[keyof T]
+>           ^: any   (TyAny)
+
+export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
+>           ^^^^^^^^^: T extends any ? ArrayPathInternal<T> : never   (TyConditional)
+
+export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
+>                     ^: any   (TyAny)
+
+export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
+>                          ^: any   (TyAny)
+
+export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
+>                                          ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
+>                                                            ^: any   (TyAny)
+
+export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
+>           ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional)
+
+export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
+>                          ^^^^^^^^^^^^: any   (TyAny)
+
+export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
+>                                          ^^^^^^^^^: any   (TyAny)
+
+export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
+>                                                    ^^^^^^^^^^^^: any   (TyAny)
+
+export type FieldPathValue<
+>           ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+  TFieldValues,
+> ^^^^^^^^^^^^: any   (TyAny)
+
+  TFieldPath extends FieldPath<TFieldValues>,
+> ^^^^^^^^^^: any   (TyAny)
+
+  TFieldPath extends FieldPath<TFieldValues>,
+>                    ^^^^^^^^^: any   (TyAny)
+
+  TFieldPath extends FieldPath<TFieldValues>,
+>                              ^^^^^^^^^^^^: any   (TyAny)
+
+> = PathValue<TFieldValues, TFieldPath>
+>   ^^^^^^^^^: any   (TyAny)
+
+> = PathValue<TFieldValues, TFieldPath>
+>             ^^^^^^^^^^^^: any   (TyAny)
+
+> = PathValue<TFieldValues, TFieldPath>
+>                           ^^^^^^^^^^: any   (TyAny)
+
+export type FieldArrayPathValue<
+>           ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+  TFieldValues,
+> ^^^^^^^^^^^^: any   (TyAny)
+
+  TFieldArrayPath extends FieldArrayPath<TFieldValues>,
+> ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  TFieldArrayPath extends FieldArrayPath<TFieldValues>,
+>                         ^^^^^^^^^^^^^^: any   (TyAny)
+
+  TFieldArrayPath extends FieldArrayPath<TFieldValues>,
+>                                        ^^^^^^^^^^^^: any   (TyAny)
+
+> = PathValue<TFieldValues, TFieldArrayPath>
+>   ^^^^^^^^^: any   (TyAny)
+
+> = PathValue<TFieldValues, TFieldArrayPath>
+>             ^^^^^^^^^^^^: any   (TyAny)
+
+> = PathValue<TFieldValues, TFieldArrayPath>
+>                           ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  FieldArrayPath,
+> ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional)
+
+  FieldArrayPathValue,
+> ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+  FieldPath,
+> ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional)
+
+  FieldPathValue,
+> ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type ContactForm = {
+>    ^^^^^^^^^^^: { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: { name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]; }   (TyObject)
+
+  user: {
+> ^^^^: { name: string; address: { city: string; zip?: number; }; }   (TyObject)
+
+    name: string
+>   ^^^^: string   (TyString)
+
+    address: {
+>   ^^^^^^^: { city: string; zip?: number; }   (TyObject)
+
+      city: string
+>     ^^^^: string   (TyString)
+
+      zip?: number
+>     ^^^: number | undefined   (TyUnion)
+
+  tags: string[]
+> ^^^^: string[]   (TyArray)
+
+  friends: Array<{
+> ^^^^^^^: { name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]   (TyArray)
+
+  friends: Array<{
+>          ^^^^^: ArrayConstructor   (TyTypeReference)
+
+  friends: Array<{
+>          ^^^^^: ArrayConstructor   (TyTypeReference)
+
+    name: string
+>   ^^^^: string   (TyString)
+
+    socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
+>   ^^^^^^^: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]   (TyTuple)
+
+    socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
+>               ^^^^: "email"   (TyStringLiteral)
+
+    socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
+>                              ^^^^^: string   (TyString)
+
+    socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
+>                                                 ^^^^: "phone"   (TyStringLiteral)
+
+    socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
+>                                                                ^^^^^: number   (TyNumber)
+
+type ContactField = FieldPath<ContactForm>
+>    ^^^^^^^^^^^^: ContactForm extends readonly infer V[] ? IsTuple<ContactForm> extends true ? { [K in TupleKeys<ContactForm>]-?: PathImpl<K & string, ContactForm[K], ContactForm>; }[TupleKeys<ContactForm>] : PathImpl<ArrayKey, V, ContactForm> : { [K in keyof ContactForm]-?: PathImpl<K & string, ContactForm[K], ContactForm>; }[keyof ContactForm]   (TyConditional)
+
+type ContactField = FieldPath<ContactForm>
+>                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional)
+
+type ContactField = FieldPath<ContactForm>
+>                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional)
+
+type ContactField = FieldPath<ContactForm>
+>                             ^^^^^^^^^^^: any   (TyAny)
+
+type ContactArrayField = FieldArrayPath<ContactForm>
+>    ^^^^^^^^^^^^^^^^^: ContactForm extends readonly infer V[] ? IsAny<ContactForm> extends true ? string : IsTuple<ContactForm> extends true ? { [K in TupleKeys<ContactForm>]-?: ArrayPathImpl<K & string, ContactForm[K], ContactForm>; }[TupleKeys<ContactForm>] : ArrayPathImpl<ArrayKey, V, ContactForm> : { [K in keyof ContactForm]-?: ArrayPathImpl<K & string, ContactForm[K], ContactForm>; }[keyof ContactForm]   (TyConditional)
+
+type ContactArrayField = FieldArrayPath<ContactForm>
+>                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional)
+
+type ContactArrayField = FieldArrayPath<ContactForm>
+>                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional)
+
+type ContactArrayField = FieldArrayPath<ContactForm>
+>                                       ^^^^^^^^^^^: any   (TyAny)
+
+type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
+>    ^^^^^^^^^: ContactForm extends any ? "user.address.city" extends `${infer K}.${infer R}` ? K extends keyof ContactForm ? R extends Path<ContactForm[K]> ? PathValue<ContactForm[K], R> : never : K extends `${ArrayKey}` ? ContactForm extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : "user.address.city" extends keyof ContactForm ? ContactForm["user.address.city"] : "user.address.city" extends `${ArrayKey}` ? ContactForm extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
+>                ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
+>                ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
+>                               ^^^^^^^^^^^: any   (TyAny)
+
+type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
+>    ^^^^^^^^^^^: ContactForm extends any ? "friends" extends `${infer K}.${infer R}` ? K extends keyof ContactForm ? R extends Path<ContactForm[K]> ? PathValue<ContactForm[K], R> : never : K extends `${ArrayKey}` ? ContactForm extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : "friends" extends keyof ContactForm ? ContactForm["friends"] : "friends" extends `${ArrayKey}` ? ContactForm extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
+>                  ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
+>                  ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
+>                                      ^^^^^^^^^^^: any   (TyAny)
+
+type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
+>    ^^^^^^^^^^^: ContactForm extends any ? "friends.0.socials.1.value" extends `${infer K}.${infer R}` ? K extends keyof ContactForm ? R extends Path<ContactForm[K]> ? PathValue<ContactForm[K], R> : never : K extends `${ArrayKey}` ? ContactForm extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : "friends.0.socials.1.value" extends keyof ContactForm ? ContactForm["friends.0.socials.1.value"] : "friends.0.socials.1.value" extends `${ArrayKey}` ? ContactForm extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
+>                  ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
+>                  ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly infer V[] ? V : never : never : never   (TyConditional)
+
+type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
+>                                 ^^^^^^^^^^^: any   (TyAny)
+
+const field: ContactField = 'friends.0.socials.1.value'
+>     ^^^^^: ContactField   (TyTypeReference)
+
+const field: ContactField = 'friends.0.socials.1.value'
+>            ^^^^^^^^^^^^: any   (TyAny)
+
+const arrayField: ContactArrayField = 'friends.0.socials'
+>     ^^^^^^^^^^: ContactArrayField   (TyTypeReference)
+
+const arrayField: ContactArrayField = 'friends.0.socials'
+>                 ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const city: CityValue = 'Paris'
+>     ^^^^: CityValue   (TyTypeReference)
+
+const city: CityValue = 'Paris'
+>           ^^^^^^^^^: any   (TyAny)
+
+const friend: FriendValue = {
+>     ^^^^^^: FriendValue   (TyTypeReference)
+
+const friend: FriendValue = {
+>             ^^^^^^^^^^^: any   (TyAny)
+
+  name: 'Ada',
+> ^^^^: string   (TyString)
+
+  socials: [
+> ^^^^^^^: ({ kind: string; value: string; } | { kind: string; value: number; })[]   (TyArray)
+
+    { kind: 'email', value: 'a@example.test' },
+>     ^^^^: string   (TyString)
+
+    { kind: 'email', value: 'a@example.test' },
+>                    ^^^^^: string   (TyString)
+
+    { kind: 'phone', value: 1 },
+>     ^^^^: string   (TyString)
+
+    { kind: 'phone', value: 1 },
+>                    ^^^^^: number   (TyNumber)
+
+const social: SocialValue = 123
+>     ^^^^^^: SocialValue   (TyTypeReference)
+
+const social: SocialValue = 123
+>             ^^^^^^^^^^^: any   (TyAny)

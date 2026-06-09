@@ -1,0 +1,803 @@
+export type BaseIssue<Expected extends string = string> = {
+>           ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+export type BaseIssue<Expected extends string = string> = {
+>                     ^^^^^^^^: any   (TyAny)
+
+  readonly kind: 'schema'
+>          ^^^^: "schema"   (TyStringLiteral)
+
+  readonly expected: Expected
+>          ^^^^^^^^: Expected   (TyTypeReference)
+
+  readonly expected: Expected
+>                    ^^^^^^^^: any   (TyAny)
+
+  readonly message: string
+>          ^^^^^^^: string   (TyString)
+
+export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
+>           ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
+>                      ^^^^^: any   (TyAny)
+
+export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
+>                             ^^^^^^: any   (TyAny)
+
+export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
+>                                     ^^^^^: any   (TyAny)
+
+export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
+>                                                   ^^^^^^^^^: any   (TyAny)
+
+  readonly '~types'?: {
+>          ^^^^^^^^: { readonly input: Input; readonly output: Output; readonly issue: Issue; } | undefined   (TyUnion)
+
+    readonly input: Input
+>            ^^^^^: Input   (TyTypeReference)
+
+    readonly input: Input
+>                   ^^^^^: any   (TyAny)
+
+    readonly output: Output
+>            ^^^^^^: Output   (TyTypeReference)
+
+    readonly output: Output
+>                    ^^^^^^: any   (TyAny)
+
+    readonly issue: Issue
+>            ^^^^^: Issue   (TyTypeReference)
+
+    readonly issue: Issue
+>                   ^^^^^: any   (TyAny)
+
+  readonly '~run': (input: unknown) => Output
+>          ^^^^^^: (input: unknown) => Output   (TyFunction)
+
+  readonly '~run': (input: unknown) => Output
+>                   ^^^^^: unknown   (TyUnknown)
+
+  readonly '~run': (input: unknown) => Output
+>                                      ^^^^^^: any   (TyAny)
+
+export type GenericSchema = BaseSchema<any, any, BaseIssue>
+>           ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export type GenericSchema = BaseSchema<any, any, BaseIssue>
+>                           ^^^^^^^^^^: any   (TyAny)
+
+export type GenericSchema = BaseSchema<any, any, BaseIssue>
+>                                                ^^^^^^^^^: any   (TyAny)
+
+export type InferInput<TSchema extends GenericSchema> = NonNullable<
+>           ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+export type InferInput<TSchema extends GenericSchema> = NonNullable<
+>                      ^^^^^^^: any   (TyAny)
+
+export type InferInput<TSchema extends GenericSchema> = NonNullable<
+>                                      ^^^^^^^^^^^^^: any   (TyAny)
+
+export type InferInput<TSchema extends GenericSchema> = NonNullable<
+>                                                       ^^^^^^^^^^^: any   (TyAny)
+
+  TSchema['~types']
+> ^^^^^^^: any   (TyAny)
+
+export type InferOutput<TSchema extends GenericSchema> = NonNullable<
+>           ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+export type InferOutput<TSchema extends GenericSchema> = NonNullable<
+>                       ^^^^^^^: any   (TyAny)
+
+export type InferOutput<TSchema extends GenericSchema> = NonNullable<
+>                                       ^^^^^^^^^^^^^: any   (TyAny)
+
+export type InferOutput<TSchema extends GenericSchema> = NonNullable<
+>                                                        ^^^^^^^^^^^: any   (TyAny)
+
+  TSchema['~types']
+> ^^^^^^^: any   (TyAny)
+
+export type InferIssue<TSchema extends GenericSchema> = NonNullable<
+>           ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+export type InferIssue<TSchema extends GenericSchema> = NonNullable<
+>                      ^^^^^^^: any   (TyAny)
+
+export type InferIssue<TSchema extends GenericSchema> = NonNullable<
+>                                      ^^^^^^^^^^^^^: any   (TyAny)
+
+export type InferIssue<TSchema extends GenericSchema> = NonNullable<
+>                                                       ^^^^^^^^^^^: any   (TyAny)
+
+  TSchema['~types']
+> ^^^^^^^: any   (TyAny)
+
+  BaseIssue,
+> ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+  BaseSchema,
+> ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+  GenericSchema,
+> ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+  InferInput,
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+  InferIssue,
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+  InferOutput,
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
+>           ^^^^^^^^^^^^: { readonly ~types?: { readonly input: string; readonly output: string; readonly issue: BaseIssue<"string">; }; readonly ~run: (input: unknown) => string; }   (TyObject)
+
+export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
+>                          ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
+>                          ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
+>                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
+>                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
+>           ^^^^^^^^^^^^: { readonly ~types?: { readonly input: number; readonly output: number; readonly issue: BaseIssue<"number">; }; readonly ~run: (input: unknown) => number; }   (TyObject)
+
+export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
+>                          ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
+>                          ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
+>                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
+>                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
+>           ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: boolean; readonly output: boolean; readonly issue: BaseIssue<"boolean">; }; readonly ~run: (input: unknown) => boolean; }   (TyObject)
+
+export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
+>                           ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
+>                           ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
+>                                                        ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
+>                                                        ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject)
+
+export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
+>           ^^^^^^^^^^^^^^: { readonly ~types?: { readonly input: InferInput<TWrapped> | undefined; readonly output: InferOutput<TWrapped> | TDefault; readonly issue: InferIssue<TWrapped>; }; readonly ~run: (input: unknown) => InferOutput<TWrapped> | TDefault; }   (TyObject)
+
+export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
+>                          ^^^^^^^^: any   (TyAny)
+
+export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
+>                                           ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
+>                                           ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
+>                                                          ^^^^^^^^: any   (TyAny)
+
+export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
+>                                                                                  ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
+>                                                                                  ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+  InferInput<TWrapped> | undefined,
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+  InferInput<TWrapped> | undefined,
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+  InferInput<TWrapped> | undefined,
+>            ^^^^^^^^: any   (TyAny)
+
+  InferOutput<TWrapped> | TDefault,
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+  InferOutput<TWrapped> | TDefault,
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+  InferOutput<TWrapped> | TDefault,
+>             ^^^^^^^^: any   (TyAny)
+
+  InferOutput<TWrapped> | TDefault,
+>                         ^^^^^^^^: any   (TyAny)
+
+  InferIssue<TWrapped>
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+  InferIssue<TWrapped>
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+  InferIssue<TWrapped>
+>            ^^^^^^^^: any   (TyAny)
+
+export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
+>           ^^^^^^^^^^^: { readonly ~types?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: InferIssue<TItem>; }; readonly ~run: (input: unknown) => InferOutput<TItem>[]; }   (TyObject)
+
+export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
+>                       ^^^^^: any   (TyAny)
+
+export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
+>                                     ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
+>                                     ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
+>                                                      ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
+>                                                      ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+  InferInput<TItem>[],
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+  InferInput<TItem>[],
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+  InferInput<TItem>[],
+>            ^^^^^: any   (TyAny)
+
+  InferOutput<TItem>[],
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+  InferOutput<TItem>[],
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+  InferOutput<TItem>[],
+>             ^^^^^: any   (TyAny)
+
+  InferIssue<TItem>
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+  InferIssue<TItem>
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+  InferIssue<TItem>
+>            ^^^^^: any   (TyAny)
+
+export type ObjectEntries = Record<string, GenericSchema>
+>           ^^^^^^^^^^^^^: { [x: string]: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }; }   (TyObject)
+
+export type ObjectEntries = Record<string, GenericSchema>
+>                           ^^^^^^: any   (TyAny)
+
+export type ObjectEntries = Record<string, GenericSchema>
+>                                          ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export type ObjectEntries = Record<string, GenericSchema>
+>                                          ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export type ObjectInput<TEntries extends ObjectEntries> = {
+>           ^^^^^^^^^^^: { [Key in keyof TEntries]: InferInput<TEntries[Key]>; }   (TyMapped)
+
+export type ObjectInput<TEntries extends ObjectEntries> = {
+>                       ^^^^^^^^: any   (TyAny)
+
+export type ObjectInput<TEntries extends ObjectEntries> = {
+>                                        ^^^^^^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferInput<TEntries[Key]>
+>  ^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferInput<TEntries[Key]>
+>               ^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferInput<TEntries[Key]>
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+  [Key in keyof TEntries]: InferInput<TEntries[Key]>
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+  [Key in keyof TEntries]: InferInput<TEntries[Key]>
+>                                     ^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferInput<TEntries[Key]>
+>                                              ^^^: any   (TyAny)
+
+export type ObjectOutput<TEntries extends ObjectEntries> = {
+>           ^^^^^^^^^^^^: { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }   (TyMapped)
+
+export type ObjectOutput<TEntries extends ObjectEntries> = {
+>                        ^^^^^^^^: any   (TyAny)
+
+export type ObjectOutput<TEntries extends ObjectEntries> = {
+>                                         ^^^^^^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferOutput<TEntries[Key]>
+>  ^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferOutput<TEntries[Key]>
+>               ^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferOutput<TEntries[Key]>
+>                          ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+  [Key in keyof TEntries]: InferOutput<TEntries[Key]>
+>                          ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+  [Key in keyof TEntries]: InferOutput<TEntries[Key]>
+>                                      ^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferOutput<TEntries[Key]>
+>                                               ^^^: any   (TyAny)
+
+export type ObjectIssue<TEntries extends ObjectEntries> = {
+>           ^^^^^^^^^^^: { [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]   (TyIndexedAccess)
+
+export type ObjectIssue<TEntries extends ObjectEntries> = {
+>                       ^^^^^^^^: any   (TyAny)
+
+export type ObjectIssue<TEntries extends ObjectEntries> = {
+>                                        ^^^^^^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferIssue<TEntries[Key]>
+>  ^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferIssue<TEntries[Key]>
+>               ^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferIssue<TEntries[Key]>
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+  [Key in keyof TEntries]: InferIssue<TEntries[Key]>
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+  [Key in keyof TEntries]: InferIssue<TEntries[Key]>
+>                                     ^^^^^^^^: any   (TyAny)
+
+  [Key in keyof TEntries]: InferIssue<TEntries[Key]>
+>                                              ^^^: any   (TyAny)
+
+}[keyof TEntries]
+>       ^^^^^^^^: any   (TyAny)
+
+export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
+>           ^^^^^^^^^^^^: { readonly ~types?: { readonly input: ObjectInput<TEntries>; readonly output: ObjectOutput<TEntries>; readonly issue: ObjectIssue<TEntries>; }; readonly ~run: (input: unknown) => ObjectOutput<TEntries>; }   (TyObject)
+
+export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
+>                        ^^^^^^^^: any   (TyAny)
+
+export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
+>                                         ^^^^^^^^^^^^^: any   (TyAny)
+
+export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
+>                                                          ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
+>                                                          ^^^^^^^^^^: { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }   (TyObject)
+
+  ObjectInput<TEntries>,
+> ^^^^^^^^^^^: any   (TyAny)
+
+  ObjectInput<TEntries>,
+>             ^^^^^^^^: any   (TyAny)
+
+  ObjectOutput<TEntries>,
+> ^^^^^^^^^^^^: any   (TyAny)
+
+  ObjectOutput<TEntries>,
+>              ^^^^^^^^: any   (TyAny)
+
+  ObjectIssue<TEntries>
+> ^^^^^^^^^^^: any   (TyAny)
+
+  ObjectIssue<TEntries>
+>             ^^^^^^^^: any   (TyAny)
+
+export function string(): StringSchema {
+>               ^^^^^^: () => StringSchema   (TyFunction)
+
+export function string(): StringSchema {
+>                         ^^^^^^^^^^^^: any   (TyAny)
+
+  return { '~run': input => String(input) }
+>          ^^^^^^: (input: any) => string   (TyFunction)
+
+  return { '~run': input => String(input) }
+>                  ^^^^^: any   (TyAny)
+
+  return { '~run': input => String(input) }
+>                           ^^^^^^: StringConstructor   (TyTypeReference)
+
+  return { '~run': input => String(input) }
+>                                  ^^^^^: any   (TyAny)
+
+export function number(): NumberSchema {
+>               ^^^^^^: () => NumberSchema   (TyFunction)
+
+export function number(): NumberSchema {
+>                         ^^^^^^^^^^^^: any   (TyAny)
+
+  return { '~run': input => Number(input) }
+>          ^^^^^^: (input: any) => number   (TyFunction)
+
+  return { '~run': input => Number(input) }
+>                  ^^^^^: any   (TyAny)
+
+  return { '~run': input => Number(input) }
+>                           ^^^^^^: NumberConstructor   (TyTypeReference)
+
+  return { '~run': input => Number(input) }
+>                                  ^^^^^: any   (TyAny)
+
+export function boolean(): BooleanSchema {
+>               ^^^^^^^: () => BooleanSchema   (TyFunction)
+
+export function boolean(): BooleanSchema {
+>                          ^^^^^^^^^^^^^: any   (TyAny)
+
+  return { '~run': input => Boolean(input) }
+>          ^^^^^^: (input: any) => boolean   (TyFunction)
+
+  return { '~run': input => Boolean(input) }
+>                  ^^^^^: any   (TyAny)
+
+  return { '~run': input => Boolean(input) }
+>                           ^^^^^^^: BooleanConstructor   (TyTypeReference)
+
+  return { '~run': input => Boolean(input) }
+>                                   ^^^^^: any   (TyAny)
+
+export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
+>               ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (TyFunction)
+
+export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
+>                        ^^^^^^^^: any   (TyAny)
+
+export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
+>                                         ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
+>                                         ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
+>                                                        ^^^^^^^^: any   (TyAny)
+
+  wrapped: TWrapped,
+> ^^^^^^^: TWrapped   (TyTypeReference)
+
+  wrapped: TWrapped,
+>          ^^^^^^^^: any   (TyAny)
+
+  default_: TDefault,
+> ^^^^^^^^: TDefault   (TyTypeReference)
+
+  default_: TDefault,
+>           ^^^^^^^^: any   (TyAny)
+
+): OptionalSchema<TWrapped, TDefault> {
+>  ^^^^^^^^^^^^^^: any   (TyAny)
+
+): OptionalSchema<TWrapped, TDefault> {
+>                 ^^^^^^^^: any   (TyAny)
+
+): OptionalSchema<TWrapped, TDefault> {
+>                           ^^^^^^^^: any   (TyAny)
+
+  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
+>          ^^^^^^: (input: any) => any   (TyFunction)
+
+  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
+>                  ^^^^^: any   (TyAny)
+
+  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
+>                            ^^^^^: any   (TyAny)
+
+  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
+>                                      ^^^^^^^^^: undefined   (TyUndefined)
+
+  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
+>                                                  ^^^^^^^^: TDefault   (TyTypeReference)
+
+  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
+>                                                             ^^^^^^^: TWrapped   (TyTypeReference)
+
+  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
+>                                                                             ^^^^^: any   (TyAny)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>               ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (TyFunction)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>                     ^^^^^: any   (TyAny)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>                                   ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>                                   ^^^^^^^^^^^^^: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }   (TyObject)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>                                                  ^^^^: TItem   (TyTypeReference)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>                                                        ^^^^^: any   (TyAny)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>                                                                ^^^^^^^^^^^: any   (TyAny)
+
+export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
+>                                                                            ^^^^^: any   (TyAny)
+
+  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
+>          ^^^^^^: (input: any) => any[]   (TyFunction)
+
+  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
+>                  ^^^^^: any   (TyAny)
+
+  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
+>                            ^^^^^: any   (TyAny)
+
+  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
+>                                                ^^^: <U>(callbackfn: (value: unknown, index: number, array: unknown[]) => U, thisArg?: any) => U[]   (TyFunction)
+
+  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
+>                                                    ^^^^^: unknown   (TyUnknown)
+
+  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
+>                                                             ^^^^: TItem   (TyTypeReference)
+
+  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
+>                                                                          ^^^^^: unknown   (TyUnknown)
+
+export function object<TEntries extends ObjectEntries>(
+>               ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (TyFunction)
+
+export function object<TEntries extends ObjectEntries>(
+>                      ^^^^^^^^: any   (TyAny)
+
+export function object<TEntries extends ObjectEntries>(
+>                                       ^^^^^^^^^^^^^: any   (TyAny)
+
+  entries: TEntries,
+> ^^^^^^^: TEntries   (TyTypeReference)
+
+  entries: TEntries,
+>          ^^^^^^^^: any   (TyAny)
+
+): ObjectSchema<TEntries> {
+>  ^^^^^^^^^^^^: any   (TyAny)
+
+): ObjectSchema<TEntries> {
+>               ^^^^^^^^: any   (TyAny)
+
+    '~run': input => {
+>   ^^^^^^: (input: any) => ObjectOutput<TEntries>   (TyFunction)
+
+    '~run': input => {
+>           ^^^^^: any   (TyAny)
+
+      const out: Record<string, unknown> = {}
+>           ^^^: Record<string, unknown>   (TyTypeReference)
+
+      const out: Record<string, unknown> = {}
+>                ^^^^^^: any   (TyAny)
+
+      for (const key in entries) {
+>                ^^^: any   (TyAny)
+
+      for (const key in entries) {
+>                       ^^^^^^^: TEntries   (TyTypeReference)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>       ^^^: Record<string, unknown>   (TyTypeReference)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>           ^^^: any   (TyAny)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>                  ^^^^^^^: TEntries   (TyTypeReference)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>                          ^^^: any   (TyAny)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>                                        ^^^^^: any   (TyAny)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>                                                 ^^^^^^: any   (TyAny)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>                                                                          ^^^: any   (TyAny)
+
+      return out as ObjectOutput<TEntries>
+>            ^^^: Record<string, unknown>   (TyTypeReference)
+
+      return out as ObjectOutput<TEntries>
+>                   ^^^^^^^^^^^^: any   (TyAny)
+
+      return out as ObjectOutput<TEntries>
+>                                ^^^^^^^^: any   (TyAny)
+
+import { array, boolean, number, object, optional, string } from '../library/schemas'
+>        ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (TyFunction)
+
+import { array, boolean, number, object, optional, string } from '../library/schemas'
+>               ^^^^^^^: () => BooleanSchema   (TyFunction)
+
+import { array, boolean, number, object, optional, string } from '../library/schemas'
+>                        ^^^^^^: () => NumberSchema   (TyFunction)
+
+import { array, boolean, number, object, optional, string } from '../library/schemas'
+>                                ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (TyFunction)
+
+import { array, boolean, number, object, optional, string } from '../library/schemas'
+>                                        ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (TyFunction)
+
+import { array, boolean, number, object, optional, string } from '../library/schemas'
+>                                                  ^^^^^^: () => StringSchema   (TyFunction)
+
+import type { InferInput, InferIssue, InferOutput } from '../library/types'
+>             ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+import type { InferInput, InferIssue, InferOutput } from '../library/types'
+>                         ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+import type { InferInput, InferIssue, InferOutput } from '../library/types'
+>                                     ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+const userSchema = object({
+>     ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference)
+
+const userSchema = object({
+>                  ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (TyFunction)
+
+  id: string(),
+> ^^: StringSchema   (TyTypeReference)
+
+  id: string(),
+>     ^^^^^^: () => StringSchema   (TyFunction)
+
+  age: optional(number(), 0),
+> ^^^: OptionalSchema<GenericSchema, number>   (TyTypeReference)
+
+  age: optional(number(), 0),
+>      ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (TyFunction)
+
+  age: optional(number(), 0),
+>               ^^^^^^: () => NumberSchema   (TyFunction)
+
+  active: boolean(),
+> ^^^^^^: BooleanSchema   (TyTypeReference)
+
+  active: boolean(),
+>         ^^^^^^^: () => BooleanSchema   (TyFunction)
+
+  tags: array(string()),
+> ^^^^: ArraySchema<GenericSchema>   (TyTypeReference)
+
+  tags: array(string()),
+>       ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (TyFunction)
+
+  tags: array(string()),
+>             ^^^^^^: () => StringSchema   (TyFunction)
+
+type UserInput = InferInput<typeof userSchema>
+>    ^^^^^^^^^: (({ readonly input: ObjectInput<ObjectEntries>; readonly output: ObjectOutput<ObjectEntries>; readonly issue: ObjectIssue<ObjectEntries>; } | undefined) & {})["input"]   (TyIndexedAccess)
+
+type UserInput = InferInput<typeof userSchema>
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+type UserInput = InferInput<typeof userSchema>
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess)
+
+type UserInput = InferInput<typeof userSchema>
+>                                  ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference)
+
+type UserOutput = InferOutput<typeof userSchema>
+>    ^^^^^^^^^^: (({ readonly input: ObjectInput<ObjectEntries>; readonly output: ObjectOutput<ObjectEntries>; readonly issue: ObjectIssue<ObjectEntries>; } | undefined) & {})["output"]   (TyIndexedAccess)
+
+type UserOutput = InferOutput<typeof userSchema>
+>                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+type UserOutput = InferOutput<typeof userSchema>
+>                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess)
+
+type UserOutput = InferOutput<typeof userSchema>
+>                                    ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference)
+
+type UserIssue = InferIssue<typeof userSchema>
+>    ^^^^^^^^^: (({ readonly input: ObjectInput<ObjectEntries>; readonly output: ObjectOutput<ObjectEntries>; readonly issue: ObjectIssue<ObjectEntries>; } | undefined) & {})["issue"]   (TyIndexedAccess)
+
+type UserIssue = InferIssue<typeof userSchema>
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+type UserIssue = InferIssue<typeof userSchema>
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess)
+
+type UserIssue = InferIssue<typeof userSchema>
+>                                  ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference)
+
+const input: UserInput = {
+>     ^^^^^: UserInput   (TyTypeReference)
+
+const input: UserInput = {
+>            ^^^^^^^^^: any   (TyAny)
+
+  id: 'user-1',
+> ^^: string   (TyString)
+
+  age: undefined,
+> ^^^: undefined   (TyUndefined)
+
+  age: undefined,
+>      ^^^^^^^^^: undefined   (TyUndefined)
+
+  active: true,
+> ^^^^^^: true   (TyBooleanLiteral)
+
+  tags: ['admin'],
+> ^^^^: string[]   (TyArray)
+
+const output = userSchema['~run'](input)
+>     ^^^^^^: any   (TyAny)
+
+const output = userSchema['~run'](input)
+>              ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference)
+
+const output = userSchema['~run'](input)
+>                                 ^^^^^: UserInput   (TyTypeReference)
+
+const explicitOutput: UserOutput = output
+>     ^^^^^^^^^^^^^^: UserOutput   (TyTypeReference)
+
+const explicitOutput: UserOutput = output
+>                     ^^^^^^^^^^: any   (TyAny)
+
+const explicitOutput: UserOutput = output
+>                                  ^^^^^^: any   (TyAny)
+
+const userAge = output.age
+>     ^^^^^^^: any   (TyAny)
+
+const userAge = output.age
+>               ^^^^^^: any   (TyAny)
+
+const userAge = output.age
+>                      ^^^: any   (TyAny)
+
+const userTags = output.tags
+>     ^^^^^^^^: any   (TyAny)
+
+const userTags = output.tags
+>                ^^^^^^: any   (TyAny)
+
+const userTags = output.tags
+>                       ^^^^: any   (TyAny)
+
+const issue: UserIssue = {
+>     ^^^^^: UserIssue   (TyTypeReference)
+
+const issue: UserIssue = {
+>            ^^^^^^^^^: any   (TyAny)
+
+  kind: 'schema',
+> ^^^^: string   (TyString)
+
+  expected: 'string',
+> ^^^^^^^^: string   (TyString)
+
+  message: 'Invalid string',
+> ^^^^^^^: string   (TyString)

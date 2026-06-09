@@ -1,3 +1,276 @@
+react-hook-form/field-path.ts::src/types/path/eager.ts	1001	1010	PathValue	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1011	1012	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1013	1014	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1017	1018	R	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1044	1045	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1057	1065	ArrayKey	number
+react-hook-form/field-path.ts::src/types/path/eager.ts	1078	1079	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1088	1101	ReadonlyArray	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1108	1109	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1123	1132	PathValue	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1133	1134	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1136	1137	R	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1140	1144	Path	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1145	1146	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1189	1190	P	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1205	1206	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1215	1216	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1217	1218	P	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1228	1229	P	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1241	1249	ArrayKey	number
+react-hook-form/field-path.ts::src/types/path/eager.ts	1262	1263	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1272	1285	ReadonlyArray	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1292	1293	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1307	1308	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	133	141	PathImpl	V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, V | TraversedTypes>}`
+react-hook-form/field-path.ts::src/types/path/eager.ts	1359	1372	ArrayPathImpl	V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, V | TraversedTypes>}`
+react-hook-form/field-path.ts::src/types/path/eager.ts	1373	1374	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1400	1401	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1403	1417	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	142	143	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1421	1422	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1435	1444	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	1449	1468	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/path/eager.ts	1483	1484	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1493	1506	ReadonlyArray	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1513	1514	U	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1522	1523	U	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1532	1541	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	1544	1563	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/path/eager.ts	1599	1609	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	16	26	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	1610	1624	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1626	1627	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1658	1659	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1667	1668	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1672	1689	ArrayPathInternal	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	169	170	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1690	1691	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1693	1707	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1710	1711	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	172	186	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1734	1744	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	1745	1759	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1761	1762	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1789	1790	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1794	1811	ArrayPathInternal	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1812	1813	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1815	1829	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1832	1833	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1843	1860	ArrayPathInternal	T extends readonly (infer V)[] ? IsAny<T> extends true ? string : IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : ArrayPathImpl<number, V, TraversedTypes> : { [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[keyof T]
+react-hook-form/field-path.ts::src/types/path/eager.ts	1861	1862	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1864	1878	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1881	1882	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1886	1887	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1896	1909	ReadonlyArray	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	190	191	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1916	1917	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1923	1928	IsAny	0 extends 1 & T ? true : false
+react-hook-form/field-path.ts::src/types/path/eager.ts	1929	1930	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	1964	1971	IsTuple	number extends T["length"] ? false : true
+react-hook-form/field-path.ts::src/types/path/eager.ts	1972	1973	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2009	2010	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2014	2023	TupleKeys	keyof T extends keyof any[] ? never : keyof T
+react-hook-form/field-path.ts::src/types/path/eager.ts	2024	2025	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2031	2044	ArrayPathImpl	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	204	213	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	2045	2046	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2057	2058	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2059	2060	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2063	2077	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2089	2098	TupleKeys	keyof T extends keyof any[] ? never : keyof T
+react-hook-form/field-path.ts::src/types/path/eager.ts	2099	2100	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2111	2124	ArrayPathImpl	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2125	2133	ArrayKey	number
+react-hook-form/field-path.ts::src/types/path/eager.ts	2135	2136	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2138	2152	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2167	2168	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2178	2179	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	218	237	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/path/eager.ts	2184	2197	ArrayPathImpl	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2198	2199	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2210	2211	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2212	2213	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2216	2230	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2244	2245	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2260	2269	ArrayPath	T extends any ? ArrayPathInternal<T, T> : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	2270	2271	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2275	2276	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2291	2308	ArrayPathInternal	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2309	2310	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2332	2346	FieldArrayPath	TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	2347	2359	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2363	2372	ArrayPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2373	2385	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2399	2413	FieldPathValue	TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	2417	2429	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2433	2443	TFieldPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	245	246	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2452	2461	FieldPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2462	2474	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2481	2490	PathValue	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2491	2503	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2505	2515	TFieldPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2530	2549	FieldArrayPathValue	TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	2553	2565	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2569	2584	TFieldArrayPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2593	2607	FieldArrayPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2608	2620	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2627	2636	PathValue	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2637	2649	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	2651	2666	TFieldArrayPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	266	276	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	277	291	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	293	294	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	30	38	ArrayKey	number
+react-hook-form/field-path.ts::src/types/path/eager.ts	305	306	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	318	319	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	327	328	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	332	344	PathInternal	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	345	346	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	348	362	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	365	366	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	376	388	PathInternal	T extends readonly (infer V)[] ? IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : PathImpl<number, V, TraversedTypes> : { [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>; }[keyof T]
+react-hook-form/field-path.ts::src/types/path/eager.ts	389	390	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	392	406	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	409	410	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	414	415	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	42	61	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/path/eager.ts	424	437	ReadonlyArray	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	444	445	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	451	458	IsTuple	number extends T["length"] ? false : true
+react-hook-form/field-path.ts::src/types/path/eager.ts	459	460	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	492	493	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	497	506	TupleKeys	keyof T extends keyof any[] ? never : keyof T
+react-hook-form/field-path.ts::src/types/path/eager.ts	507	508	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	514	522	PathImpl	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	523	524	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	535	536	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	537	538	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	541	555	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	565	574	TupleKeys	keyof T extends keyof any[] ? never : keyof T
+react-hook-form/field-path.ts::src/types/path/eager.ts	575	576	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	585	593	PathImpl	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	594	602	ArrayKey	number
+react-hook-form/field-path.ts::src/types/path/eager.ts	604	605	V	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	607	621	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	636	637	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	647	648	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	65	70	IsAny	0 extends 1 & T ? true : false
+react-hook-form/field-path.ts::src/types/path/eager.ts	653	661	PathImpl	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	662	663	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	674	675	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	676	677	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	680	694	TraversedTypes	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	708	709	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	724	728	Path	T extends any ? PathInternal<T, T> : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	729	730	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	734	735	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	74	81	IsTuple	number extends T["length"] ? false : true
+react-hook-form/field-path.ts::src/types/path/eager.ts	750	762	PathInternal	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	763	764	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	786	795	FieldPath	TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	796	808	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	812	816	Path	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	817	829	TFieldValues	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	837	846	PathValue	T extends any ? P extends `${infer K}.${infer R}` ? K extends keyof T ? R extends Path<T[K]> ? PathValue<T[K], R> : never : K extends `${number}` ? T extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : P extends keyof T ? T[P] : P extends `${number}` ? T extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	847	848	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	85	94	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	850	851	P	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	860	864	Path	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	865	866	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	870	879	ArrayPath	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	880	881	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	886	887	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	904	905	P	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	923	924	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	934	935	R	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	944	945	K	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	960	961	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	970	971	R	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	98	107	TupleKeys	keyof T extends keyof any[] ? never : keyof T
+react-hook-form/field-path.ts::src/types/path/eager.ts	980	984	Path	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	985	986	T	any
+react-hook-form/field-path.ts::src/types/path/eager.ts	987	988	K	any
+react-hook-form/field-path.ts::src/types/utils.ts	100	119	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/utils.ts	12	21	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/utils.ts	122	126	Date	DateConstructor
+react-hook-form/field-path.ts::src/types/utils.ts	129	137	FileList	{ new (): FileList; prototype: FileList; }
+react-hook-form/field-path.ts::src/types/utils.ts	140	144	File	{ new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }
+react-hook-form/field-path.ts::src/types/utils.ts	158	163	IsAny	0 extends 1 & T ? true : false
+react-hook-form/field-path.ts::src/types/utils.ts	164	165	T	any
+react-hook-form/field-path.ts::src/types/utils.ts	183	184	T	any
+react-hook-form/field-path.ts::src/types/utils.ts	213	220	IsTuple	number extends T["length"] ? false : true
+react-hook-form/field-path.ts::src/types/utils.ts	221	222	T	any
+react-hook-form/field-path.ts::src/types/utils.ts	231	244	ReadonlyArray	any
+react-hook-form/field-path.ts::src/types/utils.ts	268	269	T	any
+react-hook-form/field-path.ts::src/types/utils.ts	312	321	TupleKeys	keyof T extends keyof any[] ? never : keyof T
+react-hook-form/field-path.ts::src/types/utils.ts	322	323	T	any
+react-hook-form/field-path.ts::src/types/utils.ts	332	345	ReadonlyArray	any
+react-hook-form/field-path.ts::src/types/utils.ts	354	361	Exclude	any
+react-hook-form/field-path.ts::src/types/utils.ts	368	369	T	any
+react-hook-form/field-path.ts::src/types/utils.ts	397	405	ArrayKey	number
+react-hook-form/field-path.ts::src/types/utils.ts	428	438	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/utils.ts	439	441	T1	any
+react-hook-form/field-path.ts::src/types/utils.ts	443	445	T2	any
+react-hook-form/field-path.ts::src/types/utils.ts	449	451	T1	any
+react-hook-form/field-path.ts::src/types/utils.ts	460	462	T2	any
+react-hook-form/field-path.ts::src/types/utils.ts	469	470	G	any
+react-hook-form/field-path.ts::src/types/utils.ts	477	478	G	any
+react-hook-form/field-path.ts::src/types/utils.ts	487	489	T1	any
+react-hook-form/field-path.ts::src/types/utils.ts	508	509	G	any
+react-hook-form/field-path.ts::src/types/utils.ts	516	517	G	any
+react-hook-form/field-path.ts::src/types/utils.ts	526	528	T2	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	125	136	ContactForm	{ user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; }
+react-hook-form/field-path.ts::tests/field-path-usage.ts	143	147	user	{ name: string; address: { city: string; zip?: number; }; }
+react-hook-form/field-path.ts::tests/field-path-usage.ts	155	159	name	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	16	30	FieldArrayPath	TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	172	179	address	{ city: string; zip?: number; }
+react-hook-form/field-path.ts::tests/field-path-usage.ts	189	193	city	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	208	211	zip	number | undefined
+react-hook-form/field-path.ts::tests/field-path-usage.ts	233	237	tags	string[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	250	257	friends	{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	259	264	Array	ArrayConstructor
+react-hook-form/field-path.ts::tests/field-path-usage.ts	271	275	name	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	288	295	socials	[{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	300	304	kind	"email"
+react-hook-form/field-path.ts::tests/field-path-usage.ts	315	320	value	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	334	338	kind	"phone"
+react-hook-form/field-path.ts::tests/field-path-usage.ts	34	53	FieldArrayPathValue	TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	349	354	value	number
+react-hook-form/field-path.ts::tests/field-path-usage.ts	379	391	ContactField	"user" | "tags" | "friends" | "user.name" | "user.address" | "user.address.city" | "user.address.zip" | `tags.${number}` | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.1` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value`
+react-hook-form/field-path.ts::tests/field-path-usage.ts	394	403	FieldPath	TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	404	415	ContactForm	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	422	439	ContactArrayField	"friends" | `friends.${number}.socials`
+react-hook-form/field-path.ts::tests/field-path-usage.ts	442	456	FieldArrayPath	TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	457	468	ContactForm	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	475	484	CityValue	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	487	501	FieldPathValue	TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	502	513	ContactForm	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	541	552	FriendValue	{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	555	574	FieldArrayPathValue	TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	57	66	FieldPath	TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	575	586	ContactForm	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	604	615	SocialValue	number
+react-hook-form/field-path.ts::tests/field-path-usage.ts	618	632	FieldPathValue	TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	633	644	ContactForm	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	682	687	field	"user" | "tags" | "friends" | "user.name" | "user.address" | "user.address.city" | "user.address.zip" | `tags.${number}` | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.1` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value`
+react-hook-form/field-path.ts::tests/field-path-usage.ts	689	701	ContactField	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	70	84	FieldPathValue	TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
+react-hook-form/field-path.ts::tests/field-path-usage.ts	738	748	arrayField	"friends" | `friends.${number}.socials`
+react-hook-form/field-path.ts::tests/field-path-usage.ts	750	767	ContactArrayField	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	796	800	city	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	802	811	CityValue	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	828	834	friend	{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	836	847	FriendValue	any
+react-hook-form/field-path.ts::tests/field-path-usage.ts	854	858	name	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	869	876	socials	({ kind: string; value: string; } | { kind: string; value: number; })[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	886	890	kind	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	901	906	value	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	934	938	kind	string
+react-hook-form/field-path.ts::tests/field-path-usage.ts	949	954	value	number
+react-hook-form/field-path.ts::tests/field-path-usage.ts	974	980	social	number
+react-hook-form/field-path.ts::tests/field-path-usage.ts	982	993	SocialValue	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1009	1013	meta	M
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1021	1022	M	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	1027	1028	M	any
@@ -461,6 +734,320 @@ redux-toolkit/create-action.ts::tests/create-action-usage.ts	926	934	priority	an
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	942	946	meta	{ createdAt: number; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	950	959	createdAt	number
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	970	975	error	boolean
+remeda/data-first.ts::src/filter.ts	103	104	T	any
+remeda/data-first.ts::src/filter.ts	110	119	predicate	(value: T, index: number, data: readonly T[]) => value is S
+remeda/data-first.ts::src/filter.ts	122	127	value	T
+remeda/data-first.ts::src/filter.ts	129	130	T	any
+remeda/data-first.ts::src/filter.ts	132	137	index	number
+remeda/data-first.ts::src/filter.ts	14	18	Pred	(value: T, index: number, data: readonly T[]) => boolean
+remeda/data-first.ts::src/filter.ts	147	151	data	readonly T[]
+remeda/data-first.ts::src/filter.ts	162	163	T	any
+remeda/data-first.ts::src/filter.ts	170	175	value	T
+remeda/data-first.ts::src/filter.ts	179	180	S	any
+remeda/data-first.ts::src/filter.ts	185	186	S	any
+remeda/data-first.ts::src/filter.ts	205	211	filter	{ <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }
+remeda/data-first.ts::src/filter.ts	212	213	T	any
+remeda/data-first.ts::src/filter.ts	215	219	data	readonly T[]
+remeda/data-first.ts::src/filter.ts	230	231	T	any
+remeda/data-first.ts::src/filter.ts	235	244	predicate	Pred<T>
+remeda/data-first.ts::src/filter.ts	246	250	Pred	(value: T, index: number, data: readonly T[]) => boolean
+remeda/data-first.ts::src/filter.ts	251	252	T	any
+remeda/data-first.ts::src/filter.ts	256	257	T	any
+remeda/data-first.ts::src/filter.ts	276	282	filter	{ <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }
+remeda/data-first.ts::src/filter.ts	283	287	data	readonly unknown[]
+remeda/data-first.ts::src/filter.ts	309	318	predicate	Pred<any>
+remeda/data-first.ts::src/filter.ts	320	324	Pred	(value: T, index: number, data: readonly T[]) => boolean
+remeda/data-first.ts::src/filter.ts	353	357	data	readonly unknown[]
+remeda/data-first.ts::src/filter.ts	358	364	filter	{ <S>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }
+remeda/data-first.ts::src/filter.ts	366	371	value	unknown
+remeda/data-first.ts::src/filter.ts	373	378	index	number
+remeda/data-first.ts::src/filter.ts	383	392	predicate	Pred<any>
+remeda/data-first.ts::src/filter.ts	393	398	value	unknown
+remeda/data-first.ts::src/filter.ts	400	405	index	number
+remeda/data-first.ts::src/filter.ts	407	411	data	readonly unknown[]
+remeda/data-first.ts::src/filter.ts	62	68	filter	{ <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }
+remeda/data-first.ts::src/filter.ts	69	70	T	any
+remeda/data-first.ts::src/filter.ts	72	73	S	any
+remeda/data-first.ts::src/filter.ts	82	83	T	any
+remeda/data-first.ts::src/filter.ts	88	92	data	readonly T[]
+remeda/data-first.ts::src/groupBy.ts	100	105	index	number
+remeda/data-first.ts::src/groupBy.ts	115	119	data	readonly T[]
+remeda/data-first.ts::src/groupBy.ts	130	131	T	any
+remeda/data-first.ts::src/groupBy.ts	138	141	Key	any
+remeda/data-first.ts::src/groupBy.ts	146	153	Partial	any
+remeda/data-first.ts::src/groupBy.ts	154	160	Record	any
+remeda/data-first.ts::src/groupBy.ts	16	23	groupBy	<T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>
+remeda/data-first.ts::src/groupBy.ts	161	164	Key	any
+remeda/data-first.ts::src/groupBy.ts	166	167	T	any
+remeda/data-first.ts::src/groupBy.ts	182	185	out	Partial<Record<Key, T[]>>
+remeda/data-first.ts::src/groupBy.ts	187	194	Partial	any
+remeda/data-first.ts::src/groupBy.ts	195	201	Record	any
+remeda/data-first.ts::src/groupBy.ts	202	205	Key	any
+remeda/data-first.ts::src/groupBy.ts	207	208	T	any
+remeda/data-first.ts::src/groupBy.ts	229	234	index	number
+remeda/data-first.ts::src/groupBy.ts	24	25	T	any
+remeda/data-first.ts::src/groupBy.ts	240	245	index	number
+remeda/data-first.ts::src/groupBy.ts	248	252	data	readonly T[]
+remeda/data-first.ts::src/groupBy.ts	253	259	length	number
+remeda/data-first.ts::src/groupBy.ts	261	266	index	number
+remeda/data-first.ts::src/groupBy.ts	27	30	Key	any
+remeda/data-first.ts::src/groupBy.ts	282	287	value	T
+remeda/data-first.ts::src/groupBy.ts	290	294	data	readonly T[]
+remeda/data-first.ts::src/groupBy.ts	295	300	index	number
+remeda/data-first.ts::src/groupBy.ts	312	315	key	Key
+remeda/data-first.ts::src/groupBy.ts	318	328	callbackfn	(value: T, index: number, data: readonly T[]) => Key
+remeda/data-first.ts::src/groupBy.ts	329	334	value	T
+remeda/data-first.ts::src/groupBy.ts	336	341	index	number
+remeda/data-first.ts::src/groupBy.ts	343	347	data	readonly T[]
+remeda/data-first.ts::src/groupBy.ts	354	383	(out[key] ??= []).push(value)	number
+remeda/data-first.ts::src/groupBy.ts	355	358	out	Partial<Record<Key, T[]>>
+remeda/data-first.ts::src/groupBy.ts	359	362	key	Key
+remeda/data-first.ts::src/groupBy.ts	372	376	push	(...items: T[]) => number
+remeda/data-first.ts::src/groupBy.ts	377	382	value	T
+remeda/data-first.ts::src/groupBy.ts	39	50	PropertyKey	any
+remeda/data-first.ts::src/groupBy.ts	397	400	out	Partial<Record<Key, T[]>>
+remeda/data-first.ts::src/groupBy.ts	55	59	data	readonly T[]
+remeda/data-first.ts::src/groupBy.ts	70	71	T	any
+remeda/data-first.ts::src/groupBy.ts	77	87	callbackfn	(value: T, index: number, data: readonly T[]) => Key
+remeda/data-first.ts::src/groupBy.ts	90	95	value	T
+remeda/data-first.ts::src/groupBy.ts	97	98	T	any
+remeda/data-first.ts::src/internal/types.ts	116	117	T	any
+remeda/data-first.ts::src/internal/types.ts	12	40	EnumerableStringKeyedValueOf	T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never
+remeda/data-first.ts::src/internal/types.ts	124	125	T	any
+remeda/data-first.ts::src/internal/types.ts	161	174	NonEmptyArray	readonly [T, ...T[]]
+remeda/data-first.ts::src/internal/types.ts	175	176	T	any
+remeda/data-first.ts::src/internal/types.ts	190	191	T	any
+remeda/data-first.ts::src/internal/types.ts	196	197	T	any
+remeda/data-first.ts::src/internal/types.ts	214	227	LazyEvaluator	(value: T, index: number, data: readonly T[]) => R
+remeda/data-first.ts::src/internal/types.ts	228	229	T	any
+remeda/data-first.ts::src/internal/types.ts	231	232	R	any
+remeda/data-first.ts::src/internal/types.ts	237	242	value	T
+remeda/data-first.ts::src/internal/types.ts	244	245	T	any
+remeda/data-first.ts::src/internal/types.ts	247	252	index	number
+remeda/data-first.ts::src/internal/types.ts	262	266	data	readonly T[]
+remeda/data-first.ts::src/internal/types.ts	277	278	T	any
+remeda/data-first.ts::src/internal/types.ts	285	286	R	any
+remeda/data-first.ts::src/internal/types.ts	300	304	Pred	(value: T, index: number, data: readonly T[]) => boolean
+remeda/data-first.ts::src/internal/types.ts	305	306	T	any
+remeda/data-first.ts::src/internal/types.ts	310	323	LazyEvaluator	any
+remeda/data-first.ts::src/internal/types.ts	324	325	T	any
+remeda/data-first.ts::src/internal/types.ts	349	354	Merge	{ [Key in keyof ObjectType]: ObjectType[Key]; }
+remeda/data-first.ts::src/internal/types.ts	355	365	ObjectType	any
+remeda/data-first.ts::src/internal/types.ts	372	375	Key	any
+remeda/data-first.ts::src/internal/types.ts	385	395	ObjectType	any
+remeda/data-first.ts::src/internal/types.ts	398	408	ObjectType	any
+remeda/data-first.ts::src/internal/types.ts	409	412	Key	any
+remeda/data-first.ts::src/internal/types.ts	41	42	T	any
+remeda/data-first.ts::src/internal/types.ts	46	47	T	any
+remeda/data-first.ts::src/internal/types.ts	72	76	Item	any
+remeda/data-first.ts::src/internal/types.ts	84	88	Item	any
+remeda/data-first.ts::src/internal/types.ts	93	94	T	any
+remeda/data-first.ts::src/map.ts	101	104	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
+remeda/data-first.ts::src/map.ts	105	106	T	any
+remeda/data-first.ts::src/map.ts	108	109	U	any
+remeda/data-first.ts::src/map.ts	111	115	data	readonly T[]
+remeda/data-first.ts::src/map.ts	126	127	T	any
+remeda/data-first.ts::src/map.ts	131	141	callbackfn	LazyEvaluator<T, U>
+remeda/data-first.ts::src/map.ts	14	42	EnumerableStringKeyedValueOf	T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never
+remeda/data-first.ts::src/map.ts	143	156	LazyEvaluator	(value: T, index: number, data: readonly T[]) => R
+remeda/data-first.ts::src/map.ts	157	158	T	any
+remeda/data-first.ts::src/map.ts	160	161	U	any
+remeda/data-first.ts::src/map.ts	165	166	U	any
+remeda/data-first.ts::src/map.ts	185	188	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
+remeda/data-first.ts::src/map.ts	189	190	T	any
+remeda/data-first.ts::src/map.ts	207	208	U	any
+remeda/data-first.ts::src/map.ts	213	217	data	T
+remeda/data-first.ts::src/map.ts	219	220	T	any
+remeda/data-first.ts::src/map.ts	224	234	callbackfn	LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>
+remeda/data-first.ts::src/map.ts	236	249	LazyEvaluator	(value: T, index: number, data: readonly T[]) => R
+remeda/data-first.ts::src/map.ts	250	278	EnumerableStringKeyedValueOf	T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never
+remeda/data-first.ts::src/map.ts	279	280	T	any
+remeda/data-first.ts::src/map.ts	283	284	U	any
+remeda/data-first.ts::src/map.ts	290	291	U	any
+remeda/data-first.ts::src/map.ts	310	313	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
+remeda/data-first.ts::src/map.ts	314	318	data	unknown
+remeda/data-first.ts::src/map.ts	329	339	callbackfn	LazyEvaluator<any, any>
+remeda/data-first.ts::src/map.ts	341	354	LazyEvaluator	(value: T, index: number, data: readonly T[]) => R
+remeda/data-first.ts::src/map.ts	384	389	Array	ArrayConstructor
+remeda/data-first.ts::src/map.ts	390	397	isArray	(arg: any) => arg is any[]
+remeda/data-first.ts::src/map.ts	398	402	data	unknown
+remeda/data-first.ts::src/map.ts	410	414	data	any[]
+remeda/data-first.ts::src/map.ts	415	418	map	<U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]
+remeda/data-first.ts::src/map.ts	420	425	value	any
+remeda/data-first.ts::src/map.ts	427	432	index	number
+remeda/data-first.ts::src/map.ts	437	447	callbackfn	LazyEvaluator<any, any>
+remeda/data-first.ts::src/map.ts	44	57	LazyEvaluator	(value: T, index: number, data: readonly T[]) => R
+remeda/data-first.ts::src/map.ts	448	453	value	any
+remeda/data-first.ts::src/map.ts	455	460	index	number
+remeda/data-first.ts::src/map.ts	462	466	data	any[]
+remeda/data-first.ts::src/map.ts	475	481	Object	ObjectConstructor
+remeda/data-first.ts::src/map.ts	482	488	values	{ <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }
+remeda/data-first.ts::src/map.ts	489	493	data	unknown
+remeda/data-first.ts::src/map.ts	505	508	map	<U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]
+remeda/data-first.ts::src/map.ts	510	515	value	any
+remeda/data-first.ts::src/map.ts	517	522	index	number
+remeda/data-first.ts::src/map.ts	524	530	values	any[]
+remeda/data-first.ts::src/map.ts	535	545	callbackfn	LazyEvaluator<any, any>
+remeda/data-first.ts::src/map.ts	546	551	value	any
+remeda/data-first.ts::src/map.ts	553	558	index	number
+remeda/data-first.ts::src/map.ts	560	566	values	any[]
+remeda/data-first.ts::src/pick.ts	101	105	Keys	any
+remeda/data-first.ts::src/pick.ts	120	121	T	any
+remeda/data-first.ts::src/pick.ts	126	130	data	T
+remeda/data-first.ts::src/pick.ts	132	133	T	any
+remeda/data-first.ts::src/pick.ts	137	141	keys	NonEmptyArray<Keys>
+remeda/data-first.ts::src/pick.ts	14	19	Merge	{ [Key in keyof ObjectType]: ObjectType[Key]; }
+remeda/data-first.ts::src/pick.ts	143	156	NonEmptyArray	readonly [T, ...T[]]
+remeda/data-first.ts::src/pick.ts	157	161	Keys	any
+remeda/data-first.ts::src/pick.ts	167	172	Merge	{ [Key in keyof ObjectType]: ObjectType[Key]; }
+remeda/data-first.ts::src/pick.ts	173	177	Pick	any
+remeda/data-first.ts::src/pick.ts	178	179	T	any
+remeda/data-first.ts::src/pick.ts	181	185	Keys	any
+remeda/data-first.ts::src/pick.ts	198	201	out	Pick<T, Keys>
+remeda/data-first.ts::src/pick.ts	21	34	NonEmptyArray	readonly [T, ...T[]]
+remeda/data-first.ts::src/pick.ts	210	214	Pick	any
+remeda/data-first.ts::src/pick.ts	215	216	T	any
+remeda/data-first.ts::src/pick.ts	218	222	Keys	any
+remeda/data-first.ts::src/pick.ts	237	240	key	Keys
+remeda/data-first.ts::src/pick.ts	244	248	keys	NonEmptyArray<Keys>
+remeda/data-first.ts::src/pick.ts	256	259	out	Pick<T, Keys>
+remeda/data-first.ts::src/pick.ts	256	276	out[key] = data[key]	T[Keys]
+remeda/data-first.ts::src/pick.ts	260	263	key	Keys
+remeda/data-first.ts::src/pick.ts	267	271	data	T
+remeda/data-first.ts::src/pick.ts	272	275	key	Keys
+remeda/data-first.ts::src/pick.ts	290	293	out	Pick<T, Keys>
+remeda/data-first.ts::src/pick.ts	78	82	pick	<T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>
+remeda/data-first.ts::src/pick.ts	83	84	T	any
+remeda/data-first.ts::src/pipe.ts	115	119	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
+remeda/data-first.ts::src/pipe.ts	120	121	A	any
+remeda/data-first.ts::src/pipe.ts	123	124	B	any
+remeda/data-first.ts::src/pipe.ts	126	127	C	any
+remeda/data-first.ts::src/pipe.ts	129	134	value	A
+remeda/data-first.ts::src/pipe.ts	136	137	A	any
+remeda/data-first.ts::src/pipe.ts	139	142	op1	(input: A) => B
+remeda/data-first.ts::src/pipe.ts	145	150	input	A
+remeda/data-first.ts::src/pipe.ts	152	153	A	any
+remeda/data-first.ts::src/pipe.ts	158	159	B	any
+remeda/data-first.ts::src/pipe.ts	16	20	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
+remeda/data-first.ts::src/pipe.ts	161	164	op2	(input: B) => C
+remeda/data-first.ts::src/pipe.ts	167	172	input	B
+remeda/data-first.ts::src/pipe.ts	174	175	B	any
+remeda/data-first.ts::src/pipe.ts	180	181	C	any
+remeda/data-first.ts::src/pipe.ts	184	185	C	any
+remeda/data-first.ts::src/pipe.ts	202	206	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
+remeda/data-first.ts::src/pipe.ts	207	208	A	any
+remeda/data-first.ts::src/pipe.ts	21	22	A	any
+remeda/data-first.ts::src/pipe.ts	210	211	B	any
+remeda/data-first.ts::src/pipe.ts	213	214	C	any
+remeda/data-first.ts::src/pipe.ts	216	217	D	any
+remeda/data-first.ts::src/pipe.ts	222	227	value	A
+remeda/data-first.ts::src/pipe.ts	229	230	A	any
+remeda/data-first.ts::src/pipe.ts	234	237	op1	(input: A) => B
+remeda/data-first.ts::src/pipe.ts	24	29	value	A
+remeda/data-first.ts::src/pipe.ts	240	245	input	A
+remeda/data-first.ts::src/pipe.ts	247	248	A	any
+remeda/data-first.ts::src/pipe.ts	253	254	B	any
+remeda/data-first.ts::src/pipe.ts	258	261	op2	(input: B) => C
+remeda/data-first.ts::src/pipe.ts	264	269	input	B
+remeda/data-first.ts::src/pipe.ts	271	272	B	any
+remeda/data-first.ts::src/pipe.ts	277	278	C	any
+remeda/data-first.ts::src/pipe.ts	282	285	op3	(input: C) => D
+remeda/data-first.ts::src/pipe.ts	288	293	input	C
+remeda/data-first.ts::src/pipe.ts	295	296	C	any
+remeda/data-first.ts::src/pipe.ts	301	302	D	any
+remeda/data-first.ts::src/pipe.ts	307	308	D	any
+remeda/data-first.ts::src/pipe.ts	31	32	A	any
+remeda/data-first.ts::src/pipe.ts	325	329	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
+remeda/data-first.ts::src/pipe.ts	330	335	value	unknown
+remeda/data-first.ts::src/pipe.ts	349	359	operations	((input: any) => any)[]
+remeda/data-first.ts::src/pipe.ts	35	36	A	any
+remeda/data-first.ts::src/pipe.ts	361	366	Array	ArrayConstructor
+remeda/data-first.ts::src/pipe.ts	368	373	input	any
+remeda/data-first.ts::src/pipe.ts	409	419	operations	((input: any) => any)[]
+remeda/data-first.ts::src/pipe.ts	420	426	reduce	{ (callbackfn: (previousValue: (input: any) => any, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => (input: any) => any): (input: any) => any; (callbackfn: (previousValue: (input: any) => any, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => (input: any) => any, initialValue: (input: any) => any): (input: any) => any; <U>(callbackfn: (previousValue: U, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => U, initialValue: U): U; }
+remeda/data-first.ts::src/pipe.ts	428	435	current	unknown
+remeda/data-first.ts::src/pipe.ts	437	446	operation	(input: any) => any
+remeda/data-first.ts::src/pipe.ts	451	460	operation	(input: any) => any
+remeda/data-first.ts::src/pipe.ts	461	468	current	unknown
+remeda/data-first.ts::src/pipe.ts	471	476	value	unknown
+remeda/data-first.ts::src/pipe.ts	53	57	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
+remeda/data-first.ts::src/pipe.ts	58	59	A	any
+remeda/data-first.ts::src/pipe.ts	61	62	B	any
+remeda/data-first.ts::src/pipe.ts	64	69	value	A
+remeda/data-first.ts::src/pipe.ts	71	72	A	any
+remeda/data-first.ts::src/pipe.ts	74	77	op1	(input: A) => B
+remeda/data-first.ts::src/pipe.ts	80	85	input	A
+remeda/data-first.ts::src/pipe.ts	87	88	A	any
+remeda/data-first.ts::src/pipe.ts	93	94	B	any
+remeda/data-first.ts::src/pipe.ts	97	98	B	any
+remeda/data-first.ts::tests/data-first-usage.ts	122	126	pick	<T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>
+remeda/data-first.ts::tests/data-first-usage.ts	157	161	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
+remeda/data-first.ts::tests/data-first-usage.ts	189	193	Task	{ id: string; status: "todo" | "done"; points?: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	200	202	id	string
+remeda/data-first.ts::tests/data-first-usage.ts	213	219	status	"todo" | "done"
+remeda/data-first.ts::tests/data-first-usage.ts	239	245	points	number | undefined
+remeda/data-first.ts::tests/data-first-usage.ts	264	269	tasks	Task[]
+remeda/data-first.ts::tests/data-first-usage.ts	271	275	Task	any
+remeda/data-first.ts::tests/data-first-usage.ts	286	288	id	string
+remeda/data-first.ts::tests/data-first-usage.ts	295	301	status	"todo"
+remeda/data-first.ts::tests/data-first-usage.ts	317	319	id	string
+remeda/data-first.ts::tests/data-first-usage.ts	326	332	status	"done"
+remeda/data-first.ts::tests/data-first-usage.ts	342	348	points	number
+remeda/data-first.ts::tests/data-first-usage.ts	364	373	doneTasks	(Task & { status: "done"; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	376	382	filter	{ <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }
+remeda/data-first.ts::tests/data-first-usage.ts	386	391	tasks	Task[]
+remeda/data-first.ts::tests/data-first-usage.ts	396	400	task	Task
+remeda/data-first.ts::tests/data-first-usage.ts	403	407	task	Task
+remeda/data-first.ts::tests/data-first-usage.ts	411	415	Task	any
+remeda/data-first.ts::tests/data-first-usage.ts	420	426	status	"done"
+remeda/data-first.ts::tests/data-first-usage.ts	436	442	points	number
+remeda/data-first.ts::tests/data-first-usage.ts	456	460	task	Task
+remeda/data-first.ts::tests/data-first-usage.ts	461	467	status	"todo" | "done"
+remeda/data-first.ts::tests/data-first-usage.ts	48	55	groupBy	<T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>
+remeda/data-first.ts::tests/data-first-usage.ts	488	498	donePoints	number[]
+remeda/data-first.ts::tests/data-first-usage.ts	501	504	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
+remeda/data-first.ts::tests/data-first-usage.ts	505	514	doneTasks	(Task & { status: "done"; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	516	520	task	Task & { status: "done"; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	524	528	task	Task & { status: "done"; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	529	535	points	number
+remeda/data-first.ts::tests/data-first-usage.ts	543	555	groupedTasks	Partial<Record<"todo" | "done", Task[]>>
+remeda/data-first.ts::tests/data-first-usage.ts	558	565	groupBy	<T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>
+remeda/data-first.ts::tests/data-first-usage.ts	566	571	tasks	Task[]
+remeda/data-first.ts::tests/data-first-usage.ts	573	577	task	Task
+remeda/data-first.ts::tests/data-first-usage.ts	581	585	task	Task
+remeda/data-first.ts::tests/data-first-usage.ts	586	592	status	"todo" | "done"
+remeda/data-first.ts::tests/data-first-usage.ts	600	611	taskSummary	{ id: string; points?: number | undefined; }
+remeda/data-first.ts::tests/data-first-usage.ts	614	618	pick	<T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>
+remeda/data-first.ts::tests/data-first-usage.ts	619	624	tasks	Task[]
+remeda/data-first.ts::tests/data-first-usage.ts	653	663	pointTotal	number
+remeda/data-first.ts::tests/data-first-usage.ts	666	670	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
+remeda/data-first.ts::tests/data-first-usage.ts	674	683	doneTasks	(Task & { status: "done"; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	687	692	items	(Task & { status: "done"; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	696	699	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
+remeda/data-first.ts::tests/data-first-usage.ts	700	705	items	(Task & { status: "done"; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	707	711	item	Task & { status: "done"; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	715	719	item	Task & { status: "done"; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	720	726	points	number
+remeda/data-first.ts::tests/data-first-usage.ts	731	737	points	number[]
+remeda/data-first.ts::tests/data-first-usage.ts	741	747	points	number[]
+remeda/data-first.ts::tests/data-first-usage.ts	748	754	reduce	{ (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: number[]) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: number[]) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: number[]) => U, initialValue: U): U; }
+remeda/data-first.ts::tests/data-first-usage.ts	756	759	sum	number
+remeda/data-first.ts::tests/data-first-usage.ts	761	766	point	number
+remeda/data-first.ts::tests/data-first-usage.ts	771	774	sum	number
+remeda/data-first.ts::tests/data-first-usage.ts	777	782	point	number
+remeda/data-first.ts::tests/data-first-usage.ts	797	808	groupedDone	Task[] | undefined
+remeda/data-first.ts::tests/data-first-usage.ts	811	823	groupedTasks	Partial<Record<"todo" | "done", Task[]>>
+remeda/data-first.ts::tests/data-first-usage.ts	824	828	done	Task[] | undefined
+remeda/data-first.ts::tests/data-first-usage.ts	835	844	summaryId	string
+remeda/data-first.ts::tests/data-first-usage.ts	847	858	taskSummary	{ id: string; points?: number | undefined; }
+remeda/data-first.ts::tests/data-first-usage.ts	859	861	id	string
+remeda/data-first.ts::tests/data-first-usage.ts	868	881	summaryPoints	number | undefined
+remeda/data-first.ts::tests/data-first-usage.ts	884	895	taskSummary	{ id: string; points?: number | undefined; }
+remeda/data-first.ts::tests/data-first-usage.ts	89	92	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
+remeda/data-first.ts::tests/data-first-usage.ts	896	902	points	number | undefined
+remeda/data-first.ts::tests/data-first-usage.ts	9	15	filter	{ <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }
+remeda/data-first.ts::tests/data-first-usage.ts	909	919	firstPoint	number
+remeda/data-first.ts::tests/data-first-usage.ts	922	932	donePoints	number[]
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1001	1013	TQueryFnData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1027	1032	TData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	103	126	BaseStreamedQueryParams	{ streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: "append" | "reset" | "replace"; }
@@ -1103,3 +1690,809 @@ type-fest/object-utilities.ts::tests/object-utilities-usage.ts	945	961	StrictPub
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	968	970	id	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	984	991	profile	{ avatarUrl: string; flags: never[]; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	999	1008	avatarUrl	string
+valibot/schema-output.ts::library/schemas.ts	1013	1026	ObjectEntries	any
+valibot/schema-output.ts::library/schemas.ts	1035	1038	Key	any
+valibot/schema-output.ts::library/schemas.ts	1048	1056	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1059	1069	InferIssue	NonNullable<TSchema["~types"]>["issue"]
+valibot/schema-output.ts::library/schemas.ts	1070	1078	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1079	1082	Key	any
+valibot/schema-output.ts::library/schemas.ts	1093	1101	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1116	1128	ObjectSchema	{ readonly '~types'?: { readonly input: ObjectInput<TEntries>; readonly output: ObjectOutput<TEntries>; readonly issue: ObjectIssue<TEntries>; } | undefined; readonly '~run': (input: unknown) => ObjectOutput<TEntries>; }
+valibot/schema-output.ts::library/schemas.ts	1129	1137	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1146	1159	ObjectEntries	any
+valibot/schema-output.ts::library/schemas.ts	1163	1173	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/schemas.ts	1177	1188	ObjectInput	any
+valibot/schema-output.ts::library/schemas.ts	1189	1197	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1202	1214	ObjectOutput	any
+valibot/schema-output.ts::library/schemas.ts	1215	1223	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1228	1239	ObjectIssue	any
+valibot/schema-output.ts::library/schemas.ts	1240	1248	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1269	1275	string	() => StringSchema
+valibot/schema-output.ts::library/schemas.ts	1279	1291	StringSchema	any
+valibot/schema-output.ts::library/schemas.ts	131	143	StringSchema	{ readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: BaseIssue<"string">; } | undefined; readonly '~run': (input: unknown) => string; }
+valibot/schema-output.ts::library/schemas.ts	1313	1318	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1322	1328	String	StringConstructor
+valibot/schema-output.ts::library/schemas.ts	1329	1334	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1357	1363	number	() => NumberSchema
+valibot/schema-output.ts::library/schemas.ts	1367	1379	NumberSchema	any
+valibot/schema-output.ts::library/schemas.ts	1401	1406	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1410	1416	Number	NumberConstructor
+valibot/schema-output.ts::library/schemas.ts	1417	1422	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1445	1452	boolean	() => BooleanSchema
+valibot/schema-output.ts::library/schemas.ts	1456	1469	BooleanSchema	any
+valibot/schema-output.ts::library/schemas.ts	146	156	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/schemas.ts	1491	1496	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1500	1507	Boolean	BooleanConstructor
+valibot/schema-output.ts::library/schemas.ts	1508	1513	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1536	1544	optional	<TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>
+valibot/schema-output.ts::library/schemas.ts	1545	1553	TWrapped	any
+valibot/schema-output.ts::library/schemas.ts	1562	1575	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
+valibot/schema-output.ts::library/schemas.ts	1577	1585	TDefault	any
+valibot/schema-output.ts::library/schemas.ts	16	25	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	1602	1609	wrapped	TWrapped
+valibot/schema-output.ts::library/schemas.ts	1611	1619	TWrapped	any
+valibot/schema-output.ts::library/schemas.ts	1623	1631	default_	TDefault
+valibot/schema-output.ts::library/schemas.ts	1633	1641	TDefault	any
+valibot/schema-output.ts::library/schemas.ts	1646	1660	OptionalSchema	any
+valibot/schema-output.ts::library/schemas.ts	1661	1669	TWrapped	any
+valibot/schema-output.ts::library/schemas.ts	1671	1679	TDefault	any
+valibot/schema-output.ts::library/schemas.ts	1702	1707	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1712	1717	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1722	1731	undefined	undefined
+valibot/schema-output.ts::library/schemas.ts	173	182	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	1734	1742	default_	TDefault
+valibot/schema-output.ts::library/schemas.ts	1745	1752	wrapped	TWrapped
+valibot/schema-output.ts::library/schemas.ts	1761	1766	input	{} | null
+valibot/schema-output.ts::library/schemas.ts	1797	1802	array	<TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>
+valibot/schema-output.ts::library/schemas.ts	1803	1808	TItem	any
+valibot/schema-output.ts::library/schemas.ts	1817	1830	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
+valibot/schema-output.ts::library/schemas.ts	1832	1836	item	TItem
+valibot/schema-output.ts::library/schemas.ts	1838	1843	TItem	any
+valibot/schema-output.ts::library/schemas.ts	1846	1857	ArraySchema	any
+valibot/schema-output.ts::library/schemas.ts	1858	1863	TItem	any
+valibot/schema-output.ts::library/schemas.ts	1886	1891	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1896	1901	input	unknown
+valibot/schema-output.ts::library/schemas.ts	1916	1919	map	<U>(callbackfn: (value: unknown, index: number, array: unknown[]) => U, thisArg?: any) => U[]
+valibot/schema-output.ts::library/schemas.ts	1920	1925	value	unknown
+valibot/schema-output.ts::library/schemas.ts	1929	1933	item	TItem
+valibot/schema-output.ts::library/schemas.ts	1942	1947	value	unknown
+valibot/schema-output.ts::library/schemas.ts	1971	1977	object	<TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>
+valibot/schema-output.ts::library/schemas.ts	1978	1986	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	1995	2008	ObjectEntries	any
+valibot/schema-output.ts::library/schemas.ts	2013	2020	entries	TEntries
+valibot/schema-output.ts::library/schemas.ts	2022	2030	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	2035	2047	ObjectSchema	any
+valibot/schema-output.ts::library/schemas.ts	2048	2056	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	206	218	NumberSchema	{ readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: BaseIssue<"number">; } | undefined; readonly '~run': (input: unknown) => number; }
+valibot/schema-output.ts::library/schemas.ts	2083	2088	input	unknown
+valibot/schema-output.ts::library/schemas.ts	2106	2109	out	Record<string, unknown>
+valibot/schema-output.ts::library/schemas.ts	2111	2117	Record	any
+valibot/schema-output.ts::library/schemas.ts	2157	2160	key	Extract<keyof TEntries, string>
+valibot/schema-output.ts::library/schemas.ts	2164	2171	entries	TEntries
+valibot/schema-output.ts::library/schemas.ts	2183	2186	out	Record<string, unknown>
+valibot/schema-output.ts::library/schemas.ts	2183	2255	out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])	any
+valibot/schema-output.ts::library/schemas.ts	2187	2190	key	Extract<keyof TEntries, string>
+valibot/schema-output.ts::library/schemas.ts	2194	2201	entries	TEntries
+valibot/schema-output.ts::library/schemas.ts	2202	2205	key	Extract<keyof TEntries, string>
+valibot/schema-output.ts::library/schemas.ts	221	231	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/schemas.ts	2216	2221	input	unknown
+valibot/schema-output.ts::library/schemas.ts	2225	2231	Record	any
+valibot/schema-output.ts::library/schemas.ts	2250	2253	key	Extract<keyof TEntries, string>
+valibot/schema-output.ts::library/schemas.ts	2277	2280	out	Record<string, unknown>
+valibot/schema-output.ts::library/schemas.ts	2284	2296	ObjectOutput	any
+valibot/schema-output.ts::library/schemas.ts	2297	2305	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	248	257	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	281	294	BooleanSchema	{ readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: BaseIssue<"boolean">; } | undefined; readonly '~run': (input: unknown) => boolean; }
+valibot/schema-output.ts::library/schemas.ts	29	39	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/schemas.ts	297	307	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/schemas.ts	326	335	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	361	375	OptionalSchema	{ readonly '~types'?: { readonly input: InferInput<TWrapped> | undefined; readonly output: TDefault | InferOutput<TWrapped>; readonly issue: InferIssue<TWrapped>; } | undefined; readonly '~run': (input: unknown) => TDefault | InferOutput<TWrapped>; }
+valibot/schema-output.ts::library/schemas.ts	376	384	TWrapped	any
+valibot/schema-output.ts::library/schemas.ts	393	406	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
+valibot/schema-output.ts::library/schemas.ts	408	416	TDefault	any
+valibot/schema-output.ts::library/schemas.ts	43	56	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
+valibot/schema-output.ts::library/schemas.ts	432	442	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/schemas.ts	446	456	InferInput	NonNullable<TSchema["~types"]>["input"]
+valibot/schema-output.ts::library/schemas.ts	457	465	TWrapped	any
+valibot/schema-output.ts::library/schemas.ts	482	493	InferOutput	NonNullable<TSchema["~types"]>["output"]
+valibot/schema-output.ts::library/schemas.ts	494	502	TWrapped	any
+valibot/schema-output.ts::library/schemas.ts	506	514	TDefault	any
+valibot/schema-output.ts::library/schemas.ts	518	528	InferIssue	NonNullable<TSchema["~types"]>["issue"]
+valibot/schema-output.ts::library/schemas.ts	529	537	TWrapped	any
+valibot/schema-output.ts::library/schemas.ts	554	565	ArraySchema	{ readonly '~types'?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: InferIssue<TItem>; } | undefined; readonly '~run': (input: unknown) => InferOutput<TItem>[]; }
+valibot/schema-output.ts::library/schemas.ts	566	571	TItem	any
+valibot/schema-output.ts::library/schemas.ts	580	593	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
+valibot/schema-output.ts::library/schemas.ts	597	607	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/schemas.ts	60	70	InferInput	NonNullable<TSchema["~types"]>["input"]
+valibot/schema-output.ts::library/schemas.ts	611	621	InferInput	NonNullable<TSchema["~types"]>["input"]
+valibot/schema-output.ts::library/schemas.ts	622	627	TItem	any
+valibot/schema-output.ts::library/schemas.ts	634	645	InferOutput	NonNullable<TSchema["~types"]>["output"]
+valibot/schema-output.ts::library/schemas.ts	646	651	TItem	any
+valibot/schema-output.ts::library/schemas.ts	658	668	InferIssue	NonNullable<TSchema["~types"]>["issue"]
+valibot/schema-output.ts::library/schemas.ts	669	674	TItem	any
+valibot/schema-output.ts::library/schemas.ts	691	704	ObjectEntries	{ [x: string]: GenericSchema; }
+valibot/schema-output.ts::library/schemas.ts	707	713	Record	any
+valibot/schema-output.ts::library/schemas.ts	722	735	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
+valibot/schema-output.ts::library/schemas.ts	74	84	InferIssue	NonNullable<TSchema["~types"]>["issue"]
+valibot/schema-output.ts::library/schemas.ts	750	761	ObjectInput	{ [Key in keyof TEntries]: InferInput<TEntries[Key]>; }
+valibot/schema-output.ts::library/schemas.ts	762	770	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	779	792	ObjectEntries	any
+valibot/schema-output.ts::library/schemas.ts	801	804	Key	any
+valibot/schema-output.ts::library/schemas.ts	814	822	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	825	835	InferInput	NonNullable<TSchema["~types"]>["input"]
+valibot/schema-output.ts::library/schemas.ts	836	844	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	845	848	Key	any
+valibot/schema-output.ts::library/schemas.ts	866	878	ObjectOutput	{ [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }
+valibot/schema-output.ts::library/schemas.ts	879	887	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	88	99	InferOutput	NonNullable<TSchema["~types"]>["output"]
+valibot/schema-output.ts::library/schemas.ts	896	909	ObjectEntries	any
+valibot/schema-output.ts::library/schemas.ts	918	921	Key	any
+valibot/schema-output.ts::library/schemas.ts	931	939	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	942	953	InferOutput	NonNullable<TSchema["~types"]>["output"]
+valibot/schema-output.ts::library/schemas.ts	954	962	TEntries	any
+valibot/schema-output.ts::library/schemas.ts	963	966	Key	any
+valibot/schema-output.ts::library/schemas.ts	984	995	ObjectIssue	{ [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]
+valibot/schema-output.ts::library/schemas.ts	996	1004	TEntries	any
+valibot/schema-output.ts::library/types.ts	107	115	Expected	any
+valibot/schema-output.ts::library/types.ts	12	21	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/types.ts	127	134	message	string
+valibot/schema-output.ts::library/types.ts	158	168	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
+valibot/schema-output.ts::library/types.ts	169	174	Input	any
+valibot/schema-output.ts::library/types.ts	176	182	Output	any
+valibot/schema-output.ts::library/types.ts	184	189	Issue	any
+valibot/schema-output.ts::library/types.ts	198	207	BaseIssue	any
+valibot/schema-output.ts::library/types.ts	22	30	Expected	any
+valibot/schema-output.ts::library/types.ts	250	255	input	Input
+valibot/schema-output.ts::library/types.ts	257	262	Input	any
+valibot/schema-output.ts::library/types.ts	276	282	output	Output
+valibot/schema-output.ts::library/types.ts	284	290	Output	any
+valibot/schema-output.ts::library/types.ts	304	309	issue	Issue
+valibot/schema-output.ts::library/types.ts	311	316	Issue	any
+valibot/schema-output.ts::library/types.ts	341	346	input	unknown
+valibot/schema-output.ts::library/types.ts	360	366	Output	any
+valibot/schema-output.ts::library/types.ts	382	395	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
+valibot/schema-output.ts::library/types.ts	398	408	BaseSchema	any
+valibot/schema-output.ts::library/types.ts	419	428	BaseIssue	any
+valibot/schema-output.ts::library/types.ts	443	453	InferInput	NonNullable<TSchema["~types"]>["input"]
+valibot/schema-output.ts::library/types.ts	454	461	TSchema	any
+valibot/schema-output.ts::library/types.ts	470	483	GenericSchema	any
+valibot/schema-output.ts::library/types.ts	487	498	NonNullable	any
+valibot/schema-output.ts::library/types.ts	502	509	TSchema	any
+valibot/schema-output.ts::library/types.ts	544	555	InferOutput	NonNullable<TSchema["~types"]>["output"]
+valibot/schema-output.ts::library/types.ts	556	563	TSchema	any
+valibot/schema-output.ts::library/types.ts	572	585	GenericSchema	any
+valibot/schema-output.ts::library/types.ts	589	600	NonNullable	any
+valibot/schema-output.ts::library/types.ts	604	611	TSchema	any
+valibot/schema-output.ts::library/types.ts	647	657	InferIssue	NonNullable<TSchema["~types"]>["issue"]
+valibot/schema-output.ts::library/types.ts	658	665	TSchema	any
+valibot/schema-output.ts::library/types.ts	674	687	GenericSchema	any
+valibot/schema-output.ts::library/types.ts	691	702	NonNullable	any
+valibot/schema-output.ts::library/types.ts	706	713	TSchema	any
+valibot/schema-output.ts::library/types.ts	71	75	kind	"schema"
+valibot/schema-output.ts::library/types.ts	97	105	expected	Expected
+valibot/schema-output.ts::tests/schema-output-usage.ts	100	110	InferInput	NonNullable<TSchema["~types"]>["input"]
+valibot/schema-output.ts::tests/schema-output-usage.ts	112	122	InferIssue	NonNullable<TSchema["~types"]>["issue"]
+valibot/schema-output.ts::tests/schema-output-usage.ts	124	135	InferOutput	NonNullable<TSchema["~types"]>["output"]
+valibot/schema-output.ts::tests/schema-output-usage.ts	16	23	boolean	() => BooleanSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	169	179	userSchema	ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	182	188	object	<TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>
+valibot/schema-output.ts::tests/schema-output-usage.ts	193	195	id	StringSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	197	203	string	() => StringSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	209	212	age	OptionalSchema<NumberSchema, number>
+valibot/schema-output.ts::tests/schema-output-usage.ts	214	222	optional	<TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>
+valibot/schema-output.ts::tests/schema-output-usage.ts	223	229	number	() => NumberSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	239	245	active	BooleanSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	247	254	boolean	() => BooleanSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	25	31	number	() => NumberSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	260	264	tags	ArraySchema<StringSchema>
+valibot/schema-output.ts::tests/schema-output-usage.ts	266	271	array	<TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>
+valibot/schema-output.ts::tests/schema-output-usage.ts	272	278	string	() => StringSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	292	301	UserInput	{ id: string; age: number | undefined; active: boolean; tags: string[]; }
+valibot/schema-output.ts::tests/schema-output-usage.ts	304	314	InferInput	NonNullable<TSchema["~types"]>["input"]
+valibot/schema-output.ts::tests/schema-output-usage.ts	322	332	userSchema	ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	33	39	object	<TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>
+valibot/schema-output.ts::tests/schema-output-usage.ts	339	349	UserOutput	{ id: string; age: number; active: boolean; tags: string[]; }
+valibot/schema-output.ts::tests/schema-output-usage.ts	352	363	InferOutput	NonNullable<TSchema["~types"]>["output"]
+valibot/schema-output.ts::tests/schema-output-usage.ts	371	381	userSchema	ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	388	397	UserIssue	BaseIssue<"string"> | BaseIssue<"number"> | BaseIssue<"boolean">
+valibot/schema-output.ts::tests/schema-output-usage.ts	400	410	InferIssue	NonNullable<TSchema["~types"]>["issue"]
+valibot/schema-output.ts::tests/schema-output-usage.ts	41	49	optional	<TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>
+valibot/schema-output.ts::tests/schema-output-usage.ts	418	428	userSchema	ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	437	442	input	ObjectInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	444	453	UserInput	any
+valibot/schema-output.ts::tests/schema-output-usage.ts	460	462	id	string
+valibot/schema-output.ts::tests/schema-output-usage.ts	476	479	age	undefined
+valibot/schema-output.ts::tests/schema-output-usage.ts	481	490	undefined	undefined
+valibot/schema-output.ts::tests/schema-output-usage.ts	494	500	active	true
+valibot/schema-output.ts::tests/schema-output-usage.ts	51	57	string	() => StringSchema
+valibot/schema-output.ts::tests/schema-output-usage.ts	510	514	tags	string[]
+valibot/schema-output.ts::tests/schema-output-usage.ts	536	542	output	ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	545	555	userSchema	ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	564	569	input	ObjectInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	577	591	explicitOutput	ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	593	603	UserOutput	any
+valibot/schema-output.ts::tests/schema-output-usage.ts	606	612	output	ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	619	626	userAge	number
+valibot/schema-output.ts::tests/schema-output-usage.ts	629	635	output	ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	636	639	age	number
+valibot/schema-output.ts::tests/schema-output-usage.ts	646	654	userTags	string[]
+valibot/schema-output.ts::tests/schema-output-usage.ts	657	663	output	ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	664	668	tags	string[]
+valibot/schema-output.ts::tests/schema-output-usage.ts	675	680	issue	ObjectIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+valibot/schema-output.ts::tests/schema-output-usage.ts	682	691	UserIssue	any
+valibot/schema-output.ts::tests/schema-output-usage.ts	698	702	kind	"schema"
+valibot/schema-output.ts::tests/schema-output-usage.ts	716	724	expected	"string"
+valibot/schema-output.ts::tests/schema-output-usage.ts	738	745	message	string
+valibot/schema-output.ts::tests/schema-output-usage.ts	9	14	array	<TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>
+zod/object-inference.ts::src/v3/external.ts	127	128	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+zod/object-inference.ts::src/v3/external.ts	135	141	string	() => ZodString
+zod/object-inference.ts::src/v3/external.ts	153	162	ZodString	typeof ZodString
+zod/object-inference.ts::src/v3/external.ts	168	174	number	() => ZodNumber
+zod/object-inference.ts::src/v3/external.ts	186	195	ZodNumber	typeof ZodNumber
+zod/object-inference.ts::src/v3/external.ts	201	208	boolean	() => ZodBoolean
+zod/object-inference.ts::src/v3/external.ts	21	30	ZodNumber	typeof ZodNumber
+zod/object-inference.ts::src/v3/external.ts	220	230	ZodBoolean	typeof ZodBoolean
+zod/object-inference.ts::src/v3/external.ts	236	242	object	<Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
+zod/object-inference.ts::src/v3/external.ts	245	250	Shape	any
+zod/object-inference.ts::src/v3/external.ts	259	270	ZodRawShape	{ [x: string]: ZodTypeAny; }
+zod/object-inference.ts::src/v3/external.ts	272	277	shape	Shape
+zod/object-inference.ts::src/v3/external.ts	279	284	Shape	any
+zod/object-inference.ts::src/v3/external.ts	293	302	ZodObject	typeof ZodObject
+zod/object-inference.ts::src/v3/external.ts	303	308	shape	Shape
+zod/object-inference.ts::src/v3/external.ts	32	41	ZodObject	typeof ZodObject
+zod/object-inference.ts::src/v3/external.ts	43	52	ZodString	typeof ZodString
+zod/object-inference.ts::src/v3/external.ts	84	95	ZodRawShape	{ [x: string]: ZodTypeAny; }
+zod/object-inference.ts::src/v3/external.ts	9	19	ZodBoolean	typeof ZodBoolean
+zod/object-inference.ts::src/v3/types.ts	1020	1024	data	unknown
+zod/object-inference.ts::src/v3/types.ts	1029	1038	undefined	undefined
+zod/object-inference.ts::src/v3/types.ts	1041	1050	undefined	undefined
+zod/object-inference.ts::src/v3/types.ts	1058	1067	innerType	T
+zod/object-inference.ts::src/v3/types.ts	1068	1073	parse	(data: unknown) => any
+zod/object-inference.ts::src/v3/types.ts	1074	1078	data	{} | null
+zod/object-inference.ts::src/v3/types.ts	1100	1108	ZodArray	typeof ZodArray
+zod/object-inference.ts::src/v3/types.ts	1109	1110	T	any
+zod/object-inference.ts::src/v3/types.ts	1119	1129	ZodTypeAny	any
+zod/object-inference.ts::src/v3/types.ts	1139	1146	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	1147	1153	output	any
+zod/object-inference.ts::src/v3/types.ts	1154	1155	T	any
+zod/object-inference.ts::src/v3/types.ts	1160	1165	input	any
+zod/object-inference.ts::src/v3/types.ts	1166	1167	T	any
+zod/object-inference.ts::src/v3/types.ts	1197	1204	element	T
+zod/object-inference.ts::src/v3/types.ts	12	17	input	T["_input"]
+zod/object-inference.ts::src/v3/types.ts	1206	1207	T	any
+zod/object-inference.ts::src/v3/types.ts	1215	1222	super()	void
+zod/object-inference.ts::src/v3/types.ts	1229	1234	parse	(data: unknown) => output<T>[]
+zod/object-inference.ts::src/v3/types.ts	1235	1239	data	unknown
+zod/object-inference.ts::src/v3/types.ts	1251	1257	output	any
+zod/object-inference.ts::src/v3/types.ts	1258	1259	T	any
+zod/object-inference.ts::src/v3/types.ts	1277	1281	data	unknown
+zod/object-inference.ts::src/v3/types.ts	1296	1299	map	<U>(callbackfn: (value: unknown, index: number, array: unknown[]) => U, thisArg?: any) => U[]
+zod/object-inference.ts::src/v3/types.ts	1300	1305	value	unknown
+zod/object-inference.ts::src/v3/types.ts	1314	1321	element	T
+zod/object-inference.ts::src/v3/types.ts	1322	1327	parse	(data: unknown) => any
+zod/object-inference.ts::src/v3/types.ts	1328	1333	value	unknown
+zod/object-inference.ts::src/v3/types.ts	133	140	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	1355	1366	ZodRawShape	{ [x: string]: ZodTypeAny; }
+zod/object-inference.ts::src/v3/types.ts	1369	1375	Record	any
+zod/object-inference.ts::src/v3/types.ts	1384	1394	ZodTypeAny	any
+zod/object-inference.ts::src/v3/types.ts	1409	1425	objectOutputType	{ [Key in keyof Shape]: output<Shape[Key]>; }
+zod/object-inference.ts::src/v3/types.ts	141	147	Output	any
+zod/object-inference.ts::src/v3/types.ts	1426	1431	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1440	1451	ZodRawShape	any
+zod/object-inference.ts::src/v3/types.ts	1460	1463	Key	any
+zod/object-inference.ts::src/v3/types.ts	1473	1478	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1481	1487	output	any
+zod/object-inference.ts::src/v3/types.ts	1488	1493	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1494	1497	Key	any
+zod/object-inference.ts::src/v3/types.ts	1515	1530	objectInputType	{ [Key in keyof Shape]: input<Shape[Key]>; }
+zod/object-inference.ts::src/v3/types.ts	1531	1536	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1545	1556	ZodRawShape	any
+zod/object-inference.ts::src/v3/types.ts	155	160	Input	any
+zod/object-inference.ts::src/v3/types.ts	1565	1568	Key	any
+zod/object-inference.ts::src/v3/types.ts	1578	1583	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1586	1591	input	any
+zod/object-inference.ts::src/v3/types.ts	1592	1597	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1598	1601	Key	any
+zod/object-inference.ts::src/v3/types.ts	1620	1629	ZodObject	typeof ZodObject
+zod/object-inference.ts::src/v3/types.ts	163	169	Output	any
+zod/object-inference.ts::src/v3/types.ts	1630	1635	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1644	1655	ZodRawShape	any
+zod/object-inference.ts::src/v3/types.ts	1665	1672	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	1676	1692	objectOutputType	any
+zod/object-inference.ts::src/v3/types.ts	1693	1698	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1703	1718	objectInputType	any
+zod/object-inference.ts::src/v3/types.ts	1719	1724	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1753	1758	shape	Shape
+zod/object-inference.ts::src/v3/types.ts	1760	1765	Shape	any
+zod/object-inference.ts::src/v3/types.ts	1773	1780	super()	void
+zod/object-inference.ts::src/v3/types.ts	1787	1792	parse	(data: unknown) => objectOutputType<Shape>
+zod/object-inference.ts::src/v3/types.ts	1793	1797	data	unknown
+zod/object-inference.ts::src/v3/types.ts	18	19	T	any
+zod/object-inference.ts::src/v3/types.ts	1809	1825	objectOutputType	any
+zod/object-inference.ts::src/v3/types.ts	1826	1831	Shape	any
+zod/object-inference.ts::src/v3/types.ts	184	191	_output	Output
+zod/object-inference.ts::src/v3/types.ts	1845	1848	out	Record<string, unknown>
+zod/object-inference.ts::src/v3/types.ts	1850	1856	Record	any
+zod/object-inference.ts::src/v3/types.ts	1894	1897	key	Extract<keyof Shape, string>
+zod/object-inference.ts::src/v3/types.ts	1906	1911	shape	Shape
+zod/object-inference.ts::src/v3/types.ts	1921	1924	out	Record<string, unknown>
+zod/object-inference.ts::src/v3/types.ts	1921	1993	out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])	any
+zod/object-inference.ts::src/v3/types.ts	1925	1928	key	Extract<keyof Shape, string>
+zod/object-inference.ts::src/v3/types.ts	1937	1942	shape	Shape
+zod/object-inference.ts::src/v3/types.ts	194	200	Output	any
+zod/object-inference.ts::src/v3/types.ts	1943	1946	key	Extract<keyof Shape, string>
+zod/object-inference.ts::src/v3/types.ts	1948	1953	parse	(data: unknown) => any
+zod/object-inference.ts::src/v3/types.ts	1955	1959	data	unknown
+zod/object-inference.ts::src/v3/types.ts	1963	1969	Record	any
+zod/object-inference.ts::src/v3/types.ts	1988	1991	key	Extract<keyof Shape, string>
+zod/object-inference.ts::src/v3/types.ts	2011	2014	out	Record<string, unknown>
+zod/object-inference.ts::src/v3/types.ts	2018	2034	objectOutputType	any
+zod/object-inference.ts::src/v3/types.ts	2035	2040	Shape	any
+zod/object-inference.ts::src/v3/types.ts	2048	2052	pick	<Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>
+zod/object-inference.ts::src/v3/types.ts	2053	2057	Mask	any
+zod/object-inference.ts::src/v3/types.ts	2069	2072	Key	any
+zod/object-inference.ts::src/v3/types.ts	2082	2087	Shape	any
+zod/object-inference.ts::src/v3/types.ts	2104	2108	mask	Mask
+zod/object-inference.ts::src/v3/types.ts	2110	2114	Mask	any
+zod/object-inference.ts::src/v3/types.ts	212	218	_input	Input
+zod/object-inference.ts::src/v3/types.ts	2121	2130	ZodObject	typeof ZodObject
+zod/object-inference.ts::src/v3/types.ts	2131	2135	Pick	any
+zod/object-inference.ts::src/v3/types.ts	2136	2141	Shape	any
+zod/object-inference.ts::src/v3/types.ts	2149	2153	Mask	any
+zod/object-inference.ts::src/v3/types.ts	2162	2167	Shape	any
+zod/object-inference.ts::src/v3/types.ts	2182	2185	out	Pick<Shape, keyof Mask & keyof Shape>
+zod/object-inference.ts::src/v3/types.ts	2194	2198	Pick	any
+zod/object-inference.ts::src/v3/types.ts	2199	2204	Shape	any
+zod/object-inference.ts::src/v3/types.ts	221	226	Input	any
+zod/object-inference.ts::src/v3/types.ts	2212	2216	Mask	any
+zod/object-inference.ts::src/v3/types.ts	2225	2230	Shape	any
+zod/object-inference.ts::src/v3/types.ts	2247	2250	key	Extract<keyof Mask, string>
+zod/object-inference.ts::src/v3/types.ts	2254	2258	mask	Mask
+zod/object-inference.ts::src/v3/types.ts	2268	2271	out	Pick<Shape, keyof Mask & keyof Shape>
+zod/object-inference.ts::src/v3/types.ts	2268	2337	out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]	Shape[keyof Shape]
+zod/object-inference.ts::src/v3/types.ts	2272	2275	key	Extract<keyof Mask, string>
+zod/object-inference.ts::src/v3/types.ts	2285	2289	Mask	any
+zod/object-inference.ts::src/v3/types.ts	2298	2303	Shape	any
+zod/object-inference.ts::src/v3/types.ts	2312	2317	shape	Shape
+zod/object-inference.ts::src/v3/types.ts	2318	2321	key	Extract<keyof Mask, string>
+zod/object-inference.ts::src/v3/types.ts	2331	2336	Shape	any
+zod/object-inference.ts::src/v3/types.ts	2359	2368	ZodObject	typeof ZodObject
+zod/object-inference.ts::src/v3/types.ts	2369	2372	out	Pick<Shape, keyof Mask & keyof Shape>
+zod/object-inference.ts::src/v3/types.ts	238	243	parse	(data: unknown) => Output
+zod/object-inference.ts::src/v3/types.ts	244	248	data	unknown
+zod/object-inference.ts::src/v3/types.ts	260	266	Output	any
+zod/object-inference.ts::src/v3/types.ts	269	277	optional	() => ZodOptional<this>
+zod/object-inference.ts::src/v3/types.ts	28	38	ZodTypeAny	any
+zod/object-inference.ts::src/v3/types.ts	281	292	ZodOptional	typeof ZodOptional
+zod/object-inference.ts::src/v3/types.ts	316	327	ZodOptional	typeof ZodOptional
+zod/object-inference.ts::src/v3/types.ts	340	345	array	() => ZodArray<this>
+zod/object-inference.ts::src/v3/types.ts	349	357	ZodArray	typeof ZodArray
+zod/object-inference.ts::src/v3/types.ts	381	389	ZodArray	typeof ZodArray
+zod/object-inference.ts::src/v3/types.ts	415	425	ZodTypeAny	ZodType<any, any>
+zod/object-inference.ts::src/v3/types.ts	42	43	T	any
+zod/object-inference.ts::src/v3/types.ts	428	435	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	460	469	ZodString	typeof ZodString
+zod/object-inference.ts::src/v3/types.ts	478	485	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	498	503	parse	(data: unknown) => string
+zod/object-inference.ts::src/v3/types.ts	504	508	data	unknown
+zod/object-inference.ts::src/v3/types.ts	540	546	String	StringConstructor
+zod/object-inference.ts::src/v3/types.ts	547	551	data	unknown
+zod/object-inference.ts::src/v3/types.ts	573	582	ZodNumber	typeof ZodNumber
+zod/object-inference.ts::src/v3/types.ts	591	598	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	611	616	parse	(data: unknown) => number
+zod/object-inference.ts::src/v3/types.ts	617	621	data	unknown
+zod/object-inference.ts::src/v3/types.ts	653	659	Number	NumberConstructor
+zod/object-inference.ts::src/v3/types.ts	66	72	output	T["_output"]
+zod/object-inference.ts::src/v3/types.ts	660	664	data	unknown
+zod/object-inference.ts::src/v3/types.ts	686	696	ZodBoolean	typeof ZodBoolean
+zod/object-inference.ts::src/v3/types.ts	705	712	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	726	731	parse	(data: unknown) => boolean
+zod/object-inference.ts::src/v3/types.ts	73	74	T	any
+zod/object-inference.ts::src/v3/types.ts	732	736	data	unknown
+zod/object-inference.ts::src/v3/types.ts	769	776	Boolean	BooleanConstructor
+zod/object-inference.ts::src/v3/types.ts	777	781	data	unknown
+zod/object-inference.ts::src/v3/types.ts	803	814	ZodOptional	typeof ZodOptional
+zod/object-inference.ts::src/v3/types.ts	815	816	T	any
+zod/object-inference.ts::src/v3/types.ts	825	835	ZodTypeAny	any
+zod/object-inference.ts::src/v3/types.ts	83	93	ZodTypeAny	any
+zod/object-inference.ts::src/v3/types.ts	845	852	ZodType	typeof ZodType
+zod/object-inference.ts::src/v3/types.ts	856	862	output	any
+zod/object-inference.ts::src/v3/types.ts	863	864	T	any
+zod/object-inference.ts::src/v3/types.ts	881	886	input	any
+zod/object-inference.ts::src/v3/types.ts	887	888	T	any
+zod/object-inference.ts::src/v3/types.ts	929	938	innerType	T
+zod/object-inference.ts::src/v3/types.ts	940	941	T	any
+zod/object-inference.ts::src/v3/types.ts	949	956	super()	void
+zod/object-inference.ts::src/v3/types.ts	963	968	parse	(data: unknown) => output<T> | undefined
+zod/object-inference.ts::src/v3/types.ts	969	973	data	unknown
+zod/object-inference.ts::src/v3/types.ts	97	98	T	any
+zod/object-inference.ts::src/v3/types.ts	985	991	output	any
+zod/object-inference.ts::src/v3/types.ts	992	993	T	any
+zod/object-inference.ts::tests/object-inference-usage.ts	115	116	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+zod/object-inference.ts::tests/object-inference-usage.ts	117	123	object	<Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
+zod/object-inference.ts::tests/object-inference-usage.ts	128	130	id	ZodString
+zod/object-inference.ts::tests/object-inference-usage.ts	132	133	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+zod/object-inference.ts::tests/object-inference-usage.ts	134	140	string	() => ZodString
+zod/object-inference.ts::tests/object-inference-usage.ts	146	151	email	ZodOptional<ZodString>
+zod/object-inference.ts::tests/object-inference-usage.ts	153	154	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+zod/object-inference.ts::tests/object-inference-usage.ts	155	161	string	() => ZodString
+zod/object-inference.ts::tests/object-inference-usage.ts	164	172	optional	() => ZodOptional<ZodString>
+zod/object-inference.ts::tests/object-inference-usage.ts	178	184	scores	ZodArray<ZodNumber>
+zod/object-inference.ts::tests/object-inference-usage.ts	186	187	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+zod/object-inference.ts::tests/object-inference-usage.ts	188	194	number	() => ZodNumber
+zod/object-inference.ts::tests/object-inference-usage.ts	197	202	array	() => ZodArray<ZodNumber>
+zod/object-inference.ts::tests/object-inference-usage.ts	208	214	active	ZodBoolean
+zod/object-inference.ts::tests/object-inference-usage.ts	216	217	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+zod/object-inference.ts::tests/object-inference-usage.ts	218	225	boolean	() => ZodBoolean
+zod/object-inference.ts::tests/object-inference-usage.ts	239	258	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	261	274	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	275	279	pick	<Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("id" | "email" | "scores" | "active")>>
+zod/object-inference.ts::tests/object-inference-usage.ts	282	284	id	true
+zod/object-inference.ts::tests/object-inference-usage.ts	292	298	active	true
+zod/object-inference.ts::tests/object-inference-usage.ts	314	326	AccountInput	{ id: string; email: string | undefined; scores: number[]; active: boolean; }
+zod/object-inference.ts::tests/object-inference-usage.ts	329	334	input	T["_input"]
+zod/object-inference.ts::tests/object-inference-usage.ts	342	355	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	362	375	AccountOutput	{ id: string; email: string | undefined; scores: number[]; active: boolean; }
+zod/object-inference.ts::tests/object-inference-usage.ts	378	384	output	T["_output"]
+zod/object-inference.ts::tests/object-inference-usage.ts	392	405	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	412	425	PublicAccount	{ id: string; active: boolean; }
+zod/object-inference.ts::tests/object-inference-usage.ts	428	434	output	T["_output"]
+zod/object-inference.ts::tests/object-inference-usage.ts	442	461	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	470	480	inputValue	objectInputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	482	494	AccountInput	any
+zod/object-inference.ts::tests/object-inference-usage.ts	501	503	id	string
+zod/object-inference.ts::tests/object-inference-usage.ts	520	525	email	undefined
+zod/object-inference.ts::tests/object-inference-usage.ts	527	536	undefined	undefined
+zod/object-inference.ts::tests/object-inference-usage.ts	53	58	input	T["_input"]
+zod/object-inference.ts::tests/object-inference-usage.ts	540	546	scores	number[]
+zod/object-inference.ts::tests/object-inference-usage.ts	558	564	active	true
+zod/object-inference.ts::tests/object-inference-usage.ts	581	594	parsedAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	597	610	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	60	66	output	T["_output"]
+zod/object-inference.ts::tests/object-inference-usage.ts	611	616	parse	(data: unknown) => objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	617	627	inputValue	objectInputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	635	650	explicitAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	652	665	AccountOutput	any
+zod/object-inference.ts::tests/object-inference-usage.ts	668	681	parsedAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	688	701	publicAccount	objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	703	716	PublicAccount	any
+zod/object-inference.ts::tests/object-inference-usage.ts	719	738	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	739	744	parse	(data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	745	758	parsedAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	766	771	score	number
+zod/object-inference.ts::tests/object-inference-usage.ts	774	787	parsedAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zod/object-inference.ts::tests/object-inference-usage.ts	788	794	scores	number[]
+zod/object-inference.ts::tests/object-inference-usage.ts	804	816	publicActive	boolean
+zod/object-inference.ts::tests/object-inference-usage.ts	819	832	publicAccount	objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	833	839	active	boolean
+zod/object-inference.ts::tests/object-inference-usage.ts	9	10	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+zod/object-inference.ts::tests/object-inference-usage.ts	99	112	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+zustand/store-api.ts::src/react.ts	1015	1023	selector	((state: any) => any) | undefined
+zustand/store-api.ts::src/react.ts	1026	1034	selector	(state: any) => any
+zustand/store-api.ts::src/react.ts	1035	1038	api	StoreApi<any>
+zustand/store-api.ts::src/react.ts	1039	1047	getState	() => any
+zustand/store-api.ts::src/react.ts	1053	1056	api	StoreApi<any>
+zustand/store-api.ts::src/react.ts	1057	1065	getState	() => any
+zustand/store-api.ts::src/react.ts	1081	1087	Object	ObjectConstructor
+zustand/store-api.ts::src/react.ts	1088	1094	assign	{ <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }
+zustand/store-api.ts::src/react.ts	1095	1108	useBoundStore	(selector?: (state: any) => any) => any
+zustand/store-api.ts::src/react.ts	110	132	StoreMutatorIdentifier	never
+zustand/store-api.ts::src/react.ts	1110	1113	api	StoreApi<any>
+zustand/store-api.ts::src/react.ts	1121	1127	Create	any
+zustand/store-api.ts::src/react.ts	166	182	ReadonlyStoreApi	{ getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }
+zustand/store-api.ts::src/react.ts	183	184	T	any
+zustand/store-api.ts::src/react.ts	188	192	Pick	any
+zustand/store-api.ts::src/react.ts	196	204	StoreApi	any
+zustand/store-api.ts::src/react.ts	205	206	T	any
+zustand/store-api.ts::src/react.ts	271	284	UseBoundStore	{ (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S
+zustand/store-api.ts::src/react.ts	285	286	S	any
+zustand/store-api.ts::src/react.ts	295	311	ReadonlyStoreApi	any
+zustand/store-api.ts::src/react.ts	332	344	ExtractState	S extends { getState: () => infer T; } ? T : never
+zustand/store-api.ts::src/react.ts	345	346	S	any
+zustand/store-api.ts::src/react.ts	351	352	U	any
+zustand/store-api.ts::src/react.ts	354	362	selector	(state: ExtractState<S>) => U
+zustand/store-api.ts::src/react.ts	365	370	state	ExtractState<S>
+zustand/store-api.ts::src/react.ts	372	384	ExtractState	S extends { getState: () => infer T; } ? T : never
+zustand/store-api.ts::src/react.ts	385	386	S	any
+zustand/store-api.ts::src/react.ts	392	393	U	any
+zustand/store-api.ts::src/react.ts	396	397	U	any
+zustand/store-api.ts::src/react.ts	402	403	S	any
+zustand/store-api.ts::src/react.ts	417	423	Create	{ <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }
+zustand/store-api.ts::src/react.ts	431	432	T	any
+zustand/store-api.ts::src/react.ts	434	437	Mos	any
+zustand/store-api.ts::src/react.ts	447	469	StoreMutatorIdentifier	never
+zustand/store-api.ts::src/react.ts	493	504	initializer	StateCreator<T, [], Mos>
+zustand/store-api.ts::src/react.ts	506	518	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::src/react.ts	519	520	T	any
+zustand/store-api.ts::src/react.ts	526	529	Mos	any
+zustand/store-api.ts::src/react.ts	537	550	UseBoundStore	any
+zustand/store-api.ts::src/react.ts	551	557	Mutate	number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
+zustand/store-api.ts::src/react.ts	558	566	StoreApi	any
+zustand/store-api.ts::src/react.ts	56	68	ExtractState	S extends { getState: () => infer T; } ? T : never
+zustand/store-api.ts::src/react.ts	567	568	T	any
+zustand/store-api.ts::src/react.ts	571	574	Mos	any
+zustand/store-api.ts::src/react.ts	580	581	T	any
+zustand/store-api.ts::src/react.ts	587	590	Mos	any
+zustand/store-api.ts::src/react.ts	600	622	StoreMutatorIdentifier	never
+zustand/store-api.ts::src/react.ts	646	657	initializer	StateCreator<T, [], Mos>
+zustand/store-api.ts::src/react.ts	659	671	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::src/react.ts	672	673	T	any
+zustand/store-api.ts::src/react.ts	679	682	Mos	any
+zustand/store-api.ts::src/react.ts	692	705	UseBoundStore	any
+zustand/store-api.ts::src/react.ts	706	712	Mutate	number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
+zustand/store-api.ts::src/react.ts	713	721	StoreApi	any
+zustand/store-api.ts::src/react.ts	72	78	Mutate	number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
+zustand/store-api.ts::src/react.ts	722	723	T	any
+zustand/store-api.ts::src/react.ts	726	729	Mos	any
+zustand/store-api.ts::src/react.ts	748	754	create	Create
+zustand/store-api.ts::src/react.ts	756	762	Create	any
+zustand/store-api.ts::src/react.ts	767	778	initializer	StateCreator<any> | undefined
+zustand/store-api.ts::src/react.ts	781	793	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::src/react.ts	812	823	initializer	StateCreator<any> | undefined
+zustand/store-api.ts::src/react.ts	82	94	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::src/react.ts	839	854	nextInitializer	StateCreator<any>
+zustand/store-api.ts::src/react.ts	856	868	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::src/react.ts	878	884	create	Create
+zustand/store-api.ts::src/react.ts	885	900	nextInitializer	StateCreator<any>
+zustand/store-api.ts::src/react.ts	9	20	createStore	CreateStore
+zustand/store-api.ts::src/react.ts	914	917	api	StoreApi<any>
+zustand/store-api.ts::src/react.ts	920	931	createStore	CreateStore
+zustand/store-api.ts::src/react.ts	932	943	initializer	StateCreator<any>
+zustand/store-api.ts::src/react.ts	956	969	useBoundStore	(selector?: (state: any) => any) => any
+zustand/store-api.ts::src/react.ts	970	978	selector	((state: any) => any) | undefined
+zustand/store-api.ts::src/react.ts	98	106	StoreApi	any
+zustand/store-api.ts::src/react.ts	982	987	state	any
+zustand/store-api.ts::src/vanilla.ts	1010	1015	store	Mutate<StoreApi<T>, Mis>
+zustand/store-api.ts::src/vanilla.ts	1017	1023	Mutate	any
+zustand/store-api.ts::src/vanilla.ts	1024	1032	StoreApi	any
+zustand/store-api.ts::src/vanilla.ts	1033	1034	T	any
+zustand/store-api.ts::src/vanilla.ts	1037	1040	Mis	any
+zustand/store-api.ts::src/vanilla.ts	1048	1049	U	any
+zustand/store-api.ts::src/vanilla.ts	1055	1070	$$storeMutators	Mos | undefined
+zustand/store-api.ts::src/vanilla.ts	1073	1076	Mos	any
+zustand/store-api.ts::src/vanilla.ts	1085	1088	Get	K extends keyof T ? T[K] : F
+zustand/store-api.ts::src/vanilla.ts	1089	1090	T	any
+zustand/store-api.ts::src/vanilla.ts	1092	1093	K	any
+zustand/store-api.ts::src/vanilla.ts	1095	1096	F	any
+zustand/store-api.ts::src/vanilla.ts	1100	1101	K	any
+zustand/store-api.ts::src/vanilla.ts	1116	1117	T	any
+zustand/store-api.ts::src/vanilla.ts	1120	1121	T	any
+zustand/store-api.ts::src/vanilla.ts	1122	1123	K	any
+zustand/store-api.ts::src/vanilla.ts	1127	1128	F	any
+zustand/store-api.ts::src/vanilla.ts	1142	1154	ExtractState	S extends { getState: () => infer T; } ? T : never
+zustand/store-api.ts::src/vanilla.ts	1155	1156	S	any
+zustand/store-api.ts::src/vanilla.ts	1160	1161	S	any
+zustand/store-api.ts::src/vanilla.ts	1172	1180	getState	() => infer T
+zustand/store-api.ts::src/vanilla.ts	1194	1195	T	any
+zustand/store-api.ts::src/vanilla.ts	12	28	SetStateInternal	{ (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
+zustand/store-api.ts::src/vanilla.ts	1200	1201	T	any
+zustand/store-api.ts::src/vanilla.ts	1223	1234	CreateStore	{ <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): Mutate<StoreApi<T>, Mos>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => Mutate<StoreApi<T>, Mos>; }
+zustand/store-api.ts::src/vanilla.ts	123	124	_	{ (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
+zustand/store-api.ts::src/vanilla.ts	1242	1243	T	any
+zustand/store-api.ts::src/vanilla.ts	1245	1248	Mos	any
+zustand/store-api.ts::src/vanilla.ts	125	130	state	T | ((state: T) => T)
+zustand/store-api.ts::src/vanilla.ts	1258	1280	StoreMutatorIdentifier	any
+zustand/store-api.ts::src/vanilla.ts	1304	1315	initializer	StateCreator<T, [], Mos, T>
+zustand/store-api.ts::src/vanilla.ts	1317	1329	StateCreator	any
+zustand/store-api.ts::src/vanilla.ts	132	133	T	any
+zustand/store-api.ts::src/vanilla.ts	1330	1331	T	any
+zustand/store-api.ts::src/vanilla.ts	1337	1340	Mos	any
+zustand/store-api.ts::src/vanilla.ts	1348	1354	Mutate	any
+zustand/store-api.ts::src/vanilla.ts	1355	1363	StoreApi	any
+zustand/store-api.ts::src/vanilla.ts	1364	1365	T	any
+zustand/store-api.ts::src/vanilla.ts	1368	1371	Mos	any
+zustand/store-api.ts::src/vanilla.ts	1376	1377	T	any
+zustand/store-api.ts::src/vanilla.ts	138	143	state	T
+zustand/store-api.ts::src/vanilla.ts	1383	1386	Mos	any
+zustand/store-api.ts::src/vanilla.ts	1396	1418	StoreMutatorIdentifier	any
+zustand/store-api.ts::src/vanilla.ts	1442	1453	initializer	StateCreator<T, [], Mos, T>
+zustand/store-api.ts::src/vanilla.ts	145	146	T	any
+zustand/store-api.ts::src/vanilla.ts	1455	1467	StateCreator	any
+zustand/store-api.ts::src/vanilla.ts	1468	1469	T	any
+zustand/store-api.ts::src/vanilla.ts	1475	1478	Mos	any
+zustand/store-api.ts::src/vanilla.ts	1488	1494	Mutate	any
+zustand/store-api.ts::src/vanilla.ts	1495	1503	StoreApi	any
+zustand/store-api.ts::src/vanilla.ts	1504	1505	T	any
+zustand/store-api.ts::src/vanilla.ts	1508	1511	Mos	any
+zustand/store-api.ts::src/vanilla.ts	151	152	T	any
+zustand/store-api.ts::src/vanilla.ts	1529	1540	createStore	CreateStore
+zustand/store-api.ts::src/vanilla.ts	1542	1553	CreateStore	any
+zustand/store-api.ts::src/vanilla.ts	155	162	replace	true
+zustand/store-api.ts::src/vanilla.ts	1558	1569	initializer	StateCreator<any, [], [], any> | undefined
+zustand/store-api.ts::src/vanilla.ts	1572	1584	StateCreator	any
+zustand/store-api.ts::src/vanilla.ts	1603	1614	initializer	StateCreator<any, [], [], any> | undefined
+zustand/store-api.ts::src/vanilla.ts	1630	1645	nextInitializer	StateCreator<any, [], [], any>
+zustand/store-api.ts::src/vanilla.ts	1647	1659	StateCreator	any
+zustand/store-api.ts::src/vanilla.ts	1669	1680	createStore	CreateStore
+zustand/store-api.ts::src/vanilla.ts	1681	1696	nextInitializer	StateCreator<any, [], [], any>
+zustand/store-api.ts::src/vanilla.ts	1708	1713	state	any
+zustand/store-api.ts::src/vanilla.ts	1727	1736	listeners	Set<(state: any, prevState: any) => void>
+zustand/store-api.ts::src/vanilla.ts	1743	1746	Set	SetConstructor
+zustand/store-api.ts::src/vanilla.ts	1748	1753	state	any
+zustand/store-api.ts::src/vanilla.ts	1760	1769	prevState	any
+zustand/store-api.ts::src/vanilla.ts	1795	1798	api	StoreApi<any>
+zustand/store-api.ts::src/vanilla.ts	1800	1808	StoreApi	any
+zustand/store-api.ts::src/vanilla.ts	1822	1830	setState	(partial: any) => void
+zustand/store-api.ts::src/vanilla.ts	1831	1838	partial	any
+zustand/store-api.ts::src/vanilla.ts	1859	1868	prevState	any
+zustand/store-api.ts::src/vanilla.ts	1871	1876	state	any
+zustand/store-api.ts::src/vanilla.ts	1883	1888	state	any
+zustand/store-api.ts::src/vanilla.ts	1883	1981	state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }	any
+zustand/store-api.ts::src/vanilla.ts	1898	1905	partial	any
+zustand/store-api.ts::src/vanilla.ts	1928	1933	state	any
+zustand/store-api.ts::src/vanilla.ts	1938	1945	partial	any
+zustand/store-api.ts::src/vanilla.ts	1946	1951	state	any
+zustand/store-api.ts::src/vanilla.ts	1962	1967	state	any
+zustand/store-api.ts::src/vanilla.ts	1972	1979	partial	any
+zustand/store-api.ts::src/vanilla.ts	1988	1997	listeners	Set<(state: any, prevState: any) => void>
+zustand/store-api.ts::src/vanilla.ts	1988	2045	listeners.forEach(listener => listener(state, prevState))	void
+zustand/store-api.ts::src/vanilla.ts	1998	2005	forEach	(callbackfn: (value: (state: any, prevState: any) => void, value2: (state: any, prevState: any) => void, set: Set<(state: any, prevState: any) => void>) => void, thisArg?: any) => void
+zustand/store-api.ts::src/vanilla.ts	2006	2014	listener	(state: any, prevState: any) => void
+zustand/store-api.ts::src/vanilla.ts	201	209	StoreApi	any
+zustand/store-api.ts::src/vanilla.ts	2018	2026	listener	(state: any, prevState: any) => void
+zustand/store-api.ts::src/vanilla.ts	2027	2032	state	any
+zustand/store-api.ts::src/vanilla.ts	2034	2043	prevState	any
+zustand/store-api.ts::src/vanilla.ts	2057	2065	getState	() => any
+zustand/store-api.ts::src/vanilla.ts	2073	2078	state	any
+zustand/store-api.ts::src/vanilla.ts	2084	2099	getInitialState	() => any
+zustand/store-api.ts::src/vanilla.ts	210	211	T	any
+zustand/store-api.ts::src/vanilla.ts	2107	2112	state	any
+zustand/store-api.ts::src/vanilla.ts	2118	2127	subscribe	(listener: (state: any, prevState: any) => void) => () => boolean
+zustand/store-api.ts::src/vanilla.ts	2128	2136	listener	(state: any, prevState: any) => void
+zustand/store-api.ts::src/vanilla.ts	2146	2155	listeners	Set<(state: any, prevState: any) => void>
+zustand/store-api.ts::src/vanilla.ts	2146	2169	listeners.add(listener)	Set<(state: any, prevState: any) => void>
+zustand/store-api.ts::src/vanilla.ts	2156	2159	add	(value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>
+zustand/store-api.ts::src/vanilla.ts	2160	2168	listener	(state: any, prevState: any) => void
+zustand/store-api.ts::src/vanilla.ts	217	225	setState	{ (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
+zustand/store-api.ts::src/vanilla.ts	2189	2198	listeners	Set<(state: any, prevState: any) => void>
+zustand/store-api.ts::src/vanilla.ts	2199	2205	delete	(value: (state: any, prevState: any) => void) => boolean
+zustand/store-api.ts::src/vanilla.ts	2206	2214	listener	(state: any, prevState: any) => void
+zustand/store-api.ts::src/vanilla.ts	2229	2234	state	any
+zustand/store-api.ts::src/vanilla.ts	2229	2281	state = initializer(api.setState, api.getState, api)	any
+zustand/store-api.ts::src/vanilla.ts	2237	2248	initializer	StateCreator<any, [], [], any>
+zustand/store-api.ts::src/vanilla.ts	2249	2252	api	StoreApi<any>
+zustand/store-api.ts::src/vanilla.ts	2253	2261	setState	{ (partial: any, replace?: false): void; (state: any, replace: true): void; }
+zustand/store-api.ts::src/vanilla.ts	2263	2266	api	StoreApi<any>
+zustand/store-api.ts::src/vanilla.ts	2267	2275	getState	() => any
+zustand/store-api.ts::src/vanilla.ts	227	243	SetStateInternal	any
+zustand/store-api.ts::src/vanilla.ts	2277	2280	api	StoreApi<any>
+zustand/store-api.ts::src/vanilla.ts	2291	2294	api	StoreApi<any>
+zustand/store-api.ts::src/vanilla.ts	2301	2312	CreateStore	any
+zustand/store-api.ts::src/vanilla.ts	244	245	T	any
+zustand/store-api.ts::src/vanilla.ts	249	257	getState	() => T
+zustand/store-api.ts::src/vanilla.ts	265	266	T	any
+zustand/store-api.ts::src/vanilla.ts	269	284	getInitialState	() => T
+zustand/store-api.ts::src/vanilla.ts	29	30	T	any
+zustand/store-api.ts::src/vanilla.ts	292	293	T	any
+zustand/store-api.ts::src/vanilla.ts	296	305	subscribe	(listener: (state: T, prevState: T) => void) => () => void
+zustand/store-api.ts::src/vanilla.ts	308	316	listener	(state: T, prevState: T) => void
+zustand/store-api.ts::src/vanilla.ts	319	324	state	T
+zustand/store-api.ts::src/vanilla.ts	326	327	T	any
+zustand/store-api.ts::src/vanilla.ts	329	338	prevState	T
+zustand/store-api.ts::src/vanilla.ts	340	341	T	any
+zustand/store-api.ts::src/vanilla.ts	38	39	_	{ (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
+zustand/store-api.ts::src/vanilla.ts	381	403	StoreMutatorIdentifier	never
+zustand/store-api.ts::src/vanilla.ts	40	47	partial	T | Partial<T> | ((state: T) => T | Partial<T>)
+zustand/store-api.ts::src/vanilla.ts	412	425	StoreMutators	any
+zustand/store-api.ts::src/vanilla.ts	462	475	StoreMutators	any
+zustand/store-api.ts::src/vanilla.ts	476	477	S	any
+zustand/store-api.ts::src/vanilla.ts	479	480	A	any
+zustand/store-api.ts::src/vanilla.ts	49	50	T	any
+zustand/store-api.ts::src/vanilla.ts	498	504	Mutate	number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
+zustand/store-api.ts::src/vanilla.ts	505	506	S	any
+zustand/store-api.ts::src/vanilla.ts	508	510	Ms	any
+zustand/store-api.ts::src/vanilla.ts	529	531	Ms	any
+zustand/store-api.ts::src/vanilla.ts	53	60	Partial	any
+zustand/store-api.ts::src/vanilla.ts	549	551	Ms	any
+zustand/store-api.ts::src/vanilla.ts	557	558	S	any
+zustand/store-api.ts::src/vanilla.ts	563	565	Ms	any
+zustand/store-api.ts::src/vanilla.ts	583	584	S	any
+zustand/store-api.ts::src/vanilla.ts	591	593	Ms	any
+zustand/store-api.ts::src/vanilla.ts	61	62	T	any
+zustand/store-api.ts::src/vanilla.ts	610	612	Mi	any
+zustand/store-api.ts::src/vanilla.ts	620	622	Ma	any
+zustand/store-api.ts::src/vanilla.ts	634	637	Mrs	any
+zustand/store-api.ts::src/vanilla.ts	647	653	Mutate	any
+zustand/store-api.ts::src/vanilla.ts	654	667	StoreMutators	any
+zustand/store-api.ts::src/vanilla.ts	668	669	S	any
+zustand/store-api.ts::src/vanilla.ts	671	673	Ma	any
+zustand/store-api.ts::src/vanilla.ts	675	677	Mi	any
+zustand/store-api.ts::src/vanilla.ts	68	73	state	T
+zustand/store-api.ts::src/vanilla.ts	680	702	StoreMutatorIdentifier	any
+zustand/store-api.ts::src/vanilla.ts	705	708	Mrs	any
+zustand/store-api.ts::src/vanilla.ts	737	749	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::src/vanilla.ts	75	76	T	any
+zustand/store-api.ts::src/vanilla.ts	753	754	T	any
+zustand/store-api.ts::src/vanilla.ts	758	761	Mis	any
+zustand/store-api.ts::src/vanilla.ts	771	793	StoreMutatorIdentifier	any
+zustand/store-api.ts::src/vanilla.ts	81	82	T	any
+zustand/store-api.ts::src/vanilla.ts	814	817	Mos	any
+zustand/store-api.ts::src/vanilla.ts	827	849	StoreMutatorIdentifier	any
+zustand/store-api.ts::src/vanilla.ts	85	92	Partial	any
+zustand/store-api.ts::src/vanilla.ts	870	871	U	any
+zustand/store-api.ts::src/vanilla.ts	874	875	T	any
+zustand/store-api.ts::src/vanilla.ts	886	894	setState	Get<Mutate<StoreApi<T>, Mis>, "setState", never>
+zustand/store-api.ts::src/vanilla.ts	896	899	Get	any
+zustand/store-api.ts::src/vanilla.ts	900	906	Mutate	any
+zustand/store-api.ts::src/vanilla.ts	907	915	StoreApi	any
+zustand/store-api.ts::src/vanilla.ts	916	917	T	any
+zustand/store-api.ts::src/vanilla.ts	920	923	Mis	any
+zustand/store-api.ts::src/vanilla.ts	93	94	T	any
+zustand/store-api.ts::src/vanilla.ts	948	956	getState	Get<Mutate<StoreApi<T>, Mis>, "getState", never>
+zustand/store-api.ts::src/vanilla.ts	958	961	Get	any
+zustand/store-api.ts::src/vanilla.ts	962	968	Mutate	any
+zustand/store-api.ts::src/vanilla.ts	969	977	StoreApi	any
+zustand/store-api.ts::src/vanilla.ts	978	979	T	any
+zustand/store-api.ts::src/vanilla.ts	98	105	replace	false | undefined
+zustand/store-api.ts::src/vanilla.ts	982	985	Mis	any
+zustand/store-api.ts::tests/store-api-usage.ts	119	131	CounterState	{ count: number; label?: string; increment: (by?: number) => void; }
+zustand/store-api.ts::tests/store-api-usage.ts	138	143	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	154	159	label	string | undefined
+zustand/store-api.ts::tests/store-api-usage.ts	171	180	increment	(by?: number) => void
+zustand/store-api.ts::tests/store-api-usage.ts	183	185	by	number | undefined
+zustand/store-api.ts::tests/store-api-usage.ts	213	231	counterInitializer	StateCreator<CounterState>
+zustand/store-api.ts::tests/store-api-usage.ts	233	245	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::tests/store-api-usage.ts	246	258	CounterState	any
+zustand/store-api.ts::tests/store-api-usage.ts	263	266	set	{ (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
+zustand/store-api.ts::tests/store-api-usage.ts	268	271	get	() => CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	281	286	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	293	302	increment	(by?: number | undefined) => void
+zustand/store-api.ts::tests/store-api-usage.ts	305	307	by	number | undefined
+zustand/store-api.ts::tests/store-api-usage.ts	316	319	set	{ (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
+zustand/store-api.ts::tests/store-api-usage.ts	322	327	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	329	332	get	() => CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	335	340	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	343	345	by	number
+zustand/store-api.ts::tests/store-api-usage.ts	360	370	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	373	379	create	Create
+zustand/store-api.ts::tests/store-api-usage.ts	380	398	counterInitializer	StateCreator<CounterState>
+zustand/store-api.ts::tests/store-api-usage.ts	406	421	CounterFromHook	{ count: number; label?: string; increment: (by?: number) => void; }
+zustand/store-api.ts::tests/store-api-usage.ts	424	436	ExtractState	S extends { getState: () => infer T; } ? T : never
+zustand/store-api.ts::tests/store-api-usage.ts	444	454	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	461	473	CounterStore	StoreApi<CounterState>
+zustand/store-api.ts::tests/store-api-usage.ts	476	484	StoreApi	any
+zustand/store-api.ts::tests/store-api-usage.ts	485	497	CounterState	any
+zustand/store-api.ts::tests/store-api-usage.ts	506	513	current	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	516	526	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	52	64	ExtractState	S extends { getState: () => infer T; } ? T : never
+zustand/store-api.ts::tests/store-api-usage.ts	535	540	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	543	553	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	554	559	state	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	563	568	state	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	569	574	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	582	591	increment	(by?: number) => void
+zustand/store-api.ts::tests/store-api-usage.ts	594	604	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	605	610	state	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	614	619	state	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	620	629	increment	(by?: number) => void
+zustand/store-api.ts::tests/store-api-usage.ts	637	648	unsubscribe	() => void
+zustand/store-api.ts::tests/store-api-usage.ts	651	661	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	66	78	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::tests/store-api-usage.ts	662	671	subscribe	(listener: (state: CounterState, prevState: CounterState) => void) => () => void
+zustand/store-api.ts::tests/store-api-usage.ts	673	678	state	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	680	689	prevState	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	704	713	nextCount	number
+zustand/store-api.ts::tests/store-api-usage.ts	716	721	state	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	722	727	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	736	745	prevCount	number
+zustand/store-api.ts::tests/store-api-usage.ts	748	757	prevState	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	758	763	count	number
+zustand/store-api.ts::tests/store-api-usage.ts	766	775	nextCount	number
+zustand/store-api.ts::tests/store-api-usage.ts	766	787	nextCount + prevCount	number
+zustand/store-api.ts::tests/store-api-usage.ts	778	787	prevCount	number
+zustand/store-api.ts::tests/store-api-usage.ts	798	811	explicitState	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	80	88	StoreApi	any
+zustand/store-api.ts::tests/store-api-usage.ts	813	828	CounterFromHook	any
+zustand/store-api.ts::tests/store-api-usage.ts	831	838	current	CounterState
+zustand/store-api.ts::tests/store-api-usage.ts	845	848	api	CounterStore
+zustand/store-api.ts::tests/store-api-usage.ts	850	862	CounterStore	any
+zustand/store-api.ts::tests/store-api-usage.ts	865	875	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	876	886	useCounter	UseBoundStore<StoreApi<CounterState>>
+zustand/store-api.ts::tests/store-api-usage.ts	876	915	useCounter.setState({ label: 'ready' })	void
+zustand/store-api.ts::tests/store-api-usage.ts	887	895	setState	{ (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
+zustand/store-api.ts::tests/store-api-usage.ts	898	903	label	string
+zustand/store-api.ts::tests/store-api-usage.ts	9	15	create	Create
+zustand/store-api.ts::tests/store-api-usage.ts	916	925	increment	(by?: number) => void
+zustand/store-api.ts::tests/store-api-usage.ts	916	928	increment(2)	void
+zustand/store-api.ts::tests/store-api-usage.ts	929	940	unsubscribe	() => void
+zustand/store-api.ts::tests/store-api-usage.ts	929	942	unsubscribe()	void
