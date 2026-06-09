@@ -1,5 +1,5 @@
 export type EnumerableStringKeyedValueOf<T> = T extends readonly (infer Item)[]
->           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly infer Item[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
 
 export type EnumerableStringKeyedValueOf<T> = T extends readonly (infer Item)[]
 >                                        ^: any   (TyAny)
@@ -92,7 +92,7 @@ export type Merge<ObjectType> = { [Key in keyof ObjectType]: ObjectType[Key] } &
 >                                                                       ^^^: any   (TyAny)
 
 import type { EnumerableStringKeyedValueOf, LazyEvaluator } from './internal/types'
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly infer Item[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
 
 import type { EnumerableStringKeyedValueOf, LazyEvaluator } from './internal/types'
 >                                           ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
@@ -155,10 +155,10 @@ export function map<T extends object, U>(
 >             ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly infer Item[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly infer Item[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
 >                                                        ^: any   (TyAny)

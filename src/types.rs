@@ -1246,7 +1246,11 @@ impl<'a> Ty<'a> {
     fn display_needs_parentheses(&self) -> bool {
         matches!(
             self,
-            Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
+            Self::Function(_)
+                | Self::Union(_)
+                | Self::Intersection(_)
+                | Self::Conditional(_)
+                | Self::Infer(_)
         )
     }
 
