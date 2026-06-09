@@ -102,7 +102,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         type_name: &str,
     ) -> Option<(SymbolRef, NodeId)> {
-        let symbol = self.get_type_symbol_in_program(program_id, type_name)?;
+        let symbol = self.get_type_symbol_for_name(program_id, type_name)?;
         let declaration = self
             .semantic(symbol.program_id)
             .scoping()

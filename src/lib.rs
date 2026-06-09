@@ -219,6 +219,19 @@ fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
     Some(literal.value as usize)
 }
 
+fn tuple_index_from_index_type(index_type: Ty<'_>) -> Option<usize> {
+    let Ty::NumberLiteral(literal) = index_type else {
+        return None;
+    };
+    if !literal.value.is_finite() || literal.value < 0.0 || literal.value.fract() != 0.0 {
+        return None;
+    }
+    if literal.value > usize::MAX as f64 {
+        return None;
+    }
+    Some(literal.value as usize)
+}
+
 fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option<Ty<'a>> {
     let Ty::Tuple(tuple) = object_type else {
         return None;
@@ -1823,6 +1836,74 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "parameterValue").to_type_string(),
             "string"
+        );
+    }
+
+    #[test]
+    fn indexed_access_resolves_tuple_numeric_literal_indices() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const first: ["yes", "no"][0];
+        declare const second: ["yes", "no"][1];
+        declare const either: ["yes", "no"][0 | 1];
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "first").to_type_string(),
+            "\"yes\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "second").to_type_string(),
+            "\"no\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "either").to_type_string(),
+            "\"yes\" | \"no\""
+        );
+    }
+
+    #[test]
+    fn conditional_infer_return_type_of_generic_function_falls_back_to_unknown() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        type ReturnTypeOf<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
+        type Value = ReturnTypeOf<<T>() => T>;
+        ",
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Value").to_type_string(),
+            "unknown"
+        );
+    }
+
+    #[test]
+    fn conditional_tuple_index_reduces_redux_at_least_ts35_pattern() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type ReturnTypeOf<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
+        type IsAny<T, True, False = never> = true | false extends (T extends never ? true : false) ? True : False;
+        type IsUnknown<T, True, False = never> = unknown extends T ? IsAny<T, False, True> : False;
+        type AtLeastTS35<True, False> = [True, False][IsUnknown<ReturnTypeOf<<T>() => T>, 0, 1>];
+        type Value = AtLeastTS35<"yes", "no">;
+        type Deferred<T> = AtLeastTS35<IsUnknown<T, "yes", "no">, "fallback">;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Value").to_type_string(),
+            "\"yes\""
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "Deferred").to_type_string(),
+            "unknown extends T ? IsAny<T, \"no\", \"yes\"> : \"no\""
         );
     }
 

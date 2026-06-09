@@ -167,7 +167,7 @@ type DefaultExceptOptions = {
 > ^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral)
 
 export type Except<
->           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   ObjectType,
 > ^^^^^^^^^^: any   (TyAny)
@@ -263,7 +263,7 @@ type _Except<
 >                  ^^^^^^^^: any   (TyAny)
 
 import type { Except } from './except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 import type { HomomorphicPick } from './internal/index'
 >             ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped)
@@ -290,10 +290,10 @@ export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
 >                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
 >        ^^^^^^^^: any   (TyAny)
@@ -368,7 +368,7 @@ export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
 >                                           ^^^^^^^^^^: any   (TyAny)
 
 import type { Except } from '../source/except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 import type { KeysOfUnion } from '../source/keys-of-union'
 >             ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
@@ -401,25 +401,25 @@ type User = {
 >   ^^^^^: string[]   (TyArray)
 
 type PublicUser = Except<User, 'email'>
->    ^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; } & (false extends true ? Partial<Record<"email", never>> : {})   (TyIntersection)
+>    ^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject)
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type PublicUser = Except<User, 'email'>
 >                        ^^^^: any   (TyAny)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->    ^^^^^^^^^^^^^^^^: { [KeyType in keyof User as Filter<KeyType, "email">]: User[KeyType]; } & (NonNullable<{ requireExactProps: true; }["requireExactProps" & keyof { requireExactProps: true; }]> extends true ? Partial<Record<"email", never>> : {})   (TyIntersection)
+>    ^^^^^^^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >                              ^^^^: any   (TyAny)
@@ -449,10 +449,10 @@ type UserPreview = Simplify<
 >                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & ({ [Key in keyof DefaultExceptOptions]: Key extends keyof Options ? NonNullable<Options[Key & keyof Options]> : DefaultExceptOptions[Key]; }["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
 >        ^^^^^^^^^^^^^^^: any   (TyAny)

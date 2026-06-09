@@ -176,7 +176,7 @@ export type IsEmptyObj<T, True, False = never> = T extends any
 >     ^^^^^: any   (TyAny)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->           ^^^^^^^^^^^: [True, False][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyIndexedAccess)
+>           ^^^^^^^^^^^: True   (TyTypeReference)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
 >                       ^^^^: any   (TyAny)
@@ -203,7 +203,7 @@ export type AtLeastTS35<True, False> = [True, False][IsUnknown<
 >                     ^: any   (TyAny)
 
 export type IsUnknownOrNonInferrable<T, True, False> = AtLeastTS35<
->           ^^^^^^^^^^^^^^^^^^^^^^^^: [IsUnknown<T, True, False>, IsEmptyObj<T, True, IsUnknown<T, True, False>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyIndexedAccess)
+>           ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
 
 export type IsUnknownOrNonInferrable<T, True, False> = AtLeastTS35<
 >                                    ^: any   (TyAny)
@@ -299,7 +299,7 @@ export type Matcher<T> = HasMatchFunction<T> | TypeGuard<T>
 >                                                        ^: any   (TyAny)
 
 export type ActionFromMatcher<M extends Matcher<any>> = M extends Matcher<
->           ^^^^^^^^^^^^^^^^^: M extends (HasMatchFunction<infer T> | TypeGuard<infer T>) ? T : never   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
 
 export type ActionFromMatcher<M extends Matcher<any>> = M extends Matcher<
 >                             ^: any   (TyAny)
@@ -371,7 +371,7 @@ import { isAction } from './reduxImports'
 > ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional)
 
   IsUnknownOrNonInferrable,
-> ^^^^^^^^^^^^^^^^^^^^^^^^: [IsUnknown<T, True, False>, IsEmptyObj<T, True, IsUnknown<T, True, False>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyIndexedAccess)
+> ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
 
 import { hasMatchFunction } from './tsHelpers'
 >        ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction)
@@ -476,7 +476,7 @@ export type PrepareAction<P> =
 >                                                 ^^^^^: any   (TyAny)
 
 export type _ActionCreatorWithPreparedPayload<
->           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: PA extends (((...args: any[]) => { payload: infer P; }) | ((...args: any[]) => { payload: infer P; meta: any; }) | ((...args: any[]) => { payload: infer P; error: any; }) | ((...args: any[]) => { payload: infer P; meta: any; error: any; })) ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: PA extends PrepareAction<infer P> ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void   (TyConditional)
 
   PA extends PrepareAction<any> | void,
 > ^^: any   (TyAny)
@@ -758,7 +758,7 @@ export interface ActionCreatorWithNonInferrablePayload<
 >                                                      ^: any   (TyAny)
 
 export type PayloadActionCreator<
->           ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? PA extends (((...args: any[]) => { payload: infer P; }) | ((...args: any[]) => { payload: infer P; meta: any; }) | ((...args: any[]) => { payload: infer P; error: any; }) | ((...args: any[]) => { payload: infer P; meta: any; error: any; })) ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void : boolean extends (P extends never ? true : false) ? ActionCreatorWithPayload<any, T> : [IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>, IsEmptyObj<P, ActionCreatorWithNonInferrablePayload<T>, IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
 
   P = void,
 > ^: any   (TyAny)
@@ -806,10 +806,10 @@ export type PayloadActionCreator<
 >                                 ^: any   (TyAny)
 
     IsUnknownOrNonInferrable<
->   ^^^^^^^^^^^^^^^^^^^^^^^^: [IsUnknown<T, True, False>, IsEmptyObj<T, True, IsUnknown<T, True, False>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyIndexedAccess)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
 
     IsUnknownOrNonInferrable<
->   ^^^^^^^^^^^^^^^^^^^^^^^^: [IsUnknown<T, True, False>, IsEmptyObj<T, True, IsUnknown<T, True, False>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyIndexedAccess)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
 
       P,
 >     ^: any   (TyAny)
@@ -1124,10 +1124,10 @@ import { createAction, isActionCreator } from '../packages/toolkit/src/createAct
 > ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection)
 
   PayloadActionCreator,
-> ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? PA extends (((...args: any[]) => { payload: infer P; }) | ((...args: any[]) => { payload: infer P; meta: any; }) | ((...args: any[]) => { payload: infer P; error: any; }) | ((...args: any[]) => { payload: infer P; meta: any; error: any; })) ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void : boolean extends (P extends never ? true : false) ? ActionCreatorWithPayload<any, T> : [IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>, IsEmptyObj<P, ActionCreatorWithNonInferrablePayload<T>, IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyConditional)
+> ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
 
 import type { ActionFromMatcher } from '../packages/toolkit/src/tsHelpers'
->             ^^^^^^^^^^^^^^^^^: M extends (HasMatchFunction<infer T> | TypeGuard<infer T>) ? T : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
 
 export const increment = createAction<number, 'counter/increment'>('counter/increment')
 >            ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
@@ -1301,7 +1301,7 @@ if (increment.match(unknownAction)) {
 >      ^^^^^^^^^^^: any   (TyAny)
 
 export type IncrementAction = ReturnType<typeof increment>
->           ^^^^^^^^^^^^^^^: ReturnType<PayloadActionCreator<number, "counter/increment">>   (TyTypeReference)
+>           ^^^^^^^^^^^^^^^: PayloadActionCreator<number, "counter/increment"> extends (...args: any) => infer R ? R : any   (TyConditional)
 
 export type IncrementAction = ReturnType<typeof increment>
 >                             ^^^^^^^^^^: any   (TyAny)
@@ -1310,7 +1310,7 @@ export type IncrementAction = ReturnType<typeof increment>
 >                                               ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
->           ^^^^^^^^^^: ReturnType<PayloadActionCreator<void, "todos/add">>   (TyTypeReference)
+>           ^^^^^^^^^^: PayloadActionCreator<void, "todos/add"> extends (...args: any) => infer R ? R : any   (TyConditional)
 
 export type TodoAction = ReturnType<typeof addTodo>
 >                        ^^^^^^^^^^: any   (TyAny)
@@ -1319,34 +1319,34 @@ export type TodoAction = ReturnType<typeof addTodo>
 >                                          ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->           ^^^^^^^^^^^^^^^^^^^^: PayloadActionCreator<number, "counter/increment"> extends (HasMatchFunction<infer T> | TypeGuard<infer T>) ? T : never   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^: PayloadActionCreator<number, "counter/increment"> extends Matcher<infer T> ? T : never   (TyConditional)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->                                  ^^^^^^^^^^^^^^^^^: M extends (HasMatchFunction<infer T> | TypeGuard<infer T>) ? T : never   (TyConditional)
+>                                  ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->                                  ^^^^^^^^^^^^^^^^^: M extends (HasMatchFunction<infer T> | TypeGuard<infer T>) ? T : never   (TyConditional)
+>                                  ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
 >                                                           ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
 
 export type UnknownCreator = PayloadActionCreator<unknown, 'unknown/value'>
->           ^^^^^^^^^^^^^^: [IsUnknown<unknown, ActionCreatorWithNonInferrablePayload<"unknown/value">, IfVoid<unknown, ActionCreatorWithoutPayload<"unknown/value">, IfMaybeUndefined<unknown, ActionCreatorWithOptionalPayload<unknown, "unknown/value">, ActionCreatorWithPayload<unknown, "unknown/value">>>>, IsEmptyObj<unknown, ActionCreatorWithNonInferrablePayload<"unknown/value">, IsUnknown<unknown, ActionCreatorWithNonInferrablePayload<"unknown/value">, IfVoid<unknown, ActionCreatorWithoutPayload<"unknown/value">, IfMaybeUndefined<unknown, ActionCreatorWithOptionalPayload<unknown, "unknown/value">, ActionCreatorWithPayload<unknown, "unknown/value">>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyIndexedAccess)
+>           ^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"unknown/value">   (TyTypeReference)
 
 export type UnknownCreator = PayloadActionCreator<unknown, 'unknown/value'>
->                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? PA extends (((...args: any[]) => { payload: infer P; }) | ((...args: any[]) => { payload: infer P; meta: any; }) | ((...args: any[]) => { payload: infer P; error: any; }) | ((...args: any[]) => { payload: infer P; meta: any; error: any; })) ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void : boolean extends (P extends never ? true : false) ? ActionCreatorWithPayload<any, T> : [IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>, IsEmptyObj<P, ActionCreatorWithNonInferrablePayload<T>, IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyConditional)
+>                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
 
 export type UnknownCreator = PayloadActionCreator<unknown, 'unknown/value'>
->                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? PA extends (((...args: any[]) => { payload: infer P; }) | ((...args: any[]) => { payload: infer P; meta: any; }) | ((...args: any[]) => { payload: infer P; error: any; }) | ((...args: any[]) => { payload: infer P; meta: any; error: any; })) ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void : boolean extends (P extends never ? true : false) ? ActionCreatorWithPayload<any, T> : [IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>, IsEmptyObj<P, ActionCreatorWithNonInferrablePayload<T>, IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyConditional)
+>                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
 
 export type AnythingCreator = PayloadActionCreator<any, 'anything/value'>
->           ^^^^^^^^^^^^^^^: [IsUnknown<any, ActionCreatorWithNonInferrablePayload<"anything/value">, IfVoid<any, ActionCreatorWithoutPayload<"anything/value">, IfMaybeUndefined<any, ActionCreatorWithOptionalPayload<any, "anything/value">, ActionCreatorWithPayload<any, "anything/value">>>>, IsEmptyObj<any, ActionCreatorWithNonInferrablePayload<"anything/value">, IsUnknown<any, ActionCreatorWithNonInferrablePayload<"anything/value">, IfVoid<any, ActionCreatorWithoutPayload<"anything/value">, IfMaybeUndefined<any, ActionCreatorWithOptionalPayload<any, "anything/value">, ActionCreatorWithPayload<any, "anything/value">>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyIndexedAccess)
+>           ^^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"anything/value">   (TyTypeReference)
 
 export type AnythingCreator = PayloadActionCreator<any, 'anything/value'>
->                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? PA extends (((...args: any[]) => { payload: infer P; }) | ((...args: any[]) => { payload: infer P; meta: any; }) | ((...args: any[]) => { payload: infer P; error: any; }) | ((...args: any[]) => { payload: infer P; meta: any; error: any; })) ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void : boolean extends (P extends never ? true : false) ? ActionCreatorWithPayload<any, T> : [IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>, IsEmptyObj<P, ActionCreatorWithNonInferrablePayload<T>, IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyConditional)
+>                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
 
 export type AnythingCreator = PayloadActionCreator<any, 'anything/value'>
->                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? PA extends (((...args: any[]) => { payload: infer P; }) | ((...args: any[]) => { payload: infer P; meta: any; }) | ((...args: any[]) => { payload: infer P; error: any; }) | ((...args: any[]) => { payload: infer P; meta: any; error: any; })) ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void : boolean extends (P extends never ? true : false) ? ActionCreatorWithPayload<any, T> : [IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>, IsEmptyObj<P, ActionCreatorWithNonInferrablePayload<T>, IsUnknown<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>][IsUnknown<ReturnType<<T>() => T>, 0, 1>]   (TyConditional)
+>                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
 
 export type GenericCreator = ActionCreatorWithNonInferrablePayload<'generic/value'>
 >           ^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"generic/value">   (TyTypeReference)

@@ -140,7 +140,7 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 >                           ^^^^^^: any   (TyAny)
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
->           ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends (unknown extends { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; } ? unknown : { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; }) ? TaggedValue : TQueryFnData   (TyConditional)
+>           ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
 >                            ^^^^^^^^^^^^: any   (TyAny)
@@ -212,7 +212,7 @@ export interface QueryClient {
 >                                                      ^^^^^: any   (TyAny)
 
 export type QueryMeta = Register extends {
->           ^^^^^^^^^: Record<string, unknown>   (TyTypeReference)
+>           ^^^^^^^^^: { [x: string]: unknown; }   (TyObject)
 
 export type QueryMeta = Register extends {
 >                       ^^^^^^^^: any   (TyAny)
@@ -407,7 +407,7 @@ export interface InfiniteData<TData, TPageParam = unknown> {
 >                   ^^^^^^^^^^: any   (TyAny)
 
 export type OmitKeyof<
->           ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+>           ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
   TObject,
 > ^^^^^^^: any   (TyAny)
@@ -440,7 +440,7 @@ export type OmitKeyof<
 >                 ^^^^: any   (TyAny)
 
   OmitKeyof,
-> ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+> ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
   QueryFunction,
 > ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction)
@@ -725,10 +725,10 @@ export function streamedQuery<
 >         ^^^^^^^^^^^^^^^^^: OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">   (TyTypeReference)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                            ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+>                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                            ^^^^^^^^^: Omit<TObject, TKey>   (TyTypeReference)
+>                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
 >                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
@@ -743,13 +743,13 @@ export function streamedQuery<
 >                     ^^^^^^: QueryClient   (TyTypeReference)
 
       meta: context.meta,
->     ^^^^: QueryMeta | undefined   (TyUnion)
+>     ^^^^: Record<string, unknown> | undefined   (TyUnion)
 
       meta: context.meta,
 >           ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject)
 
       meta: context.meta,
->                   ^^^^: QueryMeta | undefined   (TyUnion)
+>                   ^^^^: Record<string, unknown> | undefined   (TyUnion)
 
       queryKey: context.queryKey,
 >     ^^^^^^^^: TQueryKey   (TyTypeReference)
@@ -896,7 +896,7 @@ import { streamedQuery } from '../packages/query-core/src/streamedQuery'
 > ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
 
   InferDataFromTag,
-> ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends (unknown extends { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; } ? unknown : { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; }) ? TaggedValue : TQueryFnData   (TyConditional)
+> ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
 
   QueryFunctionContext,
 > ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
@@ -911,7 +911,7 @@ type Todo = {
 > ^^^^^: string   (TyString)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->    ^^^^^^^^^^^^: readonly ["todos"] extends { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; } ? readonly ["todos"] : readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }   (TyConditional)
+>    ^^^^^^^^^^^^: readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }   (TyIntersection)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional)
@@ -929,13 +929,13 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                                       ^^^^^: ErrorConstructor   (TyTypeReference)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->    ^^^^^^^^^^^^^^: TodoQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : string   (TyConditional)
+>    ^^^^^^^^^^^^^^: TodoQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends (unknown extends { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; } ? unknown : { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; }) ? TaggedValue : TQueryFnData   (TyConditional)
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends (unknown extends { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; } ? unknown : { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; }) ? TaggedValue : TQueryFnData   (TyConditional)
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                                              ^^^^^^^^^^^^: any   (TyAny)
@@ -989,34 +989,34 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
 
   reducer: (data, todo) => ({
-> ^^^^^^^: (data: any, todo: any) => { pages: any[]; pageParams: any[]; }   (TyFunction)
+> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }   (TyFunction)
 
   reducer: (data, todo) => ({
->           ^^^^: any   (TyAny)
+>           ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
   reducer: (data, todo) => ({
->                 ^^^^: any   (TyAny)
+>                 ^^^^: Todo   (TyTypeReference)
 
     pages: [...data.pages, todo],
->   ^^^^^: any[]   (TyArray)
+>   ^^^^^: Todo[]   (TyArray)
 
     pages: [...data.pages, todo],
->              ^^^^: any   (TyAny)
+>              ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
     pages: [...data.pages, todo],
->                   ^^^^^: any   (TyAny)
+>                   ^^^^^: Todo[]   (TyArray)
 
     pages: [...data.pages, todo],
->                          ^^^^: any   (TyAny)
+>                          ^^^^: Todo   (TyTypeReference)
 
     pageParams: [...data.pageParams, pageParam],
->   ^^^^^^^^^^: any[]   (TyArray)
+>   ^^^^^^^^^^: number[]   (TyArray)
 
     pageParams: [...data.pageParams, pageParam],
->                   ^^^^: any   (TyAny)
+>                   ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
     pageParams: [...data.pageParams, pageParam],
->                        ^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^: number[]   (TyArray)
 
     pageParams: [...data.pageParams, pageParam],
 >                                    ^^^^^^^^^: number   (TyNumber)
@@ -1046,7 +1046,7 @@ const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
 >                                            ^^^^^: string   (TyString)
 
 const queryResult = queryFn(context)
->     ^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^: InfiniteData<Todo, number> | Promise<InfiniteData<Todo, number>>   (TyUnion)
 
 const queryResult = queryFn(context)
 >                   ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>   (TyTypeReference)

@@ -42,7 +42,8 @@ use crate::{
     program::{self},
     property_key_name_str, push_type_parameter_names, relations,
     string_literal_type_to_property_name, ts_type_name_to_str, ts_type_query_expr_name_to_str,
-    tuple_element_type_at_index, tuple_index_from_expression, type_facts,
+    tuple_element_type_at_index, tuple_index_from_expression, tuple_index_from_index_type,
+    type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyArray, TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTuple,
@@ -1488,31 +1489,48 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .unwrap_or_else(|| Ty::indexed_access(self.arena(), object_type, index_type))
             }
             TSType::TSConditionalType(conditional) => {
-                let check_type = self.get_type_from_ts_type(program_id, &conditional.check_type);
+                let source_check_type =
+                    self.get_type_from_ts_type(program_id, &conditional.check_type);
                 let contains_infer = ts_type_contains_infer(&conditional.extends_type);
-                let extends_type = if contains_infer {
+                let source_extends_type =
+                    self.get_type_from_ts_type(program_id, &conditional.extends_type);
+                let match_extends_type = if contains_infer {
                     self.get_type_from_ts_type_expanding_top_level_aliases(
                         program_id,
                         &conditional.extends_type,
                     )
                 } else {
-                    self.get_type_from_ts_type(program_id, &conditional.extends_type)
+                    source_extends_type
                 };
-                let check_type = if contains_infer {
-                    self.apparent_type_for_conditional_match(program_id, check_type, 0)
+                let match_check_type = if contains_infer {
+                    self.apparent_type_for_conditional_match(program_id, source_check_type, 0)
                 } else {
-                    check_type
+                    source_check_type
                 };
-                self.conditional_type(
-                    check_type,
-                    extends_type,
-                    self.get_type_from_ts_type(program_id, &conditional.true_type),
-                    self.get_type_from_ts_type(program_id, &conditional.false_type),
-                    matches!(
-                        conditional.check_type,
-                        TSType::TSTypeReference(ref reference) if reference.type_arguments.is_none()
-                    ),
-                )
+                let true_type = self.get_type_from_ts_type(program_id, &conditional.true_type);
+                let false_type = self.get_type_from_ts_type(program_id, &conditional.false_type);
+                let is_distributive = matches!(
+                    conditional.check_type,
+                    TSType::TSTypeReference(ref reference) if reference.type_arguments.is_none()
+                );
+                let ty = self.conditional_type(
+                    match_check_type,
+                    match_extends_type,
+                    true_type,
+                    false_type,
+                    is_distributive,
+                );
+                if contains_infer && matches!(ty, Ty::Conditional(_)) {
+                    Ty::Conditional(self.arena().alloc(TyConditional {
+                        check_type: source_check_type,
+                        extends_type: source_extends_type,
+                        true_type,
+                        false_type,
+                        is_distributive,
+                    }))
+                } else {
+                    ty
+                }
             }
             TSType::TSInferType(infer) => Ty::infer(
                 self.arena(),
@@ -1730,6 +1748,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Some(array.element_type);
         }
 
+        if let Ty::Tuple(_) = object_type
+            && let Some(index) = tuple_index_from_index_type(index_type)
+        {
+            return tuple_element_type_at_index(&object_type, index);
+        }
+
         match index_type {
             Ty::Union(union) => {
                 let property_types = union
@@ -1845,17 +1869,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.expand_type_at_use(program_id, *ty, depth + 1)),
             ),
-            Ty::Conditional(conditional) => Ty::Conditional(self.arena().alloc(TyConditional {
-                check_type: self.expand_type_at_use(program_id, conditional.check_type, depth + 1),
-                extends_type: self.expand_type_at_use(
-                    program_id,
-                    conditional.extends_type,
-                    depth + 1,
-                ),
-                true_type: self.expand_type_at_use(program_id, conditional.true_type, depth + 1),
-                false_type: self.expand_type_at_use(program_id, conditional.false_type, depth + 1),
-                is_distributive: conditional.is_distributive,
-            })),
+            Ty::Conditional(conditional) => {
+                let check_type =
+                    self.expand_type_at_use(program_id, conditional.check_type, depth + 1);
+                let extends_type =
+                    self.expand_type_at_use(program_id, conditional.extends_type, depth + 1);
+                let ty = self.conditional_type(
+                    check_type,
+                    extends_type,
+                    conditional.true_type,
+                    conditional.false_type,
+                    conditional.is_distributive,
+                );
+                if matches!(ty, Ty::Conditional(_)) {
+                    Ty::Conditional(conditional)
+                } else {
+                    self.expand_type_at_use(program_id, ty, depth + 1)
+                }
+            }
             Ty::Keyof(keyof) => Ty::keyof(
                 self.arena(),
                 self.expand_type_at_use(program_id, keyof.target, depth + 1),
@@ -1896,29 +1927,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     })
                     .unwrap_or(reference_ty)
             }
-            Ty::Conditional(conditional) => Ty::Conditional(self.arena().alloc(TyConditional {
-                check_type: self.expand_type_for_index_lookup(
+            Ty::Conditional(conditional) => {
+                let check_type = self.expand_type_for_index_lookup(
                     program_id,
                     conditional.check_type,
                     depth + 1,
-                ),
-                extends_type: self.expand_type_for_index_lookup(
+                );
+                let extends_type = self.expand_type_for_index_lookup(
                     program_id,
                     conditional.extends_type,
                     depth + 1,
-                ),
-                true_type: self.expand_type_for_index_lookup(
-                    program_id,
+                );
+                let ty = self.conditional_type(
+                    check_type,
+                    extends_type,
                     conditional.true_type,
-                    depth + 1,
-                ),
-                false_type: self.expand_type_for_index_lookup(
-                    program_id,
                     conditional.false_type,
-                    depth + 1,
-                ),
-                is_distributive: conditional.is_distributive,
-            })),
+                    conditional.is_distributive,
+                );
+                if matches!(ty, Ty::Conditional(_)) {
+                    Ty::Conditional(conditional)
+                } else {
+                    self.expand_type_for_index_lookup(program_id, ty, depth + 1)
+                }
+            }
             Ty::Keyof(keyof) => Ty::keyof(
                 self.arena(),
                 self.expand_type_for_index_lookup(program_id, keyof.target, depth + 1),

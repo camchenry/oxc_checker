@@ -1038,19 +1038,52 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         inferences: &mut InferenceContext<'a>,
         depth: usize,
     ) -> ConditionalInferMatchResult {
-        if source.parameters.len() != target.parameters.len() {
+        let target_rest_index = target
+            .parameters
+            .iter()
+            .position(|parameter| parameter.rest);
+        if target_rest_index.is_none() && source.parameters.len() != target.parameters.len() {
             return ConditionalInferMatchResult::NoMatch;
         }
+        if let Some(rest_index) = target_rest_index
+            && (rest_index + 1 != target.parameters.len() || source.parameters.len() < rest_index)
+        {
+            return ConditionalInferMatchResult::NoMatch;
+        }
+
+        let source_mapper =
+            self.infer_conditional_source_function_type_parameter_mapper(source, target);
+        let parameter_count = target_rest_index.unwrap_or(target.parameters.len());
 
         let parameter_pairs = source
             .parameters
             .iter()
+            .take(parameter_count)
             .zip(target.parameters.iter())
-            .map(|(source, target)| (source.ty, target.ty));
+            .map(|(source, target)| (self.instantiate_type(source.ty, &source_mapper), target.ty));
         self.infer_conditional_from_type_pairs(
-            parameter_pairs.chain(std::iter::once((source.return_type, target.return_type))),
+            parameter_pairs.chain(std::iter::once((
+                self.instantiate_type(source.return_type, &source_mapper),
+                target.return_type,
+            ))),
             inferences,
             depth + 1,
+        )
+    }
+
+    fn infer_conditional_source_function_type_parameter_mapper(
+        &self,
+        source: &TyFunction<'a>,
+        target: &TyFunction<'a>,
+    ) -> TypeMapper<'a> {
+        if source.type_parameters.is_empty() || !target.type_parameters.is_empty() {
+            return TypeMapper::Empty;
+        }
+
+        TypeMapper::from_type_parameters_and_arguments(
+            self.arena(),
+            source.type_parameters.iter().copied(),
+            source.type_parameters.iter().map(|_| Ty::unknown()),
         )
     }
 

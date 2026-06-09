@@ -101149,10 +101149,10 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   { new (): AudioParam; prototype: AudioParam; }
   - src/lib/dom.generated.d.ts:4515 `setValueCurveAtTime` extra in oxc output
       expected: <missing>
-      actual:   { (values: number[] | Float32Array, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; (values: number[] | Float32Array, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; }
+      actual:   { (values: number[] | Float32Array<ArrayBufferLike>, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; (values: number[] | Float32Array<ArrayBufferLike>, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; }
   - src/lib/dom.generated.d.ts:4515 `values` extra in oxc output
       expected: <missing>
-      actual:   number[] | Float32Array
+      actual:   number[] | Float32Array<ArrayBufferLike>
   - src/lib/dom.generated.d.ts:4515 `Float32Array` extra in oxc output
       expected: <missing>
       actual:   Float32ArrayConstructor
@@ -101917,16 +101917,16 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   { new (context: BaseAudioContext, options?: PannerOptions): PannerNode; prototype: PannerNode; }
   - src/lib/dom.generated.d.ts:4911 `createPeriodicWave` extra in oxc output
       expected: <missing>
-      actual:   { (real: number[] | Float32Array, imag: number[] | Float32Array, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: number[] | Float32Array, imag: number[] | Float32Array, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; }
+      actual:   { (real: number[] | Float32Array<ArrayBufferLike>, imag: number[] | Float32Array<ArrayBufferLike>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: number[] | Float32Array<ArrayBufferLike>, imag: number[] | Float32Array<ArrayBufferLike>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; }
   - src/lib/dom.generated.d.ts:4911 `real` extra in oxc output
       expected: <missing>
-      actual:   number[] | Float32Array
+      actual:   number[] | Float32Array<ArrayBufferLike>
   - src/lib/dom.generated.d.ts:4911 `Float32Array` extra in oxc output
       expected: <missing>
       actual:   Float32ArrayConstructor
   - src/lib/dom.generated.d.ts:4911 `imag` extra in oxc output
       expected: <missing>
-      actual:   number[] | Float32Array
+      actual:   number[] | Float32Array<ArrayBufferLike>
   - src/lib/dom.generated.d.ts:4911 `Float32Array` extra in oxc output
       expected: <missing>
       actual:   Float32ArrayConstructor
@@ -189445,7 +189445,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   { new (descriptor: TableDescriptor, value?: any): Table; prototype: Table; }
   - src/lib/dom.generated.d.ts:42745 `Exports` extra in oxc output
       expected: <missing>
-      actual:   Record<string, ExportValue>
+      actual:   { [x: string]: ExportValue; }
   - src/lib/dom.generated.d.ts:42745 `Record` extra in oxc output
       expected: <missing>
       actual:   any
@@ -189460,7 +189460,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   any
   - src/lib/dom.generated.d.ts:42747 `Imports` extra in oxc output
       expected: <missing>
-      actual:   Record<string, ModuleImports>
+      actual:   { [x: string]: ModuleImports; }
   - src/lib/dom.generated.d.ts:42747 `Record` extra in oxc output
       expected: <missing>
       actual:   any
@@ -189469,7 +189469,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   any
   - src/lib/dom.generated.d.ts:42748 `ModuleImports` extra in oxc output
       expected: <missing>
-      actual:   Record<string, ImportValue>
+      actual:   { [x: string]: ImportValue; }
   - src/lib/dom.generated.d.ts:42748 `Record` extra in oxc output
       expected: <missing>
       actual:   any
@@ -195001,7 +195001,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   { new (): PerformanceEntry; prototype: PerformanceEntry; }
   - src/lib/dom.generated.d.ts:44203 `PublicKeyCredentialClientCapabilities` extra in oxc output
       expected: <missing>
-      actual:   Record<string, boolean>
+      actual:   { [x: string]: boolean; }
   - src/lib/dom.generated.d.ts:44203 `Record` extra in oxc output
       expected: <missing>
       actual:   any
@@ -195940,7 +195940,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   { new (): AudioParam; prototype: AudioParam; }
   - src/lib/dom.generated.d.ts:44473 `setValueCurveAtTime` extra in oxc output
       expected: <missing>
-      actual:   { (values: number[] | Float32Array, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; (values: number[] | Float32Array, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; }
+      actual:   { (values: number[] | Float32Array<ArrayBufferLike>, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; (values: number[] | Float32Array<ArrayBufferLike>, startTime: number, duration: number): AudioParam; (values: Iterable<number>, startTime: number, duration: number): AudioParam; }
   - src/lib/dom.generated.d.ts:44473 `values` extra in oxc output
       expected: <missing>
       actual:   Iterable<number>
@@ -195988,7 +195988,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3211 mismatched_types=66501 total_
       actual:   { new (context: BaseAudioContext, options: IIRFilterOptions): IIRFilterNode; prototype: IIRFilterNode; }
   - src/lib/dom.generated.d.ts:44491 `createPeriodicWave` extra in oxc output
       expected: <missing>
-      actual:   { (real: number[] | Float32Array, imag: number[] | Float32Array, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: number[] | Float32Array, imag: number[] | Float32Array, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; }
+      actual:   { (real: number[] | Float32Array<ArrayBufferLike>, imag: number[] | Float32Array<ArrayBufferLike>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: number[] | Float32Array<ArrayBufferLike>, imag: number[] | Float32Array<ArrayBufferLike>, constraints?: PeriodicWaveConstraints): PeriodicWave; (real: Iterable<number>, imag: Iterable<number>, constraints?: PeriodicWaveConstraints): PeriodicWave; }
   - src/lib/dom.generated.d.ts:44491 `real` extra in oxc output
       expected: <missing>
       actual:   Iterable<number>
