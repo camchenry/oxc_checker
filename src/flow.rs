@@ -356,7 +356,7 @@ fn narrow_by_call_type_predicate<'a>(
         return current_type;
     }
 
-    target_type
+    target_type.with_implicit_type_arguments_visible(checker.arena)
 }
 
 /// Recognize `x === undefined` / `x !== undefined` and reversed-operand equivalents.

@@ -137,7 +137,7 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 >     ^^^^^^^: PromiseConstructor   (TyTypeReference)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
->             ^^^: { <T>(values: Iterable<T | PromiseLike<T>, any, any>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+>             ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
 >                           ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (TyFunction)

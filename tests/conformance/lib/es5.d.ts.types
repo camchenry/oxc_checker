@@ -3935,7 +3935,7 @@ interface Promise<T> {
 >                                                                                                                          ^^^^^^^: any   (TyAny)
 
 type Awaited<T> = T extends null | undefined ? T : // special case for `null | undefined` when not in `--strictNullChecks` mode
->    ^^^^^^^: T extends null | undefined ? T : T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? F extends (value: infer V, ...args: infer _) => any ? Awaited<V> : never : T   (TyConditional)
+>    ^^^^^^^: T extends (null | undefined) ? T : T extends (object & { then(onfulfilled: infer F, ...args: infer _): any; }) ? F extends (value: infer V, ...args: infer _) => any ? Awaited<V> : never : T   (TyConditional)
 
 type Awaited<T> = T extends null | undefined ? T : // special case for `null | undefined` when not in `--strictNullChecks` mode
 >            ^: any   (TyAny)
@@ -4367,7 +4367,7 @@ interface ArrayBufferConstructor {
 >                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     isView(arg: any): arg is ArrayBufferView;
->   ^^^^^^: { (arg: any): arg is ArrayBufferView<ArrayBufferLike>; (arg: any): arg is ArrayBufferView<ArrayBufferLike>; }   (TyObject)
+>   ^^^^^^: { (arg: any): arg is ArrayBufferView; (arg: any): arg is ArrayBufferView; }   (TyObject)
 
     isView(arg: any): arg is ArrayBufferView;
 >          ^^^: any   (TyAny)
@@ -5252,7 +5252,7 @@ interface Int8ArrayConstructor {
 >                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -5273,7 +5273,7 @@ interface Int8ArrayConstructor {
 >                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -5930,7 +5930,7 @@ interface Uint8ArrayConstructor {
 >                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -5951,7 +5951,7 @@ interface Uint8ArrayConstructor {
 >                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -6608,7 +6608,7 @@ interface Uint8ClampedArrayConstructor {
 >                                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -6629,7 +6629,7 @@ interface Uint8ClampedArrayConstructor {
 >                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -7286,7 +7286,7 @@ interface Int16ArrayConstructor {
 >                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -7307,7 +7307,7 @@ interface Int16ArrayConstructor {
 >                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -7964,7 +7964,7 @@ interface Uint16ArrayConstructor {
 >                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -7985,7 +7985,7 @@ interface Uint16ArrayConstructor {
 >                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -8642,7 +8642,7 @@ interface Int32ArrayConstructor {
 >                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -8663,7 +8663,7 @@ interface Int32ArrayConstructor {
 >                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -9320,7 +9320,7 @@ interface Uint32ArrayConstructor {
 >                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -9341,7 +9341,7 @@ interface Uint32ArrayConstructor {
 >                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -9998,7 +9998,7 @@ interface Float32ArrayConstructor {
 >                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -10019,7 +10019,7 @@ interface Float32ArrayConstructor {
 >                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
 >        ^: any   (TyAny)
@@ -10676,7 +10676,7 @@ interface Float64ArrayConstructor {
 >                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from(arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; }   (TyObject)
 
     from(arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>;
 >        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference)
@@ -10697,7 +10697,7 @@ interface Float64ArrayConstructor {
 >                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
->   ^^^^: { (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number, any, any>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T, any, any>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; }   (TyObject)
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; }   (TyObject)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
 >        ^: any   (TyAny)

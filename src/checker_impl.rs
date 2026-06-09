@@ -382,13 +382,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if mapped != ty {
                     mapped
                 } else {
-                    Ty::type_reference(
+                    Ty::type_reference_with_display_type_argument_count(
                         self.arena(),
                         reference.name,
                         reference
                             .type_arguments
                             .iter()
                             .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
+                        reference.display_type_argument_count,
                     )
                 }
             }
@@ -1172,6 +1173,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         type_annotation.map_or_else(Ty::any, |type_annotation| {
             self.get_type_from_ts_type(program_id, &type_annotation.type_annotation)
+                .with_implicit_type_arguments_visible(self.arena())
         })
     }
 
@@ -1879,8 +1881,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1))
                     .collect::<Vec<_>>();
-                let reference_ty =
-                    Ty::type_reference(self.arena(), reference.name, expanded_arguments);
+                let reference_ty = Ty::type_reference_with_display_type_argument_count(
+                    self.arena(),
+                    reference.name,
+                    expanded_arguments,
+                    reference.display_type_argument_count,
+                );
                 let Ty::TypeReference(reference) = reference_ty else {
                     return reference_ty;
                 };
@@ -2313,12 +2319,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         ty: &'a TSType<'a>,
     ) -> Ty<'a> {
-        match ty {
+        let ty = match ty {
             TSType::TSTypeReference(reference) => self
                 .get_transparent_type_alias_assertion_type(program_id, reference, 0)
                 .unwrap_or_else(|| self.get_type_from_ts_type_reference(program_id, reference)),
             _ => self.get_type_from_ts_type(program_id, ty),
-        }
+        };
+        ty.with_implicit_type_arguments_visible(self.arena())
     }
 
     fn get_transparent_type_alias_assertion_type(
@@ -2393,6 +2400,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
+        let display_type_argument_count = type_arguments.len();
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
@@ -2408,7 +2416,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return alias_type;
         }
 
-        Ty::type_reference(self.arena(), name, type_arguments.iter().copied())
+        Ty::type_reference_with_display_type_argument_count(
+            self.arena(),
+            name,
+            type_arguments.iter().copied(),
+            display_type_argument_count,
+        )
     }
 
     fn type_arguments_from_reference(
@@ -3237,7 +3250,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         return_type_and_type_predicate_from_annotation_with_resolver(
             parameters,
             return_type,
-            |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
+            |annotation| self.get_type_from_ts_type(program_id, &annotation.type_annotation),
         )
     }
 

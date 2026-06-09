@@ -47,7 +47,7 @@ interface PromiseConstructor {
 >                                                                                                                      ^: any   (TyAny)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->   ^^^: { <T>(values: Iterable<T | PromiseLike<T>, any, any>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+>   ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
 >       ^: any   (TyAny)
@@ -80,7 +80,7 @@ interface PromiseConstructor {
 >                                                                                                    ^: any   (TyAny)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->   ^^^^: { <T>(values: Iterable<T | PromiseLike<T>, any, any>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }   (TyObject)
+>   ^^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }   (TyObject)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >        ^: any   (TyAny)

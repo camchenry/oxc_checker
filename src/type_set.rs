@@ -22,6 +22,7 @@ pub fn reduce_union_type<'a>(
     }
 
     remove_redundant_literal_types(&mut type_set);
+    reduce_boolean_literal_union(&mut type_set);
 
     if type_set.len() > 1 {
         type_set.retain(|ty| !ty.is_never());
@@ -145,6 +146,21 @@ fn remove_redundant_literal_types(type_set: &mut Vec<Ty<'_>>) {
         Ty::BigIntLiteral(_) => !has_bigint,
         _ => true,
     });
+}
+
+fn reduce_boolean_literal_union(type_set: &mut Vec<Ty<'_>>) {
+    let has_true = type_set
+        .iter()
+        .any(|ty| matches!(ty, Ty::BooleanLiteral(true)));
+    let has_false = type_set
+        .iter()
+        .any(|ty| matches!(ty, Ty::BooleanLiteral(false)));
+    if has_true && has_false {
+        type_set.retain(|ty| !matches!(ty, Ty::BooleanLiteral(_)));
+        if !type_set.iter().any(|ty| matches!(ty, Ty::Boolean)) {
+            type_set.push(Ty::Boolean);
+        }
+    }
 }
 
 fn template_literal_matches_string(template_literal: &TyTemplateLiteral<'_>, value: &str) -> bool {

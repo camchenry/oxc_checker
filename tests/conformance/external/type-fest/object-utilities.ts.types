@@ -272,7 +272,7 @@ import type { Simplify } from './simplify'
 >             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->           ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>           ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
 >                       ^^^^^^^^: any   (TyAny)
@@ -374,7 +374,7 @@ import type { KeysOfUnion } from '../source/keys-of-union'
 >             ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
 
 import type { SetRequired } from '../source/set-required'
->             ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>             ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 import type { Simplify } from '../source/simplify'
 >             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
@@ -428,19 +428,19 @@ type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >                                               ^^^^^^^^^^^^^^^^^: true   (TyBooleanLiteral)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->    ^^^^^^^^^^^^^^^: { [KeyType in keyof (Except<User, "name" | "email", {}> & Required<HomomorphicPick<User, "name" | "email">>)]: (Except<User, "name" | "email", {}> & Required<HomomorphicPick<User, "name" | "email">>)[KeyType]; }   (TyMapped)
+>    ^^^^^^^^^^^^^^^: { [KeyType in keyof (Except<User, "name" | "email"> & Required<HomomorphicPick<User, "name" | "email">>)]: (Except<User, "name" | "email"> & Required<HomomorphicPick<User, "name" | "email">>)[KeyType]; }   (TyMapped)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys, {}> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
 >                                  ^^^^: any   (TyAny)
 
 type UserPreview = Simplify<
->    ^^^^^^^^^^^: { [KeyType in keyof (Except<ContactableUser, "profile", {}> & { displayName: string; })]: (Except<ContactableUser, "profile", {}> & { displayName: string; })[KeyType]; }   (TyMapped)
+>    ^^^^^^^^^^^: { [KeyType in keyof (Except<ContactableUser, "profile"> & { displayName: string; })]: (Except<ContactableUser, "profile"> & { displayName: string; })[KeyType]; }   (TyMapped)
 
 type UserPreview = Simplify<
 >                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)

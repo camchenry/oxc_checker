@@ -159,6 +159,7 @@ pub struct TyParameter<'a> {
 pub struct TyTypeReference<'a> {
     pub(crate) name: &'a str,
     pub(crate) type_arguments: ArenaVec<'a, Ty<'a>>,
+    pub(crate) display_type_argument_count: usize,
 }
 
 impl PartialEq for TyTypeReference<'_> {
@@ -718,9 +719,26 @@ impl<'a> Ty<'a> {
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
         let type_arguments = arena.vec_from_iter(type_arguments);
+        let display_type_argument_count = type_arguments.len();
         Self::TypeReference(arena.alloc(TyTypeReference {
             name,
             type_arguments,
+            display_type_argument_count,
+        }))
+    }
+
+    pub(crate) fn type_reference_with_display_type_argument_count(
+        arena: CheckerArena<'a>,
+        name: &'a str,
+        type_arguments: impl IntoIterator<Item = Ty<'a>>,
+        display_type_argument_count: usize,
+    ) -> Self {
+        let type_arguments = arena.vec_from_iter(type_arguments);
+        let display_type_argument_count = display_type_argument_count.min(type_arguments.len());
+        Self::TypeReference(arena.alloc(TyTypeReference {
+            name,
+            type_arguments,
+            display_type_argument_count,
         }))
     }
 
@@ -1010,12 +1028,13 @@ impl<'a> Ty<'a> {
             Self::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
             Self::Function(function) => function_type_to_string(function),
             Self::TypeReference(reference) => {
-                if reference.type_arguments.is_empty() {
+                if reference.display_type_argument_count == 0 {
                     reference.name.to_string()
                 } else {
                     let type_arguments = reference
                         .type_arguments
                         .iter()
+                        .take(reference.display_type_argument_count)
                         .map(|ty| ty.to_type_string())
                         .collect::<Vec<_>>()
                         .join(", ");
@@ -1175,6 +1194,12 @@ impl<'a> Ty<'a> {
                 } else {
                     check_type
                 };
+                let extends_type =
+                    if conditional_extends_type_needs_parentheses(conditional.extends_type) {
+                        format!("({extends_type})")
+                    } else {
+                        extends_type
+                    };
                 format!(
                     "{check_type} extends {extends_type} ? {} : {}",
                     conditional.true_type.to_type_string(),
@@ -1224,6 +1249,74 @@ impl<'a> Ty<'a> {
             self,
             Self::Function(_) | Self::Union(_) | Self::Intersection(_) | Self::Conditional(_)
         )
+    }
+
+    pub(crate) fn with_implicit_type_arguments_visible(self, arena: CheckerArena<'a>) -> Self {
+        match self {
+            Self::TypeReference(reference) => {
+                let display_type_argument_count = if reference.display_type_argument_count == 0 {
+                    reference.type_arguments.len()
+                } else {
+                    reference.display_type_argument_count
+                };
+                Self::type_reference_with_display_type_argument_count(
+                    arena,
+                    reference.name,
+                    reference
+                        .type_arguments
+                        .iter()
+                        .map(|ty| ty.with_implicit_type_arguments_visible(arena)),
+                    display_type_argument_count,
+                )
+            }
+            Self::Union(union) => Self::r#union(
+                arena,
+                union
+                    .types
+                    .iter()
+                    .map(|ty| ty.with_implicit_type_arguments_visible(arena)),
+            ),
+            Self::Intersection(intersection) => Self::intersection(
+                arena,
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| ty.with_implicit_type_arguments_visible(arena)),
+            ),
+            Self::Array(array) => {
+                let element_type = array
+                    .element_type
+                    .with_implicit_type_arguments_visible(arena);
+                if array.readonly {
+                    Self::readonly_array(arena, element_type)
+                } else {
+                    Self::array(arena, element_type)
+                }
+            }
+            Self::Tuple(tuple) => {
+                let elements = tuple
+                    .elements
+                    .iter()
+                    .map(|element| match element {
+                        TupleElement::Regular(ty) => {
+                            TupleElement::Regular(ty.with_implicit_type_arguments_visible(arena))
+                        }
+                        TupleElement::Rest(ty) => {
+                            TupleElement::Rest(ty.with_implicit_type_arguments_visible(arena))
+                        }
+                        TupleElement::Optional(ty) => {
+                            TupleElement::Optional(ty.with_implicit_type_arguments_visible(arena))
+                        }
+                    })
+                    .collect::<Vec<_>>();
+                if tuple.readonly {
+                    Self::readonly_tuple(arena, elements)
+                } else {
+                    Self::tuple(arena, elements)
+                }
+            }
+            _ => self,
+        }
     }
 
     pub(crate) fn with_signatures(
@@ -1370,6 +1463,10 @@ fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
             ty.display_needs_parentheses()
         }
     }
+}
+
+fn conditional_extends_type_needs_parentheses(ty: Ty<'_>) -> bool {
+    matches!(ty, Ty::Union(_) | Ty::Intersection(_) | Ty::Conditional(_))
 }
 
 fn type_parameter_to_type_string(type_parameter: &TyTypeParameter<'_>) -> String {

@@ -982,6 +982,43 @@ mod test {
     }
 
     #[test]
+    fn flow_predicate_narrowing_expands_fully_implicit_defaults_for_values() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        interface Action<T extends string = string> { type: T }
+        interface Base<P, T extends string, M = never, E = never> { payload: P; type: T }
+        declare function isAction(input: unknown): input is Action;
+        declare function isBase(input: unknown): input is Base<unknown, string>;
+        declare const value: unknown;
+        declare const baseValue: unknown;
+        if (isAction(value)) {
+            value;
+        }
+        if (isBase(baseValue)) {
+            baseValue;
+        }
+        ",
+        );
+
+        assert_eq!(
+            get_identifier_reference_types(&ret, "value")
+                .into_iter()
+                .map(Ty::to_type_string)
+                .collect::<Vec<_>>(),
+            vec!["unknown".to_string(), "Action<string>".to_string()]
+        );
+        assert_eq!(
+            get_identifier_reference_types(&ret, "baseValue")
+                .into_iter()
+                .map(Ty::to_type_string)
+                .collect::<Vec<_>>(),
+            vec!["unknown".to_string(), "Base<unknown, string>".to_string()]
+        );
+    }
+
+    #[test]
     fn flow_does_not_index_condition_reference_in_global_symbol_program() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -2041,6 +2078,7 @@ mod test {
         const defaultIdentity = x as DefaultIdentity;
         const aliasBox = x as AliasBox<string>;
         const boxed = (<Box>x);
+        const explicitDefaultBox = (<Box<number>>x);
         const boxedValue = (<Box>x).value;
         const explicitBoxedValue = (<Box<string>>x).value;
         const selfDefaultValue = (<SelfDefault>x).value;
@@ -2069,6 +2107,10 @@ mod test {
         );
         assert_eq!(
             get_global_symbol_type(&ret, "boxed").to_type_string(),
+            "Box<number>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "explicitDefaultBox").to_type_string(),
             "Box<number>"
         );
         assert_eq!(get_global_symbol_type(&ret, "boxedValue"), Ty::number());
