@@ -553,6 +553,67 @@ compiler/flowTypes.ts	904	908	type	string
 compiler/flowTypes.ts	925	936	maybeAction	unknown
 compiler/flowTypes.ts	953	964	maybeAction	object | null
 compiler/flowTypes.ts	987	998	maybeAction	object
+compiler/functionExpandoProperties.ts	106	110	type	string
+compiler/functionExpandoProperties.ts	112	119	payload	string
+compiler/functionExpandoProperties.ts	134	147	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	134	160	actionCreator.type = type;	string
+compiler/functionExpandoProperties.ts	148	152	type	string
+compiler/functionExpandoProperties.ts	155	159	type	string
+compiler/functionExpandoProperties.ts	165	178	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	165	297	actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;	(value: unknown) => value is { type: string; }
+compiler/functionExpandoProperties.ts	179	184	match	(value: unknown) => value is { type: string; }
+compiler/functionExpandoProperties.ts	188	193	value	unknown
+compiler/functionExpandoProperties.ts	205	210	value	unknown
+compiler/functionExpandoProperties.ts	216	220	type	string
+compiler/functionExpandoProperties.ts	241	246	value	unknown
+compiler/functionExpandoProperties.ts	263	268	value	object | null
+compiler/functionExpandoProperties.ts	27	31	type	string
+compiler/functionExpandoProperties.ts	291	296	value	object
+compiler/functionExpandoProperties.ts	309	320	creatorType	string
+compiler/functionExpandoProperties.ts	323	336	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	337	341	type	string
+compiler/functionExpandoProperties.ts	353	360	matcher	(value: unknown) => value is { type: string; }
+compiler/functionExpandoProperties.ts	363	376	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	377	382	match	(value: unknown) => value is { type: string; }
+compiler/functionExpandoProperties.ts	394	400	result	{ type: string; payload: string; }
+compiler/functionExpandoProperties.ts	403	416	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	438	451	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	462	477	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	480	497	makeActionCreator	(type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	513	525	returnedType	string
+compiler/functionExpandoProperties.ts	528	543	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	544	548	type	string
+compiler/functionExpandoProperties.ts	556	569	returnedMatch	boolean
+compiler/functionExpandoProperties.ts	56	69	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	572	587	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	588	593	match	(value: unknown) => value is { type: string; }
+compiler/functionExpandoProperties.ts	596	600	type	string
+compiler/functionExpandoProperties.ts	619	633	returnedResult	{ type: string; payload: string; }
+compiler/functionExpandoProperties.ts	636	651	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	671	683	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	687	694	payload	number
+compiler/functionExpandoProperties.ts	70	77	payload	string
+compiler/functionExpandoProperties.ts	710	717	payload	number
+compiler/functionExpandoProperties.ts	726	736	arrowLabel	string
+compiler/functionExpandoProperties.ts	748	760	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	748	779	arrowCreator.type = arrowLabel;	string
+compiler/functionExpandoProperties.ts	761	765	type	string
+compiler/functionExpandoProperties.ts	768	778	arrowLabel	string
+compiler/functionExpandoProperties.ts	780	792	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	780	856	arrowCreator.match = (value: unknown): value is { payload: number } => true;	(value: unknown) => value is { payload: number; }
+compiler/functionExpandoProperties.ts	793	798	match	(value: unknown) => value is { payload: number; }
+compiler/functionExpandoProperties.ts	802	807	value	unknown
+compiler/functionExpandoProperties.ts	819	824	value	unknown
+compiler/functionExpandoProperties.ts	830	837	payload	number
+compiler/functionExpandoProperties.ts	864	873	arrowType	string
+compiler/functionExpandoProperties.ts	876	888	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	889	893	type	string
+compiler/functionExpandoProperties.ts	9	26	makeActionCreator	(type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	901	911	arrowMatch	(value: unknown) => value is { payload: number; }
+compiler/functionExpandoProperties.ts	914	926	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	927	932	match	(value: unknown) => value is { payload: number; }
+compiler/functionExpandoProperties.ts	940	951	arrowResult	{ payload: number; }
+compiler/functionExpandoProperties.ts	954	966	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
 compiler/functionReturnTypes.ts	10	15	empty	() => void
 compiler/functionReturnTypes.ts	115	125	returnsBig	() => bigint
 compiler/functionReturnTypes.ts	154	165	returnsBig2	() => 1n | 0n

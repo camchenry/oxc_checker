@@ -1,0 +1,191 @@
+function makeActionCreator(type: string) {
+>        ^^^^^^^^^^^^^^^^^: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyFunction)
+
+function makeActionCreator(type: string) {
+>                          ^^^^: string   (TyString)
+
+    function actionCreator(payload: string) {
+>            ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+    function actionCreator(payload: string) {
+>                          ^^^^^^^: string   (TyString)
+
+        return { type, payload };
+>                ^^^^: string   (TyString)
+
+        return { type, payload };
+>                ^^^^: string   (TyString)
+
+        return { type, payload };
+>                      ^^^^^^^: string   (TyString)
+
+        return { type, payload };
+>                      ^^^^^^^: string   (TyString)
+
+    actionCreator.type = type;
+>   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+    actionCreator.type = type;
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+    actionCreator.type = type;
+>                 ^^^^: string   (TyString)
+
+    actionCreator.type = type;
+>                        ^^^^: string   (TyString)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: (value: unknown) => value is { type: string; }   (TyFunction)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>                 ^^^^^: (value: unknown) => value is { type: string; }   (TyFunction)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>                          ^^^^^: unknown   (TyUnknown)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>                                           ^^^^^: unknown   (TyUnknown)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>                                                      ^^^^: string   (TyString)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>                                                                               ^^^^^: unknown   (TyUnknown)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>                                                                                                     ^^^^^: object | null   (TyUnion)
+
+    actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
+>                                                                                                                                 ^^^^^: object   (TyPrimitiveObject)
+
+    const creatorType = actionCreator.type;
+>         ^^^^^^^^^^^: string   (TyString)
+
+    const creatorType = actionCreator.type;
+>                       ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+    const creatorType = actionCreator.type;
+>                                     ^^^^: string   (TyString)
+
+    const matcher = actionCreator.match;
+>         ^^^^^^^: (value: unknown) => value is { type: string; }   (TyFunction)
+
+    const matcher = actionCreator.match;
+>                   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+    const matcher = actionCreator.match;
+>                                 ^^^^^: (value: unknown) => value is { type: string; }   (TyFunction)
+
+    const result = actionCreator("value");
+>         ^^^^^^: { type: string; payload: string; }   (TyObject)
+
+    const result = actionCreator("value");
+>                  ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+    return actionCreator;
+>          ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+const returnedCreator = makeActionCreator("demo");
+>     ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+const returnedCreator = makeActionCreator("demo");
+>                       ^^^^^^^^^^^^^^^^^: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyFunction)
+
+const returnedType = returnedCreator.type;
+>     ^^^^^^^^^^^^: string   (TyString)
+
+const returnedType = returnedCreator.type;
+>                    ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+const returnedType = returnedCreator.type;
+>                                    ^^^^: string   (TyString)
+
+const returnedMatch = returnedCreator.match({ type: "demo" });
+>     ^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+const returnedMatch = returnedCreator.match({ type: "demo" });
+>                     ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+const returnedMatch = returnedCreator.match({ type: "demo" });
+>                                     ^^^^^: (value: unknown) => value is { type: string; }   (TyFunction)
+
+const returnedMatch = returnedCreator.match({ type: "demo" });
+>                                             ^^^^: string   (TyString)
+
+const returnedResult = returnedCreator("payload");
+>     ^^^^^^^^^^^^^^: { type: string; payload: string; }   (TyObject)
+
+const returnedResult = returnedCreator("payload");
+>                      ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject)
+
+const arrowCreator = (payload: number) => ({ payload });
+>     ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject)
+
+const arrowCreator = (payload: number) => ({ payload });
+>                     ^^^^^^^: number   (TyNumber)
+
+const arrowCreator = (payload: number) => ({ payload });
+>                                            ^^^^^^^: number   (TyNumber)
+
+const arrowCreator = (payload: number) => ({ payload });
+>                                            ^^^^^^^: number   (TyNumber)
+
+let arrowLabel = "arrow";
+>   ^^^^^^^^^^: string   (TyString)
+
+arrowCreator.type = arrowLabel;
+>^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject)
+
+arrowCreator.type = arrowLabel;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+arrowCreator.type = arrowLabel;
+>            ^^^^: string   (TyString)
+
+arrowCreator.type = arrowLabel;
+>                   ^^^^^^^^^^: string   (TyString)
+
+arrowCreator.match = (value: unknown): value is { payload: number } => true;
+>^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject)
+
+arrowCreator.match = (value: unknown): value is { payload: number } => true;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: (value: unknown) => value is { payload: number; }   (TyFunction)
+
+arrowCreator.match = (value: unknown): value is { payload: number } => true;
+>            ^^^^^: (value: unknown) => value is { payload: number; }   (TyFunction)
+
+arrowCreator.match = (value: unknown): value is { payload: number } => true;
+>                     ^^^^^: unknown   (TyUnknown)
+
+arrowCreator.match = (value: unknown): value is { payload: number } => true;
+>                                      ^^^^^: unknown   (TyUnknown)
+
+arrowCreator.match = (value: unknown): value is { payload: number } => true;
+>                                                 ^^^^^^^: number   (TyNumber)
+
+const arrowType = arrowCreator.type;
+>     ^^^^^^^^^: string   (TyString)
+
+const arrowType = arrowCreator.type;
+>                 ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject)
+
+const arrowType = arrowCreator.type;
+>                              ^^^^: string   (TyString)
+
+const arrowMatch = arrowCreator.match;
+>     ^^^^^^^^^^: (value: unknown) => value is { payload: number; }   (TyFunction)
+
+const arrowMatch = arrowCreator.match;
+>                  ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject)
+
+const arrowMatch = arrowCreator.match;
+>                               ^^^^^: (value: unknown) => value is { payload: number; }   (TyFunction)
+
+const arrowResult = arrowCreator(1);
+>     ^^^^^^^^^^^: { payload: number; }   (TyObject)
+
+const arrowResult = arrowCreator(1);
+>                   ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject)

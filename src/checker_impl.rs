@@ -45,7 +45,7 @@ use crate::{
     tuple_element_type_at_index, tuple_index_from_expression, type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
-        TyArray, TyConditional, TyFunction, TyMapped, TyParameter, TyProperty, TyTuple,
+        TyArray, TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTuple,
         TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference,
         binding_pattern_to_parameter_name,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
@@ -5125,10 +5125,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         if callable_declarations.len() <= 1 {
-            return self.get_type_of_function_signature_with_node(
+            let ty = self.get_type_of_function_signature_with_node(
                 program_id,
                 FunctionKind::Function(function),
                 Some(node_id),
+            );
+            return self.add_expando_properties_to_callable_type(
+                program_id,
+                node_id,
+                SymbolRef::new(program_id, symbol_id),
+                ty,
             );
         }
 
@@ -5153,7 +5159,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Signature::new(SignatureKind::Call, function)
             },
         );
-        Ty::object_with_signatures(self.arena(), [], signatures)
+        let ty = Ty::object_with_signatures(self.arena(), [], signatures);
+        self.add_expando_properties_to_callable_type(
+            program_id,
+            node_id,
+            SymbolRef::new(program_id, symbol_id),
+            ty,
+        )
     }
 
     fn has_class_declaration_named(&self, program_id: program::ProgramId, name: &str) -> bool {
@@ -5262,6 +5274,146 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn simple_binding_symbol(
+        &self,
+        program_id: program::ProgramId,
+        pattern: &BindingPattern<'a>,
+    ) -> Option<SymbolRef> {
+        match pattern {
+            BindingPattern::BindingIdentifier(identifier) => identifier
+                .symbol_id
+                .get()
+                .map(|symbol_id| SymbolRef::new(program_id, symbol_id)),
+            _ => None,
+        }
+    }
+
+    // Expando properties are members assigned onto a function object after the function is
+    // declared, like `actionCreator.type = type`. TypeScript models the value as both callable
+    // and object-like, so preserve the call signatures while adding the assigned properties.
+    fn add_expando_properties_to_callable_type(
+        &self,
+        program_id: program::ProgramId,
+        host_declaration: NodeId,
+        host_symbol: SymbolRef,
+        ty: Ty<'a>,
+    ) -> Ty<'a> {
+        let expando_properties =
+            self.expando_properties_for_symbol(program_id, host_declaration, host_symbol);
+        if expando_properties.is_empty() {
+            return ty;
+        }
+
+        match ty {
+            Ty::Function(function) => Ty::object_with_signatures(
+                self.arena(),
+                expando_properties,
+                [Signature::new(SignatureKind::Call, function)],
+            ),
+            Ty::Object(object) => Ty::Object(
+                self.arena().alloc(TyObject {
+                    properties: self
+                        .arena()
+                        .vec_from_iter(object.properties.iter().copied().chain(expando_properties)),
+                    signatures: self
+                        .arena()
+                        .vec_from_iter(object.signatures.iter().copied()),
+                    index_infos: self
+                        .arena()
+                        .vec_from_iter(object.index_infos.iter().copied()),
+                }),
+            ),
+            _ => ty,
+        }
+    }
+
+    fn expando_properties_for_symbol(
+        &self,
+        program_id: program::ProgramId,
+        host_declaration: NodeId,
+        host_symbol: SymbolRef,
+    ) -> Vec<TyProperty<'a>> {
+        let Some(host_container_id) =
+            self.enclosing_expando_container_id(program_id, host_declaration)
+        else {
+            return Vec::new();
+        };
+
+        let mut properties: Vec<TyProperty<'a>> = Vec::new();
+        for (node_id, node) in self.nodes(program_id).iter_enumerated() {
+            let AstKind::AssignmentExpression(assignment) = node.kind() else {
+                continue;
+            };
+            if assignment.operator != AssignmentOperator::Assign {
+                continue;
+            }
+            if self.enclosing_expando_container_id(program_id, node_id) != Some(host_container_id) {
+                continue;
+            }
+            let Some((name, right)) =
+                self.static_property_assignment_for_symbol(program_id, assignment, host_symbol)
+            else {
+                continue;
+            };
+            let ty = self.get_type_of_expression_with_node(
+                program_id,
+                right,
+                Some(assignment.node_id.get()),
+                GetTypeFlags::NONE,
+            );
+            let method = matches!(ty, Ty::Function(_));
+            if let Some(existing) = properties.iter_mut().find(|property| property.name == name) {
+                existing.ty = ty;
+                existing.method = method;
+            } else {
+                properties.push(TyProperty {
+                    name,
+                    ty,
+                    computed: false,
+                    optional: false,
+                    method,
+                    readonly: false,
+                });
+            }
+        }
+        properties
+    }
+
+    fn static_property_assignment_for_symbol(
+        &self,
+        program_id: program::ProgramId,
+        assignment: &'a AssignmentExpression<'a>,
+        host_symbol: SymbolRef,
+    ) -> Option<(&'a str, &'a Expression<'a>)> {
+        let AssignmentTarget::StaticMemberExpression(member) = &assignment.left else {
+            return None;
+        };
+        let Expression::Identifier(identifier) = &member.object else {
+            return None;
+        };
+        let object_symbol =
+            self.get_symbol_at_location(self.identifier_node_ref(program_id, identifier))?;
+        if object_symbol != host_symbol {
+            return None;
+        }
+        Some((member.property.name.as_str(), &assignment.right))
+    }
+
+    fn enclosing_expando_container_id(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+    ) -> Option<NodeId> {
+        self.nodes(program_id)
+            .ancestors_enumerated(node_id)
+            .find_map(|(ancestor_id, node)| match node.kind() {
+                AstKind::Program(_)
+                | AstKind::Function(_)
+                | AstKind::ArrowFunctionExpression(_) => Some(ancestor_id),
+                _ => None,
+            })
+    }
+
     fn get_type_of_variable_declarator(
         &self,
         program_id: program::ProgramId,
@@ -5296,6 +5448,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         && self.is_null_or_undefined_initializer(expression)
                     {
                         Ty::any()
+                    } else if expression.is_function() {
+                        self.simple_binding_symbol(program_id, &declarator.id)
+                            .map_or(ty, |symbol| {
+                                self.add_expando_properties_to_callable_type(
+                                    program_id,
+                                    declaration,
+                                    symbol,
+                                    ty,
+                                )
+                            })
                     } else {
                         ty
                     }

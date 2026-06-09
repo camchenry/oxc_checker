@@ -941,7 +941,7 @@ export function createAction(type: string, prepareAction?: Function): any {
 >                                                          ^^^^^^^^: FunctionConstructor   (TyTypeReference)
 
   function actionCreator(...args: any[]) {
->          ^^^^^^^^^^^^^: (...args: any[]) => { type: string; payload: any; }   (TyFunction)
+>          ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction<void, string, never, never>; }   (TyObject)
 
   function actionCreator(...args: any[]) {
 >                           ^^^^: any[]   (TyArray)
@@ -1010,25 +1010,25 @@ export function createAction(type: string, prepareAction?: Function): any {
 >                           ^^^^: any[]   (TyArray)
 
   actionCreator.type = type
-> ^^^^^^^^^^^^^: (...args: any[]) => { type: string; payload: any; }   (TyFunction)
+> ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction<void, string, never, never>; }   (TyObject)
 
   actionCreator.type = type
 > ^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
   actionCreator.type = type
->               ^^^^: any   (TyAny)
+>               ^^^^: string   (TyString)
 
   actionCreator.type = type
 >                      ^^^^: string   (TyString)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
-> ^^^^^^^^^^^^^: (...args: any[]) => { type: string; payload: any; }   (TyFunction)
+> ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction<void, string, never, never>; }   (TyObject)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
 > ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: (action: unknown) => action is PayloadAction<void, string, never, never>   (TyFunction)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
->               ^^^^^: any   (TyAny)
+>               ^^^^^: (action: unknown) => action is PayloadAction<void, string, never, never>   (TyFunction)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
 >                        ^^^^^^: unknown   (TyUnknown)
@@ -1055,7 +1055,7 @@ export function createAction(type: string, prepareAction?: Function): any {
 >                                       ^^^^: string   (TyString)
 
   return actionCreator
->        ^^^^^^^^^^^^^: (...args: any[]) => { type: string; payload: any; }   (TyFunction)
+>        ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction<void, string, never, never>; }   (TyObject)
 
 export function isActionCreator(
 >               ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string, never, never> & Function   (TyFunction)
