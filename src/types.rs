@@ -1466,7 +1466,7 @@ fn element_type_needs_parentheses(element: &TupleElement<'_>) -> bool {
 }
 
 fn conditional_extends_type_needs_parentheses(ty: Ty<'_>) -> bool {
-    matches!(ty, Ty::Union(_) | Ty::Intersection(_) | Ty::Conditional(_))
+    matches!(ty, Ty::Union(_) | Ty::Conditional(_))
 }
 
 fn type_parameter_to_type_string(type_parameter: &TyTypeParameter<'_>) -> String {
