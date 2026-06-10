@@ -24,6 +24,7 @@ oxc_str = "0.132.0"
 bitflags = "2.12.1"
 simdutf8 = "0.1.5"
 num-traits = "0.2.19"
+rayon = "1.11.0"
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }

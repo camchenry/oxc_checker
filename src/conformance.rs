@@ -6,10 +6,11 @@ use std::{
     fmt, io,
     path::{Component, Path, PathBuf},
     sync::{
-        Arc, Mutex,
-        atomic::{AtomicUsize, Ordering},
+        Arc,
+        atomic::{AtomicU64, AtomicUsize, Ordering},
         mpsc,
     },
+    time::{Duration, Instant},
 };
 
 use oxc_allocator::Allocator;
@@ -17,6 +18,7 @@ use oxc_ast::AstKind;
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
 use oxc_span::GetSpan;
+use rayon::prelude::*;
 
 use crate::{
     checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef},
@@ -231,6 +233,106 @@ impl ComparisonStats {
 
 struct ParsedFixture<'a> {
     store: program::ProgramStore<'a>,
+}
+
+struct ReadyConformanceFile {
+    path: PathBuf,
+    source_text: String,
+}
+
+struct ConformanceCollectionTiming {
+    enabled: bool,
+    started_at: Instant,
+    reader_nanos: AtomicU64,
+    read_nanos: AtomicU64,
+    send_wait_nanos: AtomicU64,
+    check_nanos: AtomicU64,
+    bytes_read: AtomicUsize,
+}
+
+impl ConformanceCollectionTiming {
+    fn new() -> Self {
+        Self {
+            enabled: std::env::var_os("OXC_CONFORMANCE_TIMING").is_some(),
+            started_at: Instant::now(),
+            reader_nanos: AtomicU64::new(0),
+            read_nanos: AtomicU64::new(0),
+            send_wait_nanos: AtomicU64::new(0),
+            check_nanos: AtomicU64::new(0),
+            bytes_read: AtomicUsize::new(0),
+        }
+    }
+
+    fn is_enabled(&self) -> bool {
+        self.enabled
+    }
+
+    fn record_read(&self, elapsed: Duration, bytes: usize) {
+        if !self.enabled {
+            return;
+        }
+
+        self.read_nanos
+            .fetch_add(duration_nanos(elapsed), Ordering::Relaxed);
+        self.bytes_read.fetch_add(bytes, Ordering::Relaxed);
+    }
+
+    fn record_send_wait(&self, elapsed: Duration) {
+        if self.enabled {
+            self.send_wait_nanos
+                .fetch_add(duration_nanos(elapsed), Ordering::Relaxed);
+        }
+    }
+
+    fn record_check(&self, elapsed: Duration) {
+        if self.enabled {
+            self.check_nanos
+                .fetch_add(duration_nanos(elapsed), Ordering::Relaxed);
+        }
+    }
+
+    fn record_reader(&self, elapsed: Duration) {
+        if self.enabled {
+            self.reader_nanos
+                .store(duration_nanos(elapsed), Ordering::Relaxed);
+        }
+    }
+
+    fn report(&self, suite: &ConformanceSuite, total_paths: usize, worker_count: usize) {
+        if !self.enabled {
+            return;
+        }
+
+        let wall = self.started_at.elapsed();
+        let reader = nanos_duration(self.reader_nanos.load(Ordering::Relaxed));
+        let read = nanos_duration(self.read_nanos.load(Ordering::Relaxed));
+        let send_wait = nanos_duration(self.send_wait_nanos.load(Ordering::Relaxed));
+        let check = nanos_duration(self.check_nanos.load(Ordering::Relaxed));
+        let estimated_parallel_check = check.div_f64(worker_count as f64);
+        let bytes_read = self.bytes_read.load(Ordering::Relaxed);
+
+        eprintln!(
+            "{} collection timing: files={} workers={} bytes_read={} wall={:.3}s reader_wall={:.3}s read_sum={:.3}s send_wait={:.3}s check_sum={:.3}s check_sum/workers={:.3}s",
+            suite.name,
+            total_paths,
+            worker_count,
+            bytes_read,
+            wall.as_secs_f64(),
+            reader.as_secs_f64(),
+            read.as_secs_f64(),
+            send_wait.as_secs_f64(),
+            check.as_secs_f64(),
+            estimated_parallel_check.as_secs_f64(),
+        );
+    }
+}
+
+fn duration_nanos(duration: Duration) -> u64 {
+    duration.as_nanos().min(u128::from(u64::MAX)) as u64
+}
+
+fn nanos_duration(nanos: u64) -> Duration {
+    Duration::from_nanos(nanos)
 }
 
 struct FixtureProgramHost {
@@ -986,62 +1088,97 @@ fn discover_case_files(root: &Path, paths: &mut Vec<PathBuf>) {
 }
 
 fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeRecord> {
-    let mut records = Vec::new();
     let paths = discover_compiler_cases(suite, cases_root);
     let total_paths = paths.len();
     let worker_count = conformance_worker_count(total_paths);
-    let paths = Arc::new(Mutex::new(paths));
-    let completed_paths = Arc::new(AtomicUsize::new(0));
-    let (records_sender, records_receiver) = mpsc::channel();
-
-    std::thread::scope(|scope| {
-        for worker_index in 0..worker_count {
-            let paths = Arc::clone(&paths);
-            let completed_paths = Arc::clone(&completed_paths);
-            let records_sender = records_sender.clone();
-            std::thread::Builder::new()
-                .name(format!("conformance-worker-{worker_index}"))
-                .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
-                .spawn_scoped(scope, move || {
-                    loop {
-                        let Some(path) = paths.lock().unwrap().pop() else {
-                            break;
-                        };
-
-                        let source_text = match read_to_string_simd_utf8(&path) {
-                            Ok(source_text) => source_text,
-                            Err(_) => {
-                                report_collection_progress(
-                                    completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
-                                    total_paths,
-                                );
-                                continue;
-                            }
-                        };
-                        let file_records =
-                            collect_oxc_records_from_source(cases_root, &path, &source_text);
-                        report_collection_progress(
-                            completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
-                            total_paths,
-                        );
-                        if records_sender.send(file_records).is_err() {
-                            break;
-                        }
-                    }
-                })
-                .unwrap_or_else(|err| panic!("failed to spawn conformance worker thread: {err}"));
-        }
-
-        drop(records_sender);
-        for file_records in records_receiver {
-            records.extend(file_records);
-        }
-    });
 
     if total_paths == 0 {
-        return records;
+        return Vec::new();
     }
+
+    let completed_paths = Arc::new(AtomicUsize::new(0));
+    let timing = Arc::new(ConformanceCollectionTiming::new());
+    let (ready_sender, ready_receiver) =
+        mpsc::sync_channel(conformance_read_ahead_capacity(worker_count));
+    let reader_completed_paths = Arc::clone(&completed_paths);
+    let reader_timing = Arc::clone(&timing);
+    let reader = std::thread::Builder::new()
+        .name("conformance-reader".to_string())
+        .spawn(move || {
+            let reader_started_at = reader_timing.is_enabled().then(Instant::now);
+            for path in paths {
+                let read_started_at = reader_timing.is_enabled().then(Instant::now);
+                let source_text = match read_to_string_simd_utf8(&path) {
+                    Ok(source_text) => source_text,
+                    Err(_) => {
+                        report_collection_progress(
+                            reader_completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
+                            total_paths,
+                        );
+                        continue;
+                    }
+                };
+                if let Some(read_started_at) = read_started_at {
+                    reader_timing.record_read(read_started_at.elapsed(), source_text.len());
+                }
+
+                let send_started_at = reader_timing.is_enabled().then(Instant::now);
+                if ready_sender
+                    .send(ReadyConformanceFile { path, source_text })
+                    .is_err()
+                {
+                    break;
+                }
+                if let Some(send_started_at) = send_started_at {
+                    reader_timing.record_send_wait(send_started_at.elapsed());
+                }
+            }
+            if let Some(reader_started_at) = reader_started_at {
+                reader_timing.record_reader(reader_started_at.elapsed());
+            }
+        })
+        .unwrap_or_else(|err| panic!("failed to spawn conformance reader thread: {err}"));
+
+    let pool = rayon::ThreadPoolBuilder::new()
+        .num_threads(worker_count)
+        .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
+        .thread_name(|worker_index| format!("conformance-worker-{worker_index}"))
+        .build()
+        .unwrap_or_else(|err| panic!("failed to build conformance worker pool: {err}"));
+
+    let mut records = pool.install(|| {
+        let timing = Arc::clone(&timing);
+        ready_receiver
+            .into_iter()
+            .par_bridge()
+            .map(|ready_file| {
+                let check_started_at = timing.is_enabled().then(Instant::now);
+                let file_records = collect_oxc_records_from_source(
+                    cases_root,
+                    &ready_file.path,
+                    &ready_file.source_text,
+                );
+                if let Some(check_started_at) = check_started_at {
+                    timing.record_check(check_started_at.elapsed());
+                }
+                report_collection_progress(
+                    completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
+                    total_paths,
+                );
+                file_records
+            })
+            .collect::<Vec<_>>()
+            .into_iter()
+            .flatten()
+            .collect::<Vec<_>>()
+    });
+
+    reader
+        .join()
+        .unwrap_or_else(|payload| panic!("{}", thread_panic_error(payload).into_message()));
+
     eprintln!();
+    timing.report(suite, total_paths, worker_count);
     records.sort_by(|left, right| {
         left.path
             .cmp(&right.path)
@@ -1051,6 +1188,10 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
             .then_with(|| left.ty_repr.cmp(&right.ty_repr))
     });
     records
+}
+
+fn conformance_read_ahead_capacity(worker_count: usize) -> usize {
+    worker_count.saturating_mul(2).max(1)
 }
 
 fn conformance_worker_count(total_paths: usize) -> usize {
