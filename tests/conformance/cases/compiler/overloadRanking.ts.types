@@ -46,6 +46,30 @@ declare function tiedOverload(x: string): "second";
 declare function tiedOverload(x: string): "second";
 >                             ^: string   (TyString)
 
+declare function tupleRestOverload(...args: [string]): "one";
+>                ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject)
+
+declare function tupleRestOverload(...args: [string]): "one";
+>                                     ^^^^: [string]   (TyTuple)
+
+declare function tupleRestOverload(...args: [string, number]): "two";
+>                ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject)
+
+declare function tupleRestOverload(...args: [string, number]): "two";
+>                                     ^^^^: [string, number]   (TyTuple)
+
+declare function optionalTupleRestOverload(...args: [string, number?]): "optional";
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject)
+
+declare function optionalTupleRestOverload(...args: [string, number?]): "optional";
+>                                             ^^^^: [string, (number | undefined)?]   (TyTuple)
+
+declare function optionalTupleRestOverload(...args: [string, number, boolean]): "three";
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject)
+
+declare function optionalTupleRestOverload(...args: [string, number, boolean]): "three";
+>                                             ^^^^: [string, number, boolean]   (TyTuple)
+
 const literalResult = literalOverload("ready");
 >     ^^^^^^^^^^^^^: "literal"   (TyStringLiteral)
 
@@ -63,3 +87,33 @@ const tiedResult = tiedOverload("ready");
 
 const tiedResult = tiedOverload("ready");
 >                  ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (TyObject)
+
+const tupleRestOne = tupleRestOverload("ready");
+>     ^^^^^^^^^^^^: "one"   (TyStringLiteral)
+
+const tupleRestOne = tupleRestOverload("ready");
+>                    ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject)
+
+const tupleRestTwo = tupleRestOverload("ready", 1);
+>     ^^^^^^^^^^^^: "two"   (TyStringLiteral)
+
+const tupleRestTwo = tupleRestOverload("ready", 1);
+>                    ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject)
+
+const optionalTupleRestOne = optionalTupleRestOverload("ready");
+>     ^^^^^^^^^^^^^^^^^^^^: "optional"   (TyStringLiteral)
+
+const optionalTupleRestOne = optionalTupleRestOverload("ready");
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject)
+
+const optionalTupleRestTwo = optionalTupleRestOverload("ready", 1);
+>     ^^^^^^^^^^^^^^^^^^^^: "optional"   (TyStringLiteral)
+
+const optionalTupleRestTwo = optionalTupleRestOverload("ready", 1);
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject)
+
+const optionalTupleRestThree = optionalTupleRestOverload("ready", 1, true);
+>     ^^^^^^^^^^^^^^^^^^^^^^: "three"   (TyStringLiteral)
+
+const optionalTupleRestThree = optionalTupleRestOverload("ready", 1, true);
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject)

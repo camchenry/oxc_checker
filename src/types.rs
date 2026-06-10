@@ -155,6 +155,105 @@ pub struct TyParameter<'a> {
     pub(crate) rest: bool,
 }
 
+pub(crate) fn function_minimum_argument_count(function: &TyFunction<'_>) -> usize {
+    let fixed_required = function
+        .parameters
+        .iter()
+        .filter(|parameter| !parameter.optional && !parameter.rest)
+        .count();
+    fixed_required
+        + function
+            .parameters
+            .iter()
+            .find(|parameter| parameter.rest)
+            .map_or(0, |parameter| {
+                rest_tuple_minimum_argument_count(parameter.ty)
+            })
+}
+
+pub(crate) fn function_maximum_argument_count(function: &TyFunction<'_>) -> Option<usize> {
+    let Some(rest_index) = function
+        .parameters
+        .iter()
+        .position(|parameter| parameter.rest)
+    else {
+        return Some(function.parameters.len());
+    };
+    rest_tuple_maximum_argument_count(function.parameters[rest_index].ty)
+        .map(|rest_count| rest_index + rest_count)
+}
+
+pub(crate) fn function_parameter_type_at_call_index<'a>(
+    function: &TyFunction<'a>,
+    index: usize,
+) -> Option<Ty<'a>> {
+    if let Some(rest_index) = function
+        .parameters
+        .iter()
+        .position(|parameter| parameter.rest)
+        && index >= rest_index
+    {
+        return rest_parameter_type_at_call_index(
+            function.parameters[rest_index].ty,
+            index - rest_index,
+        );
+    }
+
+    function.parameters.get(index).map(|parameter| parameter.ty)
+}
+
+fn rest_tuple_minimum_argument_count(ty: Ty<'_>) -> usize {
+    let Ty::Tuple(tuple) = ty else {
+        return 0;
+    };
+    tuple
+        .elements
+        .iter()
+        .take_while(|element| !matches!(element, TupleElement::Rest(_)))
+        .filter(|element| matches!(element, TupleElement::Regular(_)))
+        .count()
+}
+
+fn rest_tuple_maximum_argument_count(ty: Ty<'_>) -> Option<usize> {
+    let Ty::Tuple(tuple) = ty else {
+        return None;
+    };
+    if tuple
+        .elements
+        .iter()
+        .any(|element| matches!(element, TupleElement::Rest(_)))
+    {
+        None
+    } else {
+        Some(tuple.elements.len())
+    }
+}
+
+fn rest_parameter_type_at_call_index<'a>(ty: Ty<'a>, index: usize) -> Option<Ty<'a>> {
+    let Ty::Tuple(tuple) = ty else {
+        return Some(ty.array_element_type().unwrap_or(ty));
+    };
+
+    let mut current_index = 0;
+    for element in &tuple.elements {
+        match element {
+            TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
+                if current_index == index {
+                    return Some(*ty);
+                }
+                current_index += 1;
+            }
+            TupleElement::Rest(ty) => {
+                if index >= current_index {
+                    return Some(ty.array_element_type().unwrap_or(*ty));
+                }
+            }
+        }
+    }
+
+    None
+}
+
 #[derive(Debug, Eq)]
 pub struct TyTypeReference<'a> {
     pub(crate) name: &'a str,
@@ -1572,18 +1671,54 @@ fn function_type_head_to_string(function: &TyFunction<'_>) -> (String, String) {
     let parameters = function
         .parameters
         .iter()
-        .map(|parameter| {
-            if parameter.rest {
-                format!("...{}: {}", parameter.name, parameter.ty.to_type_string())
-            } else if parameter.optional {
-                format!("{}?: {}", parameter.name, parameter.ty.to_type_string())
-            } else {
-                format!("{}: {}", parameter.name, parameter.ty.to_type_string())
-            }
-        })
+        .flat_map(function_parameter_to_type_strings)
         .collect::<Vec<_>>()
         .join(", ");
     (type_parameters, parameters)
+}
+
+fn function_parameter_to_type_strings(parameter: &TyParameter<'_>) -> Vec<String> {
+    if parameter.rest
+        && let Ty::Tuple(tuple) = parameter.ty
+        && !tuple
+            .elements
+            .iter()
+            .any(|element| matches!(element, TupleElement::Rest(_)))
+    {
+        return tuple
+            .elements
+            .iter()
+            .enumerate()
+            .map(|(index, element)| {
+                let name = format!("{}_{}", parameter.name, index);
+                match element {
+                    TupleElement::Regular(ty) => format!("{name}: {}", ty.to_type_string()),
+                    TupleElement::Optional(ty) => format!("{name}?: {}", ty.to_type_string()),
+                    TupleElement::Rest(ty) => format!("...{name}: {}", ty.to_type_string()),
+                }
+            })
+            .collect();
+    }
+
+    if parameter.rest {
+        vec![format!(
+            "...{}: {}",
+            parameter.name,
+            parameter.ty.to_type_string()
+        )]
+    } else if parameter.optional {
+        vec![format!(
+            "{}?: {}",
+            parameter.name,
+            parameter.ty.to_type_string()
+        )]
+    } else {
+        vec![format!(
+            "{}: {}",
+            parameter.name,
+            parameter.ty.to_type_string()
+        )]
+    }
 }
 
 pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(

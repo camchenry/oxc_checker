@@ -19,7 +19,7 @@ use crate::{
     relations,
     types::{
         MappedModifier, TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyMapped, TyProperty,
-        TyTypeParameter, visit_type,
+        TyTypeParameter, function_parameter_type_at_call_index, visit_type,
     },
 };
 
@@ -722,18 +722,6 @@ fn literal_base_type(ty: Ty<'_>) -> Option<Ty<'static>> {
     }
 }
 
-fn call_parameter_type_at<'a>(function: &TyFunction<'a>, index: usize) -> Option<Ty<'a>> {
-    let parameter = function
-        .parameters
-        .get(index)
-        .or_else(|| function.parameters.iter().find(|parameter| parameter.rest))?;
-    if parameter.rest {
-        Some(parameter.ty.array_element_type().unwrap_or(parameter.ty))
-    } else {
-        Some(parameter.ty)
-    }
-}
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum InferenceVariance {
     Covariant,
@@ -1189,7 +1177,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .enumerate()
             .filter_map(|(index, argument)| {
                 let argument = argument.as_expression()?;
-                let parameter_type = call_parameter_type_at(function, index)?;
+                let parameter_type = function_parameter_type_at_call_index(function, index)?;
                 let flags = if self.could_contain_type_variables(parameter_type) {
                     GetTypeFlags::PRESERVE_LITERALS
                 } else {
@@ -1232,7 +1220,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
 
         for (argument_index, argument_type) in argument_types {
-            let Some(parameter_type) = call_parameter_type_at(function, argument_index) else {
+            let Some(parameter_type) =
+                function_parameter_type_at_call_index(function, argument_index)
+            else {
                 continue;
             };
             infer_types(parameter_type, argument_type, &mut context, self.arena());

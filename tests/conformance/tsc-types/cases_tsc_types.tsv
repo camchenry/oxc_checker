@@ -719,6 +719,8 @@ compiler/mappedTypeInference.ts	55	56	P	any
 compiler/mappedTypeInference.ts	62	63	T	any
 compiler/mappedTypeInference.ts	82	96	unwrapReadonly	<T>(value: { readonly [P in keyof T]: T[P]; }) => T
 compiler/mappedTypeInference.ts	97	98	T	any
+compiler/overloadRanking.ts	1015	1037	optionalTupleRestThree	"three"
+compiler/overloadRanking.ts	1040	1065	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
 compiler/overloadRanking.ts	129	144	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
 compiler/overloadRanking.ts	145	146	T	any
 compiler/overloadRanking.ts	148	149	x	T
@@ -732,15 +734,31 @@ compiler/overloadRanking.ts	244	245	x	string
 compiler/overloadRanking.ts	255	256	y	number | undefined
 compiler/overloadRanking.ts	294	306	tiedOverload	{ (x: string, y?: number): "first"; (x: string): "second"; }
 compiler/overloadRanking.ts	307	308	x	string
-compiler/overloadRanking.ts	336	349	literalResult	"literal"
 compiler/overloadRanking.ts	34	35	x	string
-compiler/overloadRanking.ts	352	367	literalOverload	{ (x: string): "wide"; (x: "ready"): "literal"; }
-compiler/overloadRanking.ts	384	397	genericResult	string[]
-compiler/overloadRanking.ts	400	415	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
-compiler/overloadRanking.ts	432	442	tiedResult	"first"
-compiler/overloadRanking.ts	445	457	tiedOverload	{ (x: string, y?: number): "first"; (x: string): "second"; }
+compiler/overloadRanking.ts	347	364	tupleRestOverload	{ (args_0: string): "one"; (args_0: string, args_1: number): "two"; }
+compiler/overloadRanking.ts	368	372	args	[string]
+compiler/overloadRanking.ts	409	426	tupleRestOverload	{ (args_0: string): "one"; (args_0: string, args_1: number): "two"; }
+compiler/overloadRanking.ts	430	434	args	[string, number]
+compiler/overloadRanking.ts	480	505	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
+compiler/overloadRanking.ts	509	513	args	[string, (number | undefined)?]
+compiler/overloadRanking.ts	564	589	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
+compiler/overloadRanking.ts	593	597	args	[string, number, boolean]
+compiler/overloadRanking.ts	643	656	literalResult	"literal"
+compiler/overloadRanking.ts	659	674	literalOverload	{ (x: string): "wide"; (x: "ready"): "literal"; }
+compiler/overloadRanking.ts	691	704	genericResult	string[]
+compiler/overloadRanking.ts	707	722	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
 compiler/overloadRanking.ts	71	86	literalOverload	{ (x: string): "wide"; (x: "ready"): "literal"; }
+compiler/overloadRanking.ts	739	749	tiedResult	"first"
+compiler/overloadRanking.ts	752	764	tiedOverload	{ (x: string, y?: number): "first"; (x: string): "second"; }
+compiler/overloadRanking.ts	781	793	tupleRestOne	"one"
+compiler/overloadRanking.ts	796	813	tupleRestOverload	{ (args_0: string): "one"; (args_0: string, args_1: number): "two"; }
+compiler/overloadRanking.ts	830	842	tupleRestTwo	"two"
+compiler/overloadRanking.ts	845	862	tupleRestOverload	{ (args_0: string): "one"; (args_0: string, args_1: number): "two"; }
 compiler/overloadRanking.ts	87	88	x	"ready"
+compiler/overloadRanking.ts	882	902	optionalTupleRestOne	"optional"
+compiler/overloadRanking.ts	905	930	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
+compiler/overloadRanking.ts	947	967	optionalTupleRestTwo	"optional"
+compiler/overloadRanking.ts	970	995	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
 compiler/tupleTypes.ts	1264	1281	StringsThenConfig	[...string[], { huh: boolean; }]
 compiler/tupleTypes.ts	1300	1303	huh	boolean
 compiler/tupleTypes.ts	1324	1335	firstChorus	StringsThenConfig

@@ -2619,9 +2619,20 @@ mod test {
         declare function tiedOverload(x: string, y?: number): "first";
         declare function tiedOverload(x: string): "second";
 
+        declare function tupleRestOverload(...args: [value: string]): "one";
+        declare function tupleRestOverload(...args: [value: string, count: number]): "two";
+
+        declare function optionalTupleRestOverload(...args: [value: string, count?: number]): "optional";
+        declare function optionalTupleRestOverload(...args: [value: string, count: number, flag: boolean]): "three";
+
         const literalResult = literalOverload("ready");
         const genericResult = genericOverload("ready");
         const tiedResult = tiedOverload("ready");
+        const tupleRestOne = tupleRestOverload("ready");
+        const tupleRestTwo = tupleRestOverload("ready", 1);
+        const optionalTupleRestOne = optionalTupleRestOverload("ready");
+        const optionalTupleRestTwo = optionalTupleRestOverload("ready", 1);
+        const optionalTupleRestThree = optionalTupleRestOverload("ready", 1, true);
         "#,
         );
 
@@ -2636,6 +2647,26 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "tiedResult").to_type_string(),
             "\"first\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "tupleRestOne").to_type_string(),
+            "\"one\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "tupleRestTwo").to_type_string(),
+            "\"two\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "optionalTupleRestOne").to_type_string(),
+            "\"optional\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "optionalTupleRestTwo").to_type_string(),
+            "\"optional\""
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "optionalTupleRestThree").to_type_string(),
+            "\"three\""
         );
     }
 

@@ -48,7 +48,8 @@ use crate::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyArray, TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTuple,
         TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference,
-        binding_pattern_to_parameter_name,
+        binding_pattern_to_parameter_name, function_maximum_argument_count,
+        function_minimum_argument_count, function_parameter_type_at_call_index,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
         visit_type,
     },
@@ -1253,6 +1254,42 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_type_from_ts_tuple_element(
+        &self,
+        program_id: program::ProgramId,
+        element: &'a TSTupleElement<'a>,
+    ) -> TupleElement<'a> {
+        match element {
+            TSTupleElement::TSRestType(rest) => {
+                TupleElement::Rest(self.get_type_from_ts_type(program_id, &rest.type_annotation))
+            }
+            TSTupleElement::TSOptionalType(optional) => TupleElement::Optional(Ty::union(
+                self.arena(),
+                [
+                    self.get_type_from_ts_type(program_id, &optional.type_annotation),
+                    Ty::undefined(),
+                ],
+            )),
+            TSTupleElement::TSNamedTupleMember(named) => {
+                let element = self.get_type_from_ts_tuple_element(program_id, &named.element_type);
+                if named.optional {
+                    match element {
+                        TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
+                            TupleElement::Optional(Ty::union(self.arena(), [ty, Ty::undefined()]))
+                        }
+                        TupleElement::Rest(ty) => TupleElement::Rest(ty),
+                    }
+                } else {
+                    element
+                }
+            }
+            _ => TupleElement::Regular(match element.as_ts_type() {
+                Some(ts_type) => self.get_type_from_ts_type(program_id, ts_type),
+                None => Ty::none(),
+            }),
+        }
+    }
+
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
         TS_TYPE_RESOLUTION_DEPTH.with(|depth| {
@@ -1444,27 +1481,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 tuple_type
                     .element_types
                     .iter()
-                    .map(|ty| match ty {
-                        TSTupleElement::TSRestType(rest) => TupleElement::Rest(
-                            self.get_type_from_ts_type(program_id, &rest.type_annotation),
-                        ),
-                        TSTupleElement::TSOptionalType(optional) => {
-                            TupleElement::Optional(Ty::union(
-                                self.arena(),
-                                [
-                                    self.get_type_from_ts_type(
-                                        program_id,
-                                        &optional.type_annotation,
-                                    ),
-                                    Ty::undefined(),
-                                ],
-                            ))
-                        }
-                        _ => TupleElement::Regular(match ty.as_ts_type() {
-                            Some(ts_type) => self.get_type_from_ts_type(program_id, ts_type),
-                            None => Ty::none(),
-                        }),
-                    })
+                    .map(|ty| self.get_type_from_ts_tuple_element(program_id, ty))
                     .collect(),
             ),
             TSType::TSTypeOperatorType(operator) => match operator.operator {
@@ -3699,15 +3716,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
         let argument_count = arguments.len();
 
-        let minimum_argument_count = function
-            .parameters
-            .iter()
-            .filter(|parameter| !parameter.optional && !parameter.rest)
-            .count();
-        let has_rest_parameter = function.parameters.iter().any(|parameter| parameter.rest);
+        let minimum_argument_count = function_minimum_argument_count(function);
+        let maximum_argument_count = function_maximum_argument_count(function);
 
         let has_compatible_argument_count = argument_count >= minimum_argument_count
-            && (has_rest_parameter || argument_count <= function.parameters.len());
+            && maximum_argument_count.is_none_or(|maximum| argument_count <= maximum);
         if !has_compatible_argument_count {
             return false;
         }
@@ -3726,15 +3739,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &TyFunction<'a>,
         index: usize,
     ) -> Option<Ty<'a>> {
-        let parameter = function
-            .parameters
-            .get(index)
-            .or_else(|| function.parameters.iter().find(|parameter| parameter.rest))?;
-        if parameter.rest {
-            Some(parameter.ty.array_element_type().unwrap_or(parameter.ty))
-        } else {
-            Some(parameter.ty)
-        }
+        function_parameter_type_at_call_index(function, index)
     }
 
     fn get_type_of_new_expression(
