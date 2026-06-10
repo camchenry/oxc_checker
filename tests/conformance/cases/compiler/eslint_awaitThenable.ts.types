@@ -1,5 +1,5 @@
 await 'value';
->^^^^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^^^^: "value"   (TyStringLiteral)
 
 const createValue = () => 'value';
 >     ^^^^^^^^^^^: () => string   (TyFunction)

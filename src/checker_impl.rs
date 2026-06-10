@@ -6539,7 +6539,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             program_id,
             &await_expr.argument,
             node_id,
-            GetTypeFlags::NONE,
+            GetTypeFlags::PRESERVE_LITERALS,
         );
         self.get_awaited_type(program_id, ty)
     }
