@@ -20,10 +20,10 @@ promise;
 >^^^^^^^^: Promise<unknown>   (TyTypeReference)
 
 async function returnsPromise() {
->              ^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
+>              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(() => {});
->^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
+>^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(() => {});
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
@@ -89,16 +89,16 @@ await promise;
 >     ^^^^^^^: Promise<unknown>   (TyTypeReference)
 
 async function returnsPromise() {
->              ^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
+>              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 void returnsPromise();
 >^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
 
 void returnsPromise();
->    ^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
+>    ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(
->^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
+>^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 returnsPromise().then(
 >^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
@@ -149,13 +149,13 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 >                                          ^: number   (TyNumber)
 
 declare function createPromiseLike(): PromiseLike<string>;
->                ^^^^^^^^^^^^^^^^^: { (): PromiseLike<string>; (): PromiseLike<string>; }   (TyObject)
+>                ^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction)
 
 declare function createPromiseLike(): PromiseLike<string>;
 >                                     ^^^^^^^^^^^: any   (TyAny)
 
 createPromiseLike();
->^^^^^^^^^^^^^^^^^: { (): PromiseLike<string>; (): PromiseLike<string>; }   (TyObject)
+>^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction)
 
 createPromiseLike();
 >^^^^^^^^^^^^^^^^^^^^: PromiseLike<string>   (TyTypeReference)
@@ -176,19 +176,19 @@ interface MyThenable {
 >                                                        ^^^^^^^^^^: any   (TyAny)
 
 declare function createMyThenable(): MyThenable;
->                ^^^^^^^^^^^^^^^^: { (): MyThenable; (): MyThenable; }   (TyObject)
+>                ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction)
 
 declare function createMyThenable(): MyThenable;
 >                                    ^^^^^^^^^^: any   (TyAny)
 
 createMyThenable();
->^^^^^^^^^^^^^^^^: { (): MyThenable; (): MyThenable; }   (TyObject)
+>^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction)
 
 createMyThenable();
 >^^^^^^^^^^^^^^^^^^^: MyThenable   (TyTypeReference)
 
 declare function createPromiseLike(): PromiseLike<string>;
->                ^^^^^^^^^^^^^^^^^: { (): PromiseLike<string>; (): PromiseLike<string>; }   (TyObject)
+>                ^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction)
 
 declare function createPromiseLike(): PromiseLike<string>;
 >                                     ^^^^^^^^^^^: any   (TyAny)
@@ -197,7 +197,7 @@ await createPromiseLike();
 >^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 await createPromiseLike();
->     ^^^^^^^^^^^^^^^^^: { (): PromiseLike<string>; (): PromiseLike<string>; }   (TyObject)
+>     ^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction)
 
 interface MyThenable {
 >         ^^^^^^^^^^: any   (TyAny)
@@ -215,7 +215,7 @@ interface MyThenable {
 >                                                        ^^^^^^^^^^: any   (TyAny)
 
 declare function createMyThenable(): MyThenable;
->                ^^^^^^^^^^^^^^^^: { (): MyThenable; (): MyThenable; }   (TyObject)
+>                ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction)
 
 declare function createMyThenable(): MyThenable;
 >                                    ^^^^^^^^^^: any   (TyAny)
@@ -224,16 +224,16 @@ await createMyThenable();
 >^^^^^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
 
 await createMyThenable();
->     ^^^^^^^^^^^^^^^^: { (): MyThenable; (): MyThenable; }   (TyObject)
+>     ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction)
 
 async function returnsPromise() {
->              ^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
+>              ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 void returnsPromise();
 >^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
 
 void returnsPromise();
->    ^^^^^^^^^^^^^^: { (): Promise<string>; (): Promise<string>; (): Promise<string>; }   (TyObject)
+>    ^^^^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 void Promise.reject('value');
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
@@ -245,7 +245,7 @@ void Promise.reject('value');
 >            ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction)
 
 await (async function () {
->^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
 
   await res(1);
 > ^^^^^^^^^^^^^: any   (TyAny)

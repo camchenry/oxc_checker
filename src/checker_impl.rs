@@ -5900,7 +5900,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn is_global_script_entry(&self, program_id: program::ProgramId) -> bool {
         self.store.entry(program_id).is_some_and(|entry| {
-            entry.module_record().requested_modules.is_empty()
+            !entry.module_record().has_module_syntax
+                && entry.module_record().requested_modules.is_empty()
                 && entry.module_record().local_export_entries.is_empty()
         })
     }

@@ -1,8 +1,8 @@
 function foo(): undefined {}
->        ^^^: { (): undefined; (): void; }   (TyObject)
+>        ^^^: () => undefined   (TyFunction)
 
 function bar(flag: boolean): undefined {
->        ^^^: { (flag: boolean): undefined; (flag: boolean): void; }   (TyObject)
+>        ^^^: (flag: boolean) => undefined   (TyFunction)
 
 function bar(flag: boolean): undefined {
 >            ^^^^: boolean   (TyBoolean)
@@ -11,10 +11,10 @@ function bar(flag: boolean): undefined {
 >     ^^^^: boolean   (TyBoolean)
 
   if (flag) return foo();
->                  ^^^: { (): undefined; (): void; }   (TyObject)
+>                  ^^^: () => undefined   (TyFunction)
 
 async function baz(flag: boolean): Promise<undefined> {
->              ^^^: { (flag: boolean): Promise<undefined>; (flag: boolean): Promise<void | number>; }   (TyObject)
+>              ^^^: (flag: boolean) => Promise<undefined>   (TyFunction)
 
 async function baz(flag: boolean): Promise<undefined> {
 >                  ^^^^: boolean   (TyBoolean)
@@ -29,13 +29,13 @@ async function baz(flag: boolean): Promise<undefined> {
 >     ^^^^: boolean   (TyBoolean)
 
   return foo();
->        ^^^: { (): undefined; (): void; }   (TyObject)
+>        ^^^: () => undefined   (TyFunction)
 
 function foo(): void {}
->        ^^^: { (): undefined; (): void; }   (TyObject)
+>        ^^^: () => void   (TyFunction)
 
 function bar(flag: boolean): void {
->        ^^^: { (flag: boolean): undefined; (flag: boolean): void; }   (TyObject)
+>        ^^^: (flag: boolean) => void   (TyFunction)
 
 function bar(flag: boolean): void {
 >            ^^^^: boolean   (TyBoolean)
@@ -44,10 +44,10 @@ function bar(flag: boolean): void {
 >     ^^^^: boolean   (TyBoolean)
 
   if (flag) return foo();
->                  ^^^: { (): undefined; (): void; }   (TyObject)
+>                  ^^^: () => void   (TyFunction)
 
 async function baz(flag: boolean): Promise<void | number> {
->              ^^^: { (flag: boolean): Promise<undefined>; (flag: boolean): Promise<void | number>; }   (TyObject)
+>              ^^^: (flag: boolean) => Promise<void | number>   (TyFunction)
 
 async function baz(flag: boolean): Promise<void | number> {
 >                  ^^^^: boolean   (TyBoolean)

@@ -2,22 +2,22 @@ void (() => {})();
 >^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
 
 function foo() {}
->        ^^^: { (): void; (): void; }   (TyObject)
+>        ^^^: () => void   (TyFunction)
 
 void foo();
 >^^^^^^^^^^^: undefined   (TyUndefined)
 
 void foo();
->    ^^^: { (): void; (): void; }   (TyObject)
+>    ^^^: () => void   (TyFunction)
 
 (() => {})();
 >^^^^^^^^^^^^^: void   (TyVoid)
 
 function foo() {}
->        ^^^: { (): void; (): void; }   (TyObject)
+>        ^^^: () => void   (TyFunction)
 
 foo(); // nothing to discard
->^^^: { (): void; (): void; }   (TyObject)
+>^^^: () => void   (TyFunction)
 
 foo(); // nothing to discard
 >^^^^^^: void   (TyVoid)

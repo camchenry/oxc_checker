@@ -1,5 +1,5 @@
 function second<A, B>(a: A, b: B): B {
->        ^^^^^^: { <A, B>(a: A, b: B): B; <B>(a: unknown, b: B): B; }   (TyObject)
+>        ^^^^^^: <A, B>(a: A, b: B) => B   (TyFunction)
 
 function second<A, B>(a: A, b: B): B {
 >               ^: any   (TyAny)
@@ -26,7 +26,7 @@ function second<A, B>(a: A, b: B): B {
 >        ^: B   (TyTypeReference)
 
 function parseJSON<T>(input: string): T {
->        ^^^^^^^^^: { <T>(input: string): T; (input: string): unknown; }   (TyObject)
+>        ^^^^^^^^^: <T>(input: string) => T   (TyFunction)
 
 function parseJSON<T>(input: string): T {
 >                  ^: any   (TyAny)
@@ -47,7 +47,7 @@ function parseJSON<T>(input: string): T {
 >                   ^^^^^: string   (TyString)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->        ^^^^^^^^^^^^^: { <T, K extends keyof T>(obj: T, key: K): void; <T>(obj: T, key: keyof T): void; }   (TyObject)
+>        ^^^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => void   (TyFunction)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
 >                      ^: any   (TyAny)
@@ -86,7 +86,7 @@ function printProperty<T, K extends keyof T>(obj: T, key: K) {
 >                 ^^^: K   (TyTypeReference)
 
 function second<B>(a: unknown, b: B): B {
->        ^^^^^^: { <A, B>(a: A, b: B): B; <B>(a: unknown, b: B): B; }   (TyObject)
+>        ^^^^^^: <B>(a: unknown, b: B) => B   (TyFunction)
 
 function second<B>(a: unknown, b: B): B {
 >               ^: any   (TyAny)
@@ -107,7 +107,7 @@ function second<B>(a: unknown, b: B): B {
 >        ^: B   (TyTypeReference)
 
 function parseJSON(input: string): unknown {
->        ^^^^^^^^^: { <T>(input: string): T; (input: string): unknown; }   (TyObject)
+>        ^^^^^^^^^: (input: string) => unknown   (TyFunction)
 
 function parseJSON(input: string): unknown {
 >                  ^^^^^: string   (TyString)
@@ -122,7 +122,7 @@ function parseJSON(input: string): unknown {
 >                   ^^^^^: string   (TyString)
 
 function printProperty<T>(obj: T, key: keyof T) {
->        ^^^^^^^^^^^^^: { <T, K extends keyof T>(obj: T, key: K): void; <T>(obj: T, key: keyof T): void; }   (TyObject)
+>        ^^^^^^^^^^^^^: <T>(obj: T, key: keyof T) => void   (TyFunction)
 
 function printProperty<T>(obj: T, key: keyof T) {
 >                      ^: any   (TyAny)

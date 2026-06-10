@@ -77,6 +77,7 @@ const DEFAULT_WORKERS = Math.max(
   1,
   Math.min(8, os.availableParallelism ? os.availableParallelism() : os.cpus().length || 1),
 );
+const VIRTUAL_MODULE_MARKER = "\nexport {};";
 
 function conformanceTypeFormatFlags(ts: TypeScript): typescript.TypeFormatFlags {
   return ts.TypeFormatFlags.NoTruncation
@@ -501,11 +502,15 @@ function prepareCompilerCase(
   const options = compilerOptionsForCase(compilerCase);
   const useCaseSensitive = useCaseSensitiveFileNames(ts, compilerCase);
   const virtualFiles = compilerCase.files.map((sourceFile) => ({
-    content: sourceFile.content,
+    content: compilerCase.hasExplicitFiles ? virtualModuleContent(sourceFile.content) : sourceFile.content,
     fileName: virtualFileName(ts, compilerCase, sourceFile),
     recordPath: recordPathForFile(compilerCase, sourceFile),
   }));
   return { compilerCase, options, useCaseSensitive, virtualFiles };
+}
+
+function virtualModuleContent(content: string): string {
+  return `${content}${VIRTUAL_MODULE_MARKER}`;
 }
 
 function compilerTaskFromPrepared(prepared: { options: TypeScriptCompilerOptions; useCaseSensitive: boolean; virtualFiles: VirtualFile[] }): CompilerTask {

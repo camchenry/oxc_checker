@@ -395,13 +395,13 @@ compiler/eslint_awaitThenable.ts::b.ts	14	21	resolve	{ (): Promise<void>; <T>(va
 compiler/eslint_awaitThenable.ts::b.ts	39	50	createValue	() => Promise<string>
 compiler/eslint_awaitThenable.ts::b.ts	6	13	Promise	PromiseConstructor
 compiler/eslint_awaitThenable.ts::b.ts	74	94	await createValue();	string
-compiler/eslint_awaitThenable.ts::b.ts	80	91	createValue	() => string
+compiler/eslint_awaitThenable.ts::b.ts	80	91	createValue	() => Promise<string>
 compiler/eslint_awaitThenable.ts::c.ts	116	123	console	Console
 compiler/eslint_awaitThenable.ts::c.ts	116	135	console.log(value);	void
 compiler/eslint_awaitThenable.ts::c.ts	124	127	log	(...data: any[]) => void
 compiler/eslint_awaitThenable.ts::c.ts	128	133	value	number
-compiler/eslint_awaitThenable.ts::c.ts	15	27	syncIterable	{ (): Promise<void>; (): Promise<void>; }
-compiler/eslint_awaitThenable.ts::c.ts	158	180	syncIterableOfPromises	{ (): Promise<void>; (): Promise<void>; }
+compiler/eslint_awaitThenable.ts::c.ts	15	27	syncIterable	() => Promise<void>
+compiler/eslint_awaitThenable.ts::c.ts	158	180	syncIterableOfPromises	() => Promise<void>
 compiler/eslint_awaitThenable.ts::c.ts	193	208	arrayOfPromises	Promise<number>[]
 compiler/eslint_awaitThenable.ts::c.ts	217	224	Promise	PromiseConstructor
 compiler/eslint_awaitThenable.ts::c.ts	225	232	resolve	{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }
@@ -422,8 +422,8 @@ compiler/eslint_awaitThenable.ts::d.ts	110	117	console	Console
 compiler/eslint_awaitThenable.ts::d.ts	110	129	console.log(value);	void
 compiler/eslint_awaitThenable.ts::d.ts	118	121	log	(...data: any[]) => void
 compiler/eslint_awaitThenable.ts::d.ts	122	127	value	number
-compiler/eslint_awaitThenable.ts::d.ts	15	27	syncIterable	{ (): Promise<void>; (): Promise<void>; }
-compiler/eslint_awaitThenable.ts::d.ts	152	174	syncIterableOfPromises	{ (): Promise<void>; (): Promise<void>; }
+compiler/eslint_awaitThenable.ts::d.ts	15	27	syncIterable	() => Promise<void>
+compiler/eslint_awaitThenable.ts::d.ts	152	174	syncIterableOfPromises	() => Promise<void>
 compiler/eslint_awaitThenable.ts::d.ts	187	202	arrayOfPromises	Promise<number>[]
 compiler/eslint_awaitThenable.ts::d.ts	211	218	Promise	PromiseConstructor
 compiler/eslint_awaitThenable.ts::d.ts	219	226	resolve	{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }
@@ -457,16 +457,16 @@ compiler/eslint_awaitThenable.ts::d.ts	663	666	log	(...data: any[]) => void
 compiler/eslint_awaitThenable.ts::d.ts	667	680	promisedValue	1 | 2
 compiler/eslint_awaitThenable.ts::d.ts	80	85	value	number
 compiler/eslint_awaitThenable.ts::d.ts	89	102	arrayOfValues	number[]
-compiler/eslint_awaitThenable.ts::e.ts	149	163	shouldNotAwait	{ (): Promise<void>; (): Promise<void>; }
+compiler/eslint_awaitThenable.ts::e.ts	149	163	shouldNotAwait	() => Promise<void>
 compiler/eslint_awaitThenable.ts::e.ts	182	190	resource	Disposable
-compiler/eslint_awaitThenable.ts::e.ts	193	211	makeSyncDisposable	{ (): Disposable; (): Disposable; }
+compiler/eslint_awaitThenable.ts::e.ts	193	211	makeSyncDisposable	() => Disposable
 compiler/eslint_awaitThenable.ts::e.ts	31	41	Disposable	any
 compiler/eslint_awaitThenable.ts::e.ts	60	66	Symbol	SymbolConstructor
 compiler/eslint_awaitThenable.ts::e.ts	67	74	dispose	unique symbol
-compiler/eslint_awaitThenable.ts::e.ts	9	27	makeSyncDisposable	{ (): Disposable; (): Disposable; }
-compiler/eslint_awaitThenable.ts::f.ts	149	163	shouldNotAwait	{ (): Promise<void>; (): Promise<void>; }
+compiler/eslint_awaitThenable.ts::e.ts	9	27	makeSyncDisposable	() => Disposable
+compiler/eslint_awaitThenable.ts::f.ts	149	163	shouldNotAwait	() => Promise<void>
 compiler/eslint_awaitThenable.ts::f.ts	176	184	resource	Disposable
-compiler/eslint_awaitThenable.ts::f.ts	187	205	makeSyncDisposable	{ (): Disposable; (): Disposable; }
+compiler/eslint_awaitThenable.ts::f.ts	187	205	makeSyncDisposable	() => Disposable
 compiler/eslint_awaitThenable.ts::f.ts	221	240	makeAsyncDisposable	() => AsyncDisposable
 compiler/eslint_awaitThenable.ts::f.ts	244	259	AsyncDisposable	any
 compiler/eslint_awaitThenable.ts::f.ts	284	290	Symbol	SymbolConstructor
@@ -478,26 +478,26 @@ compiler/eslint_awaitThenable.ts::f.ts	432	440	resource	AsyncDisposable
 compiler/eslint_awaitThenable.ts::f.ts	443	462	makeAsyncDisposable	() => AsyncDisposable
 compiler/eslint_awaitThenable.ts::f.ts	60	66	Symbol	SymbolConstructor
 compiler/eslint_awaitThenable.ts::f.ts	67	74	dispose	unique symbol
-compiler/eslint_awaitThenable.ts::f.ts	9	27	makeSyncDisposable	{ (): Disposable; (): Disposable; }
-compiler/eslint_consistentReturn.ts::a.ts	124	127	baz	{ (flag: boolean): Promise<undefined>; (flag: boolean): Promise<void | number>; }
+compiler/eslint_awaitThenable.ts::f.ts	9	27	makeSyncDisposable	() => Disposable
+compiler/eslint_consistentReturn.ts::a.ts	124	127	baz	(flag: boolean) => Promise<undefined>
 compiler/eslint_consistentReturn.ts::a.ts	128	132	flag	boolean
 compiler/eslint_consistentReturn.ts::a.ts	144	151	Promise	PromiseConstructor
 compiler/eslint_consistentReturn.ts::a.ts	171	175	flag	boolean
-compiler/eslint_consistentReturn.ts::a.ts	194	197	foo	{ (): undefined; (): void; }
-compiler/eslint_consistentReturn.ts::a.ts	38	41	bar	{ (flag: boolean): undefined; (flag: boolean): void; }
+compiler/eslint_consistentReturn.ts::a.ts	194	197	foo	() => undefined
+compiler/eslint_consistentReturn.ts::a.ts	38	41	bar	(flag: boolean) => undefined
 compiler/eslint_consistentReturn.ts::a.ts	42	46	flag	boolean
 compiler/eslint_consistentReturn.ts::a.ts	76	80	flag	boolean
-compiler/eslint_consistentReturn.ts::a.ts	89	92	foo	{ (): undefined; (): void; }
-compiler/eslint_consistentReturn.ts::a.ts	9	12	foo	{ (): undefined; (): void; }
-compiler/eslint_consistentReturn.ts::b.ts	114	117	baz	{ (flag: boolean): Promise<undefined>; (flag: boolean): Promise<void | number>; }
+compiler/eslint_consistentReturn.ts::a.ts	89	92	foo	() => undefined
+compiler/eslint_consistentReturn.ts::a.ts	9	12	foo	() => undefined
+compiler/eslint_consistentReturn.ts::b.ts	114	117	baz	(flag: boolean) => Promise<void | number>
 compiler/eslint_consistentReturn.ts::b.ts	118	122	flag	boolean
 compiler/eslint_consistentReturn.ts::b.ts	134	141	Promise	PromiseConstructor
 compiler/eslint_consistentReturn.ts::b.ts	165	169	flag	boolean
-compiler/eslint_consistentReturn.ts::b.ts	33	36	bar	{ (flag: boolean): undefined; (flag: boolean): void; }
+compiler/eslint_consistentReturn.ts::b.ts	33	36	bar	(flag: boolean) => void
 compiler/eslint_consistentReturn.ts::b.ts	37	41	flag	boolean
 compiler/eslint_consistentReturn.ts::b.ts	66	70	flag	boolean
-compiler/eslint_consistentReturn.ts::b.ts	79	82	foo	{ (): undefined; (): void; }
-compiler/eslint_consistentReturn.ts::b.ts	9	12	foo	{ (): undefined; (): void; }
+compiler/eslint_consistentReturn.ts::b.ts	79	82	foo	() => void
+compiler/eslint_consistentReturn.ts::b.ts	9	12	foo	() => void
 compiler/eslint_consistentTypeExports.ts::a.ts	10	21	ButtonProps	any
 compiler/eslint_consistentTypeExports.ts::a.ts	106	113	console	Console
 compiler/eslint_consistentTypeExports.ts::a.ts	114	117	log	(...data: any[]) => void
@@ -536,7 +536,7 @@ compiler/eslint_dotNotation.ts::a.ts	59	80	x['priv_prop'] = 123;	123
 compiler/eslint_dotNotation.ts::a.ts	6	7	X	typeof X
 compiler/eslint_dotNotation.ts::b.ts	22	36	protected_prop	number
 compiler/eslint_dotNotation.ts::b.ts	53	54	x	X
-compiler/eslint_dotNotation.ts::b.ts	6	7	X	{ new (): { protected_prop: number; }; }
+compiler/eslint_dotNotation.ts::b.ts	6	7	X	typeof X
 compiler/eslint_dotNotation.ts::b.ts	61	62	X	typeof X
 compiler/eslint_dotNotation.ts::b.ts	66	67	x	X
 compiler/eslint_dotNotation.ts::b.ts	66	92	x['protected_prop'] = 123;	123
@@ -545,7 +545,7 @@ compiler/eslint_dotNotation.ts::c.ts	44	45	x	X
 compiler/eslint_dotNotation.ts::c.ts	52	53	X	typeof X
 compiler/eslint_dotNotation.ts::c.ts	57	58	x	X
 compiler/eslint_dotNotation.ts::c.ts	57	74	x['hello'] = 123;	123
-compiler/eslint_dotNotation.ts::c.ts	6	7	X	{ new (): { [key: string]: number; }; }
+compiler/eslint_dotNotation.ts::c.ts	6	7	X	typeof X
 compiler/eslint_noArrayDelete.ts::a.ts	14	17	arr	number[]
 compiler/eslint_noArrayDelete.ts::a.ts	30	44	delete arr[0];	boolean
 compiler/eslint_noArrayDelete.ts::a.ts	37	40	arr	number[]
@@ -588,14 +588,14 @@ compiler/eslint_noBaseToString.ts::b.ts	447	466	literalWithToString	{ toString: 
 compiler/eslint_noBaseToString.ts::b.ts	74	88	'Text' + true;	string
 compiler/eslint_noBaseToString.ts::b.ts	89	105	`Value: ${123}`;	"Value: 123"
 compiler/eslint_noBaseToString.ts::c.ts	0	13	`${/regex/}`;	string
-compiler/eslint_noBaseToString.ts::c.ts	101	106	value	MyClass
+compiler/eslint_noBaseToString.ts::c.ts	101	106	value	RegExp
 compiler/eslint_noBaseToString.ts::c.ts	110	116	String	StringConstructor
 compiler/eslint_noBaseToString.ts::c.ts	110	126	String(/regex/);	string
 compiler/eslint_noBaseToString.ts::c.ts	14	27	'' + /regex/;	string
 compiler/eslint_noBaseToString.ts::c.ts	28	47	/regex/.toString();	string
 compiler/eslint_noBaseToString.ts::c.ts	36	44	toString	() => string
 compiler/eslint_noBaseToString.ts::c.ts	52	57	value	RegExp
-compiler/eslint_noBaseToString.ts::c.ts	69	74	value	MyClass
+compiler/eslint_noBaseToString.ts::c.ts	69	74	value	RegExp
 compiler/eslint_noBaseToString.ts::c.ts	69	86	value.toString();	string
 compiler/eslint_noBaseToString.ts::c.ts	75	83	toString	() => string
 compiler/eslint_noBaseToString.ts::c.ts	91	95	text	string
@@ -611,7 +611,7 @@ compiler/eslint_noConfusingVoidExpression.ts::a.ts	232	237	value	any
 compiler/eslint_noConfusingVoidExpression.ts::a.ts	241	247	window	Window & typeof globalThis
 compiler/eslint_noConfusingVoidExpression.ts::a.ts	248	259	postMessage	{ (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
 compiler/eslint_noConfusingVoidExpression.ts::a.ts	260	265	value	any
-compiler/eslint_noConfusingVoidExpression.ts::a.ts	353	364	doSomething	{ (): void; (): void; (): undefined; }
+compiler/eslint_noConfusingVoidExpression.ts::a.ts	353	364	doSomething	() => void
 compiler/eslint_noConfusingVoidExpression.ts::a.ts	404	411	console	Console
 compiler/eslint_noConfusingVoidExpression.ts::a.ts	412	417	error	(...data: any[]) => void
 compiler/eslint_noConfusingVoidExpression.ts::a.ts	444	451	console	Console
@@ -634,7 +634,7 @@ compiler/eslint_noConfusingVoidExpression.ts::b.ts	309	315	window	Window & typeo
 compiler/eslint_noConfusingVoidExpression.ts::b.ts	309	335	window.postMessage(value);	void
 compiler/eslint_noConfusingVoidExpression.ts::b.ts	316	327	postMessage	{ (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
 compiler/eslint_noConfusingVoidExpression.ts::b.ts	328	333	value	any
-compiler/eslint_noConfusingVoidExpression.ts::b.ts	418	429	doSomething	{ (): void; (): void; (): undefined; }
+compiler/eslint_noConfusingVoidExpression.ts::b.ts	418	429	doSomething	() => void
 compiler/eslint_noConfusingVoidExpression.ts::b.ts	462	469	console	Console
 compiler/eslint_noConfusingVoidExpression.ts::b.ts	462	494	console.error('Nothing to do!');	void
 compiler/eslint_noConfusingVoidExpression.ts::b.ts	470	475	error	(...data: any[]) => void
@@ -661,7 +661,7 @@ compiler/eslint_noConfusingVoidExpression.ts::c.ts	29	40	postMessage	{ (message:
 compiler/eslint_noConfusingVoidExpression.ts::c.ts	41	46	value	any
 compiler/eslint_noConfusingVoidExpression.ts::c.ts	8	12	then	any
 compiler/eslint_noConfusingVoidExpression.ts::d.ts	100	105	value	any
-compiler/eslint_noConfusingVoidExpression.ts::d.ts	178	189	doSomething	{ (): void; (): void; (): undefined; }
+compiler/eslint_noConfusingVoidExpression.ts::d.ts	178	189	doSomething	() => undefined
 compiler/eslint_noConfusingVoidExpression.ts::d.ts	234	241	console	Console
 compiler/eslint_noConfusingVoidExpression.ts::d.ts	242	247	error	(...data: any[]) => void
 compiler/eslint_noConfusingVoidExpression.ts::d.ts	274	281	console	Console
@@ -713,7 +713,7 @@ compiler/eslint_noDuplicateTypeConstituents.ts::b.ts	5	7	T1	"A" | "B"
 compiler/eslint_noDuplicateTypeConstituents.ts::b.ts	65	67	T3	{ a: string; } & { b: string; }
 compiler/eslint_noDuplicateTypeConstituents.ts::b.ts	72	73	a	string
 compiler/eslint_noDuplicateTypeConstituents.ts::b.ts	88	89	b	string
-compiler/eslint_noFloatingPromises.ts::a.ts	132	146	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::a.ts	132	146	returnsPromise	() => Promise<string>
 compiler/eslint_noFloatingPromises.ts::a.ts	132	164	returnsPromise().then(() => {});	Promise<void>
 compiler/eslint_noFloatingPromises.ts::a.ts	149	153	then	<TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>
 compiler/eslint_noFloatingPromises.ts::a.ts	166	173	Promise	PromiseConstructor
@@ -735,10 +735,10 @@ compiler/eslint_noFloatingPromises.ts::a.ts	49	56	resolve	(value: unknown) => vo
 compiler/eslint_noFloatingPromises.ts::a.ts	6	13	promise	Promise<unknown>
 compiler/eslint_noFloatingPromises.ts::a.ts	68	75	promise	Promise<unknown>
 compiler/eslint_noFloatingPromises.ts::a.ts	68	76	promise;	Promise<unknown>
-compiler/eslint_noFloatingPromises.ts::a.ts	93	107	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::a.ts	93	107	returnsPromise	() => Promise<string>
 compiler/eslint_noFloatingPromises.ts::b.ts	139	161	void returnsPromise();	undefined
-compiler/eslint_noFloatingPromises.ts::b.ts	144	158	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
-compiler/eslint_noFloatingPromises.ts::b.ts	163	177	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::b.ts	144	158	returnsPromise	() => Promise<string>
+compiler/eslint_noFloatingPromises.ts::b.ts	163	177	returnsPromise	() => Promise<string>
 compiler/eslint_noFloatingPromises.ts::b.ts	163	212	returnsPromise().then(   () => {},   () => {}, );	Promise<void>
 compiler/eslint_noFloatingPromises.ts::b.ts	180	184	then	<TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>
 compiler/eslint_noFloatingPromises.ts::b.ts	20	27	Promise	PromiseConstructor
@@ -762,40 +762,40 @@ compiler/eslint_noFloatingPromises.ts::b.ts	49	56	resolve	(value: unknown) => vo
 compiler/eslint_noFloatingPromises.ts::b.ts	6	13	promise	Promise<unknown>
 compiler/eslint_noFloatingPromises.ts::b.ts	68	82	await promise;	unknown
 compiler/eslint_noFloatingPromises.ts::b.ts	74	81	promise	Promise<unknown>
-compiler/eslint_noFloatingPromises.ts::b.ts	99	113	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::b.ts	99	113	returnsPromise	() => Promise<string>
 compiler/eslint_noFloatingPromises.ts::c.ts	111	121	MyThenable	any
-compiler/eslint_noFloatingPromises.ts::c.ts	126	130	then	{ (onFulfilled: () => void, onRejected: () => void): MyThenable; (onFulfilled: () => void, onRejected: () => void): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::c.ts	126	130	then	(onFulfilled: () => void, onRejected: () => void) => MyThenable
 compiler/eslint_noFloatingPromises.ts::c.ts	131	142	onFulfilled	() => void
 compiler/eslint_noFloatingPromises.ts::c.ts	156	166	onRejected	() => void
 compiler/eslint_noFloatingPromises.ts::c.ts	181	191	MyThenable	any
-compiler/eslint_noFloatingPromises.ts::c.ts	213	229	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::c.ts	213	229	createMyThenable	() => MyThenable
 compiler/eslint_noFloatingPromises.ts::c.ts	233	243	MyThenable	any
-compiler/eslint_noFloatingPromises.ts::c.ts	246	262	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::c.ts	246	262	createMyThenable	() => MyThenable
 compiler/eslint_noFloatingPromises.ts::c.ts	246	265	createMyThenable();	MyThenable
-compiler/eslint_noFloatingPromises.ts::c.ts	36	53	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
+compiler/eslint_noFloatingPromises.ts::c.ts	36	53	createPromiseLike	() => PromiseLike<string>
 compiler/eslint_noFloatingPromises.ts::c.ts	57	68	PromiseLike	any
-compiler/eslint_noFloatingPromises.ts::c.ts	79	96	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
+compiler/eslint_noFloatingPromises.ts::c.ts	79	96	createPromiseLike	() => PromiseLike<string>
 compiler/eslint_noFloatingPromises.ts::c.ts	79	99	createPromiseLike();	PromiseLike<string>
-compiler/eslint_noFloatingPromises.ts::d.ts	113	117	then	{ (onFulfilled: () => void, onRejected: () => void): MyThenable; (onFulfilled: () => void, onRejected: () => void): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::d.ts	113	117	then	(onFulfilled: () => void, onRejected: () => void) => MyThenable
 compiler/eslint_noFloatingPromises.ts::d.ts	118	129	onFulfilled	() => void
 compiler/eslint_noFloatingPromises.ts::d.ts	143	153	onRejected	() => void
 compiler/eslint_noFloatingPromises.ts::d.ts	168	178	MyThenable	any
-compiler/eslint_noFloatingPromises.ts::d.ts	17	34	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
-compiler/eslint_noFloatingPromises.ts::d.ts	200	216	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::d.ts	17	34	createPromiseLike	() => PromiseLike<string>
+compiler/eslint_noFloatingPromises.ts::d.ts	200	216	createMyThenable	() => MyThenable
 compiler/eslint_noFloatingPromises.ts::d.ts	220	230	MyThenable	any
 compiler/eslint_noFloatingPromises.ts::d.ts	233	258	await createMyThenable();	never
-compiler/eslint_noFloatingPromises.ts::d.ts	239	255	createMyThenable	{ (): MyThenable; (): MyThenable; }
+compiler/eslint_noFloatingPromises.ts::d.ts	239	255	createMyThenable	() => MyThenable
 compiler/eslint_noFloatingPromises.ts::d.ts	38	49	PromiseLike	any
 compiler/eslint_noFloatingPromises.ts::d.ts	60	86	await createPromiseLike();	string
-compiler/eslint_noFloatingPromises.ts::d.ts	66	83	createPromiseLike	{ (): PromiseLike<string>; (): PromiseLike<string>; }
+compiler/eslint_noFloatingPromises.ts::d.ts	66	83	createPromiseLike	() => PromiseLike<string>
 compiler/eslint_noFloatingPromises.ts::d.ts	98	108	MyThenable	any
 compiler/eslint_noFloatingPromises.ts::e.ts	106	112	reject	<T = never>(reason?: any) => Promise<T>
-compiler/eslint_noFloatingPromises.ts::e.ts	30	44	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::e.ts	30	44	returnsPromise	() => Promise<string>
 compiler/eslint_noFloatingPromises.ts::e.ts	69	91	void returnsPromise();	undefined
-compiler/eslint_noFloatingPromises.ts::e.ts	74	88	returnsPromise	{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }
+compiler/eslint_noFloatingPromises.ts::e.ts	74	88	returnsPromise	() => Promise<string>
 compiler/eslint_noFloatingPromises.ts::e.ts	93	122	void Promise.reject('value');	undefined
 compiler/eslint_noFloatingPromises.ts::e.ts	98	105	Promise	PromiseConstructor
-compiler/eslint_noFloatingPromises.ts::f.ts	15	63	await (async function () {   await res(1); })();	any
+compiler/eslint_noFloatingPromises.ts::f.ts	15	63	await (async function () {   await res(1); })();	void
 compiler/eslint_noFloatingPromises.ts::f.ts	44	57	await res(1);	any
 compiler/eslint_noFloatingPromises.ts::f.ts	65	107	(async function () {   await res(1); })();	Promise<void>
 compiler/eslint_noFloatingPromises.ts::f.ts	88	101	await res(1);	any
@@ -853,14 +853,14 @@ compiler/eslint_noForInArray.ts::b.ts	71	74	log	(...data: any[]) => void
 compiler/eslint_noForInArray.ts::b.ts	75	80	value	string
 compiler/eslint_noForInArray.ts::b.ts	95	96	i	number
 compiler/eslint_noMeaninglessVoidOperator.ts::a.ts	0	18	void (() => {})();	undefined
-compiler/eslint_noMeaninglessVoidOperator.ts::a.ts	29	32	foo	{ (): void; (): void; }
+compiler/eslint_noMeaninglessVoidOperator.ts::a.ts	29	32	foo	() => void
 compiler/eslint_noMeaninglessVoidOperator.ts::a.ts	38	49	void foo();	undefined
-compiler/eslint_noMeaninglessVoidOperator.ts::a.ts	43	46	foo	{ (): void; (): void; }
+compiler/eslint_noMeaninglessVoidOperator.ts::a.ts	43	46	foo	() => void
 compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	0	13	(() => {})();	void
 compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	136	148	void bar(1);	undefined
 compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	141	144	bar	(x: number) => number
-compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	24	27	foo	{ (): void; (): void; }
-compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	33	36	foo	{ (): void; (): void; }
+compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	24	27	foo	() => void
+compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	33	36	foo	() => void
 compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	33	39	foo();	void
 compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	72	75	bar	(x: number) => number
 compiler/eslint_noMeaninglessVoidOperator.ts::b.ts	76	77	x	number
@@ -955,7 +955,7 @@ compiler/eslint_noMisusedPromises.ts::d.ts	780	785	catch	<TResult>(onrejected?: 
 compiler/eslint_noMisusedPromises.ts::d.ts	815	831	MyAsyncInterface	any
 compiler/eslint_noMisusedPromises.ts::d.ts	836	844	setThing	() => Promise<void>
 compiler/eslint_noMisusedPromises.ts::d.ts	848	855	Promise	PromiseConstructor
-compiler/eslint_noMisusedPromises.ts::d.ts	871	878	MyClass	{ new (): { setThing(): Promise<void>; }; }
+compiler/eslint_noMisusedPromises.ts::d.ts	871	878	MyClass	typeof MyClass
 compiler/eslint_noMisusedPromises.ts::d.ts	890	906	MyAsyncInterface	any
 compiler/eslint_noMisusedPromises.ts::d.ts	917	925	setThing	() => Promise<void>
 compiler/eslint_noMisusedPromises.ts::d.ts	929	936	Promise	PromiseConstructor
@@ -995,7 +995,7 @@ compiler/eslint_noMisusedPromises.ts::f.ts	90	99	awaitData	() => Promise<void>
 compiler/eslint_noMisusedSpread.ts::a.ts	109	115	Record	any
 compiler/eslint_noMisusedSpread.ts::a.ts	139	154	getObjectSpread	{}
 compiler/eslint_noMisusedSpread.ts::a.ts	14	21	promise	Promise<number>
-compiler/eslint_noMisusedSpread.ts::a.ts	162	171	getObject	{ (): Record<string, string>; (): Record<string, string>; }
+compiler/eslint_noMisusedSpread.ts::a.ts	162	171	getObject	() => Record<string, string>
 compiler/eslint_noMisusedSpread.ts::a.ts	190	193	map	Map<string, number>
 compiler/eslint_noMisusedSpread.ts::a.ts	195	198	Map	MapConstructor
 compiler/eslint_noMisusedSpread.ts::a.ts	222	231	mapSpread	{ clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; [Symbol.iterator](): MapIterator<[string, number]>; [Symbol.toStringTag]: string; }
@@ -1006,7 +1006,7 @@ compiler/eslint_noMisusedSpread.ts::a.ts	285	295	characters	string[]
 compiler/eslint_noMisusedSpread.ts::a.ts	302	310	userName	string
 compiler/eslint_noMisusedSpread.ts::a.ts	46	59	spreadPromise	{ then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; finally(onfinally?: (() => void) | null | undefined): Promise<number>; [Symbol.toStringTag]: string; }
 compiler/eslint_noMisusedSpread.ts::a.ts	67	74	promise	Promise<number>
-compiler/eslint_noMisusedSpread.ts::a.ts	96	105	getObject	{ (): Record<string, string>; (): Record<string, string>; }
+compiler/eslint_noMisusedSpread.ts::a.ts	96	105	getObject	() => Record<string, string>
 compiler/eslint_noMisusedSpread.ts::b.ts	105	119	instanceSpread	{ value: number; }
 compiler/eslint_noMisusedSpread.ts::b.ts	127	135	instance	Box
 compiler/eslint_noMisusedSpread.ts::b.ts	14	17	Box	typeof Box
@@ -1015,11 +1015,11 @@ compiler/eslint_noMisusedSpread.ts::b.ts	45	54	boxSpread	{}
 compiler/eslint_noMisusedSpread.ts::b.ts	62	65	Box	typeof Box
 compiler/eslint_noMisusedSpread.ts::b.ts	84	92	instance	Box
 compiler/eslint_noMisusedSpread.ts::b.ts	94	97	Box	typeof Box
-compiler/eslint_noMisusedSpread.ts::c.ts	104	113	getObject	{ (): Record<string, string>; (): Record<string, string>; }
+compiler/eslint_noMisusedSpread.ts::c.ts	104	113	getObject	() => Record<string, string>
 compiler/eslint_noMisusedSpread.ts::c.ts	117	123	Record	any
 compiler/eslint_noMisusedSpread.ts::c.ts	14	21	promise	Promise<number>
 compiler/eslint_noMisusedSpread.ts::c.ts	147	162	getObjectSpread	{ [x: string]: string; }
-compiler/eslint_noMisusedSpread.ts::c.ts	170	179	getObject	{ (): Record<string, string>; (): Record<string, string>; }
+compiler/eslint_noMisusedSpread.ts::c.ts	170	179	getObject	() => Record<string, string>
 compiler/eslint_noMisusedSpread.ts::c.ts	200	203	map	Map<string, number>
 compiler/eslint_noMisusedSpread.ts::c.ts	205	208	Map	MapConstructor
 compiler/eslint_noMisusedSpread.ts::c.ts	23	30	Promise	PromiseConstructor
@@ -1053,7 +1053,7 @@ compiler/eslint_noMixedEnums.ts::b.ts	16	22	Closed	Status.Closed
 compiler/eslint_noMixedEnums.ts::b.ts	37	41	Open	Status.Open
 compiler/eslint_noMixedEnums.ts::b.ts	5	11	Status	typeof Status
 compiler/eslint_noMixedEnums.ts::b.ts	77	83	Object	ObjectConstructor
-compiler/eslint_noMixedEnums.ts::b.ts	77	99	Object.values(Status);	(string | Status.Unknown | Status.Closed)[]
+compiler/eslint_noMixedEnums.ts::b.ts	77	99	Object.values(Status);	Status[]
 compiler/eslint_noMixedEnums.ts::b.ts	84	90	values	{ <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }
 compiler/eslint_noMixedEnums.ts::b.ts	91	97	Status	typeof Status
 compiler/eslint_noMixedEnums.ts::c.ts	105	111	values	{ <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }
@@ -1097,8 +1097,8 @@ compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	374	378	text	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	392	403	wrappedText	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	409	413	text	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	422	426	Text	"A"
-compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	439	450	WrappedText	string
-compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	456	460	Text	{ new (data?: string): Text; prototype: Text; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	439	450	WrappedText	"A"
+compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	456	460	Text	any
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	479	501	intersectionWithString	string & { _brand: "test-brand"; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	514	520	_brand	"test-brand"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	544	563	wrappedIntersection	string
@@ -1127,8 +1127,8 @@ compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	576	580	text	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	594	605	wrappedText	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	608	612	text	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	619	623	Text	"A"
-compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	636	647	WrappedText	Text
-compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	650	654	Text	{ new (data?: string): Text; prototype: Text; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	636	647	WrappedText	"A"
+compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	650	654	Text	any
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	671	693	intersectionWithString	string & { _brand: "test-brand"; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	706	712	_brand	"test-brand"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	736	755	wrappedIntersection	string & { _brand: "test-brand"; }
@@ -1140,14 +1140,14 @@ compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	852	871	WrappedIntersec
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	874	896	IntersectionWithString	any
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	93	96	ab2	"ab"
 compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts	11	12	T	any
-compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts	28	29	f	{ <T = number>(): void; <T = number>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts	28	29	f	<T = number>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts	28	40	f<number>();	void
-compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts	9	10	f	{ <T = number>(): void; <T = number>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts	9	10	f	<T = number>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts	11	12	T	any
 compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts	23	24	U	any
-compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts	40	41	g	{ <T = number, U = string>(): void; <T = number, U = string>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts	40	41	g	<T = number, U = string>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts	40	60	g<string, string>();	void
-compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts	9	10	g	{ <T = number, U = string>(): void; <T = number, U = string>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts	9	10	g	<T = number, U = string>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::c.ts	23	39	new C<number>();	C<number>
 compiler/eslint_noUnnecessaryTypeArguments.ts::c.ts	27	28	C	typeof C
 compiler/eslint_noUnnecessaryTypeArguments.ts::c.ts	47	48	D	typeof D
@@ -1159,31 +1159,31 @@ compiler/eslint_noUnnecessaryTypeArguments.ts::d.ts	12	13	T	any
 compiler/eslint_noUnnecessaryTypeArguments.ts::d.ts	33	37	Impl	typeof Impl
 compiler/eslint_noUnnecessaryTypeArguments.ts::d.ts	49	50	I	any
 compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	11	12	T	any
-compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	28	29	f	{ <T = number>(): void; <T = number>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	28	29	f	<T = number>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	28	32	f();	void
-compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	33	34	f	{ <T = number>(): void; <T = number>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	33	34	f	<T = number>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	33	45	f<string>();	void
-compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	9	10	f	{ <T = number>(): void; <T = number>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts	9	10	f	<T = number>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	11	12	T	any
 compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	23	24	U	any
-compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	40	41	g	{ <T = number, U = string>(): void; <T = number, U = string>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	40	41	g	<T = number, U = string>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	40	52	g<string>();	void
-compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	53	54	g	{ <T = number, U = string>(): void; <T = number, U = string>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	53	54	g	<T = number, U = string>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	53	73	g<number, number>();	void
-compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	9	10	g	{ <T = number, U = string>(): void; <T = number, U = string>(): void; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts	9	10	g	<T = number, U = string>() => void
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	23	31	new C();	C<number>
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	27	28	C	typeof C
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	32	48	new C<string>();	C<string>
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	36	37	C	typeof C
-compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	56	57	D	{ new <number>(): {}; }
-compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	6	7	C	{ new <T = number>(): {}; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	56	57	D	typeof D
+compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	6	7	C	typeof C
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	66	67	C	typeof C
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	77	78	D	{ new <string>(): {}; }
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	8	9	T	any
 compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts	87	88	C	typeof C
 compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts	10	11	I	any
 compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts	12	13	T	any
-compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts	33	37	Impl	{ new (): {}; }
+compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts	33	37	Impl	typeof Impl
 compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts	49	50	I	any
 compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts	126	129	Foo	number
 compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts	146	150	foo3	number
@@ -1251,7 +1251,7 @@ compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts	97	109	Number(bar);	number
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	105	109	JSON	JSON
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	110	115	parse	(text: string, reviver?: (this: any, key: string, value: any) => any) => any
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	116	121	input	string
-compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	136	149	printProperty	{ <T, K extends keyof T>(obj: T, key: K): void; <T>(obj: T, key: keyof T): void; }
+compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	136	149	printProperty	<T, K extends keyof T>(obj: T, key: K) => void
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	150	151	T	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	153	154	K	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	16	17	A	any
@@ -1272,15 +1272,15 @@ compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	28	29	b	B
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	31	32	B	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	35	36	B	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	48	49	b	B
-compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	63	72	parseJSON	{ <T>(input: string): T; (input: string): unknown; }
+compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	63	72	parseJSON	<T>(input: string) => T
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	73	74	T	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	76	81	input	string
-compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	9	15	second	{ <A, B>(a: A, b: B): B; <B>(a: unknown, b: B): B; }
+compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	9	15	second	<A, B>(a: A, b: B) => B
 compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts	92	93	T	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	111	115	JSON	JSON
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	116	121	parse	(text: string, reviver?: (this: any, key: string, value: any) => any) => any
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	122	127	input	string
-compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	142	155	printProperty	{ <T, K extends keyof T>(obj: T, key: K): void; <T>(obj: T, key: keyof T): void; }
+compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	142	155	printProperty	<T>(obj: T, key: keyof T) => void
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	156	157	T	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	159	162	obj	T
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	16	17	B	any
@@ -1313,9 +1313,9 @@ compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	514	517	key	K
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	519	520	K	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	533	536	obj	T
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	537	540	key	K
-compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	66	75	parseJSON	{ <T>(input: string): T; (input: string): unknown; }
+compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	66	75	parseJSON	(input: string) => unknown
 compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	76	81	input	string
-compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	9	15	second	{ <A, B>(a: A, b: B): B; <B>(a: unknown, b: B): B; }
+compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts	9	15	second	<B>(a: unknown, b: B) => B
 compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts	17	23	length	<T>(array: ReadonlyArray<T>) => number
 compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts	24	25	T	any
 compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts	27	32	array	readonly T[]
@@ -1325,85 +1325,85 @@ compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts	79	86	length2	(array: Reado
 compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts	87	92	array	readonly unknown[]
 compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts	94	107	ReadonlyArray	any
 compiler/eslint_noUnsafeArguments.ts::a.ts	106	114	anyTyped	any
-compiler/eslint_noUnsafeArguments.ts::a.ts	117	120	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	117	120	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	117	139	foo(anyTyped, 1, 'a');	void
 compiler/eslint_noUnsafeArguments.ts::a.ts	121	129	anyTyped	any
 compiler/eslint_noUnsafeArguments.ts::a.ts	147	155	anyArray	any[]
-compiler/eslint_noUnsafeArguments.ts::a.ts	169	172	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	169	172	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	169	186	foo(...anyArray);	void
-compiler/eslint_noUnsafeArguments.ts::a.ts	17	20	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	17	20	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	176	184	anyArray	any[]
 compiler/eslint_noUnsafeArguments.ts::a.ts	194	200	tuple1	readonly ["a", any, "b"]
 compiler/eslint_noUnsafeArguments.ts::a.ts	209	217	anyTyped	any
 compiler/eslint_noUnsafeArguments.ts::a.ts	21	25	arg1	string
 compiler/eslint_noUnsafeArguments.ts::a.ts	227	232	const	any
-compiler/eslint_noUnsafeArguments.ts::a.ts	234	237	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	234	237	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	234	249	foo(...tuple1);	void
 compiler/eslint_noUnsafeArguments.ts::a.ts	241	247	tuple1	readonly ["a", any, "b"]
 compiler/eslint_noUnsafeArguments.ts::a.ts	257	263	tuple2	readonly [1]
 compiler/eslint_noUnsafeArguments.ts::a.ts	273	278	const	any
-compiler/eslint_noUnsafeArguments.ts::a.ts	280	283	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	280	283	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	280	310	foo('a', ...tuple2, anyTyped);	void
 compiler/eslint_noUnsafeArguments.ts::a.ts	292	298	tuple2	readonly [1]
 compiler/eslint_noUnsafeArguments.ts::a.ts	300	308	anyTyped	any
-compiler/eslint_noUnsafeArguments.ts::a.ts	329	332	bar	{ (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	329	332	bar	(arg1: string, arg2: number, ...rest: string[]) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	333	337	arg1	string
 compiler/eslint_noUnsafeArguments.ts::a.ts	347	351	arg2	number
 compiler/eslint_noUnsafeArguments.ts::a.ts	35	39	arg2	number
 compiler/eslint_noUnsafeArguments.ts::a.ts	364	368	rest	string[]
 compiler/eslint_noUnsafeArguments.ts::a.ts	393	394	x	[number, ...number[]]
-compiler/eslint_noUnsafeArguments.ts::a.ts	430	433	bar	{ (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	430	433	bar	(arg1: string, arg2: number, ...rest: string[]) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	430	455	bar('a', ...x, anyTyped);	void
 compiler/eslint_noUnsafeArguments.ts::a.ts	442	443	x	[number, ...number[]]
 compiler/eslint_noUnsafeArguments.ts::a.ts	445	453	anyTyped	any
-compiler/eslint_noUnsafeArguments.ts::a.ts	474	477	baz	{ (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	474	477	baz	(arg1: Set<string>, arg2: Map<string, string>) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	478	482	arg1	Set<string>
 compiler/eslint_noUnsafeArguments.ts::a.ts	484	487	Set	SetConstructor
 compiler/eslint_noUnsafeArguments.ts::a.ts	49	53	arg3	string
 compiler/eslint_noUnsafeArguments.ts::a.ts	497	501	arg2	Map<string, string>
 compiler/eslint_noUnsafeArguments.ts::a.ts	503	506	Map	MapConstructor
-compiler/eslint_noUnsafeArguments.ts::a.ts	531	534	baz	{ (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	531	534	baz	(arg1: Set<string>, arg2: Map<string, string>) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	531	575	baz(new Set<any>(), new Map<any, string>());	void
 compiler/eslint_noUnsafeArguments.ts::a.ts	539	542	Set	SetConstructor
 compiler/eslint_noUnsafeArguments.ts::a.ts	555	558	Map	MapConstructor
 compiler/eslint_noUnsafeArguments.ts::a.ts	77	85	anyTyped	any
-compiler/eslint_noUnsafeArguments.ts::a.ts	99	102	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::a.ts	99	102	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::a.ts	99	116	foo(...anyTyped);	void
 compiler/eslint_noUnsafeArguments.ts::b.ts	122	127	const	any
-compiler/eslint_noUnsafeArguments.ts::b.ts	129	132	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::b.ts	129	132	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::b.ts	129	144	foo(...tuple1);	void
-compiler/eslint_noUnsafeArguments.ts::b.ts	136	142	tuple1	readonly ["a", any, "b"]
-compiler/eslint_noUnsafeArguments.ts::b.ts	163	166	bar	{ (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }
+compiler/eslint_noUnsafeArguments.ts::b.ts	136	142	tuple1	readonly ["a", 1, "b"]
+compiler/eslint_noUnsafeArguments.ts::b.ts	163	166	bar	(arg1: string, arg2: number, ...rest: string[]) => void
 compiler/eslint_noUnsafeArguments.ts::b.ts	167	171	arg1	string
-compiler/eslint_noUnsafeArguments.ts::b.ts	17	20	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::b.ts	17	20	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::b.ts	181	185	arg2	number
 compiler/eslint_noUnsafeArguments.ts::b.ts	198	202	rest	string[]
 compiler/eslint_noUnsafeArguments.ts::b.ts	21	25	arg1	string
 compiler/eslint_noUnsafeArguments.ts::b.ts	227	232	array	string[]
-compiler/eslint_noUnsafeArguments.ts::b.ts	252	255	bar	{ (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }
+compiler/eslint_noUnsafeArguments.ts::b.ts	252	255	bar	(arg1: string, arg2: number, ...rest: string[]) => void
 compiler/eslint_noUnsafeArguments.ts::b.ts	252	274	bar('a', 1, ...array);	void
 compiler/eslint_noUnsafeArguments.ts::b.ts	267	272	array	string[]
-compiler/eslint_noUnsafeArguments.ts::b.ts	293	296	baz	{ (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }
+compiler/eslint_noUnsafeArguments.ts::b.ts	293	296	baz	(arg1: Set<string>, arg2: Map<string, string>) => void
 compiler/eslint_noUnsafeArguments.ts::b.ts	297	301	arg1	Set<string>
 compiler/eslint_noUnsafeArguments.ts::b.ts	303	306	Set	SetConstructor
 compiler/eslint_noUnsafeArguments.ts::b.ts	316	320	arg2	Map<string, string>
 compiler/eslint_noUnsafeArguments.ts::b.ts	322	325	Map	MapConstructor
 compiler/eslint_noUnsafeArguments.ts::b.ts	35	39	arg2	number
-compiler/eslint_noUnsafeArguments.ts::b.ts	350	353	baz	{ (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }
+compiler/eslint_noUnsafeArguments.ts::b.ts	350	353	baz	(arg1: Set<string>, arg2: Map<string, string>) => void
 compiler/eslint_noUnsafeArguments.ts::b.ts	350	400	baz(new Set<string>(), new Map<string, string>());	void
 compiler/eslint_noUnsafeArguments.ts::b.ts	358	361	Set	SetConstructor
 compiler/eslint_noUnsafeArguments.ts::b.ts	377	380	Map	MapConstructor
 compiler/eslint_noUnsafeArguments.ts::b.ts	49	53	arg3	string
-compiler/eslint_noUnsafeArguments.ts::b.ts	71	74	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::b.ts	71	74	foo	(arg1: string, arg2: number, arg3: string) => void
 compiler/eslint_noUnsafeArguments.ts::b.ts	71	88	foo('a', 1, 'b');	void
 compiler/eslint_noUnsafeArguments.ts::b.ts	96	102	tuple1	readonly ["a", 1, "b"]
-compiler/eslint_noUnsafeArguments.ts::c.ts	17	20	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::c.ts	17	20	foo	(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void
 compiler/eslint_noUnsafeArguments.ts::c.ts	21	25	arg1	unknown
 compiler/eslint_noUnsafeArguments.ts::c.ts	36	40	arg2	Set<unknown>
 compiler/eslint_noUnsafeArguments.ts::c.ts	42	45	Set	SetConstructor
 compiler/eslint_noUnsafeArguments.ts::c.ts	56	60	arg3	unknown[]
 compiler/eslint_noUnsafeArguments.ts::c.ts	80	123	foo(1 as any, new Set<any>(), [] as any[]);	void
-compiler/eslint_noUnsafeArguments.ts::c.ts	80	83	foo	{ (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }
+compiler/eslint_noUnsafeArguments.ts::c.ts	80	83	foo	(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void
 compiler/eslint_noUnsafeArguments.ts::c.ts	98	101	Set	SetConstructor
 compiler/eslint_restrictTemplateExpressions.ts::a.ts	106	110	arg2	{ name: string; }
 compiler/eslint_restrictTemplateExpressions.ts::a.ts	27	31	msg1	string
@@ -1421,16 +1421,16 @@ compiler/eslint_restrictTemplateExpressions.ts::b.ts	54	58	msg2	string
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	6	9	arg	"foo"
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	70	73	arg	"foo"
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	97	115	stringWithKindProp	string & { _kind?: "MyString"; }
-compiler/eslint_restrictTemplateExpressions.ts::c.ts	23	27	msg1	"arg = foo"
-compiler/eslint_restrictTemplateExpressions.ts::c.ts	39	42	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	23	27	msg1	"arg = 123"
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	39	42	arg	123
 compiler/eslint_restrictTemplateExpressions.ts::c.ts	52	56	msg2	string
 compiler/eslint_restrictTemplateExpressions.ts::c.ts	6	9	arg	123
-compiler/eslint_restrictTemplateExpressions.ts::c.ts	68	71	arg	"foo"
-compiler/eslint_restrictTemplateExpressions.ts::d.ts	24	28	msg1	"arg = foo"
-compiler/eslint_restrictTemplateExpressions.ts::d.ts	40	43	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	68	71	arg	123
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	24	28	msg1	string
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	40	43	arg	true
 compiler/eslint_restrictTemplateExpressions.ts::d.ts	53	57	msg2	string
 compiler/eslint_restrictTemplateExpressions.ts::d.ts	6	9	arg	true
-compiler/eslint_restrictTemplateExpressions.ts::d.ts	69	72	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	69	72	arg	true
 compiler/eslint_restrictTemplateExpressions.ts::e.ts	103	107	user	any
 compiler/eslint_restrictTemplateExpressions.ts::e.ts	108	112	name	any
 compiler/eslint_restrictTemplateExpressions.ts::e.ts	13	17	JSON	JSON
@@ -1440,23 +1440,23 @@ compiler/eslint_restrictTemplateExpressions.ts::e.ts	6	10	user	any
 compiler/eslint_restrictTemplateExpressions.ts::e.ts	68	72	user	any
 compiler/eslint_restrictTemplateExpressions.ts::e.ts	73	77	name	any
 compiler/eslint_restrictTemplateExpressions.ts::e.ts	87	91	msg2	string
-compiler/eslint_restrictTemplateExpressions.ts::f.ts	43	47	msg1	"arg = foo"
-compiler/eslint_restrictTemplateExpressions.ts::f.ts	59	62	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::f.ts	43	47	msg1	string
+compiler/eslint_restrictTemplateExpressions.ts::f.ts	59	62	arg	"ok" | null
 compiler/eslint_restrictTemplateExpressions.ts::f.ts	6	9	arg	"ok" | null
 compiler/eslint_restrictTemplateExpressions.ts::g.ts	16	22	RegExp	RegExpConstructor
-compiler/eslint_restrictTemplateExpressions.ts::g.ts	37	41	msg1	"arg = foo"
-compiler/eslint_restrictTemplateExpressions.ts::g.ts	53	56	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::g.ts	37	41	msg1	string
+compiler/eslint_restrictTemplateExpressions.ts::g.ts	53	56	arg	RegExp
 compiler/eslint_restrictTemplateExpressions.ts::g.ts	6	9	arg	RegExp
-compiler/eslint_restrictTemplateExpressions.ts::h.ts	25	29	msg1	"arg = foo"
-compiler/eslint_restrictTemplateExpressions.ts::h.ts	41	44	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::h.ts	25	29	msg1	string
+compiler/eslint_restrictTemplateExpressions.ts::h.ts	41	44	arg	RegExp
 compiler/eslint_restrictTemplateExpressions.ts::h.ts	6	9	arg	RegExp
-compiler/eslint_restrictTemplateExpressions.ts::i.ts	31	35	msg1	"foo" | "arg = foo"
-compiler/eslint_restrictTemplateExpressions.ts::i.ts	45	48	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	31	35	msg1	"something" | "arg = something"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	45	48	arg	"something"
 compiler/eslint_restrictTemplateExpressions.ts::i.ts	6	9	arg	"something"
-compiler/eslint_restrictTemplateExpressions.ts::i.ts	64	67	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	64	67	arg	"something"
 compiler/eslint_restrictTemplateExpressions.ts::i.ts	79	82	arg	never
-compiler/eslint_restrictTemplateExpressions.ts::j.ts	34	38	msg1	"arg = foo"
-compiler/eslint_restrictTemplateExpressions.ts::j.ts	50	53	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::j.ts	34	38	msg1	string
+compiler/eslint_restrictTemplateExpressions.ts::j.ts	50	53	arg	string[]
 compiler/eslint_restrictTemplateExpressions.ts::j.ts	6	9	arg	string[]
 compiler/expressionInference.ts	118	120	x7	-5
 compiler/expressionInference.ts	133	135	x8	false

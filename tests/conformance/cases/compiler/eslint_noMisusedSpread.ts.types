@@ -14,7 +14,7 @@ const spreadPromise = { ...promise };
 >                          ^^^^^^^: Promise<number>   (TyTypeReference)
 
 declare function getObject(): Record<string, string>;
->                ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+>                ^^^^^^^^^: () => Record<string, string>   (TyFunction)
 
 declare function getObject(): Record<string, string>;
 >                             ^^^^^^: any   (TyAny)
@@ -23,7 +23,7 @@ const getObjectSpread = { ...getObject };
 >     ^^^^^^^^^^^^^^^: {}   (TyObject)
 
 const getObjectSpread = { ...getObject };
->                            ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+>                            ^^^^^^^^^: () => Record<string, string>   (TyFunction)
 
 declare const map: Map<string, number>;
 >             ^^^: Map<string, number>   (TyTypeReference)
@@ -92,7 +92,7 @@ const spreadPromise = { ...(await promise) };
 >                                 ^^^^^^^: Promise<number>   (TyTypeReference)
 
 declare function getObject(): Record<string, string>;
->                ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+>                ^^^^^^^^^: () => Record<string, string>   (TyFunction)
 
 declare function getObject(): Record<string, string>;
 >                             ^^^^^^: any   (TyAny)
@@ -101,7 +101,7 @@ const getObjectSpread = { ...getObject() };
 >     ^^^^^^^^^^^^^^^: {}   (TyObject)
 
 const getObjectSpread = { ...getObject() };
->                            ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+>                            ^^^^^^^^^: () => Record<string, string>   (TyFunction)
 
 declare const map: Map<string, number>;
 >             ^^^: Map<string, number>   (TyTypeReference)

@@ -29,7 +29,7 @@ await createValue();
 >     ^^^^^^^^^^^: () => Promise<string>   (TyFunction)
 
 async function syncIterable() {
->              ^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+>              ^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
 
   const arrayOfValues = [1, 2, 3];
 >       ^^^^^^^^^^^^^: number[]   (TyArray)
@@ -53,7 +53,7 @@ async function syncIterable() {
 >               ^^^^^: number   (TyNumber)
 
 async function syncIterableOfPromises() {
->              ^^^^^^^^^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+>              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
 
   const arrayOfPromises = [
 >       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
@@ -95,7 +95,7 @@ async function syncIterableOfPromises() {
 >               ^^^^^^^^^^^^^: number   (TyNumber)
 
 async function syncIterable() {
->              ^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+>              ^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
 
   const arrayOfValues = [1, 2, 3];
 >       ^^^^^^^^^^^^^: number[]   (TyArray)
@@ -119,7 +119,7 @@ async function syncIterable() {
 >               ^^^^^: number   (TyNumber)
 
 async function syncIterableOfPromises() {
->              ^^^^^^^^^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+>              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
 
   const arrayOfPromises = [
 >       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
@@ -212,7 +212,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 >               ^^^^^^^^^^^^^: any   (TyAny)
 
 function makeSyncDisposable(): Disposable {
->        ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+>        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
 
 function makeSyncDisposable(): Disposable {
 >                              ^^^^^^^^^^: any   (TyAny)
@@ -224,16 +224,16 @@ function makeSyncDisposable(): Disposable {
 >           ^^^^^^^: any   (TyAny)
 
 async function shouldNotAwait() {
->              ^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+>              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
 
   await using resource = makeSyncDisposable();
 >             ^^^^^^^^: Disposable   (TyTypeReference)
 
   await using resource = makeSyncDisposable();
->                        ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+>                        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
 
 function makeSyncDisposable(): Disposable {
->        ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+>        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
 
 function makeSyncDisposable(): Disposable {
 >                              ^^^^^^^^^^: any   (TyAny)
@@ -245,13 +245,13 @@ function makeSyncDisposable(): Disposable {
 >           ^^^^^^^: any   (TyAny)
 
 async function shouldNotAwait() {
->              ^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+>              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
 
   using resource = makeSyncDisposable();
 >       ^^^^^^^^: Disposable   (TyTypeReference)
 
   using resource = makeSyncDisposable();
->                  ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+>                  ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
 
 function makeAsyncDisposable(): AsyncDisposable {
 >        ^^^^^^^^^^^^^^^^^^^: () => AsyncDisposable   (TyFunction)

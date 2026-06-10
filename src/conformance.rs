@@ -36,6 +36,7 @@ struct ConformanceSuite {
 }
 
 const CONFORMANCE_THREAD_STACK_SIZE: usize = 256 * 1024 * 1024;
+const VIRTUAL_MODULE_MARKER: &str = "\nexport {};";
 
 const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     name: "TypeScript compiler case",
@@ -245,7 +246,7 @@ struct FixtureResolverFileSystem {
 }
 
 impl FixtureProgramHost {
-    fn new(files: &[CompilerTestFile]) -> Self {
+    fn new(files: &[CompilerTestFile], module_files: bool) -> Self {
         let mut host_files = HashMap::new();
         let mut resolver_files = HashMap::new();
         let mut resolver_paths = HashMap::new();
@@ -254,9 +255,14 @@ impl FixtureProgramHost {
         for file in files {
             let fixture_path = normalize_fixture_path(Path::new(&file.name));
             let resolver_path = resolver_path_for_fixture_path(&fixture_path);
-            host_files.insert(fixture_path.clone(), file.source_text.clone());
+            let parser_source_text = if module_files {
+                virtual_module_source_text(&file.source_text)
+            } else {
+                file.source_text.clone()
+            };
+            host_files.insert(fixture_path.clone(), parser_source_text.clone());
             resolver_paths.insert(resolver_path.clone(), fixture_path);
-            resolver_files.insert(resolver_path.clone(), file.source_text.as_bytes().to_vec());
+            resolver_files.insert(resolver_path.clone(), parser_source_text.into_bytes());
             add_resolver_parent_directories(&mut directories, &resolver_path);
         }
 
@@ -1146,7 +1152,9 @@ fn collect_oxc_records_from_source(
     // Some conformance fixtures are intentionally broken or use unsupported syntax/features.
     // Fall back to per-file extraction so we still emit records for parsable files.
     for source_file in &compiler_case.files {
-        let Some(parsed) = parse_single_fixture_program(&allocator, source_file) else {
+        let Some(parsed) =
+            parse_single_fixture_program(&allocator, source_file, compiler_case.has_explicit_files)
+        else {
             continue;
         };
         let Some(program_id) = parsed
@@ -1353,7 +1361,7 @@ fn parse_fixture_program<'a>(
     allocator: &'a Allocator,
     compiler_case: &CompilerTestCase,
 ) -> Result<ParsedFixture<'a>, String> {
-    let host = FixtureProgramHost::new(&compiler_case.files);
+    let host = FixtureProgramHost::new(&compiler_case.files, compiler_case.has_explicit_files);
     let mut builder = program::ProgramStoreBuilder::new(allocator, host);
     if compiler_case
         .settings
@@ -1395,6 +1403,7 @@ fn parse_compiler_lib_names(value: &str) -> Vec<String> {
 fn parse_single_fixture_program<'a>(
     allocator: &'a Allocator,
     source_file: &CompilerTestFile,
+    module_file: bool,
 ) -> Option<ParsedFixture<'a>> {
     let compiler_case = CompilerTestCase {
         settings: HashMap::new(),
@@ -1403,9 +1412,17 @@ fn parse_single_fixture_program<'a>(
             source_text: source_file.source_text.clone(),
             settings: source_file.settings.clone(),
         }],
-        has_explicit_files: false,
+        has_explicit_files: module_file,
     };
     parse_fixture_program(allocator, &compiler_case).ok()
+}
+
+fn virtual_module_source_text(source_text: &str) -> String {
+    let mut module_source_text =
+        String::with_capacity(source_text.len() + VIRTUAL_MODULE_MARKER.len());
+    module_source_text.push_str(source_text);
+    module_source_text.push_str(VIRTUAL_MODULE_MARKER);
+    module_source_text
 }
 
 fn actual_identifier_records<'a>(
@@ -2433,6 +2450,53 @@ mod tests {
             parsed.files[1].source_text,
             "import { exit } from \"./utils.js\";\n\nexit()"
         );
+    }
+
+    #[test]
+    fn explicit_virtual_files_parse_as_modules_without_mutating_fixture_text() {
+        let parsed = parse_compiler_test_case(
+            "// @filename: a.ts\nconst createValue = () => 'value';\n// @filename: b.ts\nconst createValue = async () => 'value';",
+            "compiler/eslint_awaitThenable.ts",
+        );
+        let allocator = Allocator::default();
+        let fixture = parse_fixture_program(&allocator, &parsed).unwrap();
+        let b_path = normalize_fixture_path(Path::new("b.ts"));
+        let b_entry = fixture
+            .store
+            .id_for_path(&b_path)
+            .and_then(|program_id| fixture.store.entry(program_id))
+            .unwrap();
+
+        assert_eq!(
+            parsed.files[1].source_text,
+            "const createValue = async () => 'value';"
+        );
+        assert!(b_entry.source_text().ends_with(VIRTUAL_MODULE_MARKER));
+    }
+
+    #[test]
+    fn explicit_virtual_module_files_do_not_merge_same_named_functions() {
+        let source_text = "// @filename: a.ts\nfunction value() { return 1; }\n// @filename: b.ts\nfunction value() { return 2; }";
+
+        let records = collect_oxc_records_from_source(
+            Path::new("tests/conformance/cases"),
+            Path::new("tests/conformance/cases/compiler/virtualModules.ts"),
+            source_text,
+        );
+
+        assert!(records.iter().any(|record| {
+            record.path == "compiler/virtualModules.ts::a.ts"
+                && record.text == "value"
+                && record.ty_repr == "() => number"
+        }));
+        assert!(records.iter().any(|record| {
+            record.path == "compiler/virtualModules.ts::b.ts"
+                && record.text == "value"
+                && record.ty_repr == "() => number"
+        }));
+        assert!(!records.iter().any(|record| {
+            record.text == "value" && record.ty_repr == "{ (): number; (): number; }"
+        }));
     }
 
     #[test]

@@ -1,17 +1,17 @@
 function f<T = number>() {}
->        ^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+>        ^: <T = number>() => void   (TyFunction)
 
 function f<T = number>() {}
 >          ^: any   (TyAny)
 
 f<number>();
->^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+>^: <T = number>() => void   (TyFunction)
 
 f<number>();
 >^^^^^^^^^^^^: void   (TyVoid)
 
 function g<T = number, U = string>() {}
->        ^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+>        ^: <T = number, U = string>() => void   (TyFunction)
 
 function g<T = number, U = string>() {}
 >          ^: any   (TyAny)
@@ -20,7 +20,7 @@ function g<T = number, U = string>() {}
 >                      ^: any   (TyAny)
 
 g<string, string>();
->^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+>^: <T = number, U = string>() => void   (TyFunction)
 
 g<string, string>();
 >^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
@@ -56,25 +56,25 @@ class Impl implements I<number> {}
 >                     ^: any   (TyAny)
 
 function f<T = number>() {}
->        ^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+>        ^: <T = number>() => void   (TyFunction)
 
 function f<T = number>() {}
 >          ^: any   (TyAny)
 
 f();
->^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+>^: <T = number>() => void   (TyFunction)
 
 f();
 >^^^^: void   (TyVoid)
 
 f<string>();
->^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+>^: <T = number>() => void   (TyFunction)
 
 f<string>();
 >^^^^^^^^^^^^: void   (TyVoid)
 
 function g<T = number, U = string>() {}
->        ^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+>        ^: <T = number, U = string>() => void   (TyFunction)
 
 function g<T = number, U = string>() {}
 >          ^: any   (TyAny)
@@ -83,13 +83,13 @@ function g<T = number, U = string>() {}
 >                      ^: any   (TyAny)
 
 g<string>();
->^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+>^: <T = number, U = string>() => void   (TyFunction)
 
 g<string>();
 >^^^^^^^^^^^^: void   (TyVoid)
 
 g<number, number>();
->^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+>^: <T = number, U = string>() => void   (TyFunction)
 
 g<number, number>();
 >^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)

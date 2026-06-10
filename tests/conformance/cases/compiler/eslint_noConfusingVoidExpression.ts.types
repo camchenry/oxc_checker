@@ -35,7 +35,7 @@ promise.then(value => window.postMessage(value));
 >                                        ^^^^^: any   (TyAny)
 
 function doSomething() {
->        ^^^^^^^^^^^: { (): void; (): void; (): undefined; }   (TyObject)
+>        ^^^^^^^^^^^: () => void   (TyFunction)
 
     return console.error('Nothing to do!');
 >          ^^^^^^^: Console   (TyTypeReference)
@@ -98,7 +98,7 @@ promise.then(value => {
 >                    ^^^^^: any   (TyAny)
 
 function doSomething() {
->        ^^^^^^^^^^^: { (): void; (): void; (): undefined; }   (TyObject)
+>        ^^^^^^^^^^^: () => void   (TyFunction)
 
     console.error('Nothing to do!');
 >   ^^^^^^^: Console   (TyTypeReference)
@@ -188,7 +188,7 @@ promise.then(value => void window.postMessage(value));
 >                                             ^^^^^: any   (TyAny)
 
 function doSomething() {
->        ^^^^^^^^^^^: { (): void; (): void; (): undefined; }   (TyObject)
+>        ^^^^^^^^^^^: () => undefined   (TyFunction)
 
     return void console.error('Nothing to do!');
 >               ^^^^^^^: Console   (TyTypeReference)
