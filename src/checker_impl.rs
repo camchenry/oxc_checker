@@ -73,6 +73,10 @@ fn record_key_matches_property_name(key_type: Ty<'_>, property_name: &str) -> bo
         == property_name
 }
 
+fn should_display_implicit_default_type_argument(ty: Ty<'_>) -> bool {
+    !matches!(ty, Ty::Any | Ty::Unknown)
+}
+
 fn array_expression_element_span(element: &ArrayExpressionElement<'_>) -> Option<Span> {
     match element {
         ArrayExpressionElement::SpreadElement(spread) => Some(spread.argument.span()),
@@ -1332,9 +1336,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .filter_map(|member| match member {
                         TSSignature::TSPropertySignature(property) => {
                             let name = property_key_name_str(&property.key)?;
-                            let ty = self.get_type_from_ts_type_annotation(
-                                program_id,
-                                property.type_annotation.as_deref(),
+                            let ty = property.type_annotation.as_deref().map_or_else(
+                                Ty::any,
+                                |annotation| {
+                                    self.get_type_from_ts_type(
+                                        program_id,
+                                        &annotation.type_annotation,
+                                    )
+                                },
                             );
                             Some(TyProperty {
                                 name,
@@ -2394,7 +2403,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         reference: &TyTypeReference<'a>,
     ) -> bool {
-        self.get_type_symbol_for_name(program_id, reference.name)
+        self.is_lib_type_name(program_id, reference.name)
+    }
+
+    fn is_lib_type_name(&self, program_id: program::ProgramId, type_name: &str) -> bool {
+        self.get_type_symbol_for_name(program_id, type_name)
             .and_then(|symbol| self.store.entry(symbol.program_id))
             .is_some_and(program::ProgramEntry::is_lib)
     }
@@ -2689,9 +2702,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
-        let display_type_argument_count = type_arguments.len();
+        let explicit_type_argument_count = type_arguments.len();
+        let should_display_implicit_defaults = self.is_lib_type_name(program_id, name);
 
-        self.fill_default_type_arguments(program_id, name, &mut type_arguments);
+        let implicit_display_type_argument_count =
+            self.fill_default_type_arguments(program_id, name, &mut type_arguments);
 
         if let Some(array_type) =
             self.get_global_array_type_reference_type(program_id, name, type_arguments.as_slice())
@@ -2709,7 +2724,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena(),
             name,
             type_arguments.iter().copied(),
-            display_type_argument_count,
+            explicit_type_argument_count
+                + if should_display_implicit_defaults {
+                    implicit_display_type_argument_count
+                } else {
+                    0
+                },
         )
     }
 
@@ -3002,22 +3022,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         type_name: &str,
         type_arguments: &mut Vec<Ty<'a>>,
-    ) {
+    ) -> usize {
         let Some(type_parameters) = self.get_type_parameters_for_type(program_id, type_name) else {
-            return;
+            return 0;
         };
         if type_arguments.len() >= type_parameters.len() {
-            return;
+            return 0;
         }
 
+        let explicit_count = type_arguments.len();
+        let mut default_type_arguments = Vec::new();
         let mut substitutions =
             self.explicit_type_argument_substitutions(&type_parameters, type_arguments.as_slice());
         self.add_default_type_argument_substitutions(
             &type_parameters,
-            type_arguments.len(),
+            explicit_count,
             &mut substitutions,
-            |default_type| type_arguments.push(default_type),
+            |default_type| default_type_arguments.push(default_type),
         );
+        let display_count = if explicit_count == 0 {
+            default_type_arguments
+                .iter()
+                .rposition(|ty| should_display_implicit_default_type_argument(*ty))
+                .map_or(0, |index| index + 1)
+        } else {
+            0
+        };
+        type_arguments.extend(default_type_arguments);
+        display_count
     }
 
     /// Return the instance type for the nearest enclosing class.

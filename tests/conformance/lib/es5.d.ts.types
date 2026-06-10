@@ -4367,7 +4367,7 @@ interface ArrayBufferConstructor {
 >                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
 
     isView(arg: any): arg is ArrayBufferView;
->   ^^^^^^: { (arg: any): arg is ArrayBufferView; (arg: any): arg is ArrayBufferView; }   (TyObject)
+>   ^^^^^^: { (arg: any): arg is ArrayBufferView<ArrayBufferLike>; (arg: any): arg is ArrayBufferView; }   (TyObject)
 
     isView(arg: any): arg is ArrayBufferView;
 >          ^^^: any   (TyAny)

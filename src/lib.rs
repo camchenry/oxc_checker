@@ -2257,6 +2257,35 @@ mod test {
     }
 
     #[test]
+    fn declaration_display_handles_defaulted_type_arguments() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface BufferLike {}
+        interface BufferView<TBuffer extends BufferLike = BufferLike> { buffer: TBuffer; }
+        interface Stream<T = any> { value: T; }
+        interface LocalIterable<T, TReturn = any, TNext = any> {}
+
+        declare const declarations: {
+            view: BufferView;
+            maybeView?: BufferView;
+            stream: Stream;
+            iterable: LocalIterable<string>;
+            explicitIterable: LocalIterable<string, any, any>;
+            float: Float32Array;
+            values: number[] | Float32Array;
+        };
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "declarations").to_type_string(),
+            "{ view: BufferView; maybeView?: BufferView; stream: Stream; iterable: LocalIterable<string>; explicitIterable: LocalIterable<string, any, any>; float: Float32Array<ArrayBufferLike>; values: number[] | Float32Array<ArrayBufferLike>; }"
+        );
+    }
+
+    #[test]
     fn generic_function_infers_type_parameters_from_arguments() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
