@@ -472,6 +472,59 @@ compiler/eslint_noFloatingPromises.ts::f.ts	15	63	await (async function () {   a
 compiler/eslint_noFloatingPromises.ts::f.ts	44	57	await res(1);	any
 compiler/eslint_noFloatingPromises.ts::f.ts	65	107	(async function () {   await res(1); })();	Promise<void>
 compiler/eslint_noFloatingPromises.ts::f.ts	88	101	await res(1);	any
+compiler/eslint_restrictTemplateExpressions.ts::a.ts	106	110	arg2	{ name: string; }
+compiler/eslint_restrictTemplateExpressions.ts::a.ts	27	31	msg1	string
+compiler/eslint_restrictTemplateExpressions.ts::a.ts	44	48	arg1	number[]
+compiler/eslint_restrictTemplateExpressions.ts::a.ts	59	63	arg2	{ name: string; }
+compiler/eslint_restrictTemplateExpressions.ts::a.ts	6	10	arg1	number[]
+compiler/eslint_restrictTemplateExpressions.ts::a.ts	68	72	name	string
+compiler/eslint_restrictTemplateExpressions.ts::a.ts	89	93	msg2	string
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	128	133	_kind	"MyString" | undefined
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	164	168	msg3	string
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	195	213	stringWithKindProp	string & { _kind?: "MyString"; }
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	25	29	msg1	"arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	41	44	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	54	58	msg2	string
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	6	9	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	70	73	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	97	115	stringWithKindProp	string & { _kind?: "MyString"; }
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	23	27	msg1	"arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	39	42	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	52	56	msg2	string
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	6	9	arg	123
+compiler/eslint_restrictTemplateExpressions.ts::c.ts	68	71	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	24	28	msg1	"arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	40	43	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	53	57	msg2	string
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	6	9	arg	true
+compiler/eslint_restrictTemplateExpressions.ts::d.ts	69	72	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	103	107	user	any
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	108	112	name	any
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	13	17	JSON	JSON
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	18	23	parse	(text: string, reviver?: (this: any, key: string, value: any) => any) => any
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	52	56	msg1	string
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	6	10	user	any
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	68	72	user	any
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	73	77	name	any
+compiler/eslint_restrictTemplateExpressions.ts::e.ts	87	91	msg2	string
+compiler/eslint_restrictTemplateExpressions.ts::f.ts	43	47	msg1	"arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::f.ts	59	62	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::f.ts	6	9	arg	"ok" | null
+compiler/eslint_restrictTemplateExpressions.ts::g.ts	16	22	RegExp	RegExpConstructor
+compiler/eslint_restrictTemplateExpressions.ts::g.ts	37	41	msg1	"arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::g.ts	53	56	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::g.ts	6	9	arg	RegExp
+compiler/eslint_restrictTemplateExpressions.ts::h.ts	25	29	msg1	"arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::h.ts	41	44	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::h.ts	6	9	arg	RegExp
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	31	35	msg1	"foo" | "arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	45	48	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	6	9	arg	"something"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	64	67	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	79	82	arg	never
+compiler/eslint_restrictTemplateExpressions.ts::j.ts	34	38	msg1	"arg = foo"
+compiler/eslint_restrictTemplateExpressions.ts::j.ts	50	53	arg	"foo"
+compiler/eslint_restrictTemplateExpressions.ts::j.ts	6	9	arg	string[]
 compiler/expressionInference.ts	118	120	x7	-5
 compiler/expressionInference.ts	133	135	x8	false
 compiler/expressionInference.ts	21	23	x2	number
