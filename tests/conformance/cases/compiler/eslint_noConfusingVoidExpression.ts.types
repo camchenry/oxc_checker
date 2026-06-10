@@ -1,0 +1,251 @@
+const response = alert('Are you sure?');
+>     ^^^^^^^^: void   (TyVoid)
+
+const response = alert('Are you sure?');
+>                ^^^^^: (message?: any) => void   (TyFunction)
+
+console.log(alert('Are you sure?'));
+>^^^^^^^: Console   (TyTypeReference)
+
+console.log(alert('Are you sure?'));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+console.log(alert('Are you sure?'));
+>       ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log(alert('Are you sure?'));
+>           ^^^^^: (message?: any) => void   (TyFunction)
+
+promise.then(value => window.postMessage(value));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>       ^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>            ^^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>                     ^^^^^^: Window & typeof globalThis   (TyIntersection)
+
+promise.then(value => window.postMessage(value));
+>                            ^^^^^^^^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>                                        ^^^^^: any   (TyAny)
+
+function doSomething() {
+>        ^^^^^^^^^^^: { (): void; (): void; (): undefined; }   (TyObject)
+
+    return console.error('Nothing to do!');
+>          ^^^^^^^: Console   (TyTypeReference)
+
+    return console.error('Nothing to do!');
+>                  ^^^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log('Doing a thing...');
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log('Doing a thing...');
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log('Doing a thing...');
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+alert('Hello, world!');
+>^^^^^: (message?: any) => void   (TyFunction)
+
+alert('Hello, world!');
+>^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+const response = confirm('Are you sure?');
+>     ^^^^^^^^: boolean   (TyBoolean)
+
+const response = confirm('Are you sure?');
+>                ^^^^^^^: (message?: string) => boolean   (TyFunction)
+
+console.log(confirm('Are you sure?'));
+>^^^^^^^: Console   (TyTypeReference)
+
+console.log(confirm('Are you sure?'));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+console.log(confirm('Are you sure?'));
+>       ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log(confirm('Are you sure?'));
+>           ^^^^^^^: (message?: string) => boolean   (TyFunction)
+
+promise.then(value => {
+>^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+promise.then(value => {
+>       ^^^^: any   (TyAny)
+
+promise.then(value => {
+>            ^^^^^: any   (TyAny)
+
+  window.postMessage(value);
+> ^^^^^^: Window & typeof globalThis   (TyIntersection)
+
+  window.postMessage(value);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  window.postMessage(value);
+>        ^^^^^^^^^^^: any   (TyAny)
+
+  window.postMessage(value);
+>                    ^^^^^: any   (TyAny)
+
+function doSomething() {
+>        ^^^^^^^^^^^: { (): void; (): void; (): undefined; }   (TyObject)
+
+    console.error('Nothing to do!');
+>   ^^^^^^^: Console   (TyTypeReference)
+
+    console.error('Nothing to do!');
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+    console.error('Nothing to do!');
+>           ^^^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log('Doing a thing...');
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log('Doing a thing...');
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log('Doing a thing...');
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+cond && console.log('true');
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+cond && console.log('true');
+>       ^^^^^^^: Console   (TyTypeReference)
+
+cond && console.log('true');
+>               ^^^: (...data: any[]) => void   (TyFunction)
+
+cond || console.error('false');
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+cond || console.error('false');
+>       ^^^^^^^: Console   (TyTypeReference)
+
+cond || console.error('false');
+>               ^^^^^: (...data: any[]) => void   (TyFunction)
+
+cond ? console.log('true') : console.error('false');
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+cond ? console.log('true') : console.error('false');
+>      ^^^^^^^: Console   (TyTypeReference)
+
+cond ? console.log('true') : console.error('false');
+>              ^^^: (...data: any[]) => void   (TyFunction)
+
+cond ? console.log('true') : console.error('false');
+>                            ^^^^^^^: Console   (TyTypeReference)
+
+cond ? console.log('true') : console.error('false');
+>                                    ^^^^^: (...data: any[]) => void   (TyFunction)
+
+promise.then(value => window.postMessage(value));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>       ^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>            ^^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>                     ^^^^^^: Window & typeof globalThis   (TyIntersection)
+
+promise.then(value => window.postMessage(value));
+>                            ^^^^^^^^^^^: any   (TyAny)
+
+promise.then(value => window.postMessage(value));
+>                                        ^^^^^: any   (TyAny)
+
+promise.then(value => void window.postMessage(value));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+promise.then(value => void window.postMessage(value));
+>       ^^^^: any   (TyAny)
+
+promise.then(value => void window.postMessage(value));
+>            ^^^^^: any   (TyAny)
+
+promise.then(value => void window.postMessage(value));
+>                          ^^^^^^: Window & typeof globalThis   (TyIntersection)
+
+promise.then(value => void window.postMessage(value));
+>                                 ^^^^^^^^^^^: any   (TyAny)
+
+promise.then(value => void window.postMessage(value));
+>                                             ^^^^^: any   (TyAny)
+
+function doSomething() {
+>        ^^^^^^^^^^^: { (): void; (): void; (): undefined; }   (TyObject)
+
+    return void console.error('Nothing to do!');
+>               ^^^^^^^: Console   (TyTypeReference)
+
+    return void console.error('Nothing to do!');
+>                       ^^^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log('Doing a thing...');
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log('Doing a thing...');
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log('Doing a thing...');
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log(void alert('Hello, world!'));
+>^^^^^^^: Console   (TyTypeReference)
+
+console.log(void alert('Hello, world!'));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+console.log(void alert('Hello, world!'));
+>       ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log(void alert('Hello, world!'));
+>                ^^^^^: (message?: any) => void   (TyFunction)
+
+function foo(): void {
+>        ^^^: () => void   (TyFunction)
+
+  return console.log();
+>        ^^^^^^^: Console   (TyTypeReference)
+
+  return console.log();
+>                ^^^: (...data: any[]) => void   (TyFunction)
+
+function onError(callback: () => void): void {
+>        ^^^^^^^: (callback: () => void) => void   (TyFunction)
+
+function onError(callback: () => void): void {
+>                ^^^^^^^^: () => void   (TyFunction)
+
+  callback();
+> ^^^^^^^^: () => void   (TyFunction)
+
+  callback();
+> ^^^^^^^^^^^: void   (TyVoid)
+
+onError(() => console.log('oops'));
+>^^^^^^^: (callback: () => void) => void   (TyFunction)
+
+onError(() => console.log('oops'));
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+onError(() => console.log('oops'));
+>             ^^^^^^^: Console   (TyTypeReference)
+
+onError(() => console.log('oops'));
+>                     ^^^: (...data: any[]) => void   (TyFunction)

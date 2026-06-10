@@ -1,0 +1,140 @@
+String('123');
+>^^^^^^: StringConstructor   (TyTypeReference)
+
+String('123');
+>^^^^^^^^^^^^^^: string   (TyString)
+
+'123'.toString();
+>^^^^^^^^^^^^^^^^^: string   (TyString)
+
+'123'.toString();
+>     ^^^^^^^^: () => string   (TyFunction)
+
+'' + '123';
+>^^^^^^^^^^^: string   (TyString)
+
+'123' + '';
+>^^^^^^^^^^^: string   (TyString)
+
+Number(123);
+>^^^^^^: NumberConstructor   (TyTypeReference)
+
+Number(123);
+>^^^^^^^^^^^^: number   (TyNumber)
+
++123;
+>^^^^^: number   (TyNumber)
+
+~~123;
+>^^^^^^: number   (TyNumber)
+
+Boolean(true);
+>^^^^^^^: BooleanConstructor   (TyTypeReference)
+
+Boolean(true);
+>^^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+!!true;
+>^^^^^^^: true   (TyBooleanLiteral)
+
+BigInt(BigInt(1));
+>^^^^^^: BigIntConstructor   (TyTypeReference)
+
+BigInt(BigInt(1));
+>^^^^^^^^^^^^^^^^^^: bigint   (TyBigint)
+
+BigInt(BigInt(1));
+>      ^^^^^^: BigIntConstructor   (TyTypeReference)
+
+let str = '123';
+>   ^^^: string   (TyString)
+
+str += '';
+>^^^: string   (TyString)
+
+str += '';
+>^^^^^^^^^^: string   (TyString)
+
+function foo(bar: string | number) {
+>        ^^^: (bar: string | number) => void   (TyFunction)
+
+function foo(bar: string | number) {
+>            ^^^: string | number   (TyUnion)
+
+  String(bar);
+> ^^^^^^: StringConstructor   (TyTypeReference)
+
+  String(bar);
+> ^^^^^^^^^^^^: string   (TyString)
+
+  String(bar);
+>        ^^^: string | number   (TyUnion)
+
+  bar.toString();
+> ^^^: string | number   (TyUnion)
+
+  bar.toString();
+> ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  bar.toString();
+>     ^^^^^^^^: any   (TyAny)
+
+  '' + bar;
+> ^^^^^^^^^: string   (TyString)
+
+  '' + bar;
+>      ^^^: string | number   (TyUnion)
+
+  bar + '';
+> ^^^: string | number   (TyUnion)
+
+  bar + '';
+> ^^^^^^^^^: string   (TyString)
+
+  Number(bar);
+> ^^^^^^: NumberConstructor   (TyTypeReference)
+
+  Number(bar);
+> ^^^^^^^^^^^^: number   (TyNumber)
+
+  Number(bar);
+>        ^^^: string | number   (TyUnion)
+
+  +bar;
+> ^^^^^: number   (TyNumber)
+
+  +bar;
+>  ^^^: string | number   (TyUnion)
+
+  ~~bar;
+> ^^^^^^: number   (TyNumber)
+
+  ~~bar;
+>   ^^^: string | number   (TyUnion)
+
+  Boolean(bar);
+> ^^^^^^^: BooleanConstructor   (TyTypeReference)
+
+  Boolean(bar);
+> ^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+  Boolean(bar);
+>         ^^^: string | number   (TyUnion)
+
+  !!bar;
+> ^^^^^^: boolean   (TyBoolean)
+
+  !!bar;
+>   ^^^: string | number   (TyUnion)
+
+  BigInt(1);
+> ^^^^^^: BigIntConstructor   (TyTypeReference)
+
+  BigInt(1);
+> ^^^^^^^^^^: bigint   (TyBigint)
+
+  bar += '';
+> ^^^: string | number   (TyUnion)
+
+  bar += '';
+> ^^^^^^^^^^: string   (TyString)

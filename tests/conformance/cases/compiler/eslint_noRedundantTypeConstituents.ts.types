@@ -1,0 +1,71 @@
+type UnionAny = any | 'foo';
+>    ^^^^^^^^: any   (TyAny)
+
+type UnionUnknown = unknown | 'foo';
+>    ^^^^^^^^^^^^: unknown   (TyUnknown)
+
+type UnionNever = never | 'foo';
+>    ^^^^^^^^^^: "foo"   (TyStringLiteral)
+
+type UnionBooleanLiteral = boolean | false;
+>    ^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+type UnionNumberLiteral = number | 1;
+>    ^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+type UnionStringLiteral = string | 'foo';
+>    ^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type IntersectionAny = any & 'foo';
+>    ^^^^^^^^^^^^^^^: any & "foo"   (TyIntersection)
+
+type IntersectionUnknown = string & unknown;
+>    ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type IntersectionNever = string | never;
+>    ^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type IntersectionBooleanLiteral = boolean & false;
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean & false   (TyIntersection)
+
+type IntersectionNumberLiteral = number & 1;
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: number & 1   (TyIntersection)
+
+type IntersectionStringLiteral = string & 'foo';
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: string & "foo"   (TyIntersection)
+
+type UnionAny = any;
+>    ^^^^^^^^: any   (TyAny)
+
+type UnionUnknown = unknown;
+>    ^^^^^^^^^^^^: unknown   (TyUnknown)
+
+type UnionNever = never;
+>    ^^^^^^^^^^: never   (TyNever)
+
+type UnionBooleanLiteral = boolean;
+>    ^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+type UnionNumberLiteral = number;
+>    ^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+type UnionStringLiteral = string;
+>    ^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type IntersectionAny = any;
+>    ^^^^^^^^^^^^^^^: any   (TyAny)
+
+type IntersectionUnknown = string;
+>    ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type IntersectionNever = string;
+>    ^^^^^^^^^^^^^^^^^: string   (TyString)
+
+type IntersectionBooleanLiteral = false;
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral)
+
+type IntersectionNumberLiteral = 1;
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: 1   (TyNumberLiteral)
+
+type IntersectionStringLiteral = 'foo';
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: "foo"   (TyStringLiteral)

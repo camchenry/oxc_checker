@@ -1,0 +1,47 @@
+const foo1 = 3;
+>     ^^^^: 3   (TyNumberLiteral)
+
+const bar = foo!;
+>     ^^^: any   (TyAny)
+
+const foo1_1 = <number>3;
+>     ^^^^^^: number   (TyNumber)
+
+const foo2 = <number>(3 + 5);
+>     ^^^^: number   (TyNumber)
+
+const foo2_1 = 3 as number;
+>     ^^^^^^: number   (TyNumber)
+
+type Foo = number;
+>    ^^^: number   (TyNumber)
+
+const foo3 = <Foo>(3 + 5);
+>     ^^^^: Foo   (TyTypeReference)
+
+const foo3 = <Foo>(3 + 5);
+>             ^^^: any   (TyAny)
+
+function foo4(x: number): number {
+>        ^^^^: (x: number) => number   (TyFunction)
+
+function foo4(x: number): number {
+>             ^: number   (TyNumber)
+
+  return x!; // unnecessary non-null
+>        ^: number   (TyNumber)
+
+let foo5 = 'foo' as const;
+>   ^^^^: const   (TyTypeReference)
+
+let foo5 = 'foo' as const;
+>                   ^^^^^: any   (TyAny)
+
+function foo6(x: number | undefined): number {
+>        ^^^^: (x: number | undefined) => number   (TyFunction)
+
+function foo6(x: number | undefined): number {
+>             ^: number | undefined   (TyUnion)
+
+  return x!;
+>        ^: number | undefined   (TyUnion)

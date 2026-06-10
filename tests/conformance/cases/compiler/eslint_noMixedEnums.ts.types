@@ -1,0 +1,17 @@
+Object.values(Status);
+>^^^^^^: ObjectConstructor   (TyTypeReference)
+
+Object.values(Status);
+>^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray)
+
+Object.values(Status);
+>      ^^^^^^: { <T>(o: {} | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
+
+Object.values(Status);
+>^^^^^^: ObjectConstructor   (TyTypeReference)
+
+Object.values(Status);
+>^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray)
+
+Object.values(Status);
+>      ^^^^^^: { <T>(o: {} | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)

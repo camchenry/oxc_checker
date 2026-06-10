@@ -1,0 +1,227 @@
+function second<A, B>(a: A, b: B): B {
+>        ^^^^^^: { <A, B>(a: A, b: B): B; <B>(a: unknown, b: B): B; }   (TyObject)
+
+function second<A, B>(a: A, b: B): B {
+>               ^: any   (TyAny)
+
+function second<A, B>(a: A, b: B): B {
+>                  ^: any   (TyAny)
+
+function second<A, B>(a: A, b: B): B {
+>                     ^: A   (TyTypeReference)
+
+function second<A, B>(a: A, b: B): B {
+>                        ^: any   (TyAny)
+
+function second<A, B>(a: A, b: B): B {
+>                           ^: B   (TyTypeReference)
+
+function second<A, B>(a: A, b: B): B {
+>                              ^: any   (TyAny)
+
+function second<A, B>(a: A, b: B): B {
+>                                  ^: any   (TyAny)
+
+  return b;
+>        ^: B   (TyTypeReference)
+
+function parseJSON<T>(input: string): T {
+>        ^^^^^^^^^: { <T>(input: string): T; (input: string): unknown; }   (TyObject)
+
+function parseJSON<T>(input: string): T {
+>                  ^: any   (TyAny)
+
+function parseJSON<T>(input: string): T {
+>                     ^^^^^: string   (TyString)
+
+function parseJSON<T>(input: string): T {
+>                                     ^: any   (TyAny)
+
+  return JSON.parse(input);
+>        ^^^^: JSON   (TyTypeReference)
+
+  return JSON.parse(input);
+>             ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction)
+
+  return JSON.parse(input);
+>                   ^^^^^: string   (TyString)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>        ^^^^^^^^^^^^^: { <T, K extends keyof T>(obj: T, key: K): void; <T>(obj: T, key: keyof T): void; }   (TyObject)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>                      ^: any   (TyAny)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>                         ^: any   (TyAny)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                         ^: any   (TyAny)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                            ^^^: T   (TyTypeReference)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                                 ^: any   (TyAny)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                                    ^^^: K   (TyTypeReference)
+
+function printProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                                         ^: any   (TyAny)
+
+  console.log(obj[key]);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(obj[key]);
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(obj[key]);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(obj[key]);
+>             ^^^: T   (TyTypeReference)
+
+  console.log(obj[key]);
+>                 ^^^: K   (TyTypeReference)
+
+function second<B>(a: unknown, b: B): B {
+>        ^^^^^^: { <A, B>(a: A, b: B): B; <B>(a: unknown, b: B): B; }   (TyObject)
+
+function second<B>(a: unknown, b: B): B {
+>               ^: any   (TyAny)
+
+function second<B>(a: unknown, b: B): B {
+>                  ^: unknown   (TyUnknown)
+
+function second<B>(a: unknown, b: B): B {
+>                              ^: B   (TyTypeReference)
+
+function second<B>(a: unknown, b: B): B {
+>                                 ^: any   (TyAny)
+
+function second<B>(a: unknown, b: B): B {
+>                                     ^: any   (TyAny)
+
+  return b;
+>        ^: B   (TyTypeReference)
+
+function parseJSON(input: string): unknown {
+>        ^^^^^^^^^: { <T>(input: string): T; (input: string): unknown; }   (TyObject)
+
+function parseJSON(input: string): unknown {
+>                  ^^^^^: string   (TyString)
+
+  return JSON.parse(input);
+>        ^^^^: JSON   (TyTypeReference)
+
+  return JSON.parse(input);
+>             ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction)
+
+  return JSON.parse(input);
+>                   ^^^^^: string   (TyString)
+
+function printProperty<T>(obj: T, key: keyof T) {
+>        ^^^^^^^^^^^^^: { <T, K extends keyof T>(obj: T, key: K): void; <T>(obj: T, key: keyof T): void; }   (TyObject)
+
+function printProperty<T>(obj: T, key: keyof T) {
+>                      ^: any   (TyAny)
+
+function printProperty<T>(obj: T, key: keyof T) {
+>                         ^^^: T   (TyTypeReference)
+
+function printProperty<T>(obj: T, key: keyof T) {
+>                              ^: any   (TyAny)
+
+function printProperty<T>(obj: T, key: keyof T) {
+>                                 ^^^: keyof T   (TyKeyof)
+
+function printProperty<T>(obj: T, key: keyof T) {
+>                                            ^: any   (TyAny)
+
+  console.log(obj[key]);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(obj[key]);
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(obj[key]);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(obj[key]);
+>             ^^^: T   (TyTypeReference)
+
+  console.log(obj[key]);
+>                 ^^^: keyof T   (TyKeyof)
+
+function identity<T>(arg: T): T {
+>        ^^^^^^^^: <T>(arg: T) => T   (TyFunction)
+
+function identity<T>(arg: T): T {
+>                 ^: any   (TyAny)
+
+function identity<T>(arg: T): T {
+>                    ^^^: T   (TyTypeReference)
+
+function identity<T>(arg: T): T {
+>                         ^: any   (TyAny)
+
+function identity<T>(arg: T): T {
+>                             ^: any   (TyAny)
+
+  return arg;
+>        ^^^: T   (TyTypeReference)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>        ^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => any   (TyFunction)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>                    ^: any   (TyAny)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>                       ^: any   (TyAny)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                       ^: any   (TyAny)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                          ^^^: T   (TyTypeReference)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                               ^: any   (TyAny)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                                  ^^^: K   (TyTypeReference)
+
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+>                                                       ^: any   (TyAny)
+
+  return obj[key];
+>        ^^^: T   (TyTypeReference)
+
+  return obj[key];
+>            ^^^: K   (TyTypeReference)
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+>                ^^^^^^: <T>(array: readonly T[]) => number   (TyFunction)
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+>                       ^: any   (TyAny)
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+>                          ^^^^^: readonly T[]   (TyArray)
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+>                                 ^^^^^^^^^^^^^: any   (TyAny)
+
+declare function length<T>(array: ReadonlyArray<T>): number;
+>                                               ^: any   (TyAny)
+
+declare function length2(array: ReadonlyArray<unknown>): number;
+>                ^^^^^^^: (array: readonly unknown[]) => number   (TyFunction)
+
+declare function length2(array: ReadonlyArray<unknown>): number;
+>                        ^^^^^: readonly unknown[]   (TyArray)
+
+declare function length2(array: ReadonlyArray<unknown>): number;
+>                               ^^^^^^^^^^^^^: any   (TyAny)

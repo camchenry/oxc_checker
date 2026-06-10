@@ -1,0 +1,50 @@
+class X {
+>     ^: typeof X   (TyTypeQuery)
+
+  private priv_prop = 123;
+>         ^^^^^^^^^: number   (TyNumber)
+
+const x = new X();
+>     ^: X   (TyTypeReference)
+
+const x = new X();
+>             ^: typeof X   (TyTypeQuery)
+
+x['priv_prop'] = 123;
+>^: X   (TyTypeReference)
+
+x['priv_prop'] = 123;
+>^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+class X {
+>     ^: typeof X   (TyTypeQuery)
+
+  protected protected_prop = 123;
+>           ^^^^^^^^^^^^^^: number   (TyNumber)
+
+const x = new X();
+>     ^: X   (TyTypeReference)
+
+const x = new X();
+>             ^: typeof X   (TyTypeQuery)
+
+x['protected_prop'] = 123;
+>^: X   (TyTypeReference)
+
+x['protected_prop'] = 123;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+class X {
+>     ^: typeof X   (TyTypeQuery)
+
+const x = new X();
+>     ^: X   (TyTypeReference)
+
+const x = new X();
+>             ^: typeof X   (TyTypeQuery)
+
+x['hello'] = 123;
+>^: X   (TyTypeReference)
+
+x['hello'] = 123;
+>^^^^^^^^^^^^^^^^^: number   (TyNumber)

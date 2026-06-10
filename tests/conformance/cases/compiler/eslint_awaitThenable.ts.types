@@ -1,0 +1,281 @@
+await 'value';
+>^^^^^^^^^^^^^^: string   (TyString)
+
+const createValue = () => 'value';
+>     ^^^^^^^^^^^: () => string   (TyFunction)
+
+await createValue();
+>^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+await createValue();
+>     ^^^^^^^^^^^: () => string   (TyFunction)
+
+await Promise.resolve('value');
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+await Promise.resolve('value');
+>     ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+await Promise.resolve('value');
+>             ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+const createValue = async () => 'value';
+>     ^^^^^^^^^^^: () => Promise<string>   (TyFunction)
+
+await createValue();
+>^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+await createValue();
+>     ^^^^^^^^^^^: () => Promise<string>   (TyFunction)
+
+async function syncIterable() {
+>              ^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+
+  const arrayOfValues = [1, 2, 3];
+>       ^^^^^^^^^^^^^: number[]   (TyArray)
+
+  for await (const value of arrayOfValues) {
+>                  ^^^^^: number   (TyNumber)
+
+  for await (const value of arrayOfValues) {
+>                           ^^^^^^^^^^^^^: number[]   (TyArray)
+
+    console.log(value);
+>   ^^^^^^^: Console   (TyTypeReference)
+
+    console.log(value);
+>   ^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+    console.log(value);
+>           ^^^: (...data: any[]) => void   (TyFunction)
+
+    console.log(value);
+>               ^^^^^: number   (TyNumber)
+
+async function syncIterableOfPromises() {
+>              ^^^^^^^^^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+
+  const arrayOfPromises = [
+>       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+
+    Promise.resolve(1),
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    Promise.resolve(1),
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+    Promise.resolve(2),
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    Promise.resolve(2),
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+    Promise.resolve(3),
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    Promise.resolve(3),
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+  for await (const promisedValue of arrayOfPromises) {
+>                  ^^^^^^^^^^^^^: number   (TyNumber)
+
+  for await (const promisedValue of arrayOfPromises) {
+>                                   ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+
+    console.log(promisedValue);
+>   ^^^^^^^: Console   (TyTypeReference)
+
+    console.log(promisedValue);
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+    console.log(promisedValue);
+>           ^^^: (...data: any[]) => void   (TyFunction)
+
+    console.log(promisedValue);
+>               ^^^^^^^^^^^^^: number   (TyNumber)
+
+async function syncIterable() {
+>              ^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+
+  const arrayOfValues = [1, 2, 3];
+>       ^^^^^^^^^^^^^: number[]   (TyArray)
+
+  for (const value of arrayOfValues) {
+>            ^^^^^: number   (TyNumber)
+
+  for (const value of arrayOfValues) {
+>                     ^^^^^^^^^^^^^: number[]   (TyArray)
+
+    console.log(value);
+>   ^^^^^^^: Console   (TyTypeReference)
+
+    console.log(value);
+>   ^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+    console.log(value);
+>           ^^^: (...data: any[]) => void   (TyFunction)
+
+    console.log(value);
+>               ^^^^^: number   (TyNumber)
+
+async function syncIterableOfPromises() {
+>              ^^^^^^^^^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+
+  const arrayOfPromises = [
+>       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+
+    Promise.resolve(1),
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    Promise.resolve(1),
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+    Promise.resolve(2),
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    Promise.resolve(2),
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+    Promise.resolve(3),
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    Promise.resolve(3),
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+  for (const promisedValue of await Promise.all(arrayOfPromises)) {
+>            ^^^^^^^^^^^^^: number   (TyNumber)
+
+  for (const promisedValue of await Promise.all(arrayOfPromises)) {
+>                                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  for (const promisedValue of await Promise.all(arrayOfPromises)) {
+>                                           ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+
+  for (const promisedValue of await Promise.all(arrayOfPromises)) {
+>                                               ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+
+    console.log(promisedValue);
+>   ^^^^^^^: Console   (TyTypeReference)
+
+    console.log(promisedValue);
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+    console.log(promisedValue);
+>           ^^^: (...data: any[]) => void   (TyFunction)
+
+    console.log(promisedValue);
+>               ^^^^^^^^^^^^^: number   (TyNumber)
+
+async function validUseOfForAwaitOnAsyncIterable() {
+>              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+
+  async function* yieldThingsAsynchronously() {
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^: () => void   (TyFunction)
+
+    yield 1;
+>   ^^^^^^^^: any   (TyAny)
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+>             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+>                     ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+>                                ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+>                                           ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+    yield 2;
+>   ^^^^^^^^: any   (TyAny)
+
+  for await (const promisedValue of yieldThingsAsynchronously()) {
+>                  ^^^^^^^^^^^^^: any   (TyAny)
+
+  for await (const promisedValue of yieldThingsAsynchronously()) {
+>                                   ^^^^^^^^^^^^^^^^^^^^^^^^^: () => void   (TyFunction)
+
+    console.log(promisedValue);
+>   ^^^^^^^: Console   (TyTypeReference)
+
+    console.log(promisedValue);
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+    console.log(promisedValue);
+>           ^^^: (...data: any[]) => void   (TyFunction)
+
+    console.log(promisedValue);
+>               ^^^^^^^^^^^^^: any   (TyAny)
+
+function makeSyncDisposable(): Disposable {
+>        ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+
+function makeSyncDisposable(): Disposable {
+>                              ^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.dispose](): void {
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.dispose](): void {
+>           ^^^^^^^: any   (TyAny)
+
+async function shouldNotAwait() {
+>              ^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+
+  await using resource = makeSyncDisposable();
+>             ^^^^^^^^: Disposable   (TyTypeReference)
+
+  await using resource = makeSyncDisposable();
+>                        ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+
+function makeSyncDisposable(): Disposable {
+>        ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+
+function makeSyncDisposable(): Disposable {
+>                              ^^^^^^^^^^: any   (TyAny)
+
+    [Symbol.dispose](): void {
+>    ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    [Symbol.dispose](): void {
+>           ^^^^^^^: any   (TyAny)
+
+async function shouldNotAwait() {
+>              ^^^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject)
+
+  using resource = makeSyncDisposable();
+>       ^^^^^^^^: Disposable   (TyTypeReference)
+
+  using resource = makeSyncDisposable();
+>                  ^^^^^^^^^^^^^^^^^^: { (): Disposable; (): Disposable; }   (TyObject)
+
+function makeAsyncDisposable(): AsyncDisposable {
+>        ^^^^^^^^^^^^^^^^^^^: () => AsyncDisposable   (TyFunction)
+
+function makeAsyncDisposable(): AsyncDisposable {
+>                               ^^^^^^^^^^^^^^^: any   (TyAny)
+
+    async [Symbol.asyncDispose](): Promise<void> {
+>          ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+    async [Symbol.asyncDispose](): Promise<void> {
+>                 ^^^^^^^^^^^^: any   (TyAny)
+
+    async [Symbol.asyncDispose](): Promise<void> {
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    async [Symbol.asyncDispose](): Promise<void> {
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+async function shouldAwait() {
+>              ^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+
+  await using resource = makeAsyncDisposable();
+>             ^^^^^^^^: AsyncDisposable   (TyTypeReference)
+
+  await using resource = makeAsyncDisposable();
+>                        ^^^^^^^^^^^^^^^^^^^: () => AsyncDisposable   (TyFunction)

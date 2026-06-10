@@ -1,0 +1,137 @@
+declare const promise: Promise<number>;
+>             ^^^^^^^: Promise<number>   (TyTypeReference)
+
+declare const promise: Promise<number>;
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+declare const promise: Promise<number>;
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+const spreadPromise = { ...promise };
+>     ^^^^^^^^^^^^^: {}   (TyObject)
+
+const spreadPromise = { ...promise };
+>                          ^^^^^^^: Promise<number>   (TyTypeReference)
+
+declare function getObject(): Record<string, string>;
+>                ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+
+declare function getObject(): Record<string, string>;
+>                             ^^^^^^: any   (TyAny)
+
+const getObjectSpread = { ...getObject };
+>     ^^^^^^^^^^^^^^^: {}   (TyObject)
+
+const getObjectSpread = { ...getObject };
+>                            ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+
+declare const map: Map<string, number>;
+>             ^^^: Map<string, number>   (TyTypeReference)
+
+declare const map: Map<string, number>;
+>                  ^^^: MapConstructor   (TyTypeReference)
+
+declare const map: Map<string, number>;
+>                  ^^^: MapConstructor   (TyTypeReference)
+
+const mapSpread = { ...map };
+>     ^^^^^^^^^: {}   (TyObject)
+
+const mapSpread = { ...map };
+>                      ^^^: Map<string, number>   (TyTypeReference)
+
+declare const userName: string;
+>             ^^^^^^^^: string   (TyString)
+
+const characters = [...userName];
+>     ^^^^^^^^^^: any[]   (TyArray)
+
+const characters = [...userName];
+>                      ^^^^^^^^: string   (TyString)
+
+declare class Box {
+>             ^^^: typeof Box   (TyTypeQuery)
+
+  value: number;
+> ^^^^^: number   (TyNumber)
+
+const boxSpread = { ...Box };
+>     ^^^^^^^^^: {}   (TyObject)
+
+const boxSpread = { ...Box };
+>                      ^^^: typeof Box   (TyTypeQuery)
+
+declare const instance: Box;
+>             ^^^^^^^^: Box   (TyTypeReference)
+
+declare const instance: Box;
+>                       ^^^: typeof Box   (TyTypeQuery)
+
+declare const instance: Box;
+>                       ^^^: typeof Box   (TyTypeQuery)
+
+const instanceSpread = { ...instance };
+>     ^^^^^^^^^^^^^^: {}   (TyObject)
+
+const instanceSpread = { ...instance };
+>                           ^^^^^^^^: Box   (TyTypeReference)
+
+declare const promise: Promise<number>;
+>             ^^^^^^^: Promise<number>   (TyTypeReference)
+
+declare const promise: Promise<number>;
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+declare const promise: Promise<number>;
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+const spreadPromise = { ...(await promise) };
+>     ^^^^^^^^^^^^^: {}   (TyObject)
+
+const spreadPromise = { ...(await promise) };
+>                                 ^^^^^^^: Promise<number>   (TyTypeReference)
+
+declare function getObject(): Record<string, string>;
+>                ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+
+declare function getObject(): Record<string, string>;
+>                             ^^^^^^: any   (TyAny)
+
+const getObjectSpread = { ...getObject() };
+>     ^^^^^^^^^^^^^^^: {}   (TyObject)
+
+const getObjectSpread = { ...getObject() };
+>                            ^^^^^^^^^: { (): Record<string, string>; (): Record<string, string>; }   (TyObject)
+
+declare const map: Map<string, number>;
+>             ^^^: Map<string, number>   (TyTypeReference)
+
+declare const map: Map<string, number>;
+>                  ^^^: MapConstructor   (TyTypeReference)
+
+declare const map: Map<string, number>;
+>                  ^^^: MapConstructor   (TyTypeReference)
+
+const mapObject = Object.fromEntries(map);
+>     ^^^^^^^^^: {}   (TyObject)
+
+const mapObject = Object.fromEntries(map);
+>                 ^^^^^^: ObjectConstructor   (TyTypeReference)
+
+const mapObject = Object.fromEntries(map);
+>                        ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): {}; (entries: Iterable<readonly any[]>): any; }   (TyObject)
+
+const mapObject = Object.fromEntries(map);
+>                                    ^^^: Map<string, number>   (TyTypeReference)
+
+declare const userName: string;
+>             ^^^^^^^^: string   (TyString)
+
+const characters = userName.split('');
+>     ^^^^^^^^^^: string[]   (TyArray)
+
+const characters = userName.split('');
+>                  ^^^^^^^^: string   (TyString)
+
+const characters = userName.split('');
+>                           ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; }   (TyObject)

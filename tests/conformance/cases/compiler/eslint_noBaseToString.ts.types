@@ -1,0 +1,149 @@
+'' + {};
+>^^^^^^^^: string   (TyString)
+
+class MyClass {}
+>     ^^^^^^^: typeof MyClass   (TyTypeQuery)
+
+const value = new MyClass();
+>     ^^^^^: MyClass   (TyTypeReference)
+
+const value = new MyClass();
+>                 ^^^^^^^: typeof MyClass   (TyTypeQuery)
+
+value + '';
+>^^^^^: MyClass   (TyTypeReference)
+
+value + '';
+>^^^^^^^^^^^: string   (TyString)
+
+`Value: ${value}`;
+>^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+`Value: ${value}`;
+>         ^^^^^: MyClass   (TyTypeReference)
+
+String({});
+>^^^^^^: StringConstructor   (TyTypeReference)
+
+String({});
+>^^^^^^^^^^^: string   (TyString)
+
+({}).toString();
+>^^^^^^^^^^^^^^^^: string   (TyString)
+
+({}).toString();
+>    ^^^^^^^^: () => string   (TyFunction)
+
+({}).toLocaleString();
+>^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+({}).toLocaleString();
+>    ^^^^^^^^^^^^^^: () => string   (TyFunction)
+
+[{}, new MyClass()].join('');
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+[{}, new MyClass()].join('');
+>        ^^^^^^^: typeof MyClass   (TyTypeQuery)
+
+[{}, new MyClass()].join('');
+>                   ^^^^: (separator?: string) => string   (TyFunction)
+
+'Text' + true;
+>^^^^^^^^^^^^^^: string   (TyString)
+
+`Value: ${123}`;
+>^^^^^^^^^^^^^^^^: string   (TyString)
+
+`Arrays too: ${[1, 2, 3]}`;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+(() => {}).toString();
+>^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+(() => {}).toString();
+>          ^^^^^^^^: () => string   (TyFunction)
+
+String(42);
+>^^^^^^: StringConstructor   (TyTypeReference)
+
+String(42);
+>^^^^^^^^^^^: string   (TyString)
+
+(() => {}).toLocaleString();
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+(() => {}).toLocaleString();
+>          ^^^^^^^^^^^^^^: any   (TyAny)
+
+class CustomToString {
+>     ^^^^^^^^^^^^^^: typeof CustomToString   (TyTypeQuery)
+
+  toString() {
+> ^^^^^^^^: () => string   (TyFunction)
+
+`Value: ${new CustomToString()}`;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+`Value: ${new CustomToString()}`;
+>             ^^^^^^^^^^^^^^: typeof CustomToString   (TyTypeQuery)
+
+const literalWithToString = {
+>     ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (TyObject)
+
+  toString: () => 'Hello, world!',
+> ^^^^^^^^: () => string   (TyFunction)
+
+`Value: ${literalWithToString}`;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+`Value: ${literalWithToString}`;
+>         ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (TyObject)
+
+`${/regex/}`;
+>^^^^^^^^^^^^^: string   (TyString)
+
+'' + /regex/;
+>^^^^^^^^^^^^^: string   (TyString)
+
+/regex/.toString();
+>^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+/regex/.toString();
+>       ^^^^^^^^: any   (TyAny)
+
+let value = /regex/;
+>   ^^^^^: any   (TyAny)
+
+value.toString();
+>^^^^^: any   (TyAny)
+
+value.toString();
+>^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+value.toString();
+>     ^^^^^^^^: any   (TyAny)
+
+let text = `${value}`;
+>   ^^^^: string   (TyString)
+
+let text = `${value}`;
+>             ^^^^^: any   (TyAny)
+
+String(/regex/);
+>^^^^^^: StringConstructor   (TyTypeReference)
+
+String(/regex/);
+>^^^^^^^^^^^^^^^^: string   (TyString)
+
+declare const x: unknown;
+>             ^: unknown   (TyUnknown)
+
+String(x);
+>^^^^^^: StringConstructor   (TyTypeReference)
+
+String(x);
+>^^^^^^^^^^: string   (TyString)
+
+String(x);
+>      ^: unknown   (TyUnknown)

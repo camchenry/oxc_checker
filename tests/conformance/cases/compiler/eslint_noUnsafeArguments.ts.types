@@ -1,0 +1,257 @@
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                ^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                    ^^^^: string   (TyString)
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                                  ^^^^: number   (TyNumber)
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                                                ^^^^: string   (TyString)
+
+const anyTyped = 1 as any;
+>     ^^^^^^^^: any   (TyAny)
+
+foo(...anyTyped);
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo(...anyTyped);
+>^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+foo(...anyTyped);
+>      ^^^^^^^^: any   (TyAny)
+
+foo(anyTyped, 1, 'a');
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo(anyTyped, 1, 'a');
+>^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+foo(anyTyped, 1, 'a');
+>   ^^^^^^^^: any   (TyAny)
+
+const anyArray: any[] = [];
+>     ^^^^^^^^: any[]   (TyArray)
+
+foo(...anyArray);
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo(...anyArray);
+>^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+foo(...anyArray);
+>      ^^^^^^^^: any[]   (TyArray)
+
+const tuple1 = ['a', anyTyped, 'b'] as const;
+>     ^^^^^^: const   (TyTypeReference)
+
+const tuple1 = ['a', anyTyped, 'b'] as const;
+>                    ^^^^^^^^: any   (TyAny)
+
+const tuple1 = ['a', anyTyped, 'b'] as const;
+>                                      ^^^^^: any   (TyAny)
+
+foo(...tuple1);
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo(...tuple1);
+>^^^^^^^^^^^^^^^: void   (TyVoid)
+
+foo(...tuple1);
+>      ^^^^^^: const   (TyTypeReference)
+
+const tuple2 = [1] as const;
+>     ^^^^^^: const   (TyTypeReference)
+
+const tuple2 = [1] as const;
+>                     ^^^^^: any   (TyAny)
+
+foo('a', ...tuple2, anyTyped);
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo('a', ...tuple2, anyTyped);
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+foo('a', ...tuple2, anyTyped);
+>           ^^^^^^: const   (TyTypeReference)
+
+foo('a', ...tuple2, anyTyped);
+>                   ^^^^^^^^: any   (TyAny)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                ^^^: { (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }   (TyObject)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                    ^^^^: string   (TyString)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                                  ^^^^: number   (TyNumber)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                                                   ^^^^: string[]   (TyArray)
+
+const x = [1, 2] as [number, ...number[]];
+>     ^: [number, ...number[]]   (TyTuple)
+
+bar('a', ...x, anyTyped);
+>^^^: { (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }   (TyObject)
+
+bar('a', ...x, anyTyped);
+>^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+bar('a', ...x, anyTyped);
+>           ^: [number, ...number[]]   (TyTuple)
+
+bar('a', ...x, anyTyped);
+>              ^^^^^^^^: any   (TyAny)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                ^^^: { (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }   (TyObject)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                    ^^^^: Set<string>   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                          ^^^: SetConstructor   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                          ^^^: SetConstructor   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                                       ^^^^: Map<string, string>   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                                             ^^^: MapConstructor   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                                             ^^^: MapConstructor   (TyTypeReference)
+
+baz(new Set<any>(), new Map<any, string>());
+>^^^: { (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }   (TyObject)
+
+baz(new Set<any>(), new Map<any, string>());
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+baz(new Set<any>(), new Map<any, string>());
+>       ^^^: SetConstructor   (TyTypeReference)
+
+baz(new Set<any>(), new Map<any, string>());
+>                       ^^^: MapConstructor   (TyTypeReference)
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                ^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                    ^^^^: string   (TyString)
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                                  ^^^^: number   (TyNumber)
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
+>                                                ^^^^: string   (TyString)
+
+foo('a', 1, 'b');
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo('a', 1, 'b');
+>^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+const tuple1 = ['a', 1, 'b'] as const;
+>     ^^^^^^: const   (TyTypeReference)
+
+const tuple1 = ['a', 1, 'b'] as const;
+>                               ^^^^^: any   (TyAny)
+
+foo(...tuple1);
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo(...tuple1);
+>^^^^^^^^^^^^^^^: void   (TyVoid)
+
+foo(...tuple1);
+>      ^^^^^^: const   (TyTypeReference)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                ^^^: { (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }   (TyObject)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                    ^^^^: string   (TyString)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                                  ^^^^: number   (TyNumber)
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+>                                                   ^^^^: string[]   (TyArray)
+
+const array: string[] = ['a'];
+>     ^^^^^: string[]   (TyArray)
+
+bar('a', 1, ...array);
+>^^^: { (arg1: string, arg2: number, ...rest: string[]): void; (arg1: string, arg2: number, ...rest: string[]): void; }   (TyObject)
+
+bar('a', 1, ...array);
+>^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+bar('a', 1, ...array);
+>              ^^^^^: string[]   (TyArray)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                ^^^: { (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }   (TyObject)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                    ^^^^: Set<string>   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                          ^^^: SetConstructor   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                          ^^^: SetConstructor   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                                       ^^^^: Map<string, string>   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                                             ^^^: MapConstructor   (TyTypeReference)
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+>                                             ^^^: MapConstructor   (TyTypeReference)
+
+baz(new Set<string>(), new Map<string, string>());
+>^^^: { (arg1: Set<string>, arg2: Map<string, string>): void; (arg1: Set<string>, arg2: Map<string, string>): void; }   (TyObject)
+
+baz(new Set<string>(), new Map<string, string>());
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+baz(new Set<string>(), new Map<string, string>());
+>       ^^^: SetConstructor   (TyTypeReference)
+
+baz(new Set<string>(), new Map<string, string>());
+>                          ^^^: MapConstructor   (TyTypeReference)
+
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+>                ^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+>                    ^^^^: unknown   (TyUnknown)
+
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+>                                   ^^^^: Set<unknown>   (TyTypeReference)
+
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+>                                         ^^^: SetConstructor   (TyTypeReference)
+
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+>                                         ^^^: SetConstructor   (TyTypeReference)
+
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+>                                                       ^^^^: unknown[]   (TyArray)
+
+foo(1 as any, new Set<any>(), [] as any[]);
+>^^^: { (arg1: string, arg2: number, arg3: string): void; (arg1: string, arg2: number, arg3: string): void; (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void; }   (TyObject)
+
+foo(1 as any, new Set<any>(), [] as any[]);
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+foo(1 as any, new Set<any>(), [] as any[]);
+>                 ^^^: SetConstructor   (TyTypeReference)

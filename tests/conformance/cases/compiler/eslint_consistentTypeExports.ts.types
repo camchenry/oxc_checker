@@ -1,0 +1,74 @@
+interface ButtonProps {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+  onClick: () => void;
+> ^^^^^^^: () => void   (TyFunction)
+
+class Button implements ButtonProps {
+>     ^^^^^^: typeof Button   (TyTypeQuery)
+
+class Button implements ButtonProps {
+>                       ^^^^^^^^^^^: any   (TyAny)
+
+  onClick = () => console.log('button!');
+> ^^^^^^^: () => void   (TyFunction)
+
+  onClick = () => console.log('button!');
+>                 ^^^^^^^: Console   (TyTypeReference)
+
+  onClick = () => console.log('button!');
+>                         ^^^: (...data: any[]) => void   (TyFunction)
+
+export { Button, ButtonProps };
+>        ^^^^^^: typeof Button   (TyTypeQuery)
+
+interface ButtonProps {
+>         ^^^^^^^^^^^: any   (TyAny)
+
+  onClick: () => void;
+> ^^^^^^^: () => void   (TyFunction)
+
+class Button implements ButtonProps {
+>     ^^^^^^: typeof Button   (TyTypeQuery)
+
+class Button implements ButtonProps {
+>                       ^^^^^^^^^^^: any   (TyAny)
+
+  onClick = () => console.log('button!');
+> ^^^^^^^: () => void   (TyFunction)
+
+  onClick = () => console.log('button!');
+>                 ^^^^^^^: Console   (TyTypeReference)
+
+  onClick = () => console.log('button!');
+>                         ^^^: (...data: any[]) => void   (TyFunction)
+
+export { Button };
+>        ^^^^^^: typeof Button   (TyTypeQuery)
+
+const x = 1;
+>     ^: 1   (TyNumberLiteral)
+
+type T = number;
+>    ^: number   (TyNumber)
+
+export { x, T };
+>        ^: 1   (TyNumberLiteral)
+
+const x = 1;
+>     ^: 1   (TyNumberLiteral)
+
+type T = number;
+>    ^: number   (TyNumber)
+
+export { x, type T };
+>        ^: 1   (TyNumberLiteral)
+
+const x = 1;
+>     ^: 1   (TyNumberLiteral)
+
+type T = number;
+>    ^: number   (TyNumber)
+
+export { x };
+>        ^: 1   (TyNumberLiteral)

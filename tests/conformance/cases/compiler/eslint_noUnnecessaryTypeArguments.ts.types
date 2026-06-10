@@ -1,0 +1,137 @@
+function f<T = number>() {}
+>        ^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+
+function f<T = number>() {}
+>          ^: any   (TyAny)
+
+f<number>();
+>^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+
+f<number>();
+>^^^^^^^^^^^^: void   (TyVoid)
+
+function g<T = number, U = string>() {}
+>        ^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+
+function g<T = number, U = string>() {}
+>          ^: any   (TyAny)
+
+function g<T = number, U = string>() {}
+>                      ^: any   (TyAny)
+
+g<string, string>();
+>^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+
+g<string, string>();
+>^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+class C<T = number> {}
+>     ^: typeof C   (TyTypeQuery)
+
+class C<T = number> {}
+>       ^: any   (TyAny)
+
+new C<number>();
+>^^^^^^^^^^^^^^^^: C   (TyTypeReference)
+
+new C<number>();
+>   ^: typeof C   (TyTypeQuery)
+
+class D extends C<number> {}
+>     ^: typeof D   (TyTypeQuery)
+
+class D extends C<number> {}
+>               ^: typeof C   (TyTypeQuery)
+
+interface I<T = number> {}
+>         ^: any   (TyAny)
+
+interface I<T = number> {}
+>           ^: any   (TyAny)
+
+class Impl implements I<number> {}
+>     ^^^^: typeof Impl   (TyTypeQuery)
+
+class Impl implements I<number> {}
+>                     ^: any   (TyAny)
+
+function f<T = number>() {}
+>        ^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+
+function f<T = number>() {}
+>          ^: any   (TyAny)
+
+f();
+>^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+
+f();
+>^^^^: void   (TyVoid)
+
+f<string>();
+>^: { <T = number>(): void; <T = number>(): void; }   (TyObject)
+
+f<string>();
+>^^^^^^^^^^^^: void   (TyVoid)
+
+function g<T = number, U = string>() {}
+>        ^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+
+function g<T = number, U = string>() {}
+>          ^: any   (TyAny)
+
+function g<T = number, U = string>() {}
+>                      ^: any   (TyAny)
+
+g<string>();
+>^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+
+g<string>();
+>^^^^^^^^^^^^: void   (TyVoid)
+
+g<number, number>();
+>^: { <T = number, U = string>(): void; <T = number, U = string>(): void; }   (TyObject)
+
+g<number, number>();
+>^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+class C<T = number> {}
+>     ^: typeof C   (TyTypeQuery)
+
+class C<T = number> {}
+>       ^: any   (TyAny)
+
+new C();
+>^^^^^^^^: C   (TyTypeReference)
+
+new C();
+>   ^: typeof C   (TyTypeQuery)
+
+new C<string>();
+>^^^^^^^^^^^^^^^^: C   (TyTypeReference)
+
+new C<string>();
+>   ^: typeof C   (TyTypeQuery)
+
+class D extends C {}
+>     ^: typeof D   (TyTypeQuery)
+
+class D extends C {}
+>               ^: typeof C   (TyTypeQuery)
+
+class D extends C<string> {}
+>     ^: typeof D   (TyTypeQuery)
+
+class D extends C<string> {}
+>               ^: typeof C   (TyTypeQuery)
+
+interface I<T = number> {}
+>         ^: any   (TyAny)
+
+interface I<T = number> {}
+>           ^: any   (TyAny)
+
+class Impl implements I<string> {}
+>     ^^^^: typeof Impl   (TyTypeQuery)
+
+class Impl implements I<string> {}
+>                     ^: any   (TyAny)

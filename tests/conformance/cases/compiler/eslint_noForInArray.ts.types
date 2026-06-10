@@ -1,0 +1,158 @@
+declare const array: string[];
+>             ^^^^^: string[]   (TyArray)
+
+for (const i in array) {
+>          ^: any   (TyAny)
+
+for (const i in array) {
+>               ^^^^^: string[]   (TyArray)
+
+  console.log(array[i]);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(array[i]);
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(array[i]);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(array[i]);
+>             ^^^^^: string[]   (TyArray)
+
+  console.log(array[i]);
+>                   ^: any   (TyAny)
+
+for (const i in array) {
+>          ^: any   (TyAny)
+
+for (const i in array) {
+>               ^^^^^: string[]   (TyArray)
+
+  console.log(i, array[i]);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(i, array[i]);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(i, array[i]);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(i, array[i]);
+>             ^: any   (TyAny)
+
+  console.log(i, array[i]);
+>                ^^^^^: string[]   (TyArray)
+
+  console.log(i, array[i]);
+>                      ^: any   (TyAny)
+
+declare const array: string[];
+>             ^^^^^: string[]   (TyArray)
+
+for (const value of array) {
+>          ^^^^^: string   (TyString)
+
+for (const value of array) {
+>                   ^^^^^: string[]   (TyArray)
+
+  console.log(value);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(value);
+> ^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(value);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(value);
+>             ^^^^^: string   (TyString)
+
+for (let i = 0; i < array.length; i += 1) {
+>        ^: number   (TyNumber)
+
+for (let i = 0; i < array.length; i += 1) {
+>               ^: number   (TyNumber)
+
+for (let i = 0; i < array.length; i += 1) {
+>                   ^^^^^: string[]   (TyArray)
+
+for (let i = 0; i < array.length; i += 1) {
+>                         ^^^^^^: number   (TyNumber)
+
+for (let i = 0; i < array.length; i += 1) {
+>                                 ^: number   (TyNumber)
+
+  console.log(i, array[i]);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(i, array[i]);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(i, array[i]);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(i, array[i]);
+>             ^: number   (TyNumber)
+
+  console.log(i, array[i]);
+>                ^^^^^: string[]   (TyArray)
+
+  console.log(i, array[i]);
+>                      ^: number   (TyNumber)
+
+array.forEach((value, i) => {
+>^^^^^: string[]   (TyArray)
+
+array.forEach((value, i) => {
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+array.forEach((value, i) => {
+>     ^^^^^^^: (callbackfn: (value: string, index: number, array: string[]) => void, thisArg?: any) => void   (TyFunction)
+
+array.forEach((value, i) => {
+>              ^^^^^: string   (TyString)
+
+array.forEach((value, i) => {
+>                     ^: number   (TyNumber)
+
+  console.log(i, value);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(i, value);
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(i, value);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(i, value);
+>             ^: number   (TyNumber)
+
+  console.log(i, value);
+>                ^^^^^: string   (TyString)
+
+for (const [i, value] of array.entries()) {
+>           ^: [number, string]   (TyTuple)
+
+for (const [i, value] of array.entries()) {
+>              ^^^^^: [number, string]   (TyTuple)
+
+for (const [i, value] of array.entries()) {
+>                        ^^^^^: string[]   (TyArray)
+
+for (const [i, value] of array.entries()) {
+>                              ^^^^^^^: () => ArrayIterator<[number, string]>   (TyFunction)
+
+  console.log(i, value);
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log(i, value);
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log(i, value);
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  console.log(i, value);
+>             ^: [number, string]   (TyTuple)
+
+  console.log(i, value);
+>                ^^^^^: [number, string]   (TyTuple)

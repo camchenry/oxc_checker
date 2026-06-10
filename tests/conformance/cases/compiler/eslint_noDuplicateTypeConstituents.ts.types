@@ -1,0 +1,77 @@
+type T1 = 'A' | 'A';
+>    ^^: "A"   (TyStringLiteral)
+
+type T2 = string | string | number;
+>    ^^: string | number   (TyUnion)
+
+type T3 = { a: string } & { a: string };
+>    ^^: { a: string; }   (TyObject)
+
+type T3 = { a: string } & { a: string };
+>           ^: string   (TyString)
+
+type T3 = { a: string } & { a: string };
+>                           ^: string   (TyString)
+
+type T4 = [1, 2, 3] | [1, 2, 3];
+>    ^^: [1, 2, 3]   (TyTuple)
+
+type StringA = string;
+>    ^^^^^^^: string   (TyString)
+
+type StringB = string;
+>    ^^^^^^^: string   (TyString)
+
+type T5 = StringA | StringB;
+>    ^^: StringA | StringB   (TyUnion)
+
+type T5 = StringA | StringB;
+>         ^^^^^^^: any   (TyAny)
+
+type T5 = StringA | StringB;
+>                   ^^^^^^^: any   (TyAny)
+
+const fn = (a?: string | undefined) => {};
+>     ^^: (a?: string | undefined) => void   (TyFunction)
+
+const fn = (a?: string | undefined) => {};
+>           ^: string | undefined   (TyUnion)
+
+type T1 = 'A' | 'B';
+>    ^^: "A" | "B"   (TyUnion)
+
+type T2 = string | number | boolean;
+>    ^^: string | number | boolean   (TyUnion)
+
+type T3 = { a: string } & { b: string };
+>    ^^: { a: string; } & { b: string; }   (TyIntersection)
+
+type T3 = { a: string } & { b: string };
+>           ^: string   (TyString)
+
+type T3 = { a: string } & { b: string };
+>                           ^: string   (TyString)
+
+type T4 = [1, 2, 3] | [1, 2, 3, 4];
+>    ^^: [1, 2, 3] | [1, 2, 3, 4]   (TyUnion)
+
+type StringA = string;
+>    ^^^^^^^: string   (TyString)
+
+type NumberB = number;
+>    ^^^^^^^: number   (TyNumber)
+
+type T5 = StringA | NumberB;
+>    ^^: StringA | NumberB   (TyUnion)
+
+type T5 = StringA | NumberB;
+>         ^^^^^^^: any   (TyAny)
+
+type T5 = StringA | NumberB;
+>                   ^^^^^^^: any   (TyAny)
+
+const fn = (a?: string) => {};
+>     ^^: (a?: string) => void   (TyFunction)
+
+const fn = (a?: string) => {};
+>           ^: string | undefined   (TyUnion)

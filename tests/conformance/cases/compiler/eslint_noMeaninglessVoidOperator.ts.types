@@ -1,0 +1,41 @@
+void (() => {})();
+>^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+
+function foo() {}
+>        ^^^: { (): void; (): void; }   (TyObject)
+
+void foo();
+>^^^^^^^^^^^: undefined   (TyUndefined)
+
+void foo();
+>    ^^^: { (): void; (): void; }   (TyObject)
+
+(() => {})();
+>^^^^^^^^^^^^^: void   (TyVoid)
+
+function foo() {}
+>        ^^^: { (): void; (): void; }   (TyObject)
+
+foo(); // nothing to discard
+>^^^: { (): void; (): void; }   (TyObject)
+
+foo(); // nothing to discard
+>^^^^^^: void   (TyVoid)
+
+function bar(x: number) {
+>        ^^^: (x: number) => number   (TyFunction)
+
+function bar(x: number) {
+>            ^: number   (TyNumber)
+
+  void x; // discarding a number
+> ^^^^^^^: undefined   (TyUndefined)
+
+  void x; // discarding a number
+>      ^: number   (TyNumber)
+
+void bar(1); // discarding a number
+>^^^^^^^^^^^^: undefined   (TyUndefined)
+
+void bar(1); // discarding a number
+>    ^^^: (x: number) => number   (TyFunction)

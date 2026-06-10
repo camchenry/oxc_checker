@@ -1,0 +1,20 @@
+declare const arr: number[];
+>             ^^^: number[]   (TyArray)
+
+delete arr[0];
+>^^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+delete arr[0];
+>      ^^^: number[]   (TyArray)
+
+declare const arr: number[];
+>             ^^^: number[]   (TyArray)
+
+arr.splice(0, 1);
+>^^^: number[]   (TyArray)
+
+arr.splice(0, 1);
+>^^^^^^^^^^^^^^^^^: number[]   (TyArray)
+
+arr.splice(0, 1);
+>   ^^^^^^: { (start: number, deleteCount?: number): number[]; (start: number, deleteCount: number, ...items: number[]): number[]; }   (TyObject)

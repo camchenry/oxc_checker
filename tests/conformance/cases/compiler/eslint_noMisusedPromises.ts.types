@@ -1,0 +1,386 @@
+const promise = Promise.resolve('value');
+>     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+const promise = Promise.resolve('value');
+>               ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+const promise = Promise.resolve('value');
+>                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+if (promise) {
+>   ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+const val = promise ? 123 : 456;
+>     ^^^: number   (TyNumber)
+
+const val = promise ? 123 : 456;
+>           ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+[1, 2, 3].filter(() => promise);
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray)
+
+[1, 2, 3].filter(() => promise);
+>         ^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }   (TyObject)
+
+[1, 2, 3].filter(() => promise);
+>                      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+while (promise) {
+>      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+const promise = Promise.resolve('value');
+>     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+const promise = Promise.resolve('value');
+>               ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+const promise = Promise.resolve('value');
+>                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+
+if (await promise) {
+>         ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+const val = (await promise) ? 123 : 456;
+>     ^^^: number   (TyNumber)
+
+const val = (await promise) ? 123 : 456;
+>                  ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+const returnVal = await promise;
+>     ^^^^^^^^^: string   (TyString)
+
+const returnVal = await promise;
+>                       ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+[1, 2, 3].filter(() => returnVal);
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray)
+
+[1, 2, 3].filter(() => returnVal);
+>         ^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }   (TyObject)
+
+[1, 2, 3].filter(() => returnVal);
+>                      ^^^^^^^^^: string   (TyString)
+
+while (await promise) {
+>            ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+
+[1, 2, 3].forEach(async value => {
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+[1, 2, 3].forEach(async value => {
+>         ^^^^^^^: (callbackfn: (value: number, index: number, array: number[]) => void, thisArg?: any) => void   (TyFunction)
+
+[1, 2, 3].forEach(async value => {
+>                       ^^^^^: number   (TyNumber)
+
+  await fetch(`/${value}`);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+
+  await fetch(`/${value}`);
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+
+  await fetch(`/${value}`);
+>                 ^^^^^: number   (TyNumber)
+
+new Promise<void>(async (resolve, reject) => {
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
+
+new Promise<void>(async (resolve, reject) => {
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+new Promise<void>(async (resolve, reject) => {
+>                        ^^^^^^^: (value: void | PromiseLike<void>) => void   (TyFunction)
+
+new Promise<void>(async (resolve, reject) => {
+>                                 ^^^^^^: (reason?: any) => void   (TyFunction)
+
+  await fetch('/');
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+
+  await fetch('/');
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+
+  resolve();
+> ^^^^^^^: (value: void | PromiseLike<void>) => void   (TyFunction)
+
+  resolve();
+> ^^^^^^^^^^: void   (TyVoid)
+
+document.addEventListener('click', async () => {
+>^^^^^^^^: Document   (TyTypeReference)
+
+document.addEventListener('click', async () => {
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+document.addEventListener('click', async () => {
+>        ^^^^^^^^^^^^^^^^: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }   (TyObject)
+
+  console.log('synchronous call');
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log('synchronous call');
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log('synchronous call');
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+  await fetch('/');
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+
+  await fetch('/');
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+
+  console.log('synchronous call');
+> ^^^^^^^: Console   (TyTypeReference)
+
+  console.log('synchronous call');
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+  console.log('synchronous call');
+>         ^^^: (...data: any[]) => void   (TyFunction)
+
+interface MySyncInterface {
+>         ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  setThing(): void;
+> ^^^^^^^^: () => void   (TyFunction)
+
+class MyClass implements MySyncInterface {
+>     ^^^^^^^: typeof MyClass   (TyTypeQuery)
+
+class MyClass implements MySyncInterface {
+>                        ^^^^^^^^^^^^^^^: any   (TyAny)
+
+  async setThing(): Promise<void> {
+>       ^^^^^^^^: () => Promise<void>   (TyFunction)
+
+  async setThing(): Promise<void> {
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  async setThing(): Promise<void> {
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    this.thing = await fetchThing();
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    this.thing = await fetchThing();
+>        ^^^^^: any   (TyAny)
+
+for (const value of [1, 2, 3]) {
+>          ^^^^^: number   (TyNumber)
+
+  await doSomething(value);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  await doSomething(value);
+>                   ^^^^^: number   (TyNumber)
+
+Promise.all(
+>^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+Promise.all(
+>^^^^^^^^^^^^: Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; }>   (TyTypeReference)
+
+Promise.all(
+>       ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+
+  [1, 2, 3].map(async value => {
+>           ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (TyFunction)
+
+  [1, 2, 3].map(async value => {
+>                     ^^^^^: number   (TyNumber)
+
+    await doSomething(value);
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    await doSomething(value);
+>                     ^^^^^: number   (TyNumber)
+
+).catch(handleError);
+> ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; } | TResult>   (TyFunction)
+
+new Promise((resolve, reject) => {
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<unknown>   (TyTypeReference)
+
+new Promise((resolve, reject) => {
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+new Promise((resolve, reject) => {
+>            ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+new Promise((resolve, reject) => {
+>                     ^^^^^^: (reason?: any) => void   (TyFunction)
+
+  void (async () => {
+> ^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+
+    await doSomething();
+>   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    resolve();
+>   ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+    resolve();
+>   ^^^^^^^^^^: void   (TyVoid)
+
+document.addEventListener('click', () => {
+>^^^^^^^^: Document   (TyTypeReference)
+
+document.addEventListener('click', () => {
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+document.addEventListener('click', () => {
+>        ^^^^^^^^^^^^^^^^: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }   (TyObject)
+
+  const handler = async () => {
+>       ^^^^^^^: () => Promise<void>   (TyFunction)
+
+    await doSomething();
+>   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    otherSynchronousCall();
+>   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    synchronousCall();
+>   ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  } catch (err) {
+>          ^^^: any   (TyAny)
+
+    handleSpecificError(err);
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    handleSpecificError(err);
+>                       ^^^: any   (TyAny)
+
+  handler().catch(handleError);
+> ^^^^^^^: () => Promise<void>   (TyFunction)
+
+  handler().catch(handleError);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
+
+  handler().catch(handleError);
+>           ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void | TResult>   (TyFunction)
+
+interface MyAsyncInterface {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  setThing(): Promise<void>;
+> ^^^^^^^^: () => Promise<void>   (TyFunction)
+
+  setThing(): Promise<void>;
+>             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  setThing(): Promise<void>;
+>             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+class MyClass implements MyAsyncInterface {
+>     ^^^^^^^: typeof MyClass   (TyTypeQuery)
+
+class MyClass implements MyAsyncInterface {
+>                        ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  async setThing(): Promise<void> {
+>       ^^^^^^^^: () => Promise<void>   (TyFunction)
+
+  async setThing(): Promise<void> {
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  async setThing(): Promise<void> {
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+    this.thing = await fetchThing();
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    this.thing = await fetchThing();
+>        ^^^^^: any   (TyAny)
+
+const getData = () => fetch('/');
+>     ^^^^^^^: () => Promise<Response>   (TyFunction)
+
+const getData = () => fetch('/');
+>                     ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+
+console.log({ foo: 42, ...getData() });
+>^^^^^^^: Console   (TyTypeReference)
+
+console.log({ foo: 42, ...getData() });
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+console.log({ foo: 42, ...getData() });
+>       ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log({ foo: 42, ...getData() });
+>             ^^^: number   (TyNumber)
+
+console.log({ foo: 42, ...getData() });
+>                         ^^^^^^^: () => Promise<Response>   (TyFunction)
+
+const awaitData = async () => {
+>     ^^^^^^^^^: () => Promise<void>   (TyFunction)
+
+  await fetch('/');
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+
+  await fetch('/');
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+
+console.log({ foo: 42, ...awaitData() });
+>^^^^^^^: Console   (TyTypeReference)
+
+console.log({ foo: 42, ...awaitData() });
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+console.log({ foo: 42, ...awaitData() });
+>       ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log({ foo: 42, ...awaitData() });
+>             ^^^: number   (TyNumber)
+
+console.log({ foo: 42, ...awaitData() });
+>                         ^^^^^^^^^: () => Promise<void>   (TyFunction)
+
+const getData = () => fetch('/');
+>     ^^^^^^^: () => Promise<Response>   (TyFunction)
+
+const getData = () => fetch('/');
+>                     ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+
+console.log({ foo: 42, ...(await getData()) });
+>^^^^^^^: Console   (TyTypeReference)
+
+console.log({ foo: 42, ...(await getData()) });
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+console.log({ foo: 42, ...(await getData()) });
+>       ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log({ foo: 42, ...(await getData()) });
+>             ^^^: number   (TyNumber)
+
+console.log({ foo: 42, ...(await getData()) });
+>                                ^^^^^^^: () => Promise<Response>   (TyFunction)
+
+const awaitData = async () => {
+>     ^^^^^^^^^: () => Promise<void>   (TyFunction)
+
+  await fetch('/');
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+
+  await fetch('/');
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+
+console.log({ foo: 42, ...(await awaitData()) });
+>^^^^^^^: Console   (TyTypeReference)
+
+console.log({ foo: 42, ...(await awaitData()) });
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+console.log({ foo: 42, ...(await awaitData()) });
+>       ^^^: (...data: any[]) => void   (TyFunction)
+
+console.log({ foo: 42, ...(await awaitData()) });
+>             ^^^: number   (TyNumber)
+
+console.log({ foo: 42, ...(await awaitData()) });
+>                                ^^^^^^^^^: () => Promise<void>   (TyFunction)

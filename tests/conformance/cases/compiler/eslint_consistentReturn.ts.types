@@ -1,0 +1,62 @@
+function foo(): undefined {}
+>        ^^^: { (): undefined; (): void; }   (TyObject)
+
+function bar(flag: boolean): undefined {
+>        ^^^: { (flag: boolean): undefined; (flag: boolean): void; }   (TyObject)
+
+function bar(flag: boolean): undefined {
+>            ^^^^: boolean   (TyBoolean)
+
+  if (flag) return foo();
+>     ^^^^: boolean   (TyBoolean)
+
+  if (flag) return foo();
+>                  ^^^: { (): undefined; (): void; }   (TyObject)
+
+async function baz(flag: boolean): Promise<undefined> {
+>              ^^^: { (flag: boolean): Promise<undefined>; (flag: boolean): Promise<void | number>; }   (TyObject)
+
+async function baz(flag: boolean): Promise<undefined> {
+>                  ^^^^: boolean   (TyBoolean)
+
+async function baz(flag: boolean): Promise<undefined> {
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+async function baz(flag: boolean): Promise<undefined> {
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  if (flag) return;
+>     ^^^^: boolean   (TyBoolean)
+
+  return foo();
+>        ^^^: { (): undefined; (): void; }   (TyObject)
+
+function foo(): void {}
+>        ^^^: { (): undefined; (): void; }   (TyObject)
+
+function bar(flag: boolean): void {
+>        ^^^: { (flag: boolean): undefined; (flag: boolean): void; }   (TyObject)
+
+function bar(flag: boolean): void {
+>            ^^^^: boolean   (TyBoolean)
+
+  if (flag) return foo();
+>     ^^^^: boolean   (TyBoolean)
+
+  if (flag) return foo();
+>                  ^^^: { (): undefined; (): void; }   (TyObject)
+
+async function baz(flag: boolean): Promise<void | number> {
+>              ^^^: { (flag: boolean): Promise<undefined>; (flag: boolean): Promise<void | number>; }   (TyObject)
+
+async function baz(flag: boolean): Promise<void | number> {
+>                  ^^^^: boolean   (TyBoolean)
+
+async function baz(flag: boolean): Promise<void | number> {
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+async function baz(flag: boolean): Promise<void | number> {
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  if (flag) return 42;
+>     ^^^^: boolean   (TyBoolean)
