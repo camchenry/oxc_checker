@@ -3067,6 +3067,65 @@ mod test {
     }
 
     #[test]
+    fn object_literal_callbacks_share_intra_expression_inference() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function configure<T>(options: {
+            create: () => T;
+            consume: (value: T) => void;
+        }): T;
+
+        const result = configure({
+            create: () => ({ value: 1 }),
+            consume: (item) => {
+                const derivedValue = item.value;
+            },
+        });
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "result").to_type_string(),
+            "{ value: number; }"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "item").to_type_string(),
+            "{ value: number; }"
+        );
+        assert_eq!(get_first_symbol_type(&ret, "derivedValue"), Ty::number());
+    }
+
+    #[test]
+    fn tuple_callbacks_share_intra_expression_inference() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function configure<T>(callbacks: [() => T, (value: T) => void]): T;
+
+        const result = configure([
+            () => ({ value: 1 }),
+            (item) => {
+                const derivedValue = item.value;
+            },
+        ]);
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "result").to_type_string(),
+            "{ value: number; }"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "item").to_type_string(),
+            "{ value: number; }"
+        );
+        assert_eq!(get_first_symbol_type(&ret, "derivedValue"), Ty::number());
+    }
+
+    #[test]
     fn awaited_special_handling_requires_global_awaited_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

@@ -72,6 +72,18 @@ fn record_key_matches_property_name(key_type: Ty<'_>, property_name: &str) -> bo
         == property_name
 }
 
+fn array_expression_element_span(element: &ArrayExpressionElement<'_>) -> Option<Span> {
+    match element {
+        ArrayExpressionElement::SpreadElement(spread) => Some(spread.argument.span()),
+        ArrayExpressionElement::Elision(_) => None,
+        _ => Some(element.to_expression().span()),
+    }
+}
+
+fn span_contains(outer: Span, inner: Span) -> bool {
+    outer.start <= inner.start && inner.end <= outer.end
+}
+
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum FunctionKind<'a> {
@@ -3867,8 +3879,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 GetTypeFlags::NONE
             };
             let parameter_type = self.instantiate_type(parameter_type, &mapper);
-            let argument_type =
-                self.get_type_of_expression_with_node(program_id, argument, node_id, flags);
+            let argument_type = self.get_type_of_call_argument_for_parameter(
+                program_id,
+                argument,
+                node_id,
+                parameter_type,
+                flags,
+            );
             if !self.is_assignable_to(argument_type, parameter_type) {
                 return false;
             }
@@ -4760,6 +4777,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             })
             .or_else(|| {
+                self.get_contextual_type_of_array_element(program_id, node_id, function_span)
+            })
+            .or_else(|| {
                 self.get_contextual_type_of_binding_initializer(program_id, node_id, function_span)
             })
             .or_else(|| {
@@ -4854,7 +4874,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         value_span: Span,
     ) -> Option<Ty<'a>> {
         let mut property_name = None;
-        let mut object_span = None;
+        let mut object_expression = None;
 
         if let AstKind::ObjectProperty(property) = self.node_kind(NodeRef::new(program_id, node_id))
             && property.value.span() == value_span
@@ -4868,7 +4888,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     property_name = property_key_name_str(&property.key);
                 }
                 AstKind::ObjectExpression(object) if property_name.is_some() => {
-                    object_span = Some(object.span);
+                    object_expression = Some(object);
                     break;
                 }
                 _ => {}
@@ -4876,10 +4896,339 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let property_name = property_name?;
-        let object_context =
-            self.get_contextual_type_of_call_argument(program_id, node_id, object_span?)?;
+        let object = object_expression?;
+        let object_context = self
+            .get_contextual_type_of_object_property_value_from_intra_expression(
+                program_id, node_id, object, value_span,
+            )
+            .or_else(|| {
+                self.get_contextual_type_of_call_argument(program_id, node_id, object.span)
+            })?;
 
         self.get_destructured_property_type(program_id, object_context, property_name)
+    }
+
+    fn get_contextual_type_of_object_property_value_from_intra_expression(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        object: &'a ObjectExpression<'a>,
+        current_value_span: Span,
+    ) -> Option<Ty<'a>> {
+        let call_expression = self.nodes(program_id).ancestors(node_id).find_map(|node| {
+            let AstKind::CallExpression(call_expression) = node.kind() else {
+                return None;
+            };
+            call_expression
+                .arguments
+                .iter()
+                .any(|argument| {
+                    argument
+                        .as_expression()
+                        .is_some_and(|expression| expression.span() == object.span)
+                })
+                .then_some(call_expression)
+        })?;
+        let argument_index = call_expression.arguments.iter().position(|argument| {
+            argument
+                .as_expression()
+                .is_some_and(|expression| expression.span() == object.span)
+        })?;
+
+        let callee_type = self.get_type_of_expression_with_node(
+            program_id,
+            &call_expression.callee,
+            Some(node_id),
+            GetTypeFlags::NONE,
+        );
+        let callee_signature = self
+            .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
+            .into_iter()
+            .next()?;
+        let parameter_type =
+            self.get_call_parameter_type_at(callee_signature.function, argument_index)?;
+
+        let argument_types = call_expression
+            .arguments
+            .iter()
+            .enumerate()
+            .filter_map(|(index, argument)| {
+                let argument = argument.as_expression()?;
+                let argument_type = if argument.span() == object.span {
+                    self.get_type_of_object_expression_excluding_property_value(
+                        program_id,
+                        object,
+                        current_value_span,
+                    )
+                } else {
+                    let parameter_type =
+                        self.get_call_parameter_type_at(callee_signature.function, index);
+                    let flags =
+                        if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
+                            GetTypeFlags::PRESERVE_LITERALS
+                        } else {
+                            GetTypeFlags::NONE
+                        };
+                    self.get_type_of_expression_with_node(
+                        program_id,
+                        argument,
+                        Some(node_id),
+                        flags,
+                    )
+                };
+                Some((index, argument_type))
+            })
+            .collect::<Vec<_>>();
+
+        let inference = self.infer_call_type_parameter_resolution_from_argument_types(
+            program_id,
+            callee_signature.function,
+            call_expression.type_arguments.as_deref(),
+            argument_types,
+        );
+        Some(self.instantiate_type(parameter_type, inference.mapper()))
+    }
+
+    fn get_type_of_object_expression_excluding_property_value(
+        &self,
+        program_id: program::ProgramId,
+        object: &'a ObjectExpression<'a>,
+        excluded_value_span: Span,
+    ) -> Ty<'a> {
+        Ty::object(
+            self.arena(),
+            object.properties.iter().filter_map(|property| {
+                let ObjectPropertyKind::ObjectProperty(property) = property else {
+                    return None;
+                };
+                if property.value.span() == excluded_value_span {
+                    return None;
+                }
+                let name = property_key_name_str(&property.key)?;
+                let ty = self.get_type_of_expression_with_node(
+                    program_id,
+                    &property.value,
+                    None,
+                    GetTypeFlags::NONE,
+                );
+                Some(Ty::property(name, ty))
+            }),
+        )
+    }
+
+    fn get_contextual_type_of_array_element(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        value_span: Span,
+    ) -> Option<Ty<'a>> {
+        let (array, element_index) =
+            self.nodes(program_id).ancestors(node_id).find_map(|node| {
+                let AstKind::ArrayExpression(array) = node.kind() else {
+                    return None;
+                };
+                array
+                    .elements
+                    .iter()
+                    .position(|element| {
+                        array_expression_element_span(element)
+                            .is_some_and(|element_span| span_contains(element_span, value_span))
+                    })
+                    .map(|index| (array, index))
+            })?;
+
+        self.get_contextual_type_of_array_element_from_intra_expression(
+            program_id,
+            node_id,
+            array,
+            element_index,
+        )
+        .or_else(|| {
+            let array_context =
+                self.get_contextual_type_of_call_argument(program_id, node_id, array.span)?;
+            self.get_contextual_type_of_array_element_at(program_id, array_context, element_index)
+        })
+    }
+
+    fn get_contextual_type_of_array_element_from_intra_expression(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        array: &'a ArrayExpression<'a>,
+        element_index: usize,
+    ) -> Option<Ty<'a>> {
+        let call_expression = self.nodes(program_id).ancestors(node_id).find_map(|node| {
+            let AstKind::CallExpression(call_expression) = node.kind() else {
+                return None;
+            };
+            call_expression
+                .arguments
+                .iter()
+                .any(|argument| {
+                    argument
+                        .as_expression()
+                        .is_some_and(|expression| expression.span() == array.span)
+                })
+                .then_some(call_expression)
+        })?;
+        let argument_index = call_expression.arguments.iter().position(|argument| {
+            argument
+                .as_expression()
+                .is_some_and(|expression| expression.span() == array.span)
+        })?;
+
+        let callee_type = self.get_type_of_expression_with_node(
+            program_id,
+            &call_expression.callee,
+            Some(node_id),
+            GetTypeFlags::NONE,
+        );
+        let callee_signature = self
+            .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
+            .into_iter()
+            .next()?;
+        let parameter_type =
+            self.get_call_parameter_type_at(callee_signature.function, argument_index)?;
+
+        let argument_types = call_expression
+            .arguments
+            .iter()
+            .enumerate()
+            .filter_map(|(index, argument)| {
+                let argument = argument.as_expression()?;
+                let argument_type = if argument.span() == array.span {
+                    self.get_type_of_array_expression_as_tuple_excluding_element(
+                        program_id,
+                        array,
+                        element_index,
+                    )
+                } else {
+                    let parameter_type =
+                        self.get_call_parameter_type_at(callee_signature.function, index);
+                    let flags =
+                        if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
+                            GetTypeFlags::PRESERVE_LITERALS
+                        } else {
+                            GetTypeFlags::NONE
+                        };
+                    self.get_type_of_expression_with_node(
+                        program_id,
+                        argument,
+                        Some(node_id),
+                        flags,
+                    )
+                };
+                Some((index, argument_type))
+            })
+            .collect::<Vec<_>>();
+        let inference = self.infer_call_type_parameter_resolution_from_argument_types(
+            program_id,
+            callee_signature.function,
+            call_expression.type_arguments.as_deref(),
+            argument_types,
+        );
+        let array_context = self.instantiate_type(parameter_type, inference.mapper());
+        self.get_contextual_type_of_array_element_at(program_id, array_context, element_index)
+    }
+
+    pub(crate) fn get_type_of_call_argument_for_parameter(
+        &self,
+        program_id: program::ProgramId,
+        argument: &'a Expression<'a>,
+        node_id: Option<NodeId>,
+        parameter_type: Ty<'a>,
+        flags: GetTypeFlags,
+    ) -> Ty<'a> {
+        if let Expression::ArrayExpression(array) = argument
+            && matches!(
+                self.expand_type_at_use(program_id, parameter_type, 0),
+                Ty::Tuple(_)
+            )
+        {
+            return self.get_type_of_array_expression_as_tuple_for_call_argument(
+                program_id, array, node_id, flags,
+            );
+        }
+
+        self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
+    }
+
+    pub(crate) fn get_type_of_array_expression_as_tuple_for_call_argument(
+        &self,
+        program_id: program::ProgramId,
+        array: &'a ArrayExpression<'a>,
+        node_id: Option<NodeId>,
+        flags: GetTypeFlags,
+    ) -> Ty<'a> {
+        self.get_type_of_array_expression_as_tuple_with_excluded_element(
+            program_id, array, None, node_id, flags,
+        )
+    }
+
+    fn get_type_of_array_expression_as_tuple_excluding_element(
+        &self,
+        program_id: program::ProgramId,
+        array: &'a ArrayExpression<'a>,
+        excluded_index: usize,
+    ) -> Ty<'a> {
+        self.get_type_of_array_expression_as_tuple_with_excluded_element(
+            program_id,
+            array,
+            Some(excluded_index),
+            None,
+            GetTypeFlags::NONE,
+        )
+    }
+
+    fn get_type_of_array_expression_as_tuple_with_excluded_element(
+        &self,
+        program_id: program::ProgramId,
+        array: &'a ArrayExpression<'a>,
+        excluded_index: Option<usize>,
+        node_id: Option<NodeId>,
+        flags: GetTypeFlags,
+    ) -> Ty<'a> {
+        Ty::tuple(
+            self.arena(),
+            array
+                .elements
+                .iter()
+                .enumerate()
+                .map(|(index, element)| {
+                    if excluded_index == Some(index) {
+                        TupleElement::Regular(Ty::any())
+                    } else {
+                        TupleElement::Regular(self.get_type_of_array_expression_element(
+                            program_id, element, node_id, flags,
+                        ))
+                    }
+                })
+                .collect(),
+        )
+    }
+
+    fn get_contextual_type_of_array_element_at(
+        &self,
+        program_id: program::ProgramId,
+        array_context: Ty<'a>,
+        element_index: usize,
+    ) -> Option<Ty<'a>> {
+        let array_context = self.expand_type_at_use(program_id, array_context, 0);
+        match array_context {
+            Ty::Array(array) => Some(array.element_type),
+            Ty::Tuple(_) => tuple_element_type_at_index(&array_context, element_index),
+            Ty::Union(union) => {
+                let element_types = union
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        self.get_contextual_type_of_array_element_at(program_id, *ty, element_index)
+                    })
+                    .collect::<Vec<_>>();
+                (!element_types.is_empty()).then(|| Ty::union(self.arena(), element_types))
+            }
+            _ => None,
+        }
     }
 
     fn get_contextual_type_of_binding_initializer(

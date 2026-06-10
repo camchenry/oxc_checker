@@ -1,6 +1,7 @@
 use oxc_ast::ast::{
     ArrowFunctionExpression, CallExpression, Expression, FormalParameters, Function, FunctionBody,
     NewExpression, ReturnStatement, TSSignature, TSTupleElement, TSType,
+    TSTypeParameterInstantiation,
 };
 use oxc_ast_visit::Visit;
 use oxc_semantic::{NodeId, ScopeFlags};
@@ -721,6 +722,18 @@ fn literal_base_type(ty: Ty<'_>) -> Option<Ty<'static>> {
     }
 }
 
+fn call_parameter_type_at<'a>(function: &TyFunction<'a>, index: usize) -> Option<Ty<'a>> {
+    let parameter = function
+        .parameters
+        .get(index)
+        .or_else(|| function.parameters.iter().find(|parameter| parameter.rest))?;
+    if parameter.rest {
+        Some(parameter.ty.array_element_type().unwrap_or(parameter.ty))
+    } else {
+        Some(parameter.ty)
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum InferenceVariance {
     Covariant,
@@ -1170,11 +1183,46 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
     ) -> InferenceResolution<'a> {
-        let (substitutions, _) = self.explicit_type_parameter_substitutions(
+        let argument_types = call_expression
+            .arguments
+            .iter()
+            .enumerate()
+            .filter_map(|(index, argument)| {
+                let argument = argument.as_expression()?;
+                let parameter_type = call_parameter_type_at(function, index)?;
+                let flags = if self.could_contain_type_variables(parameter_type) {
+                    GetTypeFlags::PRESERVE_LITERALS
+                } else {
+                    GetTypeFlags::NONE
+                };
+                let argument_type = self.get_type_of_call_argument_for_parameter(
+                    program_id,
+                    argument,
+                    node_id,
+                    parameter_type,
+                    flags,
+                );
+                Some((index, argument_type))
+            })
+            .collect::<Vec<_>>();
+
+        self.infer_call_type_parameter_resolution_from_argument_types(
             program_id,
             function,
             call_expression.type_arguments.as_deref(),
-        );
+            argument_types,
+        )
+    }
+
+    pub(crate) fn infer_call_type_parameter_resolution_from_argument_types(
+        &self,
+        program_id: ProgramId,
+        function: &'a TyFunction<'a>,
+        type_arguments: Option<&'a TSTypeParameterInstantiation<'a>>,
+        argument_types: impl IntoIterator<Item = (usize, Ty<'a>)>,
+    ) -> InferenceResolution<'a> {
+        let (substitutions, _) =
+            self.explicit_type_parameter_substitutions(program_id, function, type_arguments);
         let mut context = InferenceContext::with_substitutions(
             function.type_parameters.iter().copied(),
             &substitutions,
@@ -1183,22 +1231,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.inference_return_type_for_literal_widening(program_id, function.return_type),
         );
 
-        for (argument, parameter) in call_expression
-            .arguments
-            .iter()
-            .zip(function.parameters.iter())
-        {
-            let Some(argument) = argument.as_expression() else {
+        for (argument_index, argument_type) in argument_types {
+            let Some(parameter_type) = call_parameter_type_at(function, argument_index) else {
                 continue;
             };
-            let flags = if self.could_contain_type_variables(parameter.ty) {
-                GetTypeFlags::PRESERVE_LITERALS
-            } else {
-                GetTypeFlags::NONE
-            };
-            let argument_type =
-                self.get_type_of_expression_with_node(program_id, argument, node_id, flags);
-            infer_types(parameter.ty, argument_type, &mut context, self.arena());
+            infer_types(parameter_type, argument_type, &mut context, self.arena());
         }
 
         context.resolve_with_contextual_mapper(self.arena(), InferenceResolutionFlags::NONE)
