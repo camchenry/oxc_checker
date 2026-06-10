@@ -1996,6 +1996,55 @@ mod test {
     }
 
     #[test]
+    fn indexed_access_resolves_mapped_type_property_templates() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type Defaults = { requireExactProps: false };
+        type Wrapper<T> = T & {};
+        type Apply<SpecifiedOptions extends object> = {
+            [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
+                ? SpecifiedOptions[Key]
+                : Defaults[Key]
+        };
+        type ApplyWrapped<SpecifiedOptions extends object> = {
+            [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
+                ? Wrapper<SpecifiedOptions[Key & keyof SpecifiedOptions]>
+                : Defaults[Key]
+        };
+        type Deferred<Options extends object> = Apply<Options>["requireExactProps"];
+        type DeferredWrapped<Options extends object> = ApplyWrapped<Options>["requireExactProps"];
+        type Concrete = Apply<{ requireExactProps: true }>["requireExactProps"];
+        type Outer<Options extends object> = Apply<Options>["requireExactProps"] extends true ? "yes" : "no";
+        type OuterViaParameter<Options extends object> = _Outer<Apply<Options>>;
+        type _Outer<Options extends { requireExactProps: boolean }> = Options["requireExactProps"] extends true ? "yes" : "no";
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Deferred").to_type_string(),
+            "\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "DeferredWrapped").to_type_string(),
+            "\"requireExactProps\" extends keyof Options ? Wrapper<Options[keyof Options & \"requireExactProps\"]> : false"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "Concrete").to_type_string(),
+            "true"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "Outer").to_type_string(),
+            "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "OuterViaParameter").to_type_string(),
+            "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
+        );
+    }
+
+    #[test]
     fn tuple_wrapped_conditionals_are_not_distributive() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

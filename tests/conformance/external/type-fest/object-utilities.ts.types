@@ -167,7 +167,7 @@ type DefaultExceptOptions = {
 > ^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral)
 
 export type Except<
->           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   ObjectType,
 > ^^^^^^^^^^: any   (TyAny)
@@ -263,7 +263,7 @@ type _Except<
 >                  ^^^^^^^^: any   (TyAny)
 
 import type { Except } from './except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 import type { HomomorphicPick } from './internal/index'
 >             ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped)
@@ -272,7 +272,7 @@ import type { Simplify } from './simplify'
 >             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->           ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>           ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
 >                       ^^^^^^^^: any   (TyAny)
@@ -290,10 +290,10 @@ export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
 >                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
 >        ^^^^^^^^: any   (TyAny)
@@ -368,13 +368,13 @@ export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
 >                                           ^^^^^^^^^^: any   (TyAny)
 
 import type { Except } from '../source/except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 import type { KeysOfUnion } from '../source/keys-of-union'
 >             ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
 
 import type { SetRequired } from '../source/set-required'
->             ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>             ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 import type { Simplify } from '../source/simplify'
 >             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
@@ -404,10 +404,10 @@ type PublicUser = Except<User, 'email'>
 >    ^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject)
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type PublicUser = Except<User, 'email'>
 >                        ^^^^: any   (TyAny)
@@ -416,10 +416,10 @@ type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >    ^^^^^^^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >                              ^^^^: any   (TyAny)
@@ -428,19 +428,19 @@ type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >                                               ^^^^^^^^^^^^^^^^^: true   (TyBooleanLiteral)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->    ^^^^^^^^^^^^^^^: { [KeyType in keyof (Except<User, "name" | "email"> & Required<HomomorphicPick<User, "name" | "email">>)]: (Except<User, "name" | "email"> & Required<HomomorphicPick<User, "name" | "email">>)[KeyType]; }   (TyMapped)
+>    ^^^^^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; }   (TyMapped)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>                      ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->                      ^^^^^^^^^^^: { [KeyType in keyof (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)]: (Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
+>                      ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
 >                                  ^^^^: any   (TyAny)
 
 type UserPreview = Simplify<
->    ^^^^^^^^^^^: { [KeyType in keyof (Except<ContactableUser, "profile"> & { displayName: string; })]: (Except<ContactableUser, "profile"> & { displayName: string; })[KeyType]; }   (TyMapped)
+>    ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; } as Filter<KeyType, "profile">]: { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; }[KeyType]; } & { displayName: string; })]: ({ [KeyType in keyof { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; } as Filter<KeyType, "profile">]: { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; }[KeyType]; } & { displayName: string; })[KeyType]; }   (TyMapped)
 
 type UserPreview = Simplify<
 >                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
@@ -449,10 +449,10 @@ type UserPreview = Simplify<
 >                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
 >        ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -494,7 +494,7 @@ type Event = CreatedEvent | DeletedEvent
 >                           ^^^^^^^^^^^^: any   (TyAny)
 
 type EventKey = KeysOfUnion<Event>
->    ^^^^^^^^: keyof (((Event extends unknown ? Record<keyof Event, never> : never) extends unknown ? (distributedUnion: Event extends unknown ? Record<keyof Event, never> : never) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & (Event extends unknown ? Record<keyof Event, never> : never) : never)   (TyKeyof)
+>    ^^^^^^^^: keyof (((({ type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) extends unknown ? (distributedUnion: { type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) => void : never) | ((distributedUnion: Record<keyof { type: "deleted"; id: string; actor?: string; }, never>) => void)) extends (mergedIntersection: infer Intersection) => void ? Intersection & (({ type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) | Record<keyof { type: "deleted"; id: string; actor?: string; }, never>) : never)   (TyKeyof)
 
 type EventKey = KeysOfUnion<Event>
 >               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)

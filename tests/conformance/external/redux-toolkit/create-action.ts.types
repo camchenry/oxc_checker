@@ -1301,7 +1301,7 @@ if (increment.match(unknownAction)) {
 >      ^^^^^^^^^^^: any   (TyAny)
 
 export type IncrementAction = ReturnType<typeof increment>
->           ^^^^^^^^^^^^^^^: PayloadActionCreator<number, "counter/increment"> extends (...args: any) => infer R ? R : any   (TyConditional)
+>           ^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends (...args: any) => infer R ? R : any   (TyConditional)
 
 export type IncrementAction = ReturnType<typeof increment>
 >                             ^^^^^^^^^^: any   (TyAny)
@@ -1310,7 +1310,7 @@ export type IncrementAction = ReturnType<typeof increment>
 >                                               ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
->           ^^^^^^^^^^: PayloadActionCreator<void, "todos/add"> extends (...args: any) => infer R ? R : any   (TyConditional)
+>           ^^^^^^^^^^: ActionCreatorWithoutPayload<"todos/add"> extends (...args: any) => infer R ? R : any   (TyConditional)
 
 export type TodoAction = ReturnType<typeof addTodo>
 >                        ^^^^^^^^^^: any   (TyAny)
@@ -1319,7 +1319,7 @@ export type TodoAction = ReturnType<typeof addTodo>
 >                                          ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->           ^^^^^^^^^^^^^^^^^^^^: PayloadActionCreator<number, "counter/increment"> extends Matcher<infer T> ? T : never   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends Matcher<infer T> ? T : never   (TyConditional)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
 >                                  ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)

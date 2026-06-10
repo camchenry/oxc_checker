@@ -929,7 +929,7 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                                       ^^^^^: ErrorConstructor   (TyTypeReference)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->    ^^^^^^^^^^^^^^: TodoQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string   (TyConditional)
+>    ^^^^^^^^^^^^^^: (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string   (TyConditional)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
@@ -989,16 +989,16 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference)
 
   reducer: (data, todo) => ({
-> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }   (TyFunction)
+> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: { id: number; title: string; }) => { pages: (Todo | { id: number; title: string; })[]; pageParams: number[]; }   (TyFunction)
 
   reducer: (data, todo) => ({
 >           ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
   reducer: (data, todo) => ({
->                 ^^^^: Todo   (TyTypeReference)
+>                 ^^^^: { id: number; title: string; }   (TyObject)
 
     pages: [...data.pages, todo],
->   ^^^^^: Todo[]   (TyArray)
+>   ^^^^^: (Todo | { id: number; title: string; })[]   (TyArray)
 
     pages: [...data.pages, todo],
 >              ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
@@ -1007,7 +1007,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                   ^^^^^: Todo[]   (TyArray)
 
     pages: [...data.pages, todo],
->                          ^^^^: Todo   (TyTypeReference)
+>                          ^^^^: { id: number; title: string; }   (TyObject)
 
     pageParams: [...data.pageParams, pageParam],
 >   ^^^^^^^^^^: number[]   (TyArray)

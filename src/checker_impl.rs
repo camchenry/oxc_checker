@@ -1504,6 +1504,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 };
                 let match_check_type = if contains_infer {
                     self.apparent_type_for_conditional_match(program_id, source_check_type, 0)
+                } else if matches!(source_check_type, Ty::IndexedAccess(_)) {
+                    self.expand_type_at_use(program_id, source_check_type, 0)
                 } else {
                     source_check_type
                 };
@@ -1802,6 +1804,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_for_indexed_access(program_id, *ty, property_name)
             }),
+            Ty::Mapped(mapped) => {
+                self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
+            }
             Ty::TypeReference(reference) => self
                 .get_expanded_type_alias_reference_type(program_id, reference, 0)
                 .and_then(|(expanded_program_id, expanded)| {
@@ -1815,6 +1820,114 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_property_type_of_interface_type(program_id, reference, property_name)
                 }),
             _ => None,
+        }
+    }
+
+    fn get_property_type_of_mapped_type(
+        &self,
+        program_id: program::ProgramId,
+        mapped: &TyMapped<'a>,
+        property_name: &str,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        if let Some(properties) =
+            self.properties_for_mapped_constraint(program_id, mapped.constraint, depth + 1)
+            && !properties
+                .iter()
+                .any(|property| !property.computed && property.name == property_name)
+        {
+            return None;
+        }
+
+        let key_type = Ty::string_literal(self.arena(), self.arena().str(property_name));
+        let mapper = TypeMapper::single(
+            Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+            key_type,
+        );
+
+        if let Some(name_type) = mapped.name_type {
+            let name_type = self.instantiate_type(name_type, &mapper);
+            let name_type = self.expand_type_at_use(program_id, name_type, depth + 1);
+            if name_type.is_never() {
+                return None;
+            }
+            let remapped_name = index_type_to_property_name(self.arena(), name_type)?;
+            if remapped_name != property_name {
+                return None;
+            }
+        }
+
+        let ty = self.instantiate_type(mapped.template, &mapper);
+        let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+        let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
+        Some(
+            if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) {
+                Ty::union(self.arena(), [ty, Ty::undefined()])
+            } else {
+                ty
+            },
+        )
+    }
+
+    fn expand_deferred_conditional_branches_at_use(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::Conditional(conditional) => Ty::Conditional(self.arena().alloc(TyConditional {
+                check_type: conditional.check_type,
+                extends_type: conditional.extends_type,
+                true_type: self.expand_deferred_conditional_branch_at_use(
+                    program_id,
+                    conditional.true_type,
+                    depth + 1,
+                ),
+                false_type: self.expand_deferred_conditional_branch_at_use(
+                    program_id,
+                    conditional.false_type,
+                    depth + 1,
+                ),
+                is_distributive: conditional.is_distributive,
+            })),
+            _ => ty,
+        }
+    }
+
+    fn expand_deferred_conditional_branch_at_use(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(reference) => {
+                let type_arguments = reference
+                    .type_arguments
+                    .iter()
+                    .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1))
+                    .collect::<Vec<_>>();
+                Ty::type_reference_with_display_type_argument_count(
+                    self.arena(),
+                    reference.name,
+                    type_arguments,
+                    reference.display_type_argument_count,
+                )
+            }
+            _ => self.expand_type_for_index_lookup(program_id, ty, depth + 1),
         }
     }
 
@@ -1882,7 +1995,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     conditional.is_distributive,
                 );
                 if matches!(ty, Ty::Conditional(_)) {
-                    Ty::Conditional(conditional)
+                    if matches!(conditional.check_type, Ty::IndexedAccess(_)) {
+                        Ty::Conditional(self.arena().alloc(TyConditional {
+                            check_type,
+                            extends_type,
+                            true_type: conditional.true_type,
+                            false_type: conditional.false_type,
+                            is_distributive: conditional.is_distributive,
+                        }))
+                    } else {
+                        Ty::Conditional(conditional)
+                    }
                 } else {
                     self.expand_type_at_use(program_id, ty, depth + 1)
                 }
@@ -1927,6 +2050,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     })
                     .unwrap_or(reference_ty)
             }
+            Ty::IndexedAccess(indexed_access) => {
+                let object_type = self.expand_type_for_index_lookup(
+                    program_id,
+                    indexed_access.object_type,
+                    depth + 1,
+                );
+                let index_type =
+                    self.normalize_index_access_index_type_for_display(indexed_access.index_type);
+                let lookup_index_type =
+                    self.expand_type_for_index_lookup(program_id, index_type, depth + 1);
+                self.resolve_indexed_access_type(program_id, object_type, lookup_index_type)
+                    .map(|resolved| {
+                        self.expand_type_for_index_lookup(program_id, resolved, depth + 1)
+                    })
+                    .unwrap_or_else(|| Ty::indexed_access(self.arena(), object_type, index_type))
+            }
             Ty::Conditional(conditional) => {
                 let check_type = self.expand_type_for_index_lookup(
                     program_id,
@@ -1966,6 +2105,31 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn normalize_index_access_index_type_for_display(&self, ty: Ty<'a>) -> Ty<'a> {
+        let Ty::Intersection(intersection) = ty else {
+            return ty;
+        };
+        let mut types = intersection.types.iter().copied().collect::<Vec<_>>();
+        let mut changed = false;
+        for i in 0..types.len() {
+            if !matches!(types[i], Ty::StringLiteral(_) | Ty::NumberLiteral(_)) {
+                continue;
+            }
+            if let Some(keyof_offset) = types[i + 1..]
+                .iter()
+                .position(|ty| matches!(ty, Ty::Keyof(_)))
+            {
+                types.swap(i, i + 1 + keyof_offset);
+                changed = true;
+            }
+        }
+        if changed {
+            Ty::intersection(self.arena(), types)
+        } else {
+            ty
+        }
+    }
+
     fn expand_mapped_type(
         &self,
         program_id: program::ProgramId,
@@ -2002,6 +2166,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
             let ty = self.instantiate_type(mapped.template, &mapper);
             let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+            let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
             expanded.push(TyProperty {
                 name: property_name,
                 ty,
@@ -2131,15 +2296,78 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
 
         self.fill_default_type_arguments(program_id, name, &mut type_arguments);
-
         let (symbol, declaration) =
             self.get_type_symbol_and_declaration_for_name(program_id, name)?;
+        if symbol.program_id != program_id {
+            type_arguments = type_arguments
+                .into_iter()
+                .map(|ty| {
+                    self.expand_type_alias_argument_for_foreign_declaration(
+                        program_id,
+                        ty,
+                        depth + 1,
+                    )
+                })
+                .collect::<Vec<_>>();
+        }
         self.get_expanded_type_alias_declaration(
             symbol.program_id,
             declaration,
             &type_arguments,
             depth,
         )
+    }
+
+    fn expand_type_alias_argument_for_foreign_declaration(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match ty {
+            Ty::TypeReference(reference) if self.is_lib_type_reference(program_id, reference) => ty,
+            Ty::TypeReference(reference) => self
+                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                .map(|(expanded_program_id, expanded)| {
+                    self.expand_type_at_use(expanded_program_id, expanded, depth + 1)
+                })
+                .unwrap_or(ty),
+            Ty::Union(union) => Ty::union(
+                self.arena(),
+                union.types.iter().map(|ty| {
+                    self.expand_type_alias_argument_for_foreign_declaration(
+                        program_id,
+                        *ty,
+                        depth + 1,
+                    )
+                }),
+            ),
+            Ty::Intersection(intersection) => Ty::intersection(
+                self.arena(),
+                intersection.types.iter().map(|ty| {
+                    self.expand_type_alias_argument_for_foreign_declaration(
+                        program_id,
+                        *ty,
+                        depth + 1,
+                    )
+                }),
+            ),
+            _ => ty,
+        }
+    }
+
+    fn is_lib_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> bool {
+        self.get_type_symbol_for_name(program_id, reference.name)
+            .and_then(|symbol| self.store.entry(symbol.program_id))
+            .is_some_and(program::ProgramEntry::is_lib)
     }
 
     fn get_flat_mapped_intersection_alias_reference(
@@ -5823,10 +6051,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
         let (symbol, declaration) =
             self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+        let type_arguments = if symbol.program_id != program_id {
+            reference
+                .type_arguments
+                .iter()
+                .map(|ty| {
+                    self.expand_type_alias_argument_for_foreign_declaration(
+                        program_id,
+                        *ty,
+                        depth + 1,
+                    )
+                })
+                .collect::<Vec<_>>()
+        } else {
+            reference.type_arguments.iter().copied().collect::<Vec<_>>()
+        };
         self.get_expanded_type_alias_declaration(
             symbol.program_id,
             declaration,
-            reference.type_arguments.as_slice(),
+            &type_arguments,
             depth + 1,
         )
         .map(|ty| (symbol.program_id, ty))

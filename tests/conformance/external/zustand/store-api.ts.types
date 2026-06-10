@@ -875,7 +875,7 @@ const useCounter = create(counterInitializer)
 >                         ^^^^^^^^^^^^^^^^^^: StateCreator<CounterState>   (TyTypeReference)
 
 type CounterFromHook = ExtractState<typeof useCounter>
->    ^^^^^^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>> extends { getState: () => infer T; } ? T : never   (TyConditional)
+>    ^^^^^^^^^^^^^^^: ({ (): ExtractState<StoreApi<CounterState>>; <U>(selector: (state: ExtractState<StoreApi<CounterState>>) => U): U; } & StoreApi<CounterState>) extends { getState: () => infer T; } ? T : never   (TyConditional)
 
 type CounterFromHook = ExtractState<typeof useCounter>
 >                      ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional)
