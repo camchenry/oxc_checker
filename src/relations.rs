@@ -18,7 +18,10 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
     let next_depth = depth + 1;
 
     match (source, target) {
+        (Ty::Never, _) => true,
+        (_, Ty::Never) => false,
         (_, Ty::Any | Ty::Unknown) | (Ty::Any, _) => true,
+        (Ty::Undefined, Ty::Void) => true,
         (Ty::Object(source), Ty::Object(target)) => {
             properties_assignable_to(&source.properties, &target.properties, next_depth)
         }
@@ -223,4 +226,73 @@ fn properties_assignable_to<'a>(
 
         is_assignable_to_at_depth(source_property.ty, target_property.ty, depth)
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_any_unknown_object_void_undefined_null_never_assignability() {
+        // All types are assignable to themselves.
+        assert!(is_assignable_to(Ty::any(), Ty::any()));
+        assert!(is_assignable_to(Ty::unknown(), Ty::unknown()));
+        assert!(is_assignable_to(
+            Ty::primitive_object(),
+            Ty::primitive_object()
+        ));
+        assert!(is_assignable_to(Ty::void(), Ty::void()));
+        assert!(is_assignable_to(Ty::undefined(), Ty::undefined()));
+        assert!(is_assignable_to(Ty::null(), Ty::null()));
+        assert!(is_assignable_to(Ty::never(), Ty::never()));
+        // `any` is assignable to all types, except for `never`
+        assert!(is_assignable_to(Ty::any(), Ty::unknown()));
+        assert!(is_assignable_to(Ty::any(), Ty::primitive_object()));
+        assert!(is_assignable_to(Ty::any(), Ty::void()));
+        assert!(is_assignable_to(Ty::any(), Ty::undefined()));
+        assert!(is_assignable_to(Ty::any(), Ty::null()));
+        assert!(!is_assignable_to(Ty::any(), Ty::never()));
+        // `unknown` is basically the same as `any`, but doesn't allow for any type to be assigned to it
+        assert!(is_assignable_to(Ty::unknown(), Ty::any()));
+        assert!(!is_assignable_to(Ty::unknown(), Ty::primitive_object()));
+        assert!(!is_assignable_to(Ty::unknown(), Ty::void()));
+        assert!(!is_assignable_to(Ty::unknown(), Ty::undefined()));
+        assert!(!is_assignable_to(Ty::unknown(), Ty::null()));
+        assert!(!is_assignable_to(Ty::unknown(), Ty::never()));
+        // `object` is assignable to `any`, `unknown`, and itself, but not to `void`, `undefined`, `null`, or `never`
+        assert!(is_assignable_to(Ty::primitive_object(), Ty::any()));
+        assert!(is_assignable_to(Ty::primitive_object(), Ty::unknown()));
+        assert!(!is_assignable_to(Ty::primitive_object(), Ty::void()));
+        assert!(!is_assignable_to(Ty::primitive_object(), Ty::undefined()));
+        assert!(!is_assignable_to(Ty::primitive_object(), Ty::null()));
+        assert!(!is_assignable_to(Ty::primitive_object(), Ty::never()));
+        // `void` is not assignable to anything, except for `any` and `unknown`
+        assert!(is_assignable_to(Ty::void(), Ty::any()));
+        assert!(is_assignable_to(Ty::void(), Ty::unknown()));
+        assert!(!is_assignable_to(Ty::void(), Ty::primitive_object()));
+        assert!(!is_assignable_to(Ty::void(), Ty::undefined()));
+        assert!(!is_assignable_to(Ty::void(), Ty::null()));
+        assert!(!is_assignable_to(Ty::void(), Ty::never()));
+        // `undefined` is not assignable to anything, except for `any`, `unknown`, and `void`
+        assert!(is_assignable_to(Ty::undefined(), Ty::any()));
+        assert!(is_assignable_to(Ty::undefined(), Ty::unknown()));
+        assert!(is_assignable_to(Ty::undefined(), Ty::void()));
+        assert!(!is_assignable_to(Ty::undefined(), Ty::primitive_object()));
+        assert!(!is_assignable_to(Ty::undefined(), Ty::null()));
+        assert!(!is_assignable_to(Ty::undefined(), Ty::never()));
+        // `null` is not assignable to anything, except for `any` and `unknown`
+        assert!(is_assignable_to(Ty::null(), Ty::any()));
+        assert!(is_assignable_to(Ty::null(), Ty::unknown()));
+        assert!(!is_assignable_to(Ty::null(), Ty::primitive_object()));
+        assert!(!is_assignable_to(Ty::null(), Ty::void()));
+        assert!(!is_assignable_to(Ty::null(), Ty::undefined()));
+        assert!(!is_assignable_to(Ty::null(), Ty::never()));
+        // `never` is assignable to everything
+        assert!(is_assignable_to(Ty::never(), Ty::any()));
+        assert!(is_assignable_to(Ty::never(), Ty::unknown()));
+        assert!(is_assignable_to(Ty::never(), Ty::primitive_object()));
+        assert!(is_assignable_to(Ty::never(), Ty::void()));
+        assert!(is_assignable_to(Ty::never(), Ty::undefined()));
+        assert!(is_assignable_to(Ty::never(), Ty::null()));
+    }
 }
