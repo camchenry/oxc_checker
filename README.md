@@ -36,6 +36,10 @@ What we are _not_ doing is almost as important as what we are doing. In order to
 | Emit (JS output) | ❌ Will not be supported |
 | Watch mode | ❌ Will not be supported |
 
+### Design decisions
+
+- **Always strict mode**: In order to reduce complexity in the type checker, all `strict` configuration options are always enabled, such as `strictNullChecks`.
+
 ## FAQ
 
 ### How can I contribute?
