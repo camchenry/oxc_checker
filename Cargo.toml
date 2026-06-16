@@ -41,6 +41,10 @@ harness = false
 name = "type_counts"
 path = "src/examples/type_counts.rs"
 
+[[example]]
+name = "type_check"
+path = "src/examples/type_check.rs"
+
 [profile.bench]
 debug = true
 

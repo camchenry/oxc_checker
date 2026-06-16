@@ -1,0 +1,47 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug type checker on current file",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--example", "type_check"],
+        "filter": {
+          "name": "type_check",
+          "kind": "example"
+        }
+      },
+      "args": ["${file}"],
+      "cwd": "${workspaceFolder}",
+      "sourceLanguages": ["rust"]
+    },
+    {
+      "name": "Debug conformance on current file",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": [
+          "test",
+          "--features",
+          "conformance",
+          "--no-run",
+          "--lib",
+          "conformance::full_conformance"
+        ],
+        "filter": {
+          "name": "oxc_checker",
+          "kind": "lib"
+        }
+      },
+      "args": [
+        "conformance::full_conformance",
+        "--exact",
+        "--nocapture",
+        "${file}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "sourceLanguages": ["rust"]
+    }
+  ]
+}
