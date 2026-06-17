@@ -1213,6 +1213,29 @@ mod test {
     }
 
     #[test]
+    fn assignability_handles_complex_types() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+
+        // Test that a function type is assignable to a more general function type
+        assert!(relations::is_assignable_to(
+            Ty::function(arena, vec![], vec![], Ty::string()),
+            Ty::function(arena, vec![], vec![], Ty::any())
+        ));
+
+        // Regression test: Check that thenable is assignable to an intersection type
+        let thenable = Ty::object(
+            arena,
+            [Ty::property(
+                "then",
+                Ty::function(arena, vec![], vec![], Ty::any()),
+            )],
+        );
+        let intersection = Ty::intersection(arena, [Ty::primitive_object(), thenable]);
+        assert!(relations::is_assignable_to(thenable, intersection));
+    }
+
+    #[test]
     fn simple_declared_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -3200,6 +3223,28 @@ mod test {
             get_type_alias_type(&ret, "Value").to_type_string(),
             "{ value: Promise<number>; }"
         );
+    }
+
+    #[test]
+    fn awaited_primitive_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        const arrayOfPromises = [
+            Promise.resolve(1),
+            Promise.resolve(2),
+            Promise.resolve(3),
+        ];
+        type T1 = Awaited<number>;
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "arrayOfPromises").to_type_string(),
+            "Promise<number>[]"
+        );
+        assert_eq!(get_type_alias_type(&ret, "T1").to_type_string(), "number");
     }
 
     #[test]
