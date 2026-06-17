@@ -42,6 +42,7 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
             .types
             .iter()
             .any(|target_type| is_assignable_to_at_depth(source, *target_type, next_depth)),
+        // TODO: intersection types
         (Ty::Function(source), Ty::Function(target)) => {
             source.parameters.len() == target.parameters.len()
                 && source.parameters.iter().zip(target.parameters.iter()).all(
@@ -108,6 +109,11 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
         (Ty::BooleanLiteral(_), Ty::Boolean) => true,
         (source, Ty::Keyof(target)) => is_assignable_to_keyof(source, target.target, next_depth),
         _ => false,
+        // _ => {
+        //     panic!(
+        //         "I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}"
+        //     );
+        // }
     }
 }
 
@@ -230,6 +236,10 @@ fn properties_assignable_to<'a>(
 
 #[cfg(test)]
 mod tests {
+    use oxc_allocator::Allocator;
+
+    use crate::CheckerArena;
+
     use super::*;
 
     #[test]
@@ -294,5 +304,120 @@ mod tests {
         assert!(is_assignable_to(Ty::never(), Ty::void()));
         assert!(is_assignable_to(Ty::never(), Ty::undefined()));
         assert!(is_assignable_to(Ty::never(), Ty::null()));
+    }
+
+    #[test]
+    fn test_intersection_assignability() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+
+        let number_and_string = Ty::intersection(
+            arena,
+            [
+                Ty::object(arena, [Ty::property("a", Ty::number())]),
+                Ty::object(arena, [Ty::property("b", Ty::string())]),
+            ],
+        );
+
+        // { a: number, b: string } -> { a: number } & { b: string }
+        assert!(is_assignable_to(
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::number()),
+                    Ty::property("b", Ty::string())
+                ]
+            ),
+            number_and_string
+        ));
+        // { a: number } -!> { a: number, b: string }
+        assert!(!is_assignable_to(
+            Ty::object(arena, [Ty::property("a", Ty::number())]),
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::number()),
+                    Ty::property("b", Ty::string())
+                ]
+            ),
+        ));
+        // { a: number } & { b: string } -> { a: number, b: string }
+        assert!(is_assignable_to(
+            number_and_string,
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::number()),
+                    Ty::property("b", Ty::string())
+                ]
+            ),
+        ));
+    }
+
+    #[test]
+    fn object_type_assignability() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+
+        // { a: number, b: string } is assignable to { a: number }
+        assert!(is_assignable_to(
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::number()),
+                    Ty::property("b", Ty::string())
+                ]
+            ),
+            Ty::object(arena, [Ty::property("a", Ty::number())])
+        ));
+
+        // { a: number } is not assignable to { a: number, b: string }
+        assert!(!is_assignable_to(
+            Ty::object(arena, [Ty::property("a", Ty::number())]),
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::number()),
+                    Ty::property("b", Ty::string())
+                ]
+            ),
+        ));
+
+        // { a: number, b: string } is assignable to {}
+        assert!(is_assignable_to(
+            Ty::object(
+                arena,
+                [
+                    Ty::property("a", Ty::number()),
+                    Ty::property("b", Ty::string())
+                ]
+            ),
+            Ty::object(arena, [])
+        ));
+    }
+
+    #[test]
+    fn test_primitive_object_type_assignability() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+
+        // primitive object is assignable to itself
+        assert!(is_assignable_to(
+            Ty::primitive_object(),
+            Ty::primitive_object()
+        ));
+        // `object` is assignable to {}
+        assert!(is_assignable_to(
+            Ty::primitive_object(),
+            Ty::object(arena, [])
+        ));
+        // `{}` is assignable to `object`
+        assert!(is_assignable_to(
+            Ty::object(arena, []),
+            Ty::primitive_object()
+        ));
+        // `{}` is not assignable to undefined, null
+        assert!(!is_assignable_to(Ty::object(arena, []), Ty::undefined()));
+        assert!(!is_assignable_to(Ty::object(arena, []), Ty::null()));
     }
 }
