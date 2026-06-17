@@ -38,7 +38,7 @@ fn run(path: PathBuf) -> Result<(), Box<dyn Error>> {
 
     for entry in store.entries().iter().filter(|entry| !entry.is_lib()) {
         for (node_id, _node) in entry.semantic().nodes().iter_enumerated() {
-            let _ = checker.get_type_at_location(NodeRef::new(entry.id(), node_id));
+            let _ty = checker.get_type_at_location(NodeRef::new(entry.id(), node_id));
         }
     }
 
