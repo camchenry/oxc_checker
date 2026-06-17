@@ -25,6 +25,12 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
         (Ty::Object(source), Ty::Object(target)) => {
             properties_assignable_to(&source.properties, &target.properties, next_depth)
         }
+        (Ty::PrimitiveObject, Ty::Object(target)) => {
+            properties_assignable_to(&[], &target.properties, next_depth)
+        }
+        (Ty::Object(source), Ty::PrimitiveObject) => {
+            properties_assignable_to(&source.properties, &[], next_depth)
+        }
         (Ty::ModuleNamespace(source), Ty::Object(target)) => {
             properties_assignable_to(&source.properties, &target.properties, next_depth)
         }

@@ -227,28 +227,28 @@ export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
 >                   ^^^^: unknown   (TyUnknown)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                   ^^^: <U>(callbackfn: (value: T, index: number, array: T[]) => U, thisArg?: any) => U[]   (TyFunction)
+>                                   ^^^: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]   (TyFunction)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                        ^^^^^: T   (TyTypeReference)
+>                                        ^^^^^: any   (TyAny)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >                                               ^^^^^: number   (TyNumber)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                      ^^^^^^: T[]   (TyArray)
+>                                                      ^^^^^^: any[]   (TyArray)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >                                                                 ^^^^^^^^^^: LazyEvaluator<any, any>   (TyTypeReference)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                            ^^^^^: T   (TyTypeReference)
+>                                                                            ^^^^^: any   (TyAny)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >                                                                                   ^^^^^: number   (TyNumber)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                                          ^^^^^^: T[]   (TyArray)
+>                                                                                          ^^^^^^: any[]   (TyArray)
 
 import type { Pred } from './internal/types'
 >             ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction)
