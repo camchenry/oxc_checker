@@ -3248,6 +3248,167 @@ mod test {
     }
 
     #[test]
+    fn awaited_conditional_alias_shape_resolves_nullish_branch() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type TestAwaited<T> = T extends null | undefined ? T :
+            T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ?
+                F extends ((value: infer V, ...args: infer _) => any) ?
+                    TestAwaited<V> :
+                never :
+            T;
+
+        type Nullish = TestAwaited<null | undefined>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Nullish").to_type_string(),
+            "null | undefined"
+        );
+    }
+
+    #[test]
+    fn awaited_conditional_alias_extracts_thenable_callback_value() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type ThenValue<T> = T extends { then(onfulfilled: infer F, ...args: infer _): any; } ?
+            F extends ((value: infer V, ...args: infer _) => any) ? V : never :
+            T;
+
+        type StructuralThenable = ThenValue<{ then(onfulfilled: (value: string) => void): void }>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "StructuralThenable").to_type_string(),
+            "string"
+        );
+    }
+
+    #[test]
+    #[ignore = "TODO(correctness): recursively instantiate conditional alias true branches"]
+    fn awaited_conditional_alias_recursively_unwraps_simple_thenable_value() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type TestAwaited<T> = T extends null | undefined ? T :
+            T extends { then(onfulfilled: infer F, ...args: infer _): any; } ?
+                F extends ((value: infer V, ...args: infer _) => any) ?
+                    TestAwaited<V> :
+                never :
+            T;
+
+        type StructuralThenable = TestAwaited<{ then(onfulfilled: (value: string) => void): void }>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "StructuralThenable").to_type_string(),
+            "string"
+        );
+    }
+
+    #[test]
+    #[ignore = "TODO(correctness): resolve false branches when extends type contains infer"]
+    fn awaited_conditional_alias_shape_resolves_non_thenable_false_branch() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type TestAwaited<T> = T extends null | undefined ? T :
+            T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ?
+                F extends ((value: infer V, ...args: infer _) => any) ?
+                    TestAwaited<V> :
+                never :
+            T;
+
+        type Primitive = TestAwaited<number>;
+        type PlainObject = TestAwaited<{ value: string }>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Primitive").to_type_string(),
+            "number"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "PlainObject").to_type_string(),
+            "{ value: string; }"
+        );
+    }
+
+    #[test]
+    #[ignore = "TODO(correctness): infer through intersection constraints in conditional types"]
+    fn awaited_conditional_alias_shape_matches_lib_thenables() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type TestAwaited<T> = T extends null | undefined ? T :
+            T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ?
+                F extends ((value: infer V, ...args: infer _) => any) ?
+                    TestAwaited<V> :
+                never :
+            T;
+
+        type StructuralThenable = TestAwaited<{ then(onfulfilled: (value: string) => void): void }>;
+        type NestedStructuralThenable = TestAwaited<{
+            then(onfulfilled: (value: { then(onfulfilled: (value: number) => void): void }) => void): void;
+        }>;
+        type PromiseValue = TestAwaited<Promise<string>>;
+        type NestedPromiseValue = TestAwaited<Promise<Promise<number>>>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "StructuralThenable").to_type_string(),
+            "string"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "NestedStructuralThenable").to_type_string(),
+            "number"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "PromiseValue").to_type_string(),
+            "string"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "NestedPromiseValue").to_type_string(),
+            "number"
+        );
+    }
+
+    #[test]
+    #[ignore = "TODO(correctness): resolve false branches when inferred callback is not callable"]
+    fn awaited_conditional_alias_shape_rejects_non_callable_then_argument() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type TestAwaited<T> = T extends null | undefined ? T :
+            T extends { then(onfulfilled: infer F, ...args: infer _): any; } ?
+                F extends ((value: infer V, ...args: infer _) => any) ?
+                    TestAwaited<V> :
+                never :
+            T;
+
+        type NonCallableThenArgument = TestAwaited<{ then(onfulfilled: number): void }>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "NonCallableThenArgument").to_type_string(),
+            "never"
+        );
+    }
+
+    #[test]
     fn global_script_function_declarations_merge_across_programs() {
         let allocator = Allocator::default();
         let host = TestProgramHost::new("/project")
