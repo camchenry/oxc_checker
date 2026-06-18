@@ -56,14 +56,14 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
             .types
             .iter()
             .any(|target_type| is_assignable_to_at_depth(source, *target_type, next_depth)),
-        (Ty::Intersection(_), _) => {
-            /* TODO: Implement */
-            false
-        }
-        (_, Ty::Intersection(_)) => {
-            /* TODO: Implement */
-            false
-        }
+        (Ty::Intersection(intersection), Ty::Object(obj)) => intersection
+            .types
+            .iter()
+            .all(|t| is_assignable_to_at_depth(Ty::Object(obj), *t, next_depth)),
+        (Ty::Object(obj), Ty::Intersection(intersection)) => intersection
+            .types
+            .iter()
+            .all(|t| is_assignable_to_at_depth(Ty::Object(obj), *t, next_depth)),
         (Ty::Function(source), Ty::Function(target)) => {
             source.parameters.len() == target.parameters.len()
                 && source.parameters.iter().zip(target.parameters.iter()).all(
@@ -158,9 +158,13 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
             | Ty::ModuleNamespace(_)
             | Ty::Infer(_)
             | Ty::Conditional(_)
-            | Ty::IndexedAccess(_),
+            | Ty::IndexedAccess(_)
+            | Ty::Intersection(_),
             _,
-        ) => false,
+        ) => {
+            // panic!("I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}")
+            false
+        }
         (
             _,
             Ty::Number
@@ -189,7 +193,10 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
             | Ty::Infer(_)
             | Ty::Conditional(_)
             | Ty::IndexedAccess(_),
-        ) => false,
+        ) => {
+            // panic!("I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}")
+            false
+        }
         (Ty::None, _) => false,
     }
 }
