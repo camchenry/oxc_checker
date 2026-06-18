@@ -18,9 +18,17 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
     let next_depth = depth + 1;
 
     match (source, target) {
+        // `never` is not assignable to any type
         (Ty::Never, _) => true,
+        // Nothing is assignable to `never`
         (_, Ty::Never) => false,
-        (_, Ty::Any | Ty::Unknown) | (Ty::Any, _) => true,
+        // `any` is assignable to any type and any type is assignable to `any`
+        (_, Ty::Any) | (Ty::Any, _) => true,
+        // Any type is assignable to `unknown`
+        (_, Ty::Unknown) => true,
+        // Unlike `any`, `unknown` is not assignable to any type (except for `any`)
+        (Ty::Unknown, _) => false,
+        // `undefined` is assignable to `void`
         (Ty::Undefined, Ty::Void) => true,
         (Ty::Object(source), Ty::Object(target)) => {
             properties_assignable_to(&source.properties, &target.properties, next_depth)
@@ -48,7 +56,14 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
             .types
             .iter()
             .any(|target_type| is_assignable_to_at_depth(source, *target_type, next_depth)),
-        // TODO: intersection types
+        (Ty::Intersection(_), _) => {
+            /* TODO: Implement */
+            false
+        }
+        (_, Ty::Intersection(_)) => {
+            /* TODO: Implement */
+            false
+        }
         (Ty::Function(source), Ty::Function(target)) => {
             source.parameters.len() == target.parameters.len()
                 && source.parameters.iter().zip(target.parameters.iter()).all(
@@ -114,12 +129,68 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
         }
         (Ty::BooleanLiteral(_), Ty::Boolean) => true,
         (source, Ty::Keyof(target)) => is_assignable_to_keyof(source, target.target, next_depth),
-        _ => false,
-        // _ => {
-        //     panic!(
-        //         "I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}"
-        //     );
-        // }
+        // Base case: if we can't find a more specific rule, we default to false but do so explicitly so that we can
+        // catch any missing cases during development.
+        (
+            Ty::Number
+            | Ty::String
+            | Ty::Bigint
+            | Ty::Boolean
+            | Ty::Null
+            | Ty::Undefined
+            | Ty::Void
+            | Ty::Symbol
+            | Ty::PrimitiveObject
+            | Ty::This
+            | Ty::BigIntLiteral(_)
+            | Ty::StringLiteral(_)
+            | Ty::NumberLiteral(_)
+            | Ty::TemplateLiteral(_)
+            | Ty::BooleanLiteral(_)
+            | Ty::Function(_)
+            | Ty::TypeReference(_)
+            | Ty::Array(_)
+            | Ty::Tuple(_)
+            | Ty::UniqueSymbol(_)
+            | Ty::Mapped(_)
+            | Ty::Object(_)
+            | Ty::Keyof(_)
+            | Ty::ModuleNamespace(_)
+            | Ty::Infer(_)
+            | Ty::Conditional(_)
+            | Ty::IndexedAccess(_),
+            _,
+        ) => false,
+        (
+            _,
+            Ty::Number
+            | Ty::String
+            | Ty::Bigint
+            | Ty::Boolean
+            | Ty::Null
+            | Ty::Undefined
+            | Ty::Void
+            | Ty::Symbol
+            | Ty::PrimitiveObject
+            | Ty::This
+            | Ty::BigIntLiteral(_)
+            | Ty::StringLiteral(_)
+            | Ty::NumberLiteral(_)
+            | Ty::TemplateLiteral(_)
+            | Ty::BooleanLiteral(_)
+            | Ty::Function(_)
+            | Ty::TypeReference(_)
+            | Ty::Array(_)
+            | Ty::Tuple(_)
+            | Ty::UniqueSymbol(_)
+            | Ty::Mapped(_)
+            | Ty::Object(_)
+            | Ty::ModuleNamespace(_)
+            | Ty::Infer(_)
+            | Ty::Conditional(_)
+            | Ty::IndexedAccess(_),
+        ) => false,
+        (Ty::None, _) => false,
     }
 }
 
