@@ -8,7 +8,7 @@ use oxc_semantic::{NodeId, ScopeFlags};
 use std::cell::RefCell;
 
 use crate::{
-    checker::{Checker, CheckerReturn},
+    checker::CheckerReturn,
     checker_impl::{FunctionKind, GetTypeFlags},
     index_type_to_property_name,
     limits::{
@@ -16,7 +16,7 @@ use crate::{
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
-    relations,
+    relations::is_assignable_to_without_checker,
     types::{
         MappedModifier, TupleElement, Ty, TyConditional, TyFunction, TyInfer, TyMapped, TyProperty,
         TyTypeParameter, function_parameter_type_at_call_index, visit_type,
@@ -370,7 +370,7 @@ impl<'a> InferenceContext<'a> {
             let substitutions = self.resolved_substitutions();
             let constraint_type =
                 instantiate_inference_fallback_type(constraint_type, &substitutions, arena);
-            if !relations::is_assignable_to(current_inferred_type, constraint_type) {
+            if !is_assignable_to_without_checker(current_inferred_type, constraint_type) {
                 self.inferences[index].inferred_type = Some(constraint_type);
                 inferred_type = Some(constraint_type);
             }
@@ -487,7 +487,7 @@ fn inferred_type_from_candidates<'a>(
             if inference
                 .contra_candidates
                 .iter()
-                .any(|candidate| relations::is_assignable_to(covariant, *candidate))
+                .any(|candidate| is_assignable_to_without_checker(covariant, *candidate))
             {
                 Some(covariant)
             } else {
@@ -657,7 +657,7 @@ fn get_common_supertype<'a>(
         return Ty::union(arena, candidates.iter().copied());
     }
 
-    get_single_common_supertype(candidates, relations::is_assignable_to)
+    get_single_common_supertype(candidates, is_assignable_to_without_checker)
 }
 
 fn get_single_common_supertype<'a>(
@@ -671,13 +671,13 @@ fn get_single_common_supertype<'a>(
     {
         return candidate;
     }
-    find_leftmost_type(candidates, &relations::is_assignable_to)
+    find_leftmost_type(candidates, &is_assignable_to_without_checker)
 }
 
 fn get_common_subtype<'a>(candidates: &[Ty<'a>]) -> Ty<'a> {
     let mut subtype = candidates[0];
     for candidate in candidates.iter().skip(1) {
-        if relations::is_assignable_to(*candidate, subtype) {
+        if is_assignable_to_without_checker(*candidate, subtype) {
             subtype = *candidate;
         }
     }

@@ -1496,7 +1496,7 @@ fn simplify_conditional_type<'a>(
         }));
     }
 
-    if crate::relations::is_assignable_to(check_type, extends_type) {
+    if crate::relations::is_assignable_to_without_checker(check_type, extends_type) {
         true_type
     } else {
         false_type
@@ -1532,11 +1532,13 @@ fn simplify_type_equality_function_extends(
     }
 
     Some(
-        crate::relations::is_assignable_to(check_return.extends_type, extends_return.extends_type)
-            && crate::relations::is_assignable_to(
-                extends_return.extends_type,
-                check_return.extends_type,
-            ),
+        crate::relations::is_assignable_to_without_checker(
+            check_return.extends_type,
+            extends_return.extends_type,
+        ) && crate::relations::is_assignable_to_without_checker(
+            extends_return.extends_type,
+            check_return.extends_type,
+        ),
     )
 }
 

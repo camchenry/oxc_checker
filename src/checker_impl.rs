@@ -40,10 +40,9 @@ use crate::{
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self},
-    property_key_name_str, push_type_parameter_names, relations,
-    string_literal_type_to_property_name, ts_type_name_to_str, ts_type_query_expr_name_to_str,
-    tuple_element_type_at_index, tuple_index_from_expression, tuple_index_from_index_type,
-    type_facts,
+    property_key_name_str, push_type_parameter_names, string_literal_type_to_property_name,
+    ts_type_name_to_str, ts_type_query_expr_name_to_str, tuple_element_type_at_index,
+    tuple_index_from_expression, tuple_index_from_index_type, type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyArray, TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTuple,
@@ -7260,7 +7259,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
-        relations::is_assignable_to(source, target)
+        CheckerReturn::is_assignable_to(self, source, target)
     }
 
     fn type_to_string(&self, t: Ty<'a>, _location: NodeRef) -> String {

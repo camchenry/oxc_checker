@@ -1184,17 +1184,19 @@ mod test {
     #[test]
     fn assignability_handles_basic_and_structural_types() {
         let allocator = Allocator::default();
-        let arena = CheckerArena::new(&allocator);
+        let ret = parse_and_check_source(&allocator, "");
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let arena = arena(&ret);
 
-        assert!(relations::is_assignable_to(Ty::number(), Ty::number()));
-        assert!(relations::is_assignable_to(Ty::number(), Ty::any()));
-        assert!(relations::is_assignable_to(Ty::string(), Ty::unknown()));
-        assert!(!relations::is_assignable_to(Ty::number(), Ty::string()));
-        assert!(relations::is_assignable_to(
+        assert!(checker.is_assignable_to(Ty::number(), Ty::number()));
+        assert!(checker.is_assignable_to(Ty::number(), Ty::any()));
+        assert!(checker.is_assignable_to(Ty::string(), Ty::unknown()));
+        assert!(!checker.is_assignable_to(Ty::number(), Ty::string()));
+        assert!(checker.is_assignable_to(
             Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
             Ty::number()
         ));
-        assert!(relations::is_assignable_to(
+        assert!(checker.is_assignable_to(
             Ty::array(arena, Ty::number()),
             Ty::array(arena, Ty::number())
         ));
@@ -1208,17 +1210,19 @@ mod test {
         );
         let target = Ty::object(arena, [Ty::property("x", Ty::number())]);
 
-        assert!(relations::is_assignable_to(source, target));
-        assert!(!relations::is_assignable_to(target, source));
+        assert!(checker.is_assignable_to(source, target));
+        assert!(!checker.is_assignable_to(target, source));
     }
 
     #[test]
     fn assignability_handles_complex_types() {
         let allocator = Allocator::default();
-        let arena = CheckerArena::new(&allocator);
+        let ret = parse_and_check_source(&allocator, "");
+        let checker = CheckerBuilder::new().build(&ret.store);
+        let arena = arena(&ret);
 
         // Test that a function type is assignable to a more general function type
-        assert!(relations::is_assignable_to(
+        assert!(checker.is_assignable_to(
             Ty::function(arena, vec![], vec![], Ty::string()),
             Ty::function(arena, vec![], vec![], Ty::any())
         ));
@@ -1232,7 +1236,7 @@ mod test {
             )],
         );
         let intersection = Ty::intersection(arena, [Ty::primitive_object(), thenable]);
-        assert!(relations::is_assignable_to(thenable, intersection));
+        assert!(checker.is_assignable_to(thenable, intersection));
     }
 
     #[test]

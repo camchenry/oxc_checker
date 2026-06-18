@@ -1,13 +1,46 @@
 use crate::{
+    checker::CheckerReturn,
     limits::ASSIGNABILITY_MAX_DEPTH,
     types::{Ty, TyTypePredicate},
 };
 
-pub(crate) fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
-    is_assignable_to_at_depth(source, target, 0)
+impl<'a, 'store> CheckerReturn<'a, 'store> {
+    pub(crate) fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
+        self.is_assignable_to_at_depth(source, target, 0)
+    }
 }
 
-fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
+pub(crate) fn is_assignable_to_without_checker<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
+    is_assignable_to_at_depth_without_checker(source, target, 0)
+}
+
+impl<'a, 'store> CheckerReturn<'a, 'store> {
+    fn is_assignable_to_at_depth(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
+        is_assignable_to_at_depth(source, target, depth, |source, target, depth| {
+            self.is_assignable_to_at_depth(source, target, depth)
+        })
+    }
+}
+
+fn is_assignable_to_at_depth_without_checker<'a>(
+    source: Ty<'a>,
+    target: Ty<'a>,
+    depth: usize,
+) -> bool {
+    is_assignable_to_at_depth(
+        source,
+        target,
+        depth,
+        is_assignable_to_at_depth_without_checker,
+    )
+}
+
+fn is_assignable_to_at_depth<'a>(
+    source: Ty<'a>,
+    target: Ty<'a>,
+    depth: usize,
+    is_assignable_to_at_depth: impl Copy + Fn(Ty<'a>, Ty<'a>, usize) -> bool,
+) -> bool {
     if source == target {
         return true;
     }
@@ -30,24 +63,42 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
         (Ty::Unknown, _) => false,
         // `undefined` is assignable to `void`
         (Ty::Undefined, Ty::Void) => true,
-        (Ty::Object(source), Ty::Object(target)) => {
-            properties_assignable_to(&source.properties, &target.properties, next_depth)
-        }
-        (Ty::PrimitiveObject, Ty::Object(target)) => {
-            properties_assignable_to(&[], &target.properties, next_depth)
-        }
-        (Ty::Object(source), Ty::PrimitiveObject) => {
-            properties_assignable_to(&source.properties, &[], next_depth)
-        }
-        (Ty::ModuleNamespace(source), Ty::Object(target)) => {
-            properties_assignable_to(&source.properties, &target.properties, next_depth)
-        }
-        (Ty::Object(source), Ty::ModuleNamespace(target)) => {
-            properties_assignable_to(&source.properties, &target.properties, next_depth)
-        }
-        (Ty::ModuleNamespace(source), Ty::ModuleNamespace(target)) => {
-            properties_assignable_to(&source.properties, &target.properties, next_depth)
-        }
+        (Ty::Object(source), Ty::Object(target)) => properties_assignable_to(
+            &source.properties,
+            &target.properties,
+            next_depth,
+            is_assignable_to_at_depth,
+        ),
+        (Ty::PrimitiveObject, Ty::Object(target)) => properties_assignable_to(
+            &[],
+            &target.properties,
+            next_depth,
+            is_assignable_to_at_depth,
+        ),
+        (Ty::Object(source), Ty::PrimitiveObject) => properties_assignable_to(
+            &source.properties,
+            &[],
+            next_depth,
+            is_assignable_to_at_depth,
+        ),
+        (Ty::ModuleNamespace(source), Ty::Object(target)) => properties_assignable_to(
+            &source.properties,
+            &target.properties,
+            next_depth,
+            is_assignable_to_at_depth,
+        ),
+        (Ty::Object(source), Ty::ModuleNamespace(target)) => properties_assignable_to(
+            &source.properties,
+            &target.properties,
+            next_depth,
+            is_assignable_to_at_depth,
+        ),
+        (Ty::ModuleNamespace(source), Ty::ModuleNamespace(target)) => properties_assignable_to(
+            &source.properties,
+            &target.properties,
+            next_depth,
+            is_assignable_to_at_depth,
+        ),
         (Ty::Union(source), target) => source
             .types
             .iter()
@@ -75,7 +126,12 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
                         )
                     },
                 )
-                && function_return_type_assignable_to(source, target, next_depth)
+                && function_return_type_assignable_to(
+                    source,
+                    target,
+                    next_depth,
+                    is_assignable_to_at_depth,
+                )
         }
         (Ty::TypeReference(source), Ty::TypeReference(target)) => {
             source.name == target.name
@@ -116,7 +172,12 @@ fn is_assignable_to_at_depth<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -
             source.elements.len() == target.elements.len()
                 && source.elements.iter().zip(target.elements.iter()).all(
                     |(source_element, target_element)| {
-                        tuple_element_assignable_to(source_element, target_element, next_depth)
+                        tuple_element_assignable_to(
+                            source_element,
+                            target_element,
+                            next_depth,
+                            is_assignable_to_at_depth,
+                        )
                     },
                 )
         }
@@ -253,6 +314,7 @@ fn tuple_element_assignable_to<'a>(
     source: &crate::types::TupleElement<'a>,
     target: &crate::types::TupleElement<'a>,
     depth: usize,
+    is_assignable_to_at_depth: impl Copy + Fn(Ty<'a>, Ty<'a>, usize) -> bool,
 ) -> bool {
     use crate::types::TupleElement;
 
@@ -270,10 +332,16 @@ fn function_return_type_assignable_to<'a>(
     source: &crate::types::TyFunction<'a>,
     target: &crate::types::TyFunction<'a>,
     depth: usize,
+    is_assignable_to_at_depth: impl Copy + Fn(Ty<'a>, Ty<'a>, usize) -> bool,
 ) -> bool {
     match target.type_predicate {
         Some(target_predicate) => source.type_predicate.is_some_and(|source_predicate| {
-            type_predicate_assignable_to(source_predicate, target_predicate, depth)
+            type_predicate_assignable_to(
+                source_predicate,
+                target_predicate,
+                depth,
+                is_assignable_to_at_depth,
+            )
         }),
         None => is_assignable_to_at_depth(source.return_type, target.return_type, depth),
     }
@@ -283,6 +351,7 @@ fn type_predicate_assignable_to<'a>(
     source: &TyTypePredicate<'a>,
     target: &TyTypePredicate<'a>,
     depth: usize,
+    is_assignable_to_at_depth: impl Copy + Fn(Ty<'a>, Ty<'a>, usize) -> bool,
 ) -> bool {
     crate::types::type_predicate_kinds_match(source, target)
         && match (source.target_type, target.target_type) {
@@ -298,6 +367,7 @@ fn properties_assignable_to<'a>(
     source_properties: &[crate::types::TyProperty<'a>],
     target_properties: &[crate::types::TyProperty<'a>],
     depth: usize,
+    is_assignable_to_at_depth: impl Copy + Fn(Ty<'a>, Ty<'a>, usize) -> bool,
 ) -> bool {
     target_properties.iter().all(|target_property| {
         let Some(source_property) = source_properties.iter().find(|source_property| {
@@ -325,6 +395,10 @@ mod tests {
     use crate::CheckerArena;
 
     use super::*;
+
+    fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
+        is_assignable_to_without_checker(source, target)
+    }
 
     #[test]
     fn test_any_unknown_object_void_undefined_null_never_assignability() {
