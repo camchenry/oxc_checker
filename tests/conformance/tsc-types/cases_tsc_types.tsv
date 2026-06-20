@@ -1745,6 +1745,19 @@ compiler/overloadRanking.ts	882	902	optionalTupleRestOne	"optional"
 compiler/overloadRanking.ts	905	930	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
 compiler/overloadRanking.ts	947	967	optionalTupleRestTwo	"optional"
 compiler/overloadRanking.ts	970	995	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
+compiler/tsIndexSignatures.ts	125	130	Multi	{}
+compiler/tsIndexSignatures.ts	13	16	key	string
+compiler/tsIndexSignatures.ts	138	141	key	string
+compiler/tsIndexSignatures.ts	151	155	key2	number
+compiler/tsIndexSignatures.ts	182	188	Multi2	{ [key: string]: string; [key2: number]: string; [key3: symbol]: string; }
+compiler/tsIndexSignatures.ts	196	199	key	string
+compiler/tsIndexSignatures.ts	221	225	key2	number
+compiler/tsIndexSignatures.ts	247	251	key3	symbol
+compiler/tsIndexSignatures.ts	48	49	B	any
+compiler/tsIndexSignatures.ts	55	58	key	string
+compiler/tsIndexSignatures.ts	6	7	A	typeof A
+compiler/tsIndexSignatures.ts	85	86	C	{ [key: string]: string; }
+compiler/tsIndexSignatures.ts	94	97	key	string
 compiler/tupleTypes.ts	1264	1281	StringsThenConfig	[...string[], { huh: boolean; }]
 compiler/tupleTypes.ts	1300	1303	huh	boolean
 compiler/tupleTypes.ts	1324	1335	firstChorus	StringsThenConfig
