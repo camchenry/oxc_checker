@@ -14,7 +14,7 @@ x['priv_prop'] = 123;
 >^: X   (TyTypeReference)
 
 x['priv_prop'] = 123;
->^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral)
 
 class X {
 >     ^: typeof X   (TyTypeQuery)
@@ -32,7 +32,7 @@ x['protected_prop'] = 123;
 >^: X   (TyTypeReference)
 
 x['protected_prop'] = 123;
->^^^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral)
 
 class X {
 >     ^: typeof X   (TyTypeQuery)
@@ -47,4 +47,4 @@ x['hello'] = 123;
 >^: X   (TyTypeReference)
 
 x['hello'] = 123;
->^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral)

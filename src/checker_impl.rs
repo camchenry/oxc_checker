@@ -936,7 +936,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             program_id,
             &assignment_expression.right,
             node_id,
-            flags,
+            flags | GetTypeFlags::PRESERVE_LITERALS,
         );
         match assignment_expression.operator {
             AssignmentOperator::Assign => right,
