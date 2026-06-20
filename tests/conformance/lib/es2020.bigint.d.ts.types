@@ -695,7 +695,7 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [index: number]: bigint;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface BigInt64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -1559,7 +1559,7 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
     [index: number]: bigint;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface BigUint64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

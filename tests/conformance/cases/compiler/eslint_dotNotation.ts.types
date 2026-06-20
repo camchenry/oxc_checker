@@ -38,7 +38,7 @@ class X {
 >     ^: typeof X   (TyTypeQuery)
 
   [key: string]: number;
->  ^^^^^^^^^^^: string   (TyString)
+>  ^^^: string   (TyString)
 
 const x = new X();
 >     ^: X   (TyTypeReference)

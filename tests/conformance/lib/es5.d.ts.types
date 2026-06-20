@@ -113,7 +113,7 @@ interface PropertyDescriptorMap {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     [key: PropertyKey]: PropertyDescriptor;
->    ^^^^^^^^^^^^^^^^: PropertyKey   (TyTypeReference)
+>    ^^^: PropertyKey   (TyTypeReference)
 
     [key: PropertyKey]: PropertyDescriptor;
 >         ^^^^^^^^^^^: any   (TyAny)
@@ -350,7 +350,7 @@ interface ObjectConstructor {
 >          ^: any   (TyAny)
 
     freeze<T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>;
->                       ^^^^^^^^^^^: string   (TyString)
+>                       ^^^: string   (TyString)
 
     freeze<T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>;
 >                                     ^: any   (TyAny)
@@ -971,7 +971,7 @@ interface IArguments {
 >         ^^^^^^^^^^: any   (TyAny)
 
     [index: number]: any;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
     length: number;
 >   ^^^^^^: number   (TyNumber)
@@ -1169,7 +1169,7 @@ interface String {
 >   ^^^^^^^: { (): string; (): string; }   (TyObject)
 
     readonly [index: number]: string;
->             ^^^^^^^^^^^^^: number   (TyNumber)
+>             ^^^^^: number   (TyNumber)
 
 interface StringConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -1361,13 +1361,13 @@ interface ImportAssertions {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     [key: string]: string;
->    ^^^^^^^^^^^: string   (TyString)
+>    ^^^: string   (TyString)
 
 interface ImportAttributes {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     [key: string]: string;
->    ^^^^^^^^^^^: string   (TyString)
+>    ^^^: string   (TyString)
 
 interface Math {
 >         ^^^^: Math   (TyTypeReference)
@@ -3011,7 +3011,7 @@ interface ReadonlyArray<T> {
 >                                                                                                                                     ^: any   (TyAny)
 
     readonly [n: number]: T;
->             ^^^^^^^^^: number   (TyNumber)
+>             ^: number   (TyNumber)
 
     readonly [n: number]: T;
 >                         ^: any   (TyAny)
@@ -3026,7 +3026,7 @@ interface ConcatArray<T> {
 >            ^^^^^^: number   (TyNumber)
 
     readonly [n: number]: T;
->             ^^^^^^^^^: number   (TyNumber)
+>             ^: number   (TyNumber)
 
     readonly [n: number]: T;
 >                         ^: any   (TyAny)
@@ -3665,7 +3665,7 @@ interface Array<T> {
 >                                                                                                                            ^: any   (TyAny)
 
     [n: number]: T;
->    ^^^^^^^^^: number   (TyNumber)
+>    ^: number   (TyNumber)
 
     [n: number]: T;
 >                ^: any   (TyAny)
@@ -4025,7 +4025,7 @@ interface ArrayLike<T> {
 >            ^^^^^^: number   (TyNumber)
 
     readonly [n: number]: T;
->             ^^^^^^^^^: number   (TyNumber)
+>             ^: number   (TyNumber)
 
     readonly [n: number]: T;
 >                         ^: any   (TyAny)
@@ -5129,7 +5129,7 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Int8ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -5810,7 +5810,7 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Uint8ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -6491,7 +6491,7 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike = ArrayBufferLi
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Uint8ClampedArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -7172,7 +7172,7 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Int16ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -7853,7 +7853,7 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Uint16ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -8534,7 +8534,7 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Int32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -9215,7 +9215,7 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Uint32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -9896,7 +9896,7 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Float32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -10577,7 +10577,7 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >   ^^^^^^^: { (): this; (): this; }   (TyObject)
 
     [index: number]: number;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^: number   (TyNumber)
 
 interface Float64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

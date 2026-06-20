@@ -5,7 +5,7 @@ interface RegExpMatchArray {
 >   ^^^^^^: {} | undefined   (TyUnion)
 
         [key: string]: string;
->        ^^^^^^^^^^^: string   (TyString)
+>        ^^^: string   (TyString)
 
 interface RegExpExecArray {
 >         ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -14,7 +14,7 @@ interface RegExpExecArray {
 >   ^^^^^^: {} | undefined   (TyUnion)
 
         [key: string]: string;
->        ^^^^^^^^^^^: string   (TyString)
+>        ^^^: string   (TyString)
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny)

@@ -2,37 +2,37 @@ class A {
 >     ^: typeof A   (TyTypeQuery)
 
   [key: string]: string;
->  ^^^^^^^^^^^: string   (TyString)
+>  ^^^: string   (TyString)
 
 interface B {
 >         ^: any   (TyAny)
 
   [key: string]: string;
->  ^^^^^^^^^^^: string   (TyString)
+>  ^^^: string   (TyString)
 
 type C = {
 >    ^: {}   (TyObject)
 
   [key: string]: string;
->  ^^^^^^^^^^^: string   (TyString)
+>  ^^^: string   (TyString)
 
 type Multi = {
 >    ^^^^^: {}   (TyObject)
 
   [key: string, key2: number]: object;
->  ^^^^^^^^^^^: string   (TyString)
+>  ^^^: string   (TyString)
 
   [key: string, key2: number]: object;
->               ^^^^^^^^^^^^: number   (TyNumber)
+>               ^^^^: number   (TyNumber)
 
 type Multi2 = {
 >    ^^^^^^: {}   (TyObject)
 
   [key: string]: string;
->  ^^^^^^^^^^^: string   (TyString)
+>  ^^^: string   (TyString)
 
   [key2: number]: string;
->  ^^^^^^^^^^^^: number   (TyNumber)
+>  ^^^^: number   (TyNumber)
 
   [key3: symbol]: string;
->  ^^^^^^^^^^^^: symbol   (TySymbol)
+>  ^^^^: symbol   (TySymbol)

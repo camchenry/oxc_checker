@@ -1724,7 +1724,12 @@ fn actual_identifier_record<'a>(
             )
         }
         AstKind::TSIndexSignatureName(signature_name) => (
-            signature_name.span,
+            // TODO(oxc): there is no way to get the span for an index signature name identifier
+            // yet, so we'll just construct our own that is approximately correct
+            Span::new(
+                signature_name.span.start,
+                signature_name.type_annotation.span.start,
+            ),
             signature_name.name.as_str(),
             checker.get_type_at_location(node_ref),
         ),
