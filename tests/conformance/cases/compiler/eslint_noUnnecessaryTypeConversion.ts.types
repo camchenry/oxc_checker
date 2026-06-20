@@ -23,7 +23,7 @@ Number(123);
 >^^^^^^^^^^^^: number   (TyNumber)
 
 +123;
->^^^^^: number   (TyNumber)
+>^^^^^: 123   (TyNumberLiteral)
 
 ~~123;
 >^^^^^^: number   (TyNumber)

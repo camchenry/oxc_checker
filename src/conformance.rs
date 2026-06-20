@@ -20,10 +20,7 @@ use oxc_semantic::NodeId;
 use oxc_span::GetSpan;
 use rayon::prelude::*;
 
-use crate::{
-    checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef},
-    checker_impl::GetTypeFlags,
-};
+use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef};
 
 use super::*;
 
@@ -1715,12 +1712,7 @@ fn actual_identifier_record<'a>(
             (
                 statement.span,
                 expression_text,
-                checker.get_type_of_expression_with_node(
-                    program_id,
-                    &statement.expression,
-                    Some(node_id),
-                    GetTypeFlags::NONE,
-                ),
+                checker.get_type_at_location(node_ref),
             )
         }
         AstKind::TSIndexSignatureName(signature_name) => (

@@ -6957,6 +6957,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     Some(node.node_id),
                     GetTypeFlags::NONE,
                 ),
+            AstKind::ExpressionStatement(expr) => self.get_type_of_expression_with_node(
+                node.program_id,
+                &expr.expression,
+                Some(node.node_id),
+                GetTypeFlags::PRESERVE_LITERALS,
+            ),
             AstKind::MethodDefinition(method) => {
                 let class = self
                     .nodes(node.program_id)
