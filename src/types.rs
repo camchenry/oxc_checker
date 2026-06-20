@@ -10,6 +10,8 @@ use oxc_ast::ast::{
 };
 use oxc_str::Str;
 
+const SYNTHETIC_INDEX_SIGNATURE_NAME: &str = "x";
+
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
     allocator: &'a Allocator,
@@ -745,11 +747,12 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
     ) -> Self {
-        Self::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(properties),
-            signatures: arena.vec_from_iter(std::iter::empty()),
-            index_infos: arena.vec_from_iter(std::iter::empty()),
-        }))
+        Self::object_with_signatures_and_index_infos(
+            arena,
+            properties,
+            std::iter::empty(),
+            std::iter::empty(),
+        )
     }
 
     pub fn object_with_signatures(
@@ -757,11 +760,12 @@ impl<'a> Ty<'a> {
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         signatures: impl IntoIterator<Item = Signature<'a>>,
     ) -> Self {
-        Self::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(properties),
-            signatures: arena.vec_from_iter(signatures),
-            index_infos: arena.vec_from_iter(std::iter::empty()),
-        }))
+        Self::object_with_signatures_and_index_infos(
+            arena,
+            properties,
+            signatures,
+            std::iter::empty(),
+        )
     }
 
     pub fn object_with_index_infos(
@@ -769,9 +773,23 @@ impl<'a> Ty<'a> {
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
     ) -> Self {
+        Self::object_with_signatures_and_index_infos(
+            arena,
+            properties,
+            std::iter::empty(),
+            index_infos,
+        )
+    }
+
+    pub fn object_with_signatures_and_index_infos(
+        arena: CheckerArena<'a>,
+        properties: impl IntoIterator<Item = TyProperty<'a>>,
+        signatures: impl IntoIterator<Item = Signature<'a>>,
+        index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
+    ) -> Self {
         Self::Object(arena.alloc(TyObject {
             properties: arena.vec_from_iter(properties),
-            signatures: arena.vec_from_iter(std::iter::empty()),
+            signatures: arena.vec_from_iter(signatures),
             index_infos: arena.vec_from_iter(index_infos),
         }))
     }
@@ -1094,8 +1112,9 @@ impl<'a> Ty<'a> {
                     .chain(object.index_infos.iter().map(|info| {
                         let readonly = if info.readonly { "readonly " } else { "" };
                         format!(
-                            "{}[x: {}]: {};",
+                            "{}[{}: {}]: {};",
                             readonly,
+                            info.name,
                             info.key_type.to_type_string(),
                             info.value_type.to_type_string()
                         )
@@ -1613,12 +1632,34 @@ impl<'a> Signature<'a> {
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct IndexInfo<'a> {
+    /// The name of the index parameter.
+    pub(crate) name: &'a str,
     /// The type of the index key. The `K` in `{ [k: K]: V }` or `string` in `{ [k: string]: number }`
     pub(crate) key_type: Ty<'a>,
     /// The type of the index value. The `V` in `{ [k: K]: V }` or `string` in `{ [k: string]: number }`
     pub(crate) value_type: Ty<'a>,
     /// Whether the index returns a readonly value.
     pub(crate) readonly: bool,
+}
+
+impl<'a> IndexInfo<'a> {
+    pub(crate) fn new(name: &'a str, key_type: Ty<'a>, value_type: Ty<'a>, readonly: bool) -> Self {
+        Self {
+            name,
+            key_type,
+            value_type,
+            readonly,
+        }
+    }
+
+    pub(crate) fn synthetic(key_type: Ty<'a>, value_type: Ty<'a>, readonly: bool) -> Self {
+        Self::new(
+            SYNTHETIC_INDEX_SIGNATURE_NAME,
+            key_type,
+            value_type,
+            readonly,
+        )
+    }
 }
 
 fn function_type_to_string(function: &TyFunction<'_>) -> String {

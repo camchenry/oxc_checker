@@ -327,10 +327,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             )
             .with_index_infos(
                 self.arena(),
-                object.index_infos.iter().map(|info| IndexInfo {
-                    key_type: self.instantiate_type_at_depth(info.key_type, mapper, depth + 1),
-                    value_type: self.instantiate_type_at_depth(info.value_type, mapper, depth + 1),
-                    readonly: info.readonly,
+                object.index_infos.iter().map(|info| {
+                    IndexInfo::new(
+                        info.name,
+                        self.instantiate_type_at_depth(info.key_type, mapper, depth + 1),
+                        self.instantiate_type_at_depth(info.value_type, mapper, depth + 1),
+                        info.readonly,
+                    )
                 }),
             )
             .with_signatures(
@@ -1327,7 +1330,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TSType::TSNeverKeyword(_) => Ty::never(),
             TSType::TSObjectKeyword(_) => Ty::primitive_object(),
             TSType::TSThisType(_) => Ty::this(),
-            TSType::TSTypeLiteral(type_literal) => Ty::object_with_signatures(
+            TSType::TSTypeLiteral(type_literal) => Ty::object_with_signatures_and_index_infos(
                 self.arena(),
                 type_literal
                     .members
@@ -1390,6 +1393,32 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 type_literal.members.iter().filter_map(|member| {
                     self.signature_from_type_literal_signature(program_id, member)
                 }),
+                type_literal
+                    .members
+                    .iter()
+                    .filter_map(|member| {
+                        let TSSignature::TSIndexSignature(index_signature) = member else {
+                            return None;
+                        };
+                        if index_signature.parameters.len() != 1 {
+                            return None;
+                        }
+                        Some(index_signature.parameters.iter().map(|index_sig_name| {
+                            IndexInfo::new(
+                                index_sig_name.name.as_str(),
+                                self.get_type_from_ts_type_annotation(
+                                    program_id,
+                                    Some(&index_sig_name.type_annotation),
+                                ),
+                                self.get_type_from_ts_type_annotation(
+                                    program_id,
+                                    Some(&index_signature.type_annotation),
+                                ),
+                                index_signature.readonly,
+                            )
+                        }))
+                    })
+                    .flatten(),
             ),
             TSType::TSArrayType(array) => Ty::array(
                 self.arena(),
@@ -2260,11 +2289,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
             let ty = self.instantiate_type(mapped.template, &mapper);
             let ty = self.expand_type_at_use(program_id, ty, depth + 1);
-            IndexInfo {
+            IndexInfo::synthetic(
                 key_type,
-                value_type: ty,
-                readonly: matches!(mapped.readonly, MappedModifier::True | MappedModifier::Plus),
-            }
+                ty,
+                matches!(mapped.readonly, MappedModifier::True | MappedModifier::Plus),
+            )
         });
 
         Some(Ty::object_with_index_infos(self.arena(), [], index_infos))

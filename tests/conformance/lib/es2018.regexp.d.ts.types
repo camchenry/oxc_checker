@@ -2,7 +2,7 @@ interface RegExpMatchArray {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny)
 
     groups?: {
->   ^^^^^^: {} | undefined   (TyUnion)
+>   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion)
 
         [key: string]: string;
 >        ^^^: string   (TyString)
@@ -11,7 +11,7 @@ interface RegExpExecArray {
 >         ^^^^^^^^^^^^^^^: any   (TyAny)
 
     groups?: {
->   ^^^^^^: {} | undefined   (TyUnion)
+>   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion)
 
         [key: string]: string;
 >        ^^^: string   (TyString)

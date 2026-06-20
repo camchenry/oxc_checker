@@ -11,7 +11,7 @@ interface B {
 >  ^^^: string   (TyString)
 
 type C = {
->    ^: {}   (TyObject)
+>    ^: { [key: string]: string; }   (TyObject)
 
   [key: string]: string;
 >  ^^^: string   (TyString)
@@ -26,7 +26,7 @@ type Multi = {
 >               ^^^^: number   (TyNumber)
 
 type Multi2 = {
->    ^^^^^^: {}   (TyObject)
+>    ^^^^^^: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }   (TyObject)
 
   [key: string]: string;
 >  ^^^: string   (TyString)

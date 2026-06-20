@@ -323,7 +323,7 @@ interface ObjectConstructor {
 >                  ^: any   (TyAny)
 
     freeze<T extends Function>(f: T): T;
->   ^^^^^^: { <T extends Function>(f: T): T; <T extends {}, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; <T extends Function>(f: T): T; <T extends {}, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; }   (TyObject)
+>   ^^^^^^: { <T extends Function>(f: T): T; <T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; <T extends Function>(f: T): T; <T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; }   (TyObject)
 
     freeze<T extends Function>(f: T): T;
 >          ^: any   (TyAny)
@@ -344,7 +344,7 @@ interface ObjectConstructor {
 >                                     ^: any   (TyAny)
 
     freeze<T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>;
->   ^^^^^^: { <T extends Function>(f: T): T; <T extends {}, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; <T extends Function>(f: T): T; <T extends {}, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; }   (TyObject)
+>   ^^^^^^: { <T extends Function>(f: T): T; <T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; <T extends Function>(f: T): T; <T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; }   (TyObject)
 
     freeze<T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>;
 >          ^: any   (TyAny)
@@ -371,7 +371,7 @@ interface ObjectConstructor {
 >                                                                                                                                              ^: any   (TyAny)
 
     freeze<T>(o: T): Readonly<T>;
->   ^^^^^^: { <T extends Function>(f: T): T; <T extends {}, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; <T extends Function>(f: T): T; <T extends {}, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; }   (TyObject)
+>   ^^^^^^: { <T extends Function>(f: T): T; <T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; <T extends Function>(f: T): T; <T extends { [idx: string]: U | null | undefined | object; }, U extends string | bigint | number | boolean | symbol>(o: T): Readonly<T>; <T>(o: T): Readonly<T>; }   (TyObject)
 
     freeze<T>(o: T): Readonly<T>;
 >          ^: any   (TyAny)

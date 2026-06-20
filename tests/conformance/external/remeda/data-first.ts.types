@@ -221,7 +221,7 @@ export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
 >     ^^^^^^: ObjectConstructor   (TyTypeReference)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->            ^^^^^^: { <T>(o: {} | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
+>            ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >                   ^^^^: unknown   (TyUnknown)

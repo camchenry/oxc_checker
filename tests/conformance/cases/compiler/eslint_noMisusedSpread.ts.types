@@ -113,13 +113,13 @@ declare const map: Map<string, number>;
 >                  ^^^: MapConstructor   (TyTypeReference)
 
 const mapObject = Object.fromEntries(map);
->     ^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^: { [k: string]: any; }   (TyObject)
 
 const mapObject = Object.fromEntries(map);
 >                 ^^^^^^: ObjectConstructor   (TyTypeReference)
 
 const mapObject = Object.fromEntries(map);
->                        ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): {}; (entries: Iterable<readonly any[]>): any; }   (TyObject)
+>                        ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (TyObject)
 
 const mapObject = Object.fromEntries(map);
 >                                    ^^^: Map<string, number>   (TyTypeReference)
