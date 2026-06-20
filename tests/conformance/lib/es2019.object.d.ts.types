@@ -20,6 +20,9 @@ interface ObjectConstructor {
 >                                                                 ^: any   (TyAny)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
+>                                                                          ^^^^^^^^^: string   (TyString)
+
+    fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
 >                                                                                      ^: any   (TyAny)
 
     fromEntries(entries: Iterable<readonly any[]>): any;

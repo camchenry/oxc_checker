@@ -37,6 +37,9 @@ x['protected_prop'] = 123;
 class X {
 >     ^: typeof X   (TyTypeQuery)
 
+  [key: string]: number;
+>  ^^^^^^^^^^^: string   (TyString)
+
 const x = new X();
 >     ^: X   (TyTypeReference)
 

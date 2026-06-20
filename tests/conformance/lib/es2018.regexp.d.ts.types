@@ -4,11 +4,17 @@ interface RegExpMatchArray {
     groups?: {
 >   ^^^^^^: {} | undefined   (TyUnion)
 
+        [key: string]: string;
+>        ^^^^^^^^^^^: string   (TyString)
+
 interface RegExpExecArray {
 >         ^^^^^^^^^^^^^^^: any   (TyAny)
 
     groups?: {
 >   ^^^^^^: {} | undefined   (TyUnion)
+
+        [key: string]: string;
+>        ^^^^^^^^^^^: string   (TyString)
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny)

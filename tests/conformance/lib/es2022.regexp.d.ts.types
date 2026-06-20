@@ -28,6 +28,9 @@ interface RegExpIndicesArray extends Array<[number, number] | undefined> {
     groups?: {
 >   ^^^^^^: {} | undefined   (TyUnion)
 
+        [key: string]: [number, number];
+>        ^^^^^^^^^^^: string   (TyString)
+
 interface RegExp {
 >         ^^^^^^: any   (TyAny)
 

@@ -1723,6 +1723,11 @@ fn actual_identifier_record<'a>(
                 ),
             )
         }
+        AstKind::TSIndexSignatureName(signature_name) => (
+            signature_name.span,
+            signature_name.name.as_str(),
+            checker.get_type_at_location(node_ref),
+        ),
         _ => return None,
     };
 

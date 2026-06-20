@@ -6972,6 +6972,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol));
                 if ty.is_none() { Ty::any() } else { ty }
             }
+            AstKind::TSIndexSignatureName(signature_name) => self.get_type_from_ts_type_annotation(
+                node.program_id,
+                Some(&signature_name.type_annotation),
+            ),
             _ => self
                 .get_symbol_at_location(node)
                 .map_or_else(Ty::none, |sym| self.get_type_of_symbol(sym)),

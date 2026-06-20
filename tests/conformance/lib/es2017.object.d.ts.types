@@ -11,6 +11,9 @@ interface ObjectConstructor {
 >             ^: {} | ArrayLike<T>   (TyUnion)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
+>                   ^^^^^^^^^: string   (TyString)
+
+    values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
 >                               ^: any   (TyAny)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
@@ -36,6 +39,9 @@ interface ObjectConstructor {
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
 >              ^: {} | ArrayLike<T>   (TyUnion)
+
+    entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
+>                    ^^^^^^^^^: string   (TyString)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
 >                                ^: any   (TyAny)
@@ -81,6 +87,9 @@ interface ObjectConstructor {
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
 >                                                                                   ^: any   (TyAny)
+
+    getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
+>                                                                                               ^^^^^^^^^: string   (TyString)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
 >                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (TyAny)

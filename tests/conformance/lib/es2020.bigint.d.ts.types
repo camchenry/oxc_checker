@@ -694,6 +694,9 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
     readonly [Symbol.toStringTag]: "BigInt64Array";
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
 
+    [index: number]: bigint;
+>    ^^^^^^^^^^^^^: number   (TyNumber)
+
 interface BigInt64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
@@ -1554,6 +1557,9 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 
     readonly [Symbol.toStringTag]: "BigUint64Array";
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+    [index: number]: bigint;
+>    ^^^^^^^^^^^^^: number   (TyNumber)
 
 interface BigUint64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
