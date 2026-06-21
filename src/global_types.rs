@@ -23,6 +23,8 @@ const BIGINT_TYPE_NAME: &str = "BigInt";
 const AWAITED_TYPE_NAME: &str = "Awaited";
 const NON_NULLABLE_TYPE_NAME: &str = "NonNullable";
 const RECORD_TYPE_NAME: &str = "Record";
+const GENERATOR_TYPE_NAME: &str = "Generator";
+const ASYNC_GENERATOR_TYPE_NAME: &str = "AsyncGenerator";
 
 #[derive(Clone, Copy, Debug, Default)]
 struct GlobalSymbolEntry {
@@ -297,6 +299,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
             .then(|| Ty::type_reference(self.arena(), NON_NULLABLE_TYPE_NAME, [target_type]))
+    }
+
+    pub(crate) fn get_global_generator_type(
+        &self,
+        program_id: program::ProgramId,
+        yield_type: Ty<'a>,
+        return_type: Ty<'a>,
+        next_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        self.get_global_type_reference(
+            program_id,
+            GENERATOR_TYPE_NAME,
+            [yield_type, return_type, next_type],
+        )
+    }
+
+    pub(crate) fn get_global_async_generator_type(
+        &self,
+        program_id: program::ProgramId,
+        yield_type: Ty<'a>,
+        return_type: Ty<'a>,
+        next_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        self.get_global_type_reference(
+            program_id,
+            ASYNC_GENERATOR_TYPE_NAME,
+            [yield_type, return_type, next_type],
+        )
     }
 
     pub(crate) fn get_global_record_type(

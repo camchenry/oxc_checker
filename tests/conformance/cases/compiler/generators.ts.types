@@ -1,5 +1,5 @@
 function* g1() {
->         ^^: () => 1 | "foo"   (TyFunction)
+>         ^^: () => Generator<1 | "foo", void, unknown>   (TyFunction)
 
   yield 1
 > ^^^^^^^: any   (TyAny)
@@ -8,16 +8,16 @@ function* g1() {
 > ^^^^^^^^^^^: any   (TyAny)
 
 function* g2() {
->         ^^: () => void   (TyFunction)
+>         ^^: () => Generator<never, string, unknown>   (TyFunction)
 
 function* g3() {
->         ^^: () => string   (TyFunction)
+>         ^^: () => Generator<string, void, unknown>   (TyFunction)
 
   yield "foo"
 > ^^^^^^^^^^^: any   (TyAny)
 
 async function* g4() {
->               ^^: () => string   (TyFunction)
+>               ^^: () => AsyncGenerator<string, string, unknown>   (TyFunction)
 
   if (Math.random() > 0.5) {
 >     ^^^^: Math   (TyTypeReference)
@@ -29,7 +29,7 @@ async function* g4() {
 > ^^^^^^^^^^^: any   (TyAny)
 
 async function* g5() {
->               ^^: () => "foo" | 1 | 3   (TyFunction)
+>               ^^: () => AsyncGenerator<"foo" | 1 | 3, string, unknown>   (TyFunction)
 
   yield "foo"
 > ^^^^^^^^^^^: any   (TyAny)
@@ -71,7 +71,7 @@ async function* g5() {
 > ^^^^^^^: any   (TyAny)
 
 async function* g6() {
->               ^^: () => "foo" | 1 | 2 | 3   (TyFunction)
+>               ^^: () => AsyncGenerator<"foo" | 1 | 2 | 3, "err" | "bar", unknown>   (TyFunction)
 
   yield "foo"
 > ^^^^^^^^^^^: any   (TyAny)

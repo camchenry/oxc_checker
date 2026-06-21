@@ -1255,46 +1255,61 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 return Ty::any();
             };
             let expressions = ReturnExpressionVisitor::expressions_in_body(body);
+
+            let return_type = if expressions.return_expressions.is_empty() {
+                Ty::void()
+            } else {
+                let flags = if expressions.return_expressions.len() > 1 {
+                    GetTypeFlags::PRESERVE_LITERALS
+                } else {
+                    GetTypeFlags::NONE
+                };
+                Ty::union(
+                    self.arena(),
+                    expressions.return_expressions.into_iter().map(|argument| {
+                        self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
+                    }),
+                )
+            };
+
+            let yield_type = if expressions.yield_expressions.is_empty() {
+                Ty::never()
+            } else {
+                let flags = if expressions.yield_expressions.len() > 1 {
+                    GetTypeFlags::PRESERVE_LITERALS
+                } else {
+                    GetTypeFlags::NONE
+                };
+                Ty::union(
+                    self.arena(),
+                    expressions.yield_expressions.into_iter().map(|argument| {
+                        self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
+                    }),
+                )
+            };
+
             if let FunctionKind::Function(f) = function
                 && f.generator
             {
-                // function*: look for yield expressions
-                if expressions.yield_expressions.is_empty() {
-                    return Ty::void();
-                } else {
-                    let flags = if expressions.yield_expressions.len() > 1 {
-                        GetTypeFlags::PRESERVE_LITERALS
-                    } else {
-                        GetTypeFlags::NONE
-                    };
-                    Ty::union(
-                        self.arena(),
-                        expressions.yield_expressions.into_iter().map(|argument| {
-                            self.get_type_of_expression_with_node(
-                                program_id, argument, node_id, flags,
-                            )
-                        }),
+                // TODO(completeness): Implement next type inference
+                let next_type = Ty::unknown();
+
+                // function*: look for yield expressions and return expressions
+                if f.r#async {
+                    self.get_global_async_generator_type(
+                        program_id,
+                        yield_type,
+                        return_type,
+                        next_type,
                     )
+                    .unwrap_or(Ty::any())
+                } else {
+                    self.get_global_generator_type(program_id, yield_type, return_type, next_type)
+                        .unwrap_or(Ty::any())
                 }
             } else {
                 // non-generator function: look at return expressions
-                if expressions.return_expressions.is_empty() {
-                    Ty::void()
-                } else {
-                    let flags = if expressions.return_expressions.len() > 1 {
-                        GetTypeFlags::PRESERVE_LITERALS
-                    } else {
-                        GetTypeFlags::NONE
-                    };
-                    Ty::union(
-                        self.arena(),
-                        expressions.return_expressions.into_iter().map(|argument| {
-                            self.get_type_of_expression_with_node(
-                                program_id, argument, node_id, flags,
-                            )
-                        }),
-                    )
-                }
+                return_type
             }
         };
 
