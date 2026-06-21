@@ -41,7 +41,7 @@ declare const intersectionWithString: string & { _brand: 'test-brand' };
 >                                                ^^^^^^: "test-brand"   (TyStringLiteral)
 
 const wrappedIntersection = `${intersectionWithString}`;
->     ^^^^^^^^^^^^^^^^^^^: `${string & { _brand: "test-brand"; }}`   (TyTemplateLiteral)
+>     ^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 const wrappedIntersection = `${intersectionWithString}`;
 >                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection)

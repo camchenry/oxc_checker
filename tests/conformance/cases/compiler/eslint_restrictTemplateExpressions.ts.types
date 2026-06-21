@@ -2,7 +2,7 @@ const arg1 = [1, 2];
 >     ^^^^: number[]   (TyArray)
 
 const msg1 = `arg1 = ${arg1}`;
->     ^^^^: `arg1 = ${number[]}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg1 = `arg1 = ${arg1}`;
 >                      ^^^^: number[]   (TyArray)
@@ -14,7 +14,7 @@ const arg2 = { name: 'Foo' };
 >              ^^^^: string   (TyString)
 
 const msg2 = `arg2 = ${arg2 || null}`;
->     ^^^^: `arg2 = ${{ name: string; } | null}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg2 = `arg2 = ${arg2 || null}`;
 >                      ^^^^: { name: string; }   (TyObject)
@@ -29,7 +29,7 @@ const msg1 = `arg = ${arg}`;
 >                     ^^^: "foo"   (TyStringLiteral)
 
 const msg2 = `arg = ${arg || 'default'}`;
->     ^^^^: `arg = ${string}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg2 = `arg = ${arg || 'default'}`;
 >                     ^^^: "foo"   (TyStringLiteral)
@@ -41,7 +41,7 @@ const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
 >                                    ^^^^^: "MyString" | undefined   (TyUnion)
 
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
->     ^^^^: `stringWithKindProp = ${string & { _kind?: "MyString"; }}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 >                                    ^^^^^^^^^^^^^^^^^^: string & { _kind?: "MyString"; }   (TyIntersection)
@@ -56,7 +56,7 @@ const msg1 = `arg = ${arg}`;
 >                     ^^^: 123   (TyNumberLiteral)
 
 const msg2 = `arg = ${arg || 'zero'}`;
->     ^^^^: `arg = ${123 | string}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg2 = `arg = ${arg || 'zero'}`;
 >                     ^^^: 123   (TyNumberLiteral)
@@ -71,7 +71,7 @@ const msg1 = `arg = ${arg}`;
 >                     ^^^: true   (TyBooleanLiteral)
 
 const msg2 = `arg = ${arg || 'not truthy'}`;
->     ^^^^: `arg = ${true | string}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg2 = `arg = ${arg || 'not truthy'}`;
 >                     ^^^: true   (TyBooleanLiteral)
@@ -86,7 +86,7 @@ const user = JSON.parse('{ "name": "foo" }');
 >                 ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction)
 
 const msg1 = `arg = ${user.name}`;
->     ^^^^: `arg = ${any}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg1 = `arg = ${user.name}`;
 >                     ^^^^: any   (TyAny)
@@ -95,7 +95,7 @@ const msg1 = `arg = ${user.name}`;
 >                          ^^^^: any   (TyAny)
 
 const msg2 = `arg = ${user.name || 'the user with no name'}`;
->     ^^^^: `arg = ${any}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg2 = `arg = ${user.name || 'the user with no name'}`;
 >                     ^^^^: any   (TyAny)
@@ -107,7 +107,7 @@ const arg = condition ? 'ok' : null;
 >     ^^^: string | null   (TyUnion)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: `arg = ${string | null}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg1 = `arg = ${arg}`;
 >                     ^^^: string | null   (TyUnion)
@@ -119,7 +119,7 @@ const arg = new RegExp('foo');
 >               ^^^^^^: RegExpConstructor   (TyTypeReference)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: `arg = ${RegExp}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg1 = `arg = ${arg}`;
 >                     ^^^: RegExp   (TyTypeReference)
@@ -128,7 +128,7 @@ const arg = /foo/;
 >     ^^^: any   (TyAny)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: `arg = ${any}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg1 = `arg = ${arg}`;
 >                     ^^^: any   (TyAny)
@@ -152,7 +152,7 @@ const arg = ['foo', 'bar'];
 >     ^^^: string[]   (TyArray)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: `arg = ${string[]}`   (TyTemplateLiteral)
+>     ^^^^: string   (TyString)
 
 const msg1 = `arg = ${arg}`;
 >                     ^^^: string[]   (TyArray)

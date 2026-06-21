@@ -751,7 +751,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         self.get_template_literal_static_value(program_id, literal, node_id)
                     {
                         Ty::string_literal(self.arena(), value)
-                    } else {
+                    } else if literal.expressions.is_empty() {
                         Ty::template_literal(
                             self.arena(),
                             literal.quasis.iter().map(|q| TemplateLiteralElement {
@@ -766,6 +766,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 )
                             }),
                         )
+                    } else {
+                        Ty::string()
                     }
                 } else {
                     Ty::string()

@@ -17,7 +17,7 @@ value + '';
 >^^^^^^^^^^^: string   (TyString)
 
 `Value: ${value}`;
->^^^^^^^^^^^^^^^^^^: `Value: ${MyClass}`   (TyTemplateLiteral)
+>^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 `Value: ${value}`;
 >         ^^^^^: MyClass   (TyTypeReference)
@@ -56,7 +56,7 @@ String({});
 >^^^^^^^^^^^^^^^^: "Value: 123"   (TyStringLiteral)
 
 `Arrays too: ${[1, 2, 3]}`;
->^^^^^^^^^^^^^^^^^^^^^^^^^^^: `Arrays too: ${number[]}`   (TyTemplateLiteral)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 (() => {}).toString();
 >^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
@@ -83,7 +83,7 @@ class CustomToString {
 > ^^^^^^^^: () => string   (TyFunction)
 
 `Value: ${new CustomToString()}`;
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: `Value: ${CustomToString}`   (TyTemplateLiteral)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 `Value: ${new CustomToString()}`;
 >             ^^^^^^^^^^^^^^: typeof CustomToString   (TyTypeQuery)
@@ -95,13 +95,13 @@ const literalWithToString = {
 > ^^^^^^^^: () => string   (TyFunction)
 
 `Value: ${literalWithToString}`;
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: `Value: ${{ toString: () => string; }}`   (TyTemplateLiteral)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 `Value: ${literalWithToString}`;
 >         ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (TyObject)
 
 `${/regex/}`;
->^^^^^^^^^^^^^: `${any}`   (TyTemplateLiteral)
+>^^^^^^^^^^^^^: string   (TyString)
 
 '' + /regex/;
 >^^^^^^^^^^^^^: string   (TyString)
