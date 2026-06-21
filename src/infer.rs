@@ -1,7 +1,7 @@
 use oxc_ast::ast::{
     ArrowFunctionExpression, CallExpression, Expression, FormalParameters, Function, FunctionBody,
     NewExpression, ReturnStatement, TSSignature, TSTupleElement, TSType,
-    TSTypeParameterInstantiation,
+    TSTypeParameterInstantiation, YieldExpression,
 };
 use oxc_ast_visit::Visit;
 use oxc_semantic::{NodeId, ScopeFlags};
@@ -1254,21 +1254,47 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(body) = body else {
                 return Ty::any();
             };
-            let return_expressions = ReturnExpressionVisitor::expressions_in_body(body);
-            if return_expressions.is_empty() {
-                Ty::void()
-            } else {
-                let flags = if return_expressions.len() > 1 {
-                    GetTypeFlags::PRESERVE_LITERALS
+            let expressions = ReturnExpressionVisitor::expressions_in_body(body);
+            if let FunctionKind::Function(f) = function
+                && f.generator
+            {
+                // function*: look for yield expressions
+                if expressions.yield_expressions.is_empty() {
+                    return Ty::void();
                 } else {
-                    GetTypeFlags::NONE
-                };
-                Ty::union(
-                    self.arena(),
-                    return_expressions.into_iter().map(|argument| {
-                        self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
-                    }),
-                )
+                    let flags = if expressions.yield_expressions.len() > 1 {
+                        GetTypeFlags::PRESERVE_LITERALS
+                    } else {
+                        GetTypeFlags::NONE
+                    };
+                    Ty::union(
+                        self.arena(),
+                        expressions.yield_expressions.into_iter().map(|argument| {
+                            self.get_type_of_expression_with_node(
+                                program_id, argument, node_id, flags,
+                            )
+                        }),
+                    )
+                }
+            } else {
+                // non-generator function: look at return expressions
+                if expressions.return_expressions.is_empty() {
+                    Ty::void()
+                } else {
+                    let flags = if expressions.return_expressions.len() > 1 {
+                        GetTypeFlags::PRESERVE_LITERALS
+                    } else {
+                        GetTypeFlags::NONE
+                    };
+                    Ty::union(
+                        self.arena(),
+                        expressions.return_expressions.into_iter().map(|argument| {
+                            self.get_type_of_expression_with_node(
+                                program_id, argument, node_id, flags,
+                            )
+                        }),
+                    )
+                }
             }
         };
 
@@ -1353,24 +1379,32 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 }
 
 struct ReturnExpressionVisitor<'a> {
-    expressions: Vec<&'a Expression<'a>>,
+    return_expressions: Vec<&'a Expression<'a>>,
+    yield_expressions: Vec<&'a Expression<'a>>,
 }
 
 impl<'a> ReturnExpressionVisitor<'a> {
     /// Collect return expressions from this function body, ignoring nested functions.
-    fn expressions_in_body(body: &'a FunctionBody<'a>) -> Vec<&'a Expression<'a>> {
+    fn expressions_in_body(body: &'a FunctionBody<'a>) -> ReturnExpressionVisitor<'a> {
         let mut visitor = Self {
-            expressions: Vec::new(),
+            return_expressions: Vec::new(),
+            yield_expressions: Vec::new(),
         };
         visitor.visit_function_body(body);
-        visitor.expressions
+        visitor
     }
 }
 
 impl<'a> Visit<'a> for ReturnExpressionVisitor<'a> {
     fn visit_return_statement(&mut self, statement: &ReturnStatement<'a>) {
         if let Some(argument) = statement.argument.as_ref() {
-            self.expressions.push(self.alloc(argument));
+            self.return_expressions.push(self.alloc(argument));
+        }
+    }
+
+    fn visit_yield_expression(&mut self, expression: &YieldExpression<'a>) {
+        if let Some(argument) = expression.argument.as_ref() {
+            self.yield_expressions.push(self.alloc(argument));
         }
     }
 

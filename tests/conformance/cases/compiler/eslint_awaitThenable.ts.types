@@ -170,7 +170,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 >              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
 
   async function* yieldThingsAsynchronously() {
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^: () => void   (TyFunction)
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^: () => 1 | 2   (TyFunction)
 
     yield 1;
 >   ^^^^^^^^: any   (TyAny)
@@ -197,7 +197,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 >                  ^^^^^^^^^^^^^: any   (TyAny)
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
->                                   ^^^^^^^^^^^^^^^^^^^^^^^^^: () => void   (TyFunction)
+>                                   ^^^^^^^^^^^^^^^^^^^^^^^^^: () => 1 | 2   (TyFunction)
 
     console.log(promisedValue);
 >   ^^^^^^^: Console   (TyTypeReference)

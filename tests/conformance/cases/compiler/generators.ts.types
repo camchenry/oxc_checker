@@ -1,0 +1,116 @@
+function* g1() {
+>         ^^: () => 1 | "foo"   (TyFunction)
+
+  yield 1
+> ^^^^^^^: any   (TyAny)
+
+  yield "foo"
+> ^^^^^^^^^^^: any   (TyAny)
+
+function* g2() {
+>         ^^: () => void   (TyFunction)
+
+function* g3() {
+>         ^^: () => string   (TyFunction)
+
+  yield "foo"
+> ^^^^^^^^^^^: any   (TyAny)
+
+async function* g4() {
+>               ^^: () => string   (TyFunction)
+
+  if (Math.random() > 0.5) {
+>     ^^^^: Math   (TyTypeReference)
+
+  if (Math.random() > 0.5) {
+>          ^^^^^^: () => number   (TyFunction)
+
+  yield "foo"
+> ^^^^^^^^^^^: any   (TyAny)
+
+async function* g5() {
+>               ^^: () => "foo" | 1 | 3   (TyFunction)
+
+  yield "foo"
+> ^^^^^^^^^^^: any   (TyAny)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>           ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                   ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                                         ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+  yield 1
+> ^^^^^^^: any   (TyAny)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>           ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                   ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                                         ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+  yield 3
+> ^^^^^^^: any   (TyAny)
+
+async function* g6() {
+>               ^^: () => "foo" | 1 | 2 | 3   (TyFunction)
+
+  yield "foo"
+> ^^^^^^^^^^^: any   (TyAny)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>           ^^^^^^^: PromiseConstructor   (TyTypeReference)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                   ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+
+  await new Promise(resolve => setTimeout(resolve, 1000))
+>                                         ^^^^^^^: (value: unknown) => void   (TyFunction)
+
+  yield 1
+> ^^^^^^^: any   (TyAny)
+
+    yield 2
+>   ^^^^^^^: any   (TyAny)
+
+  } catch (e) {
+>          ^: any   (TyAny)
+
+    console.error(e)
+>   ^^^^^^^: Console   (TyTypeReference)
+
+    console.error(e)
+>   ^^^^^^^^^^^^^^^^: void   (TyVoid)
+
+    console.error(e)
+>           ^^^^^: (...data: any[]) => void   (TyFunction)
+
+    console.error(e)
+>                 ^: any   (TyAny)
+
+  yield 3
+> ^^^^^^^: any   (TyAny)
