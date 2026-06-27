@@ -71,10 +71,10 @@ String(42);
 >^^^^^^^^^^^: string   (TyString)
 
 (() => {}).toLocaleString();
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 (() => {}).toLocaleString();
->          ^^^^^^^^^^^^^^: any   (TyAny)
+>          ^^^^^^^^^^^^^^: () => string   (TyFunction)
 
 class CustomToString {
 >     ^^^^^^^^^^^^^^: typeof CustomToString   (TyTypeQuery)

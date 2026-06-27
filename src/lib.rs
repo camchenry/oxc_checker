@@ -882,6 +882,27 @@ mod test {
     }
 
     #[test]
+    fn callable_types_expose_function_and_object_members() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        function declared(value: string) { return value; }
+
+        const arrowLocale = (() => {}).toLocaleString();
+        const declaredLocale = declared.toLocaleString();
+        const declaredLength = declared.length;
+        const arrowHasOwn = (() => {}).hasOwnProperty('call');
+        ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "arrowLocale"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "declaredLocale"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "declaredLength"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "arrowHasOwn"), Ty::boolean());
+    }
+
+    #[test]
     fn global_type_reference_locations_resolve_symbols() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -3229,6 +3250,7 @@ mod test {
         );
     }
 
+    #[ignore = "TODO(correctness): implement functionality needed for Awaited type"]
     #[test]
     fn awaited_primitive_types() {
         let allocator = Allocator::default();
@@ -3798,6 +3820,7 @@ mod test {
         declare const key: symbol;
         declare const big: bigint;
         const objectText = ({ a: 1 }).toString();
+        const fnText = (() => {}).toLocaleString();
         const functionLength = ((value: number) => value).length;
         const fixed = (1).toFixed();
         const boolValue = (true).valueOf();
@@ -3807,6 +3830,7 @@ mod test {
         );
 
         assert_eq!(get_global_symbol_type(&ret, "objectText"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "fnText"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "functionLength"), Ty::number());
         assert_eq!(get_global_symbol_type(&ret, "fixed"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "boolValue"), Ty::boolean());

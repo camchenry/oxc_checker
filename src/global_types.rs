@@ -15,6 +15,8 @@ const ARRAY_TYPE_NAME: &str = "Array";
 const READONLY_ARRAY_TYPE_NAME: &str = "ReadonlyArray";
 const OBJECT_TYPE_NAME: &str = "Object";
 const FUNCTION_TYPE_NAME: &str = "Function";
+const CALLABLE_FUNCTION_TYPE_NAME: &str = "CallableFunction";
+const NEWABLE_FUNCTION_TYPE_NAME: &str = "NewableFunction";
 const STRING_TYPE_NAME: &str = "String";
 const BOOLEAN_TYPE_NAME: &str = "Boolean";
 const NUMBER_TYPE_NAME: &str = "Number";
@@ -255,6 +257,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
     ) -> Option<Ty<'a>> {
         self.get_global_type_reference(program_id, FUNCTION_TYPE_NAME, std::iter::empty())
+    }
+
+    pub(crate) fn get_global_callable_function_type(
+        &self,
+        program_id: program::ProgramId,
+    ) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, CALLABLE_FUNCTION_TYPE_NAME, std::iter::empty())
+    }
+
+    pub(crate) fn get_global_newable_function_type(
+        &self,
+        program_id: program::ProgramId,
+    ) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, NEWABLE_FUNCTION_TYPE_NAME, std::iter::empty())
     }
 
     pub(crate) fn get_global_string_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {

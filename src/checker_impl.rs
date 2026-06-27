@@ -3184,6 +3184,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    // TODO: Refactor this into a more general function like `get_property_of_type`
     fn get_property_type_of_structural_type(
         &self,
         program_id: program::ProgramId,
@@ -3242,8 +3243,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_global_readonly_array_type(program_id, array.element_type)
             }
             Ty::Array(array) => self.get_global_array_type(program_id, array.element_type),
-            Ty::Object(_) | Ty::PrimitiveObject => self.get_global_object_type(program_id),
-            Ty::Function(_) => self.get_global_function_type(program_id),
+            Ty::Object(object) => {
+                return self.get_property_type_of_global_function_augmented_object_type(
+                    program_id,
+                    object,
+                    property_name,
+                );
+            }
+            Ty::PrimitiveObject => self.get_global_object_type(program_id),
+            Ty::Function(_) => {
+                return self.get_property_type_of_global_function_augmented_type(
+                    program_id,
+                    true,
+                    false,
+                    property_name,
+                );
+            }
             Ty::String | Ty::StringLiteral(_) => self.get_global_string_type(program_id),
             Ty::Boolean | Ty::BooleanLiteral(_) => self.get_global_boolean_type(program_id),
             Ty::Number | Ty::NumberLiteral(_) => self.get_global_number_type(program_id),
@@ -3251,7 +3266,83 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::Bigint | Ty::BigIntLiteral(_) => self.get_global_bigint_type(program_id),
             _ => return None,
         };
-        let Some(Ty::TypeReference(reference)) = interface_type else {
+        self.get_property_type_of_global_interface_reference(
+            program_id,
+            interface_type?,
+            property_name,
+        )
+    }
+
+    fn get_property_type_of_global_function_augmented_object_type(
+        &self,
+        program_id: program::ProgramId,
+        object: &TyObject<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        self.get_property_type_of_global_function_augmented_type(
+            program_id,
+            object
+                .signatures
+                .iter()
+                .any(|signature| signature.kind == SignatureKind::Call),
+            object
+                .signatures
+                .iter()
+                .any(|signature| signature.kind == SignatureKind::Construct),
+            property_name,
+        )
+    }
+
+    fn get_property_type_of_global_function_augmented_type(
+        &self,
+        program_id: program::ProgramId,
+        has_call_signatures: bool,
+        has_construct_signatures: bool,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        let function_type = if has_call_signatures {
+            self.get_global_callable_function_type(program_id)
+        } else if has_construct_signatures {
+            self.get_global_newable_function_type(program_id)
+        } else {
+            None
+        };
+
+        function_type
+            .and_then(|ty| {
+                self.get_property_type_of_global_interface_reference(program_id, ty, property_name)
+            })
+            .or_else(|| {
+                if has_call_signatures || has_construct_signatures {
+                    self.get_global_function_type(program_id).and_then(|ty| {
+                        self.get_property_type_of_global_interface_reference(
+                            program_id,
+                            ty,
+                            property_name,
+                        )
+                    })
+                } else {
+                    None
+                }
+            })
+            .or_else(|| {
+                self.get_global_object_type(program_id).and_then(|ty| {
+                    self.get_property_type_of_global_interface_reference(
+                        program_id,
+                        ty,
+                        property_name,
+                    )
+                })
+            })
+    }
+
+    fn get_property_type_of_global_interface_reference(
+        &self,
+        program_id: program::ProgramId,
+        interface_type: Ty<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        let Ty::TypeReference(reference) = interface_type else {
             return None;
         };
         self.get_property_type_of_interface_type(program_id, reference, property_name)
