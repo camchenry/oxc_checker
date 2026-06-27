@@ -125,13 +125,13 @@ const msg1 = `arg = ${arg}`;
 >                     ^^^: RegExp   (TyTypeReference)
 
 const arg = /foo/;
->     ^^^: any   (TyAny)
+>     ^^^: RegExp   (TyTypeReference)
 
 const msg1 = `arg = ${arg}`;
 >     ^^^^: string   (TyString)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: any   (TyAny)
+>                     ^^^: RegExp   (TyTypeReference)
 
 const arg = 'something';
 >     ^^^: "something"   (TyStringLiteral)

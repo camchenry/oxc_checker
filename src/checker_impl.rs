@@ -773,8 +773,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::string()
                 }
             }
+            Expression::RegExpLiteral(_) => {
+                self.get_global_regexp_type(program_id).unwrap_or(Ty::any())
+            }
             // TODO(correctness): Handle all of these cases.
-            Expression::RegExpLiteral(_) => Ty::any(),
             Expression::MetaProperty(_) => Ty::any(),
             Expression::Super(_) => Ty::any(),
             Expression::ChainExpression(_) => Ty::any(),

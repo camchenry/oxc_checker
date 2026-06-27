@@ -22,6 +22,7 @@ const BOOLEAN_TYPE_NAME: &str = "Boolean";
 const NUMBER_TYPE_NAME: &str = "Number";
 const SYMBOL_TYPE_NAME: &str = "Symbol";
 const BIGINT_TYPE_NAME: &str = "BigInt";
+const REGEXP_TYPE_NAME: &str = "RegExp";
 const AWAITED_TYPE_NAME: &str = "Awaited";
 const NON_NULLABLE_TYPE_NAME: &str = "NonNullable";
 const RECORD_TYPE_NAME: &str = "Record";
@@ -291,6 +292,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     pub(crate) fn get_global_bigint_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
         self.get_global_type_reference(program_id, BIGINT_TYPE_NAME, std::iter::empty())
+    }
+
+    pub(crate) fn get_global_regexp_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+        self.get_global_type_reference(program_id, REGEXP_TYPE_NAME, std::iter::empty())
     }
 
     pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
