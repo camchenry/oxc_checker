@@ -107,10 +107,10 @@ const literalWithToString = {
 >^^^^^^^^^^^^^: string   (TyString)
 
 /regex/.toString();
->^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 /regex/.toString();
->       ^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^: () => string   (TyFunction)
 
 let value = /regex/;
 >   ^^^^^: RegExp   (TyTypeReference)
@@ -119,10 +119,10 @@ value.toString();
 >^^^^^: RegExp   (TyTypeReference)
 
 value.toString();
->^^^^^^^^^^^^^^^^^: any   (TyAny)
+>^^^^^^^^^^^^^^^^^: string   (TyString)
 
 value.toString();
->     ^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^: () => string   (TyFunction)
 
 let text = `${value}`;
 >   ^^^^: string   (TyString)

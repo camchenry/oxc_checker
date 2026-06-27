@@ -3266,6 +3266,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::Number | Ty::NumberLiteral(_) => self.get_global_number_type(program_id),
             Ty::Symbol | Ty::UniqueSymbol(_) => self.get_global_symbol_type(program_id),
             Ty::Bigint | Ty::BigIntLiteral(_) => self.get_global_bigint_type(program_id),
+            Ty::TypeReference(reference)
+                if self.is_global_regexp_type_reference(program_id, reference) =>
+            {
+                return self.get_property_type_of_global_object_augmented_interface_type(
+                    program_id,
+                    reference,
+                    property_name,
+                );
+            }
             _ => return None,
         };
         self.get_property_type_of_global_interface_reference(
@@ -3327,6 +3336,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     None
                 }
             })
+            .or_else(|| {
+                self.get_global_object_type(program_id).and_then(|ty| {
+                    self.get_property_type_of_global_interface_reference(
+                        program_id,
+                        ty,
+                        property_name,
+                    )
+                })
+            })
+    }
+
+    fn get_property_type_of_global_object_augmented_interface_type(
+        &self,
+        program_id: program::ProgramId,
+        reference: &TyTypeReference<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        self.get_property_type_of_interface_type(program_id, reference, property_name)
             .or_else(|| {
                 self.get_global_object_type(program_id).and_then(|ty| {
                     self.get_property_type_of_global_interface_reference(

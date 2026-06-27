@@ -3826,6 +3826,10 @@ mod test {
         const boolValue = (true).valueOf();
         const symbolText = key.toString();
         const bigValue = big.valueOf();
+        const regexText = /abc/.toString();
+        const regexTest = /abc/.test('abc');
+        const regexHasOwn = /abc/.hasOwnProperty('source');
+        const regexLowercase = /abc/.tostring();
         ",
         );
 
@@ -3836,6 +3840,10 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "boolValue"), Ty::boolean());
         assert_eq!(get_global_symbol_type(&ret, "symbolText"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "bigValue"), Ty::bigint());
+        assert_eq!(get_global_symbol_type(&ret, "regexText"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "regexTest"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "regexHasOwn"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "regexLowercase"), Ty::any());
     }
 
     #[test]
