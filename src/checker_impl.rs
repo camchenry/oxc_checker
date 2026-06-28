@@ -714,10 +714,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     FunctionKind::ArrowFunction(arrow_function),
                     node_id,
                 ),
-            Expression::NullLiteral(_) => Ty::null(),
+            Expression::LogicalExpression(logical) => {
+                self.get_type_of_logical_expression(program_id, logical, node_id, flags)
+            }
             Expression::AwaitExpression(await_expr) => {
                 self.get_type_of_await_expression(program_id, await_expr, node_id)
             }
+            Expression::TSSatisfiesExpression(satisfies_expr) => {
+                // `satisfies` doesn't actually change the type, it just adds an additional assertion
+                // on the apparent type for the type checker to verify against without changing the declared type.
+                self.get_type_of_expression_with_node(
+                    program_id,
+                    &satisfies_expr.expression,
+                    node_id,
+                    flags,
+                )
+            }
+            Expression::NullLiteral(_) => Ty::null(),
             Expression::NumericLiteral(literal) => {
                 if flags.preserve_literals() {
                     Ty::number_literal_from_ast(self.arena(), literal, false)
@@ -783,9 +796,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ChainExpression(_) => Ty::any(),
             Expression::ClassExpression(_) => Ty::any(),
             Expression::ImportExpression(_) => Ty::any(),
-            Expression::LogicalExpression(logical) => {
-                self.get_type_of_logical_expression(program_id, logical, node_id, flags)
-            }
             Expression::SequenceExpression(_) => Ty::any(),
             Expression::TaggedTemplateExpression(_) => Ty::any(),
             Expression::UpdateExpression(_) => Ty::any(),
@@ -793,7 +803,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::PrivateInExpression(_) => Ty::any(),
             Expression::JSXElement(_) => Ty::any(),
             Expression::JSXFragment(_) => Ty::any(),
-            Expression::TSSatisfiesExpression(_) => Ty::any(),
             Expression::TSInstantiationExpression(_) => Ty::any(),
             Expression::V8IntrinsicExpression(_) => Ty::any(),
             Expression::PrivateFieldExpression(_) => Ty::any(),
