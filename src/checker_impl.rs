@@ -5,14 +5,15 @@ use oxc_ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
         AssignmentTarget, AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern,
         CallExpression, Class, ClassElement, ComputedMemberExpression, ConditionalExpression,
-        Expression, FormalParameter, FormalParameterRest, FormalParameters, Function,
-        IdentifierReference, LogicalExpression, MethodDefinition, MethodDefinitionKind,
-        NewExpression, NumberBase, ObjectExpression, ObjectPropertyKind, PropertyDefinition,
-        StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType,
-        TSModuleDeclarationName, TSSignature, TSThisParameter, TSTupleElement, TSType,
-        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
-        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        ExportSpecifier, Expression, FormalParameter, FormalParameterRest, FormalParameters,
+        Function, IdentifierReference, LogicalExpression, MethodDefinition, MethodDefinitionKind,
+        ModuleExportName, NewExpression, NumberBase, ObjectExpression, ObjectPropertyKind,
+        PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
+        TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
+        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
+        TSTypeParameter, TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery,
+        TSTypeQueryExprName, TSTypeReference, TemplateLiteral, VariableDeclarationKind,
+        VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -816,6 +817,66 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     | AstKind::ExportAllDeclaration(_)
             )
         })
+    }
+
+    fn get_type_symbol_for_export_specifier_local(
+        &self,
+        program_id: program::ProgramId,
+        node_id: NodeId,
+        identifier: &IdentifierReference<'a>,
+    ) -> Option<SymbolRef> {
+        let AstKind::ExportSpecifier(specifier) = self.nodes(program_id).parent_kind(node_id)
+        else {
+            return None;
+        };
+        let ModuleExportName::IdentifierReference(local) = &specifier.local else {
+            return None;
+        };
+        if local.span != identifier.span {
+            return None;
+        }
+        self.get_type_symbol_in_program(program_id, identifier.name.as_str())
+    }
+
+    fn get_type_of_export_specifier_local(
+        &self,
+        program_id: program::ProgramId,
+        specifier: &ExportSpecifier<'a>,
+    ) -> Ty<'a> {
+        let Some(local_name) = specifier.local.identifier_name() else {
+            return Ty::none();
+        };
+        let local_name = local_name.as_str();
+
+        self.get_type_symbol_in_program(program_id, local_name)
+            .and_then(|symbol| {
+                let ty = self.get_type_of_symbol(symbol);
+                if ty.is_none() { None } else { Some(ty) }
+            })
+            .or_else(|| self.get_type_of_local_type_declaration_by_name(program_id, local_name))
+            .unwrap_or_else(Ty::none)
+    }
+
+    fn get_type_of_local_type_declaration_by_name(
+        &self,
+        program_id: program::ProgramId,
+        type_name: &str,
+    ) -> Option<Ty<'a>> {
+        self.semantic(program_id)
+            .nodes()
+            .iter()
+            .find_map(|node| match node.kind() {
+                AstKind::TSInterfaceDeclaration(interface)
+                    if interface.id.name.as_str() == type_name =>
+                {
+                    Some(Ty::any())
+                }
+                AstKind::TSTypeAliasDeclaration(alias) if alias.id.name.as_str() == type_name => {
+                    let ty = self.get_type_of_type_alias_declaration(program_id, alias);
+                    Some(if ty.is_none() { Ty::any() } else { ty })
+                }
+                _ => None,
+            })
     }
 
     /// Removes `null` and `undefined` from the type, like when using `!` or `NonNullable<T>`.
@@ -6949,6 +7010,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 })
                 .or_else(|| {
                     self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
+                })
+                .or_else(|| {
+                    self.get_type_symbol_for_export_specifier_local(
+                        node.program_id,
+                        node.node_id,
+                        identifier,
+                    )
                 }),
             AstKind::TSTypeReference(reference) => match &reference.type_name {
                 TSTypeName::IdentifierReference(identifier) => identifier
@@ -7123,6 +7191,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
             AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
             AstKind::TSInterfaceDeclaration(_) => Ty::any(),
+            AstKind::ExportSpecifier(specifier) => {
+                self.get_type_of_export_specifier_local(node.program_id, specifier)
+            }
             AstKind::TSModuleDeclaration(module) => {
                 let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
                     return Ty::none();

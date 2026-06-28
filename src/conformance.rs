@@ -2,6 +2,7 @@
 // writing the conformance testing code myself yet.
 use std::{
     any::Any,
+    borrow::Cow,
     collections::{BTreeMap, BTreeSet, HashMap},
     fmt, io,
     path::{Component, Path, PathBuf},
@@ -14,13 +15,14 @@ use std::{
 };
 
 use oxc_allocator::Allocator;
-use oxc_ast::AstKind;
+use oxc_ast::{AstKind, ast::Statement};
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
 use oxc_span::GetSpan;
+use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
 
-use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef};
+use crate::checker::{Checker, CheckerBuilder, NodeRef};
 
 use super::*;
 
@@ -1570,43 +1572,108 @@ fn actual_identifier_records<'a>(
     source_text: &str,
 ) -> Vec<TypeRecord> {
     let checker = CheckerBuilder::new().build(store);
-    store
-        .entry(program_id)
-        .unwrap()
+    let entry = store.entry(program_id).unwrap();
+    let mut records = entry
         .semantic()
         .nodes()
         .iter_enumerated()
         .filter_map(|(node_id, node)| {
-            actual_identifier_record(
-                &checker,
-                program_id,
-                path,
-                source_text,
-                node_id,
-                node.kind(),
-            )
+            actual_identifier_record(&checker, entry, path, source_text, node_id, node.kind())
+        })
+        .collect::<Vec<_>>();
+    records.extend(actual_export_specifier_records(
+        &checker, &records, entry, path,
+    ));
+    records
+}
+
+fn actual_export_specifier_records<'a>(
+    checker: &impl Checker<'a>,
+    existing_records: &[TypeRecord],
+    entry: &program::ProgramEntry<'a>,
+    path: &str,
+) -> Vec<TypeRecord> {
+    let program_id = entry.id();
+    let existing_keys = existing_records
+        .iter()
+        .map(TypeRecord::key)
+        .collect::<BTreeSet<_>>();
+    entry
+        .module_record()
+        .local_export_entries
+        .iter()
+        .filter_map(|export_entry| {
+            let ExportLocalName::Name(local_name) = &export_entry.local_name else {
+                return None;
+            };
+            let key = TypeRecordKey {
+                start: local_name.span.start,
+                end: local_name.span.end,
+                text: sanitize(local_name.name.as_str()),
+            };
+            if existing_keys.contains(&key) {
+                return None;
+            }
+            let node_ref = export_specifier_node_ref(program_id, entry, export_entry)?;
+            let ty = checker.get_type_at_location(node_ref);
+            if ty.is_none() {
+                return None;
+            }
+            let ty_variant = ty.enum_variant_name();
+            let ty_repr = checker.type_to_string(ty, node_ref);
+            Some(TypeRecord {
+                path: path.to_string(),
+                start: key.start,
+                end: key.end,
+                text: key.text,
+                ty_variant: Some(ty_variant),
+                ty_repr: sanitize(&ty_repr),
+            })
         })
         .collect()
 }
 
-fn actual_identifier_record<'a>(
-    checker: &CheckerReturn<'a, '_>,
+fn export_specifier_node_ref<'a>(
     program_id: program::ProgramId,
+    entry: &program::ProgramEntry<'a>,
+    export_entry: &ExportEntry<'a>,
+) -> Option<NodeRef> {
+    let ExportLocalName::Name(local_name) = &export_entry.local_name else {
+        return None;
+    };
+    entry.program().body.iter().find_map(|statement| {
+        let Statement::ExportNamedDeclaration(declaration) = statement else {
+            return None;
+        };
+        if declaration.span != export_entry.statement_span {
+            return None;
+        }
+        declaration.specifiers.iter().find_map(|specifier| {
+            let (span, _) = module_export_name_span_and_text(&specifier.local)?;
+            (span == local_name.span).then(|| NodeRef::new(program_id, specifier.node_id()))
+        })
+    })
+}
+
+fn actual_identifier_record<'a>(
+    checker: &impl Checker<'a>,
+    entry: &program::ProgramEntry<'a>,
     path: &str,
     source_text: &str,
     node_id: NodeId,
     kind: AstKind<'a>,
 ) -> Option<TypeRecord> {
+    let program_id = entry.id();
     let node_ref = NodeRef::new(program_id, node_id);
-    let (span, text, ty): (Span, &str, Ty<'_>) = match kind {
+    let (span, text, ty): (Span, Cow<'_, str>, Ty<'_>) = match kind {
         AstKind::BindingIdentifier(identifier) => (
             identifier.span,
-            &identifier.name,
+            Cow::Borrowed(identifier.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::IdentifierReference(identifier) => (
             identifier.span,
-            &identifier.name,
+            Cow::Borrowed(identifier.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::IdentifierName(identifier) => {
@@ -1614,74 +1681,106 @@ fn actual_identifier_record<'a>(
             if ty.is_none() {
                 return None;
             }
-            (identifier.span, &identifier.name, ty)
+            (identifier.span, Cow::Borrowed(identifier.name.as_str()), ty)
         }
         AstKind::TSPropertySignature(property) => {
             let span = property.key.span();
             let text = property_key_name_str(&property.key)?;
-            (span, text, checker.get_type_at_location(node_ref))
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
         }
         AstKind::ObjectProperty(property) => {
             let span = property.key.span();
             let text = property_key_name_str(&property.key)?;
-            (span, text, checker.get_type_at_location(node_ref))
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
         }
         AstKind::StaticMemberExpression(member) => (
             member.property.span,
-            &member.property.name,
+            Cow::Borrowed(member.property.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::MethodDefinition(method) => {
             let span = method.key.span();
             let text = property_key_name_str(&method.key)?;
-            (span, text, checker.get_type_at_location(node_ref))
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
         }
         AstKind::TSMethodSignature(method) => {
             let span = method.key.span();
             let text = property_key_name_str(&method.key)?;
-            (span, text, checker.get_type_at_location(node_ref))
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
+        }
+        AstKind::ExportSpecifier(specifier) => {
+            let (span, text) = module_export_name_span_and_text(&specifier.local)?;
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
         }
         AstKind::TSThisParameter(parameter) => (
             parameter.this_span,
-            "this",
+            Cow::Borrowed("this"),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::PropertyDefinition(property) => {
             let span = property.key.span();
             let text = property_key_name_str(&property.key)?;
-            (span, text, checker.get_type_at_location(node_ref))
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
         }
         AstKind::TSTypeAliasDeclaration(alias) => (
             alias.id.span,
-            &alias.id.name,
+            Cow::Borrowed(alias.id.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSImportEqualsDeclaration(import_equals) => (
             import_equals.id.span,
-            &import_equals.id.name,
+            Cow::Borrowed(import_equals.id.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSInterfaceDeclaration(interface) => (
             interface.id.span,
-            &interface.id.name,
+            Cow::Borrowed(interface.id.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSModuleDeclaration(module) => {
             let (span, text) = ts_module_declaration_name_span_and_text(&module.id)?;
-            (span, text, checker.get_type_at_location(node_ref))
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
         }
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
-            &parameter.name.name,
+            Cow::Borrowed(parameter.name.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSMappedType(mapped) => (
             mapped.key.span,
-            &mapped.key.name,
+            Cow::Borrowed(mapped.key.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSClassImplements(implements) => {
-            let (span, text) = ts_type_name_span_and_text(checker.arena(), &implements.expression)?;
+            let (span, text) = ts_type_name_span_and_text(&implements.expression)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSInterfaceHeritage(heritage) => {
@@ -1690,28 +1789,28 @@ fn actual_identifier_record<'a>(
             };
             (
                 identifier.span,
-                &identifier.name,
+                Cow::Borrowed(identifier.name.as_str()),
                 checker.get_type_at_location(node_ref),
             )
         }
         AstKind::TSTypeReference(reference) => {
-            let (span, text) = ts_type_name_span_and_text(checker.arena(), &reference.type_name)?;
+            let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::ExpressionStatement(statement) => {
             let expression_text = statement.span.source_text(source_text);
             if matches!(
-                checker.nodes(program_id).parent_kind(node_id),
+                entry.semantic().nodes().parent_kind(node_id),
                 AstKind::ArrowFunctionExpression(_)
             ) || matches!(
-                checker.nodes(program_id).parent_kind(node_id),
+                entry.semantic().nodes().parent_kind(node_id),
                 AstKind::FunctionBody(body) if body.span == statement.span
             ) {
                 return None;
             }
             (
                 statement.span,
-                expression_text,
+                Cow::Borrowed(expression_text),
                 checker.get_type_at_location(node_ref),
             )
         }
@@ -1722,7 +1821,7 @@ fn actual_identifier_record<'a>(
                 signature_name.span.start,
                 signature_name.type_annotation.span.start,
             ),
-            signature_name.name.as_str(),
+            Cow::Borrowed(signature_name.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
         _ => return None,
@@ -1739,7 +1838,7 @@ fn actual_identifier_record<'a>(
         path: path.to_string(),
         start: span.start,
         end: span.end,
-        text: sanitize(text),
+        text: sanitize(text.as_ref()),
         ty_variant: Some(ty_variant),
         ty_repr: sanitize(&ty_repr),
     })
@@ -1758,16 +1857,41 @@ fn ts_module_declaration_name_span_and_text<'a>(
     }
 }
 
-fn ts_type_name_span_and_text<'a>(
-    arena: CheckerArena<'a>,
-    name: &TSTypeName<'a>,
+fn module_export_name_span_and_text<'a>(
+    name: &'a oxc_ast::ast::ModuleExportName<'a>,
 ) -> Option<(Span, &'a str)> {
+    match name {
+        oxc_ast::ast::ModuleExportName::IdentifierName(identifier) => {
+            Some((identifier.span, &identifier.name))
+        }
+        oxc_ast::ast::ModuleExportName::IdentifierReference(identifier) => {
+            Some((identifier.span, &identifier.name))
+        }
+        oxc_ast::ast::ModuleExportName::StringLiteral(literal) => {
+            Some((literal.span, &literal.value))
+        }
+    }
+}
+
+fn ts_type_name_span_and_text<'a>(name: &'a TSTypeName<'a>) -> Option<(Span, Cow<'a, str>)> {
     let span = match name {
         TSTypeName::IdentifierReference(identifier) => identifier.span,
         TSTypeName::QualifiedName(qualified) => qualified.span,
         TSTypeName::ThisExpression(_) => return None,
     };
-    Some((span, ts_type_name_to_str(arena, name)))
+    Some((span, ts_type_name_text(name)))
+}
+
+fn ts_type_name_text<'a>(name: &'a TSTypeName<'a>) -> Cow<'a, str> {
+    match name {
+        TSTypeName::IdentifierReference(identifier) => Cow::Borrowed(identifier.name.as_str()),
+        TSTypeName::QualifiedName(qualified) => Cow::Owned(format!(
+            "{}.{}",
+            ts_type_name_text(&qualified.left),
+            qualified.right.name
+        )),
+        TSTypeName::ThisExpression(_) => Cow::Borrowed("this"),
+    }
 }
 
 fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Vec<FileResult> {

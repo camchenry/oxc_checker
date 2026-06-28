@@ -144,7 +144,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         })
     }
 
-    fn get_type_symbol_in_program(
+    pub(crate) fn get_type_symbol_in_program(
         &self,
         program_id: program::ProgramId,
         type_name: &str,

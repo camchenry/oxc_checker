@@ -22,6 +22,12 @@ class Button implements ButtonProps {
 export { Button, ButtonProps };
 >        ^^^^^^: typeof Button   (TyTypeQuery)
 
+export { Button, ButtonProps };
+>        ^^^^^^: typeof Button   (TyTypeQuery)
+
+export { Button, ButtonProps };
+>                ^^^^^^^^^^^: any   (TyAny)
+
 interface ButtonProps {
 >         ^^^^^^^^^^^: any   (TyAny)
 
@@ -46,6 +52,12 @@ class Button implements ButtonProps {
 export { Button };
 >        ^^^^^^: typeof Button   (TyTypeQuery)
 
+export { Button };
+>        ^^^^^^: typeof Button   (TyTypeQuery)
+
+export type { ButtonProps };
+>             ^^^^^^^^^^^: any   (TyAny)
+
 const x = 1;
 >     ^: 1   (TyNumberLiteral)
 
@@ -54,6 +66,9 @@ type T = number;
 
 export { x, T };
 >        ^: 1   (TyNumberLiteral)
+
+export { x, T };
+>           ^: number   (TyNumber)
 
 const x = 1;
 >     ^: 1   (TyNumberLiteral)
@@ -64,11 +79,17 @@ type T = number;
 export { x, type T };
 >        ^: 1   (TyNumberLiteral)
 
+export { x, type T };
+>                ^: number   (TyNumber)
+
 const x = 1;
 >     ^: 1   (TyNumberLiteral)
 
 type T = number;
 >    ^: number   (TyNumber)
+
+export type { T };
+>             ^: number   (TyNumber)
 
 export { x };
 >        ^: 1   (TyNumberLiteral)
