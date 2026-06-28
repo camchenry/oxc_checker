@@ -1,0 +1,380 @@
+const x: number = 1 satisfies 2 | 3
+>     ^: number   (TyNumber)
+
+const y = 1 satisfies 2 | 3
+>     ^: any   (TyAny)
+
+type Point = { x: number; y: number }
+>    ^^^^^: { x: number; y: number; }   (TyObject)
+
+type Point = { x: number; y: number }
+>              ^: number   (TyNumber)
+
+type Point = { x: number; y: number }
+>                         ^: number   (TyNumber)
+
+type Named = { name: string }
+>    ^^^^^: { name: string; }   (TyObject)
+
+type Named = { name: string }
+>              ^^^^: string   (TyString)
+
+type Handler<T> = (value: T) => T
+>    ^^^^^^^: (value: T) => T   (TyFunction)
+
+type Handler<T> = (value: T) => T
+>            ^: any   (TyAny)
+
+type Handler<T> = (value: T) => T
+>                  ^^^^^: T   (TyTypeReference)
+
+type Handler<T> = (value: T) => T
+>                         ^: any   (TyAny)
+
+type Handler<T> = (value: T) => T
+>                               ^: any   (TyAny)
+
+type Status = "idle" | "loading" | "done"
+>    ^^^^^^: "idle" | "loading" | "done"   (TyUnion)
+
+type StringNumberRecord = { [key: string]: number }
+>    ^^^^^^^^^^^^^^^^^^: { [key: string]: number; }   (TyObject)
+
+type StringNumberRecord = { [key: string]: number }
+>                            ^^^: string   (TyString)
+
+type StatusMap = { idle: number; loading: number; done: number }
+>    ^^^^^^^^^: { idle: number; loading: number; done: number; }   (TyObject)
+
+type StatusMap = { idle: number; loading: number; done: number }
+>                  ^^^^: number   (TyNumber)
+
+type StatusMap = { idle: number; loading: number; done: number }
+>                                ^^^^^^^: number   (TyNumber)
+
+type StatusMap = { idle: number; loading: number; done: number }
+>                                                 ^^^^: number   (TyNumber)
+
+const literalNumber = 1 satisfies number
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const literalString = "hello" satisfies string
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const literalBoolean = true satisfies boolean
+>     ^^^^^^^^^^^^^^: any   (TyAny)
+
+const literalUnion = "idle" satisfies Status
+>     ^^^^^^^^^^^^: any   (TyAny)
+
+const literalUnion = "idle" satisfies Status
+>                                     ^^^^^^: any   (TyAny)
+
+const literalTemplate = `id-${literalNumber}` satisfies `id-${number}`
+>     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+const literalTemplate = `id-${literalNumber}` satisfies `id-${number}`
+>                             ^^^^^^^^^^^^^: any   (TyAny)
+
+const tuple = [1, "two"] satisfies [number, string]
+>     ^^^^^: any   (TyAny)
+
+const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
+>                                  ^^^^^: any   (TyAny)
+
+const array = ["red", "green", "blue"] satisfies string[]
+>     ^^^^^: any   (TyAny)
+
+const nestedArray = [[1], [2, 3]] satisfies number[][]
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const point = { x: 0, y: 1 } satisfies Point
+>     ^^^^^: any   (TyAny)
+
+const point = { x: 0, y: 1 } satisfies Point
+>               ^: number   (TyNumber)
+
+const point = { x: 0, y: 1 } satisfies Point
+>                     ^: number   (TyNumber)
+
+const point = { x: 0, y: 1 } satisfies Point
+>                                      ^^^^^: any   (TyAny)
+
+const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
+>     ^^^^^^^^^^: any   (TyAny)
+
+const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
+>                    ^^^^: string   (TyString)
+
+const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
+>                                    ^: number   (TyNumber)
+
+const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
+>                                          ^: number   (TyNumber)
+
+const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
+>                                                           ^^^^^: any   (TyAny)
+
+const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
+>                                                                   ^^^^^: any   (TyAny)
+
+const optionalShape = { x: 1 } satisfies { x: number; y?: number }
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const optionalShape = { x: 1 } satisfies { x: number; y?: number }
+>                       ^: number   (TyNumber)
+
+const optionalShape = { x: 1 } satisfies { x: number; y?: number }
+>                                          ^: number   (TyNumber)
+
+const optionalShape = { x: 1 } satisfies { x: number; y?: number }
+>                                                     ^: number | undefined   (TyUnion)
+
+const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
+>                     ^: number   (TyNumber)
+
+const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
+>                           ^: number   (TyNumber)
+
+const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
+>                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
+>                       ^^^^: number   (TyNumber)
+
+const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
+>                                ^^^^^^^: number   (TyNumber)
+
+const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
+>                                            ^^^^: number   (TyNumber)
+
+const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
+>                                                                ^^^^^^^^^: any   (TyAny)
+
+const nestedObject = {
+>     ^^^^^^^^^^^^: any   (TyAny)
+
+	id: "root",
+>^^: string   (TyString)
+
+	child: { x: 1, y: 2 },
+>^^^^^: { x: number; y: number; }   (TyObject)
+
+	child: { x: 1, y: 2 },
+>         ^: number   (TyNumber)
+
+	child: { x: 1, y: 2 },
+>               ^: number   (TyNumber)
+
+} satisfies { id: string; child: Point }
+>             ^^: string   (TyString)
+
+} satisfies { id: string; child: Point }
+>                         ^^^^^: Point   (TyTypeReference)
+
+} satisfies { id: string; child: Point }
+>                                ^^^^^: any   (TyAny)
+
+const methodObject = {
+>     ^^^^^^^^^^^^: any   (TyAny)
+
+	scale(value: number) {
+>^^^^^: (value: number) => number   (TyFunction)
+
+	scale(value: number) {
+>      ^^^^^: number   (TyNumber)
+
+		return value * 2
+>        ^^^^^: number   (TyNumber)
+
+} satisfies { scale(value: number): number }
+>             ^^^^^: (value: number) => number   (TyFunction)
+
+} satisfies { scale(value: number): number }
+>                   ^^^^^: number   (TyNumber)
+
+const arrow = ((value: number) => value + 1) satisfies Handler<number>
+>     ^^^^^: any   (TyAny)
+
+const arrow = ((value: number) => value + 1) satisfies Handler<number>
+>               ^^^^^: number   (TyNumber)
+
+const arrow = ((value: number) => value + 1) satisfies Handler<number>
+>                                 ^^^^^: number   (TyNumber)
+
+const arrow = ((value: number) => value + 1) satisfies Handler<number>
+>                                                      ^^^^^^^: any   (TyAny)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>     ^^^^^^^^^^^^: any   (TyAny)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                      ^: any   (TyAny)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                         ^^^^^: T   (TyTypeReference)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                                ^: any   (TyAny)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                                      ^^^^^: T   (TyTypeReference)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                                                        ^: any   (TyAny)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                                                           ^^^^^: T   (TyTypeReference)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                                                                  ^: any   (TyAny)
+
+const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
+>                                                                        ^: any   (TyAny)
+
+const constructorLike = class {
+>     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+	value = 1
+>^^^^^: number   (TyNumber)
+
+} satisfies new () => { value: number }
+>                       ^^^^^: number   (TyNumber)
+
+const parenthesized = (1 + 2) satisfies number
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const conditional = (literalBoolean ? "yes" : "no") satisfies "yes" | "no"
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const conditional = (literalBoolean ? "yes" : "no") satisfies "yes" | "no"
+>                    ^^^^^^^^^^^^^^: any   (TyAny)
+
+const nullish = (undefined ?? "fallback") satisfies string
+>     ^^^^^^^: any   (TyAny)
+
+const nullish = (undefined ?? "fallback") satisfies string
+>                ^^^^^^^^^: undefined   (TyUndefined)
+
+const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
+>     ^^^^^^^: any   (TyAny)
+
+const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
+>                  ^: number   (TyNumber)
+
+const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
+>                        ^: number   (TyNumber)
+
+const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
+>                                         ^^^^^: any   (TyAny)
+
+const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
+>                                                ^: any   (TyAny)
+
+declare const maybePoint: Point | undefined
+>             ^^^^^^^^^^: Point | undefined   (TyUnion)
+
+declare const maybePoint: Point | undefined
+>                         ^^^^^: any   (TyAny)
+
+const narrowed = maybePoint?.x satisfies number | undefined
+>     ^^^^^^^^: any   (TyAny)
+
+const narrowed = maybePoint?.x satisfies number | undefined
+>                ^^^^^^^^^^: Point | undefined   (TyUnion)
+
+const narrowed = maybePoint?.x satisfies number | undefined
+>                            ^: any   (TyAny)
+
+declare function takesPoint<T extends Point>(value: T): T
+>                ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction)
+
+declare function takesPoint<T extends Point>(value: T): T
+>                           ^: any   (TyAny)
+
+declare function takesPoint<T extends Point>(value: T): T
+>                                     ^^^^^: any   (TyAny)
+
+declare function takesPoint<T extends Point>(value: T): T
+>                                            ^^^^^: T   (TyTypeReference)
+
+declare function takesPoint<T extends Point>(value: T): T
+>                                                   ^: any   (TyAny)
+
+declare function takesPoint<T extends Point>(value: T): T
+>                                                       ^: any   (TyAny)
+
+const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
+>                   ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction)
+
+const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
+>                                ^: number   (TyNumber)
+
+const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
+>                                      ^: number   (TyNumber)
+
+const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
+>                                                        ^^^^^: any   (TyAny)
+
+const missingProperty = { x: 1 } satisfies Point
+>     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+const missingProperty = { x: 1 } satisfies Point
+>                         ^: number   (TyNumber)
+
+const missingProperty = { x: 1 } satisfies Point
+>                                          ^^^^^: any   (TyAny)
+
+const wrongPropertyType = { x: 1, y: "two" } satisfies Point
+>     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const wrongPropertyType = { x: 1, y: "two" } satisfies Point
+>                           ^: number   (TyNumber)
+
+const wrongPropertyType = { x: 1, y: "two" } satisfies Point
+>                                 ^: string   (TyString)
+
+const wrongPropertyType = { x: 1, y: "two" } satisfies Point
+>                                                      ^^^^^: any   (TyAny)
+
+const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
+>     ^^^^^^^^^^^^^^: any   (TyAny)
+
+const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
+>                        ^: number   (TyNumber)
+
+const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
+>                              ^: number   (TyNumber)
+
+const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
+>                                    ^: number   (TyNumber)
+
+const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
+>                                                     ^^^^^: any   (TyAny)
+
+const wrongTuple = [1, 2] satisfies [number, string]
+>     ^^^^^^^^^^: any   (TyAny)
+
+const wrongFunction = ((value: string) => value) satisfies Handler<number>
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const wrongFunction = ((value: string) => value) satisfies Handler<number>
+>                       ^^^^^: string   (TyString)
+
+const wrongFunction = ((value: string) => value) satisfies Handler<number>
+>                                         ^^^^^: string   (TyString)
+
+const wrongFunction = ((value: string) => value) satisfies Handler<number>
+>                                                          ^^^^^^^: any   (TyAny)
