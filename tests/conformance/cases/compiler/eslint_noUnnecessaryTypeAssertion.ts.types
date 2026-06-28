@@ -32,7 +32,7 @@ function foo4(x: number): number {
 >        ^: number   (TyNumber)
 
 let foo5 = 'foo' as const;
->   ^^^^: const   (TyTypeReference)
+>   ^^^^: "foo"   (TyStringLiteral)
 
 let foo5 = 'foo' as const;
 >                   ^^^^^: any   (TyAny)

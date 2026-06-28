@@ -176,6 +176,7 @@ pub(crate) enum BindingPatternKind<'a> {
     RestParameter(&'a FormalParameterRest<'a>),
 }
 
+// TODO: Consolidate this with `CheckMode`?
 bitflags! {
     /// Flags for changing behavior when getting the types of expressions or nodes.
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -196,6 +197,62 @@ impl GetTypeFlags {
 
     pub fn context_free(&self) -> bool {
         self.contains(GetTypeFlags::CONTEXT_FREE)
+    }
+}
+
+bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+    struct CheckMode: u8 {
+        const NONE = 0;
+        const CONTEXTUAL = 1 << 0;
+        const FORCE_TUPLE = 1 << 1;
+        const CONST_CONTEXT = 1 << 2;
+    }
+}
+
+impl CheckMode {
+    fn force_tuple(self) -> bool {
+        self.contains(Self::FORCE_TUPLE)
+    }
+
+    fn const_context(self) -> bool {
+        self.contains(Self::CONST_CONTEXT)
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+struct ExpressionCheckContext<'a> {
+    flags: GetTypeFlags,
+    contextual_type: Option<Ty<'a>>,
+    check_mode: CheckMode,
+}
+
+impl<'a> ExpressionCheckContext<'a> {
+    fn new(flags: GetTypeFlags) -> Self {
+        Self {
+            flags,
+            contextual_type: None,
+            check_mode: CheckMode::NONE,
+        }
+    }
+
+    fn with_flags(self, flags: GetTypeFlags) -> Self {
+        Self { flags, ..self }
+    }
+
+    fn with_contextual_type(self, contextual_type: Ty<'a>, check_mode: CheckMode) -> Self {
+        Self {
+            contextual_type: Some(contextual_type),
+            check_mode: self.check_mode | check_mode,
+            ..self
+        }
+    }
+
+    fn with_check_mode(self, check_mode: CheckMode) -> Self {
+        Self {
+            check_mode: self.check_mode | check_mode,
+            ..self
+        }
     }
 }
 
@@ -587,6 +644,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
         flags: GetTypeFlags,
     ) -> Ty<'a> {
+        self.check_expression_with_context(
+            program_id,
+            expression,
+            node_id,
+            ExpressionCheckContext::new(flags),
+        )
+    }
+
+    fn check_expression_with_context(
+        &self,
+        program_id: program::ProgramId,
+        expression: &'a Expression<'a>,
+        node_id: Option<NodeId>,
+        context: ExpressionCheckContext<'a>,
+    ) -> Ty<'a> {
+        let flags = context.flags;
         match expression {
             Expression::Identifier(identifier) => {
                 let symbol = identifier
@@ -678,7 +751,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_call_expression(program_id, call_expression, node_id)
             }
             Expression::ArrayExpression(array_expression) => {
-                self.get_type_of_array_expression(program_id, array_expression, node_id, flags)
+                self.get_type_of_array_expression(program_id, array_expression, node_id, context)
             }
             Expression::ComputedMemberExpression(member) => {
                 self.get_type_of_computed_member_expression(program_id, member, node_id, flags)
@@ -687,14 +760,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_static_member_expression(program_id, member, node_id, flags)
             }
             Expression::ParenthesizedExpression(parenthesized) => self
-                .get_type_of_expression_with_node(
+                .check_expression_with_context(
                     program_id,
                     &parenthesized.expression,
                     node_id,
-                    flags & GetTypeFlags::CONTEXT_FREE,
+                    context,
                 ),
             Expression::TSTypeAssertion(assertion) => {
                 self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
+            }
+            Expression::TSAsExpression(assertion)
+                if is_const_type_reference(&assertion.type_annotation) =>
+            {
+                let const_context = context
+                    .with_flags(
+                        flags | GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
+                    )
+                    .with_check_mode(CheckMode::CONST_CONTEXT | CheckMode::FORCE_TUPLE);
+                self.check_expression_with_context(
+                    program_id,
+                    &assertion.expression,
+                    node_id,
+                    const_context,
+                )
             }
             Expression::TSAsExpression(assertion) => {
                 self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
@@ -721,13 +809,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_await_expression(program_id, await_expr, node_id)
             }
             Expression::TSSatisfiesExpression(satisfies_expr) => {
-                // `satisfies` doesn't actually change the type, it just adds an additional assertion
+                // `satisfies` mostly does not change the type, it just adds an additional assertion
                 // on the apparent type for the type checker to verify against without changing the declared type.
-                self.get_type_of_expression_with_node(
+                // However, it can change the type in some cases, for example:
+                // - Inferring a tuple instead of an array if the satisfies type is a tuple
+                // - Changing the type of a literal to a more specific type if the satisfies type is more specific
+                let target_type =
+                    self.get_type_from_ts_type(program_id, &satisfies_expr.type_annotation);
+                let target_type = self.expand_type_at_use(program_id, target_type, 0);
+                let satisfies_context = context
+                    .with_flags(
+                        flags | GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
+                    )
+                    .with_contextual_type(target_type, CheckMode::CONTEXTUAL);
+                self.check_expression_with_context(
                     program_id,
                     &satisfies_expr.expression,
                     node_id,
-                    flags,
+                    satisfies_context,
                 )
             }
             Expression::NullLiteral(_) => Ty::null(),
@@ -5474,7 +5573,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         TupleElement::Regular(Ty::any())
                     } else {
                         TupleElement::Regular(self.get_type_of_array_expression_element(
-                            program_id, element, node_id, flags,
+                            program_id,
+                            element,
+                            node_id,
+                            ExpressionCheckContext::new(flags),
                         ))
                     }
                 })
@@ -5907,8 +6009,33 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         array_expression: &'a ArrayExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
+        if self.array_literal_context_produces_tuple(context) {
+            let elements = array_expression
+                .elements
+                .iter()
+                .enumerate()
+                .map(|(index, element)| {
+                    let contextual_element_type = self
+                        .contextual_type_for_array_literal_element(context.contextual_type, index);
+                    let element_context =
+                        self.array_literal_element_context(context, contextual_element_type);
+                    TupleElement::Regular(self.get_type_of_array_expression_element(
+                        program_id,
+                        element,
+                        node_id,
+                        element_context,
+                    ))
+                })
+                .collect();
+            return if self.array_literal_context_produces_readonly_tuple(context) {
+                Ty::readonly_tuple(self.arena(), elements)
+            } else {
+                Ty::tuple(self.arena(), elements)
+            };
+        }
+
         match array_expression.elements.len() {
             0 => Ty::array(
                 self.arena,
@@ -5922,12 +6049,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // For 1 element: infer the type of the first element
             1 => {
                 let first_element = &array_expression.elements[0];
-                let element_flags = flags & GetTypeFlags::CONTEXT_FREE;
+                let contextual_element_type =
+                    self.contextual_type_for_array_literal_element(context.contextual_type, 0);
+                let element_context =
+                    self.array_literal_element_context(context, contextual_element_type);
                 let element_type = self.get_type_of_array_expression_element(
                     program_id,
                     first_element,
                     node_id,
-                    element_flags,
+                    element_context,
                 );
                 Ty::array(self.arena, element_type)
             }
@@ -5935,13 +6065,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             _ => {
                 // TODO(perf): avoid allocating here somehow?
                 let mut element_types = Vec::default();
-                let element_flags = flags & GetTypeFlags::CONTEXT_FREE;
-                for element in &array_expression.elements {
+                for (index, element) in array_expression.elements.iter().enumerate() {
+                    let contextual_element_type = self
+                        .contextual_type_for_array_literal_element(context.contextual_type, index);
+                    let element_context =
+                        self.array_literal_element_context(context, contextual_element_type);
                     let element_type = self.get_type_of_array_expression_element(
                         program_id,
                         element,
                         node_id,
-                        element_flags,
+                        element_context,
                     );
                     // TODO(perf): avoid re-iterating elements? use a hash set?
                     if !element_types.contains(&element_type) {
@@ -5958,29 +6091,82 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn array_literal_context_produces_tuple(&self, context: ExpressionCheckContext<'a>) -> bool {
+        context.check_mode.force_tuple() || matches!(context.contextual_type, Some(Ty::Tuple(_)))
+    }
+
+    fn array_literal_context_produces_readonly_tuple(
+        &self,
+        context: ExpressionCheckContext<'a>,
+    ) -> bool {
+        context.check_mode.const_context()
+            || matches!(context.contextual_type, Some(Ty::Tuple(tuple)) if tuple.readonly)
+    }
+
+    fn contextual_type_for_array_literal_element(
+        &self,
+        contextual_type: Option<Ty<'a>>,
+        index: usize,
+    ) -> Option<Ty<'a>> {
+        match contextual_type? {
+            Ty::Tuple(tuple) => tuple.elements.get(index).map(TupleElement::ty),
+            Ty::Array(array) => Some(array.element_type),
+            Ty::Union(union) => {
+                let element_types = union
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        self.contextual_type_for_array_literal_element(Some(*ty), index)
+                    })
+                    .collect::<Vec<_>>();
+                (!element_types.is_empty()).then(|| Ty::union(self.arena(), element_types))
+            }
+            _ => None,
+        }
+    }
+
+    fn array_literal_element_context(
+        &self,
+        context: ExpressionCheckContext<'a>,
+        contextual_type: Option<Ty<'a>>,
+    ) -> ExpressionCheckContext<'a> {
+        let mut flags = context.flags | GetTypeFlags::CONTEXT_FREE;
+        if !context.check_mode.const_context()
+            && contextual_type.is_none_or(|ty| !type_contains_literal_type(ty, 0))
+        {
+            flags.remove(GetTypeFlags::PRESERVE_LITERALS);
+        }
+        ExpressionCheckContext {
+            flags,
+            contextual_type,
+            check_mode: context.check_mode,
+        }
+    }
+
     fn get_type_of_array_expression_element(
         &self,
         program_id: program::ProgramId,
         element: &'a ArrayExpressionElement<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
+        let flags = context.flags;
         match element {
             ArrayExpressionElement::SpreadElement(spread) => {
-                let argument_type = self.get_type_of_expression_with_node(
+                let argument_type = self.check_expression_with_context(
                     program_id,
                     &spread.argument,
                     node_id,
-                    flags,
+                    context,
                 );
                 argument_type.array_element_type().unwrap_or_else(Ty::any)
             }
             ArrayExpressionElement::Elision(_) => Ty::any(),
-            _ => self.get_type_of_expression_with_node(
+            _ => self.check_expression_with_context(
                 program_id,
                 element.to_expression(),
                 node_id,
-                flags,
+                context.with_flags(flags),
             ),
         }
     }
@@ -6997,6 +7183,54 @@ fn transparent_type_alias_type_parameter_name<'a>(ty: &'a TSType<'a>) -> Option<
             transparent_type_alias_type_parameter_name(&parenthesized.type_annotation)
         }
         _ => None,
+    }
+}
+
+fn is_const_type_reference(ty: &TSType<'_>) -> bool {
+    match ty {
+        TSType::TSTypeReference(reference)
+            if reference
+                .type_arguments
+                .as_ref()
+                .is_none_or(|arguments| arguments.params.is_empty()) =>
+        {
+            matches!(
+                &reference.type_name,
+                TSTypeName::IdentifierReference(identifier) if identifier.name == "const"
+            )
+        }
+        TSType::TSParenthesizedType(parenthesized) => {
+            is_const_type_reference(&parenthesized.type_annotation)
+        }
+        _ => false,
+    }
+}
+
+fn type_contains_literal_type(ty: Ty<'_>, depth: usize) -> bool {
+    if depth >= TYPE_EXPANSION_MAX_DEPTH {
+        return false;
+    }
+
+    match ty {
+        Ty::StringLiteral(_)
+        | Ty::NumberLiteral(_)
+        | Ty::BooleanLiteral(_)
+        | Ty::BigIntLiteral(_)
+        | Ty::TemplateLiteral(_) => true,
+        Ty::Array(array) => type_contains_literal_type(array.element_type, depth + 1),
+        Ty::Tuple(tuple) => tuple
+            .elements
+            .iter()
+            .any(|element| type_contains_literal_type(element.ty(), depth + 1)),
+        Ty::Union(union) => union
+            .types
+            .iter()
+            .any(|ty| type_contains_literal_type(*ty, depth + 1)),
+        Ty::Intersection(intersection) => intersection
+            .types
+            .iter()
+            .any(|ty| type_contains_literal_type(*ty, depth + 1)),
+        _ => false,
     }
 }
 

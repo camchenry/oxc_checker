@@ -77,10 +77,10 @@ const literalTemplate = `id-${literalNumber}` satisfies `id-${number}`
 >                             ^^^^^^^^^^^^^: 1   (TyNumberLiteral)
 
 const tuple = [1, "two"] satisfies [number, string]
->     ^^^^^: (number | string)[]   (TyArray)
+>     ^^^^^: [number, string]   (TyTuple)
 
 const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
->     ^^^^^^^^^^^^^: const   (TyTypeReference)
+>     ^^^^^^^^^^^^^: readonly [1, 2, 3]   (TyTuple)
 
 const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
 >                                  ^^^^^: any   (TyAny)
@@ -260,7 +260,7 @@ const conditional = (literalBoolean ? "yes" : "no") satisfies "yes" | "no"
 >                    ^^^^^^^^^^^^^^: true   (TyBooleanLiteral)
 
 const nullish = (undefined ?? "fallback") satisfies string
->     ^^^^^^^: string   (TyString)
+>     ^^^^^^^: "fallback"   (TyStringLiteral)
 
 const nullish = (undefined ?? "fallback") satisfies string
 >                ^^^^^^^^^: undefined   (TyUndefined)
@@ -365,7 +365,7 @@ const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
 >                                                     ^^^^^: any   (TyAny)
 
 const wrongTuple = [1, 2] satisfies [number, string]
->     ^^^^^^^^^^: number[]   (TyArray)
+>     ^^^^^^^^^^: [number, number]   (TyTuple)
 
 const wrongFunction = ((value: string) => value) satisfies Handler<number>
 >     ^^^^^^^^^^^^^: (value: string) => string   (TyFunction)

@@ -44,7 +44,7 @@ foo(...anyArray);
 >      ^^^^^^^^: any[]   (TyArray)
 
 const tuple1 = ['a', anyTyped, 'b'] as const;
->     ^^^^^^: const   (TyTypeReference)
+>     ^^^^^^: readonly ["a", any, "b"]   (TyTuple)
 
 const tuple1 = ['a', anyTyped, 'b'] as const;
 >                    ^^^^^^^^: any   (TyAny)
@@ -59,10 +59,10 @@ foo(...tuple1);
 >^^^^^^^^^^^^^^^: void   (TyVoid)
 
 foo(...tuple1);
->      ^^^^^^: const   (TyTypeReference)
+>      ^^^^^^: readonly ["a", any, "b"]   (TyTuple)
 
 const tuple2 = [1] as const;
->     ^^^^^^: const   (TyTypeReference)
+>     ^^^^^^: readonly [1]   (TyTuple)
 
 const tuple2 = [1] as const;
 >                     ^^^^^: any   (TyAny)
@@ -74,7 +74,7 @@ foo('a', ...tuple2, anyTyped);
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
 
 foo('a', ...tuple2, anyTyped);
->           ^^^^^^: const   (TyTypeReference)
+>           ^^^^^^: readonly [1]   (TyTuple)
 
 foo('a', ...tuple2, anyTyped);
 >                   ^^^^^^^^: any   (TyAny)
@@ -158,7 +158,7 @@ foo('a', 1, 'b');
 >^^^^^^^^^^^^^^^^^: void   (TyVoid)
 
 const tuple1 = ['a', 1, 'b'] as const;
->     ^^^^^^: const   (TyTypeReference)
+>     ^^^^^^: readonly ["a", 1, "b"]   (TyTuple)
 
 const tuple1 = ['a', 1, 'b'] as const;
 >                               ^^^^^: any   (TyAny)
@@ -170,7 +170,7 @@ foo(...tuple1);
 >^^^^^^^^^^^^^^^: void   (TyVoid)
 
 foo(...tuple1);
->      ^^^^^^: const   (TyTypeReference)
+>      ^^^^^^: readonly ["a", 1, "b"]   (TyTuple)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
 >                ^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction)
