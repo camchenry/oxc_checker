@@ -529,17 +529,40 @@ function sanitize(value: unknown): string {
   return String(value).replace(/[\t\r\n]+/g, " ").trim();
 }
 
+function utf16ToUtf8ByteOffsets(sourceText: string): Uint32Array {
+  const offsets = new Uint32Array(sourceText.length + 1);
+  let utf8Offset = 0;
+
+  for (let utf16Offset = 0; utf16Offset < sourceText.length;) {
+    offsets[utf16Offset] = utf8Offset;
+    const codePoint = sourceText.codePointAt(utf16Offset) ?? 0;
+    const utf16Width = codePoint > 0xffff ? 2 : 1;
+    const utf8Width = codePoint <= 0x7f ? 1 : codePoint <= 0x7ff ? 2 : codePoint <= 0xffff ? 3 : 4;
+
+    if (utf16Width === 2) {
+      offsets[utf16Offset + 1] = utf8Offset;
+    }
+
+    utf16Offset += utf16Width;
+    utf8Offset += utf8Width;
+  }
+
+  offsets[sourceText.length] = utf8Offset;
+  return offsets;
+}
+
 function recordForNode(
   ts: TypeScript,
   checker: TypeChecker,
   sourceFile: TypeScriptSourceFile,
   relativePath: string,
   node: TypeScriptNode,
+  byteOffsets: Uint32Array,
 ): string | undefined {
   if (ts.isExpressionStatement(node)) {
     const typeText = typeToString(ts, checker, checker.getTypeAtLocation(node.expression), node);
-    const start = node.getStart(sourceFile, false);
-    const end = node.getEnd();
+    const start = byteOffsets[node.getStart(sourceFile, false)];
+    const end = byteOffsets[node.getEnd()];
     const text = sanitize(node.getText(sourceFile));
     return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
   }
@@ -554,8 +577,8 @@ function recordForNode(
     return undefined;
   }
 
-  const start = node.getStart(sourceFile, false);
-  const end = node.getEnd();
+  const start = byteOffsets[node.getStart(sourceFile, false)];
+  const end = byteOffsets[node.getEnd()];
   const text = sanitize(node.getText(sourceFile));
   return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
 }
@@ -616,13 +639,14 @@ function collectRecords(
   relativePath: string,
 ): string[] {
   const records: string[] = [];
+  const byteOffsets = utf16ToUtf8ByteOffsets(sourceFile.text);
   const stack: TypeScriptNode[] = [sourceFile];
   while (stack.length > 0) {
     const node = stack.pop();
     if (!node) {
       continue;
     }
-    const record = recordForNode(ts, checker, sourceFile, relativePath, node);
+    const record = recordForNode(ts, checker, sourceFile, relativePath, node, byteOffsets);
     if (record) {
       records.push(record);
     }
