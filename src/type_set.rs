@@ -85,7 +85,7 @@ fn add_type_to_intersection<'a>(type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
         for ty in &intersection.types {
             add_type_to_intersection(type_set, *ty);
         }
-    } else if !type_set.contains(&ty) {
+    } else {
         type_set.push(ty);
     }
 }

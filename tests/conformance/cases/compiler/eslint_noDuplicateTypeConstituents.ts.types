@@ -5,7 +5,7 @@ type T2 = string | string | number;
 >    ^^: string | number   (TyUnion)
 
 type T3 = { a: string } & { a: string };
->    ^^: { a: string; }   (TyObject)
+>    ^^: { a: string; } & { a: string; }   (TyIntersection)
 
 type T3 = { a: string } & { a: string };
 >           ^: string   (TyString)
