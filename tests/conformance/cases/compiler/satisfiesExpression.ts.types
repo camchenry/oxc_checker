@@ -254,7 +254,7 @@ const parenthesized = (1 + 2) satisfies number
 >     ^^^^^^^^^^^^^: number   (TyNumber)
 
 const conditional = (literalBoolean ? "yes" : "no") satisfies "yes" | "no"
->     ^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^: "yes" | "no"   (TyUnion)
 
 const conditional = (literalBoolean ? "yes" : "no") satisfies "yes" | "no"
 >                    ^^^^^^^^^^^^^^: true   (TyBooleanLiteral)

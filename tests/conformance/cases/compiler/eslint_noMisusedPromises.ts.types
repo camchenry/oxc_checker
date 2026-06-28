@@ -11,7 +11,7 @@ if (promise) {
 >   ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
 
 const val = promise ? 123 : 456;
->     ^^^: number   (TyNumber)
+>     ^^^: 123 | 456   (TyUnion)
 
 const val = promise ? 123 : 456;
 >           ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
@@ -41,7 +41,7 @@ if (await promise) {
 >         ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
 
 const val = (await promise) ? 123 : 456;
->     ^^^: number   (TyNumber)
+>     ^^^: 123 | 456   (TyUnion)
 
 const val = (await promise) ? 123 : 456;
 >                  ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)

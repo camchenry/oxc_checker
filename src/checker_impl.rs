@@ -811,9 +811,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::TSSatisfiesExpression(satisfies_expr) => {
                 // `satisfies` mostly does not change the type, it just adds an additional assertion
                 // on the apparent type for the type checker to verify against without changing the declared type.
-                // However, it can change the type in some cases, for example:
-                // - Inferring a tuple instead of an array if the satisfies type is a tuple
-                // - Changing the type of a literal to a more specific type if the satisfies type is more specific
+                // However, it can change the type if the `satisfies` type is more specific than the apparent type.
                 let target_type =
                     self.get_type_from_ts_type(program_id, &satisfies_expr.type_annotation);
                 let target_type = self.expand_type_at_use(program_id, target_type, 0);
@@ -1342,13 +1340,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             program_id,
             &conditional.consequent,
             node_id,
-            GetTypeFlags::NONE,
+            GetTypeFlags::PRESERVE_LITERALS,
         );
         let alternate = self.get_type_of_expression_with_node(
             program_id,
             &conditional.alternate,
             node_id,
-            GetTypeFlags::NONE,
+            GetTypeFlags::PRESERVE_LITERALS,
         );
 
         Ty::union(self.arena(), [consequent, alternate])

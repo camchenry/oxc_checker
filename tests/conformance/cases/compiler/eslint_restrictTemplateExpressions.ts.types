@@ -104,13 +104,13 @@ const msg2 = `arg = ${user.name || 'the user with no name'}`;
 >                          ^^^^: any   (TyAny)
 
 const arg = condition ? 'ok' : null;
->     ^^^: string | null   (TyUnion)
+>     ^^^: "ok" | null   (TyUnion)
 
 const msg1 = `arg = ${arg}`;
 >     ^^^^: string   (TyString)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: string | null   (TyUnion)
+>                     ^^^: "ok" | null   (TyUnion)
 
 const arg = new RegExp('foo');
 >     ^^^: RegExp   (TyTypeReference)
