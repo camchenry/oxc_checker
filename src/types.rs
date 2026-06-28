@@ -1002,6 +1002,30 @@ impl<'a> Ty<'a> {
         matches!(self, Self::Never)
     }
 
+    pub(crate) fn is_transparent_type_alias_union_constituent(&self) -> bool {
+        matches!(
+            self,
+            Self::String
+                | Self::Number
+                | Self::Boolean
+                | Self::Bigint
+                | Self::Symbol
+                | Self::Undefined
+                | Self::Null
+                | Self::Void
+                | Self::Never
+                | Self::Any
+                | Self::Unknown
+                | Self::PrimitiveObject
+                | Self::StringLiteral(_)
+                | Self::NumberLiteral(_)
+                | Self::BooleanLiteral(_)
+                | Self::BigIntLiteral(_)
+                | Self::TemplateLiteral(_)
+                | Self::UniqueSymbol(_)
+        )
+    }
+
     /// Returns `true` if the type is a numerical index type.
     pub fn is_number_index_type(&self) -> bool {
         matches!(self, Ty::Number | Ty::NumberLiteral(_))

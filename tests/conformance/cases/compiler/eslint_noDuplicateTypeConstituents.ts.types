@@ -23,7 +23,7 @@ type StringB = string;
 >    ^^^^^^^: string   (TyString)
 
 type T5 = StringA | StringB;
->    ^^: StringA | StringB   (TyUnion)
+>    ^^: string   (TyString)
 
 type T5 = StringA | StringB;
 >         ^^^^^^^: any   (TyAny)
@@ -62,7 +62,7 @@ type NumberB = number;
 >    ^^^^^^^: number   (TyNumber)
 
 type T5 = StringA | NumberB;
->    ^^: StringA | NumberB   (TyUnion)
+>    ^^: string | number   (TyUnion)
 
 type T5 = StringA | NumberB;
 >         ^^^^^^^: any   (TyAny)

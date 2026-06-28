@@ -1778,6 +1778,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TSType::TSTypeReference(reference) => self
                 .get_expanded_type_alias_reference(program_id, reference, depth + 1)
                 .unwrap_or_else(|| self.get_type_from_ts_type_reference(program_id, reference)),
+            TSType::TSUnionType(union_type) => Ty::union(
+                self.arena(),
+                union_type.types.iter().map(|ty| match ty {
+                    TSType::TSTypeReference(reference) => self
+                        .get_expanded_type_alias_reference(program_id, reference, depth + 1)
+                        .filter(|expanded| expanded.is_transparent_type_alias_union_constituent())
+                        .unwrap_or_else(|| {
+                            self.get_type_from_ts_type_reference(program_id, reference)
+                        }),
+                    TSType::TSParenthesizedType(parenthesized) => self
+                        .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                            program_id,
+                            &parenthesized.type_annotation,
+                            depth + 1,
+                        ),
+                    _ => self.get_type_from_ts_type(program_id, ty),
+                }),
+            ),
             TSType::TSParenthesizedType(parenthesized) => self
                 .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
                     program_id,

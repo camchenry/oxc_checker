@@ -195004,7 +195004,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=3220 mismatched_types=66532 total_
       actual:   any
   - src/lib/dom.generated.d.ts:44192 `LineAndPositionSetting` extra in oxc output
       expected: <missing>
-      actual:   number | AutoKeyword
+      actual:   number | "auto"
   - src/lib/dom.generated.d.ts:44192 `AutoKeyword` extra in oxc output
       expected: <missing>
       actual:   any

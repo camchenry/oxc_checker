@@ -1995,6 +1995,51 @@ mod test {
     }
 
     #[test]
+    fn type_alias_union_constituents_match_typescript_alias_display_rules() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type StringA = string;
+        type StringB = string;
+        type AutoKeyword = "auto";
+        type One = 1;
+        type Two = 2;
+        type BooleanLogicExpression = ["and", ...Expression[]] | ["not", Expression];
+        type Expression = BooleanLogicExpression | "true" | "false";
+        type ObjAlias = { x: number };
+
+        type PrimitiveAliases = StringA | StringB;
+        type LiteralAliasWithPrimitive = AutoKeyword | string;
+        type LiteralAliases = One | Two;
+        type NamedUnionAlias = BooleanLogicExpression | "true" | "false";
+        type ObjectAlias = ObjAlias | string;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "PrimitiveAliases").to_type_string(),
+            "string"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "LiteralAliasWithPrimitive").to_type_string(),
+            "string"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "LiteralAliases").to_type_string(),
+            "1 | 2"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "NamedUnionAlias").to_type_string(),
+            "BooleanLogicExpression | \"true\" | \"false\""
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "ObjectAlias").to_type_string(),
+            "ObjAlias | string"
+        );
+    }
+
+    #[test]
     fn type_literal_property_signatures_preserve_optional_modifier() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
