@@ -3379,12 +3379,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty<'a>> {
         match ty {
-            Ty::Object(_) | Ty::ModuleNamespace(_) => ty.property_type(property_name),
+            Ty::Object(_) | Ty::ModuleNamespace(_) => ty.property_type(self.arena(), property_name),
             Ty::TypeReference(_) => {
                 // Resolve type reference into its underlying type
                 let resolved_type = self.expand_type_at_use(program_id, ty, 0);
                 // 1) Try to get a property from the resolved type
-                if let Some(prop_type) = resolved_type.property_type(property_name) {
+                if let Some(prop_type) = resolved_type.property_type(self.arena(), property_name) {
                     return Some(prop_type);
                 }
                 // 2) Try to get an index signature from the resolved type

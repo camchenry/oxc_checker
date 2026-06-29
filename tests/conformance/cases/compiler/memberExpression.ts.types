@@ -107,13 +107,13 @@ const userId = user.id;
 >                   ^^: `user_${string}`   (TyTemplateLiteral)
 
 const userActive = user.active;
->     ^^^^^^^^^^: boolean   (TyBoolean)
+>     ^^^^^^^^^^: boolean | undefined   (TyUnion)
 
 const userActive = user.active;
 >                  ^^^^: User   (TyTypeReference)
 
 const userActive = user.active;
->                       ^^^^^^: boolean   (TyBoolean)
+>                       ^^^^^^: boolean | undefined   (TyUnion)
 
 const userCity = user.address.city;
 >     ^^^^^^^^: string   (TyString)
@@ -167,7 +167,7 @@ const userTheme = user.preferences.theme;
 >                                  ^^^^^: "light" | "dark"   (TyUnion)
 
 const userNotifications = user.preferences.notifications;
->     ^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+>     ^^^^^^^^^^^^^^^^^: boolean | undefined   (TyUnion)
 
 const userNotifications = user.preferences.notifications;
 >                         ^^^^: User   (TyTypeReference)
@@ -176,7 +176,7 @@ const userNotifications = user.preferences.notifications;
 >                              ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject)
 
 const userNotifications = user.preferences.notifications;
->                                          ^^^^^^^^^^^^^: boolean   (TyBoolean)
+>                                          ^^^^^^^^^^^^^: boolean | undefined   (TyUnion)
 
 const literalKey = "name" as const;
 >     ^^^^^^^^^^: "name"   (TyStringLiteral)

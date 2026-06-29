@@ -1031,18 +1031,27 @@ impl<'a> Ty<'a> {
         matches!(self, Ty::Number | Ty::NumberLiteral(_))
     }
 
-    pub(crate) fn property_type(&self, name: &str) -> Option<Self> {
+    pub(crate) fn property_type(&self, arena: CheckerArena<'a>, name: &str) -> Option<Self> {
+        // TODO(correctness): handle all readonly/optional cases
         match self {
             Self::Object(object) => object.properties.iter().find_map(|property| {
-                (property.name == name && !property.computed).then_some(property.ty)
+                (property.name == name && !property.computed).then_some(if property.optional {
+                    Self::union(arena, [property.ty, Self::Undefined])
+                } else {
+                    property.ty
+                })
             }),
             Self::ModuleNamespace(namespace) => namespace.properties.iter().find_map(|property| {
-                (property.name == name && !property.computed).then_some(property.ty)
+                (property.name == name && !property.computed).then_some(if property.optional {
+                    Self::union(arena, [property.ty, Self::Undefined])
+                } else {
+                    property.ty
+                })
             }),
             Self::Intersection(intersection) => intersection
                 .types
                 .iter()
-                .find_map(|ty| ty.property_type(name)),
+                .find_map(|ty| ty.property_type(arena, name)),
             _ => None,
         }
     }
