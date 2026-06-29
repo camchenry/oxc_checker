@@ -3380,9 +3380,32 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         match ty {
             Ty::Object(_) | Ty::ModuleNamespace(_) => ty.property_type(self.arena(), property_name),
+            Ty::Union(union) => {
+                // TODO(correctness): check if there are cases we don't want to do this.
+                // By default, if we are accessing a property on a type that might be null or undefined,
+                // we want to ignore the null and undefined types.
+                let property_types = union
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        let ty = self.remove_null_or_undefined(*ty);
+                        if ty.is_never() {
+                            None
+                        } else {
+                            self.get_property_type_of_structural_type(
+                                program_id,
+                                ty,
+                                property_name,
+                            )
+                        }
+                    })
+                    .collect::<Vec<_>>();
+                (!property_types.is_empty()).then(|| Ty::union(self.arena(), property_types))
+            }
             Ty::TypeReference(_) => {
                 // Resolve type reference into its underlying type
                 let resolved_type = self.expand_type_at_use(program_id, ty, 0);
+
                 // 1) Try to get a property from the resolved type
                 if let Some(prop_type) = resolved_type.property_type(self.arena(), property_name) {
                     return Some(prop_type);

@@ -287,13 +287,13 @@ declare const maybePoint: Point | undefined
 >                         ^^^^^: any   (TyAny)
 
 const narrowed = maybePoint?.x satisfies number | undefined
->     ^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^: number | undefined   (TyUnion)
 
 const narrowed = maybePoint?.x satisfies number | undefined
 >                ^^^^^^^^^^: Point | undefined   (TyUnion)
 
 const narrowed = maybePoint?.x satisfies number | undefined
->                            ^: any   (TyAny)
+>                            ^: number   (TyNumber)
 
 declare function takesPoint<T extends Point>(value: T): T
 >                ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction)

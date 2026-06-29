@@ -3916,6 +3916,32 @@ mod test {
     }
 
     #[test]
+    fn chain_expression_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            type User = {
+                id: number;
+                name: string;
+            };
+            declare const user: User | undefined = { id: 1, name: 'Alice' };
+            const userId = user?.id;
+            const userName = user?.name;
+            ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "userId"),
+            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "userName"),
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+        );
+    }
+
+    #[test]
     fn function_parameter_declared_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
