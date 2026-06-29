@@ -281,6 +281,184 @@ compiler/callbackReturnInference.ts	73	82	configure	<T>(options: { create: () =>
 compiler/callbackReturnInference.ts	83	84	T	any
 compiler/callbackReturnInference.ts	86	93	options	{ create: () => T; }
 compiler/callbackReturnInference.ts	97	103	create	() => T
+compiler/chainExpression.ts	100	106	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	1016	1025	maybeUser	Profile | undefined
+compiler/chainExpression.ts	1027	1033	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	1035	1040	count	number | undefined
+compiler/chainExpression.ts	1047	1067	optionalNestedMethod	number | undefined
+compiler/chainExpression.ts	1070	1079	maybeUser	Profile | undefined
+compiler/chainExpression.ts	1081	1087	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	1089	1097	getCount	(() => number) | undefined
+compiler/chainExpression.ts	1108	1127	optionalNestedArray	{ label: string; } | undefined
+compiler/chainExpression.ts	113	118	count	number
+compiler/chainExpression.ts	1130	1139	maybeUser	Profile | undefined
+compiler/chainExpression.ts	1141	1147	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	1149	1155	values	{ label: string; }[] | undefined
+compiler/chainExpression.ts	1158	1163	index	number
+compiler/chainExpression.ts	1171	1195	optionalNestedArrayLabel	string | undefined
+compiler/chainExpression.ts	1198	1207	maybeUser	Profile | undefined
+compiler/chainExpression.ts	1209	1215	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	1217	1223	values	{ label: string; }[] | undefined
+compiler/chainExpression.ts	1226	1231	index	number
+compiler/chainExpression.ts	1234	1239	label	string | undefined
+compiler/chainExpression.ts	1247	1262	optionalElement	string | undefined
+compiler/chainExpression.ts	1265	1274	maybeUser	Profile | undefined
+compiler/chainExpression.ts	1276	1280	tags	string[] | undefined
+compiler/chainExpression.ts	129	137	getCount	(() => number) | undefined
+compiler/chainExpression.ts	1292	1312	optionalArrayElement	Profile | undefined
+compiler/chainExpression.ts	1315	1325	maybeUsers	Profile[] | undefined
+compiler/chainExpression.ts	1328	1333	index	number
+compiler/chainExpression.ts	1341	1365	optionalArrayElementName	string | undefined
+compiler/chainExpression.ts	1368	1378	maybeUsers	Profile[] | undefined
+compiler/chainExpression.ts	1381	1386	index	number
+compiler/chainExpression.ts	1389	1393	name	string | undefined
+compiler/chainExpression.ts	1400	1426	optionalArrayElementMethod	string | undefined
+compiler/chainExpression.ts	1429	1439	maybeUsers	Profile[] | undefined
+compiler/chainExpression.ts	1442	1447	index	number
+compiler/chainExpression.ts	1450	1455	greet	((message: string) => string) | undefined
+compiler/chainExpression.ts	1474	1498	optionalDictionaryLookup	Profile | undefined
+compiler/chainExpression.ts	1501	1511	dictionary	Record<string, Profile | undefined> | undefined
+compiler/chainExpression.ts	1514	1517	key	string
+compiler/chainExpression.ts	1525	1547	optionalDictionaryName	string | undefined
+compiler/chainExpression.ts	155	161	values	{ label: string; }[] | undefined
+compiler/chainExpression.ts	1550	1560	dictionary	Record<string, Profile | undefined> | undefined
+compiler/chainExpression.ts	1563	1566	key	string
+compiler/chainExpression.ts	1569	1573	name	string | undefined
+compiler/chainExpression.ts	1580	1595	optionalHandler	((value: number) => string) | undefined
+compiler/chainExpression.ts	1598	1606	handlers	Record<string, ((value: number) => string) | undefined> | undefined
+compiler/chainExpression.ts	1609	1612	key	string
+compiler/chainExpression.ts	1620	1639	optionalHandlerCall	string | undefined
+compiler/chainExpression.ts	164	169	Array	ArrayConstructor
+compiler/chainExpression.ts	1642	1650	handlers	Record<string, ((value: number) => string) | undefined> | undefined
+compiler/chainExpression.ts	1653	1656	key	string
+compiler/chainExpression.ts	1672	1684	optionalCall	string | undefined
+compiler/chainExpression.ts	1687	1695	callback	((value: number) => string) | undefined
+compiler/chainExpression.ts	1707	1727	optionalCallProperty	number | undefined
+compiler/chainExpression.ts	172	177	label	string
+compiler/chainExpression.ts	1730	1738	callback	((value: number) => string) | undefined
+compiler/chainExpression.ts	1745	1751	length	number | undefined
+compiler/chainExpression.ts	1758	1777	optionalServiceCall	Profile | undefined
+compiler/chainExpression.ts	1780	1787	service	Service
+compiler/chainExpression.ts	1788	1795	getUser	((id: string) => Profile | undefined) | undefined
+compiler/chainExpression.ts	18	22	name	string
+compiler/chainExpression.ts	1815	1838	optionalServiceCallName	string | undefined
+compiler/chainExpression.ts	1841	1848	service	Service
+compiler/chainExpression.ts	1849	1856	getUser	((id: string) => Profile | undefined) | undefined
+compiler/chainExpression.ts	1871	1875	name	string | undefined
+compiler/chainExpression.ts	1882	1906	optionalMaybeServiceCall	Profile | undefined
+compiler/chainExpression.ts	1909	1921	maybeService	Service | undefined
+compiler/chainExpression.ts	1923	1930	getUser	((id: string) => Profile | undefined) | undefined
+compiler/chainExpression.ts	1952	1980	optionalMaybeServiceCallName	string | undefined
+compiler/chainExpression.ts	1983	1995	maybeService	Service | undefined
+compiler/chainExpression.ts	1997	2004	getUser	((id: string) => Profile | undefined) | undefined
+compiler/chainExpression.ts	200	207	Service	{ getUser?: (id: string) => Profile | undefined; users?: Profile[]; }
+compiler/chainExpression.ts	2021	2025	name	string | undefined
+compiler/chainExpression.ts	2033	2052	optionalFactoryCall	{ user?: Profile; service?: Service; } | undefined
+compiler/chainExpression.ts	2055	2065	getFactory	(() => { user?: Profile; service?: Service; }) | undefined
+compiler/chainExpression.ts	2076	2095	optionalFactoryUser	Profile | undefined
+compiler/chainExpression.ts	2098	2108	getFactory	(() => { user?: Profile; service?: Service; }) | undefined
+compiler/chainExpression.ts	2113	2117	user	Profile | undefined
+compiler/chainExpression.ts	2124	2147	optionalFactoryUserName	string | undefined
+compiler/chainExpression.ts	213	220	getUser	((id: string) => Profile | undefined) | undefined
+compiler/chainExpression.ts	2150	2160	getFactory	(() => { user?: Profile; service?: Service; }) | undefined
+compiler/chainExpression.ts	2165	2169	user	Profile | undefined
+compiler/chainExpression.ts	2171	2175	name	string | undefined
+compiler/chainExpression.ts	2182	2208	optionalFactoryServiceUser	Profile | undefined
+compiler/chainExpression.ts	2211	2221	getFactory	(() => { user?: Profile; service?: Service; }) | undefined
+compiler/chainExpression.ts	2226	2233	service	Service | undefined
+compiler/chainExpression.ts	2235	2242	getUser	((id: string) => Profile | undefined) | undefined
+compiler/chainExpression.ts	224	226	id	string
+compiler/chainExpression.ts	2263	2282	optionalWithNonNull	number | undefined
+compiler/chainExpression.ts	2285	2294	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2296	2302	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	2304	2309	count	number | undefined
+compiler/chainExpression.ts	2316	2337	optionalNonNullMethod	number | undefined
+compiler/chainExpression.ts	2340	2349	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2351	2357	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	2359	2367	getCount	(() => number) | undefined
+compiler/chainExpression.ts	2378	2393	optionalGrouped	number | undefined
+compiler/chainExpression.ts	239	246	Profile	any
+compiler/chainExpression.ts	2397	2406	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2408	2414	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	2417	2422	count	number | undefined
+compiler/chainExpression.ts	2429	2448	optionalGroupedCall	string | undefined
+compiler/chainExpression.ts	2452	2461	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2463	2468	greet	((message: string) => string) | undefined
+compiler/chainExpression.ts	2490	2505	optionalNullish	string
+compiler/chainExpression.ts	2508	2517	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2519	2523	name	string | undefined
+compiler/chainExpression.ts	2545	2560	optionalLogical	string | 0 | undefined
+compiler/chainExpression.ts	2563	2572	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2574	2577	age	number | undefined
+compiler/chainExpression.ts	2581	2590	maybeUser	Profile
+compiler/chainExpression.ts	2591	2594	age	number
+compiler/chainExpression.ts	2595	2602	toFixed	(fractionDigits?: number) => string
+compiler/chainExpression.ts	260	265	users	Profile[] | undefined
+compiler/chainExpression.ts	2611	2630	optionalConditional	string
+compiler/chainExpression.ts	2633	2642	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2644	2648	name	string | undefined
+compiler/chainExpression.ts	2651	2660	maybeUser	Profile
+compiler/chainExpression.ts	2661	2665	name	string
+compiler/chainExpression.ts	268	275	Profile	any
+compiler/chainExpression.ts	2684	2700	optionalTemplate	string
+compiler/chainExpression.ts	2711	2720	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2722	2726	name	string | undefined
+compiler/chainExpression.ts	2736	2760	definiteOptionalProperty	string | undefined
+compiler/chainExpression.ts	2763	2775	definiteUser	Profile
+compiler/chainExpression.ts	2776	2780	tags	string[] | undefined
+compiler/chainExpression.ts	2792	2814	definiteOptionalMethod	string | undefined
+compiler/chainExpression.ts	2817	2829	definiteUser	Profile
+compiler/chainExpression.ts	2830	2835	greet	((message: string) => string) | undefined
+compiler/chainExpression.ts	2856	2884	definiteNestedOptionalMethod	number | undefined
+compiler/chainExpression.ts	2887	2899	definiteUser	Profile
+compiler/chainExpression.ts	2900	2906	nested	{ count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+compiler/chainExpression.ts	2908	2916	getCount	(() => number) | undefined
+compiler/chainExpression.ts	2928	2945	optionalSatisfies	string | undefined
+compiler/chainExpression.ts	2948	2957	maybeUser	Profile | undefined
+compiler/chainExpression.ts	295	304	maybeUser	Profile | undefined
+compiler/chainExpression.ts	2959	2963	name	string | undefined
+compiler/chainExpression.ts	2999	3009	optionalAs	number | undefined
+compiler/chainExpression.ts	3012	3021	maybeUser	Profile | undefined
+compiler/chainExpression.ts	3023	3026	age	number | undefined
+compiler/chainExpression.ts	306	313	Profile	any
+compiler/chainExpression.ts	32	35	age	number | undefined
+compiler/chainExpression.ts	340	352	definiteUser	Profile
+compiler/chainExpression.ts	354	361	Profile	any
+compiler/chainExpression.ts	376	386	maybeUsers	Profile[] | undefined
+compiler/chainExpression.ts	388	395	Profile	any
+compiler/chainExpression.ts	424	434	dictionary	Record<string, Profile | undefined> | undefined
+compiler/chainExpression.ts	436	442	Record	any
+compiler/chainExpression.ts	451	458	Profile	any
+compiler/chainExpression.ts	46	51	greet	((message: string) => string) | undefined
+compiler/chainExpression.ts	498	506	handlers	Record<string, ((value: number) => string) | undefined> | undefined
+compiler/chainExpression.ts	5	12	Profile	{ name: string; age?: number; greet?: (message: string) => string; tags?: string[]; nested?: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; }; }
+compiler/chainExpression.ts	508	514	Record	any
+compiler/chainExpression.ts	525	530	value	number
+compiler/chainExpression.ts	55	62	message	string
+compiler/chainExpression.ts	590	598	callback	((value: number) => string) | undefined
+compiler/chainExpression.ts	602	607	value	number
+compiler/chainExpression.ts	654	661	service	Service
+compiler/chainExpression.ts	663	670	Service	any
+compiler/chainExpression.ts	685	697	maybeService	Service | undefined
+compiler/chainExpression.ts	699	706	Service	any
+compiler/chainExpression.ts	733	743	getFactory	(() => { user?: Profile; service?: Service; }) | undefined
+compiler/chainExpression.ts	754	758	user	Profile | undefined
+compiler/chainExpression.ts	761	768	Profile	any
+compiler/chainExpression.ts	770	777	service	Service | undefined
+compiler/chainExpression.ts	780	787	Service	any
+compiler/chainExpression.ts	817	820	key	string
+compiler/chainExpression.ts	83	87	tags	string[] | undefined
+compiler/chainExpression.ts	843	848	index	number
+compiler/chainExpression.ts	864	876	optionalName	string | undefined
+compiler/chainExpression.ts	879	888	maybeUser	Profile | undefined
+compiler/chainExpression.ts	890	894	name	string | undefined
+compiler/chainExpression.ts	901	912	optionalAge	number | undefined
+compiler/chainExpression.ts	915	924	maybeUser	Profile | undefined
+compiler/chainExpression.ts	926	929	age	number | undefined
+compiler/chainExpression.ts	936	954	optionalMethodCall	string | undefined
+compiler/chainExpression.ts	957	966	maybeUser	Profile | undefined
+compiler/chainExpression.ts	968	973	greet	((message: string) => string) | undefined
+compiler/chainExpression.ts	991	1013	optionalNestedProperty	number | undefined
 compiler/conditionalInferTypes.ts	1010	1015	value	number
 compiler/conditionalInferTypes.ts	1036	1041	value	U
 compiler/conditionalInferTypes.ts	104	109	value	U
