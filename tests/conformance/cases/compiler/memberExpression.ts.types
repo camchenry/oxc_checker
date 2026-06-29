@@ -1,0 +1,797 @@
+type User = {
+>    ^^^^: { name: string; age: number; id: `user_${string}`; active?: boolean; address: { city: string; zip: number; }; greet(message: string): string; preferences: { theme: "light" | "dark"; notifications?: boolean; }; }   (TyObject)
+
+  name: string;
+> ^^^^: string   (TyString)
+
+  age: number;
+> ^^^: number   (TyNumber)
+
+  id: `user_${string}`
+> ^^: `user_${string}`   (TyTemplateLiteral)
+
+  active?: boolean;
+> ^^^^^^: boolean | undefined   (TyUnion)
+
+  address: {
+> ^^^^^^^: { city: string; zip: number; }   (TyObject)
+
+    city: string;
+>   ^^^^: string   (TyString)
+
+    zip: number;
+>   ^^^: number   (TyNumber)
+
+  greet(message: string): string;
+> ^^^^^: (message: string) => string   (TyFunction)
+
+  greet(message: string): string;
+>       ^^^^^^^: string   (TyString)
+
+  preferences: {
+> ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject)
+
+    theme: "light" | "dark";
+>   ^^^^^: "light" | "dark"   (TyUnion)
+
+    notifications?: boolean;
+>   ^^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+
+const user: User = {
+>     ^^^^: User   (TyTypeReference)
+
+const user: User = {
+>           ^^^^: any   (TyAny)
+
+  name: "Alice",
+> ^^^^: string   (TyString)
+
+  age: 30,
+> ^^^: number   (TyNumber)
+
+  id: "user_Alice",
+> ^^: string   (TyString)
+
+  address: {
+> ^^^^^^^: { city: string; zip: number; }   (TyObject)
+
+    city: "Paris",
+>   ^^^^: string   (TyString)
+
+    zip: 75000,
+>   ^^^: number   (TyNumber)
+
+  greet(message: string) {
+> ^^^^^: (message: string) => string   (TyFunction)
+
+  greet(message: string) {
+>       ^^^^^^^: string   (TyString)
+
+    return `${message}, ${this.name}`;
+>             ^^^^^^^: string   (TyString)
+
+    return `${message}, ${this.name}`;
+>                              ^^^^: any   (TyAny)
+
+  preferences: {
+> ^^^^^^^^^^^: { theme: string; }   (TyObject)
+
+    theme: "dark",
+>   ^^^^^: string   (TyString)
+
+const userName = user.name;
+>     ^^^^^^^^: string   (TyString)
+
+const userName = user.name;
+>                ^^^^: User   (TyTypeReference)
+
+const userName = user.name;
+>                     ^^^^: string   (TyString)
+
+const userAge = user.age;
+>     ^^^^^^^: number   (TyNumber)
+
+const userAge = user.age;
+>               ^^^^: User   (TyTypeReference)
+
+const userAge = user.age;
+>                    ^^^: number   (TyNumber)
+
+const userId = user.id;
+>     ^^^^^^: `user_${string}`   (TyTemplateLiteral)
+
+const userId = user.id;
+>              ^^^^: User   (TyTypeReference)
+
+const userId = user.id;
+>                   ^^: `user_${string}`   (TyTemplateLiteral)
+
+const userActive = user.active;
+>     ^^^^^^^^^^: boolean   (TyBoolean)
+
+const userActive = user.active;
+>                  ^^^^: User   (TyTypeReference)
+
+const userActive = user.active;
+>                       ^^^^^^: boolean   (TyBoolean)
+
+const userCity = user.address.city;
+>     ^^^^^^^^: string   (TyString)
+
+const userCity = user.address.city;
+>                ^^^^: User   (TyTypeReference)
+
+const userCity = user.address.city;
+>                     ^^^^^^^: { city: string; zip: number; }   (TyObject)
+
+const userCity = user.address.city;
+>                             ^^^^: string   (TyString)
+
+const userZip = user["address"].zip;
+>     ^^^^^^^: any   (TyAny)
+
+const userZip = user["address"].zip;
+>               ^^^^: User   (TyTypeReference)
+
+const userZip = user["address"].zip;
+>                               ^^^: any   (TyAny)
+
+const userGreeting = user.greet("hello");
+>     ^^^^^^^^^^^^: string   (TyString)
+
+const userGreeting = user.greet("hello");
+>                    ^^^^: User   (TyTypeReference)
+
+const userGreeting = user.greet("hello");
+>                         ^^^^^: (message: string) => string   (TyFunction)
+
+const userGreetMethod = user.greet;
+>     ^^^^^^^^^^^^^^^: (message: string) => string   (TyFunction)
+
+const userGreetMethod = user.greet;
+>                       ^^^^: User   (TyTypeReference)
+
+const userGreetMethod = user.greet;
+>                            ^^^^^: (message: string) => string   (TyFunction)
+
+const userTheme = user.preferences.theme;
+>     ^^^^^^^^^: "light" | "dark"   (TyUnion)
+
+const userTheme = user.preferences.theme;
+>                 ^^^^: User   (TyTypeReference)
+
+const userTheme = user.preferences.theme;
+>                      ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject)
+
+const userTheme = user.preferences.theme;
+>                                  ^^^^^: "light" | "dark"   (TyUnion)
+
+const userNotifications = user.preferences.notifications;
+>     ^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+const userNotifications = user.preferences.notifications;
+>                         ^^^^: User   (TyTypeReference)
+
+const userNotifications = user.preferences.notifications;
+>                              ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject)
+
+const userNotifications = user.preferences.notifications;
+>                                          ^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+const literalKey = "name" as const;
+>     ^^^^^^^^^^: "name"   (TyStringLiteral)
+
+const literalKey = "name" as const;
+>                            ^^^^^: any   (TyAny)
+
+const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
+>     ^^^^^^^^: "name" | "id"   (TyUnion)
+
+const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
+>                               ^^^^: Math   (TyTypeReference)
+
+const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
+>                                    ^^^^^^: () => number   (TyFunction)
+
+const dynamicStringKey: string = "whatever";
+>     ^^^^^^^^^^^^^^^^: string   (TyString)
+
+const literalKeyValue = user[literalKey];
+>     ^^^^^^^^^^^^^^^: any   (TyAny)
+
+const literalKeyValue = user[literalKey];
+>                       ^^^^: User   (TyTypeReference)
+
+const literalKeyValue = user[literalKey];
+>                            ^^^^^^^^^^: "name"   (TyStringLiteral)
+
+const unionKeyValue = user[unionKey];
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const unionKeyValue = user[unionKey];
+>                     ^^^^: User   (TyTypeReference)
+
+const unionKeyValue = user[unionKey];
+>                          ^^^^^^^^: "name" | "id"   (TyUnion)
+
+const dynamicStringKeyValue = user[dynamicStringKey];
+>     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const dynamicStringKeyValue = user[dynamicStringKey];
+>                             ^^^^: User   (TyTypeReference)
+
+const dynamicStringKeyValue = user[dynamicStringKey];
+>                                  ^^^^^^^^^^^^^^^^: string   (TyString)
+
+type StringDictionary = {
+>    ^^^^^^^^^^^^^^^^: { [key: string]: number; known: number; }   (TyObject)
+
+  known: number;
+> ^^^^^: number   (TyNumber)
+
+  [key: string]: number;
+>  ^^^: string   (TyString)
+
+const dictionary: StringDictionary = {
+>     ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+
+const dictionary: StringDictionary = {
+>                 ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  known: 1,
+> ^^^^^: number   (TyNumber)
+
+  extra: 2,
+> ^^^^^: number   (TyNumber)
+
+const dictionaryKnownDot = dictionary.known;
+>     ^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+const dictionaryKnownDot = dictionary.known;
+>                          ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+
+const dictionaryKnownDot = dictionary.known;
+>                                     ^^^^^: number   (TyNumber)
+
+const dictionaryKnownBracket = dictionary["known"];
+>     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const dictionaryKnownBracket = dictionary["known"];
+>                              ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+
+const dictionaryExtraDot = dictionary.extra;
+>     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const dictionaryExtraDot = dictionary.extra;
+>                          ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+
+const dictionaryExtraDot = dictionary.extra;
+>                                     ^^^^^: any   (TyAny)
+
+const dictionaryDynamic = dictionary[dynamicStringKey];
+>     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const dictionaryDynamic = dictionary[dynamicStringKey];
+>                         ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+
+const dictionaryDynamic = dictionary[dynamicStringKey];
+>                                    ^^^^^^^^^^^^^^^^: string   (TyString)
+
+type NumericDictionary = {
+>    ^^^^^^^^^^^^^^^^^: { [index: number]: "zero" | "one" | "many" | undefined; 0: "zero"; 1?: "one"; }   (TyObject)
+
+  0: "zero";
+> ^: "zero"   (TyStringLiteral)
+
+  1?: "one";
+> ^: "one" | undefined   (TyUnion)
+
+  [index: number]: "zero" | "one" | "many" | undefined;
+>  ^^^^^: number   (TyNumber)
+
+const numericDictionary: NumericDictionary = {
+>     ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+
+const numericDictionary: NumericDictionary = {
+>                        ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+  0: "zero",
+> ^: string   (TyString)
+
+  2: "many",
+> ^: string   (TyString)
+
+const numericZeroDot = numericDictionary[0];
+>     ^^^^^^^^^^^^^^: any   (TyAny)
+
+const numericZeroDot = numericDictionary[0];
+>                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+
+const numericOneBracket = numericDictionary[1];
+>     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const numericOneBracket = numericDictionary[1];
+>                         ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+
+const numericDynamic = numericDictionary[42];
+>     ^^^^^^^^^^^^^^: any   (TyAny)
+
+const numericDynamic = numericDictionary[42];
+>                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+
+const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
+>     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+
+const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
+>              ^^^^: User   (TyTypeReference)
+
+const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
+>                         ^^^^: User   (TyTypeReference)
+
+const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
+>                               ^^^^: string   (TyString)
+
+const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
+>                                            ^^: string   (TyString)
+
+const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
+>                                                                 ^^^^^: any   (TyAny)
+
+const firstUser = users[0];
+>     ^^^^^^^^^: User   (TyTypeReference)
+
+const firstUser = users[0];
+>                 ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+
+const firstUserName = users[0].name;
+>     ^^^^^^^^^^^^^: string   (TyString)
+
+const firstUserName = users[0].name;
+>                     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+
+const firstUserName = users[0].name;
+>                              ^^^^: string   (TyString)
+
+const usersLength = users.length;
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const usersLength = users.length;
+>                   ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+
+const usersLength = users.length;
+>                         ^^^^^^: any   (TyAny)
+
+const arrayMapMethod = users.map;
+>     ^^^^^^^^^^^^^^: any   (TyAny)
+
+const arrayMapMethod = users.map;
+>                      ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+
+const arrayMapMethod = users.map;
+>                            ^^^: any   (TyAny)
+
+const tuple = ["ready", 200, { ok: true }] as const;
+>     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+
+const tuple = ["ready", 200, { ok: true }] as const;
+>                              ^^: boolean   (TyBoolean)
+
+const tuple = ["ready", 200, { ok: true }] as const;
+>                                             ^^^^^: any   (TyAny)
+
+const tupleStatus = tuple[0];
+>     ^^^^^^^^^^^: "ready"   (TyStringLiteral)
+
+const tupleStatus = tuple[0];
+>                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+
+const tupleCode = tuple[1];
+>     ^^^^^^^^^: 200   (TyNumberLiteral)
+
+const tupleCode = tuple[1];
+>                 ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+
+const tupleObjectOk = tuple[2].ok;
+>     ^^^^^^^^^^^^^: boolean   (TyBoolean)
+
+const tupleObjectOk = tuple[2].ok;
+>                     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+
+const tupleObjectOk = tuple[2].ok;
+>                              ^^: boolean   (TyBoolean)
+
+const tupleLength = tuple.length;
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const tupleLength = tuple.length;
+>                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+
+const tupleLength = tuple.length;
+>                         ^^^^^^: any   (TyAny)
+
+const matrix = [[1, 2], [3, 4]] as const;
+>     ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple)
+
+const matrix = [[1, 2], [3, 4]] as const;
+>                                  ^^^^^: any   (TyAny)
+
+const matrixFirstRow = matrix[0];
+>     ^^^^^^^^^^^^^^: readonly [1, 2]   (TyTuple)
+
+const matrixFirstRow = matrix[0];
+>                      ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple)
+
+const matrixFirstValue = matrix[0][0];
+>     ^^^^^^^^^^^^^^^^: 1   (TyNumberLiteral)
+
+const matrixFirstValue = matrix[0][0];
+>                        ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple)
+
+type CallableWithProperty = {
+>    ^^^^^^^^^^^^^^^^^^^^: { (value: number): string; description: string; }   (TyObject)
+
+  (value: number): string;
+>  ^^^^^: number   (TyNumber)
+
+  description: string;
+> ^^^^^^^^^^^: string   (TyString)
+
+declare const callableWithProperty: CallableWithProperty;
+>             ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+
+declare const callableWithProperty: CallableWithProperty;
+>                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const callableResult = callableWithProperty(123);
+>     ^^^^^^^^^^^^^^: string   (TyString)
+
+const callableResult = callableWithProperty(123);
+>                      ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+
+const callableDescription = callableWithProperty.description;
+>     ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+const callableDescription = callableWithProperty.description;
+>                           ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+
+const callableDescription = callableWithProperty.description;
+>                                                ^^^^^^^^^^^: string   (TyString)
+
+const callableApply = callableWithProperty.apply;
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const callableApply = callableWithProperty.apply;
+>                     ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+
+const callableApply = callableWithProperty.apply;
+>                                          ^^^^^: any   (TyAny)
+
+class Counter {
+>     ^^^^^^^: typeof Counter   (TyTypeQuery)
+
+  static label = "counter";
+>        ^^^^^: string   (TyString)
+
+  static create() {
+>        ^^^^^^: () => Counter   (TyFunction)
+
+    return new Counter(0);
+>              ^^^^^^^: typeof Counter   (TyTypeQuery)
+
+  constructor(public value: number) {}
+> ^^^^^^^^^^^: (value: number) => void   (TyFunction)
+
+  constructor(public value: number) {}
+>                    ^^^^^: number   (TyNumber)
+
+  increment() {
+> ^^^^^^^^^: () => any   (TyFunction)
+
+    this.value += 1;
+>   ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+    this.value += 1;
+>        ^^^^^: any   (TyAny)
+
+    return this.value;
+>               ^^^^^: any   (TyAny)
+
+  readSecret() {
+> ^^^^^^^^^^: () => any   (TyFunction)
+
+const counter = new Counter(1);
+>     ^^^^^^^: Counter   (TyTypeReference)
+
+const counter = new Counter(1);
+>                   ^^^^^^^: typeof Counter   (TyTypeQuery)
+
+const counterValue = counter.value;
+>     ^^^^^^^^^^^^: any   (TyAny)
+
+const counterValue = counter.value;
+>                    ^^^^^^^: Counter   (TyTypeReference)
+
+const counterValue = counter.value;
+>                            ^^^^^: any   (TyAny)
+
+const counterIncrement = counter.increment;
+>     ^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+
+const counterIncrement = counter.increment;
+>                        ^^^^^^^: Counter   (TyTypeReference)
+
+const counterIncrement = counter.increment;
+>                                ^^^^^^^^^: () => any   (TyFunction)
+
+const counterIncrementResult = counter.increment();
+>     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const counterIncrementResult = counter.increment();
+>                              ^^^^^^^: Counter   (TyTypeReference)
+
+const counterIncrementResult = counter.increment();
+>                                      ^^^^^^^^^: () => any   (TyFunction)
+
+const counterSecret = counter.readSecret();
+>     ^^^^^^^^^^^^^: any   (TyAny)
+
+const counterSecret = counter.readSecret();
+>                     ^^^^^^^: Counter   (TyTypeReference)
+
+const counterSecret = counter.readSecret();
+>                             ^^^^^^^^^^: () => any   (TyFunction)
+
+const counterStaticLabel = Counter.label;
+>     ^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+const counterStaticLabel = Counter.label;
+>                          ^^^^^^^: typeof Counter   (TyTypeQuery)
+
+const counterStaticLabel = Counter.label;
+>                                  ^^^^^: string   (TyString)
+
+const counterStaticFactory = Counter.create;
+>     ^^^^^^^^^^^^^^^^^^^^: () => Counter   (TyFunction)
+
+const counterStaticFactory = Counter.create;
+>                            ^^^^^^^: typeof Counter   (TyTypeQuery)
+
+const counterStaticFactory = Counter.create;
+>                                    ^^^^^^: () => Counter   (TyFunction)
+
+const counterStaticResult = Counter.create();
+>     ^^^^^^^^^^^^^^^^^^^: Counter   (TyTypeReference)
+
+const counterStaticResult = Counter.create();
+>                           ^^^^^^^: typeof Counter   (TyTypeQuery)
+
+const counterStaticResult = Counter.create();
+>                                   ^^^^^^: () => Counter   (TyFunction)
+
+class DerivedCounter extends Counter {
+>     ^^^^^^^^^^^^^^: typeof DerivedCounter   (TyTypeQuery)
+
+class DerivedCounter extends Counter {
+>                            ^^^^^^^: typeof Counter   (TyTypeQuery)
+
+  readSuperIncrement() {
+> ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+
+    return super.increment();
+>                ^^^^^^^^^: any   (TyAny)
+
+const derived = new DerivedCounter(5);
+>     ^^^^^^^: DerivedCounter   (TyTypeReference)
+
+const derived = new DerivedCounter(5);
+>                   ^^^^^^^^^^^^^^: typeof DerivedCounter   (TyTypeQuery)
+
+const derivedSuperResult = derived.readSuperIncrement();
+>     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const derivedSuperResult = derived.readSuperIncrement();
+>                          ^^^^^^^: DerivedCounter   (TyTypeReference)
+
+const derivedSuperResult = derived.readSuperIncrement();
+>                                  ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+
+const uniqueKey: unique symbol = Symbol("uniqueKey");
+>     ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+const uniqueKey: unique symbol = Symbol("uniqueKey");
+>                                ^^^^^^: SymbolConstructor   (TyTypeReference)
+
+type SymbolObject = {
+>    ^^^^^^^^^^^^: { [uniqueKey]: number; regular: string; }   (TyObject)
+
+  [uniqueKey]: number;
+>  ^^^^^^^^^: number   (TyNumber)
+
+  [uniqueKey]: number;
+>  ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+  regular: string;
+> ^^^^^^^: string   (TyString)
+
+const symbolObject: SymbolObject = {
+>     ^^^^^^^^^^^^: SymbolObject   (TyTypeReference)
+
+const symbolObject: SymbolObject = {
+>                   ^^^^^^^^^^^^: any   (TyAny)
+
+  [uniqueKey]: 42,
+>  ^^^^^^^^^: number   (TyNumber)
+
+  [uniqueKey]: 42,
+>  ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+  regular: "ok",
+> ^^^^^^^: string   (TyString)
+
+const symbolValue = symbolObject[uniqueKey];
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const symbolValue = symbolObject[uniqueKey];
+>                   ^^^^^^^^^^^^: SymbolObject   (TyTypeReference)
+
+const symbolValue = symbolObject[uniqueKey];
+>                                ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+
+const symbolRegular = symbolObject.regular;
+>     ^^^^^^^^^^^^^: string   (TyString)
+
+const symbolRegular = symbolObject.regular;
+>                     ^^^^^^^^^^^^: SymbolObject   (TyTypeReference)
+
+const symbolRegular = symbolObject.regular;
+>                                  ^^^^^^^: string   (TyString)
+
+type Hyphenated = {
+>    ^^^^^^^^^^: { data-id: string; aria-label?: string; }   (TyObject)
+
+  "data-id": string;
+> ^^^^^^^^^: string   (TyString)
+
+  "aria-label"?: string;
+> ^^^^^^^^^^^^: string | undefined   (TyUnion)
+
+const hyphenated: Hyphenated = {
+>     ^^^^^^^^^^: Hyphenated   (TyTypeReference)
+
+const hyphenated: Hyphenated = {
+>                 ^^^^^^^^^^: any   (TyAny)
+
+  "data-id": "item-1",
+> ^^^^^^^^^: string   (TyString)
+
+const hyphenatedDataId = hyphenated["data-id"];
+>     ^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const hyphenatedDataId = hyphenated["data-id"];
+>                        ^^^^^^^^^^: Hyphenated   (TyTypeReference)
+
+const hyphenatedAriaLabel = hyphenated["aria-label"];
+>     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const hyphenatedAriaLabel = hyphenated["aria-label"];
+>                           ^^^^^^^^^^: Hyphenated   (TyTypeReference)
+
+type UnionMember =
+>    ^^^^^^^^^^^: { kind: "text"; value: string; common: boolean; } | { kind: "count"; value: number; common: boolean; }   (TyUnion)
+
+  | { kind: "text"; value: string; common: boolean }
+>     ^^^^: "text"   (TyStringLiteral)
+
+  | { kind: "text"; value: string; common: boolean }
+>                   ^^^^^: string   (TyString)
+
+  | { kind: "text"; value: string; common: boolean }
+>                                  ^^^^^^: boolean   (TyBoolean)
+
+  | { kind: "count"; value: number; common: boolean }
+>     ^^^^: "count"   (TyStringLiteral)
+
+  | { kind: "count"; value: number; common: boolean }
+>                    ^^^^^: number   (TyNumber)
+
+  | { kind: "count"; value: number; common: boolean }
+>                                   ^^^^^^: boolean   (TyBoolean)
+
+declare const unionMember: UnionMember;
+>             ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+
+declare const unionMember: UnionMember;
+>                          ^^^^^^^^^^^: any   (TyAny)
+
+const unionKind = unionMember.kind;
+>     ^^^^^^^^^: any   (TyAny)
+
+const unionKind = unionMember.kind;
+>                 ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+
+const unionKind = unionMember.kind;
+>                             ^^^^: any   (TyAny)
+
+const unionValue = unionMember.value;
+>     ^^^^^^^^^^: any   (TyAny)
+
+const unionValue = unionMember.value;
+>                  ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+
+const unionValue = unionMember.value;
+>                              ^^^^^: any   (TyAny)
+
+const unionCommon = unionMember.common;
+>     ^^^^^^^^^^^: any   (TyAny)
+
+const unionCommon = unionMember.common;
+>                   ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+
+const unionCommon = unionMember.common;
+>                               ^^^^^^: any   (TyAny)
+
+type IntersectionMember = { left: string } & { right: number };
+>    ^^^^^^^^^^^^^^^^^^: { left: string; } & { right: number; }   (TyIntersection)
+
+type IntersectionMember = { left: string } & { right: number };
+>                           ^^^^: string   (TyString)
+
+type IntersectionMember = { left: string } & { right: number };
+>                                              ^^^^^: number   (TyNumber)
+
+declare const intersectionMember: IntersectionMember;
+>             ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference)
+
+declare const intersectionMember: IntersectionMember;
+>                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+
+const intersectionLeft = intersectionMember.left;
+>     ^^^^^^^^^^^^^^^^: string   (TyString)
+
+const intersectionLeft = intersectionMember.left;
+>                        ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference)
+
+const intersectionLeft = intersectionMember.left;
+>                                           ^^^^: string   (TyString)
+
+const intersectionRight = intersectionMember.right;
+>     ^^^^^^^^^^^^^^^^^: number   (TyNumber)
+
+const intersectionRight = intersectionMember.right;
+>                         ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference)
+
+const intersectionRight = intersectionMember.right;
+>                                            ^^^^^: number   (TyNumber)
+
+const parenthesizedMember = (user).name;
+>     ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+
+const parenthesizedMember = (user).name;
+>                            ^^^^: User   (TyTypeReference)
+
+const parenthesizedMember = (user).name;
+>                                  ^^^^: string   (TyString)
+
+const assertedMember = (user as User).age;
+>     ^^^^^^^^^^^^^^: number   (TyNumber)
+
+const assertedMember = (user as User).age;
+>                       ^^^^: User   (TyTypeReference)
+
+const assertedMember = (user as User).age;
+>                               ^^^^: any   (TyAny)
+
+const assertedMember = (user as User).age;
+>                                     ^^^: number   (TyNumber)
+
+const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
+>     ^^^^^^^^^^^^^^^: number   (TyNumber)
+
+const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
+>                          ^^^^^: number   (TyNumber)
+
+const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
+>                                                 ^^^^^: number   (TyNumber)
+
+const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
+>                                                                  ^^^^^: number   (TyNumber)
