@@ -3392,11 +3392,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         if ty.is_never() {
                             None
                         } else {
-                            self.get_property_type_of_structural_type(
-                                program_id,
-                                ty,
-                                property_name,
-                            )
+                            self.get_property_type_of_structural_type(program_id, ty, property_name)
                         }
                     })
                     .collect::<Vec<_>>();
