@@ -302,7 +302,7 @@ const optionalCall = callback?.(1)
 >                    ^^^^^^^^: ((value: number) => string) | undefined   (TyUnion)
 
 const optionalCallProperty = callback?.(1)?.length
->     ^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
 
 const optionalCallProperty = callback?.(1)?.length
 >                            ^^^^^^^^: ((value: number) => string) | undefined   (TyUnion)
@@ -317,7 +317,7 @@ const optionalServiceCall = service.getUser?.("primary")
 >                           ^^^^^^^: Service   (TyTypeReference)
 
 const optionalServiceCall = service.getUser?.("primary")
->                                   ^^^^^^^: any   (TyAny)
+>                                   ^^^^^^^: (id: string) => Profile | undefined   (TyFunction)
 
 const optionalServiceCallName = service.getUser?.("primary")?.name
 >     ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -326,7 +326,7 @@ const optionalServiceCallName = service.getUser?.("primary")?.name
 >                               ^^^^^^^: Service   (TyTypeReference)
 
 const optionalServiceCallName = service.getUser?.("primary")?.name
->                                       ^^^^^^^: any   (TyAny)
+>                                       ^^^^^^^: (id: string) => Profile | undefined   (TyFunction)
 
 const optionalServiceCallName = service.getUser?.("primary")?.name
 >                                                             ^^^^: any   (TyAny)
@@ -359,7 +359,7 @@ const optionalFactoryCall = getFactory?.()
 >                           ^^^^^^^^^^: (() => { user?: Profile; service?: Service; }) | undefined   (TyUnion)
 
 const optionalFactoryUser = getFactory?.().user
->     ^^^^^^^^^^^^^^^^^^^: Profile   (TyTypeReference)
+>     ^^^^^^^^^^^^^^^^^^^: Profile | undefined   (TyUnion)
 
 const optionalFactoryUser = getFactory?.().user
 >                           ^^^^^^^^^^: (() => { user?: Profile; service?: Service; }) | undefined   (TyUnion)
@@ -368,7 +368,7 @@ const optionalFactoryUser = getFactory?.().user
 >                                          ^^^^: Profile   (TyTypeReference)
 
 const optionalFactoryUserName = getFactory?.().user?.name
->     ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
 
 const optionalFactoryUserName = getFactory?.().user?.name
 >                               ^^^^^^^^^^: (() => { user?: Profile; service?: Service; }) | undefined   (TyUnion)
@@ -377,7 +377,7 @@ const optionalFactoryUserName = getFactory?.().user?.name
 >                                              ^^^^: Profile   (TyTypeReference)
 
 const optionalFactoryUserName = getFactory?.().user?.name
->                                                    ^^^^: any   (TyAny)
+>                                                    ^^^^: string   (TyString)
 
 const optionalFactoryServiceUser = getFactory?.().service?.getUser?.("factory")
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -389,7 +389,7 @@ const optionalFactoryServiceUser = getFactory?.().service?.getUser?.("factory")
 >                                                 ^^^^^^^: Service   (TyTypeReference)
 
 const optionalFactoryServiceUser = getFactory?.().service?.getUser?.("factory")
->                                                          ^^^^^^^: any   (TyAny)
+>                                                          ^^^^^^^: (id: string) => Profile | undefined   (TyFunction)
 
 const optionalWithNonNull = maybeUser?.nested!.count
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -494,7 +494,7 @@ const definiteOptionalProperty = definiteUser.tags?.[0]
 >                                ^^^^^^^^^^^^: Profile   (TyTypeReference)
 
 const definiteOptionalProperty = definiteUser.tags?.[0]
->                                             ^^^^: any   (TyAny)
+>                                             ^^^^: string[]   (TyArray)
 
 const definiteOptionalMethod = definiteUser.greet?.("definite")
 >     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -503,7 +503,7 @@ const definiteOptionalMethod = definiteUser.greet?.("definite")
 >                              ^^^^^^^^^^^^: Profile   (TyTypeReference)
 
 const definiteOptionalMethod = definiteUser.greet?.("definite")
->                                           ^^^^^: any   (TyAny)
+>                                           ^^^^^: (message: string) => string   (TyFunction)
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -512,10 +512,10 @@ const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >                                    ^^^^^^^^^^^^: Profile   (TyTypeReference)
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
->                                                 ^^^^^^: any   (TyAny)
+>                                                 ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; }   (TyObject)
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
->                                                         ^^^^^^^^: any   (TyAny)
+>                                                         ^^^^^^^^: () => number   (TyFunction)
 
 const optionalSatisfies = maybeUser?.name satisfies string | undefined
 >     ^^^^^^^^^^^^^^^^^: any   (TyAny)

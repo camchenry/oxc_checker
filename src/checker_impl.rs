@@ -4,16 +4,16 @@ use oxc_ast::{
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
         AssignmentTarget, AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern,
-        CallExpression, Class, ClassElement, ComputedMemberExpression, ConditionalExpression,
-        ExportSpecifier, Expression, FormalParameter, FormalParameterRest, FormalParameters,
-        Function, IdentifierReference, LogicalExpression, MethodDefinition, MethodDefinitionKind,
-        ModuleExportName, NewExpression, NumberBase, ObjectExpression, ObjectPropertyKind,
-        PropertyDefinition, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration,
-        TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature, TSThisParameter,
-        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery,
-        TSTypeQueryExprName, TSTypeReference, TemplateLiteral, VariableDeclarationKind,
-        VariableDeclarator,
+        CallExpression, ChainElement, Class, ClassElement, ComputedMemberExpression,
+        ConditionalExpression, ExportSpecifier, Expression, FormalParameter, FormalParameterRest,
+        FormalParameters, Function, IdentifierReference, LogicalExpression, MethodDefinition,
+        MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase, ObjectExpression,
+        ObjectPropertyKind, PropertyDefinition, StaticMemberExpression, StringLiteral,
+        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSModuleDeclarationName, TSSignature,
+        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -54,24 +54,6 @@ use crate::{
         visit_type,
     },
 };
-
-fn record_key_matches_property_name(key_type: Ty<'_>, property_name: &str) -> bool {
-    let Ty::StringLiteral(literal) = key_type else {
-        return false;
-    };
-    literal
-        .value
-        .strip_prefix('\'')
-        .and_then(|value| value.strip_suffix('\''))
-        .or_else(|| {
-            literal
-                .value
-                .strip_prefix('"')
-                .and_then(|value| value.strip_suffix('"'))
-        })
-        .unwrap_or(literal.value)
-        == property_name
-}
 
 fn should_display_implicit_default_type_argument(ty: Ty<'_>) -> bool {
     !matches!(ty, Ty::Any | Ty::Unknown)
@@ -759,6 +741,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id, flags)
             }
+            // `obj?.prop`
+            Expression::ChainExpression(chain_expr) => {
+                // Chain expressions have the same type as the property they are accessing, however they are
+                // unioned with undefined, since the source object may be undefined.
+                match &chain_expr.expression {
+                    ChainElement::StaticMemberExpression(member_expr) => {
+                        // Get type of `foo.bar` and then union it with undefined
+                        let member_expr_type = self.get_type_of_static_member_expression(
+                            program_id,
+                            member_expr,
+                            node_id,
+                            flags,
+                        );
+                        Ty::union(self.arena(), [member_expr_type, Ty::undefined()])
+                    }
+                    _ => Ty::any(),
+                }
+            }
+
             Expression::ParenthesizedExpression(parenthesized) => self
                 .check_expression_with_context(
                     program_id,
@@ -890,7 +891,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // TODO(correctness): Handle all of these cases.
             Expression::MetaProperty(_) => Ty::any(),
             Expression::Super(_) => Ty::any(),
-            Expression::ChainExpression(_) => Ty::any(),
             Expression::ClassExpression(_) => Ty::any(),
             Expression::ImportExpression(_) => Ty::any(),
             Expression::SequenceExpression(_) => Ty::any(),
@@ -3380,28 +3380,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         match ty {
             Ty::Object(_) | Ty::ModuleNamespace(_) => ty.property_type(property_name),
-            Ty::TypeReference(reference) => {
-                self.get_property_type_of_global_record_type(program_id, reference, property_name)
+            Ty::TypeReference(_) => {
+                // Resolve type reference into its underlying type
+                let resolved_type = self.expand_type_at_use(program_id, ty, 0);
+                // 1) Try to get a property from the resolved type
+                if let Some(prop_type) = resolved_type.property_type(property_name) {
+                    return Some(prop_type);
+                }
+                // 2) Try to get an index signature from the resolved type
+                if let Some(index_infos) = resolved_type.index_infos() {
+                    for index_info in index_infos {
+                        // TODO(correctness): Don't hard-code the key type here
+                        if index_info.key_type == Ty::string() {
+                            return Some(index_info.value_type);
+                        }
+                    }
+                }
+                None
             }
             Ty::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_of_structural_type(program_id, *ty, property_name)
             }),
             _ => None,
         }
-    }
-
-    fn get_property_type_of_global_record_type(
-        &self,
-        program_id: program::ProgramId,
-        reference: &TyTypeReference<'a>,
-        property_name: &str,
-    ) -> Option<Ty<'a>> {
-        if !self.is_global_record_type_reference(program_id, reference)
-            || !record_key_matches_property_name(reference.type_arguments[0], property_name)
-        {
-            return None;
-        }
-        Some(reference.type_arguments[1])
     }
 
     fn get_type_of_computed_member_expression(
@@ -6830,7 +6831,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             }),
             Ty::TypeReference(reference) => self
-                .get_property_type_of_global_record_type(program_id, reference, property_name)
+                .get_property_type_of_structural_type(
+                    program_id,
+                    Ty::TypeReference(reference),
+                    property_name,
+                )
                 .or_else(|| {
                     self.get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
                         .and_then(|(expanded_program_id, expanded)| {

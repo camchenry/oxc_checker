@@ -380,16 +380,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
     }
 
-    pub(crate) fn is_global_record_type_reference(
-        &self,
-        program_id: program::ProgramId,
-        reference: &TyTypeReference<'a>,
-    ) -> bool {
-        reference.name == RECORD_TYPE_NAME
-            && reference.type_arguments.len() == 2
-            && self.is_default_lib_type(program_id, RECORD_TYPE_NAME)
-    }
-
     pub(crate) fn is_global_regexp_type_reference(
         &self,
         program_id: program::ProgramId,

@@ -215,4 +215,4 @@ if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAc
 >             ^^^^^^^^^^^: object & Record<"type", unknown>   (TyIntersection)
 
   console.log(maybeAction.type);
->                         ^^^^: unknown   (TyUnknown)
+>                         ^^^^: any   (TyAny)

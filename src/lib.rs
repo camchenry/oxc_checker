@@ -3892,6 +3892,30 @@ mod test {
     }
 
     #[test]
+    fn member_expression_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            type User = {
+                id: number;
+                name: string;
+            };
+            const user: User = { id: 1, name: 'Alice' };
+            const userId = user.id;
+            const userName = user.name;
+
+            const hash: Record<string, string> = { a: '1', b: '2' };
+            const hashValue = hash.a;
+            ",
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "userId"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "userName"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "hashValue"), Ty::string());
+    }
+
+    #[test]
     fn function_parameter_declared_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

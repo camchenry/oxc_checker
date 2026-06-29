@@ -1504,6 +1504,18 @@ impl<'a> Ty<'a> {
             && !object.index_infos.is_empty()
     }
 
+    /// Returns the index infos of the type, or `None` if the type is not an object with index infos.
+    pub fn index_infos(&self) -> Option<&[IndexInfo<'a>]> {
+        let Ty::Object(object) = self else {
+            return None;
+        };
+        if object.index_infos.is_empty() {
+            None
+        } else {
+            Some(&object.index_infos)
+        }
+    }
+
     /// Returns the element type of an array type, or `None` if the type is not an array.
     pub fn array_element_type(&self) -> Option<Self> {
         let Ty::Array(array) = self else {

@@ -260,13 +260,13 @@ const dictionaryKnownBracket = dictionary["known"];
 >                              ^^^^^^^^^^: StringDictionary   (TyTypeReference)
 
 const dictionaryExtraDot = dictionary.extra;
->     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^: number   (TyNumber)
 
 const dictionaryExtraDot = dictionary.extra;
 >                          ^^^^^^^^^^: StringDictionary   (TyTypeReference)
 
 const dictionaryExtraDot = dictionary.extra;
->                                     ^^^^^: any   (TyAny)
+>                                     ^^^^^: number   (TyNumber)
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
 >     ^^^^^^^^^^^^^^^^^: any   (TyAny)
