@@ -18,6 +18,7 @@ interface RegExpExecArray {
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny)
+        expected: RegExpConstructor
 
     readonly dotAll: boolean;
 >            ^^^^^^: boolean   (TyBoolean)

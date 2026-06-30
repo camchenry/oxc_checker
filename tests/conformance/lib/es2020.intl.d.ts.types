@@ -21,24 +21,29 @@ declare namespace Intl {
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >        ^^^^^^^^^^^^^^^: UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined   (TyUnion)
+                expected: string | Locale | readonly (string | Locale)[] | undefined
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                                        expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                                        expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                                                                                          expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                                                                                          expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     interface RelativeTimeFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -66,6 +71,7 @@ declare namespace Intl {
 
         locale: UnicodeBCP47LocaleIdentifier;
 >       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference)
+      expected: string
 
         locale: UnicodeBCP47LocaleIdentifier;
 >               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -96,6 +102,7 @@ declare namespace Intl {
 
             type: Exclude<NumberFormatPartTypes, "literal">;
 >           ^^^^: Exclude<NumberFormatPartTypes, "literal">   (TyTypeReference)
+        expected: "nan" | "infinity" | "percent" | "integer" | "group" | "decimal" | "fraction" | "plusSign" | "minusSign" | "percentSign" | "currency" | "compact" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "unit" | "unknown"
 
             type: Exclude<NumberFormatPartTypes, "literal">;
 >                 ^^^^^^^: any   (TyAny)
@@ -156,6 +163,7 @@ declare namespace Intl {
 
             locales?: LocalesArgument,
 >           ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+           expected: LocalesArgument
 
             locales?: LocalesArgument,
 >                     ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -177,6 +185,7 @@ declare namespace Intl {
 
             locales?: LocalesArgument,
 >           ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+           expected: LocalesArgument
 
             locales?: LocalesArgument,
 >                     ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -237,6 +246,7 @@ declare namespace Intl {
 
         signDisplay?: NumberFormatOptionsSignDisplay | undefined;
 >       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay | undefined   (TyUnion)
+           expected: keyof NumberFormatOptionsSignDisplayRegistry | undefined
 
         signDisplay?: NumberFormatOptionsSignDisplay | undefined;
 >                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -261,6 +271,7 @@ declare namespace Intl {
 
         signDisplay: NumberFormatOptionsSignDisplay;
 >       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay   (TyTypeReference)
+           expected: keyof NumberFormatOptionsSignDisplayRegistry
 
         signDisplay: NumberFormatOptionsSignDisplay;
 >                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -363,9 +374,11 @@ declare namespace Intl {
 
     interface Locale extends LocaleOptions {
 >             ^^^^^^: any   (TyAny)
+            expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     interface Locale extends LocaleOptions {
 >             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+            expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     interface Locale extends LocaleOptions {
 >                            ^^^^^^^^^^^^^: any   (TyAny)
@@ -381,18 +394,22 @@ declare namespace Intl {
 
         maximize(): Locale;
 >                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         maximize(): Locale;
 >                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         minimize(): Locale;
 >       ^^^^^^^^: () => Locale   (TyFunction)
 
         minimize(): Locale;
 >                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         minimize(): Locale;
 >                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         toString(): UnicodeBCP47LocaleIdentifier;
 >       ^^^^^^^^: () => UnicodeBCP47LocaleIdentifier   (TyFunction)
@@ -402,18 +419,22 @@ declare namespace Intl {
 
     const Locale: {
 >         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+        expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >            ^^^: UnicodeBCP47LocaleIdentifier | Locale   (TyUnion)
+        expected: string | Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                               expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                               expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                                                        ^^^^^^^: LocaleOptions | undefined   (TyUnion)
@@ -423,9 +444,11 @@ declare namespace Intl {
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                                                                 expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject)
+                                                                                 expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type DisplayNamesFallback =
 >        ^^^^^^^^^^^^^^^^^^^^: "code" | "none"   (TyUnion)
@@ -474,6 +497,7 @@ declare namespace Intl {
 
         locale: UnicodeBCP47LocaleIdentifier;
 >       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference)
+      expected: string
 
         locale: UnicodeBCP47LocaleIdentifier;
 >               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -555,6 +579,7 @@ declare namespace Intl {
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
 >                          ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+                          expected: LocalesArgument
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
 >                                    ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -576,6 +601,7 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+            expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >                      ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -588,9 +614,11 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >                                                                   ^^^^^^^^: any   (TyAny)
+                                                                    expected: CollatorConstructor
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+        expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >                  ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -603,9 +631,11 @@ declare namespace Intl {
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >                                                               ^^^^^^^^: any   (TyAny)
+                                                                expected: CollatorConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: CollatorOptions) => string[]   (TyFunction)
+                  expected: { (locales: string | string[], options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; }
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
 >                          ^^^^^^^: LocalesArgument   (TyTypeReference)
@@ -624,6 +654,7 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+            expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                      ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -636,9 +667,11 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                                                                         ^^^^^^^^^^^^^^: any   (TyAny)
+                                                                                expected: DateTimeFormatConstructor
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+        expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                  ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -651,9 +684,11 @@ declare namespace Intl {
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                                                                     ^^^^^^^^^^^^^^: any   (TyAny)
+                                                                            expected: DateTimeFormatConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: DateTimeFormatOptions) => string[]   (TyFunction)
+                  expected: { (locales: string | string[], options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; }
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
 >                          ^^^^^^^: LocalesArgument   (TyTypeReference)
@@ -672,6 +707,7 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+            expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                      ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -684,9 +720,11 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                                                                       ^^^^^^^^^^^^: any   (TyAny)
+                                                                            expected: NumberFormatConstructor
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+        expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                  ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -699,9 +737,11 @@ declare namespace Intl {
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                                                                   ^^^^^^^^^^^^: any   (TyAny)
+                                                                        expected: NumberFormatConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: NumberFormatOptions) => string[]   (TyFunction)
+                  expected: { (locales: string | string[], options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; }
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
 >                          ^^^^^^^: LocalesArgument   (TyTypeReference)
@@ -720,6 +760,7 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+            expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >                      ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -732,9 +773,11 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >                                                                      ^^^^^^^^^^^: any   (TyAny)
+                                                                          expected: PluralRulesConstructor
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >        ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+        expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >                  ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -747,9 +790,11 @@ declare namespace Intl {
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >                                                                  ^^^^^^^^^^^: any   (TyAny)
+                                                                      expected: PluralRulesConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }) => string[]   (TyFunction)
+                  expected: { (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; }
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
 >                          ^^^^^^^: LocalesArgument   (TyTypeReference)

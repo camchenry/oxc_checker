@@ -3,6 +3,7 @@ Object.values(Status);
 
 Object.values(Status);
 >^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray)
+               expected: Status[]
 
 Object.values(Status);
 >      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
@@ -12,6 +13,7 @@ Object.values(Status);
 
 Object.values(Status);
 >^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray)
+               expected: (string | Status.Unknown | Status.Closed)[]
 
 Object.values(Status);
 >      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)

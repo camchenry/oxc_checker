@@ -6,6 +6,7 @@ interface ProxyHandler<T extends object> {
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
 >   ^^^^^: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; }   (TyObject)
+ expected: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; } | undefined
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
 >          ^^^^^^: T   (TyTypeReference)
@@ -21,6 +22,7 @@ interface ProxyHandler<T extends object> {
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
 >   ^^^^^^^^^: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; }   (TyObject)
+     expected: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; } | undefined
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
 >              ^^^^^^: T   (TyTypeReference)
@@ -42,6 +44,7 @@ interface ProxyHandler<T extends object> {
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
 >   ^^^^^^^^^^^^^^: { (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; }   (TyObject)
+          expected: { (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; } | undefined
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
 >                   ^^^^^^: T   (TyTypeReference)
@@ -60,6 +63,7 @@ interface ProxyHandler<T extends object> {
 
     deleteProperty?(target: T, p: string | symbol): boolean;
 >   ^^^^^^^^^^^^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; }   (TyObject)
+          expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined
 
     deleteProperty?(target: T, p: string | symbol): boolean;
 >                   ^^^^^^: T   (TyTypeReference)
@@ -72,6 +76,7 @@ interface ProxyHandler<T extends object> {
 
     get?(target: T, p: string | symbol, receiver: any): any;
 >   ^^^: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; }   (TyObject)
+expected: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; } | undefined
 
     get?(target: T, p: string | symbol, receiver: any): any;
 >        ^^^^^^: T   (TyTypeReference)
@@ -87,6 +92,7 @@ interface ProxyHandler<T extends object> {
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
 >   ^^^^^^^^^^^^^^^^^^^^^^^^: { (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; }   (TyObject)
+                    expected: { (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; } | undefined
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
 >                             ^^^^^^: T   (TyTypeReference)
@@ -102,6 +108,7 @@ interface ProxyHandler<T extends object> {
 
     getPrototypeOf?(target: T): object | null;
 >   ^^^^^^^^^^^^^^: { (target: T): object | null; (target: T): object | null; }   (TyObject)
+          expected: { (target: T): object | null; (target: T): object | null; } | undefined
 
     getPrototypeOf?(target: T): object | null;
 >                   ^^^^^^: T   (TyTypeReference)
@@ -111,6 +118,7 @@ interface ProxyHandler<T extends object> {
 
     has?(target: T, p: string | symbol): boolean;
 >   ^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; }   (TyObject)
+expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined
 
     has?(target: T, p: string | symbol): boolean;
 >        ^^^^^^: T   (TyTypeReference)
@@ -123,6 +131,7 @@ interface ProxyHandler<T extends object> {
 
     isExtensible?(target: T): boolean;
 >   ^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; }   (TyObject)
+        expected: { (target: T): boolean; (target: T): boolean; } | undefined
 
     isExtensible?(target: T): boolean;
 >                 ^^^^^^: T   (TyTypeReference)
@@ -132,6 +141,7 @@ interface ProxyHandler<T extends object> {
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
 >   ^^^^^^^: { (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; }   (TyObject)
+   expected: { (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; } | undefined
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
 >            ^^^^^^: T   (TyTypeReference)
@@ -144,6 +154,7 @@ interface ProxyHandler<T extends object> {
 
     preventExtensions?(target: T): boolean;
 >   ^^^^^^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; }   (TyObject)
+             expected: { (target: T): boolean; (target: T): boolean; } | undefined
 
     preventExtensions?(target: T): boolean;
 >                      ^^^^^^: T   (TyTypeReference)
@@ -153,6 +164,7 @@ interface ProxyHandler<T extends object> {
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
 >   ^^^: { (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; }   (TyObject)
+expected: { (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; } | undefined
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
 >        ^^^^^^: T   (TyTypeReference)
@@ -171,6 +183,7 @@ interface ProxyHandler<T extends object> {
 
     setPrototypeOf?(target: T, v: object | null): boolean;
 >   ^^^^^^^^^^^^^^: { (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; }   (TyObject)
+          expected: { (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; } | undefined
 
     setPrototypeOf?(target: T, v: object | null): boolean;
 >                   ^^^^^^: T   (TyTypeReference)

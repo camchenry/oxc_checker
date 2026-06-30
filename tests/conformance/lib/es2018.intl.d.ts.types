@@ -69,9 +69,11 @@ declare namespace Intl {
 
     interface PluralRules {
 >             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+                 expected: PluralRulesConstructor
 
     interface PluralRules {
 >             ^^^^^^^^^^^: any   (TyAny)
+                 expected: PluralRulesConstructor
 
         resolvedOptions(): ResolvedPluralRulesOptions;
 >       ^^^^^^^^^^^^^^^: () => ResolvedPluralRulesOptions   (TyFunction)
@@ -123,6 +125,7 @@ declare namespace Intl {
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }) => string[]   (TyFunction)
+                  expected: { (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; }
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
 >                          ^^^^^^^: string | readonly string[]   (TyUnion)
@@ -189,6 +192,7 @@ declare namespace Intl {
 
         type: NumberFormatPartTypes;
 >       ^^^^: NumberFormatPartTypes   (TyTypeReference)
+    expected: keyof NumberFormatPartTypeRegistry
 
         type: NumberFormatPartTypes;
 >             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -198,9 +202,11 @@ declare namespace Intl {
 
     interface NumberFormat {
 >             ^^^^^^^^^^^^: any   (TyAny)
+                  expected: NumberFormatConstructor
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
 >       ^^^^^^^^^^^^^: (number?: number | bigint) => NumberFormatPart[]   (TyFunction)
+             expected: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (number?: number | bigint): NumberFormatPart[]; }
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
 >                     ^^^^^^: number | bigint | undefined   (TyUnion)

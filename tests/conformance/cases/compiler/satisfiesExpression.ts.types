@@ -186,6 +186,7 @@ const nestedObject = {
 
 const methodObject = {
 >     ^^^^^^^^^^^^: { scale: (value: number) => number; }   (TyObject)
+          expected: { scale(value: number): number; }
 
 	scale(value: number) {
 >^^^^^: (value: number) => number   (TyFunction)
@@ -243,6 +244,7 @@ const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
 
 const constructorLike = class {
 >     ^^^^^^^^^^^^^^^: any   (TyAny)
+             expected: { new (): { value: number; }; }
 
 	value = 1
 >^^^^^: number   (TyNumber)
@@ -294,6 +296,7 @@ const narrowed = maybePoint?.x satisfies number | undefined
 
 const narrowed = maybePoint?.x satisfies number | undefined
 >                            ^: number   (TyNumber)
+                      expected: number | undefined
 
 declare function takesPoint<T extends Point>(value: T): T
 >                ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction)
@@ -315,6 +318,7 @@ declare function takesPoint<T extends Point>(value: T): T
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
 >     ^^^^^^^^^^^: Point   (TyTypeReference)
+         expected: { x: number; y: number; }
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
 >                   ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction)

@@ -1,5 +1,6 @@
 type Profile = {
 >    ^^^^^^^: { name: string; age?: number; greet?: (message: string) => string; tags?: string[]; nested?: { count: number; getCount?: () => number; values?: { label: string; }[]; }; }   (TyObject)
+    expected: { name: string; age?: number; greet?: (message: string) => string; tags?: string[]; nested?: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; }; }
 
 	name: string
 >^^^^: string   (TyString)
@@ -18,6 +19,7 @@ type Profile = {
 
 	nested?: {
 >^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 		count: number
 > ^^^^^: number   (TyNumber)
@@ -138,6 +140,7 @@ const optionalName = maybeUser?.name
 
 const optionalName = maybeUser?.name
 >                               ^^^^: string   (TyString)
+                            expected: string | undefined
 
 const optionalAge = maybeUser?.age
 >     ^^^^^^^^^^^: number | undefined   (TyUnion)
@@ -150,6 +153,7 @@ const optionalAge = maybeUser?.age
 
 const optionalMethodCall = maybeUser?.greet?.("hello")
 >     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                expected: string | undefined
 
 const optionalMethodCall = maybeUser?.greet?.("hello")
 >                          ^^^^^^^^^: Profile | undefined   (TyUnion)
@@ -165,30 +169,36 @@ const optionalNestedProperty = maybeUser?.nested?.count
 
 const optionalNestedProperty = maybeUser?.nested?.count
 >                                         ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                        expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalNestedProperty = maybeUser?.nested?.count
 >                                                 ^^^^^: number   (TyNumber)
+                                               expected: number | undefined
 
 const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >     ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                  expected: number | undefined
 
 const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >                            ^^^^^^^^^: Profile | undefined   (TyUnion)
 
 const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >                                       ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                      expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >                                               ^^^^^^^^: (() => number) | undefined   (TyUnion)
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                 expected: { label: string; } | undefined
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >                           ^^^^^^^^^: Profile | undefined   (TyUnion)
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >                                      ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                     expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >                                              ^^^^^^: { label: string; }[] | undefined   (TyUnion)
@@ -198,12 +208,14 @@ const optionalNestedArray = maybeUser?.nested?.values?.[index]
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                      expected: string | undefined
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                ^^^^^^^^^: Profile | undefined   (TyUnion)
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                           ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                          expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                                   ^^^^^^: { label: string; }[] | undefined   (TyUnion)
@@ -213,9 +225,11 @@ const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                                                    ^^^^^: any   (TyAny)
+                                                                  expected: string | undefined
 
 const optionalElement = maybeUser?.tags?.[0]
 >     ^^^^^^^^^^^^^^^: any   (TyAny)
+             expected: string | undefined
 
 const optionalElement = maybeUser?.tags?.[0]
 >                       ^^^^^^^^^: Profile | undefined   (TyUnion)
@@ -225,6 +239,7 @@ const optionalElement = maybeUser?.tags?.[0]
 
 const optionalArrayElement = maybeUsers?.[index]
 >     ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                  expected: Profile | undefined
 
 const optionalArrayElement = maybeUsers?.[index]
 >                            ^^^^^^^^^^: Profile[] | undefined   (TyUnion)
@@ -234,6 +249,7 @@ const optionalArrayElement = maybeUsers?.[index]
 
 const optionalArrayElementName = maybeUsers?.[index]?.name
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                      expected: string | undefined
 
 const optionalArrayElementName = maybeUsers?.[index]?.name
 >                                ^^^^^^^^^^: Profile[] | undefined   (TyUnion)
@@ -243,9 +259,11 @@ const optionalArrayElementName = maybeUsers?.[index]?.name
 
 const optionalArrayElementName = maybeUsers?.[index]?.name
 >                                                     ^^^^: any   (TyAny)
+                                                  expected: string | undefined
 
 const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                        expected: string | undefined
 
 const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
 >                                  ^^^^^^^^^^: Profile[] | undefined   (TyUnion)
@@ -255,9 +273,11 @@ const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
 
 const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
 >                                                       ^^^^^: any   (TyAny)
+                                                     expected: ((message: string) => string) | undefined
 
 const optionalDictionaryLookup = dictionary?.[key]
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                      expected: Profile | undefined
 
 const optionalDictionaryLookup = dictionary?.[key]
 >                                ^^^^^^^^^^: Record<string, Profile | undefined> | undefined   (TyUnion)
@@ -267,6 +287,7 @@ const optionalDictionaryLookup = dictionary?.[key]
 
 const optionalDictionaryName = dictionary?.[key]?.name
 >     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                    expected: string | undefined
 
 const optionalDictionaryName = dictionary?.[key]?.name
 >                              ^^^^^^^^^^: Record<string, Profile | undefined> | undefined   (TyUnion)
@@ -276,9 +297,11 @@ const optionalDictionaryName = dictionary?.[key]?.name
 
 const optionalDictionaryName = dictionary?.[key]?.name
 >                                                 ^^^^: any   (TyAny)
+                                              expected: string | undefined
 
 const optionalHandler = handlers?.[key]
 >     ^^^^^^^^^^^^^^^: any   (TyAny)
+             expected: ((value: number) => string) | undefined
 
 const optionalHandler = handlers?.[key]
 >                       ^^^^^^^^: Record<string, ((value: number) => string) | undefined> | undefined   (TyUnion)
@@ -288,6 +311,7 @@ const optionalHandler = handlers?.[key]
 
 const optionalHandlerCall = handlers?.[key]?.(123)
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                 expected: string | undefined
 
 const optionalHandlerCall = handlers?.[key]?.(123)
 >                           ^^^^^^^^: Record<string, ((value: number) => string) | undefined> | undefined   (TyUnion)
@@ -297,6 +321,7 @@ const optionalHandlerCall = handlers?.[key]?.(123)
 
 const optionalCall = callback?.(1)
 >     ^^^^^^^^^^^^: any   (TyAny)
+          expected: string | undefined
 
 const optionalCall = callback?.(1)
 >                    ^^^^^^^^: ((value: number) => string) | undefined   (TyUnion)
@@ -309,9 +334,11 @@ const optionalCallProperty = callback?.(1)?.length
 
 const optionalCallProperty = callback?.(1)?.length
 >                                           ^^^^^^: number   (TyNumber)
+                                          expected: number | undefined
 
 const optionalServiceCall = service.getUser?.("primary")
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                 expected: Profile | undefined
 
 const optionalServiceCall = service.getUser?.("primary")
 >                           ^^^^^^^: Service   (TyTypeReference)
@@ -330,9 +357,11 @@ const optionalServiceCallName = service.getUser?.("primary")?.name
 
 const optionalServiceCallName = service.getUser?.("primary")?.name
 >                                                             ^^^^: string   (TyString)
+                                                          expected: string | undefined
 
 const optionalMaybeServiceCall = maybeService?.getUser?.("secondary")
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                      expected: Profile | undefined
 
 const optionalMaybeServiceCall = maybeService?.getUser?.("secondary")
 >                                ^^^^^^^^^^^^: Service | undefined   (TyUnion)
@@ -351,9 +380,11 @@ const optionalMaybeServiceCallName = maybeService?.getUser?.("secondary")?.name
 
 const optionalMaybeServiceCallName = maybeService?.getUser?.("secondary")?.name
 >                                                                          ^^^^: string   (TyString)
+                                                                       expected: string | undefined
 
 const optionalFactoryCall = getFactory?.()
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                 expected: { user?: Profile; service?: Service; } | undefined
 
 const optionalFactoryCall = getFactory?.()
 >                           ^^^^^^^^^^: (() => { user?: Profile; service?: Service; }) | undefined   (TyUnion)
@@ -378,9 +409,11 @@ const optionalFactoryUserName = getFactory?.().user?.name
 
 const optionalFactoryUserName = getFactory?.().user?.name
 >                                                    ^^^^: string   (TyString)
+                                                 expected: string | undefined
 
 const optionalFactoryServiceUser = getFactory?.().service?.getUser?.("factory")
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                        expected: Profile | undefined
 
 const optionalFactoryServiceUser = getFactory?.().service?.getUser?.("factory")
 >                                  ^^^^^^^^^^: (() => { user?: Profile; service?: Service; }) | undefined   (TyUnion)
@@ -399,18 +432,22 @@ const optionalWithNonNull = maybeUser?.nested!.count
 
 const optionalWithNonNull = maybeUser?.nested!.count
 >                                      ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                     expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalWithNonNull = maybeUser?.nested!.count
 >                                              ^^^^^: number   (TyNumber)
+                                            expected: number | undefined
 
 const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
 >     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                   expected: number | undefined
 
 const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
 >                             ^^^^^^^^^: Profile | undefined   (TyUnion)
 
 const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
 >                                        ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                       expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
 >                                                ^^^^^^^^: (() => number) | undefined   (TyUnion)
@@ -423,12 +460,15 @@ const optionalGrouped = (maybeUser?.nested)?.count
 
 const optionalGrouped = (maybeUser?.nested)?.count
 >                                   ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                  expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalGrouped = (maybeUser?.nested)?.count
 >                                            ^^^^^: number   (TyNumber)
+                                          expected: number | undefined
 
 const optionalGroupedCall = (maybeUser?.greet)?.("grouped")
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                 expected: string | undefined
 
 const optionalGroupedCall = (maybeUser?.greet)?.("grouped")
 >                            ^^^^^^^^^: Profile | undefined   (TyUnion)
@@ -444,9 +484,11 @@ const optionalNullish = maybeUser?.name ?? "anonymous"
 
 const optionalNullish = maybeUser?.name ?? "anonymous"
 >                                  ^^^^: string   (TyString)
+                               expected: string | undefined
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >     ^^^^^^^^^^^^^^^: any   (TyAny)
+             expected: string | 0 | undefined
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >                       ^^^^^^^^^: Profile | undefined   (TyUnion)
@@ -456,12 +498,15 @@ const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >                                         ^^^^^^^^^: Profile | undefined   (TyUnion)
+                                           expected: Profile
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >                                                   ^^^: number | undefined   (TyUnion)
+                                               expected: number
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >                                                       ^^^^^^^: any   (TyAny)
+                                                       expected: (fractionDigits?: number) => string
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >     ^^^^^^^^^^^^^^^^^^^: string   (TyString)
@@ -471,9 +516,11 @@ const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >                                      ^^^^: string   (TyString)
+                                   expected: string | undefined
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >                                             ^^^^^^^^^: Profile | undefined   (TyUnion)
+                                               expected: Profile
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >                                                       ^^^^: string   (TyString)
@@ -486,9 +533,11 @@ const optionalTemplate = `user-${maybeUser?.name}`
 
 const optionalTemplate = `user-${maybeUser?.name}`
 >                                           ^^^^: string   (TyString)
+                                        expected: string | undefined
 
 const definiteOptionalProperty = definiteUser.tags?.[0]
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                      expected: string | undefined
 
 const definiteOptionalProperty = definiteUser.tags?.[0]
 >                                ^^^^^^^^^^^^: Profile   (TyTypeReference)
@@ -498,6 +547,7 @@ const definiteOptionalProperty = definiteUser.tags?.[0]
 
 const definiteOptionalMethod = definiteUser.greet?.("definite")
 >     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                    expected: string | undefined
 
 const definiteOptionalMethod = definiteUser.greet?.("definite")
 >                              ^^^^^^^^^^^^: Profile   (TyTypeReference)
@@ -507,12 +557,14 @@ const definiteOptionalMethod = definiteUser.greet?.("definite")
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                          expected: number | undefined
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >                                    ^^^^^^^^^^^^: Profile   (TyTypeReference)
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >                                                 ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion)
+                                                expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >                                                         ^^^^^^^^: (() => number) | undefined   (TyUnion)
@@ -525,6 +577,7 @@ const optionalSatisfies = maybeUser?.name satisfies string | undefined
 
 const optionalSatisfies = maybeUser?.name satisfies string | undefined
 >                                    ^^^^: string   (TyString)
+                                 expected: string | undefined
 
 const optionalAs = maybeUser?.age as number | undefined
 >     ^^^^^^^^^^: number | undefined   (TyUnion)

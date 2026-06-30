@@ -6,12 +6,14 @@ declare var Infinity: number;
 
 declare function eval(x: string): any;
 >                ^^^^: (x: string) => any   (TyFunction)
+             expected: { (x: string): any; (x: string): any; }
 
 declare function eval(x: string): any;
 >                     ^: string   (TyString)
 
 declare function parseInt(string: string, radix?: number): number;
 >                ^^^^^^^^: (string: string, radix?: number) => number   (TyFunction)
+                 expected: { (string: string, radix?: number): number; (string: string, radix?: number): number; }
 
 declare function parseInt(string: string, radix?: number): number;
 >                         ^^^^^^: string   (TyString)
@@ -21,60 +23,70 @@ declare function parseInt(string: string, radix?: number): number;
 
 declare function parseFloat(string: string): number;
 >                ^^^^^^^^^^: (string: string) => number   (TyFunction)
+                   expected: { (string: string): number; (string: string): number; }
 
 declare function parseFloat(string: string): number;
 >                           ^^^^^^: string   (TyString)
 
 declare function isNaN(number: number): boolean;
 >                ^^^^^: (number: number) => boolean   (TyFunction)
+              expected: { (number: number): boolean; (number: number): boolean; }
 
 declare function isNaN(number: number): boolean;
 >                      ^^^^^^: number   (TyNumber)
 
 declare function isFinite(number: number): boolean;
 >                ^^^^^^^^: (number: number) => boolean   (TyFunction)
+                 expected: { (number: number): boolean; (number: number): boolean; }
 
 declare function isFinite(number: number): boolean;
 >                         ^^^^^^: number   (TyNumber)
 
 declare function decodeURI(encodedURI: string): string;
 >                ^^^^^^^^^: (encodedURI: string) => string   (TyFunction)
+                  expected: { (encodedURI: string): string; (encodedURI: string): string; }
 
 declare function decodeURI(encodedURI: string): string;
 >                          ^^^^^^^^^^: string   (TyString)
 
 declare function decodeURIComponent(encodedURIComponent: string): string;
 >                ^^^^^^^^^^^^^^^^^^: (encodedURIComponent: string) => string   (TyFunction)
+                           expected: { (encodedURIComponent: string): string; (encodedURIComponent: string): string; }
 
 declare function decodeURIComponent(encodedURIComponent: string): string;
 >                                   ^^^^^^^^^^^^^^^^^^^: string   (TyString)
 
 declare function encodeURI(uri: string): string;
 >                ^^^^^^^^^: (uri: string) => string   (TyFunction)
+                  expected: { (uri: string): string; (uri: string): string; }
 
 declare function encodeURI(uri: string): string;
 >                          ^^^: string   (TyString)
 
 declare function encodeURIComponent(uriComponent: string | number | boolean): string;
 >                ^^^^^^^^^^^^^^^^^^: (uriComponent: string | number | boolean) => string   (TyFunction)
+                           expected: { (uriComponent: string | number | boolean): string; (uriComponent: string | number | boolean): string; }
 
 declare function encodeURIComponent(uriComponent: string | number | boolean): string;
 >                                   ^^^^^^^^^^^^: string | number | boolean   (TyUnion)
 
 declare function escape(string: string): string;
 >                ^^^^^^: (string: string) => string   (TyFunction)
+               expected: { (string: string): string; (string: string): string; }
 
 declare function escape(string: string): string;
 >                       ^^^^^^: string   (TyString)
 
 declare function unescape(string: string): string;
 >                ^^^^^^^^: (string: string) => string   (TyFunction)
+                 expected: { (string: string): string; (string: string): string; }
 
 declare function unescape(string: string): string;
 >                         ^^^^^^: string   (TyString)
 
 interface Symbol {
 >         ^^^^^^: any   (TyAny)
+        expected: SymbolConstructor
 
     toString(): string;
 >   ^^^^^^^^: { (): string; (): string; }   (TyObject)
@@ -102,9 +114,11 @@ interface PropertyDescriptor {
 
     get?(): any;
 >   ^^^: { (): any; (): any; }   (TyObject)
+expected: { (): any; (): any; } | undefined
 
     set?(v: any): void;
 >   ^^^: { (v: any): void; (v: any): void; }   (TyObject)
+expected: { (v: any): void; (v: any): void; } | undefined
 
     set?(v: any): void;
 >        ^: any   (TyAny)
@@ -123,9 +137,11 @@ interface PropertyDescriptorMap {
 
 interface Object {
 >         ^^^^^^: ObjectConstructor   (TyTypeReference)
+        expected: ObjectConstructor
 
 interface Object {
 >         ^^^^^^: any   (TyAny)
+        expected: ObjectConstructor
 
     constructor: Function;
 >   ^^^^^^^^^^^: Function   (TyTypeReference)
@@ -435,12 +451,15 @@ declare var Object: ObjectConstructor;
 
 interface Function {
 >         ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+          expected: FunctionConstructor
 
 interface Function {
 >         ^^^^^^^^: any   (TyAny)
+          expected: FunctionConstructor
 
     apply(this: Function, thisArg: any, argArray?: any): any;
 >   ^^^^^: { (thisArg: any, argArray?: any): any; (thisArg: any, argArray?: any): any; }   (TyObject)
+ expected: { (this: Function, thisArg: any, argArray?: any): any; (this: Function, thisArg: any, argArray?: any): any; }
 
     apply(this: Function, thisArg: any, argArray?: any): any;
 >         ^^^^: Function   (TyTypeReference)
@@ -459,6 +478,7 @@ interface Function {
 
     call(this: Function, thisArg: any, ...argArray: any[]): any;
 >   ^^^^: { (thisArg: any, ...argArray: any[]): any; (thisArg: any, ...argArray: any[]): any; }   (TyObject)
+expected: { (this: Function, thisArg: any, ...argArray: any[]): any; (this: Function, thisArg: any, ...argArray: any[]): any; }
 
     call(this: Function, thisArg: any, ...argArray: any[]): any;
 >        ^^^^: Function   (TyTypeReference)
@@ -477,6 +497,7 @@ interface Function {
 
     bind(this: Function, thisArg: any, ...argArray: any[]): any;
 >   ^^^^: { (thisArg: any, ...argArray: any[]): any; (thisArg: any, ...argArray: any[]): any; }   (TyObject)
+expected: { (this: Function, thisArg: any, ...argArray: any[]): any; (this: Function, thisArg: any, ...argArray: any[]): any; }
 
     bind(this: Function, thisArg: any, ...argArray: any[]): any;
 >        ^^^^: Function   (TyTypeReference)
@@ -561,6 +582,7 @@ type ThisParameterType<T> = T extends (this: infer U, ...args: never) => any ? U
 
 type ThisParameterType<T> = T extends (this: infer U, ...args: never) => any ? U : unknown;
 >                                      ^^^^: infer U   (TyInfer)
+                                   expected: U
 
 type ThisParameterType<T> = T extends (this: infer U, ...args: never) => any ? U : unknown;
 >                                                  ^: any   (TyAny)
@@ -591,6 +613,7 @@ type OmitThisParameter<T> = unknown extends ThisParameterType<T> ? T : T extends
 
 type OmitThisParameter<T> = unknown extends ThisParameterType<T> ? T : T extends (...args: infer A) => infer R ? (...args: A) => R : T;
 >                                                                                    ^^^^: infer A   (TyInfer)
+                                                                                 expected: A
 
 type OmitThisParameter<T> = unknown extends ThisParameterType<T> ? T : T extends (...args: infer A) => infer R ? (...args: A) => R : T;
 >                                                                                                ^: any   (TyAny)
@@ -615,12 +638,15 @@ interface CallableFunction extends Function {
 
 interface CallableFunction extends Function {
 >                                  ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+                                   expected: FunctionConstructor
 
 interface CallableFunction extends Function {
 >                                  ^^^^^^^^: any   (TyAny)
+                                   expected: FunctionConstructor
 
     apply<T, R>(this: (this: T) => R, thisArg: T): R;
 >   ^^^^^: { <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; }   (TyObject)
+ expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
 
     apply<T, R>(this: (this: T) => R, thisArg: T): R;
 >         ^: any   (TyAny)
@@ -651,6 +677,7 @@ interface CallableFunction extends Function {
 
     apply<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R;
 >   ^^^^^: { <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; }   (TyObject)
+ expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
 
     apply<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R;
 >         ^: any   (TyAny)
@@ -696,6 +723,7 @@ interface CallableFunction extends Function {
 
     call<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R;
 >   ^^^^: { <T, A extends any[], R>(thisArg: T, ...args: A): R; <T, A extends any[], R>(thisArg: T, ...args: A): R; }   (TyObject)
+expected: { <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R; }
 
     call<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R;
 >        ^: any   (TyAny)
@@ -741,6 +769,7 @@ interface CallableFunction extends Function {
 
     bind<T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>;
 >   ^^^^: { <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; }   (TyObject)
+expected: { <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; }
 
     bind<T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>;
 >        ^: any   (TyAny)
@@ -768,6 +797,7 @@ interface CallableFunction extends Function {
 
     bind<T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R;
 >   ^^^^: { <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; }   (TyObject)
+expected: { <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; }
 
     bind<T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R;
 >        ^: any   (TyAny)
@@ -828,12 +858,15 @@ interface NewableFunction extends Function {
 
 interface NewableFunction extends Function {
 >                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+                                  expected: FunctionConstructor
 
 interface NewableFunction extends Function {
 >                                 ^^^^^^^^: any   (TyAny)
+                                  expected: FunctionConstructor
 
     apply<T>(this: new () => T, thisArg: T): void;
 >   ^^^^^: { <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; }   (TyObject)
+ expected: { <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; }
 
     apply<T>(this: new () => T, thisArg: T): void;
 >         ^: any   (TyAny)
@@ -849,6 +882,7 @@ interface NewableFunction extends Function {
 
     apply<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void;
 >   ^^^^^: { <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; }   (TyObject)
+ expected: { <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; }
 
     apply<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void;
 >         ^: any   (TyAny)
@@ -879,6 +913,7 @@ interface NewableFunction extends Function {
 
     call<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void;
 >   ^^^^: { <T, A extends any[]>(thisArg: T, ...args: A): void; <T, A extends any[]>(thisArg: T, ...args: A): void; }   (TyObject)
+expected: { <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void; }
 
     call<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void;
 >        ^: any   (TyAny)
@@ -909,6 +944,7 @@ interface NewableFunction extends Function {
 
     bind<T>(this: T, thisArg: any): T;
 >   ^^^^: { <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; }   (TyObject)
+expected: { <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; }
 
     bind<T>(this: T, thisArg: any): T;
 >        ^: any   (TyAny)
@@ -927,6 +963,7 @@ interface NewableFunction extends Function {
 
     bind<A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R;
 >   ^^^^: { <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; }   (TyObject)
+expected: { <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; }
 
     bind<A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R;
 >        ^: any   (TyAny)
@@ -987,9 +1024,11 @@ interface IArguments {
 
 interface String {
 >         ^^^^^^: StringConstructor   (TyTypeReference)
+        expected: StringConstructor
 
 interface String {
 >         ^^^^^^: any   (TyAny)
+        expected: StringConstructor
 
     toString(): string;
 >   ^^^^^^^^: { (): string; (): string; }   (TyObject)
@@ -1038,6 +1077,7 @@ interface String {
 
     match(regexp: string | RegExp): RegExpMatchArray | null;
 >   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: {}): RegExpMatchArray | null; (regexp: string | RegExp): RegExpMatchArray | null; }   (TyObject)
+ expected: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; (regexp: string | RegExp): RegExpMatchArray | null; }
 
     match(regexp: string | RegExp): RegExpMatchArray | null;
 >         ^^^^^^: string | RegExp   (TyUnion)
@@ -1053,6 +1093,7 @@ interface String {
 
     replace(searchValue: string | RegExp, replaceValue: string): string;
 >   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject)
+   expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
 
     replace(searchValue: string | RegExp, replaceValue: string): string;
 >           ^^^^^^^^^^^: string | RegExp   (TyUnion)
@@ -1068,6 +1109,7 @@ interface String {
 
     replace(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
 >   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject)
+   expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
 
     replace(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
 >           ^^^^^^^^^^^: string | RegExp   (TyUnion)
@@ -1089,6 +1131,7 @@ interface String {
 
     search(regexp: string | RegExp): number;
 >   ^^^^^^: { (regexp: string | RegExp): number; (searcher: {}): number; (regexp: string | RegExp): number; }   (TyObject)
+  expected: { (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; (regexp: string | RegExp): number; }
 
     search(regexp: string | RegExp): number;
 >          ^^^^^^: string | RegExp   (TyUnion)
@@ -1110,6 +1153,7 @@ interface String {
 
     split(separator: string | RegExp, limit?: number): string[];
 >   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; (separator: string | RegExp, limit?: number): string[]; }   (TyObject)
+ expected: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; (separator: string | RegExp, limit?: number): string[]; }
 
     split(separator: string | RegExp, limit?: number): string[];
 >         ^^^^^^^^^: string | RegExp   (TyUnion)
@@ -1209,9 +1253,11 @@ declare var String: StringConstructor;
 
 interface Boolean {
 >         ^^^^^^^: BooleanConstructor   (TyTypeReference)
+         expected: BooleanConstructor
 
 interface Boolean {
 >         ^^^^^^^: any   (TyAny)
+         expected: BooleanConstructor
 
     valueOf(): boolean;
 >   ^^^^^^^: { (): boolean; (): boolean; }   (TyObject)
@@ -1254,9 +1300,11 @@ declare var Boolean: BooleanConstructor;
 
 interface Number {
 >         ^^^^^^: NumberConstructor   (TyTypeReference)
+        expected: NumberConstructor
 
 interface Number {
 >         ^^^^^^: any   (TyAny)
+        expected: NumberConstructor
 
     toString(radix?: number): string;
 >   ^^^^^^^^: { (radix?: number): string; (radix?: number): string; }   (TyObject)
@@ -1371,9 +1419,11 @@ interface ImportAttributes {
 
 interface Math {
 >         ^^^^: Math   (TyTypeReference)
+      expected: Math
 
 interface Math {
 >         ^^^^: any   (TyAny)
+      expected: Math
 
     readonly E: number;
 >            ^: number   (TyNumber)
@@ -1521,9 +1571,11 @@ declare var Math: Math;
 
 interface Date {
 >         ^^^^: DateConstructor   (TyTypeReference)
+      expected: DateConstructor
 
 interface Date {
 >         ^^^^: any   (TyAny)
+      expected: DateConstructor
 
     toString(): string;
 >   ^^^^^^^^: { (): string; (): string; }   (TyObject)
@@ -1854,9 +1906,11 @@ interface RegExpMatchArray extends Array<string> {
 
 interface RegExpMatchArray extends Array<string> {
 >                                  ^^^^^: ArrayConstructor   (TyTypeReference)
+                                expected: ArrayConstructor
 
 interface RegExpMatchArray extends Array<string> {
 >                                  ^^^^^: any   (TyAny)
+                                expected: ArrayConstructor
 
     index?: number;
 >   ^^^^^: number | undefined   (TyUnion)
@@ -1872,9 +1926,11 @@ interface RegExpExecArray extends Array<string> {
 
 interface RegExpExecArray extends Array<string> {
 >                                 ^^^^^: ArrayConstructor   (TyTypeReference)
+                               expected: ArrayConstructor
 
 interface RegExpExecArray extends Array<string> {
 >                                 ^^^^^: any   (TyAny)
+                               expected: ArrayConstructor
 
     index: number;
 >   ^^^^^: number   (TyNumber)
@@ -1887,9 +1943,11 @@ interface RegExpExecArray extends Array<string> {
 
 interface RegExp {
 >         ^^^^^^: RegExpConstructor   (TyTypeReference)
+        expected: RegExpConstructor
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny)
+        expected: RegExpConstructor
 
     exec(string: string): RegExpExecArray | null;
 >   ^^^^: { (string: string): RegExpExecArray | null; (string: string): RegExpExecArray | null; }   (TyObject)
@@ -2061,9 +2119,11 @@ declare var RegExp: RegExpConstructor;
 
 interface Error {
 >         ^^^^^: ErrorConstructor   (TyTypeReference)
+       expected: ErrorConstructor
 
 interface Error {
 >         ^^^^^: any   (TyAny)
+       expected: ErrorConstructor
 
     name: string;
 >   ^^^^: string   (TyString)
@@ -2112,15 +2172,19 @@ declare var Error: ErrorConstructor;
 
 interface EvalError extends Error {
 >         ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference)
+           expected: EvalErrorConstructor
 
 interface EvalError extends Error {
 >         ^^^^^^^^^: any   (TyAny)
+           expected: EvalErrorConstructor
 
 interface EvalError extends Error {
 >                           ^^^^^: ErrorConstructor   (TyTypeReference)
+                         expected: ErrorConstructor
 
 interface EvalError extends Error {
 >                           ^^^^^: any   (TyAny)
+                         expected: ErrorConstructor
 
 interface EvalErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -2163,15 +2227,19 @@ declare var EvalError: EvalErrorConstructor;
 
 interface RangeError extends Error {
 >         ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference)
+            expected: RangeErrorConstructor
 
 interface RangeError extends Error {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: RangeErrorConstructor
 
 interface RangeError extends Error {
 >                            ^^^^^: ErrorConstructor   (TyTypeReference)
+                          expected: ErrorConstructor
 
 interface RangeError extends Error {
 >                            ^^^^^: any   (TyAny)
+                          expected: ErrorConstructor
 
 interface RangeErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -2214,15 +2282,19 @@ declare var RangeError: RangeErrorConstructor;
 
 interface ReferenceError extends Error {
 >         ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference)
+                expected: ReferenceErrorConstructor
 
 interface ReferenceError extends Error {
 >         ^^^^^^^^^^^^^^: any   (TyAny)
+                expected: ReferenceErrorConstructor
 
 interface ReferenceError extends Error {
 >                                ^^^^^: ErrorConstructor   (TyTypeReference)
+                              expected: ErrorConstructor
 
 interface ReferenceError extends Error {
 >                                ^^^^^: any   (TyAny)
+                              expected: ErrorConstructor
 
 interface ReferenceErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -2265,15 +2337,19 @@ declare var ReferenceError: ReferenceErrorConstructor;
 
 interface SyntaxError extends Error {
 >         ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference)
+             expected: SyntaxErrorConstructor
 
 interface SyntaxError extends Error {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: SyntaxErrorConstructor
 
 interface SyntaxError extends Error {
 >                             ^^^^^: ErrorConstructor   (TyTypeReference)
+                           expected: ErrorConstructor
 
 interface SyntaxError extends Error {
 >                             ^^^^^: any   (TyAny)
+                           expected: ErrorConstructor
 
 interface SyntaxErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -2316,15 +2392,19 @@ declare var SyntaxError: SyntaxErrorConstructor;
 
 interface TypeError extends Error {
 >         ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference)
+           expected: TypeErrorConstructor
 
 interface TypeError extends Error {
 >         ^^^^^^^^^: any   (TyAny)
+           expected: TypeErrorConstructor
 
 interface TypeError extends Error {
 >                           ^^^^^: ErrorConstructor   (TyTypeReference)
+                         expected: ErrorConstructor
 
 interface TypeError extends Error {
 >                           ^^^^^: any   (TyAny)
+                         expected: ErrorConstructor
 
 interface TypeErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -2367,15 +2447,19 @@ declare var TypeError: TypeErrorConstructor;
 
 interface URIError extends Error {
 >         ^^^^^^^^: URIErrorConstructor   (TyTypeReference)
+          expected: URIErrorConstructor
 
 interface URIError extends Error {
 >         ^^^^^^^^: any   (TyAny)
+          expected: URIErrorConstructor
 
 interface URIError extends Error {
 >                          ^^^^^: ErrorConstructor   (TyTypeReference)
+                        expected: ErrorConstructor
 
 interface URIError extends Error {
 >                          ^^^^^: any   (TyAny)
+                        expected: ErrorConstructor
 
 interface URIErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -2418,9 +2502,11 @@ declare var URIError: URIErrorConstructor;
 
 interface JSON {
 >         ^^^^: JSON   (TyTypeReference)
+      expected: JSON
 
 interface JSON {
 >         ^^^^: any   (TyAny)
+      expected: JSON
 
     parse(text: string, reviver?: (this: any, key: string, value: any) => any): any;
 >   ^^^^^: { (text: string, reviver?: (this: any, key: string, value: any) => any): any; (text: string, reviver?: (this: any, key: string, value: any) => any): any; }   (TyObject)
@@ -3051,9 +3137,11 @@ interface ConcatArray<T> {
 
 interface Array<T> {
 >         ^^^^^: ArrayConstructor   (TyTypeReference)
+       expected: ArrayConstructor
 
 interface Array<T> {
 >         ^^^^^: any   (TyAny)
+       expected: ArrayConstructor
 
 interface Array<T> {
 >               ^: any   (TyAny)
@@ -3777,6 +3865,7 @@ interface TypedPropertyDescriptor<T> {
 
 declare type PromiseConstructorLike = new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void) => PromiseLike<T>;
 >            ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                           expected: new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void) => PromiseLike<T>
 
 declare type PromiseConstructorLike = new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void) => PromiseLike<T>;
 >                                          ^: any   (TyAny)
@@ -3873,6 +3962,7 @@ interface PromiseLike<T> {
 
 interface Promise<T> {
 >         ^^^^^^^: any   (TyAny)
+         expected: PromiseConstructor
 
 interface Promise<T> {
 >                 ^: any   (TyAny)
@@ -3924,6 +4014,7 @@ interface Promise<T> {
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
 >                                                                                                                                                                                                                 ^^^^^^^: any   (TyAny)
+                                                                                                                                                                                                                 expected: PromiseConstructor
 
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
 >                                                                                                                                                                                                                         ^^^^^^^^: any   (TyAny)
@@ -3954,6 +4045,7 @@ interface Promise<T> {
 
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
 >                                                                                                              ^^^^^^^: any   (TyAny)
+                                                                                                              expected: PromiseConstructor
 
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
 >                                                                                                                      ^: any   (TyAny)
@@ -3987,6 +4079,7 @@ type Awaited<T> = T extends null | undefined ? T : // special case for `null | u
 
     T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
 >                                                      ^^^^: infer _   (TyInfer)
+                                                   expected: _
 
     T extends object & { then(onfulfilled: infer F, ...args: infer _): any; } ? // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
 >                                                                  ^: any   (TyAny)
@@ -4002,6 +4095,7 @@ type Awaited<T> = T extends null | undefined ? T : // special case for `null | u
 
         F extends ((value: infer V, ...args: infer _) => any) ? // if the argument to `then` is callable, extracts the first argument
 >                                      ^^^^: infer _   (TyInfer)
+                                   expected: _
 
         F extends ((value: infer V, ...args: infer _) => any) ? // if the argument to `then` is callable, extracts the first argument
 >                                                  ^: any   (TyAny)
@@ -4209,6 +4303,7 @@ type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) 
 
 type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
 >                                                                ^^^^: infer P   (TyInfer)
+                                                             expected: P
 
 type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
 >                                                                            ^: any   (TyAny)
@@ -4218,6 +4313,7 @@ type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) 
 
 type ConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never;
 >    ^^^^^^^^^^^^^^^^^^^^^: T extends none ? P : never   (TyConditional)
+                  expected: T extends abstract new (...args: infer P) => any ? P : never
 
 type ConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never;
 >                          ^: any   (TyAny)
@@ -4230,6 +4326,7 @@ type ConstructorParameters<T extends abstract new (...args: any) => any> = T ext
 
 type ConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never;
 >                                                                                                     ^^^^: infer P   (TyInfer)
+                                                                                                  expected: P
 
 type ConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never;
 >                                                                                                                 ^: any   (TyAny)
@@ -4260,6 +4357,7 @@ type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => i
 
 type InstanceType<T extends abstract new (...args: any) => any> = T extends abstract new (...args: any) => infer R ? R : any;
 >    ^^^^^^^^^^^^: T extends none ? R : any   (TyConditional)
+         expected: T extends abstract new (...args: any) => infer R ? R : any
 
 type InstanceType<T extends abstract new (...args: any) => any> = T extends abstract new (...args: any) => infer R ? R : any;
 >                 ^: any   (TyAny)
@@ -4281,30 +4379,35 @@ type InstanceType<T extends abstract new (...args: any) => any> = T extends abst
 
 type Uppercase<S extends string> = intrinsic;
 >    ^^^^^^^^^: any   (TyAny)
+      expected: intrinsic
 
 type Uppercase<S extends string> = intrinsic;
 >              ^: any   (TyAny)
 
 type Lowercase<S extends string> = intrinsic;
 >    ^^^^^^^^^: any   (TyAny)
+      expected: intrinsic
 
 type Lowercase<S extends string> = intrinsic;
 >              ^: any   (TyAny)
 
 type Capitalize<S extends string> = intrinsic;
 >    ^^^^^^^^^^: any   (TyAny)
+       expected: intrinsic
 
 type Capitalize<S extends string> = intrinsic;
 >               ^: any   (TyAny)
 
 type Uncapitalize<S extends string> = intrinsic;
 >    ^^^^^^^^^^^^: any   (TyAny)
+         expected: intrinsic
 
 type Uncapitalize<S extends string> = intrinsic;
 >                 ^: any   (TyAny)
 
 type NoInfer<T> = intrinsic;
 >    ^^^^^^^: any   (TyAny)
+    expected: intrinsic
 
 type NoInfer<T> = intrinsic;
 >            ^: any   (TyAny)
@@ -4323,6 +4426,7 @@ interface WeakKeyTypes {
 
 type WeakKey = WeakKeyTypes[keyof WeakKeyTypes];
 >    ^^^^^^^: WeakKeyTypes[keyof WeakKeyTypes]   (TyIndexedAccess)
+    expected: symbol | object
 
 type WeakKey = WeakKeyTypes[keyof WeakKeyTypes];
 >              ^^^^^^^^^^^^: any   (TyAny)
@@ -4332,9 +4436,11 @@ type WeakKey = WeakKeyTypes[keyof WeakKeyTypes];
 
 interface ArrayBuffer {
 >         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference)
+             expected: ArrayBufferConstructor
 
 interface ArrayBuffer {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: ArrayBufferConstructor
 
     readonly byteLength: number;
 >            ^^^^^^^^^^: number   (TyNumber)
@@ -4368,6 +4474,7 @@ interface ArrayBufferTypes {
 
 type ArrayBufferLike = ArrayBufferTypes[keyof ArrayBufferTypes];
 >    ^^^^^^^^^^^^^^^: ArrayBufferTypes[keyof ArrayBufferTypes]   (TyIndexedAccess)
+            expected: ArrayBuffer | SharedArrayBuffer
 
 type ArrayBufferLike = ArrayBufferTypes[keyof ArrayBufferTypes];
 >                      ^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -4398,6 +4505,7 @@ interface ArrayBufferConstructor {
 
     isView(arg: any): arg is ArrayBufferView;
 >   ^^^^^^: { (arg: any): arg is ArrayBufferView<ArrayBufferLike>; (arg: any): arg is ArrayBufferView; }   (TyObject)
+  expected: { (arg: any): arg is ArrayBufferView; (arg: any): arg is ArrayBufferView; }
 
     isView(arg: any): arg is ArrayBufferView;
 >          ^^^: any   (TyAny)
@@ -4440,9 +4548,11 @@ interface ArrayBufferView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike
 
 interface DataView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^: DataViewConstructor   (TyTypeReference)
+          expected: DataViewConstructor
 
 interface DataView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^: any   (TyAny)
+          expected: DataViewConstructor
 
 interface DataView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                  ^^^^^^^^^^^^: any   (TyAny)
@@ -4674,9 +4784,11 @@ declare var DataView: DataViewConstructor;
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+           expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^: any   (TyAny)
+           expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                   ^^^^^^^^^^^^: any   (TyAny)
@@ -5355,9 +5467,11 @@ declare var Int8Array: Int8ArrayConstructor;
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+            expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -6036,9 +6150,11 @@ declare var Uint8Array: Uint8ArrayConstructor;
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference)
+                   expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+                   expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                           ^^^^^^^^^^^^: any   (TyAny)
@@ -6717,9 +6833,11 @@ declare var Uint8ClampedArray: Uint8ClampedArrayConstructor;
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+            expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -7398,9 +7516,11 @@ declare var Int16Array: Int16ArrayConstructor;
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+             expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny)
@@ -8079,9 +8199,11 @@ declare var Uint16Array: Uint16ArrayConstructor;
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+            expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -8760,9 +8882,11 @@ declare var Int32Array: Int32ArrayConstructor;
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+             expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny)
@@ -9441,9 +9565,11 @@ declare var Uint32Array: Uint32ArrayConstructor;
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference)
+              expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
+              expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny)
@@ -10122,9 +10248,11 @@ declare var Float32Array: Float32ArrayConstructor;
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference)
+              expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
+              expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny)
@@ -10854,12 +10982,15 @@ declare namespace Intl {
 
     interface Collator {
 >             ^^^^^^^^: CollatorConstructor   (TyTypeReference)
+              expected: CollatorConstructor
 
     interface Collator {
 >             ^^^^^^^^: any   (TyAny)
+              expected: CollatorConstructor
 
         compare(x: string, y: string): number;
 >       ^^^^^^^: (x: string, y: string) => number   (TyFunction)
+       expected: { (x: string, y: string): number; (x: string, y: string): number; }
 
         compare(x: string, y: string): number;
 >               ^: string   (TyString)
@@ -10869,6 +11000,7 @@ declare namespace Intl {
 
         resolvedOptions(): ResolvedCollatorOptions;
 >       ^^^^^^^^^^^^^^^: () => ResolvedCollatorOptions   (TyFunction)
+               expected: { (): ResolvedCollatorOptions; (): ResolvedCollatorOptions; }
 
         resolvedOptions(): ResolvedCollatorOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -10908,6 +11040,7 @@ declare namespace Intl {
 
         supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: CollatorOptions) => string[]   (TyFunction)
+                  expected: { (locales: string | string[], options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; (locales: string | string[], options?: CollatorOptions): string[]; }
 
         supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion)
@@ -10965,6 +11098,7 @@ declare namespace Intl {
 
     type NumberFormatOptionsUseGrouping = {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false" | boolean;
 >        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false" | boolean   (TyConditional)
+                               expected: boolean | "false" | keyof NumberFormatOptionsUseGroupingRegistry | "true"
 
     type NumberFormatOptionsUseGrouping = {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false" | boolean;
 >                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -10974,6 +11108,7 @@ declare namespace Intl {
 
     type ResolvedNumberFormatOptionsUseGrouping = {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | false;
 >        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | false   (TyConditional)
+                                       expected: false | keyof NumberFormatOptionsUseGroupingRegistry
 
     type ResolvedNumberFormatOptionsUseGrouping = {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | false;
 >                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -10989,6 +11124,7 @@ declare namespace Intl {
 
         style?: NumberFormatOptionsStyle | undefined;
 >       ^^^^^: NumberFormatOptionsStyle | undefined   (TyUnion)
+     expected: keyof NumberFormatOptionsStyleRegistry | undefined
 
         style?: NumberFormatOptionsStyle | undefined;
 >               ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -10998,12 +11134,14 @@ declare namespace Intl {
 
         currencyDisplay?: NumberFormatOptionsCurrencyDisplay | undefined;
 >       ^^^^^^^^^^^^^^^: NumberFormatOptionsCurrencyDisplay | undefined   (TyUnion)
+               expected: keyof NumberFormatOptionsCurrencyDisplayRegistry | undefined
 
         currencyDisplay?: NumberFormatOptionsCurrencyDisplay | undefined;
 >                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
         useGrouping?: NumberFormatOptionsUseGrouping | undefined;
 >       ^^^^^^^^^^^: NumberFormatOptionsUseGrouping | undefined   (TyUnion)
+           expected: boolean | "false" | keyof NumberFormatOptionsUseGroupingRegistry | "true" | undefined
 
         useGrouping?: NumberFormatOptionsUseGrouping | undefined;
 >                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -11034,6 +11172,7 @@ declare namespace Intl {
 
         style: NumberFormatOptionsStyle;
 >       ^^^^^: NumberFormatOptionsStyle   (TyTypeReference)
+     expected: keyof NumberFormatOptionsStyleRegistry
 
         style: NumberFormatOptionsStyle;
 >              ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -11043,6 +11182,7 @@ declare namespace Intl {
 
         currencyDisplay?: NumberFormatOptionsCurrencyDisplay;
 >       ^^^^^^^^^^^^^^^: NumberFormatOptionsCurrencyDisplay | undefined   (TyUnion)
+               expected: keyof NumberFormatOptionsCurrencyDisplayRegistry | undefined
 
         currencyDisplay?: NumberFormatOptionsCurrencyDisplay;
 >                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -11064,24 +11204,29 @@ declare namespace Intl {
 
         useGrouping: ResolvedNumberFormatOptionsUseGrouping;
 >       ^^^^^^^^^^^: ResolvedNumberFormatOptionsUseGrouping   (TyTypeReference)
+           expected: false | keyof NumberFormatOptionsUseGroupingRegistry
 
         useGrouping: ResolvedNumberFormatOptionsUseGrouping;
 >                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
     interface NumberFormat {
 >             ^^^^^^^^^^^^: NumberFormatConstructor   (TyTypeReference)
+                  expected: NumberFormatConstructor
 
     interface NumberFormat {
 >             ^^^^^^^^^^^^: any   (TyAny)
+                  expected: NumberFormatConstructor
 
         format(value: number): string;
 >       ^^^^^^: (value: number) => string   (TyFunction)
+      expected: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number): string; }
 
         format(value: number): string;
 >              ^^^^^: number   (TyNumber)
 
         resolvedOptions(): ResolvedNumberFormatOptions;
 >       ^^^^^^^^^^^^^^^: () => ResolvedNumberFormatOptions   (TyFunction)
+               expected: { (): ResolvedNumberFormatOptions; (): ResolvedNumberFormatOptions; }
 
         resolvedOptions(): ResolvedNumberFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -11121,6 +11266,7 @@ declare namespace Intl {
 
         supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: NumberFormatOptions) => string[]   (TyFunction)
+                  expected: { (locales: string | string[], options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; (locales: string | string[], options?: NumberFormatOptions): string[]; }
 
         supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion)
@@ -11235,12 +11381,15 @@ declare namespace Intl {
 
     interface DateTimeFormat {
 >             ^^^^^^^^^^^^^^: DateTimeFormatConstructor   (TyTypeReference)
+                    expected: DateTimeFormatConstructor
 
     interface DateTimeFormat {
 >             ^^^^^^^^^^^^^^: any   (TyAny)
+                    expected: DateTimeFormatConstructor
 
         format(date?: Date | number): string;
 >       ^^^^^^: (date?: Date | number) => string   (TyFunction)
+      expected: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: Date | number): string; }
 
         format(date?: Date | number): string;
 >              ^^^^: Date | number | undefined   (TyUnion)
@@ -11253,6 +11402,7 @@ declare namespace Intl {
 
         resolvedOptions(): ResolvedDateTimeFormatOptions;
 >       ^^^^^^^^^^^^^^^: () => ResolvedDateTimeFormatOptions   (TyFunction)
+               expected: { (): ResolvedDateTimeFormatOptions; (): ResolvedDateTimeFormatOptions; }
 
         resolvedOptions(): ResolvedDateTimeFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -11292,6 +11442,7 @@ declare namespace Intl {
 
         supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
 >       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: DateTimeFormatOptions) => string[]   (TyFunction)
+                  expected: { (locales: string | string[], options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; (locales: string | string[], options?: DateTimeFormatOptions): string[]; }
 
         supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion)
@@ -11319,9 +11470,11 @@ declare namespace Intl {
 
 interface String {
 >         ^^^^^^: StringConstructor   (TyTypeReference)
+        expected: StringConstructor
 
 interface String {
 >         ^^^^^^: any   (TyAny)
+        expected: StringConstructor
 
     localeCompare(that: string, locales?: string | string[], options?: Intl.CollatorOptions): number;
 >   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; }   (TyObject)
@@ -11340,9 +11493,11 @@ interface String {
 
 interface Number {
 >         ^^^^^^: NumberConstructor   (TyTypeReference)
+        expected: NumberConstructor
 
 interface Number {
 >         ^^^^^^: any   (TyAny)
+        expected: NumberConstructor
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
@@ -11358,9 +11513,11 @@ interface Number {
 
 interface Date {
 >         ^^^^: DateConstructor   (TyTypeReference)
+      expected: DateConstructor
 
 interface Date {
 >         ^^^^: any   (TyAny)
+      expected: DateConstructor
 
     toLocaleString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject)

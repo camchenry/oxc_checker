@@ -72,6 +72,7 @@ declare namespace Intl {
 
         containing(codeUnitIndex?: number): SegmentData | undefined;
 >       ^^^^^^^^^^: (codeUnitIndex?: number) => SegmentData | undefined   (TyFunction)
+          expected: { (codeUnitIndex?: number): SegmentData | undefined; (codeUnitIndex?: number): SegmentData | undefined; }
 
         containing(codeUnitIndex?: number): SegmentData | undefined;
 >                  ^^^^^^^^^^^^^: number | undefined   (TyUnion)
@@ -120,6 +121,7 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+            expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
 >                      ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -159,6 +161,7 @@ declare namespace Intl {
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
 >            ^^^^^^^^^^^^^^^^^: (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit") => string[]   (TyFunction)
+                      expected: { (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
 >                              ^^^: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"   (TyUnion)

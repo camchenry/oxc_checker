@@ -6,15 +6,18 @@ const ab2 = `a${'b'}`;
 
 type AB1 = `${'A'}${'B'}`;
 >    ^^^: `${"A"}${"B"}`   (TyTemplateLiteral)
+expected: "AB"
 
 type AB2 = `A${'B'}`;
 >    ^^^: `A${"B"}`   (TyTemplateLiteral)
+expected: "AB"
 
 const stringWithNumber = `${'1 + 1 = '}${2}`;
 >     ^^^^^^^^^^^^^^^^: "1 + 1 = 2"   (TyStringLiteral)
 
 const stringWithBoolean = `${'true is '}${true}`;
 >     ^^^^^^^^^^^^^^^^^: "true is true"   (TyStringLiteral)
+               expected: string
 
 const text = 'a';
 >     ^^^^: "a"   (TyStringLiteral)
@@ -30,6 +33,7 @@ type Text = 'A';
 
 type WrappedText = `${Text}`;
 >    ^^^^^^^^^^^: `${Text}`   (TyTemplateLiteral)
+        expected: "A"
 
 type WrappedText = `${Text}`;
 >                     ^^^^: any   (TyAny)
@@ -66,15 +70,19 @@ const ab2 = `ab`;
 
 type AB = `AB`;
 >    ^^: `AB`   (TyTemplateLiteral)
+expected: "AB"
 
 type ABCUnion = `${ABC}`;
 >    ^^^^^^^^: `${ABC}`   (TyTemplateLiteral)
+     expected: "A" | "B" | "C"
 
 type ABCUnion = `${ABC}`;
 >                  ^^^: any   (TyAny)
+              expected: typeof ABC
 
 type A = `${ABC.A}`;
 >    ^: `${ABC.A}`   (TyTemplateLiteral)
+expected: "A"
 
 type A = `${ABC.A}`;
 >           ^^^^^: any   (TyAny)

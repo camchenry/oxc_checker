@@ -3,6 +3,7 @@ declare const array: string[];
 
 for (const i in array) {
 >          ^: any   (TyAny)
+    expected: string
 
 for (const i in array) {
 >               ^^^^^: string[]   (TyArray)
@@ -21,9 +22,11 @@ for (const i in array) {
 
   console.log(array[i]);
 >                   ^: any   (TyAny)
+             expected: string
 
 for (const i in array) {
 >          ^: any   (TyAny)
+    expected: string
 
 for (const i in array) {
 >               ^^^^^: string[]   (TyArray)
@@ -39,12 +42,14 @@ for (const i in array) {
 
   console.log(i, array[i]);
 >             ^: any   (TyAny)
+       expected: string
 
   console.log(i, array[i]);
 >                ^^^^^: string[]   (TyArray)
 
   console.log(i, array[i]);
 >                      ^: any   (TyAny)
+                expected: string
 
 declare const array: string[];
 >             ^^^^^: string[]   (TyArray)
@@ -132,9 +137,11 @@ array.forEach((value, i) => {
 
 for (const [i, value] of array.entries()) {
 >           ^: [number, string]   (TyTuple)
+     expected: number
 
 for (const [i, value] of array.entries()) {
 >              ^^^^^: [number, string]   (TyTuple)
+            expected: string
 
 for (const [i, value] of array.entries()) {
 >                        ^^^^^: string[]   (TyArray)
@@ -153,6 +160,8 @@ for (const [i, value] of array.entries()) {
 
   console.log(i, value);
 >             ^: [number, string]   (TyTuple)
+       expected: number
 
   console.log(i, value);
 >                ^^^^^: [number, string]   (TyTuple)
+              expected: string

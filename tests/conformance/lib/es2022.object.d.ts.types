@@ -3,6 +3,7 @@ interface ObjectConstructor {
 
     hasOwn(o: object, v: PropertyKey): boolean;
 >   ^^^^^^: (o: object, v: PropertyKey) => boolean   (TyFunction)
+  expected: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }
 
     hasOwn(o: object, v: PropertyKey): boolean;
 >          ^: object   (TyPrimitiveObject)

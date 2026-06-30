@@ -27,6 +27,7 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
 >            ^^^^^: any   (TyAny)
+          expected: TNext | undefined
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
 >                          ^^^^^: any   (TyAny)
@@ -138,6 +139,7 @@ interface AsyncGeneratorFunction {
 
     readonly prototype: AsyncGenerator;
 >            ^^^^^^^^^: AsyncGenerator   (TyTypeReference)
+              expected: AsyncGenerator<unknown, any, any>
 
     readonly prototype: AsyncGenerator;
 >                       ^^^^^^^^^^^^^^: any   (TyAny)

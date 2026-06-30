@@ -1,5 +1,6 @@
 interface String {
 >         ^^^^^^: any   (TyAny)
+        expected: StringConstructor
 
     padStart(maxLength: number, fillString?: string): string;
 >   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject)

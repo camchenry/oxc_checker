@@ -33,6 +33,7 @@ interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorRetur
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny)
+        expected: RegExpConstructor
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference)

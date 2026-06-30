@@ -1,11 +1,13 @@
 export type SetStateInternal<T> = {
 >           ^^^^^^^^^^^^^^^^: (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false) => void   (TyFunction)
+                    expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
 export type SetStateInternal<T> = {
 >                            ^: any   (TyAny)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 > ^: (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false) => void   (TyFunction)
+expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 >   ^^^^^^^: T | Partial<T> | ((state: T) => T | Partial<T>)   (TyUnion)
@@ -39,6 +41,7 @@ export type SetStateInternal<T> = {
 
   _(state: T | ((state: T) => T), replace: true): void
 > ^: (state: T | ((state: T) => T), replace: true) => void   (TyFunction)
+expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
   _(state: T | ((state: T) => T), replace: true): void
 >   ^^^^^: T | ((state: T) => T)   (TyUnion)
@@ -66,6 +69,7 @@ export interface StoreApi<T> {
 
   setState: SetStateInternal<T>
 > ^^^^^^^^: SetStateInternal<T>   (TyTypeReference)
+  expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
   setState: SetStateInternal<T>
 >           ^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -105,6 +109,7 @@ export interface StoreApi<T> {
 
 export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
 >           ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof)
+                          expected: never
 
 export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
 >                                          ^^^^^^^^^^^^^: any   (TyAny)
@@ -120,6 +125,7 @@ export interface StoreMutators<S, A> {}
 
 export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
 >           ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional)
+          expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
 export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
 >                  ^: any   (TyAny)
@@ -318,6 +324,7 @@ export type CreateStore = {
 
     initializer: StateCreator<T, [], Mos>,
 >   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference)
+       expected: StateCreator<T, [], Mos, T>
 
     initializer: StateCreator<T, [], Mos>,
 >                ^^^^^^^^^^^^: any   (TyAny)
@@ -351,6 +358,7 @@ export type CreateStore = {
 
     initializer: StateCreator<T, [], Mos>,
 >   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference)
+       expected: StateCreator<T, [], Mos, T>
 
     initializer: StateCreator<T, [], Mos>,
 >                ^^^^^^^^^^^^: any   (TyAny)
@@ -381,15 +389,18 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 
 export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 >                                         ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion)
+                                             expected: StateCreator<any, [], [], any> | undefined
 
 export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 >                                                       ^^^^^^^^^^^^: any   (TyAny)
 
   if (!initializer) {
 >      ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion)
+          expected: StateCreator<any, [], [], any> | undefined
 
     return (nextInitializer: StateCreator<any>) => createStore(nextInitializer)
 >           ^^^^^^^^^^^^^^^: StateCreator<any>   (TyTypeReference)
+                   expected: StateCreator<any, [], [], any>
 
     return (nextInitializer: StateCreator<any>) => createStore(nextInitializer)
 >                            ^^^^^^^^^^^^: any   (TyAny)
@@ -399,6 +410,7 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 
     return (nextInitializer: StateCreator<any>) => createStore(nextInitializer)
 >                                                              ^^^^^^^^^^^^^^^: StateCreator<any>   (TyTypeReference)
+                                                                      expected: StateCreator<any, [], [], any>
 
   let state: any
 >     ^^^^^: any   (TyAny)
@@ -438,6 +450,7 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: {}   (TyObject)
+                                                                                                expected: any
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
 >                    ^^^^^^^: any   (TyAny)
@@ -492,21 +505,26 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 
     subscribe(listener) {
 >   ^^^^^^^^^: (listener: any) => () => boolean   (TyFunction)
+     expected: (listener: (state: any, prevState: any) => void) => () => boolean
 
     subscribe(listener) {
 >             ^^^^^^^^: any   (TyAny)
+              expected: (state: any, prevState: any) => void
 
       listeners.add(listener)
 >     ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference)
 
       listeners.add(listener)
 >     ^^^^^^^^^^^^^^^^^^^^^^^: this   (TyThis)
+                     expected: Set<(state: any, prevState: any) => void>
 
       listeners.add(listener)
 >               ^^^: (value: (state: any, prevState: any) => void) => this   (TyFunction)
+           expected: (value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>
 
       listeners.add(listener)
 >                   ^^^^^^^^: any   (TyAny)
+                    expected: (state: any, prevState: any) => void
 
       return () => listeners.delete(listener)
 >                  ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference)
@@ -516,6 +534,7 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 
       return () => listeners.delete(listener)
 >                                   ^^^^^^^^: any   (TyAny)
+                                    expected: (state: any, prevState: any) => void
 
   state = initializer(api.setState, api.getState, api)
 > ^^^^^: any   (TyAny)
@@ -525,12 +544,14 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 
   state = initializer(api.setState, api.getState, api)
 >         ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion)
+             expected: StateCreator<any, [], [], any>
 
   state = initializer(api.setState, api.getState, api)
 >                     ^^^: StoreApi<any>   (TyTypeReference)
 
   state = initializer(api.setState, api.getState, api)
 >                         ^^^^^^^^: SetStateInternal<any>   (TyTypeReference)
+                          expected: { (partial: any, replace?: false): void; (state: any, replace: true): void; }
 
   state = initializer(api.setState, api.getState, api)
 >                                   ^^^: StoreApi<any>   (TyTypeReference)
@@ -555,15 +576,18 @@ import { createStore } from './vanilla'
 
   Mutate,
 > ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional)
+expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   StateCreator,
 > ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection)
 
   StoreMutatorIdentifier,
 > ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof)
+                expected: never
 
 export type ReadonlyStoreApi<T> = Pick<
 >           ^^^^^^^^^^^^^^^^: { [P in "getState" | "getInitialState" | "subscribe"]: StoreApi<T>[P]; }   (TyMapped)
+                    expected: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }
 
 export type ReadonlyStoreApi<T> = Pick<
 >                            ^: any   (TyAny)
@@ -633,9 +657,11 @@ export type Create = {
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
 >                  ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof)
+                                 expected: never
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
 >                  ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof)
+                                 expected: never
 
     initializer: StateCreator<T, [], Mos>,
 >   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference)
@@ -657,9 +683,11 @@ export type Create = {
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                  ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional)
+                 expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                  ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional)
+                 expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                         ^^^^^^^^: any   (TyAny)
@@ -678,9 +706,11 @@ export type Create = {
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
 >                      ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof)
+                                     expected: never
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
 >                      ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof)
+                                     expected: never
 
     initializer: StateCreator<T, [], Mos>,
 >   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference)
@@ -702,9 +732,11 @@ export type Create = {
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                    ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional)
+                   expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                    ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional)
+                   expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                           ^^^^^^^^: any   (TyAny)
@@ -750,12 +782,14 @@ export const create: Create = ((initializer?: StateCreator<any>) => {
 
   const api = createStore(initializer)
 >       ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference)
+   expected: StoreApi<any>
 
   const api = createStore(initializer)
 >             ^^^^^^^^^^^: CreateStore   (TyTypeReference)
 
   const api = createStore(initializer)
 >                         ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion)
+                             expected: StateCreator<any>
 
   function useBoundStore(selector?: (state: any) => any) {
 >          ^^^^^^^^^^^^^: (selector?: (state: any) => any) => any   (TyFunction)
@@ -774,15 +808,19 @@ export const create: Create = ((initializer?: StateCreator<any>) => {
 
     return selector ? selector(api.getState()) : api.getState()
 >                              ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference)
+                          expected: StoreApi<any>
 
     return selector ? selector(api.getState()) : api.getState()
 >                                  ^^^^^^^^: any   (TyAny)
+                                   expected: () => any
 
     return selector ? selector(api.getState()) : api.getState()
 >                                                ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference)
+                                            expected: StoreApi<any>
 
     return selector ? selector(api.getState()) : api.getState()
 >                                                    ^^^^^^^^: any   (TyAny)
+                                                     expected: () => any
 
   return Object.assign(useBoundStore, api)
 >        ^^^^^^: ObjectConstructor   (TyTypeReference)
@@ -795,6 +833,7 @@ export const create: Create = ((initializer?: StateCreator<any>) => {
 
   return Object.assign(useBoundStore, api)
 >                                     ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference)
+                                 expected: StoreApi<any>
 
 }) as Create
 >     ^^^^^^: any   (TyAny)
@@ -837,36 +876,45 @@ const counterInitializer: StateCreator<CounterState> = (set, get) => ({
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
 >                                                       ^^^: any   (TyAny)
+                                                   expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
 >                                                            ^^^: any   (TyAny)
+                                                        expected: () => CounterState
 
   count: 0,
 > ^^^^^: number   (TyNumber)
 
   increment: (by = 1) => set({ count: get().count + by }),
 > ^^^^^^^^^: (by: any) => any   (TyFunction)
+   expected: (by?: number | undefined) => void
 
   increment: (by = 1) => set({ count: get().count + by }),
 >             ^^: any   (TyAny)
+        expected: number | undefined
 
   increment: (by = 1) => set({ count: get().count + by }),
 >                        ^^^: any   (TyAny)
+                    expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
   increment: (by = 1) => set({ count: get().count + by }),
 >                              ^^^^^: number   (TyNumber)
 
   increment: (by = 1) => set({ count: get().count + by }),
 >                                     ^^^: any   (TyAny)
+                                 expected: () => CounterState
 
   increment: (by = 1) => set({ count: get().count + by }),
 >                                           ^^^^^: any   (TyAny)
+                                         expected: number
 
   increment: (by = 1) => set({ count: get().count + by }),
 >                                                   ^^: any   (TyAny)
+                                              expected: number
 
 const useCounter = create(counterInitializer)
 >     ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+        expected: UseBoundStore<StoreApi<CounterState>>
 
 const useCounter = create(counterInitializer)
 >                  ^^^^^^: Create   (TyTypeReference)
@@ -876,6 +924,7 @@ const useCounter = create(counterInitializer)
 
 type CounterFromHook = ExtractState<typeof useCounter>
 >    ^^^^^^^^^^^^^^^: ({ (): ExtractState<StoreApi<CounterState>>; <U>(selector: (state: ExtractState<StoreApi<CounterState>>) => U): U; } & StoreApi<CounterState>) extends { getState: () => infer T; } ? T : never   (TyConditional)
+            expected: { count: number; label?: string; increment: (by?: number) => void; }
 
 type CounterFromHook = ExtractState<typeof useCounter>
 >                      ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional)
@@ -885,6 +934,7 @@ type CounterFromHook = ExtractState<typeof useCounter>
 
 type CounterFromHook = ExtractState<typeof useCounter>
 >                                          ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+                                             expected: UseBoundStore<StoreApi<CounterState>>
 
 type CounterStore = StoreApi<CounterState>
 >    ^^^^^^^^^^^^: StoreApi<CounterState>   (TyTypeReference)
@@ -897,90 +947,117 @@ type CounterStore = StoreApi<CounterState>
 
 const current = useCounter()
 >     ^^^^^^^: ExtractState<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+     expected: CounterState
 
 const current = useCounter()
 >               ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+                  expected: UseBoundStore<StoreApi<CounterState>>
 
 const count = useCounter(state => state.count)
 >     ^^^^^: any   (TyAny)
+   expected: number
 
 const count = useCounter(state => state.count)
 >             ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+                expected: UseBoundStore<StoreApi<CounterState>>
 
 const count = useCounter(state => state.count)
 >                        ^^^^^: any   (TyAny)
+                      expected: CounterState
 
 const count = useCounter(state => state.count)
 >                                 ^^^^^: any   (TyAny)
+                               expected: CounterState
 
 const count = useCounter(state => state.count)
 >                                       ^^^^^: any   (TyAny)
+                                     expected: number
 
 const increment = useCounter(state => state.increment)
 >     ^^^^^^^^^: any   (TyAny)
+       expected: (by?: number) => void
 
 const increment = useCounter(state => state.increment)
 >                 ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+                    expected: UseBoundStore<StoreApi<CounterState>>
 
 const increment = useCounter(state => state.increment)
 >                            ^^^^^: any   (TyAny)
+                          expected: CounterState
 
 const increment = useCounter(state => state.increment)
 >                                     ^^^^^: any   (TyAny)
+                                   expected: CounterState
 
 const increment = useCounter(state => state.increment)
 >                                           ^^^^^^^^^: any   (TyAny)
+                                             expected: (by?: number) => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
 >     ^^^^^^^^^^^: any   (TyAny)
+         expected: () => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
 >                   ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+                      expected: UseBoundStore<StoreApi<CounterState>>
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
 >                              ^^^^^^^^^: any   (TyAny)
+                                expected: (listener: (state: CounterState, prevState: CounterState) => void) => () => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
 >                                         ^^^^^: any   (TyAny)
+                                       expected: CounterState
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
 >                                                ^^^^^^^^^: any   (TyAny)
+                                                  expected: CounterState
 
   const nextCount = state.count
 >       ^^^^^^^^^: any   (TyAny)
+         expected: number
 
   const nextCount = state.count
 >                   ^^^^^: any   (TyAny)
+                 expected: CounterState
 
   const nextCount = state.count
 >                         ^^^^^: any   (TyAny)
+                       expected: number
 
   const prevCount = prevState.count
 >       ^^^^^^^^^: any   (TyAny)
+         expected: number
 
   const prevCount = prevState.count
 >                   ^^^^^^^^^: any   (TyAny)
+                     expected: CounterState
 
   const prevCount = prevState.count
 >                             ^^^^^: any   (TyAny)
+                           expected: number
 
   nextCount + prevCount
 > ^^^^^^^^^: any   (TyAny)
+   expected: number
 
   nextCount + prevCount
 > ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
 
   nextCount + prevCount
 >             ^^^^^^^^^: any   (TyAny)
+               expected: number
 
 const explicitState: CounterFromHook = current
 >     ^^^^^^^^^^^^^: CounterFromHook   (TyTypeReference)
+           expected: CounterState
 
 const explicitState: CounterFromHook = current
 >                    ^^^^^^^^^^^^^^^: any   (TyAny)
 
 const explicitState: CounterFromHook = current
 >                                      ^^^^^^^: ExtractState<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+                                      expected: CounterState
 
 const api: CounterStore = useCounter
 >     ^^^: CounterStore   (TyTypeReference)
@@ -990,27 +1067,35 @@ const api: CounterStore = useCounter
 
 const api: CounterStore = useCounter
 >                         ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+                            expected: UseBoundStore<StoreApi<CounterState>>
 
 useCounter.setState({ label: 'ready' })
 >^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference)
+   expected: UseBoundStore<StoreApi<CounterState>>
 
 useCounter.setState({ label: 'ready' })
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                                expected: void
 
 useCounter.setState({ label: 'ready' })
 >          ^^^^^^^^: any   (TyAny)
+           expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
 useCounter.setState({ label: 'ready' })
 >                     ^^^^^: string   (TyString)
 
 increment(2)
 >^^^^^^^^^: any   (TyAny)
+  expected: (by?: number) => void
 
 increment(2)
 >^^^^^^^^^^^^: any   (TyAny)
+     expected: void
 
 unsubscribe()
 >^^^^^^^^^^^: any   (TyAny)
+    expected: () => void
 
 unsubscribe()
 >^^^^^^^^^^^^^: any   (TyAny)
+      expected: void

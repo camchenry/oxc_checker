@@ -18,6 +18,7 @@ type Foo = number;
 
 const foo3 = <Foo>(3 + 5);
 >     ^^^^: Foo   (TyTypeReference)
+  expected: number
 
 const foo3 = <Foo>(3 + 5);
 >             ^^^: any   (TyAny)

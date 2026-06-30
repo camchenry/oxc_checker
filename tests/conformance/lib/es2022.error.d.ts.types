@@ -6,6 +6,7 @@ interface ErrorOptions {
 
 interface Error {
 >         ^^^^^: any   (TyAny)
+       expected: ErrorConstructor
 
     cause?: unknown;
 >   ^^^^^: unknown   (TyUnknown)
@@ -24,6 +25,7 @@ interface ErrorConstructor {
 
     new (message?: string, options?: ErrorOptions): Error;
 >                                                   ^^^^^: any   (TyAny)
+                                                 expected: ErrorConstructor
 
     (message?: string, options?: ErrorOptions): Error;
 >    ^^^^^^^: string | undefined   (TyUnion)
@@ -36,6 +38,7 @@ interface ErrorConstructor {
 
     (message?: string, options?: ErrorOptions): Error;
 >                                               ^^^^^: any   (TyAny)
+                                             expected: ErrorConstructor
 
 interface EvalErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -255,6 +258,7 @@ interface AggregateErrorConstructor {
 
     ): AggregateError;
 >      ^^^^^^^^^^^^^^: any   (TyAny)
+             expected: AggregateErrorConstructor
 
         errors: Iterable<any>,
 >       ^^^^^^: Iterable<any>   (TyTypeReference)
@@ -273,3 +277,4 @@ interface AggregateErrorConstructor {
 
     ): AggregateError;
 >      ^^^^^^^^^^^^^^: any   (TyAny)
+             expected: AggregateErrorConstructor

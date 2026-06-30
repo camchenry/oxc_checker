@@ -18,6 +18,7 @@ type UnionStringLiteral = string | 'foo';
 
 type IntersectionAny = any & 'foo';
 >    ^^^^^^^^^^^^^^^: any & "foo"   (TyIntersection)
+            expected: any
 
 type IntersectionUnknown = string & unknown;
 >    ^^^^^^^^^^^^^^^^^^^: string   (TyString)
@@ -27,12 +28,15 @@ type IntersectionNever = string | never;
 
 type IntersectionBooleanLiteral = boolean & false;
 >    ^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean & false   (TyIntersection)
+                       expected: false
 
 type IntersectionNumberLiteral = number & 1;
 >    ^^^^^^^^^^^^^^^^^^^^^^^^^: number & 1   (TyIntersection)
+                      expected: 1
 
 type IntersectionStringLiteral = string & 'foo';
 >    ^^^^^^^^^^^^^^^^^^^^^^^^^: string & "foo"   (TyIntersection)
+                      expected: "foo"
 
 type UnionAny = any;
 >    ^^^^^^^^: any   (TyAny)

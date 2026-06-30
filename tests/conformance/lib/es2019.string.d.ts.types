@@ -1,5 +1,6 @@
 interface String {
 >         ^^^^^^: any   (TyAny)
+        expected: StringConstructor
 
     trimEnd(): string;
 >   ^^^^^^^: { (): string; (): string; }   (TyObject)

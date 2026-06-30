@@ -1,8 +1,10 @@
 interface Map<K, V> {
 >         ^^^: MapConstructor   (TyTypeReference)
+     expected: MapConstructor
 
 interface Map<K, V> {
 >         ^^^: any   (TyAny)
+     expected: MapConstructor
 
 interface Map<K, V> {
 >             ^: any   (TyAny)
@@ -114,6 +116,7 @@ interface MapConstructor {
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
 >              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion)
+              expected: readonly (readonly [K, V])[] | null | undefined
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
 >                                            ^: any   (TyAny)
@@ -216,9 +219,11 @@ interface ReadonlyMap<K, V> {
 
 interface WeakMap<K extends WeakKey, V> {
 >         ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+         expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
 >         ^^^^^^^: any   (TyAny)
+         expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
 >                 ^: any   (TyAny)
@@ -291,6 +296,7 @@ interface WeakMapConstructor {
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
 >                                              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion)
+                                              expected: readonly (readonly [K, V])[] | null | undefined
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
 >                                                                            ^: any   (TyAny)
@@ -330,9 +336,11 @@ declare var WeakMap: WeakMapConstructor;
 
 interface Set<T> {
 >         ^^^: SetConstructor   (TyTypeReference)
+     expected: SetConstructor
 
 interface Set<T> {
 >         ^^^: any   (TyAny)
+     expected: SetConstructor
 
 interface Set<T> {
 >             ^: any   (TyAny)
@@ -489,9 +497,11 @@ interface ReadonlySet<T> {
 
 interface WeakSet<T extends WeakKey> {
 >         ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+         expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {
 >         ^^^^^^^: any   (TyAny)
+         expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {
 >                 ^: any   (TyAny)

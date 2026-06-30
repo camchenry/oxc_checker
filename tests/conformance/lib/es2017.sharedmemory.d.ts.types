@@ -1,8 +1,10 @@
 interface SharedArrayBuffer {
 >         ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+                   expected: SharedArrayBufferConstructor
 
 interface SharedArrayBuffer {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+                   expected: SharedArrayBufferConstructor
 
     readonly byteLength: number;
 >            ^^^^^^^^^^: number   (TyNumber)
@@ -78,9 +80,11 @@ interface ArrayBufferTypes {
 
 interface Atomics {
 >         ^^^^^^^: Atomics   (TyTypeReference)
+         expected: Atomics
 
 interface Atomics {
 >         ^^^^^^^: any   (TyAny)
+         expected: Atomics
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
 >   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)

@@ -30,6 +30,7 @@ promise.then(value => window.postMessage(value));
 
 promise.then(value => window.postMessage(value));
 >                            ^^^^^^^^^^^: any   (TyAny)
+                                expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
 
 promise.then(value => window.postMessage(value));
 >                                        ^^^^^: any   (TyAny)
@@ -90,9 +91,11 @@ promise.then(value => {
 
   window.postMessage(value);
 > ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                    expected: void
 
   window.postMessage(value);
 >        ^^^^^^^^^^^: any   (TyAny)
+            expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
 
   window.postMessage(value);
 >                    ^^^^^: any   (TyAny)
@@ -165,6 +168,7 @@ promise.then(value => window.postMessage(value));
 
 promise.then(value => window.postMessage(value));
 >                            ^^^^^^^^^^^: any   (TyAny)
+                                expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
 
 promise.then(value => window.postMessage(value));
 >                                        ^^^^^: any   (TyAny)
@@ -183,6 +187,7 @@ promise.then(value => void window.postMessage(value));
 
 promise.then(value => void window.postMessage(value));
 >                                 ^^^^^^^^^^^: any   (TyAny)
+                                     expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
 
 promise.then(value => void window.postMessage(value));
 >                                             ^^^^^: any   (TyAny)

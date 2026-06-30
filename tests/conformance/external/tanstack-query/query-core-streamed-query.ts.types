@@ -105,9 +105,11 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
 >                                           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+                                               expected: any
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
 >                                           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+                                               expected: any
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
 >                                                          ^^^^^: any   (TyAny)
@@ -141,6 +143,7 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
 >           ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+                    expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
 >                            ^^^^^^^^^^^^: any   (TyAny)
@@ -897,6 +900,7 @@ import { streamedQuery } from '../packages/query-core/src/streamedQuery'
 
   InferDataFromTag,
 > ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+          expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
   QueryFunctionContext,
 > ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
@@ -930,12 +934,15 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >    ^^^^^^^^^^^^^^: (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string   (TyConditional)
+           expected: Todo[]
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+                              expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional)
+                              expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
 >                                              ^^^^^^^^^^^^: any   (TyAny)
@@ -951,6 +958,7 @@ declare const todoStream: AsyncIterable<Todo>
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
 >             ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
+             expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
 >                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional)
@@ -963,6 +971,7 @@ const pageParam = context.pageParam
 
 const pageParam = context.pageParam
 >                 ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
+                 expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
 
 const pageParam = context.pageParam
 >                         ^^^^^^^^^: number   (TyNumber)
@@ -990,15 +999,18 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 
   reducer: (data, todo) => ({
 > ^^^^^^^: (data: InfiniteData<Todo, number>, todo: { id: number; title: string; }) => { pages: (Todo | { id: number; title: string; })[]; pageParams: number[]; }   (TyFunction)
+ expected: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }
 
   reducer: (data, todo) => ({
 >           ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
 
   reducer: (data, todo) => ({
 >                 ^^^^: { id: number; title: string; }   (TyObject)
+              expected: Todo
 
     pages: [...data.pages, todo],
 >   ^^^^^: (Todo | { id: number; title: string; })[]   (TyArray)
+ expected: Todo[]
 
     pages: [...data.pages, todo],
 >              ^^^^: InfiniteData<Todo, number>   (TyTypeReference)
@@ -1008,6 +1020,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 
     pages: [...data.pages, todo],
 >                          ^^^^: { id: number; title: string; }   (TyObject)
+                       expected: Todo
 
     pageParams: [...data.pageParams, pageParam],
 >   ^^^^^^^^^^: number[]   (TyArray)
@@ -1032,9 +1045,11 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 
   refetchMode: 'append',
 > ^^^^^^^^^^^: string   (TyString)
+     expected: "append"
 
 const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
 >     ^^^^^^^^^^: TaggedTodoData   (TyTypeReference)
+        expected: Todo[]
 
 const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
 >                 ^^^^^^^^^^^^^^: any   (TyAny)
@@ -1053,3 +1068,4 @@ const queryResult = queryFn(context)
 
 const queryResult = queryFn(context)
 >                           ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference)
+                           expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }

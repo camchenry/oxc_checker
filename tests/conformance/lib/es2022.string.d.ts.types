@@ -1,8 +1,10 @@
 interface String {
 >         ^^^^^^: any   (TyAny)
+        expected: StringConstructor
 
     at(index: number): string | undefined;
 >   ^^: (index: number) => string | undefined   (TyFunction)
+expected: { (index: number): string | undefined; (index: number): string | undefined; }
 
     at(index: number): string | undefined;
 >      ^^^^^: number   (TyNumber)

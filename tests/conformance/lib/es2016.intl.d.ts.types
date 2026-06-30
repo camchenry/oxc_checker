@@ -3,6 +3,7 @@ declare namespace Intl {
 
     function getCanonicalLocales(locale?: string | readonly string[]): string[];
 >            ^^^^^^^^^^^^^^^^^^^: (locale?: string | readonly string[]) => string[]   (TyFunction)
+                        expected: { (locale?: string | readonly string[]): string[]; (locale?: string | readonly string[]): string[]; }
 
     function getCanonicalLocales(locale?: string | readonly string[]): string[];
 >                                ^^^^^^: string | readonly string[] | undefined   (TyUnion)

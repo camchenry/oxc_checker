@@ -1,5 +1,6 @@
 interface Array<T> {
 >         ^^^^^: any   (TyAny)
+       expected: ArrayConstructor
 
 interface Array<T> {
 >               ^: any   (TyAny)
@@ -231,12 +232,14 @@ interface DateConstructor {
 
 interface Function {
 >         ^^^^^^^^: any   (TyAny)
+          expected: FunctionConstructor
 
     readonly name: string;
 >            ^^^^: string   (TyString)
 
 interface Math {
 >         ^^^^: any   (TyAny)
+      expected: Math
 
     clz32(x: number): number;
 >   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
@@ -666,6 +669,7 @@ interface ReadonlyArray<T> {
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny)
+        expected: RegExpConstructor
 
     readonly flags: string;
 >            ^^^^^: string   (TyString)
@@ -684,27 +688,32 @@ interface RegExpConstructor {
 
     new (pattern: RegExp | string, flags?: string): RegExp;
 >                 ^^^^^^: any   (TyAny)
+                expected: RegExpConstructor
 
     new (pattern: RegExp | string, flags?: string): RegExp;
 >                                  ^^^^^: string | undefined   (TyUnion)
 
     new (pattern: RegExp | string, flags?: string): RegExp;
 >                                                   ^^^^^^: any   (TyAny)
+                                                  expected: RegExpConstructor
 
     (pattern: RegExp | string, flags?: string): RegExp;
 >    ^^^^^^^: RegExp | string   (TyUnion)
 
     (pattern: RegExp | string, flags?: string): RegExp;
 >             ^^^^^^: any   (TyAny)
+            expected: RegExpConstructor
 
     (pattern: RegExp | string, flags?: string): RegExp;
 >                              ^^^^^: string | undefined   (TyUnion)
 
     (pattern: RegExp | string, flags?: string): RegExp;
 >                                               ^^^^^^: any   (TyAny)
+                                              expected: RegExpConstructor
 
 interface String {
 >         ^^^^^^: any   (TyAny)
+        expected: StringConstructor
 
     codePointAt(pos: number): number | undefined;
 >   ^^^^^^^^^^^: { (pos: number): number | undefined; (pos: number): number | undefined; }   (TyObject)
@@ -840,6 +849,7 @@ interface StringConstructor {
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^: any   (TyAny)
+           expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                   ^^^^^^^^^^^^: any   (TyAny)
@@ -861,6 +871,7 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -882,6 +893,7 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+                   expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                           ^^^^^^^^^^^^: any   (TyAny)
@@ -903,6 +915,7 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -924,6 +937,7 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny)
@@ -945,6 +959,7 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -966,6 +981,7 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny)
@@ -987,6 +1003,7 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
+              expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny)
@@ -1008,6 +1025,7 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
+              expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny)

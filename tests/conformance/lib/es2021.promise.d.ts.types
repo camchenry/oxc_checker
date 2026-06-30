@@ -1,14 +1,18 @@
 interface AggregateError extends Error {
 >         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference)
+                expected: AggregateErrorConstructor
 
 interface AggregateError extends Error {
 >         ^^^^^^^^^^^^^^: any   (TyAny)
+                expected: AggregateErrorConstructor
 
 interface AggregateError extends Error {
 >                                ^^^^^: ErrorConstructor   (TyTypeReference)
+                              expected: ErrorConstructor
 
 interface AggregateError extends Error {
 >                                ^^^^^: any   (TyAny)
+                              expected: ErrorConstructor
 
     errors: any[];
 >   ^^^^^^: any[]   (TyArray)
@@ -66,6 +70,7 @@ interface PromiseConstructor {
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject)
+expected: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >       ^: any   (TyAny)
@@ -90,6 +95,7 @@ interface PromiseConstructor {
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject)
+expected: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >       ^: any   (TyAny)

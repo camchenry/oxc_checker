@@ -51,6 +51,7 @@ const user: User = {
 
   id: "user_Alice",
 > ^^: string   (TyString)
+expected: "user_Alice"
 
   address: {
 > ^^^^^^^: { city: string; zip: number; }   (TyObject)
@@ -72,12 +73,15 @@ const user: User = {
 
     return `${message}, ${this.name}`;
 >                              ^^^^: any   (TyAny)
+                           expected: string
 
   preferences: {
 > ^^^^^^^^^^^: { theme: string; }   (TyObject)
+     expected: { theme: "dark"; }
 
     theme: "dark",
 >   ^^^^^: string   (TyString)
+ expected: "dark"
 
 const userName = user.name;
 >     ^^^^^^^^: string   (TyString)
@@ -135,6 +139,7 @@ const userZip = user["address"].zip;
 
 const userZip = user["address"].zip;
 >                               ^^^: any   (TyAny)
+                           expected: number
 
 const userGreeting = user.greet("hello");
 >     ^^^^^^^^^^^^: string   (TyString)
@@ -207,6 +212,7 @@ const literalKeyValue = user[literalKey];
 
 const unionKeyValue = user[unionKey];
 >     ^^^^^^^^^^^^^: any   (TyAny)
+           expected: string
 
 const unionKeyValue = user[unionKey];
 >                     ^^^^: User   (TyTypeReference)
@@ -270,6 +276,7 @@ const dictionaryExtraDot = dictionary.extra;
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
 >     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+               expected: number
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
 >                         ^^^^^^^^^^: StringDictionary   (TyTypeReference)
@@ -303,24 +310,28 @@ const numericDictionary: NumericDictionary = {
 
 const numericZeroDot = numericDictionary[0];
 >     ^^^^^^^^^^^^^^: any   (TyAny)
+            expected: "zero"
 
 const numericZeroDot = numericDictionary[0];
 >                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
 
 const numericOneBracket = numericDictionary[1];
 >     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+               expected: "one" | undefined
 
 const numericOneBracket = numericDictionary[1];
 >                         ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
 
 const numericDynamic = numericDictionary[42];
 >     ^^^^^^^^^^^^^^: any   (TyAny)
+            expected: "zero" | "one" | "many" | undefined
 
 const numericDynamic = numericDictionary[42];
 >                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+   expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >              ^^^^: User   (TyTypeReference)
@@ -330,9 +341,11 @@ const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >                               ^^^^: string   (TyString)
+                            expected: "Bob"
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >                                            ^^: string   (TyString)
+                                       expected: "user_Bob"
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >                                                                 ^^^^^: any   (TyAny)
@@ -342,39 +355,49 @@ const firstUser = users[0];
 
 const firstUser = users[0];
 >                 ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+               expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const firstUserName = users[0].name;
 >     ^^^^^^^^^^^^^: string   (TyString)
 
 const firstUserName = users[0].name;
 >                     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+                   expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const firstUserName = users[0].name;
 >                              ^^^^: string   (TyString)
 
 const usersLength = users.length;
 >     ^^^^^^^^^^^: any   (TyAny)
+         expected: 2
 
 const usersLength = users.length;
 >                   ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+                 expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const usersLength = users.length;
 >                         ^^^^^^: any   (TyAny)
+                        expected: 2
 
 const arrayMapMethod = users.map;
 >     ^^^^^^^^^^^^^^: any   (TyAny)
+            expected: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
 
 const arrayMapMethod = users.map;
 >                      ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+                    expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const arrayMapMethod = users.map;
 >                            ^^^: any   (TyAny)
+                        expected: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
 
 const tuple = ["ready", 200, { ok: true }] as const;
 >     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+   expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tuple = ["ready", 200, { ok: true }] as const;
 >                              ^^: boolean   (TyBoolean)
+                         expected: true
 
 const tuple = ["ready", 200, { ok: true }] as const;
 >                                             ^^^^^: any   (TyAny)
@@ -384,30 +407,38 @@ const tupleStatus = tuple[0];
 
 const tupleStatus = tuple[0];
 >                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+                 expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleCode = tuple[1];
 >     ^^^^^^^^^: 200   (TyNumberLiteral)
 
 const tupleCode = tuple[1];
 >                 ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+               expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleObjectOk = tuple[2].ok;
 >     ^^^^^^^^^^^^^: boolean   (TyBoolean)
+           expected: true
 
 const tupleObjectOk = tuple[2].ok;
 >                     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+                   expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleObjectOk = tuple[2].ok;
 >                              ^^: boolean   (TyBoolean)
+                         expected: true
 
 const tupleLength = tuple.length;
 >     ^^^^^^^^^^^: any   (TyAny)
+         expected: 3
 
 const tupleLength = tuple.length;
 >                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+                 expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleLength = tuple.length;
 >                         ^^^^^^: any   (TyAny)
+                        expected: 3
 
 const matrix = [[1, 2], [3, 4]] as const;
 >     ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple)
@@ -459,12 +490,14 @@ const callableDescription = callableWithProperty.description;
 
 const callableApply = callableWithProperty.apply;
 >     ^^^^^^^^^^^^^: any   (TyAny)
+           expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
 
 const callableApply = callableWithProperty.apply;
 >                     ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
 
 const callableApply = callableWithProperty.apply;
 >                                          ^^^^^: any   (TyAny)
+                                        expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
 
 class Counter {
 >     ^^^^^^^: typeof Counter   (TyTypeQuery)
@@ -486,18 +519,23 @@ class Counter {
 
   increment() {
 > ^^^^^^^^^: () => any   (TyFunction)
+   expected: () => number
 
     this.value += 1;
 >   ^^^^^^^^^^^^^^^^: any   (TyAny)
+            expected: number
 
     this.value += 1;
 >        ^^^^^: any   (TyAny)
+      expected: number
 
     return this.value;
 >               ^^^^^: any   (TyAny)
+             expected: number
 
   readSecret() {
 > ^^^^^^^^^^: () => any   (TyFunction)
+    expected: () => number
 
 const counter = new Counter(1);
 >     ^^^^^^^: Counter   (TyTypeReference)
@@ -507,39 +545,47 @@ const counter = new Counter(1);
 
 const counterValue = counter.value;
 >     ^^^^^^^^^^^^: any   (TyAny)
+          expected: number
 
 const counterValue = counter.value;
 >                    ^^^^^^^: Counter   (TyTypeReference)
 
 const counterValue = counter.value;
 >                            ^^^^^: any   (TyAny)
+                          expected: number
 
 const counterIncrement = counter.increment;
 >     ^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+              expected: () => number
 
 const counterIncrement = counter.increment;
 >                        ^^^^^^^: Counter   (TyTypeReference)
 
 const counterIncrement = counter.increment;
 >                                ^^^^^^^^^: () => any   (TyFunction)
+                                  expected: () => number
 
 const counterIncrementResult = counter.increment();
 >     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                    expected: number
 
 const counterIncrementResult = counter.increment();
 >                              ^^^^^^^: Counter   (TyTypeReference)
 
 const counterIncrementResult = counter.increment();
 >                                      ^^^^^^^^^: () => any   (TyFunction)
+                                        expected: () => number
 
 const counterSecret = counter.readSecret();
 >     ^^^^^^^^^^^^^: any   (TyAny)
+           expected: number
 
 const counterSecret = counter.readSecret();
 >                     ^^^^^^^: Counter   (TyTypeReference)
 
 const counterSecret = counter.readSecret();
 >                             ^^^^^^^^^^: () => any   (TyFunction)
+                                expected: () => number
 
 const counterStaticLabel = Counter.label;
 >     ^^^^^^^^^^^^^^^^^^: string   (TyString)
@@ -576,9 +622,11 @@ class DerivedCounter extends Counter {
 
   readSuperIncrement() {
 > ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+            expected: () => number
 
     return super.increment();
 >                ^^^^^^^^^: any   (TyAny)
+                  expected: () => number
 
 const derived = new DerivedCounter(5);
 >     ^^^^^^^: DerivedCounter   (TyTypeReference)
@@ -588,12 +636,14 @@ const derived = new DerivedCounter(5);
 
 const derivedSuperResult = derived.readSuperIncrement();
 >     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                expected: number
 
 const derivedSuperResult = derived.readSuperIncrement();
 >                          ^^^^^^^: DerivedCounter   (TyTypeReference)
 
 const derivedSuperResult = derived.readSuperIncrement();
 >                                  ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+                                             expected: () => number
 
 const uniqueKey: unique symbol = Symbol("uniqueKey");
 >     ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
@@ -603,6 +653,7 @@ const uniqueKey: unique symbol = Symbol("uniqueKey");
 
 type SymbolObject = {
 >    ^^^^^^^^^^^^: { [uniqueKey]: number; regular: string; }   (TyObject)
+         expected: { regular: string; [uniqueKey]: number; }
 
   [uniqueKey]: number;
 >  ^^^^^^^^^: number   (TyNumber)
@@ -630,6 +681,7 @@ const symbolObject: SymbolObject = {
 
 const symbolValue = symbolObject[uniqueKey];
 >     ^^^^^^^^^^^: any   (TyAny)
+         expected: number
 
 const symbolValue = symbolObject[uniqueKey];
 >                   ^^^^^^^^^^^^: SymbolObject   (TyTypeReference)
@@ -648,6 +700,7 @@ const symbolRegular = symbolObject.regular;
 
 type Hyphenated = {
 >    ^^^^^^^^^^: { data-id: string; aria-label?: string; }   (TyObject)
+       expected: { "data-id": string; "aria-label"?: string; }
 
   "data-id": string;
 > ^^^^^^^^^: string   (TyString)
@@ -705,30 +758,36 @@ declare const unionMember: UnionMember;
 
 const unionKind = unionMember.kind;
 >     ^^^^^^^^^: any   (TyAny)
+       expected: "text" | "count"
 
 const unionKind = unionMember.kind;
 >                 ^^^^^^^^^^^: UnionMember   (TyTypeReference)
 
 const unionKind = unionMember.kind;
 >                             ^^^^: any   (TyAny)
+                          expected: "text" | "count"
 
 const unionValue = unionMember.value;
 >     ^^^^^^^^^^: any   (TyAny)
+        expected: string | number
 
 const unionValue = unionMember.value;
 >                  ^^^^^^^^^^^: UnionMember   (TyTypeReference)
 
 const unionValue = unionMember.value;
 >                              ^^^^^: any   (TyAny)
+                            expected: string | number
 
 const unionCommon = unionMember.common;
 >     ^^^^^^^^^^^: any   (TyAny)
+         expected: boolean
 
 const unionCommon = unionMember.common;
 >                   ^^^^^^^^^^^: UnionMember   (TyTypeReference)
 
 const unionCommon = unionMember.common;
 >                               ^^^^^^: any   (TyAny)
+                              expected: boolean
 
 type IntersectionMember = { left: string } & { right: number };
 >    ^^^^^^^^^^^^^^^^^^: { left: string; } & { right: number; }   (TyIntersection)

@@ -1,5 +1,6 @@
 interface Symbol {
 >         ^^^^^^: any   (TyAny)
+        expected: SymbolConstructor
 
     readonly description: string | undefined;
 >            ^^^^^^^^^^^: string | undefined   (TyUnion)

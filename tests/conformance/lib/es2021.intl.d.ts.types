@@ -36,9 +36,11 @@ declare namespace Intl {
 
     interface DateTimeFormat {
 >             ^^^^^^^^^^^^^^: any   (TyAny)
+                    expected: DateTimeFormatConstructor
 
         formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
 >       ^^^^^^^^^^^: (startDate: Date | number | bigint, endDate: Date | number | bigint) => string   (TyFunction)
+           expected: { (startDate: Date | number | bigint, endDate: Date | number | bigint): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; (startDate: Date | number | bigint, endDate: Date | number | bigint): string; }
 
         formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
 >                   ^^^^^^^^^: Date | number | bigint   (TyUnion)
@@ -60,6 +62,7 @@ declare namespace Intl {
 
         formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
 >       ^^^^^^^^^^^^^^^^^^: (startDate: Date | number | bigint, endDate: Date | number | bigint) => DateTimeRangeFormatPart[]   (TyFunction)
+                  expected: { (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; }
 
         formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
 >                          ^^^^^^^^^: Date | number | bigint   (TyUnion)
@@ -201,6 +204,7 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion)
+            expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
 >                      ^^^^^^^^^^^^^^^: any   (TyAny)

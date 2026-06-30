@@ -57,6 +57,7 @@ async function syncIterableOfPromises() {
 
   const arrayOfPromises = [
 >       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+               expected: Promise<number>[]
 
     Promise.resolve(1),
 >   ^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -81,6 +82,7 @@ async function syncIterableOfPromises() {
 
   for await (const promisedValue of arrayOfPromises) {
 >                                   ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+                                           expected: Promise<number>[]
 
     console.log(promisedValue);
 >   ^^^^^^^: Console   (TyTypeReference)
@@ -123,6 +125,7 @@ async function syncIterableOfPromises() {
 
   const arrayOfPromises = [
 >       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+               expected: Promise<number>[]
 
     Promise.resolve(1),
 >   ^^^^^^^: PromiseConstructor   (TyTypeReference)
@@ -153,6 +156,7 @@ async function syncIterableOfPromises() {
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
 >                                               ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+                                                       expected: Promise<number>[]
 
     console.log(promisedValue);
 >   ^^^^^^^: Console   (TyTypeReference)
@@ -195,6 +199,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
 >                  ^^^^^^^^^^^^^: any   (TyAny)
+                        expected: 1 | 2
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
 >                                   ^^^^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (TyFunction)
@@ -210,6 +215,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 
     console.log(promisedValue);
 >               ^^^^^^^^^^^^^: any   (TyAny)
+                     expected: 1 | 2
 
 function makeSyncDisposable(): Disposable {
 >        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
@@ -222,6 +228,7 @@ function makeSyncDisposable(): Disposable {
 
     [Symbol.dispose](): void {
 >           ^^^^^^^: any   (TyAny)
+           expected: unique symbol
 
 async function shouldNotAwait() {
 >              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
@@ -243,6 +250,7 @@ function makeSyncDisposable(): Disposable {
 
     [Symbol.dispose](): void {
 >           ^^^^^^^: any   (TyAny)
+           expected: unique symbol
 
 async function shouldNotAwait() {
 >              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
@@ -264,6 +272,7 @@ function makeAsyncDisposable(): AsyncDisposable {
 
     async [Symbol.asyncDispose](): Promise<void> {
 >                 ^^^^^^^^^^^^: any   (TyAny)
+                      expected: unique symbol
 
     async [Symbol.asyncDispose](): Promise<void> {
 >                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)

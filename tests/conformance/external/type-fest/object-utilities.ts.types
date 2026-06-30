@@ -402,6 +402,7 @@ type User = {
 
 type PublicUser = Except<User, 'email'>
 >    ^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject)
+       expected: { id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }
 
 type PublicUser = Except<User, 'email'>
 >                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
@@ -414,6 +415,7 @@ type PublicUser = Except<User, 'email'>
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >    ^^^^^^^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject)
+             expected: { id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; } & Partial<Record<"email", never>>
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection)
@@ -429,6 +431,7 @@ type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
 >    ^^^^^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; }   (TyMapped)
+            expected: { id: string; profile: { avatarUrl?: string; flags: string[]; }; email: string; name: string; }
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
 >                      ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped)
@@ -441,6 +444,7 @@ type ContactableUser = SetRequired<User, 'name' | 'email'>
 
 type UserPreview = Simplify<
 >    ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; } as Filter<KeyType, "profile">]: { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; }[KeyType]; } & { displayName: string; })]: ({ [KeyType in keyof { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; } as Filter<KeyType, "profile">]: { [KeyType in keyof ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)]: ({ [KeyType in keyof { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; } as Filter<KeyType, "name" | "email">]: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }[KeyType]; } & Required<HomomorphicPick<{ id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }, "name" | "email">>)[KeyType]; }[KeyType]; } & { displayName: string; })[KeyType]; }   (TyMapped)
+        expected: { id: string; email: string; name: string; displayName: string; }
 
 type UserPreview = Simplify<
 >                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped)
@@ -495,6 +499,7 @@ type Event = CreatedEvent | DeletedEvent
 
 type EventKey = KeysOfUnion<Event>
 >    ^^^^^^^^: keyof (((({ type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) extends unknown ? (distributedUnion: { type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) => void : never) | ((distributedUnion: Record<keyof { type: "deleted"; id: string; actor?: string; }, never>) => void)) extends (mergedIntersection: infer Intersection) => void ? Intersection & (({ type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) | Record<keyof { type: "deleted"; id: string; actor?: string; }, never>) : never)   (TyKeyof)
+     expected: "id" | "type" | "user" | "actor"
 
 type EventKey = KeysOfUnion<Event>
 >               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof)
@@ -507,6 +512,7 @@ type EventKey = KeysOfUnion<Event>
 
 const publicUser: PublicUser = {
 >     ^^^^^^^^^^: PublicUser   (TyTypeReference)
+        expected: { id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }
 
 const publicUser: PublicUser = {
 >                 ^^^^^^^^^^: any   (TyAny)
@@ -543,6 +549,7 @@ const strictPublicUser: StrictPublicUser = {
 
 const contactableUser: ContactableUser = {
 >     ^^^^^^^^^^^^^^^: ContactableUser   (TyTypeReference)
+             expected: { id: string; profile: { avatarUrl?: string; flags: string[]; }; email: string; name: string; }
 
 const contactableUser: ContactableUser = {
 >                      ^^^^^^^^^^^^^^^: any   (TyAny)
@@ -564,6 +571,7 @@ const contactableUser: ContactableUser = {
 
 const userPreview: UserPreview = {
 >     ^^^^^^^^^^^: UserPreview   (TyTypeReference)
+         expected: { id: string; email: string; name: string; displayName: string; }
 
 const userPreview: UserPreview = {
 >                  ^^^^^^^^^^^: any   (TyAny)
@@ -582,15 +590,18 @@ const userPreview: UserPreview = {
 
 const eventKey: EventKey = 'actor'
 >     ^^^^^^^^: EventKey   (TyTypeReference)
+      expected: "id" | "type" | "user" | "actor"
 
 const eventKey: EventKey = 'actor'
 >               ^^^^^^^^: any   (TyAny)
 
 const omittedEmail = strictPublicUser.email
 >     ^^^^^^^^^^^^: any   (TyAny)
+          expected: undefined
 
 const omittedEmail = strictPublicUser.email
 >                    ^^^^^^^^^^^^^^^^: StrictPublicUser   (TyTypeReference)
 
 const omittedEmail = strictPublicUser.email
 >                                     ^^^^^: any   (TyAny)
+                                   expected: undefined

@@ -48,9 +48,11 @@ interface BigIntToLocaleStringOptions {
 
 interface BigInt {
 >         ^^^^^^: BigIntConstructor   (TyTypeReference)
+        expected: BigIntConstructor
 
 interface BigInt {
 >         ^^^^^^: any   (TyAny)
+        expected: BigIntConstructor
 
     toString(radix?: number): string;
 >   ^^^^^^^^: { (radix?: number): string; (radix?: number): string; }   (TyObject)
@@ -63,6 +65,7 @@ interface BigInt {
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
 >                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+                  expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
 >                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -123,9 +126,11 @@ declare var BigInt: BigIntConstructor;
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference)
+               expected: BigInt64ArrayConstructor
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^: any   (TyAny)
+               expected: BigInt64ArrayConstructor
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                       ^^^^^^^^^^^^: any   (TyAny)
@@ -987,9 +992,11 @@ declare var BigInt64Array: BigInt64ArrayConstructor;
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference)
+                expected: BigUint64ArrayConstructor
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^: any   (TyAny)
+                expected: BigUint64ArrayConstructor
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                        ^^^^^^^^^^^^: any   (TyAny)
@@ -1851,6 +1858,7 @@ declare var BigUint64Array: BigUint64ArrayConstructor;
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^: any   (TyAny)
+          expected: DataViewConstructor
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >                  ^^^^^^^^^^^^: any   (TyAny)
@@ -1905,9 +1913,11 @@ declare namespace Intl {
 
     interface NumberFormat {
 >             ^^^^^^^^^^^^: any   (TyAny)
+                  expected: NumberFormatConstructor
 
         format(value: number | bigint): string;
 >       ^^^^^^: (value: number | bigint) => string   (TyFunction)
+      expected: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number | bigint): string; }
 
         format(value: number | bigint): string;
 >              ^^^^^: number | bigint   (TyUnion)

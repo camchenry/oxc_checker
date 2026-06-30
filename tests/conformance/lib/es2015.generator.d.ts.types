@@ -27,6 +27,7 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
 >            ^^^^^: any   (TyAny)
+          expected: TNext | undefined
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
 >                          ^^^^^: any   (TyAny)
@@ -114,6 +115,7 @@ interface GeneratorFunction {
 
     readonly prototype: Generator;
 >            ^^^^^^^^^: Generator   (TyTypeReference)
+              expected: Generator<unknown, any, any>
 
     readonly prototype: Generator;
 >                       ^^^^^^^^^: any   (TyAny)

@@ -33,6 +33,7 @@ class C<T = number> {}
 
 new C<number>();
 >^^^^^^^^^^^^^^^^: C   (TyTypeReference)
+         expected: C<number>
 
 new C<number>();
 >   ^: typeof C   (TyTypeQuery)
@@ -102,12 +103,14 @@ class C<T = number> {}
 
 new C();
 >^^^^^^^^: C   (TyTypeReference)
+ expected: C<number>
 
 new C();
 >   ^: typeof C   (TyTypeQuery)
 
 new C<string>();
 >^^^^^^^^^^^^^^^^: C   (TyTypeReference)
+         expected: C<string>
 
 new C<string>();
 >   ^: typeof C   (TyTypeQuery)
@@ -120,6 +123,7 @@ class D extends C {}
 
 class D extends C<string> {}
 >     ^: typeof D   (TyTypeQuery)
+expected: { new <string>(): {}; }
 
 class D extends C<string> {}
 >               ^: typeof C   (TyTypeQuery)

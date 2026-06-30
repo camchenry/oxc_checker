@@ -216,6 +216,7 @@ export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
 
     ? data.map((value, index) => callbackfn(value, index, data))
 >                                                         ^^^^: unknown   (TyUnknown)
+                                                      expected: any[]
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >     ^^^^^^: ObjectConstructor   (TyTypeReference)
@@ -345,6 +346,7 @@ export function filter(data: readonly unknown[], predicate: Pred<any>): unknown[
 
   return data.filter((value, index) => predicate(value, index, data))
 >             ^^^^^^: { <S extends unknown>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }   (TyObject)
+            expected: { <S>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }
 
   return data.filter((value, index) => predicate(value, index, data))
 >                     ^^^^^: unknown   (TyUnknown)
@@ -447,6 +449,7 @@ export function groupBy<T, Key extends PropertyKey>(
 
     const value = data[index]
 >         ^^^^^: any   (TyAny)
+       expected: T
 
     const value = data[index]
 >                 ^^^^: readonly T[]   (TyArray)
@@ -462,6 +465,7 @@ export function groupBy<T, Key extends PropertyKey>(
 
     const key = callbackfn(value, index, data)
 >                          ^^^^^: any   (TyAny)
+                        expected: T
 
     const key = callbackfn(value, index, data)
 >                                 ^^^^^: number   (TyNumber)
@@ -471,6 +475,7 @@ export function groupBy<T, Key extends PropertyKey>(
 
     ;(out[key] ??= []).push(value)
 >    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                          expected: number
 
     ;(out[key] ??= []).push(value)
 >     ^^^: Partial<Record<Key, T[]>>   (TyTypeReference)
@@ -480,9 +485,11 @@ export function groupBy<T, Key extends PropertyKey>(
 
     ;(out[key] ??= []).push(value)
 >                      ^^^^: any   (TyAny)
+                   expected: (...items: T[]) => number
 
     ;(out[key] ??= []).push(value)
 >                           ^^^^^: any   (TyAny)
+                         expected: T
 
   return out
 >        ^^^: Partial<Record<Key, T[]>>   (TyTypeReference)
@@ -552,6 +559,7 @@ export function pick<T extends object, Keys extends keyof T>(
 
   for (const key of keys) {
 >            ^^^: any   (TyAny)
+        expected: Keys
 
   for (const key of keys) {
 >                   ^^^^: NonEmptyArray<Keys>   (TyTypeReference)
@@ -561,15 +569,18 @@ export function pick<T extends object, Keys extends keyof T>(
 
     out[key] = data[key]
 >   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+                expected: T[Keys]
 
     out[key] = data[key]
 >       ^^^: any   (TyAny)
+   expected: Keys
 
     out[key] = data[key]
 >              ^^^^: T   (TyTypeReference)
 
     out[key] = data[key]
 >                   ^^^: any   (TyAny)
+               expected: Keys
 
   return out
 >        ^^^: Pick<T, Keys>   (TyTypeReference)
@@ -750,6 +761,7 @@ export function pipe(value: unknown, ...operations: Array<(input: any) => any>):
 
   return operations.reduce((current, operation) => operation(current), value)
 >                           ^^^^^^^: (input: any) => any   (TyFunction)
+                           expected: unknown
 
   return operations.reduce((current, operation) => operation(current), value)
 >                                    ^^^^^^^^^: (input: any) => any   (TyFunction)
@@ -759,6 +771,7 @@ export function pipe(value: unknown, ...operations: Array<(input: any) => any>):
 
   return operations.reduce((current, operation) => operation(current), value)
 >                                                            ^^^^^^^: (input: any) => any   (TyFunction)
+                                                            expected: unknown
 
   return operations.reduce((current, operation) => operation(current), value)
 >                                                                      ^^^^^: unknown   (TyUnknown)
@@ -801,18 +814,21 @@ const tasks: Task[] = [
 
   { id: 'a', status: 'todo' },
 >            ^^^^^^: string   (TyString)
+           expected: "todo"
 
   { id: 'b', status: 'done', points: 3 },
 >   ^^: string   (TyString)
 
   { id: 'b', status: 'done', points: 3 },
 >            ^^^^^^: string   (TyString)
+           expected: "done"
 
   { id: 'b', status: 'done', points: 3 },
 >                            ^^^^^^: number   (TyNumber)
 
 const doneTasks = filter(
 >     ^^^^^^^^^: Task[]   (TyArray)
+       expected: (Task & { status: "done"; points: number; })[]
 
 const doneTasks = filter(
 >                 ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject)
@@ -822,9 +838,11 @@ const doneTasks = filter(
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
 >  ^^^^: T   (TyTypeReference)
+expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
 >         ^^^^: any   (TyAny)
+      expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
 >                 ^^^^: any   (TyAny)
@@ -837,30 +855,38 @@ const doneTasks = filter(
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
 >                                                              ^^^^: T   (TyTypeReference)
+                                                           expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
 >                                                                   ^^^^^^: any   (TyAny)
+                                                                  expected: "todo" | "done"
 
 const donePoints = map(doneTasks, task => task.points)
 >     ^^^^^^^^^^: U[]   (TyArray)
+        expected: number[]
 
 const donePoints = map(doneTasks, task => task.points)
 >                  ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
 
 const donePoints = map(doneTasks, task => task.points)
 >                      ^^^^^^^^^: Task[]   (TyArray)
+                        expected: (Task & { status: "done"; points: number; })[]
 
 const donePoints = map(doneTasks, task => task.points)
 >                                 ^^^^: T   (TyTypeReference)
+                              expected: Task & { status: "done"; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
 >                                         ^^^^: T   (TyTypeReference)
+                                      expected: Task & { status: "done"; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
 >                                              ^^^^^^: any   (TyAny)
+                                             expected: number
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >     ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference)
+          expected: Partial<Record<"todo" | "done", Task[]>>
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >                    ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction)
@@ -870,15 +896,19 @@ const groupedTasks = groupBy(tasks, task => task.status)
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >                                   ^^^^: T   (TyTypeReference)
+                                expected: Task
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >                                           ^^^^: T   (TyTypeReference)
+                                        expected: Task
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >                                                ^^^^^^: any   (TyAny)
+                                               expected: "todo" | "done"
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
 >     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference)
+         expected: { id: string; points?: number | undefined; }
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
 >                   ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction)
@@ -888,81 +918,106 @@ const taskSummary = pick(tasks[1], ['id', 'points'])
 
 const pointTotal = pipe(
 >     ^^^^^^^^^^: any   (TyAny)
+        expected: number
 
 const pointTotal = pipe(
 >                  ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
 
   doneTasks,
 > ^^^^^^^^^: Task[]   (TyArray)
+   expected: (Task & { status: "done"; points: number; })[]
 
   items => map(items, item => item.points),
 > ^^^^^: any   (TyAny)
+expected: (Task & { status: "done"; points: number; })[]
 
   items => map(items, item => item.points),
 >          ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
 
   items => map(items, item => item.points),
 >              ^^^^^: any   (TyAny)
+            expected: (Task & { status: "done"; points: number; })[]
 
   items => map(items, item => item.points),
 >                     ^^^^: T   (TyTypeReference)
+                  expected: Task & { status: "done"; points: number; }
 
   items => map(items, item => item.points),
 >                             ^^^^: T   (TyTypeReference)
+                          expected: Task & { status: "done"; points: number; }
 
   items => map(items, item => item.points),
 >                                  ^^^^^^: any   (TyAny)
+                                 expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
 > ^^^^^^: any   (TyAny)
+expected: number[]
 
   points => points.reduce((sum, point) => sum + point, 0),
 >           ^^^^^^: any   (TyAny)
+          expected: number[]
 
   points => points.reduce((sum, point) => sum + point, 0),
 >                  ^^^^^^: any   (TyAny)
+                 expected: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: number[]) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: number[]) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: number[]) => U, initialValue: U): U; }
 
   points => points.reduce((sum, point) => sum + point, 0),
 >                          ^^^: any   (TyAny)
+                      expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
 >                               ^^^^^: any   (TyAny)
+                             expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
 >                                         ^^^: any   (TyAny)
+                                     expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
 >                                               ^^^^^: any   (TyAny)
+                                             expected: number
 
 const groupedDone = groupedTasks.done
 >     ^^^^^^^^^^^: any   (TyAny)
+         expected: Task[] | undefined
 
 const groupedDone = groupedTasks.done
 >                   ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference)
+                        expected: Partial<Record<"todo" | "done", Task[]>>
 
 const groupedDone = groupedTasks.done
 >                                ^^^^: any   (TyAny)
+                             expected: Task[] | undefined
 
 const summaryId = taskSummary.id
 >     ^^^^^^^^^: any   (TyAny)
+       expected: string
 
 const summaryId = taskSummary.id
 >                 ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference)
+                     expected: { id: string; points?: number | undefined; }
 
 const summaryId = taskSummary.id
 >                             ^^: any   (TyAny)
+                        expected: string
 
 const summaryPoints = taskSummary.points
 >     ^^^^^^^^^^^^^: any   (TyAny)
+           expected: number | undefined
 
 const summaryPoints = taskSummary.points
 >                     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference)
+                         expected: { id: string; points?: number | undefined; }
 
 const summaryPoints = taskSummary.points
 >                                 ^^^^^^: any   (TyAny)
+                                expected: number | undefined
 
 const firstPoint = donePoints[0]
 >     ^^^^^^^^^^: any   (TyAny)
+        expected: number
 
 const firstPoint = donePoints[0]
 >                  ^^^^^^^^^^: U[]   (TyArray)
+                     expected: number[]

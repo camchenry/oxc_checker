@@ -18,6 +18,7 @@ function* g3() {
 
 async function* g4() {
 >               ^^: () => AsyncGenerator<string, string, unknown>   (TyFunction)
+          expected: () => AsyncGenerator<string, "bar" | undefined, unknown>
 
   if (Math.random() > 0.5) {
 >     ^^^^: Math   (TyTypeReference)
@@ -99,6 +100,7 @@ async function* g6() {
 
   } catch (e) {
 >          ^: any   (TyAny)
+    expected: unknown
 
     console.error(e)
 >   ^^^^^^^: Console   (TyTypeReference)
@@ -111,6 +113,7 @@ async function* g6() {
 
     console.error(e)
 >                 ^: any   (TyAny)
+           expected: unknown
 
   yield 3
 > ^^^^^^^: any   (TyAny)

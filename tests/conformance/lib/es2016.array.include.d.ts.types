@@ -1,5 +1,6 @@
 interface Array<T> {
 >         ^^^^^: any   (TyAny)
+       expected: ArrayConstructor
 
 interface Array<T> {
 >               ^: any   (TyAny)
@@ -36,6 +37,7 @@ interface ReadonlyArray<T> {
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^: any   (TyAny)
+           expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                   ^^^^^^^^^^^^: any   (TyAny)
@@ -54,6 +56,7 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -72,6 +75,7 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+                   expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                           ^^^^^^^^^^^^: any   (TyAny)
@@ -90,6 +94,7 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -108,6 +113,7 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny)
@@ -126,6 +132,7 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny)
+            expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny)
@@ -144,6 +151,7 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny)
+             expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny)
@@ -162,6 +170,7 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
+              expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny)
@@ -180,6 +189,7 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny)
+              expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny)

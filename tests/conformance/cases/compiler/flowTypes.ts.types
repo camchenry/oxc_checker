@@ -216,3 +216,4 @@ if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAc
 
   console.log(maybeAction.type);
 >                         ^^^^: any   (TyAny)
+                      expected: unknown

@@ -9,6 +9,7 @@ declare const promise: Promise<number>;
 
 const spreadPromise = { ...promise };
 >     ^^^^^^^^^^^^^: {}   (TyObject)
+           expected: { then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; finally(onfinally?: (() => void) | null | undefined): Promise<number>; [Symbol.toStringTag]: string; }
 
 const spreadPromise = { ...promise };
 >                          ^^^^^^^: Promise<number>   (TyTypeReference)
@@ -36,6 +37,7 @@ declare const map: Map<string, number>;
 
 const mapSpread = { ...map };
 >     ^^^^^^^^^: {}   (TyObject)
+       expected: { clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; [Symbol.iterator](): MapIterator<[string, number]>; [Symbol.toStringTag]: string; }
 
 const mapSpread = { ...map };
 >                      ^^^: Map<string, number>   (TyTypeReference)
@@ -45,6 +47,7 @@ declare const userName: string;
 
 const characters = [...userName];
 >     ^^^^^^^^^^: any[]   (TyArray)
+        expected: string[]
 
 const characters = [...userName];
 >                      ^^^^^^^^: string   (TyString)
@@ -72,6 +75,7 @@ declare const instance: Box;
 
 const instanceSpread = { ...instance };
 >     ^^^^^^^^^^^^^^: {}   (TyObject)
+            expected: { value: number; }
 
 const instanceSpread = { ...instance };
 >                           ^^^^^^^^: Box   (TyTypeReference)
@@ -87,6 +91,7 @@ declare const promise: Promise<number>;
 
 const spreadPromise = { ...(await promise) };
 >     ^^^^^^^^^^^^^: {}   (TyObject)
+           expected: any
 
 const spreadPromise = { ...(await promise) };
 >                                 ^^^^^^^: Promise<number>   (TyTypeReference)
@@ -99,6 +104,7 @@ declare function getObject(): Record<string, string>;
 
 const getObjectSpread = { ...getObject() };
 >     ^^^^^^^^^^^^^^^: {}   (TyObject)
+             expected: { [x: string]: string; }
 
 const getObjectSpread = { ...getObject() };
 >                            ^^^^^^^^^: () => Record<string, string>   (TyFunction)
@@ -114,6 +120,7 @@ declare const map: Map<string, number>;
 
 const mapObject = Object.fromEntries(map);
 >     ^^^^^^^^^: { [k: string]: any; }   (TyObject)
+       expected: { [k: string]: number; }
 
 const mapObject = Object.fromEntries(map);
 >                 ^^^^^^: ObjectConstructor   (TyTypeReference)
@@ -135,3 +142,4 @@ const characters = userName.split('');
 
 const characters = userName.split('');
 >                           ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; }   (TyObject)
+                         expected: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }

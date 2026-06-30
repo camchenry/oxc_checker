@@ -921,9 +921,8 @@ fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
     ensure_cases_root(suite, &cases_root)?;
 
     let oxc_records = collect_oxc_records(suite, &cases_root);
-    write_type_outputs(suite, &cases_root, &oxc_records);
-
     let tsc_records = read_records(&tsc_types_path)?;
+    write_type_outputs(suite, &cases_root, &oxc_records, &tsc_records);
     let results = compare_records(&tsc_records, &oxc_records);
     let stats = ComparisonStats::from_results(&results);
     write_snapshot(&snapshot_path, suite, &stats, &results);
@@ -2284,11 +2283,17 @@ fn parse_records(text: &str, source: &str) -> ConformanceResult<Vec<TypeRecord>>
         .collect()
 }
 
-fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[TypeRecord]) {
+fn write_type_outputs(
+    suite: &ConformanceSuite,
+    cases_root: &Path,
+    records: &[TypeRecord],
+    expected_records: &[TypeRecord],
+) {
     if !suite.write_type_outputs {
         return;
     }
 
+    let mismatches_by_path = type_output_mismatches(expected_records, records);
     let mut records_by_path = BTreeMap::new();
     for record in records {
         records_by_path
@@ -2319,6 +2324,7 @@ fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[Ty
                 &mut output,
                 &source_file.source_text,
                 source_records,
+                mismatches_by_path.get(record_path.as_str()),
             );
         }
 
@@ -2338,6 +2344,34 @@ fn write_type_outputs(suite: &ConformanceSuite, cases_root: &Path, records: &[Ty
             )
         });
     }
+}
+
+fn type_output_mismatches(
+    expected_records: &[TypeRecord],
+    records: &[TypeRecord],
+) -> BTreeMap<String, TypeRecordMap> {
+    let expected_by_file = records_by_file(expected_records);
+    let records_by_file = records_by_file(records);
+    let mut mismatches = BTreeMap::new();
+
+    for (path, expected_by_key) in expected_by_file {
+        let Some(records_by_key) = records_by_file.get(&path) else {
+            continue;
+        };
+
+        for (key, expected_type) in expected_by_key {
+            if let Some(actual_type) = records_by_key.get(&key)
+                && !type_reprs_are_equivalent(&expected_type, actual_type)
+            {
+                mismatches
+                    .entry(path.clone())
+                    .or_insert_with(TypeRecordMap::new)
+                    .insert(key, expected_type);
+            }
+        }
+    }
+
+    mismatches
 }
 
 fn type_output_path(suite: &ConformanceSuite, cases_root: &Path, path: &Path) -> PathBuf {
@@ -2363,6 +2397,7 @@ fn write_type_output_for_source_file(
     output: &mut String,
     source_text: &str,
     records: &[&TypeRecord],
+    mismatches: Option<&TypeRecordMap>,
 ) {
     let line_starts = line_starts_for_text(source_text);
     for record in records {
@@ -2393,6 +2428,18 @@ fn write_type_output_for_source_file(
             output.push(')');
         }
         output.push('\n');
+
+        if let Some(expected_type) = mismatches.and_then(|mismatches| mismatches.get(&record.key()))
+        {
+            let colon_column = 1 + marker_column + caret_count;
+            output.extend(std::iter::repeat_n(
+                ' ',
+                colon_column.saturating_sub("expected".len()),
+            ));
+            output.push_str("expected: ");
+            output.push_str(expected_type);
+            output.push('\n');
+        }
     }
 }
 
@@ -2779,11 +2826,34 @@ mod tests {
         };
         let mut output = String::new();
 
-        write_type_output_for_source_file(&mut output, source_text, &[&record]);
+        write_type_output_for_source_file(&mut output, source_text, &[&record], None);
 
         assert_eq!(
             output,
             "let label: string = \"ready\";\n>   ^^^^^: string   (TyString)\n"
+        );
+    }
+
+    #[test]
+    fn type_output_renders_mismatch_expected_type_on_separate_line() {
+        let source_text = "let count: number = 1;";
+        let record = TypeRecord {
+            path: "compiler/basicPrimitives.ts".to_string(),
+            start: 4,
+            end: 9,
+            text: "count".to_string(),
+            ty_variant: Some("TyString"),
+            ty_repr: "string".to_string(),
+        };
+        let mut mismatches = TypeRecordMap::new();
+        mismatches.insert(record.key(), "number".to_string());
+        let mut output = String::new();
+
+        write_type_output_for_source_file(&mut output, source_text, &[&record], Some(&mismatches));
+
+        assert_eq!(
+            output,
+            "let count: number = 1;\n>   ^^^^^: string   (TyString)\n expected: number\n"
         );
     }
 

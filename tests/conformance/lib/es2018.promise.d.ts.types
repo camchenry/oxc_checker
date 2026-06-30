@@ -1,5 +1,6 @@
 interface Promise<T> {
 >         ^^^^^^^: any   (TyAny)
+         expected: PromiseConstructor
 
 interface Promise<T> {
 >                 ^: any   (TyAny)
@@ -12,6 +13,7 @@ interface Promise<T> {
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
 >                                                         ^^^^^^^: any   (TyAny)
+                                                         expected: PromiseConstructor
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
 >                                                                 ^: any   (TyAny)

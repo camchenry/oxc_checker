@@ -66,6 +66,7 @@ const arg = true;
 
 const msg1 = `arg = ${arg}`;
 >     ^^^^: "arg = true"   (TyStringLiteral)
+  expected: string
 
 const msg1 = `arg = ${arg}`;
 >                     ^^^: true   (TyBooleanLiteral)
@@ -138,6 +139,7 @@ const arg = 'something';
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 >     ^^^^: string   (TyString)
+  expected: "something" | "arg = something"
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 >                   ^^^: "something"   (TyStringLiteral)

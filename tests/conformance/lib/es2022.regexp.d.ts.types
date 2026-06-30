@@ -21,9 +21,11 @@ interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 >                                    ^^^^^: ArrayConstructor   (TyTypeReference)
+                                  expected: ArrayConstructor
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 >                                    ^^^^^: any   (TyAny)
+                                  expected: ArrayConstructor
 
     groups?: {
 >   ^^^^^^: { [key: string]: [number, number]; } | undefined   (TyUnion)
@@ -33,6 +35,7 @@ interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny)
+        expected: RegExpConstructor
 
     readonly hasIndices: boolean;
 >            ^^^^^^^^^^: boolean   (TyBoolean)

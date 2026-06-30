@@ -345,6 +345,7 @@ type OptionalEverything = Optional<User>
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >    ^^^^^^^^^^^^^^^^^^^: { profile: { email?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]> | undefined; address?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]> | undefined; } | undefined; id: string; name: string; }   (TyObject)
+                expected: { profile: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; id: string; name: string; }
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
 >                          ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess)
@@ -369,6 +370,7 @@ type DirectFlat = OptionalFlat<User>
 
 type DirectDeep = OptionalDeep<User>
 >    ^^^^^^^^^^: { id?: OptionalDeep<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }["id"]> | undefined; name?: OptionalDeep<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }["name"]> | undefined; profile?: OptionalDeep<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }["profile"]> | undefined; }   (TyObject)
+       expected: { id?: string | undefined; name?: string | undefined; profile?: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; }
 
 type DirectDeep = OptionalDeep<User>
 >                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (TyMapped)
@@ -381,6 +383,7 @@ type DirectDeep = OptionalDeep<User>
 
 const optionalName: OptionalName = {
 >     ^^^^^^^^^^^^: OptionalName   (TyTypeReference)
+          expected: PatchFlat<{ name?: string | undefined; }, User>
 
 const optionalName: OptionalName = {
 >                   ^^^^^^^^^^^^: any   (TyAny)
@@ -402,12 +405,14 @@ const optionalName: OptionalName = {
 
 const optionalEverything: OptionalEverything = {}
 >     ^^^^^^^^^^^^^^^^^^: OptionalEverything   (TyTypeReference)
+                expected: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
 
 const optionalEverything: OptionalEverything = {}
 >                         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
 
 const optionalProfileDeep: OptionalProfileDeep = {
 >     ^^^^^^^^^^^^^^^^^^^: OptionalProfileDeep   (TyTypeReference)
+                 expected: PatchFlat<OptionalDeep<{ profile: { email: string; address: { city: string; }; }; }>, User>
 
 const optionalProfileDeep: OptionalProfileDeep = {
 >                          ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -426,6 +431,7 @@ const optionalProfileDeep: OptionalProfileDeep = {
 
 const directFlat: DirectFlat = {
 >     ^^^^^^^^^^: DirectFlat   (TyTypeReference)
+        expected: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
 
 const directFlat: DirectFlat = {
 >                 ^^^^^^^^^^: any   (TyAny)
@@ -435,6 +441,7 @@ const directFlat: DirectFlat = {
 
 const directDeep: DirectDeep = {
 >     ^^^^^^^^^^: DirectDeep   (TyTypeReference)
+        expected: OptionalDeep<User>
 
 const directDeep: DirectDeep = {
 >                 ^^^^^^^^^^: any   (TyAny)

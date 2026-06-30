@@ -1,11 +1,13 @@
 interface Date {
 >         ^^^^: any   (TyAny)
+      expected: DateConstructor
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+                  expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -21,6 +23,7 @@ interface Date {
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+                      expected: Intl.LocalesArgument
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -36,6 +39,7 @@ interface Date {
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+                      expected: Intl.LocalesArgument
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)

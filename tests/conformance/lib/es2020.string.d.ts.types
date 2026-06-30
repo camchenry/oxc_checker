@@ -1,5 +1,6 @@
 interface String {
 >         ^^^^^^: any   (TyAny)
+        expected: StringConstructor
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
 >   ^^^^^^^^: { (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; }   (TyObject)
@@ -24,6 +25,7 @@ interface String {
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
 >                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+                     expected: Intl.LocalesArgument
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
 >                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -33,6 +35,7 @@ interface String {
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
 >                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+                     expected: Intl.LocalesArgument
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
 >                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
@@ -45,6 +48,7 @@ interface String {
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
 >                               ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+                               expected: Intl.LocalesArgument
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
 >                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
