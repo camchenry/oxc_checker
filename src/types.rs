@@ -1002,6 +1002,11 @@ impl<'a> Ty<'a> {
         matches!(self, Self::Never)
     }
 
+    /// Returns `true` if the type is `undefined`.
+    pub fn is_undefined(&self) -> bool {
+        matches!(self, Self::Undefined)
+    }
+
     pub(crate) fn is_transparent_type_alias_union_constituent(&self) -> bool {
         matches!(
             self,

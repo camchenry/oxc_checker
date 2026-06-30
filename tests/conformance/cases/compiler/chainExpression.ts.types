@@ -186,8 +186,7 @@ const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >                                               ^^^^^^^^: (() => number) | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
->     ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                 expected: { label: string; } | undefined
+>     ^^^^^^^^^^^^^^^^^^^: { label: string; } | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >                           ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
@@ -203,8 +202,7 @@ const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >                                                       ^^^^^: number   (TyNumber) (IdentifierReference)
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
->     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                      expected: string | undefined
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
@@ -220,8 +218,7 @@ const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                                            ^^^^^: number   (TyNumber) (IdentifierReference)
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
->                                                                    ^^^^^: any   (TyAny) (StaticMemberExpression)
-                                                                  expected: string | undefined
+>                                                                    ^^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalElement = maybeUser?.tags?.[0]
 >     ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -234,8 +231,7 @@ const optionalElement = maybeUser?.tags?.[0]
 >                                  ^^^^: string[] | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalArrayElement = maybeUsers?.[index]
->     ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                  expected: Profile | undefined
+>     ^^^^^^^^^^^^^^^^^^^^: Profile | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalArrayElement = maybeUsers?.[index]
 >                            ^^^^^^^^^^: Profile[] | undefined   (TyUnion) (IdentifierReference)
@@ -244,8 +240,7 @@ const optionalArrayElement = maybeUsers?.[index]
 >                                         ^^^^^: number   (TyNumber) (IdentifierReference)
 
 const optionalArrayElementName = maybeUsers?.[index]?.name
->     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                      expected: string | undefined
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalArrayElementName = maybeUsers?.[index]?.name
 >                                ^^^^^^^^^^: Profile[] | undefined   (TyUnion) (IdentifierReference)
@@ -254,12 +249,10 @@ const optionalArrayElementName = maybeUsers?.[index]?.name
 >                                             ^^^^^: number   (TyNumber) (IdentifierReference)
 
 const optionalArrayElementName = maybeUsers?.[index]?.name
->                                                     ^^^^: any   (TyAny) (StaticMemberExpression)
-                                                  expected: string | undefined
+>                                                     ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                        expected: string | undefined
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
 >                                  ^^^^^^^^^^: Profile[] | undefined   (TyUnion) (IdentifierReference)
@@ -268,8 +261,7 @@ const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
 >                                               ^^^^^: number   (TyNumber) (IdentifierReference)
 
 const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
->                                                       ^^^^^: any   (TyAny) (StaticMemberExpression)
-                                                     expected: ((message: string) => string) | undefined
+>                                                       ^^^^^: ((message: string) => string) | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalDictionaryLookup = dictionary?.[key]
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)

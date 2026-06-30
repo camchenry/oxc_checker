@@ -3925,12 +3925,28 @@ mod test {
                 id: number;
                 name: string;
             };
+
+            type Profile = {
+                name: string
+                age?: number
+                greet?: (message: string) => string
+                tags?: string[]
+                nested?: {
+                    count: number
+                    getCount?: () => number
+                    values?: Array<{ label: string }>
+                }
+            }
             declare const user: User | undefined = { id: 1, name: 'Alice' };
             const userId = user?.id;
             const userName = user?.name;
 
             const userId2 = user?.['id'];
             const userName2 = user?.['name'];
+
+            declare const index: number
+            declare const maybeUser: Profile | undefined
+            const optionalNestedArray = maybeUser?.nested?.values?.[index]
             ",
         );
 
@@ -3949,6 +3965,11 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "userName2"),
             Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "optionalNestedArray"),
+            Ty::object(arena(&ret), [Ty::property("label", Ty::string())])
+                .or_undefined(arena(&ret))
         );
     }
 

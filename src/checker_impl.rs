@@ -3340,14 +3340,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
         let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
         let property_name = member.property.name.as_str();
-        let in_chain = if let Some(node_id) = node_id {
-            matches!(
-                self.semantic(program_id).nodes().parent_kind(node_id),
-                AstKind::ChainExpression(_)
-            )
-        } else {
-            false
-        };
+        let in_chain = self.is_in_chain_expression(program_id, node_id);
         let ty = self
             .get_property_type_of_structural_type(program_id, object_type, property_name)
             .or_else(|| {
@@ -3470,12 +3463,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return prop_type;
         }
 
-        // Try accessing like tuple with numeric key
+        // Try accessing like tuple with specific numeric key
         if key_type.is_number_index_type()
             && let Some(index) = tuple_index_from_expression(&member.expression)
         {
             return tuple_element_type_at_index(&object_type, index).unwrap_or_else(Ty::any);
         };
+
+        // Try accessing as array with a generic numeric key
+        if key_type.is_number_index_type()
+            && let Some(element_type) = self
+                .remove_null_or_undefined(object_type)
+                .array_element_type()
+        {
+            return element_type;
+        }
 
         Ty::any()
     }
@@ -7226,6 +7228,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
         names
+    }
+
+    fn is_in_chain_expression(
+        &self,
+        program_id: program::ProgramId,
+        node_id: Option<NodeId>,
+    ) -> bool {
+        if let Some(node_id) = node_id {
+            matches!(
+                self.semantic(program_id).nodes().parent_kind(node_id),
+                AstKind::ChainExpression(_)
+            )
+        } else {
+            false
+        }
     }
 }
 

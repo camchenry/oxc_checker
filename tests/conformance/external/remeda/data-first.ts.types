@@ -448,8 +448,7 @@ export function groupBy<T, Key extends PropertyKey>(
 >                                          ^^^^^: number   (TyNumber) (IdentifierReference)
 
     const value = data[index]
->         ^^^^^: any   (TyAny) (BindingIdentifier)
-       expected: T
+>         ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     const value = data[index]
 >                 ^^^^: readonly T[]   (TyArray) (IdentifierReference)
@@ -464,8 +463,7 @@ export function groupBy<T, Key extends PropertyKey>(
 >               ^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => Key   (TyFunction) (IdentifierReference)
 
     const key = callbackfn(value, index, data)
->                          ^^^^^: any   (TyAny) (IdentifierReference)
-                        expected: T
+>                          ^^^^^: T   (TyTypeReference) (IdentifierReference)
 
     const key = callbackfn(value, index, data)
 >                                 ^^^^^: number   (TyNumber) (IdentifierReference)
@@ -488,8 +486,7 @@ export function groupBy<T, Key extends PropertyKey>(
                    expected: (...items: T[]) => number
 
     ;(out[key] ??= []).push(value)
->                           ^^^^^: any   (TyAny) (IdentifierReference)
-                         expected: T
+>                           ^^^^^: T   (TyTypeReference) (IdentifierReference)
 
   return out
 >        ^^^: Partial<Record<Key, T[]>>   (TyTypeReference) (IdentifierReference)
