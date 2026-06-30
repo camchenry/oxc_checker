@@ -1554,6 +1554,15 @@ impl<'a> Ty<'a> {
             _ => None,
         }
     }
+
+    /// Returns the type, unioned with `undefined`.
+    pub fn or_undefined(&self, arena: CheckerArena<'a>) -> Self {
+        if matches!(self, Ty::Undefined) {
+            *self
+        } else {
+            Self::union(arena, [*self, Ty::Undefined])
+        }
+    }
 }
 
 fn simplify_conditional_type<'a>(

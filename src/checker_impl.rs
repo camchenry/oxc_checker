@@ -754,7 +754,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             node_id,
                             flags,
                         );
-                        Ty::union(self.arena(), [member_expr_type, Ty::undefined()])
+                        member_expr_type.or_undefined(self.arena())
                     }
                     // `obj?.[prop]`
                     ChainElement::ComputedMemberExpression(computed_member_expression) => {
@@ -765,7 +765,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             node_id,
                             flags,
                         );
-                        Ty::union(self.arena(), [computed_member_type, Ty::undefined()])
+                        computed_member_type.or_undefined(self.arena())
                     }
                     // TODO(completeness): Complete these expressions
                     ChainElement::CallExpression(_) => Ty::any(),
@@ -1454,19 +1454,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TSTupleElement::TSRestType(rest) => {
                 TupleElement::Rest(self.get_type_from_ts_type(program_id, &rest.type_annotation))
             }
-            TSTupleElement::TSOptionalType(optional) => TupleElement::Optional(Ty::union(
-                self.arena(),
-                [
-                    self.get_type_from_ts_type(program_id, &optional.type_annotation),
-                    Ty::undefined(),
-                ],
-            )),
+            TSTupleElement::TSOptionalType(optional) => TupleElement::Optional(
+                self.get_type_from_ts_type(program_id, &optional.type_annotation)
+                    .or_undefined(self.arena()),
+            ),
             TSTupleElement::TSNamedTupleMember(named) => {
                 let element = self.get_type_from_ts_tuple_element(program_id, &named.element_type);
                 if named.optional {
                     match element {
                         TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
-                            TupleElement::Optional(Ty::union(self.arena(), [ty, Ty::undefined()]))
+                            TupleElement::Optional(ty.or_undefined(self.arena()))
                         }
                         TupleElement::Rest(ty) => TupleElement::Rest(ty),
                     }
@@ -1832,7 +1829,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .as_ref()
             .map_or_else(Ty::any, |ty| self.get_type_from_ts_type(program_id, ty));
         let template = if matches!(optional, MappedModifier::True | MappedModifier::Plus) {
-            Ty::union(self.arena(), [template, Ty::undefined()])
+            template.or_undefined(self.arena())
         } else {
             template
         };
@@ -2055,7 +2052,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     return None;
                 }
                 Some(if property.optional {
-                    Ty::union(self.arena(), [property.ty, Ty::undefined()])
+                    property.ty.or_undefined(self.arena())
                 } else {
                     property.ty
                 })
@@ -2135,7 +2132,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
         Some(
             if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) {
-                Ty::union(self.arena(), [ty, Ty::undefined()])
+                ty.or_undefined(self.arena())
             } else {
                 ty
             },
@@ -3392,7 +3389,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.get_apparent_type_at_use(program_id, ty, 0)
         };
         if in_chain {
-            Ty::union(self.arena(), vec![ty, Ty::undefined()])
+            ty.or_undefined(self.arena())
         } else {
             ty
         }
@@ -6860,7 +6857,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     return None;
                 }
                 Some(if property.optional {
-                    Ty::union(self.arena(), [property.ty, Ty::undefined()])
+                    property.ty.or_undefined(self.arena())
                 } else {
                     property.ty
                 })
@@ -6965,7 +6962,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         if parameter.optional {
-            return Ty::union(self.arena(), [annotated_type, Ty::undefined()]);
+            return annotated_type.or_undefined(self.arena());
         }
 
         annotated_type
@@ -7397,7 +7394,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     ty
                 };
                 if property.optional {
-                    Ty::union(self.arena(), [ty, Ty::undefined()])
+                    ty.or_undefined(self.arena())
                 } else {
                     ty
                 }
