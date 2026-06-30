@@ -3928,6 +3928,9 @@ mod test {
             declare const user: User | undefined = { id: 1, name: 'Alice' };
             const userId = user?.id;
             const userName = user?.name;
+
+            const userId2 = user?.['id'];
+            const userName2 = user?.['name'];
             ",
         );
 
@@ -3937,6 +3940,14 @@ mod test {
         );
         assert_eq!(
             get_global_symbol_type(&ret, "userName"),
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "userId2"),
+            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()])
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "userName2"),
             Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
         );
     }

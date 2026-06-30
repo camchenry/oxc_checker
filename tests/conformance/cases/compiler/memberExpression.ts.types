@@ -128,7 +128,7 @@ const userCity = user.address.city;
 >                             ^^^^: string   (TyString)
 
 const userZip = user["address"].zip;
->     ^^^^^^^: any   (TyAny)
+>     ^^^^^^^: number   (TyNumber)
 
 const userZip = user["address"].zip;
 >               ^^^^: User   (TyTypeReference)
@@ -197,7 +197,7 @@ const dynamicStringKey: string = "whatever";
 >     ^^^^^^^^^^^^^^^^: string   (TyString)
 
 const literalKeyValue = user[literalKey];
->     ^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^: string   (TyString)
 
 const literalKeyValue = user[literalKey];
 >                       ^^^^: User   (TyTypeReference)
@@ -254,7 +254,7 @@ const dictionaryKnownDot = dictionary.known;
 >                                     ^^^^^: number   (TyNumber)
 
 const dictionaryKnownBracket = dictionary["known"];
->     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
 
 const dictionaryKnownBracket = dictionary["known"];
 >                              ^^^^^^^^^^: StringDictionary   (TyTypeReference)
@@ -665,13 +665,13 @@ const hyphenated: Hyphenated = {
 > ^^^^^^^^^: string   (TyString)
 
 const hyphenatedDataId = hyphenated["data-id"];
->     ^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^: string   (TyString)
 
 const hyphenatedDataId = hyphenated["data-id"];
 >                        ^^^^^^^^^^: Hyphenated   (TyTypeReference)
 
 const hyphenatedAriaLabel = hyphenated["aria-label"];
->     ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
 
 const hyphenatedAriaLabel = hyphenated["aria-label"];
 >                           ^^^^^^^^^^: Hyphenated   (TyTypeReference)

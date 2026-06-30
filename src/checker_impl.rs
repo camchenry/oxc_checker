@@ -741,11 +741,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id, flags)
             }
-            // `obj?.prop`
             Expression::ChainExpression(chain_expr) => {
                 // Chain expressions have the same type as the property they are accessing, however they are
                 // unioned with undefined, since the source object may be undefined.
                 match &chain_expr.expression {
+                    // `obj?.prop`
                     ChainElement::StaticMemberExpression(member_expr) => {
                         // Get type of `foo.bar` and then union it with undefined
                         let member_expr_type = self.get_type_of_static_member_expression(
@@ -756,7 +756,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         );
                         Ty::union(self.arena(), [member_expr_type, Ty::undefined()])
                     }
-                    _ => Ty::any(),
+                    // `obj?.[prop]`
+                    ChainElement::ComputedMemberExpression(computed_member_expression) => {
+                        // Get type of `foo[bar]` and then union it with undefined
+                        let computed_member_type = self.get_type_of_computed_member_expression(
+                            program_id,
+                            computed_member_expression,
+                            node_id,
+                            flags,
+                        );
+                        Ty::union(self.arena(), [computed_member_type, Ty::undefined()])
+                    }
+                    // TODO(completeness): Complete these expressions
+                    ChainElement::CallExpression(_) => Ty::any(),
+                    ChainElement::TSNonNullExpression(_) => Ty::any(),
+                    ChainElement::PrivateFieldExpression(_) => Ty::any(),
                 }
             }
 
@@ -3433,10 +3447,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
-        let Some(index) = tuple_index_from_expression(&member.expression) else {
-            return Ty::any();
+        let key_type =
+            self.get_type_of_expression_with_node(program_id, &member.expression, node_id, flags);
+
+        // Try accessing like a structural / property type
+        if let Some(property_name) = key_type.string_value()
+            && let Some(prop_type) =
+                self.get_property_type_of_structural_type(program_id, object_type, property_name)
+        {
+            return prop_type;
+        }
+
+        // Try accessing like tuple with numeric key
+        if key_type.is_number_index_type()
+            && let Some(index) = tuple_index_from_expression(&member.expression)
+        {
+            return tuple_element_type_at_index(&object_type, index).unwrap_or_else(Ty::any);
         };
-        tuple_element_type_at_index(&object_type, index).unwrap_or_else(Ty::any)
+
+        Ty::any()
     }
 
     fn get_property_type_of_global_interface_type(

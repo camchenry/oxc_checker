@@ -1532,6 +1532,28 @@ impl<'a> Ty<'a> {
         };
         Some(array.element_type)
     }
+
+    /// Returns the string value of the type (if applicable).
+    pub fn string_value(&self) -> Option<&str> {
+        match self {
+            // Remove quoting
+            Ty::StringLiteral(string_literal) => Some(
+                string_literal
+                    .value
+                    .strip_prefix('\'')
+                    .and_then(|name| name.strip_suffix('\''))
+                    .or_else(|| {
+                        string_literal
+                            .value
+                            .strip_prefix('"')
+                            .and_then(|name| name.strip_suffix('"'))
+                    })
+                    .unwrap_or(string_literal.value),
+            ),
+            // TODO(completeness): Handle template literals
+            _ => None,
+        }
+    }
 }
 
 fn simplify_conditional_type<'a>(
