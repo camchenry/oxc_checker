@@ -1,8 +1,8 @@
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery)
+>                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
     interface DateTimeFormatPartTypesRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         unknown: never;
->       ^^^^^^^: never   (TyNever)
+>       ^^^^^^^: never   (TyNever) (TSPropertySignature)

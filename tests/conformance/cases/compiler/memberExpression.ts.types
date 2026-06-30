@@ -1,856 +1,856 @@
 type User = {
->    ^^^^: { name: string; age: number; id: `user_${string}`; active?: boolean; address: { city: string; zip: number; }; greet(message: string): string; preferences: { theme: "light" | "dark"; notifications?: boolean; }; }   (TyObject)
+>    ^^^^: { name: string; age: number; id: `user_${string}`; active?: boolean; address: { city: string; zip: number; }; greet(message: string): string; preferences: { theme: "light" | "dark"; notifications?: boolean; }; }   (TyObject) (TSTypeAliasDeclaration)
 
   name: string;
-> ^^^^: string   (TyString)
+> ^^^^: string   (TyString) (TSPropertySignature)
 
   age: number;
-> ^^^: number   (TyNumber)
+> ^^^: number   (TyNumber) (TSPropertySignature)
 
   id: `user_${string}`
-> ^^: `user_${string}`   (TyTemplateLiteral)
+> ^^: `user_${string}`   (TyTemplateLiteral) (TSPropertySignature)
 
   active?: boolean;
-> ^^^^^^: boolean | undefined   (TyUnion)
+> ^^^^^^: boolean | undefined   (TyUnion) (TSPropertySignature)
 
   address: {
-> ^^^^^^^: { city: string; zip: number; }   (TyObject)
+> ^^^^^^^: { city: string; zip: number; }   (TyObject) (TSPropertySignature)
 
     city: string;
->   ^^^^: string   (TyString)
+>   ^^^^: string   (TyString) (TSPropertySignature)
 
     zip: number;
->   ^^^: number   (TyNumber)
+>   ^^^: number   (TyNumber) (TSPropertySignature)
 
   greet(message: string): string;
-> ^^^^^: (message: string) => string   (TyFunction)
+> ^^^^^: (message: string) => string   (TyFunction) (TSMethodSignature)
 
   greet(message: string): string;
->       ^^^^^^^: string   (TyString)
+>       ^^^^^^^: string   (TyString) (BindingIdentifier)
 
   preferences: {
-> ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject)
+> ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject) (TSPropertySignature)
 
     theme: "light" | "dark";
->   ^^^^^: "light" | "dark"   (TyUnion)
+>   ^^^^^: "light" | "dark"   (TyUnion) (TSPropertySignature)
 
     notifications?: boolean;
->   ^^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+>   ^^^^^^^^^^^^^: boolean | undefined   (TyUnion) (TSPropertySignature)
 
 const user: User = {
->     ^^^^: User   (TyTypeReference)
+>     ^^^^: User   (TyTypeReference) (BindingIdentifier)
 
 const user: User = {
->           ^^^^: any   (TyAny)
+>           ^^^^: any   (TyAny) (TSTypeReference)
 
   name: "Alice",
-> ^^^^: string   (TyString)
+> ^^^^: string   (TyString) (ObjectProperty)
 
   age: 30,
-> ^^^: number   (TyNumber)
+> ^^^: number   (TyNumber) (ObjectProperty)
 
   id: "user_Alice",
-> ^^: string   (TyString)
+> ^^: string   (TyString) (ObjectProperty)
 expected: "user_Alice"
 
   address: {
-> ^^^^^^^: { city: string; zip: number; }   (TyObject)
+> ^^^^^^^: { city: string; zip: number; }   (TyObject) (ObjectProperty)
 
     city: "Paris",
->   ^^^^: string   (TyString)
+>   ^^^^: string   (TyString) (ObjectProperty)
 
     zip: 75000,
->   ^^^: number   (TyNumber)
+>   ^^^: number   (TyNumber) (ObjectProperty)
 
   greet(message: string) {
-> ^^^^^: (message: string) => string   (TyFunction)
+> ^^^^^: (message: string) => string   (TyFunction) (ObjectProperty)
 
   greet(message: string) {
->       ^^^^^^^: string   (TyString)
+>       ^^^^^^^: string   (TyString) (BindingIdentifier)
 
     return `${message}, ${this.name}`;
->             ^^^^^^^: string   (TyString)
+>             ^^^^^^^: string   (TyString) (IdentifierReference)
 
     return `${message}, ${this.name}`;
->                              ^^^^: any   (TyAny)
+>                              ^^^^: any   (TyAny) (StaticMemberExpression)
                            expected: string
 
   preferences: {
-> ^^^^^^^^^^^: { theme: string; }   (TyObject)
+> ^^^^^^^^^^^: { theme: string; }   (TyObject) (ObjectProperty)
      expected: { theme: "dark"; }
 
     theme: "dark",
->   ^^^^^: string   (TyString)
+>   ^^^^^: string   (TyString) (ObjectProperty)
  expected: "dark"
 
 const userName = user.name;
->     ^^^^^^^^: string   (TyString)
+>     ^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const userName = user.name;
->                ^^^^: User   (TyTypeReference)
+>                ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userName = user.name;
->                     ^^^^: string   (TyString)
+>                     ^^^^: string   (TyString) (StaticMemberExpression)
 
 const userAge = user.age;
->     ^^^^^^^: number   (TyNumber)
+>     ^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const userAge = user.age;
->               ^^^^: User   (TyTypeReference)
+>               ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userAge = user.age;
->                    ^^^: number   (TyNumber)
+>                    ^^^: number   (TyNumber) (StaticMemberExpression)
 
 const userId = user.id;
->     ^^^^^^: `user_${string}`   (TyTemplateLiteral)
+>     ^^^^^^: `user_${string}`   (TyTemplateLiteral) (BindingIdentifier)
 
 const userId = user.id;
->              ^^^^: User   (TyTypeReference)
+>              ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userId = user.id;
->                   ^^: `user_${string}`   (TyTemplateLiteral)
+>                   ^^: `user_${string}`   (TyTemplateLiteral) (StaticMemberExpression)
 
 const userActive = user.active;
->     ^^^^^^^^^^: boolean | undefined   (TyUnion)
+>     ^^^^^^^^^^: boolean | undefined   (TyUnion) (BindingIdentifier)
 
 const userActive = user.active;
->                  ^^^^: User   (TyTypeReference)
+>                  ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userActive = user.active;
->                       ^^^^^^: boolean | undefined   (TyUnion)
+>                       ^^^^^^: boolean | undefined   (TyUnion) (StaticMemberExpression)
 
 const userCity = user.address.city;
->     ^^^^^^^^: string   (TyString)
+>     ^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const userCity = user.address.city;
->                ^^^^: User   (TyTypeReference)
+>                ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userCity = user.address.city;
->                     ^^^^^^^: { city: string; zip: number; }   (TyObject)
+>                     ^^^^^^^: { city: string; zip: number; }   (TyObject) (StaticMemberExpression)
 
 const userCity = user.address.city;
->                             ^^^^: string   (TyString)
+>                             ^^^^: string   (TyString) (StaticMemberExpression)
 
 const userZip = user["address"].zip;
->     ^^^^^^^: number   (TyNumber)
+>     ^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const userZip = user["address"].zip;
->               ^^^^: User   (TyTypeReference)
+>               ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userZip = user["address"].zip;
->                               ^^^: any   (TyAny)
+>                               ^^^: any   (TyAny) (StaticMemberExpression)
                            expected: number
 
 const userGreeting = user.greet("hello");
->     ^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const userGreeting = user.greet("hello");
->                    ^^^^: User   (TyTypeReference)
+>                    ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userGreeting = user.greet("hello");
->                         ^^^^^: (message: string) => string   (TyFunction)
+>                         ^^^^^: (message: string) => string   (TyFunction) (StaticMemberExpression)
 
 const userGreetMethod = user.greet;
->     ^^^^^^^^^^^^^^^: (message: string) => string   (TyFunction)
+>     ^^^^^^^^^^^^^^^: (message: string) => string   (TyFunction) (BindingIdentifier)
 
 const userGreetMethod = user.greet;
->                       ^^^^: User   (TyTypeReference)
+>                       ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userGreetMethod = user.greet;
->                            ^^^^^: (message: string) => string   (TyFunction)
+>                            ^^^^^: (message: string) => string   (TyFunction) (StaticMemberExpression)
 
 const userTheme = user.preferences.theme;
->     ^^^^^^^^^: "light" | "dark"   (TyUnion)
+>     ^^^^^^^^^: "light" | "dark"   (TyUnion) (BindingIdentifier)
 
 const userTheme = user.preferences.theme;
->                 ^^^^: User   (TyTypeReference)
+>                 ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userTheme = user.preferences.theme;
->                      ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject)
+>                      ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject) (StaticMemberExpression)
 
 const userTheme = user.preferences.theme;
->                                  ^^^^^: "light" | "dark"   (TyUnion)
+>                                  ^^^^^: "light" | "dark"   (TyUnion) (StaticMemberExpression)
 
 const userNotifications = user.preferences.notifications;
->     ^^^^^^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+>     ^^^^^^^^^^^^^^^^^: boolean | undefined   (TyUnion) (BindingIdentifier)
 
 const userNotifications = user.preferences.notifications;
->                         ^^^^: User   (TyTypeReference)
+>                         ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userNotifications = user.preferences.notifications;
->                              ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject)
+>                              ^^^^^^^^^^^: { theme: "light" | "dark"; notifications?: boolean; }   (TyObject) (StaticMemberExpression)
 
 const userNotifications = user.preferences.notifications;
->                                          ^^^^^^^^^^^^^: boolean | undefined   (TyUnion)
+>                                          ^^^^^^^^^^^^^: boolean | undefined   (TyUnion) (StaticMemberExpression)
 
 const literalKey = "name" as const;
->     ^^^^^^^^^^: "name"   (TyStringLiteral)
+>     ^^^^^^^^^^: "name"   (TyStringLiteral) (BindingIdentifier)
 
 const literalKey = "name" as const;
->                            ^^^^^: any   (TyAny)
+>                            ^^^^^: any   (TyAny) (TSTypeReference)
 
 const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
->     ^^^^^^^^: "name" | "id"   (TyUnion)
+>     ^^^^^^^^: "name" | "id"   (TyUnion) (BindingIdentifier)
 
 const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
->                               ^^^^: Math   (TyTypeReference)
+>                               ^^^^: Math   (TyTypeReference) (IdentifierReference)
 
 const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
->                                    ^^^^^^: () => number   (TyFunction)
+>                                    ^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const dynamicStringKey: string = "whatever";
->     ^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const literalKeyValue = user[literalKey];
->     ^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const literalKeyValue = user[literalKey];
->                       ^^^^: User   (TyTypeReference)
+>                       ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const literalKeyValue = user[literalKey];
->                            ^^^^^^^^^^: "name"   (TyStringLiteral)
+>                            ^^^^^^^^^^: "name"   (TyStringLiteral) (IdentifierReference)
 
 const unionKeyValue = user[unionKey];
->     ^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
            expected: string
 
 const unionKeyValue = user[unionKey];
->                     ^^^^: User   (TyTypeReference)
+>                     ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const unionKeyValue = user[unionKey];
->                          ^^^^^^^^: "name" | "id"   (TyUnion)
+>                          ^^^^^^^^: "name" | "id"   (TyUnion) (IdentifierReference)
 
 const dynamicStringKeyValue = user[dynamicStringKey];
->     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 const dynamicStringKeyValue = user[dynamicStringKey];
->                             ^^^^: User   (TyTypeReference)
+>                             ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const dynamicStringKeyValue = user[dynamicStringKey];
->                                  ^^^^^^^^^^^^^^^^: string   (TyString)
+>                                  ^^^^^^^^^^^^^^^^: string   (TyString) (IdentifierReference)
 
 type StringDictionary = {
->    ^^^^^^^^^^^^^^^^: { [key: string]: number; known: number; }   (TyObject)
+>    ^^^^^^^^^^^^^^^^: { [key: string]: number; known: number; }   (TyObject) (TSTypeAliasDeclaration)
 
   known: number;
-> ^^^^^: number   (TyNumber)
+> ^^^^^: number   (TyNumber) (TSPropertySignature)
 
   [key: string]: number;
->  ^^^: string   (TyString)
+>  ^^^: string   (TyString) (TSIndexSignatureName)
 
 const dictionary: StringDictionary = {
->     ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+>     ^^^^^^^^^^: StringDictionary   (TyTypeReference) (BindingIdentifier)
 
 const dictionary: StringDictionary = {
->                 ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   known: 1,
-> ^^^^^: number   (TyNumber)
+> ^^^^^: number   (TyNumber) (ObjectProperty)
 
   extra: 2,
-> ^^^^^: number   (TyNumber)
+> ^^^^^: number   (TyNumber) (ObjectProperty)
 
 const dictionaryKnownDot = dictionary.known;
->     ^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const dictionaryKnownDot = dictionary.known;
->                          ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+>                          ^^^^^^^^^^: StringDictionary   (TyTypeReference) (IdentifierReference)
 
 const dictionaryKnownDot = dictionary.known;
->                                     ^^^^^: number   (TyNumber)
+>                                     ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
 const dictionaryKnownBracket = dictionary["known"];
->     ^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const dictionaryKnownBracket = dictionary["known"];
->                              ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+>                              ^^^^^^^^^^: StringDictionary   (TyTypeReference) (IdentifierReference)
 
 const dictionaryExtraDot = dictionary.extra;
->     ^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const dictionaryExtraDot = dictionary.extra;
->                          ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+>                          ^^^^^^^^^^: StringDictionary   (TyTypeReference) (IdentifierReference)
 
 const dictionaryExtraDot = dictionary.extra;
->                                     ^^^^^: number   (TyNumber)
+>                                     ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
->     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                expected: number
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
->                         ^^^^^^^^^^: StringDictionary   (TyTypeReference)
+>                         ^^^^^^^^^^: StringDictionary   (TyTypeReference) (IdentifierReference)
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
->                                    ^^^^^^^^^^^^^^^^: string   (TyString)
+>                                    ^^^^^^^^^^^^^^^^: string   (TyString) (IdentifierReference)
 
 type NumericDictionary = {
->    ^^^^^^^^^^^^^^^^^: { [index: number]: "zero" | "one" | "many" | undefined; 0: "zero"; 1?: "one"; }   (TyObject)
+>    ^^^^^^^^^^^^^^^^^: { [index: number]: "zero" | "one" | "many" | undefined; 0: "zero"; 1?: "one"; }   (TyObject) (TSTypeAliasDeclaration)
 
   0: "zero";
-> ^: "zero"   (TyStringLiteral)
+> ^: "zero"   (TyStringLiteral) (TSPropertySignature)
 
   1?: "one";
-> ^: "one" | undefined   (TyUnion)
+> ^: "one" | undefined   (TyUnion) (TSPropertySignature)
 
   [index: number]: "zero" | "one" | "many" | undefined;
->  ^^^^^: number   (TyNumber)
+>  ^^^^^: number   (TyNumber) (TSIndexSignatureName)
 
 const numericDictionary: NumericDictionary = {
->     ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+>     ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (BindingIdentifier)
 
 const numericDictionary: NumericDictionary = {
->                        ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   0: "zero",
-> ^: string   (TyString)
+> ^: string   (TyString) (ObjectProperty)
 
   2: "many",
-> ^: string   (TyString)
+> ^: string   (TyString) (ObjectProperty)
 
 const numericZeroDot = numericDictionary[0];
->     ^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: "zero"
 
 const numericZeroDot = numericDictionary[0];
->                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+>                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)
 
 const numericOneBracket = numericDictionary[1];
->     ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                expected: "one" | undefined
 
 const numericOneBracket = numericDictionary[1];
->                         ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+>                         ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)
 
 const numericDynamic = numericDictionary[42];
->     ^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: "zero" | "one" | "many" | undefined
 
 const numericDynamic = numericDictionary[42];
->                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference)
+>                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+>     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple) (BindingIdentifier)
    expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->              ^^^^: User   (TyTypeReference)
+>              ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->                         ^^^^: User   (TyTypeReference)
+>                         ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->                               ^^^^: string   (TyString)
+>                               ^^^^: string   (TyString) (ObjectProperty)
                             expected: "Bob"
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->                                            ^^: string   (TyString)
+>                                            ^^: string   (TyString) (ObjectProperty)
                                        expected: "user_Bob"
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->                                                                 ^^^^^: any   (TyAny)
+>                                                                 ^^^^^: any   (TyAny) (TSTypeReference)
 
 const firstUser = users[0];
->     ^^^^^^^^^: User   (TyTypeReference)
+>     ^^^^^^^^^: User   (TyTypeReference) (BindingIdentifier)
 
 const firstUser = users[0];
->                 ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+>                 ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple) (IdentifierReference)
                expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const firstUserName = users[0].name;
->     ^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const firstUserName = users[0].name;
->                     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+>                     ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple) (IdentifierReference)
                    expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const firstUserName = users[0].name;
->                              ^^^^: string   (TyString)
+>                              ^^^^: string   (TyString) (StaticMemberExpression)
 
 const usersLength = users.length;
->     ^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: 2
 
 const usersLength = users.length;
->                   ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+>                   ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple) (IdentifierReference)
                  expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const usersLength = users.length;
->                         ^^^^^^: any   (TyAny)
+>                         ^^^^^^: any   (TyAny) (StaticMemberExpression)
                         expected: 2
 
 const arrayMapMethod = users.map;
->     ^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
 
 const arrayMapMethod = users.map;
->                      ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple)
+>                      ^^^^^: readonly [User, { name: string; id: string; }]   (TyTuple) (IdentifierReference)
                     expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
 
 const arrayMapMethod = users.map;
->                            ^^^: any   (TyAny)
+>                            ^^^: any   (TyAny) (StaticMemberExpression)
                         expected: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
 
 const tuple = ["ready", 200, { ok: true }] as const;
->     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+>     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple) (BindingIdentifier)
    expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tuple = ["ready", 200, { ok: true }] as const;
->                              ^^: boolean   (TyBoolean)
+>                              ^^: boolean   (TyBoolean) (ObjectProperty)
                          expected: true
 
 const tuple = ["ready", 200, { ok: true }] as const;
->                                             ^^^^^: any   (TyAny)
+>                                             ^^^^^: any   (TyAny) (TSTypeReference)
 
 const tupleStatus = tuple[0];
->     ^^^^^^^^^^^: "ready"   (TyStringLiteral)
+>     ^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
 
 const tupleStatus = tuple[0];
->                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+>                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple) (IdentifierReference)
                  expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleCode = tuple[1];
->     ^^^^^^^^^: 200   (TyNumberLiteral)
+>     ^^^^^^^^^: 200   (TyNumberLiteral) (BindingIdentifier)
 
 const tupleCode = tuple[1];
->                 ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+>                 ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple) (IdentifierReference)
                expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleObjectOk = tuple[2].ok;
->     ^^^^^^^^^^^^^: boolean   (TyBoolean)
+>     ^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
            expected: true
 
 const tupleObjectOk = tuple[2].ok;
->                     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+>                     ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple) (IdentifierReference)
                    expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleObjectOk = tuple[2].ok;
->                              ^^: boolean   (TyBoolean)
+>                              ^^: boolean   (TyBoolean) (StaticMemberExpression)
                          expected: true
 
 const tupleLength = tuple.length;
->     ^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: 3
 
 const tupleLength = tuple.length;
->                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple)
+>                   ^^^^^: readonly ["ready", 200, { ok: boolean; }]   (TyTuple) (IdentifierReference)
                  expected: readonly ["ready", 200, { readonly ok: true; }]
 
 const tupleLength = tuple.length;
->                         ^^^^^^: any   (TyAny)
+>                         ^^^^^^: any   (TyAny) (StaticMemberExpression)
                         expected: 3
 
 const matrix = [[1, 2], [3, 4]] as const;
->     ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple)
+>     ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple) (BindingIdentifier)
 
 const matrix = [[1, 2], [3, 4]] as const;
->                                  ^^^^^: any   (TyAny)
+>                                  ^^^^^: any   (TyAny) (TSTypeReference)
 
 const matrixFirstRow = matrix[0];
->     ^^^^^^^^^^^^^^: readonly [1, 2]   (TyTuple)
+>     ^^^^^^^^^^^^^^: readonly [1, 2]   (TyTuple) (BindingIdentifier)
 
 const matrixFirstRow = matrix[0];
->                      ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple)
+>                      ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple) (IdentifierReference)
 
 const matrixFirstValue = matrix[0][0];
->     ^^^^^^^^^^^^^^^^: 1   (TyNumberLiteral)
+>     ^^^^^^^^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
 
 const matrixFirstValue = matrix[0][0];
->                        ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple)
+>                        ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple) (IdentifierReference)
 
 type CallableWithProperty = {
->    ^^^^^^^^^^^^^^^^^^^^: { (value: number): string; description: string; }   (TyObject)
+>    ^^^^^^^^^^^^^^^^^^^^: { (value: number): string; description: string; }   (TyObject) (TSTypeAliasDeclaration)
 
   (value: number): string;
->  ^^^^^: number   (TyNumber)
+>  ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   description: string;
-> ^^^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
 
 declare const callableWithProperty: CallableWithProperty;
->             ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+>             ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference) (BindingIdentifier)
 
 declare const callableWithProperty: CallableWithProperty;
->                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const callableResult = callableWithProperty(123);
->     ^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const callableResult = callableWithProperty(123);
->                      ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference) (IdentifierReference)
 
 const callableDescription = callableWithProperty.description;
->     ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const callableDescription = callableWithProperty.description;
->                           ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+>                           ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference) (IdentifierReference)
 
 const callableDescription = callableWithProperty.description;
->                                                ^^^^^^^^^^^: string   (TyString)
+>                                                ^^^^^^^^^^^: string   (TyString) (StaticMemberExpression)
 
 const callableApply = callableWithProperty.apply;
->     ^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
            expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
 
 const callableApply = callableWithProperty.apply;
->                     ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference) (IdentifierReference)
 
 const callableApply = callableWithProperty.apply;
->                                          ^^^^^: any   (TyAny)
+>                                          ^^^^^: any   (TyAny) (StaticMemberExpression)
                                         expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
 
 class Counter {
->     ^^^^^^^: typeof Counter   (TyTypeQuery)
+>     ^^^^^^^: typeof Counter   (TyTypeQuery) (BindingIdentifier)
 
   static label = "counter";
->        ^^^^^: string   (TyString)
+>        ^^^^^: string   (TyString) (PropertyDefinition)
 
   static create() {
->        ^^^^^^: () => Counter   (TyFunction)
+>        ^^^^^^: () => Counter   (TyFunction) (MethodDefinition)
 
     return new Counter(0);
->              ^^^^^^^: typeof Counter   (TyTypeQuery)
+>              ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
   constructor(public value: number) {}
-> ^^^^^^^^^^^: (value: number) => void   (TyFunction)
+> ^^^^^^^^^^^: (value: number) => void   (TyFunction) (MethodDefinition)
 
   constructor(public value: number) {}
->                    ^^^^^: number   (TyNumber)
+>                    ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   increment() {
-> ^^^^^^^^^: () => any   (TyFunction)
+> ^^^^^^^^^: () => any   (TyFunction) (MethodDefinition)
    expected: () => number
 
     this.value += 1;
->   ^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
             expected: number
 
     this.value += 1;
->        ^^^^^: any   (TyAny)
+>        ^^^^^: any   (TyAny) (StaticMemberExpression)
       expected: number
 
     return this.value;
->               ^^^^^: any   (TyAny)
+>               ^^^^^: any   (TyAny) (StaticMemberExpression)
              expected: number
 
   readSecret() {
-> ^^^^^^^^^^: () => any   (TyFunction)
+> ^^^^^^^^^^: () => any   (TyFunction) (MethodDefinition)
     expected: () => number
 
 const counter = new Counter(1);
->     ^^^^^^^: Counter   (TyTypeReference)
+>     ^^^^^^^: Counter   (TyTypeReference) (BindingIdentifier)
 
 const counter = new Counter(1);
->                   ^^^^^^^: typeof Counter   (TyTypeQuery)
+>                   ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
 const counterValue = counter.value;
->     ^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
           expected: number
 
 const counterValue = counter.value;
->                    ^^^^^^^: Counter   (TyTypeReference)
+>                    ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterValue = counter.value;
->                            ^^^^^: any   (TyAny)
+>                            ^^^^^: any   (TyAny) (StaticMemberExpression)
                           expected: number
 
 const counterIncrement = counter.increment;
->     ^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+>     ^^^^^^^^^^^^^^^^: () => any   (TyFunction) (BindingIdentifier)
               expected: () => number
 
 const counterIncrement = counter.increment;
->                        ^^^^^^^: Counter   (TyTypeReference)
+>                        ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterIncrement = counter.increment;
->                                ^^^^^^^^^: () => any   (TyFunction)
+>                                ^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
                                   expected: () => number
 
 const counterIncrementResult = counter.increment();
->     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                     expected: number
 
 const counterIncrementResult = counter.increment();
->                              ^^^^^^^: Counter   (TyTypeReference)
+>                              ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterIncrementResult = counter.increment();
->                                      ^^^^^^^^^: () => any   (TyFunction)
+>                                      ^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
                                         expected: () => number
 
 const counterSecret = counter.readSecret();
->     ^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
            expected: number
 
 const counterSecret = counter.readSecret();
->                     ^^^^^^^: Counter   (TyTypeReference)
+>                     ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterSecret = counter.readSecret();
->                             ^^^^^^^^^^: () => any   (TyFunction)
+>                             ^^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
                                 expected: () => number
 
 const counterStaticLabel = Counter.label;
->     ^^^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const counterStaticLabel = Counter.label;
->                          ^^^^^^^: typeof Counter   (TyTypeQuery)
+>                          ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
 const counterStaticLabel = Counter.label;
->                                  ^^^^^: string   (TyString)
+>                                  ^^^^^: string   (TyString) (StaticMemberExpression)
 
 const counterStaticFactory = Counter.create;
->     ^^^^^^^^^^^^^^^^^^^^: () => Counter   (TyFunction)
+>     ^^^^^^^^^^^^^^^^^^^^: () => Counter   (TyFunction) (BindingIdentifier)
 
 const counterStaticFactory = Counter.create;
->                            ^^^^^^^: typeof Counter   (TyTypeQuery)
+>                            ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
 const counterStaticFactory = Counter.create;
->                                    ^^^^^^: () => Counter   (TyFunction)
+>                                    ^^^^^^: () => Counter   (TyFunction) (StaticMemberExpression)
 
 const counterStaticResult = Counter.create();
->     ^^^^^^^^^^^^^^^^^^^: Counter   (TyTypeReference)
+>     ^^^^^^^^^^^^^^^^^^^: Counter   (TyTypeReference) (BindingIdentifier)
 
 const counterStaticResult = Counter.create();
->                           ^^^^^^^: typeof Counter   (TyTypeQuery)
+>                           ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
 const counterStaticResult = Counter.create();
->                                   ^^^^^^: () => Counter   (TyFunction)
+>                                   ^^^^^^: () => Counter   (TyFunction) (StaticMemberExpression)
 
 class DerivedCounter extends Counter {
->     ^^^^^^^^^^^^^^: typeof DerivedCounter   (TyTypeQuery)
+>     ^^^^^^^^^^^^^^: typeof DerivedCounter   (TyTypeQuery) (BindingIdentifier)
 
 class DerivedCounter extends Counter {
->                            ^^^^^^^: typeof Counter   (TyTypeQuery)
+>                            ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
   readSuperIncrement() {
-> ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+> ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction) (MethodDefinition)
             expected: () => number
 
     return super.increment();
->                ^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
                   expected: () => number
 
 const derived = new DerivedCounter(5);
->     ^^^^^^^: DerivedCounter   (TyTypeReference)
+>     ^^^^^^^: DerivedCounter   (TyTypeReference) (BindingIdentifier)
 
 const derived = new DerivedCounter(5);
->                   ^^^^^^^^^^^^^^: typeof DerivedCounter   (TyTypeQuery)
+>                   ^^^^^^^^^^^^^^: typeof DerivedCounter   (TyTypeQuery) (IdentifierReference)
 
 const derivedSuperResult = derived.readSuperIncrement();
->     ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                 expected: number
 
 const derivedSuperResult = derived.readSuperIncrement();
->                          ^^^^^^^: DerivedCounter   (TyTypeReference)
+>                          ^^^^^^^: DerivedCounter   (TyTypeReference) (IdentifierReference)
 
 const derivedSuperResult = derived.readSuperIncrement();
->                                  ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction)
+>                                  ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
                                              expected: () => number
 
 const uniqueKey: unique symbol = Symbol("uniqueKey");
->     ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>     ^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 const uniqueKey: unique symbol = Symbol("uniqueKey");
->                                ^^^^^^: SymbolConstructor   (TyTypeReference)
+>                                ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
 type SymbolObject = {
->    ^^^^^^^^^^^^: { [uniqueKey]: number; regular: string; }   (TyObject)
+>    ^^^^^^^^^^^^: { [uniqueKey]: number; regular: string; }   (TyObject) (TSTypeAliasDeclaration)
          expected: { regular: string; [uniqueKey]: number; }
 
   [uniqueKey]: number;
->  ^^^^^^^^^: number   (TyNumber)
+>  ^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
   [uniqueKey]: number;
->  ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>  ^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
   regular: string;
-> ^^^^^^^: string   (TyString)
+> ^^^^^^^: string   (TyString) (TSPropertySignature)
 
 const symbolObject: SymbolObject = {
->     ^^^^^^^^^^^^: SymbolObject   (TyTypeReference)
+>     ^^^^^^^^^^^^: SymbolObject   (TyTypeReference) (BindingIdentifier)
 
 const symbolObject: SymbolObject = {
->                   ^^^^^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   [uniqueKey]: 42,
->  ^^^^^^^^^: number   (TyNumber)
+>  ^^^^^^^^^: number   (TyNumber) (ObjectProperty)
 
   [uniqueKey]: 42,
->  ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>  ^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
   regular: "ok",
-> ^^^^^^^: string   (TyString)
+> ^^^^^^^: string   (TyString) (ObjectProperty)
 
 const symbolValue = symbolObject[uniqueKey];
->     ^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: number
 
 const symbolValue = symbolObject[uniqueKey];
->                   ^^^^^^^^^^^^: SymbolObject   (TyTypeReference)
+>                   ^^^^^^^^^^^^: SymbolObject   (TyTypeReference) (IdentifierReference)
 
 const symbolValue = symbolObject[uniqueKey];
->                                ^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                                ^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
 const symbolRegular = symbolObject.regular;
->     ^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const symbolRegular = symbolObject.regular;
->                     ^^^^^^^^^^^^: SymbolObject   (TyTypeReference)
+>                     ^^^^^^^^^^^^: SymbolObject   (TyTypeReference) (IdentifierReference)
 
 const symbolRegular = symbolObject.regular;
->                                  ^^^^^^^: string   (TyString)
+>                                  ^^^^^^^: string   (TyString) (StaticMemberExpression)
 
 type Hyphenated = {
->    ^^^^^^^^^^: { data-id: string; aria-label?: string; }   (TyObject)
+>    ^^^^^^^^^^: { data-id: string; aria-label?: string; }   (TyObject) (TSTypeAliasDeclaration)
        expected: { "data-id": string; "aria-label"?: string; }
 
   "data-id": string;
-> ^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^: string   (TyString) (TSPropertySignature)
 
   "aria-label"?: string;
-> ^^^^^^^^^^^^: string | undefined   (TyUnion)
+> ^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
 
 const hyphenated: Hyphenated = {
->     ^^^^^^^^^^: Hyphenated   (TyTypeReference)
+>     ^^^^^^^^^^: Hyphenated   (TyTypeReference) (BindingIdentifier)
 
 const hyphenated: Hyphenated = {
->                 ^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   "data-id": "item-1",
-> ^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^: string   (TyString) (ObjectProperty)
 
 const hyphenatedDataId = hyphenated["data-id"];
->     ^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const hyphenatedDataId = hyphenated["data-id"];
->                        ^^^^^^^^^^: Hyphenated   (TyTypeReference)
+>                        ^^^^^^^^^^: Hyphenated   (TyTypeReference) (IdentifierReference)
 
 const hyphenatedAriaLabel = hyphenated["aria-label"];
->     ^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion)
+>     ^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const hyphenatedAriaLabel = hyphenated["aria-label"];
->                           ^^^^^^^^^^: Hyphenated   (TyTypeReference)
+>                           ^^^^^^^^^^: Hyphenated   (TyTypeReference) (IdentifierReference)
 
 type UnionMember =
->    ^^^^^^^^^^^: { kind: "text"; value: string; common: boolean; } | { kind: "count"; value: number; common: boolean; }   (TyUnion)
+>    ^^^^^^^^^^^: { kind: "text"; value: string; common: boolean; } | { kind: "count"; value: number; common: boolean; }   (TyUnion) (TSTypeAliasDeclaration)
 
   | { kind: "text"; value: string; common: boolean }
->     ^^^^: "text"   (TyStringLiteral)
+>     ^^^^: "text"   (TyStringLiteral) (TSPropertySignature)
 
   | { kind: "text"; value: string; common: boolean }
->                   ^^^^^: string   (TyString)
+>                   ^^^^^: string   (TyString) (TSPropertySignature)
 
   | { kind: "text"; value: string; common: boolean }
->                                  ^^^^^^: boolean   (TyBoolean)
+>                                  ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
   | { kind: "count"; value: number; common: boolean }
->     ^^^^: "count"   (TyStringLiteral)
+>     ^^^^: "count"   (TyStringLiteral) (TSPropertySignature)
 
   | { kind: "count"; value: number; common: boolean }
->                    ^^^^^: number   (TyNumber)
+>                    ^^^^^: number   (TyNumber) (TSPropertySignature)
 
   | { kind: "count"; value: number; common: boolean }
->                                   ^^^^^^: boolean   (TyBoolean)
+>                                   ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
 declare const unionMember: UnionMember;
->             ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+>             ^^^^^^^^^^^: UnionMember   (TyTypeReference) (BindingIdentifier)
 
 declare const unionMember: UnionMember;
->                          ^^^^^^^^^^^: any   (TyAny)
+>                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const unionKind = unionMember.kind;
->     ^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
        expected: "text" | "count"
 
 const unionKind = unionMember.kind;
->                 ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+>                 ^^^^^^^^^^^: UnionMember   (TyTypeReference) (IdentifierReference)
 
 const unionKind = unionMember.kind;
->                             ^^^^: any   (TyAny)
+>                             ^^^^: any   (TyAny) (StaticMemberExpression)
                           expected: "text" | "count"
 
 const unionValue = unionMember.value;
->     ^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: string | number
 
 const unionValue = unionMember.value;
->                  ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+>                  ^^^^^^^^^^^: UnionMember   (TyTypeReference) (IdentifierReference)
 
 const unionValue = unionMember.value;
->                              ^^^^^: any   (TyAny)
+>                              ^^^^^: any   (TyAny) (StaticMemberExpression)
                             expected: string | number
 
 const unionCommon = unionMember.common;
->     ^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: boolean
 
 const unionCommon = unionMember.common;
->                   ^^^^^^^^^^^: UnionMember   (TyTypeReference)
+>                   ^^^^^^^^^^^: UnionMember   (TyTypeReference) (IdentifierReference)
 
 const unionCommon = unionMember.common;
->                               ^^^^^^: any   (TyAny)
+>                               ^^^^^^: any   (TyAny) (StaticMemberExpression)
                               expected: boolean
 
 type IntersectionMember = { left: string } & { right: number };
->    ^^^^^^^^^^^^^^^^^^: { left: string; } & { right: number; }   (TyIntersection)
+>    ^^^^^^^^^^^^^^^^^^: { left: string; } & { right: number; }   (TyIntersection) (TSTypeAliasDeclaration)
 
 type IntersectionMember = { left: string } & { right: number };
->                           ^^^^: string   (TyString)
+>                           ^^^^: string   (TyString) (TSPropertySignature)
 
 type IntersectionMember = { left: string } & { right: number };
->                                              ^^^^^: number   (TyNumber)
+>                                              ^^^^^: number   (TyNumber) (TSPropertySignature)
 
 declare const intersectionMember: IntersectionMember;
->             ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference)
+>             ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference) (BindingIdentifier)
 
 declare const intersectionMember: IntersectionMember;
->                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const intersectionLeft = intersectionMember.left;
->     ^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const intersectionLeft = intersectionMember.left;
->                        ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference)
+>                        ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference) (IdentifierReference)
 
 const intersectionLeft = intersectionMember.left;
->                                           ^^^^: string   (TyString)
+>                                           ^^^^: string   (TyString) (StaticMemberExpression)
 
 const intersectionRight = intersectionMember.right;
->     ^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const intersectionRight = intersectionMember.right;
->                         ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference)
+>                         ^^^^^^^^^^^^^^^^^^: IntersectionMember   (TyTypeReference) (IdentifierReference)
 
 const intersectionRight = intersectionMember.right;
->                                            ^^^^^: number   (TyNumber)
+>                                            ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
 const parenthesizedMember = (user).name;
->     ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const parenthesizedMember = (user).name;
->                            ^^^^: User   (TyTypeReference)
+>                            ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const parenthesizedMember = (user).name;
->                                  ^^^^: string   (TyString)
+>                                  ^^^^: string   (TyString) (StaticMemberExpression)
 
 const assertedMember = (user as User).age;
->     ^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const assertedMember = (user as User).age;
->                       ^^^^: User   (TyTypeReference)
+>                       ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const assertedMember = (user as User).age;
->                               ^^^^: any   (TyAny)
+>                               ^^^^: any   (TyAny) (TSTypeReference)
 
 const assertedMember = (user as User).age;
->                                     ^^^: number   (TyNumber)
+>                                     ^^^: number   (TyNumber) (StaticMemberExpression)
 
 const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
->     ^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
->                          ^^^^^: number   (TyNumber)
+>                          ^^^^^: number   (TyNumber) (ObjectProperty)
 
 const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
->                                                 ^^^^^: number   (TyNumber)
+>                                                 ^^^^^: number   (TyNumber) (TSPropertySignature)
 
 const satisfiesMember = ({ value: 1 } satisfies { value: number }).value;
->                                                                  ^^^^^: number   (TyNumber)
+>                                                                  ^^^^^: number   (TyNumber) (StaticMemberExpression)

@@ -1,19 +1,19 @@
 Object.values(Status);
->^^^^^^: ObjectConstructor   (TyTypeReference)
+>^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
 
 Object.values(Status);
->^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray)
+>^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray) (ExpressionStatement)
                expected: Status[]
 
 Object.values(Status);
->      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
+>      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject) (StaticMemberExpression)
 
 Object.values(Status);
->^^^^^^: ObjectConstructor   (TyTypeReference)
+>^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
 
 Object.values(Status);
->^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray)
+>^^^^^^^^^^^^^^^^^^^^^^: T[]   (TyArray) (ExpressionStatement)
                expected: (string | Status.Unknown | Status.Closed)[]
 
 Object.values(Status);
->      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
+>      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject) (StaticMemberExpression)

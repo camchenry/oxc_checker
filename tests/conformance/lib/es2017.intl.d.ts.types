@@ -1,77 +1,77 @@
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery)
+>                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
     interface DateTimeFormatPartTypesRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         day: any;
->       ^^^: any   (TyAny)
+>       ^^^: any   (TyAny) (TSPropertySignature)
 
         dayPeriod: any;
->       ^^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^^: any   (TyAny) (TSPropertySignature)
 
         era: any;
->       ^^^: any   (TyAny)
+>       ^^^: any   (TyAny) (TSPropertySignature)
 
         hour: any;
->       ^^^^: any   (TyAny)
+>       ^^^^: any   (TyAny) (TSPropertySignature)
 
         literal: any;
->       ^^^^^^^: any   (TyAny)
+>       ^^^^^^^: any   (TyAny) (TSPropertySignature)
 
         minute: any;
->       ^^^^^^: any   (TyAny)
+>       ^^^^^^: any   (TyAny) (TSPropertySignature)
 
         month: any;
->       ^^^^^: any   (TyAny)
+>       ^^^^^: any   (TyAny) (TSPropertySignature)
 
         second: any;
->       ^^^^^^: any   (TyAny)
+>       ^^^^^^: any   (TyAny) (TSPropertySignature)
 
         timeZoneName: any;
->       ^^^^^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
 
         weekday: any;
->       ^^^^^^^: any   (TyAny)
+>       ^^^^^^^: any   (TyAny) (TSPropertySignature)
 
         year: any;
->       ^^^^: any   (TyAny)
+>       ^^^^: any   (TyAny) (TSPropertySignature)
 
     type DateTimeFormatPartTypes = keyof DateTimeFormatPartTypesRegistry;
->        ^^^^^^^^^^^^^^^^^^^^^^^: keyof DateTimeFormatPartTypesRegistry   (TyKeyof)
+>        ^^^^^^^^^^^^^^^^^^^^^^^: keyof DateTimeFormatPartTypesRegistry   (TyKeyof) (TSTypeAliasDeclaration)
 
     type DateTimeFormatPartTypes = keyof DateTimeFormatPartTypesRegistry;
->                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface DateTimeFormatPart {
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         type: DateTimeFormatPartTypes;
->       ^^^^: DateTimeFormatPartTypes   (TyTypeReference)
+>       ^^^^: DateTimeFormatPartTypes   (TyTypeReference) (TSPropertySignature)
     expected: keyof DateTimeFormatPartTypesRegistry
 
         type: DateTimeFormatPartTypes;
->             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         value: string;
->       ^^^^^: string   (TyString)
+>       ^^^^^: string   (TyString) (TSPropertySignature)
 
     interface DateTimeFormat {
->             ^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                     expected: DateTimeFormatConstructor
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
->       ^^^^^^^^^^^^^: (date?: Date | number) => DateTimeFormatPart[]   (TyFunction)
+>       ^^^^^^^^^^^^^: (date?: Date | number) => DateTimeFormatPart[]   (TyFunction) (TSMethodSignature)
              expected: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: Date | number): DateTimeFormatPart[]; }
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
->                     ^^^^: Date | number | undefined   (TyUnion)
+>                     ^^^^: Date | number | undefined   (TyUnion) (BindingIdentifier)
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
->                            ^^^^: DateConstructor   (TyTypeReference)
+>                            ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
->                            ^^^^: DateConstructor   (TyTypeReference)
+>                            ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
->                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

@@ -1,53 +1,53 @@
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction)
+>                ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction) (BindingIdentifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeParameter)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                       ^: any   (TyAny)
+>                                       ^: any   (TyAny) (TSTypeReference)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                          ^^^: T   (TyTypeReference)
+>                                          ^^^: T   (TyTypeReference) (BindingIdentifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                  ^^^: K   (TyTypeReference)
+>                                                  ^^^: K   (TyTypeReference) (BindingIdentifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                           ^: any   (TyAny)
+>                                                           ^: any   (TyAny) (TSTypeReference)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                             ^: any   (TyAny)
+>                                                             ^: any   (TyAny) (TSTypeReference)
 
 const value = get({ value: 1, name: "ready" }, "value");
->     ^^^^^: number   (TyNumber)
+>     ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const value = get({ value: 1, name: "ready" }, "value");
->             ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction)
+>             ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction) (IdentifierReference)
 
 const value = get({ value: 1, name: "ready" }, "value");
->                   ^^^^^: number   (TyNumber)
+>                   ^^^^^: number   (TyNumber) (ObjectProperty)
 
 const value = get({ value: 1, name: "ready" }, "value");
->                             ^^^^: string   (TyString)
+>                             ^^^^: string   (TyString) (ObjectProperty)
 
 const name = get({ value: 1, name: "ready" }, "name");
->     ^^^^: string   (TyString)
+>     ^^^^: string   (TyString) (BindingIdentifier)
 
 const name = get({ value: 1, name: "ready" }, "name");
->            ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction)
+>            ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction) (IdentifierReference)
 
 const name = get({ value: 1, name: "ready" }, "name");
->                  ^^^^^: number   (TyNumber)
+>                  ^^^^^: number   (TyNumber) (ObjectProperty)
 
 const name = get({ value: 1, name: "ready" }, "name");
->                            ^^^^: string   (TyString)
+>                            ^^^^: string   (TyString) (ObjectProperty)

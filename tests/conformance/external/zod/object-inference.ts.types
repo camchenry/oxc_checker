@@ -1,828 +1,828 @@
 export type input<T extends ZodTypeAny> = T['_input']
->           ^^^^^: T["_input"]   (TyIndexedAccess)
+>           ^^^^^: T["_input"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
 
 export type input<T extends ZodTypeAny> = T['_input']
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeParameter)
 
 export type input<T extends ZodTypeAny> = T['_input']
->                           ^^^^^^^^^^: any   (TyAny)
+>                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type input<T extends ZodTypeAny> = T['_input']
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
 export type output<T extends ZodTypeAny> = T['_output']
->           ^^^^^^: T["_output"]   (TyIndexedAccess)
+>           ^^^^^^: T["_output"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
 
 export type output<T extends ZodTypeAny> = T['_output']
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeParameter)
 
 export type output<T extends ZodTypeAny> = T['_output']
->                            ^^^^^^^^^^: any   (TyAny)
+>                            ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type output<T extends ZodTypeAny> = T['_output']
->                                          ^: any   (TyAny)
+>                                          ^: any   (TyAny) (TSTypeReference)
 
 export abstract class ZodType<Output = any, Input = Output> {
->                     ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                     ^^^^^^^: typeof ZodType   (TyTypeQuery) (BindingIdentifier)
 
 export abstract class ZodType<Output = any, Input = Output> {
->                             ^^^^^^: any   (TyAny)
+>                             ^^^^^^: any   (TyAny) (TSTypeParameter)
 
 export abstract class ZodType<Output = any, Input = Output> {
->                                           ^^^^^: any   (TyAny)
+>                                           ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export abstract class ZodType<Output = any, Input = Output> {
->                                                   ^^^^^^: any   (TyAny)
+>                                                   ^^^^^^: any   (TyAny) (TSTypeReference)
 
   readonly _output!: Output
->          ^^^^^^^: Output   (TyTypeReference)
+>          ^^^^^^^: Output   (TyTypeReference) (PropertyDefinition)
 
   readonly _output!: Output
->                    ^^^^^^: any   (TyAny)
+>                    ^^^^^^: any   (TyAny) (TSTypeReference)
 
   readonly _input!: Input
->          ^^^^^^: Input   (TyTypeReference)
+>          ^^^^^^: Input   (TyTypeReference) (PropertyDefinition)
 
   readonly _input!: Input
->                   ^^^^^: any   (TyAny)
+>                   ^^^^^: any   (TyAny) (TSTypeReference)
 
   abstract parse(data: unknown): Output
->          ^^^^^: (data: unknown) => Output   (TyFunction)
+>          ^^^^^: (data: unknown) => Output   (TyFunction) (MethodDefinition)
 
   abstract parse(data: unknown): Output
->                ^^^^: unknown   (TyUnknown)
+>                ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
   abstract parse(data: unknown): Output
->                                ^^^^^^: any   (TyAny)
+>                                ^^^^^^: any   (TyAny) (TSTypeReference)
 
   optional(): ZodOptional<this> {
-> ^^^^^^^^: () => ZodOptional<this>   (TyFunction)
+> ^^^^^^^^: () => ZodOptional<this>   (TyFunction) (MethodDefinition)
 
   optional(): ZodOptional<this> {
->             ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery)
+>             ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery) (TSTypeReference)
 
   optional(): ZodOptional<this> {
->             ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery)
+>             ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery) (IdentifierReference)
 
     return new ZodOptional(this)
->              ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery)
+>              ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery) (IdentifierReference)
 
   array(): ZodArray<this> {
-> ^^^^^: () => ZodArray<this>   (TyFunction)
+> ^^^^^: () => ZodArray<this>   (TyFunction) (MethodDefinition)
 
   array(): ZodArray<this> {
->          ^^^^^^^^: typeof ZodArray   (TyTypeQuery)
+>          ^^^^^^^^: typeof ZodArray   (TyTypeQuery) (TSTypeReference)
 
   array(): ZodArray<this> {
->          ^^^^^^^^: typeof ZodArray   (TyTypeQuery)
+>          ^^^^^^^^: typeof ZodArray   (TyTypeQuery) (IdentifierReference)
 
     return new ZodArray(this)
->              ^^^^^^^^: typeof ZodArray   (TyTypeQuery)
+>              ^^^^^^^^: typeof ZodArray   (TyTypeQuery) (IdentifierReference)
 
 export type ZodTypeAny = ZodType<any, any>
->           ^^^^^^^^^^: ZodType<any, any>   (TyTypeReference)
+>           ^^^^^^^^^^: ZodType<any, any>   (TyTypeReference) (TSTypeAliasDeclaration)
 
 export type ZodTypeAny = ZodType<any, any>
->                        ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                        ^^^^^^^: typeof ZodType   (TyTypeQuery) (TSTypeReference)
 
 export type ZodTypeAny = ZodType<any, any>
->                        ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                        ^^^^^^^: typeof ZodType   (TyTypeQuery) (IdentifierReference)
 
 export class ZodString extends ZodType<string> {
->            ^^^^^^^^^: typeof ZodString   (TyTypeQuery)
+>            ^^^^^^^^^: typeof ZodString   (TyTypeQuery) (BindingIdentifier)
 
 export class ZodString extends ZodType<string> {
->                              ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                              ^^^^^^^: typeof ZodType   (TyTypeQuery) (IdentifierReference)
 
   parse(data: unknown): string {
-> ^^^^^: (data: unknown) => string   (TyFunction)
+> ^^^^^: (data: unknown) => string   (TyFunction) (MethodDefinition)
 
   parse(data: unknown): string {
->       ^^^^: unknown   (TyUnknown)
+>       ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     return String(data)
->          ^^^^^^: StringConstructor   (TyTypeReference)
+>          ^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
 
     return String(data)
->                 ^^^^: unknown   (TyUnknown)
+>                 ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
 export class ZodNumber extends ZodType<number> {
->            ^^^^^^^^^: typeof ZodNumber   (TyTypeQuery)
+>            ^^^^^^^^^: typeof ZodNumber   (TyTypeQuery) (BindingIdentifier)
 
 export class ZodNumber extends ZodType<number> {
->                              ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                              ^^^^^^^: typeof ZodType   (TyTypeQuery) (IdentifierReference)
 
   parse(data: unknown): number {
-> ^^^^^: (data: unknown) => number   (TyFunction)
+> ^^^^^: (data: unknown) => number   (TyFunction) (MethodDefinition)
 
   parse(data: unknown): number {
->       ^^^^: unknown   (TyUnknown)
+>       ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     return Number(data)
->          ^^^^^^: NumberConstructor   (TyTypeReference)
+>          ^^^^^^: NumberConstructor   (TyTypeReference) (IdentifierReference)
 
     return Number(data)
->                 ^^^^: unknown   (TyUnknown)
+>                 ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
 export class ZodBoolean extends ZodType<boolean> {
->            ^^^^^^^^^^: typeof ZodBoolean   (TyTypeQuery)
+>            ^^^^^^^^^^: typeof ZodBoolean   (TyTypeQuery) (BindingIdentifier)
 
 export class ZodBoolean extends ZodType<boolean> {
->                               ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                               ^^^^^^^: typeof ZodType   (TyTypeQuery) (IdentifierReference)
 
   parse(data: unknown): boolean {
-> ^^^^^: (data: unknown) => boolean   (TyFunction)
+> ^^^^^: (data: unknown) => boolean   (TyFunction) (MethodDefinition)
 
   parse(data: unknown): boolean {
->       ^^^^: unknown   (TyUnknown)
+>       ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     return Boolean(data)
->          ^^^^^^^: BooleanConstructor   (TyTypeReference)
+>          ^^^^^^^: BooleanConstructor   (TyTypeReference) (IdentifierReference)
 
     return Boolean(data)
->                  ^^^^: unknown   (TyUnknown)
+>                  ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
 export class ZodOptional<T extends ZodTypeAny> extends ZodType<
->            ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery)
+>            ^^^^^^^^^^^: typeof ZodOptional   (TyTypeQuery) (BindingIdentifier)
 
 export class ZodOptional<T extends ZodTypeAny> extends ZodType<
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeParameter)
 
 export class ZodOptional<T extends ZodTypeAny> extends ZodType<
->                                  ^^^^^^^^^^: any   (TyAny)
+>                                  ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export class ZodOptional<T extends ZodTypeAny> extends ZodType<
->                                                      ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                                                      ^^^^^^^: typeof ZodType   (TyTypeQuery) (IdentifierReference)
 
   output<T> | undefined,
-> ^^^^^^: any   (TyAny)
+> ^^^^^^: any   (TyAny) (TSTypeReference)
 
   output<T> | undefined,
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeReference)
 
   input<T> | undefined
-> ^^^^^: any   (TyAny)
+> ^^^^^: any   (TyAny) (TSTypeReference)
 
   input<T> | undefined
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
   constructor(readonly innerType: T) {
-> ^^^^^^^^^^^: (innerType: T) => void   (TyFunction)
+> ^^^^^^^^^^^: (innerType: T) => void   (TyFunction) (MethodDefinition)
 
   constructor(readonly innerType: T) {
->                      ^^^^^^^^^: T   (TyTypeReference)
+>                      ^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   constructor(readonly innerType: T) {
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeReference)
 
     super()
->   ^^^^^^^: any   (TyAny)
+>   ^^^^^^^: any   (TyAny) (ExpressionStatement)
    expected: void
 
   parse(data: unknown): output<T> | undefined {
-> ^^^^^: (data: unknown) => output<T> | undefined   (TyFunction)
+> ^^^^^: (data: unknown) => output<T> | undefined   (TyFunction) (MethodDefinition)
 
   parse(data: unknown): output<T> | undefined {
->       ^^^^: unknown   (TyUnknown)
+>       ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
   parse(data: unknown): output<T> | undefined {
->                       ^^^^^^: any   (TyAny)
+>                       ^^^^^^: any   (TyAny) (TSTypeReference)
 
   parse(data: unknown): output<T> | undefined {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
     return data === undefined ? undefined : this.innerType.parse(data)
->          ^^^^: unknown   (TyUnknown)
+>          ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
     return data === undefined ? undefined : this.innerType.parse(data)
->                   ^^^^^^^^^: undefined   (TyUndefined)
+>                   ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
 
     return data === undefined ? undefined : this.innerType.parse(data)
->                               ^^^^^^^^^: undefined   (TyUndefined)
+>                               ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
 
     return data === undefined ? undefined : this.innerType.parse(data)
->                                                ^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
                                                   expected: T
 
     return data === undefined ? undefined : this.innerType.parse(data)
->                                                          ^^^^^: any   (TyAny)
+>                                                          ^^^^^: any   (TyAny) (StaticMemberExpression)
                                                         expected: (data: unknown) => any
 
     return data === undefined ? undefined : this.innerType.parse(data)
->                                                                ^^^^: unknown   (TyUnknown)
+>                                                                ^^^^: unknown   (TyUnknown) (IdentifierReference)
                                                              expected: {} | null
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->            ^^^^^^^^: typeof ZodArray   (TyTypeQuery)
+>            ^^^^^^^^: typeof ZodArray   (TyTypeQuery) (BindingIdentifier)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeParameter)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                               ^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                                                   ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                                                   ^^^^^^^: typeof ZodType   (TyTypeQuery) (IdentifierReference)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                                                           ^^^^^^: any   (TyAny)
+>                                                           ^^^^^^: any   (TyAny) (TSTypeReference)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                                                                  ^: any   (TyAny)
+>                                                                  ^: any   (TyAny) (TSTypeReference)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                                                                        ^^^^^: any   (TyAny)
+>                                                                        ^^^^^: any   (TyAny) (TSTypeReference)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                                                                              ^: any   (TyAny)
+>                                                                              ^: any   (TyAny) (TSTypeReference)
 
   constructor(readonly element: T) {
-> ^^^^^^^^^^^: (element: T) => void   (TyFunction)
+> ^^^^^^^^^^^: (element: T) => void   (TyFunction) (MethodDefinition)
 
   constructor(readonly element: T) {
->                      ^^^^^^^: T   (TyTypeReference)
+>                      ^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   constructor(readonly element: T) {
->                               ^: any   (TyAny)
+>                               ^: any   (TyAny) (TSTypeReference)
 
     super()
->   ^^^^^^^: any   (TyAny)
+>   ^^^^^^^: any   (TyAny) (ExpressionStatement)
    expected: void
 
   parse(data: unknown): output<T>[] {
-> ^^^^^: (data: unknown) => output<T>[]   (TyFunction)
+> ^^^^^: (data: unknown) => output<T>[]   (TyFunction) (MethodDefinition)
 
   parse(data: unknown): output<T>[] {
->       ^^^^: unknown   (TyUnknown)
+>       ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
   parse(data: unknown): output<T>[] {
->                       ^^^^^^: any   (TyAny)
+>                       ^^^^^^: any   (TyAny) (TSTypeReference)
 
   parse(data: unknown): output<T>[] {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
     return (data as unknown[]).map(value => this.element.parse(value))
->           ^^^^: unknown   (TyUnknown)
+>           ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
     return (data as unknown[]).map(value => this.element.parse(value))
->                              ^^^: <U>(callbackfn: (value: unknown, index: number, array: unknown[]) => U, thisArg?: any) => U[]   (TyFunction)
+>                              ^^^: <U>(callbackfn: (value: unknown, index: number, array: unknown[]) => U, thisArg?: any) => U[]   (TyFunction) (StaticMemberExpression)
 
     return (data as unknown[]).map(value => this.element.parse(value))
->                                  ^^^^^: unknown   (TyUnknown)
+>                                  ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     return (data as unknown[]).map(value => this.element.parse(value))
->                                                ^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^: any   (TyAny) (StaticMemberExpression)
                                                 expected: T
 
     return (data as unknown[]).map(value => this.element.parse(value))
->                                                        ^^^^^: any   (TyAny)
+>                                                        ^^^^^: any   (TyAny) (StaticMemberExpression)
                                                       expected: (data: unknown) => any
 
     return (data as unknown[]).map(value => this.element.parse(value))
->                                                              ^^^^^: unknown   (TyUnknown)
+>                                                              ^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
 export type ZodRawShape = Record<string, ZodTypeAny>
->           ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject)
+>           ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject) (TSTypeAliasDeclaration)
                expected: { [x: string]: ZodTypeAny; }
 
 export type ZodRawShape = Record<string, ZodTypeAny>
->                         ^^^^^^: any   (TyAny)
+>                         ^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type ZodRawShape = Record<string, ZodTypeAny>
->                                        ^^^^^^^^^^: any   (TyAny)
+>                                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type objectOutputType<Shape extends ZodRawShape> = {
->           ^^^^^^^^^^^^^^^^: { [Key in keyof Shape]: output<Shape[Key]>; }   (TyMapped)
+>           ^^^^^^^^^^^^^^^^: { [Key in keyof Shape]: output<Shape[Key]>; }   (TyMapped) (TSTypeAliasDeclaration)
 
 export type objectOutputType<Shape extends ZodRawShape> = {
->                            ^^^^^: any   (TyAny)
+>                            ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type objectOutputType<Shape extends ZodRawShape> = {
->                                          ^^^^^^^^^^^: any   (TyAny)
+>                                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: output<Shape[Key]>
->  ^^^: any   (TyAny)
+>  ^^^: any   (TyAny) (TSMappedType)
 
   [Key in keyof Shape]: output<Shape[Key]>
->               ^^^^^: any   (TyAny)
+>               ^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: output<Shape[Key]>
->                       ^^^^^^: any   (TyAny)
+>                       ^^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: output<Shape[Key]>
->                              ^^^^^: any   (TyAny)
+>                              ^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: output<Shape[Key]>
->                                    ^^^: any   (TyAny)
+>                                    ^^^: any   (TyAny) (TSTypeReference)
 
 export type objectInputType<Shape extends ZodRawShape> = {
->           ^^^^^^^^^^^^^^^: { [Key in keyof Shape]: input<Shape[Key]>; }   (TyMapped)
+>           ^^^^^^^^^^^^^^^: { [Key in keyof Shape]: input<Shape[Key]>; }   (TyMapped) (TSTypeAliasDeclaration)
 
 export type objectInputType<Shape extends ZodRawShape> = {
->                           ^^^^^: any   (TyAny)
+>                           ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type objectInputType<Shape extends ZodRawShape> = {
->                                         ^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: input<Shape[Key]>
->  ^^^: any   (TyAny)
+>  ^^^: any   (TyAny) (TSMappedType)
 
   [Key in keyof Shape]: input<Shape[Key]>
->               ^^^^^: any   (TyAny)
+>               ^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: input<Shape[Key]>
->                       ^^^^^: any   (TyAny)
+>                       ^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: input<Shape[Key]>
->                             ^^^^^: any   (TyAny)
+>                             ^^^^^: any   (TyAny) (TSTypeReference)
 
   [Key in keyof Shape]: input<Shape[Key]>
->                                   ^^^: any   (TyAny)
+>                                   ^^^: any   (TyAny) (TSTypeReference)
 
 export class ZodObject<Shape extends ZodRawShape> extends ZodType<
->            ^^^^^^^^^: typeof ZodObject   (TyTypeQuery)
+>            ^^^^^^^^^: typeof ZodObject   (TyTypeQuery) (BindingIdentifier)
 
 export class ZodObject<Shape extends ZodRawShape> extends ZodType<
->                      ^^^^^: any   (TyAny)
+>                      ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export class ZodObject<Shape extends ZodRawShape> extends ZodType<
->                                    ^^^^^^^^^^^: any   (TyAny)
+>                                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export class ZodObject<Shape extends ZodRawShape> extends ZodType<
->                                                         ^^^^^^^: typeof ZodType   (TyTypeQuery)
+>                                                         ^^^^^^^: typeof ZodType   (TyTypeQuery) (IdentifierReference)
 
   objectOutputType<Shape>,
-> ^^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   objectOutputType<Shape>,
->                  ^^^^^: any   (TyAny)
+>                  ^^^^^: any   (TyAny) (TSTypeReference)
 
   objectInputType<Shape>
-> ^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   objectInputType<Shape>
->                 ^^^^^: any   (TyAny)
+>                 ^^^^^: any   (TyAny) (TSTypeReference)
 
   constructor(readonly shape: Shape) {
-> ^^^^^^^^^^^: (shape: Shape) => void   (TyFunction)
+> ^^^^^^^^^^^: (shape: Shape) => void   (TyFunction) (MethodDefinition)
 
   constructor(readonly shape: Shape) {
->                      ^^^^^: Shape   (TyTypeReference)
+>                      ^^^^^: Shape   (TyTypeReference) (BindingIdentifier)
 
   constructor(readonly shape: Shape) {
->                             ^^^^^: any   (TyAny)
+>                             ^^^^^: any   (TyAny) (TSTypeReference)
 
     super()
->   ^^^^^^^: any   (TyAny)
+>   ^^^^^^^: any   (TyAny) (ExpressionStatement)
    expected: void
 
   parse(data: unknown): objectOutputType<Shape> {
-> ^^^^^: (data: unknown) => objectOutputType<Shape>   (TyFunction)
+> ^^^^^: (data: unknown) => objectOutputType<Shape>   (TyFunction) (MethodDefinition)
 
   parse(data: unknown): objectOutputType<Shape> {
->       ^^^^: unknown   (TyUnknown)
+>       ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
   parse(data: unknown): objectOutputType<Shape> {
->                       ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                       ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   parse(data: unknown): objectOutputType<Shape> {
->                                        ^^^^^: any   (TyAny)
+>                                        ^^^^^: any   (TyAny) (TSTypeReference)
 
     const out: Record<string, unknown> = {}
->         ^^^: Record<string, unknown>   (TyTypeReference)
+>         ^^^: Record<string, unknown>   (TyTypeReference) (BindingIdentifier)
 
     const out: Record<string, unknown> = {}
->              ^^^^^^: any   (TyAny)
+>              ^^^^^^: any   (TyAny) (TSTypeReference)
 
     for (const key in this.shape) {
->              ^^^: any   (TyAny)
+>              ^^^: any   (TyAny) (BindingIdentifier)
           expected: Extract<keyof Shape, string>
 
     for (const key in this.shape) {
->                          ^^^^^: any   (TyAny)
+>                          ^^^^^: any   (TyAny) (StaticMemberExpression)
                         expected: Shape
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->     ^^^: Record<string, unknown>   (TyTypeReference)
+>     ^^^: Record<string, unknown>   (TyTypeReference) (IdentifierReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->         ^^^: any   (TyAny)
+>         ^^^: any   (TyAny) (IdentifierReference)
      expected: Extract<keyof Shape, string>
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                     ^^^^^: any   (TyAny)
+>                     ^^^^^: any   (TyAny) (StaticMemberExpression)
                    expected: Shape
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                           ^^^: any   (TyAny)
+>                           ^^^: any   (TyAny) (IdentifierReference)
                        expected: Extract<keyof Shape, string>
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                                ^^^^^: any   (TyAny)
+>                                ^^^^^: any   (TyAny) (StaticMemberExpression)
                               expected: (data: unknown) => any
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                                       ^^^^: unknown   (TyUnknown)
+>                                       ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                                               ^^^^^^: any   (TyAny)
+>                                               ^^^^^^: any   (TyAny) (TSTypeReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                                                                        ^^^: any   (TyAny)
+>                                                                        ^^^: any   (TyAny) (IdentifierReference)
                                                                     expected: Extract<keyof Shape, string>
 
     return out as objectOutputType<Shape>
->          ^^^: Record<string, unknown>   (TyTypeReference)
+>          ^^^: Record<string, unknown>   (TyTypeReference) (IdentifierReference)
 
     return out as objectOutputType<Shape>
->                 ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return out as objectOutputType<Shape>
->                                  ^^^^^: any   (TyAny)
+>                                  ^^^^^: any   (TyAny) (TSTypeReference)
 
   pick<Mask extends { [Key in keyof Shape]?: true }>(
-> ^^^^: <Mask extends { [Key in keyof Shape]?: true | undefined; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>   (TyFunction)
+> ^^^^: <Mask extends { [Key in keyof Shape]?: true | undefined; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>   (TyFunction) (MethodDefinition)
 expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>
 
   pick<Mask extends { [Key in keyof Shape]?: true }>(
->      ^^^^: any   (TyAny)
+>      ^^^^: any   (TyAny) (TSTypeParameter)
 
   pick<Mask extends { [Key in keyof Shape]?: true }>(
->                      ^^^: any   (TyAny)
+>                      ^^^: any   (TyAny) (TSMappedType)
 
   pick<Mask extends { [Key in keyof Shape]?: true }>(
->                                   ^^^^^: any   (TyAny)
+>                                   ^^^^^: any   (TyAny) (TSTypeReference)
 
     mask: Mask,
->   ^^^^: Mask   (TyTypeReference)
+>   ^^^^: Mask   (TyTypeReference) (BindingIdentifier)
 
     mask: Mask,
->         ^^^^: any   (TyAny)
+>         ^^^^: any   (TyAny) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->    ^^^^^^^^^: typeof ZodObject   (TyTypeQuery)
+>    ^^^^^^^^^: typeof ZodObject   (TyTypeQuery) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->    ^^^^^^^^^: typeof ZodObject   (TyTypeQuery)
+>    ^^^^^^^^^: typeof ZodObject   (TyTypeQuery) (IdentifierReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->              ^^^^: any   (TyAny)
+>              ^^^^: any   (TyAny) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->                   ^^^^^: any   (TyAny)
+>                   ^^^^^: any   (TyAny) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->                                ^^^^: any   (TyAny)
+>                                ^^^^: any   (TyAny) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->                                             ^^^^^: any   (TyAny)
+>                                             ^^^^^: any   (TyAny) (TSTypeReference)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
->         ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TyTypeReference)
+>         ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TyTypeReference) (BindingIdentifier)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
->                     ^^^^: any   (TyAny)
+>                     ^^^^: any   (TyAny) (TSTypeReference)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
->                          ^^^^^: any   (TyAny)
+>                          ^^^^^: any   (TyAny) (TSTypeReference)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
->                                       ^^^^: any   (TyAny)
+>                                       ^^^^: any   (TyAny) (TSTypeReference)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
->                                                    ^^^^^: any   (TyAny)
+>                                                    ^^^^^: any   (TyAny) (TSTypeReference)
 
     for (const key in mask) {
->              ^^^: any   (TyAny)
+>              ^^^: any   (TyAny) (BindingIdentifier)
           expected: Extract<keyof Mask, string>
 
     for (const key in mask) {
->                     ^^^^: Mask   (TyTypeReference)
+>                     ^^^^: Mask   (TyTypeReference) (IdentifierReference)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->     ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TyTypeReference)
+>     ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TyTypeReference) (IdentifierReference)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
                                                                    expected: Shape[keyof Shape]
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->         ^^^: any   (TyAny)
+>         ^^^: any   (TyAny) (IdentifierReference)
      expected: Extract<keyof Mask, string>
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->                      ^^^^: any   (TyAny)
+>                      ^^^^: any   (TyAny) (TSTypeReference)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->                                   ^^^^^: any   (TyAny)
+>                                   ^^^^^: any   (TyAny) (TSTypeReference)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->                                                 ^^^^^: any   (TyAny)
+>                                                 ^^^^^: any   (TyAny) (StaticMemberExpression)
                                                expected: Shape
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->                                                       ^^^: any   (TyAny)
+>                                                       ^^^: any   (TyAny) (IdentifierReference)
                                                    expected: Extract<keyof Mask, string>
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->                                                                    ^^^^^: any   (TyAny)
+>                                                                    ^^^^^: any   (TyAny) (TSTypeReference)
 
     return new ZodObject(out)
->              ^^^^^^^^^: typeof ZodObject   (TyTypeQuery)
+>              ^^^^^^^^^: typeof ZodObject   (TyTypeQuery) (IdentifierReference)
 
     return new ZodObject(out)
->                        ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TyTypeReference)
+>                        ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TyTypeReference) (IdentifierReference)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->        ^^^^^^^^^^: typeof ZodBoolean   (TyTypeQuery)
+>        ^^^^^^^^^^: typeof ZodBoolean   (TyTypeQuery) (BindingIdentifier)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->                    ^^^^^^^^^: typeof ZodNumber   (TyTypeQuery)
+>                    ^^^^^^^^^: typeof ZodNumber   (TyTypeQuery) (BindingIdentifier)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->                               ^^^^^^^^^: typeof ZodObject   (TyTypeQuery)
+>                               ^^^^^^^^^: typeof ZodObject   (TyTypeQuery) (BindingIdentifier)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->                                          ^^^^^^^^^: typeof ZodString   (TyTypeQuery)
+>                                          ^^^^^^^^^: typeof ZodString   (TyTypeQuery) (BindingIdentifier)
 
 import type { ZodRawShape } from './types'
->             ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject)
+>             ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject) (BindingIdentifier)
                  expected: { [x: string]: ZodTypeAny; }
 
 export const z = {
->            ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject)
+>            ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject) (BindingIdentifier)
       expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 
   string: () => new ZodString(),
-> ^^^^^^: () => ZodString   (TyFunction)
+> ^^^^^^: () => ZodString   (TyFunction) (ObjectProperty)
 
   string: () => new ZodString(),
->                   ^^^^^^^^^: typeof ZodString   (TyTypeQuery)
+>                   ^^^^^^^^^: typeof ZodString   (TyTypeQuery) (IdentifierReference)
 
   number: () => new ZodNumber(),
-> ^^^^^^: () => ZodNumber   (TyFunction)
+> ^^^^^^: () => ZodNumber   (TyFunction) (ObjectProperty)
 
   number: () => new ZodNumber(),
->                   ^^^^^^^^^: typeof ZodNumber   (TyTypeQuery)
+>                   ^^^^^^^^^: typeof ZodNumber   (TyTypeQuery) (IdentifierReference)
 
   boolean: () => new ZodBoolean(),
-> ^^^^^^^: () => ZodBoolean   (TyFunction)
+> ^^^^^^^: () => ZodBoolean   (TyFunction) (ObjectProperty)
 
   boolean: () => new ZodBoolean(),
->                    ^^^^^^^^^^: typeof ZodBoolean   (TyTypeQuery)
+>                    ^^^^^^^^^^: typeof ZodBoolean   (TyTypeQuery) (IdentifierReference)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
-> ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject   (TyFunction)
+> ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject   (TyFunction) (ObjectProperty)
 expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->          ^^^^^: any   (TyAny)
+>          ^^^^^: any   (TyAny) (TSTypeParameter)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                        ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject)
+>                        ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject) (TSTypeReference)
                             expected: { [x: string]: ZodTypeAny; }
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                        ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject)
+>                        ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (TyObject) (IdentifierReference)
                             expected: { [x: string]: ZodTypeAny; }
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                                     ^^^^^: Shape   (TyTypeReference)
+>                                     ^^^^^: Shape   (TyTypeReference) (BindingIdentifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                                            ^^^^^: any   (TyAny)
+>                                            ^^^^^: any   (TyAny) (TSTypeReference)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                                                          ^^^^^^^^^: typeof ZodObject   (TyTypeQuery)
+>                                                          ^^^^^^^^^: typeof ZodObject   (TyTypeQuery) (IdentifierReference)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                                                                    ^^^^^: Shape   (TyTypeReference)
+>                                                                    ^^^^^: Shape   (TyTypeReference) (IdentifierReference)
 
 import { z } from '../src/v3/external'
->        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject)
+>        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject) (BindingIdentifier)
   expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 
 import type { input, output } from '../src/v3/types'
->             ^^^^^: T["_input"]   (TyIndexedAccess)
+>             ^^^^^: T["_input"]   (TyIndexedAccess) (BindingIdentifier)
 
 import type { input, output } from '../src/v3/types'
->                    ^^^^^^: T["_output"]   (TyIndexedAccess)
+>                    ^^^^^^: T["_output"]   (TyIndexedAccess) (BindingIdentifier)
 
 const accountSchema = z.object({
->     ^^^^^^^^^^^^^: ZodObject   (TyTypeReference)
+>     ^^^^^^^^^^^^^: ZodObject   (TyTypeReference) (BindingIdentifier)
            expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const accountSchema = z.object({
->                     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject)
+>                     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject) (IdentifierReference)
                expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 
 const accountSchema = z.object({
->                       ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject   (TyFunction)
+>                       ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject   (TyFunction) (StaticMemberExpression)
                       expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
 
   id: z.string(),
-> ^^: ZodString   (TyTypeReference)
+> ^^: ZodString   (TyTypeReference) (ObjectProperty)
 
   id: z.string(),
->     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject)
+>     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject) (IdentifierReference)
 expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 
   id: z.string(),
->       ^^^^^^: () => ZodString   (TyFunction)
+>       ^^^^^^: () => ZodString   (TyFunction) (StaticMemberExpression)
 
   email: z.string().optional(),
-> ^^^^^: any   (TyAny)
+> ^^^^^: any   (TyAny) (ObjectProperty)
 expected: ZodOptional<ZodString>
 
   email: z.string().optional(),
->        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject)
+>        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject) (IdentifierReference)
   expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 
   email: z.string().optional(),
->          ^^^^^^: () => ZodString   (TyFunction)
+>          ^^^^^^: () => ZodString   (TyFunction) (StaticMemberExpression)
 
   email: z.string().optional(),
->                   ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: any   (TyAny) (StaticMemberExpression)
                     expected: () => ZodOptional<ZodString>
 
   scores: z.number().array(),
-> ^^^^^^: any   (TyAny)
+> ^^^^^^: any   (TyAny) (ObjectProperty)
 expected: ZodArray<ZodNumber>
 
   scores: z.number().array(),
->         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject)
+>         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject) (IdentifierReference)
    expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 
   scores: z.number().array(),
->           ^^^^^^: () => ZodNumber   (TyFunction)
+>           ^^^^^^: () => ZodNumber   (TyFunction) (StaticMemberExpression)
 
   scores: z.number().array(),
->                    ^^^^^: any   (TyAny)
+>                    ^^^^^: any   (TyAny) (StaticMemberExpression)
                   expected: () => ZodArray<ZodNumber>
 
   active: z.boolean(),
-> ^^^^^^: ZodBoolean   (TyTypeReference)
+> ^^^^^^: ZodBoolean   (TyTypeReference) (ObjectProperty)
 
   active: z.boolean(),
->         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject)
+>         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (TyObject) (IdentifierReference)
    expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 
   active: z.boolean(),
->           ^^^^^^^: () => ZodBoolean   (TyFunction)
+>           ^^^^^^^: () => ZodBoolean   (TyFunction) (StaticMemberExpression)
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->     ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference)
+>     ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference) (BindingIdentifier)
                  expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                           ^^^^^^^^^^^^^: ZodObject   (TyTypeReference)
+>                           ^^^^^^^^^^^^^: ZodObject   (TyTypeReference) (IdentifierReference)
                                  expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                                         ^^^^: <Mask extends { [Key in keyof Shape]?: true | undefined; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>   (TyFunction)
+>                                         ^^^^: <Mask extends { [Key in keyof Shape]?: true | undefined; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>   (TyFunction) (StaticMemberExpression)
                                       expected: <Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("id" | "email" | "scores" | "active")>>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                                                ^^: boolean   (TyBoolean)
+>                                                ^^: boolean   (TyBoolean) (ObjectProperty)
                                            expected: true
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                                                          ^^^^^^: boolean   (TyBoolean)
+>                                                          ^^^^^^: boolean   (TyBoolean) (ObjectProperty)
                                                          expected: true
 
 type AccountInput = input<typeof accountSchema>
->    ^^^^^^^^^^^^: ZodObject["_input"]   (TyIndexedAccess)
+>    ^^^^^^^^^^^^: ZodObject["_input"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
          expected: { id: string; email: string | undefined; scores: number[]; active: boolean; }
 
 type AccountInput = input<typeof accountSchema>
->                   ^^^^^: T["_input"]   (TyIndexedAccess)
+>                   ^^^^^: T["_input"]   (TyIndexedAccess) (TSTypeReference)
 
 type AccountInput = input<typeof accountSchema>
->                   ^^^^^: T["_input"]   (TyIndexedAccess)
+>                   ^^^^^: T["_input"]   (TyIndexedAccess) (IdentifierReference)
 
 type AccountInput = input<typeof accountSchema>
->                                ^^^^^^^^^^^^^: ZodObject   (TyTypeReference)
+>                                ^^^^^^^^^^^^^: ZodObject   (TyTypeReference) (IdentifierReference)
                                       expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 type AccountOutput = output<typeof accountSchema>
->    ^^^^^^^^^^^^^: ZodObject["_output"]   (TyIndexedAccess)
+>    ^^^^^^^^^^^^^: ZodObject["_output"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
           expected: { id: string; email: string | undefined; scores: number[]; active: boolean; }
 
 type AccountOutput = output<typeof accountSchema>
->                    ^^^^^^: T["_output"]   (TyIndexedAccess)
+>                    ^^^^^^: T["_output"]   (TyIndexedAccess) (TSTypeReference)
 
 type AccountOutput = output<typeof accountSchema>
->                    ^^^^^^: T["_output"]   (TyIndexedAccess)
+>                    ^^^^^^: T["_output"]   (TyIndexedAccess) (IdentifierReference)
 
 type AccountOutput = output<typeof accountSchema>
->                                  ^^^^^^^^^^^^^: ZodObject   (TyTypeReference)
+>                                  ^^^^^^^^^^^^^: ZodObject   (TyTypeReference) (IdentifierReference)
                                         expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 type PublicAccount = output<typeof publicAccountSchema>
->    ^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>["_output"]   (TyIndexedAccess)
+>    ^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>["_output"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
           expected: { id: string; active: boolean; }
 
 type PublicAccount = output<typeof publicAccountSchema>
->                    ^^^^^^: T["_output"]   (TyIndexedAccess)
+>                    ^^^^^^: T["_output"]   (TyIndexedAccess) (TSTypeReference)
 
 type PublicAccount = output<typeof publicAccountSchema>
->                    ^^^^^^: T["_output"]   (TyIndexedAccess)
+>                    ^^^^^^: T["_output"]   (TyIndexedAccess) (IdentifierReference)
 
 type PublicAccount = output<typeof publicAccountSchema>
->                                  ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference)
+>                                  ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference) (IdentifierReference)
                                               expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
 
 const inputValue: AccountInput = {
->     ^^^^^^^^^^: AccountInput   (TyTypeReference)
+>     ^^^^^^^^^^: AccountInput   (TyTypeReference) (BindingIdentifier)
         expected: objectInputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const inputValue: AccountInput = {
->                 ^^^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   id: 'account-1',
-> ^^: string   (TyString)
+> ^^: string   (TyString) (ObjectProperty)
 
   email: undefined,
-> ^^^^^: undefined   (TyUndefined)
+> ^^^^^: undefined   (TyUndefined) (ObjectProperty)
 
   email: undefined,
->        ^^^^^^^^^: undefined   (TyUndefined)
+>        ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
 
   scores: [1, 2],
-> ^^^^^^: number[]   (TyArray)
+> ^^^^^^: number[]   (TyArray) (ObjectProperty)
 
   active: true,
-> ^^^^^^: true   (TyBooleanLiteral)
+> ^^^^^^: true   (TyBooleanLiteral) (ObjectProperty)
 
 const parsedAccount = accountSchema.parse(inputValue)
->     ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference)
+>     ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference) (BindingIdentifier)
            expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const parsedAccount = accountSchema.parse(inputValue)
->                     ^^^^^^^^^^^^^: ZodObject   (TyTypeReference)
+>                     ^^^^^^^^^^^^^: ZodObject   (TyTypeReference) (IdentifierReference)
                            expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const parsedAccount = accountSchema.parse(inputValue)
->                                   ^^^^^: (data: unknown) => objectOutputType<Shape>   (TyFunction)
+>                                   ^^^^^: (data: unknown) => objectOutputType<Shape>   (TyFunction) (StaticMemberExpression)
                                  expected: (data: unknown) => objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const parsedAccount = accountSchema.parse(inputValue)
->                                         ^^^^^^^^^^: AccountInput   (TyTypeReference)
+>                                         ^^^^^^^^^^: AccountInput   (TyTypeReference) (IdentifierReference)
                                             expected: objectInputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const explicitAccount: AccountOutput = parsedAccount
->     ^^^^^^^^^^^^^^^: AccountOutput   (TyTypeReference)
+>     ^^^^^^^^^^^^^^^: AccountOutput   (TyTypeReference) (BindingIdentifier)
              expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const explicitAccount: AccountOutput = parsedAccount
->                      ^^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const explicitAccount: AccountOutput = parsedAccount
->                                      ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference)
+>                                      ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference) (IdentifierReference)
                                             expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->     ^^^^^^^^^^^^^: PublicAccount   (TyTypeReference)
+>     ^^^^^^^^^^^^^: PublicAccount   (TyTypeReference) (BindingIdentifier)
            expected: objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->                    ^^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->                                    ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference)
+>                                    ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference) (IdentifierReference)
                                                 expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->                                                        ^^^^^: (data: unknown) => objectOutputType<Shape>   (TyFunction)
+>                                                        ^^^^^: (data: unknown) => objectOutputType<Shape>   (TyFunction) (StaticMemberExpression)
                                                       expected: (data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->                                                              ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference)
+>                                                              ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference) (IdentifierReference)
                                                                     expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const score = parsedAccount.scores[0]
->     ^^^^^: any   (TyAny)
+>     ^^^^^: any   (TyAny) (BindingIdentifier)
    expected: number
 
 const score = parsedAccount.scores[0]
->             ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference)
+>             ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference) (IdentifierReference)
                    expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const score = parsedAccount.scores[0]
->                           ^^^^^^: any   (TyAny)
+>                           ^^^^^^: any   (TyAny) (StaticMemberExpression)
                           expected: number[]
 
 const publicActive = publicAccount.active
->     ^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
           expected: boolean
 
 const publicActive = publicAccount.active
->                    ^^^^^^^^^^^^^: PublicAccount   (TyTypeReference)
+>                    ^^^^^^^^^^^^^: PublicAccount   (TyTypeReference) (IdentifierReference)
                           expected: objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
 
 const publicActive = publicAccount.active
->                                  ^^^^^^: any   (TyAny)
+>                                  ^^^^^^: any   (TyAny) (StaticMemberExpression)
                                  expected: boolean

@@ -1,155 +1,155 @@
 type Box<T> = { value: T };
->    ^^^: { value: T; }   (TyObject)
+>    ^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
 
 type Box<T> = { value: T };
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
 type Box<T> = { value: T };
->               ^^^^^: T   (TyTypeReference)
+>               ^^^^^: T   (TyTypeReference) (TSPropertySignature)
 
 type Box<T> = { value: T };
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
 type DefaultBox<T = number> = { value: T };
->    ^^^^^^^^^^: { value: T; }   (TyObject)
+>    ^^^^^^^^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
 
 type DefaultBox<T = number> = { value: T };
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeParameter)
 
 type DefaultBox<T = number> = { value: T };
->                               ^^^^^: T   (TyTypeReference)
+>                               ^^^^^: T   (TyTypeReference) (TSPropertySignature)
 
 type DefaultBox<T = number> = { value: T };
->                                      ^: any   (TyAny)
+>                                      ^: any   (TyAny) (TSTypeReference)
 
 type SelfDefault<T = T> = { value: T };
->    ^^^^^^^^^^^: { value: T; }   (TyObject)
+>    ^^^^^^^^^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
 
 type SelfDefault<T = T> = { value: T };
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeParameter)
 
 type SelfDefault<T = T> = { value: T };
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeReference)
 
 type SelfDefault<T = T> = { value: T };
->                           ^^^^^: T   (TyTypeReference)
+>                           ^^^^^: T   (TyTypeReference) (TSPropertySignature)
 
 type SelfDefault<T = T> = { value: T };
->                                  ^: any   (TyAny)
+>                                  ^: any   (TyAny) (TSTypeReference)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->    ^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject)
+>    ^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject) (TSTypeAliasDeclaration)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeParameter)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeReference)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeParameter)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                          ^: T   (TyTypeReference)
+>                                          ^: T   (TyTypeReference) (TSPropertySignature)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                             ^: any   (TyAny)
+>                                             ^: any   (TyAny) (TSTypeReference)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                                ^: U   (TyTypeReference)
+>                                                ^: U   (TyTypeReference) (TSPropertySignature)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                                   ^: any   (TyAny)
+>                                                   ^: any   (TyAny) (TSTypeReference)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->    ^^^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject)
+>    ^^^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject) (TSTypeAliasDeclaration)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeParameter)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeParameter)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeReference)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                            ^: T   (TyTypeReference)
+>                                            ^: T   (TyTypeReference) (TSPropertySignature)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                                  ^: U   (TyTypeReference)
+>                                                  ^: U   (TyTypeReference) (TSPropertySignature)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSTypeReference)
 
 function box<T>(x: T): Box<T> {
->        ^^^: <T>(x: T) => Box<T>   (TyFunction)
+>        ^^^: <T>(x: T) => Box<T>   (TyFunction) (BindingIdentifier)
 
 function box<T>(x: T): Box<T> {
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeParameter)
 
 function box<T>(x: T): Box<T> {
->               ^: T   (TyTypeReference)
+>               ^: T   (TyTypeReference) (BindingIdentifier)
 
 function box<T>(x: T): Box<T> {
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeReference)
 
 function box<T>(x: T): Box<T> {
->                      ^^^: any   (TyAny)
+>                      ^^^: any   (TyAny) (TSTypeReference)
 
 function box<T>(x: T): Box<T> {
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeReference)
 
   return { value: x };
->          ^^^^^: T   (TyTypeReference)
+>          ^^^^^: T   (TyTypeReference) (ObjectProperty)
 
   return { value: x };
->                 ^: T   (TyTypeReference)
+>                 ^: T   (TyTypeReference) (IdentifierReference)
 
 const explicit: Box<string> = { value: "test" };
->     ^^^^^^^^: Box<string>   (TyTypeReference)
+>     ^^^^^^^^: Box<string>   (TyTypeReference) (BindingIdentifier)
 
 const explicit: Box<string> = { value: "test" };
->               ^^^: any   (TyAny)
+>               ^^^: any   (TyAny) (TSTypeReference)
 
 const explicit: Box<string> = { value: "test" };
->                               ^^^^^: string   (TyString)
+>                               ^^^^^: string   (TyString) (ObjectProperty)
 
 const inferred = box(123);
->     ^^^^^^^^: Box<number>   (TyTypeReference)
+>     ^^^^^^^^: Box<number>   (TyTypeReference) (BindingIdentifier)
 
 const inferred = box(123);
->                ^^^: <T>(x: T) => Box<T>   (TyFunction)
+>                ^^^: <T>(x: T) => Box<T>   (TyFunction) (IdentifierReference)
 
 const fromExplicitCall = box<string>("test");
->     ^^^^^^^^^^^^^^^^: Box<string>   (TyTypeReference)
+>     ^^^^^^^^^^^^^^^^: Box<string>   (TyTypeReference) (BindingIdentifier)
 
 const fromExplicitCall = box<string>("test");
->                        ^^^: <T>(x: T) => Box<T>   (TyFunction)
+>                        ^^^: <T>(x: T) => Box<T>   (TyFunction) (IdentifierReference)
 
 declare const defaultBox: DefaultBox;
->             ^^^^^^^^^^: DefaultBox<number>   (TyTypeReference)
+>             ^^^^^^^^^^: DefaultBox<number>   (TyTypeReference) (BindingIdentifier)
 
 declare const defaultBox: DefaultBox;
->                         ^^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const selfDefault: SelfDefault;
->             ^^^^^^^^^^^: SelfDefault<any>   (TyTypeReference)
+>             ^^^^^^^^^^^: SelfDefault<any>   (TyTypeReference) (BindingIdentifier)
 
 declare const selfDefault: SelfDefault;
->                          ^^^^^^^^^^^: any   (TyAny)
+>                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const forwardDefault: ForwardDefault;
->             ^^^^^^^^^^^^^^: ForwardDefault<any, string>   (TyTypeReference)
+>             ^^^^^^^^^^^^^^: ForwardDefault<any, string>   (TyTypeReference) (BindingIdentifier)
 
 declare const forwardDefault: ForwardDefault;
->                             ^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const dependentDefault: DependentDefault;
->             ^^^^^^^^^^^^^^^^: DependentDefault<string, string>   (TyTypeReference)
+>             ^^^^^^^^^^^^^^^^: DependentDefault<string, string>   (TyTypeReference) (BindingIdentifier)
 
 declare const dependentDefault: DependentDefault;
->                               ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

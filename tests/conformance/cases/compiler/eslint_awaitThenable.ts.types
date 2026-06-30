@@ -1,290 +1,290 @@
 await 'value';
->^^^^^^^^^^^^^^: "value"   (TyStringLiteral)
+>^^^^^^^^^^^^^^: "value"   (TyStringLiteral) (ExpressionStatement)
 
 const createValue = () => 'value';
->     ^^^^^^^^^^^: () => string   (TyFunction)
+>     ^^^^^^^^^^^: () => string   (TyFunction) (BindingIdentifier)
 
 await createValue();
->^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 await createValue();
->     ^^^^^^^^^^^: () => string   (TyFunction)
+>     ^^^^^^^^^^^: () => string   (TyFunction) (IdentifierReference)
 
 await Promise.resolve('value');
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 await Promise.resolve('value');
->     ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>     ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 await Promise.resolve('value');
->             ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>             ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
 const createValue = async () => 'value';
->     ^^^^^^^^^^^: () => Promise<string>   (TyFunction)
+>     ^^^^^^^^^^^: () => Promise<string>   (TyFunction) (BindingIdentifier)
 
 await createValue();
->^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 await createValue();
->     ^^^^^^^^^^^: () => Promise<string>   (TyFunction)
+>     ^^^^^^^^^^^: () => Promise<string>   (TyFunction) (IdentifierReference)
 
 async function syncIterable() {
->              ^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   const arrayOfValues = [1, 2, 3];
->       ^^^^^^^^^^^^^: number[]   (TyArray)
+>       ^^^^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
 
   for await (const value of arrayOfValues) {
->                  ^^^^^: number   (TyNumber)
+>                  ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   for await (const value of arrayOfValues) {
->                           ^^^^^^^^^^^^^: number[]   (TyArray)
+>                           ^^^^^^^^^^^^^: number[]   (TyArray) (IdentifierReference)
 
     console.log(value);
->   ^^^^^^^: Console   (TyTypeReference)
+>   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
     console.log(value);
->   ^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>   ^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
     console.log(value);
->           ^^^: (...data: any[]) => void   (TyFunction)
+>           ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
     console.log(value);
->               ^^^^^: number   (TyNumber)
+>               ^^^^^: number   (TyNumber) (IdentifierReference)
 
 async function syncIterableOfPromises() {
->              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   const arrayOfPromises = [
->       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+>       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (BindingIdentifier)
                expected: Promise<number>[]
 
     Promise.resolve(1),
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     Promise.resolve(1),
->           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
     Promise.resolve(2),
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     Promise.resolve(2),
->           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
     Promise.resolve(3),
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     Promise.resolve(3),
->           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
   for await (const promisedValue of arrayOfPromises) {
->                  ^^^^^^^^^^^^^: number   (TyNumber)
+>                  ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
   for await (const promisedValue of arrayOfPromises) {
->                                   ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+>                                   ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (IdentifierReference)
                                            expected: Promise<number>[]
 
     console.log(promisedValue);
->   ^^^^^^^: Console   (TyTypeReference)
+>   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
     console.log(promisedValue);
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
     console.log(promisedValue);
->           ^^^: (...data: any[]) => void   (TyFunction)
+>           ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
     console.log(promisedValue);
->               ^^^^^^^^^^^^^: number   (TyNumber)
+>               ^^^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
 
 async function syncIterable() {
->              ^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   const arrayOfValues = [1, 2, 3];
->       ^^^^^^^^^^^^^: number[]   (TyArray)
+>       ^^^^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
 
   for (const value of arrayOfValues) {
->            ^^^^^: number   (TyNumber)
+>            ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   for (const value of arrayOfValues) {
->                     ^^^^^^^^^^^^^: number[]   (TyArray)
+>                     ^^^^^^^^^^^^^: number[]   (TyArray) (IdentifierReference)
 
     console.log(value);
->   ^^^^^^^: Console   (TyTypeReference)
+>   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
     console.log(value);
->   ^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>   ^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
     console.log(value);
->           ^^^: (...data: any[]) => void   (TyFunction)
+>           ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
     console.log(value);
->               ^^^^^: number   (TyNumber)
+>               ^^^^^: number   (TyNumber) (IdentifierReference)
 
 async function syncIterableOfPromises() {
->              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   const arrayOfPromises = [
->       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+>       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (BindingIdentifier)
                expected: Promise<number>[]
 
     Promise.resolve(1),
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     Promise.resolve(1),
->           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
     Promise.resolve(2),
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     Promise.resolve(2),
->           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
     Promise.resolve(3),
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     Promise.resolve(3),
->           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
->            ^^^^^^^^^^^^^: number   (TyNumber)
+>            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
->                                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
->                                           ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+>                                           ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject) (StaticMemberExpression)
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
->                                               ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray)
+>                                               ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (IdentifierReference)
                                                        expected: Promise<number>[]
 
     console.log(promisedValue);
->   ^^^^^^^: Console   (TyTypeReference)
+>   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
     console.log(promisedValue);
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
     console.log(promisedValue);
->           ^^^: (...data: any[]) => void   (TyFunction)
+>           ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
     console.log(promisedValue);
->               ^^^^^^^^^^^^^: number   (TyNumber)
+>               ^^^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
 
 async function validUseOfForAwaitOnAsyncIterable() {
->              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   async function* yieldThingsAsynchronously() {
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (TyFunction)
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (TyFunction) (BindingIdentifier)
 
     yield 1;
->   ^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     await new Promise(resolve => setTimeout(resolve, 1000));
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown) (ExpressionStatement)
 
     await new Promise(resolve => setTimeout(resolve, 1000));
->             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>             ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     await new Promise(resolve => setTimeout(resolve, 1000));
->                     ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                     ^^^^^^^: (value: unknown) => void   (TyFunction) (BindingIdentifier)
 
     await new Promise(resolve => setTimeout(resolve, 1000));
->                                ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+>                                ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction) (IdentifierReference)
 
     await new Promise(resolve => setTimeout(resolve, 1000));
->                                           ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                                           ^^^^^^^: (value: unknown) => void   (TyFunction) (IdentifierReference)
 
     yield 2;
->   ^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
->                  ^^^^^^^^^^^^^: any   (TyAny)
+>                  ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                         expected: 1 | 2
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
->                                   ^^^^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (TyFunction)
+>                                   ^^^^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (TyFunction) (IdentifierReference)
 
     console.log(promisedValue);
->   ^^^^^^^: Console   (TyTypeReference)
+>   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
     console.log(promisedValue);
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
     console.log(promisedValue);
->           ^^^: (...data: any[]) => void   (TyFunction)
+>           ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
     console.log(promisedValue);
->               ^^^^^^^^^^^^^: any   (TyAny)
+>               ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                      expected: 1 | 2
 
 function makeSyncDisposable(): Disposable {
->        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
+>        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction) (BindingIdentifier)
 
 function makeSyncDisposable(): Disposable {
->                              ^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.dispose](): void {
->    ^^^^^^: SymbolConstructor   (TyTypeReference)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     [Symbol.dispose](): void {
->           ^^^^^^^: any   (TyAny)
+>           ^^^^^^^: any   (TyAny) (StaticMemberExpression)
            expected: unique symbol
 
 async function shouldNotAwait() {
->              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   await using resource = makeSyncDisposable();
->             ^^^^^^^^: Disposable   (TyTypeReference)
+>             ^^^^^^^^: Disposable   (TyTypeReference) (BindingIdentifier)
 
   await using resource = makeSyncDisposable();
->                        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
+>                        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction) (IdentifierReference)
 
 function makeSyncDisposable(): Disposable {
->        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
+>        ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction) (BindingIdentifier)
 
 function makeSyncDisposable(): Disposable {
->                              ^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.dispose](): void {
->    ^^^^^^: SymbolConstructor   (TyTypeReference)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     [Symbol.dispose](): void {
->           ^^^^^^^: any   (TyAny)
+>           ^^^^^^^: any   (TyAny) (StaticMemberExpression)
            expected: unique symbol
 
 async function shouldNotAwait() {
->              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   using resource = makeSyncDisposable();
->       ^^^^^^^^: Disposable   (TyTypeReference)
+>       ^^^^^^^^: Disposable   (TyTypeReference) (BindingIdentifier)
 
   using resource = makeSyncDisposable();
->                  ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction)
+>                  ^^^^^^^^^^^^^^^^^^: () => Disposable   (TyFunction) (IdentifierReference)
 
 function makeAsyncDisposable(): AsyncDisposable {
->        ^^^^^^^^^^^^^^^^^^^: () => AsyncDisposable   (TyFunction)
+>        ^^^^^^^^^^^^^^^^^^^: () => AsyncDisposable   (TyFunction) (BindingIdentifier)
 
 function makeAsyncDisposable(): AsyncDisposable {
->                               ^^^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     async [Symbol.asyncDispose](): Promise<void> {
->          ^^^^^^: SymbolConstructor   (TyTypeReference)
+>          ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     async [Symbol.asyncDispose](): Promise<void> {
->                 ^^^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
                       expected: unique symbol
 
     async [Symbol.asyncDispose](): Promise<void> {
->                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     async [Symbol.asyncDispose](): Promise<void> {
->                                  ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 async function shouldAwait() {
->              ^^^^^^^^^^^: () => Promise<void>   (TyFunction)
+>              ^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   await using resource = makeAsyncDisposable();
->             ^^^^^^^^: AsyncDisposable   (TyTypeReference)
+>             ^^^^^^^^: AsyncDisposable   (TyTypeReference) (BindingIdentifier)
 
   await using resource = makeAsyncDisposable();
->                        ^^^^^^^^^^^^^^^^^^^: () => AsyncDisposable   (TyFunction)
+>                        ^^^^^^^^^^^^^^^^^^^: () => AsyncDisposable   (TyFunction) (IdentifierReference)

@@ -1,26 +1,26 @@
 type ConcreteTrue = number extends number ? boolean : string;
->    ^^^^^^^^^^^^: boolean   (TyBoolean)
+>    ^^^^^^^^^^^^: boolean   (TyBoolean) (TSTypeAliasDeclaration)
 
 type ConcreteFalse = number extends string ? boolean : string;
->    ^^^^^^^^^^^^^: string   (TyString)
+>    ^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
 declare const concreteTrue: number extends number ? boolean : string;
->             ^^^^^^^^^^^^: boolean   (TyBoolean)
+>             ^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 declare const concreteFalse: number extends string ? boolean : string;
->             ^^^^^^^^^^^^^: string   (TyString)
+>             ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 declare function choose<T>(): T extends string ? boolean : number;
->                ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction)
+>                ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction) (BindingIdentifier)
 
 declare function choose<T>(): T extends string ? boolean : number;
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 declare function choose<T>(): T extends string ? boolean : number;
->                             ^: any   (TyAny)
+>                             ^: any   (TyAny) (TSTypeReference)
 
 const distributed = choose<string | number>();
->     ^^^^^^^^^^^: boolean | number   (TyUnion)
+>     ^^^^^^^^^^^: boolean | number   (TyUnion) (BindingIdentifier)
 
 const distributed = choose<string | number>();
->                   ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction)
+>                   ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction) (IdentifierReference)

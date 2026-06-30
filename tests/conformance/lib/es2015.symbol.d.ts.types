@@ -1,32 +1,32 @@
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     readonly prototype: Symbol;
->            ^^^^^^^^^: Symbol   (TyTypeReference)
+>            ^^^^^^^^^: Symbol   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: Symbol;
->                       ^^^^^^: SymbolConstructor   (TyTypeReference)
+>                       ^^^^^^: SymbolConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly prototype: Symbol;
->                       ^^^^^^: SymbolConstructor   (TyTypeReference)
+>                       ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     (description?: string | number): symbol;
->    ^^^^^^^^^^^: string | number | undefined   (TyUnion)
+>    ^^^^^^^^^^^: string | number | undefined   (TyUnion) (BindingIdentifier)
 
     for(key: string): symbol;
->   ^^^: { (key: string): symbol; (key: string): symbol; }   (TyObject)
+>   ^^^: { (key: string): symbol; (key: string): symbol; }   (TyObject) (TSMethodSignature)
 
     for(key: string): symbol;
->       ^^^: string   (TyString)
+>       ^^^: string   (TyString) (BindingIdentifier)
 
     keyFor(sym: symbol): string | undefined;
->   ^^^^^^: { (sym: symbol): string | undefined; (sym: symbol): string | undefined; }   (TyObject)
+>   ^^^^^^: { (sym: symbol): string | undefined; (sym: symbol): string | undefined; }   (TyObject) (TSMethodSignature)
 
     keyFor(sym: symbol): string | undefined;
->          ^^^: symbol   (TySymbol)
+>          ^^^: symbol   (TySymbol) (BindingIdentifier)
 
 declare var Symbol: SymbolConstructor;
->           ^^^^^^: SymbolConstructor   (TyTypeReference)
+>           ^^^^^^: SymbolConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var Symbol: SymbolConstructor;
->                   ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

@@ -1,191 +1,191 @@
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     readonly prototype: Promise<any>;
->            ^^^^^^^^^: Promise<any>   (TyTypeReference)
+>            ^^^^^^^^^: Promise<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: Promise<any>;
->                       ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly prototype: Promise<any>;
->                       ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->           ^^^^^^^^: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void   (TyFunction)
+>           ^^^^^^^^: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void   (TyFunction) (BindingIdentifier)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                      ^^^^^^^: (value: T | PromiseLike<T>) => void   (TyFunction)
+>                      ^^^^^^^: (value: T | PromiseLike<T>) => void   (TyFunction) (BindingIdentifier)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                ^^^^^: T | PromiseLike<T>   (TyUnion)
+>                                ^^^^^: T | PromiseLike<T>   (TyUnion) (BindingIdentifier)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                       ^: any   (TyAny)
+>                                       ^: any   (TyAny) (TSTypeReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                           ^^^^^^^^^^^: any   (TyAny)
+>                                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                                                    ^^^^^^: (reason?: any) => void   (TyFunction)
+>                                                                    ^^^^^^: (reason?: any) => void   (TyFunction) (BindingIdentifier)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                                                             ^^^^^^: any   (TyAny)
+>                                                                             ^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                                                                                              ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                                                                              ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                                                                                              ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                                                                              ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
->                                                                                                                      ^: any   (TyAny)
+>                                                                                                                      ^: any   (TyAny) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->   ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+>   ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject) (TSMethodSignature)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeParameter)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                          ^^^^^^: T   (TyTypeReference)
+>                                          ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                                           ^: any   (TyAny)
+>                                                                           ^: any   (TyAny) (TSMappedType)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                                                      ^: any   (TyAny)
+>                                                                                      ^: any   (TyAny) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                                                          ^^^^^^^: any   (TyAny)
+>                                                                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                                                                  ^: any   (TyAny)
+>                                                                                                  ^: any   (TyAny) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                                                                                    ^: any   (TyAny)
+>                                                                                                    ^: any   (TyAny) (TSTypeReference)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->   ^^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }   (TyObject)
+>   ^^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }   (TyObject) (TSMethodSignature)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                           ^^^^^^: T   (TyTypeReference)
+>                                           ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                   ^: any   (TyAny)
+>                                                   ^: any   (TyAny) (TSTypeReference)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                               ^^^^^^^: any   (TyAny)
+>                                                               ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                                       ^: any   (TyAny)
+>                                                                       ^: any   (TyAny) (TSTypeReference)
 
     reject<T = never>(reason?: any): Promise<T>;
->   ^^^^^^: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }   (TyObject)
+>   ^^^^^^: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }   (TyObject) (TSMethodSignature)
 
     reject<T = never>(reason?: any): Promise<T>;
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
     reject<T = never>(reason?: any): Promise<T>;
->                     ^^^^^^: any   (TyAny)
+>                     ^^^^^^: any   (TyAny) (BindingIdentifier)
 
     reject<T = never>(reason?: any): Promise<T>;
->                                    ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     reject<T = never>(reason?: any): Promise<T>;
->                                    ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     reject<T = never>(reason?: any): Promise<T>;
->                                            ^: any   (TyAny)
+>                                            ^: any   (TyAny) (TSTypeReference)
 
     resolve(): Promise<void>;
->   ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>   ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
 
     resolve(): Promise<void>;
->              ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>              ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     resolve(): Promise<void>;
->              ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>              ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->   ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>   ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeParameter)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->              ^^^^^: T   (TyTypeReference)
+>              ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->                         ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                         ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->                         ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                         ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->                                 ^^^^^^^: any   (TyAny)
+>                                 ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->   ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>   ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeParameter)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->              ^^^^^: T | PromiseLike<T>   (TyUnion)
+>              ^^^^^: T | PromiseLike<T>   (TyUnion) (BindingIdentifier)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->                         ^^^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->                                          ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                          ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->                                          ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                          ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->                                                  ^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
->                                                          ^: any   (TyAny)
+>                                                          ^: any   (TyAny) (TSTypeReference)
 
 declare var Promise: PromiseConstructor;
->           ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>           ^^^^^^^: PromiseConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var Promise: PromiseConstructor;
->                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

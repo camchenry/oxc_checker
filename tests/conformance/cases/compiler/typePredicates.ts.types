@@ -1,80 +1,80 @@
 type IsString = (value: unknown) => value is string;
->    ^^^^^^^^: (value: unknown) => value is string   (TyFunction)
+>    ^^^^^^^^: (value: unknown) => value is string   (TyFunction) (TSTypeAliasDeclaration)
 
 type IsString = (value: unknown) => value is string;
->                ^^^^^: unknown   (TyUnknown)
+>                ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 type IsString = (value: unknown) => value is string;
->                                   ^^^^^: unknown   (TyUnknown)
+>                                   ^^^^^: unknown   (TyUnknown) (IdentifierName)
 
 type AssertString = (value: unknown) => asserts value is string;
->    ^^^^^^^^^^^^: (value: unknown) => asserts value is string   (TyFunction)
+>    ^^^^^^^^^^^^: (value: unknown) => asserts value is string   (TyFunction) (TSTypeAliasDeclaration)
 
 type AssertString = (value: unknown) => asserts value is string;
->                    ^^^^^: unknown   (TyUnknown)
+>                    ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 type AssertString = (value: unknown) => asserts value is string;
->                                               ^^^^^: unknown   (TyUnknown)
+>                                               ^^^^^: unknown   (TyUnknown) (IdentifierName)
 
 type AssertValue = (value: unknown) => asserts value;
->    ^^^^^^^^^^^: (value: unknown) => asserts value   (TyFunction)
+>    ^^^^^^^^^^^: (value: unknown) => asserts value   (TyFunction) (TSTypeAliasDeclaration)
 
 type AssertValue = (value: unknown) => asserts value;
->                   ^^^^^: unknown   (TyUnknown)
+>                   ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 type AssertValue = (value: unknown) => asserts value;
->                                              ^^^^^: unknown   (TyUnknown)
+>                                              ^^^^^: unknown   (TyUnknown) (IdentifierName)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->    ^^^^^^^^^^^: (this: { ready: boolean; }) => this is { ready: true; }   (TyFunction)
+>    ^^^^^^^^^^^: (this: { ready: boolean; }) => this is { ready: true; }   (TyFunction) (TSTypeAliasDeclaration)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->                   ^^^^: { ready: boolean; }   (TyObject)
+>                   ^^^^: { ready: boolean; }   (TyObject) (TSThisParameter)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->                           ^^^^^: boolean   (TyBoolean)
+>                           ^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->                                                          ^^^^^: true   (TyBooleanLiteral)
+>                                                          ^^^^^: true   (TyBooleanLiteral) (TSPropertySignature)
 
 interface PredicateArray<T> {
->         ^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface PredicateArray<T> {
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeParameter)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->   ^^^^^: <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S) => this is readonly S[]   (TyFunction)
+>   ^^^^^: <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S) => this is readonly S[]   (TyFunction) (TSMethodSignature)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->         ^: any   (TyAny)
+>         ^: any   (TyAny) (TSTypeParameter)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeReference)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                      ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (TyFunction)
+>                      ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (TyFunction) (BindingIdentifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                  ^^^^^: T   (TyTypeReference)
+>                                  ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                            ^^^^^: number   (TyNumber)
+>                                            ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                           ^^^^^: readonly T[]   (TyArray)
+>                                                           ^^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                           ^: any   (TyAny)
+>                                                                           ^: any   (TyAny) (TSTypeReference)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                                   ^^^^^: T   (TyTypeReference)
+>                                                                                   ^^^^^: T   (TyTypeReference) (IdentifierName)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                                            ^: any   (TyAny)
+>                                                                                            ^: any   (TyAny) (TSTypeReference)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                                                                 ^: any   (TyAny)
+>                                                                                                                 ^: any   (TyAny) (TSTypeReference)

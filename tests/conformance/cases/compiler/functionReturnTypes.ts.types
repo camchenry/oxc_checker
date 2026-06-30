@@ -1,17 +1,17 @@
 function empty() {
->        ^^^^^: () => void   (TyFunction)
+>        ^^^^^: () => void   (TyFunction) (BindingIdentifier)
 
 function emptyVoid(): void {
->        ^^^^^^^^^: () => void   (TyFunction)
+>        ^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
 
 class EmptyGetter {
->     ^^^^^^^^^^^: typeof EmptyGetter   (TyTypeQuery)
+>     ^^^^^^^^^^^: typeof EmptyGetter   (TyTypeQuery) (BindingIdentifier)
 
   public get x() {
->            ^: void   (TyVoid)
+>            ^: void   (TyVoid) (MethodDefinition)
 
 function returnsBig() {
->        ^^^^^^^^^^: () => bigint   (TyFunction)
+>        ^^^^^^^^^^: () => bigint   (TyFunction) (BindingIdentifier)
 
 function returnsBig2() {
->        ^^^^^^^^^^^: () => 0n | 1n   (TyFunction)
+>        ^^^^^^^^^^^: () => 0n | 1n   (TyFunction) (BindingIdentifier)

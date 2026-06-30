@@ -1,142 +1,142 @@
 String('123');
->^^^^^^: StringConstructor   (TyTypeReference)
+>^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
 
 String('123');
->^^^^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 '123'.toString();
->^^^^^^^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 '123'.toString();
->     ^^^^^^^^: () => string   (TyFunction)
+>     ^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
 
 '' + '123';
->^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 '123' + '';
->^^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 Number(123);
->^^^^^^: NumberConstructor   (TyTypeReference)
+>^^^^^^: NumberConstructor   (TyTypeReference) (IdentifierReference)
 
 Number(123);
->^^^^^^^^^^^^: number   (TyNumber)
+>^^^^^^^^^^^^: number   (TyNumber) (ExpressionStatement)
 
 +123;
->^^^^^: 123   (TyNumberLiteral)
+>^^^^^: 123   (TyNumberLiteral) (ExpressionStatement)
 
 ~~123;
->^^^^^^: number   (TyNumber)
+>^^^^^^: number   (TyNumber) (ExpressionStatement)
 
 Boolean(true);
->^^^^^^^: BooleanConstructor   (TyTypeReference)
+>^^^^^^^: BooleanConstructor   (TyTypeReference) (IdentifierReference)
 
 Boolean(true);
->^^^^^^^^^^^^^^: boolean   (TyBoolean)
+>^^^^^^^^^^^^^^: boolean   (TyBoolean) (ExpressionStatement)
 
 !!true;
->^^^^^^^: true   (TyBooleanLiteral)
+>^^^^^^^: true   (TyBooleanLiteral) (ExpressionStatement)
 
 BigInt(BigInt(1));
->^^^^^^: BigIntConstructor   (TyTypeReference)
+>^^^^^^: BigIntConstructor   (TyTypeReference) (IdentifierReference)
 
 BigInt(BigInt(1));
->^^^^^^^^^^^^^^^^^^: bigint   (TyBigint)
+>^^^^^^^^^^^^^^^^^^: bigint   (TyBigint) (ExpressionStatement)
 
 BigInt(BigInt(1));
->      ^^^^^^: BigIntConstructor   (TyTypeReference)
+>      ^^^^^^: BigIntConstructor   (TyTypeReference) (IdentifierReference)
 
 let str = '123';
->   ^^^: string   (TyString)
+>   ^^^: string   (TyString) (BindingIdentifier)
 
 str += '';
->^^^: string   (TyString)
+>^^^: string   (TyString) (IdentifierReference)
 
 str += '';
->^^^^^^^^^^: string   (TyString)
+>^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
 function foo(bar: string | number) {
->        ^^^: (bar: string | number) => void   (TyFunction)
+>        ^^^: (bar: string | number) => void   (TyFunction) (BindingIdentifier)
 
 function foo(bar: string | number) {
->            ^^^: string | number   (TyUnion)
+>            ^^^: string | number   (TyUnion) (BindingIdentifier)
 
   String(bar);
-> ^^^^^^: StringConstructor   (TyTypeReference)
+> ^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
 
   String(bar);
-> ^^^^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
   String(bar);
->        ^^^: string | number   (TyUnion)
+>        ^^^: string | number   (TyUnion) (IdentifierReference)
 
   bar.toString();
-> ^^^: string | number   (TyUnion)
+> ^^^: string | number   (TyUnion) (IdentifierReference)
 
   bar.toString();
-> ^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
          expected: string
 
   bar.toString();
->     ^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^: any   (TyAny) (StaticMemberExpression)
       expected: (() => string) | ((radix?: number) => string)
 
   '' + bar;
-> ^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
   '' + bar;
->      ^^^: string | number   (TyUnion)
+>      ^^^: string | number   (TyUnion) (IdentifierReference)
 
   bar + '';
-> ^^^: string | number   (TyUnion)
+> ^^^: string | number   (TyUnion) (IdentifierReference)
 
   bar + '';
-> ^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
   Number(bar);
-> ^^^^^^: NumberConstructor   (TyTypeReference)
+> ^^^^^^: NumberConstructor   (TyTypeReference) (IdentifierReference)
 
   Number(bar);
-> ^^^^^^^^^^^^: number   (TyNumber)
+> ^^^^^^^^^^^^: number   (TyNumber) (ExpressionStatement)
 
   Number(bar);
->        ^^^: string | number   (TyUnion)
+>        ^^^: string | number   (TyUnion) (IdentifierReference)
 
   +bar;
-> ^^^^^: number   (TyNumber)
+> ^^^^^: number   (TyNumber) (ExpressionStatement)
 
   +bar;
->  ^^^: string | number   (TyUnion)
+>  ^^^: string | number   (TyUnion) (IdentifierReference)
 
   ~~bar;
-> ^^^^^^: number   (TyNumber)
+> ^^^^^^: number   (TyNumber) (ExpressionStatement)
 
   ~~bar;
->   ^^^: string | number   (TyUnion)
+>   ^^^: string | number   (TyUnion) (IdentifierReference)
 
   Boolean(bar);
-> ^^^^^^^: BooleanConstructor   (TyTypeReference)
+> ^^^^^^^: BooleanConstructor   (TyTypeReference) (IdentifierReference)
 
   Boolean(bar);
-> ^^^^^^^^^^^^^: boolean   (TyBoolean)
+> ^^^^^^^^^^^^^: boolean   (TyBoolean) (ExpressionStatement)
 
   Boolean(bar);
->         ^^^: string | number   (TyUnion)
+>         ^^^: string | number   (TyUnion) (IdentifierReference)
 
   !!bar;
-> ^^^^^^: boolean   (TyBoolean)
+> ^^^^^^: boolean   (TyBoolean) (ExpressionStatement)
 
   !!bar;
->   ^^^: string | number   (TyUnion)
+>   ^^^: string | number   (TyUnion) (IdentifierReference)
 
   BigInt(1);
-> ^^^^^^: BigIntConstructor   (TyTypeReference)
+> ^^^^^^: BigIntConstructor   (TyTypeReference) (IdentifierReference)
 
   BigInt(1);
-> ^^^^^^^^^^: bigint   (TyBigint)
+> ^^^^^^^^^^: bigint   (TyBigint) (ExpressionStatement)
 
   bar += '';
-> ^^^: string | number   (TyUnion)
+> ^^^: string | number   (TyUnion) (IdentifierReference)
 
   bar += '';
-> ^^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^^: string   (TyString) (ExpressionStatement)

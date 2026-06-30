@@ -1,179 +1,179 @@
 function foo<T>(x: T) {
->        ^^^: <T>(x: T) => T   (TyFunction)
+>        ^^^: <T>(x: T) => T   (TyFunction) (BindingIdentifier)
 
 function foo<T>(x: T) {
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeParameter)
 
 function foo<T>(x: T) {
->               ^: T   (TyTypeReference)
+>               ^: T   (TyTypeReference) (BindingIdentifier)
 
 function foo<T>(x: T) {
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeReference)
 
   return x;
->        ^: T   (TyTypeReference)
+>        ^: T   (TyTypeReference) (IdentifierReference)
 
 const x: string = "hello"
->     ^: string   (TyString)
+>     ^: string   (TyString) (BindingIdentifier)
 
 const x1 = foo(x);
->     ^^: string   (TyString)
+>     ^^: string   (TyString) (BindingIdentifier)
 
 const x1 = foo(x);
->          ^^^: <T>(x: T) => T   (TyFunction)
+>          ^^^: <T>(x: T) => T   (TyFunction) (IdentifierReference)
 
 const x1 = foo(x);
->              ^: string   (TyString)
+>              ^: string   (TyString) (IdentifierReference)
 
 const x2 = foo(x1);
->     ^^: string   (TyString)
+>     ^^: string   (TyString) (BindingIdentifier)
 
 const x2 = foo(x1);
->          ^^^: <T>(x: T) => T   (TyFunction)
+>          ^^^: <T>(x: T) => T   (TyFunction) (IdentifierReference)
 
 const x2 = foo(x1);
->              ^^: string   (TyString)
+>              ^^: string   (TyString) (IdentifierReference)
 
 function foo2<T, U>(x: T, y: U) {
->        ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction)
+>        ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction) (BindingIdentifier)
 
 function foo2<T, U>(x: T, y: U) {
->             ^: any   (TyAny)
+>             ^: any   (TyAny) (TSTypeParameter)
 
 function foo2<T, U>(x: T, y: U) {
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeParameter)
 
 function foo2<T, U>(x: T, y: U) {
->                   ^: T   (TyTypeReference)
+>                   ^: T   (TyTypeReference) (BindingIdentifier)
 
 function foo2<T, U>(x: T, y: U) {
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
 function foo2<T, U>(x: T, y: U) {
->                         ^: U   (TyTypeReference)
+>                         ^: U   (TyTypeReference) (BindingIdentifier)
 
 function foo2<T, U>(x: T, y: U) {
->                            ^: any   (TyAny)
+>                            ^: any   (TyAny) (TSTypeReference)
 
   return { x, y };
->          ^: T   (TyTypeReference)
+>          ^: T   (TyTypeReference) (ObjectProperty)
 
   return { x, y };
->          ^: T   (TyTypeReference)
+>          ^: T   (TyTypeReference) (IdentifierReference)
 
   return { x, y };
->             ^: U   (TyTypeReference)
+>             ^: U   (TyTypeReference) (ObjectProperty)
 
   return { x, y };
->             ^: U   (TyTypeReference)
+>             ^: U   (TyTypeReference) (IdentifierReference)
 
 const y = foo2("hello", 123);
->     ^: { x: string; y: number; }   (TyObject)
+>     ^: { x: string; y: number; }   (TyObject) (BindingIdentifier)
 
 const y = foo2("hello", 123);
->         ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction)
+>         ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction) (IdentifierReference)
 
 const y2 = foo2(y.x, y.y);
->     ^^: { x: string; y: number; }   (TyObject)
+>     ^^: { x: string; y: number; }   (TyObject) (BindingIdentifier)
 
 const y2 = foo2(y.x, y.y);
->          ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction)
+>          ^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (TyFunction) (IdentifierReference)
 
 const y2 = foo2(y.x, y.y);
->               ^: { x: string; y: number; }   (TyObject)
+>               ^: { x: string; y: number; }   (TyObject) (IdentifierReference)
 
 const y2 = foo2(y.x, y.y);
->                 ^: string   (TyString)
+>                 ^: string   (TyString) (StaticMemberExpression)
 
 const y2 = foo2(y.x, y.y);
->                    ^: { x: string; y: number; }   (TyObject)
+>                    ^: { x: string; y: number; }   (TyObject) (IdentifierReference)
 
 const y2 = foo2(y.x, y.y);
->                      ^: number   (TyNumber)
+>                      ^: number   (TyNumber) (StaticMemberExpression)
 
 function foo3<T>(x: T | undefined | null) {
->        ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction)
+>        ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction) (BindingIdentifier)
 
 function foo3<T>(x: T | undefined | null) {
->             ^: any   (TyAny)
+>             ^: any   (TyAny) (TSTypeParameter)
 
 function foo3<T>(x: T | undefined | null) {
->                ^: T | null | undefined   (TyUnion)
+>                ^: T | null | undefined   (TyUnion) (BindingIdentifier)
 
 function foo3<T>(x: T | undefined | null) {
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeReference)
 
   return x!
->        ^: T | null | undefined   (TyUnion)
+>        ^: T | null | undefined   (TyUnion) (IdentifierReference)
 
 const f3_1 = foo3("hello");
->     ^^^^: "hello"   (TyStringLiteral)
+>     ^^^^: "hello"   (TyStringLiteral) (BindingIdentifier)
 
 const f3_1 = foo3("hello");
->            ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction)
+>            ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction) (IdentifierReference)
 
 const f3_2 = foo3(undefined);
->     ^^^^: never   (TyNever)
+>     ^^^^: never   (TyNever) (BindingIdentifier)
 
 const f3_2 = foo3(undefined);
->            ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction)
+>            ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction) (IdentifierReference)
 
 const f3_2 = foo3(undefined);
->                 ^^^^^^^^^: undefined   (TyUndefined)
+>                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
 
 const f3_3 = foo3(123 as number);
->     ^^^^: number   (TyNumber)
+>     ^^^^: number   (TyNumber) (BindingIdentifier)
 
 const f3_3 = foo3(123 as number);
->            ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction)
+>            ^^^^: <T>(x: T | null | undefined) => NonNullable<T>   (TyFunction) (IdentifierReference)
 
 function defaultOnlyReadU<T = string, U = T>(): U {
->        ^^^^^^^^^^^^^^^^: <T = string, U = T>() => U   (TyFunction)
+>        ^^^^^^^^^^^^^^^^: <T = string, U = T>() => U   (TyFunction) (BindingIdentifier)
 
 function defaultOnlyReadU<T = string, U = T>(): U {
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeParameter)
 
 function defaultOnlyReadU<T = string, U = T>(): U {
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeParameter)
 
 function defaultOnlyReadU<T = string, U = T>(): U {
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
 function defaultOnlyReadU<T = string, U = T>(): U {
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
   return undefined as any;
->        ^^^^^^^^^: undefined   (TyUndefined)
+>        ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
 
 const defaultOnlyReadUValue = defaultOnlyReadU();
->     ^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const defaultOnlyReadUValue = defaultOnlyReadU();
->                             ^^^^^^^^^^^^^^^^: <T = string, U = T>() => U   (TyFunction)
+>                             ^^^^^^^^^^^^^^^^: <T = string, U = T>() => U   (TyFunction) (IdentifierReference)
 
 function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
->        ^^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (TyFunction)
+>        ^^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (TyFunction) (BindingIdentifier)
 
 function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
->                            ^: any   (TyAny)
+>                            ^: any   (TyAny) (TSTypeParameter)
 
 function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
->                                        ^: any   (TyAny)
+>                                        ^: any   (TyAny) (TSTypeParameter)
 
 function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
->                                            ^: any   (TyAny)
+>                                            ^: any   (TyAny) (TSTypeReference)
 
 function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
->                                                   ^: any   (TyAny)
+>                                                   ^: any   (TyAny) (TSTypeReference)
 
 function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
->                                                      ^: any   (TyAny)
+>                                                      ^: any   (TyAny) (TSTypeReference)
 
   return undefined as any;
->        ^^^^^^^^^: undefined   (TyUndefined)
+>        ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
 
 const defaultReadTBeforeUValue = defaultReadTBeforeU();
->     ^^^^^^^^^^^^^^^^^^^^^^^^: [number, number]   (TyTuple)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: [number, number]   (TyTuple) (BindingIdentifier)
 
 const defaultReadTBeforeUValue = defaultReadTBeforeU();
->                                ^^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (TyFunction)
+>                                ^^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (TyFunction) (IdentifierReference)

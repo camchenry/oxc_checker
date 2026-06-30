@@ -1,24 +1,24 @@
 interface RegExpMatchArray {
->         ^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     groups?: {
->   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion)
+>   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion) (TSPropertySignature)
 
         [key: string]: string;
->        ^^^: string   (TyString)
+>        ^^^: string   (TyString) (TSIndexSignatureName)
 
 interface RegExpExecArray {
->         ^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     groups?: {
->   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion)
+>   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion) (TSPropertySignature)
 
         [key: string]: string;
->        ^^^: string   (TyString)
+>        ^^^: string   (TyString) (TSIndexSignatureName)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: RegExpConstructor
 
     readonly dotAll: boolean;
->            ^^^^^^: boolean   (TyBoolean)
+>            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)

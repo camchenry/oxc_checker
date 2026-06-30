@@ -1,219 +1,219 @@
 interface Array<T> {
->         ^^^^^: any   (TyAny)
+>         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
        expected: ArrayConstructor
 
 interface Array<T> {
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeParameter)
 
     at(index: number): T | undefined;
->   ^^: (index: number) => T | undefined   (TyFunction)
+>   ^^: (index: number) => T | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): T | undefined; (index: number): T | undefined; }
 
     at(index: number): T | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     at(index: number): T | undefined;
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ReadonlyArray<T> {
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
     at(index: number): T | undefined;
->   ^^: (index: number) => T | undefined   (TyFunction)
+>   ^^: (index: number) => T | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): T | undefined; (index: number): T | undefined; }
 
     at(index: number): T | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     at(index: number): T | undefined;
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                   ^^^^^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                           ^^^^^^^^^^^^: any   (TyAny)
+>                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction)
+>   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): number | undefined; (index: number): number | undefined; }
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                expected: BigInt64ArrayConstructor
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->                       ^^^^^^^^^^^^: any   (TyAny)
+>                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->                                            ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): bigint | undefined;
->   ^^: (index: number) => bigint | undefined   (TyFunction)
+>   ^^: (index: number) => bigint | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): bigint | undefined; (index: number): bigint | undefined; }
 
     at(index: number): bigint | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                 expected: BigUint64ArrayConstructor
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->                        ^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->                                             ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): bigint | undefined;
->   ^^: (index: number) => bigint | undefined   (TyFunction)
+>   ^^: (index: number) => bigint | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): bigint | undefined; (index: number): bigint | undefined; }
 
     at(index: number): bigint | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)

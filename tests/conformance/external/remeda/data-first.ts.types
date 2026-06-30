@@ -1,1023 +1,1023 @@
 export type EnumerableStringKeyedValueOf<T> = T extends readonly (infer Item)[]
->           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type EnumerableStringKeyedValueOf<T> = T extends readonly (infer Item)[]
->                                        ^: any   (TyAny)
+>                                        ^: any   (TyAny) (TSTypeParameter)
 
 export type EnumerableStringKeyedValueOf<T> = T extends readonly (infer Item)[]
->                                             ^: any   (TyAny)
+>                                             ^: any   (TyAny) (TSTypeReference)
 
 export type EnumerableStringKeyedValueOf<T> = T extends readonly (infer Item)[]
->                                                                       ^^^^: any   (TyAny)
+>                                                                       ^^^^: any   (TyAny) (TSTypeParameter)
 
   ? Item
->   ^^^^: any   (TyAny)
+>   ^^^^: any   (TyAny) (TSTypeReference)
 
   : T extends object
->   ^: any   (TyAny)
+>   ^: any   (TyAny) (TSTypeReference)
 
     ? T[keyof T & string]
->     ^: any   (TyAny)
+>     ^: any   (TyAny) (TSTypeReference)
 
     ? T[keyof T & string]
->             ^: any   (TyAny)
+>             ^: any   (TyAny) (TSTypeReference)
 
 export type NonEmptyArray<T> = readonly [T, ...T[]]
->           ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple)
+>           ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple) (TSTypeAliasDeclaration)
 
 export type NonEmptyArray<T> = readonly [T, ...T[]]
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeParameter)
 
 export type NonEmptyArray<T> = readonly [T, ...T[]]
->                                        ^: any   (TyAny)
+>                                        ^: any   (TyAny) (TSTypeReference)
 
 export type NonEmptyArray<T> = readonly [T, ...T[]]
->                                              ^: any   (TyAny)
+>                                              ^: any   (TyAny) (TSTypeReference)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->           ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>           ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (TSTypeAliasDeclaration)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeParameter)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                            ^: any   (TyAny)
+>                            ^: any   (TyAny) (TSTypeParameter)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                                  ^^^^^: T   (TyTypeReference)
+>                                  ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                                            ^^^^^: number   (TyNumber)
+>                                            ^^^^^: number   (TyNumber) (BindingIdentifier)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                                                           ^^^^: readonly T[]   (TyArray)
+>                                                           ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                                                                          ^: any   (TyAny)
+>                                                                          ^: any   (TyAny) (TSTypeReference)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                                                                                  ^: any   (TyAny)
+>                                                                                  ^: any   (TyAny) (TSTypeReference)
 
 export type Pred<T> = LazyEvaluator<T, boolean>
->           ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction)
+>           ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction) (TSTypeAliasDeclaration)
 
 export type Pred<T> = LazyEvaluator<T, boolean>
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeParameter)
 
 export type Pred<T> = LazyEvaluator<T, boolean>
->                     ^^^^^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type Pred<T> = LazyEvaluator<T, boolean>
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
 export type Merge<ObjectType> = { [Key in keyof ObjectType]: ObjectType[Key] } & {}
->           ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped)
+>           ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped) (TSTypeAliasDeclaration)
 
 export type Merge<ObjectType> = { [Key in keyof ObjectType]: ObjectType[Key] } & {}
->                 ^^^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type Merge<ObjectType> = { [Key in keyof ObjectType]: ObjectType[Key] } & {}
->                                  ^^^: any   (TyAny)
+>                                  ^^^: any   (TyAny) (TSMappedType)
 
 export type Merge<ObjectType> = { [Key in keyof ObjectType]: ObjectType[Key] } & {}
->                                               ^^^^^^^^^^: any   (TyAny)
+>                                               ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type Merge<ObjectType> = { [Key in keyof ObjectType]: ObjectType[Key] } & {}
->                                                            ^^^^^^^^^^: any   (TyAny)
+>                                                            ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type Merge<ObjectType> = { [Key in keyof ObjectType]: ObjectType[Key] } & {}
->                                                                       ^^^: any   (TyAny)
+>                                                                       ^^^: any   (TyAny) (TSTypeReference)
 
 import type { EnumerableStringKeyedValueOf, LazyEvaluator } from './internal/types'
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional) (BindingIdentifier)
 
 import type { EnumerableStringKeyedValueOf, LazyEvaluator } from './internal/types'
->                                           ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>                                           ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (BindingIdentifier)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->               ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
+>               ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject) (BindingIdentifier)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeParameter)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                         ^^^^: readonly T[]   (TyArray)
+>                         ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                                        ^: any   (TyAny)
+>                                        ^: any   (TyAny) (TSTypeReference)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                                             ^^^^^^^^^^: LazyEvaluator<T, U>   (TyTypeReference)
+>                                             ^^^^^^^^^^: LazyEvaluator<T, U>   (TyTypeReference) (BindingIdentifier)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                                                         ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>                                                         ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (TSTypeReference)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                                                         ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>                                                         ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (IdentifierReference)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                                                                       ^: any   (TyAny)
+>                                                                       ^: any   (TyAny) (TSTypeReference)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                                                                          ^: any   (TyAny)
+>                                                                          ^: any   (TyAny) (TSTypeReference)
 
 export function map<T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]
->                                                                               ^: any   (TyAny)
+>                                                                               ^: any   (TyAny) (TSTypeReference)
 
 export function map<T extends object, U>(
->               ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
+>               ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject) (BindingIdentifier)
 
 export function map<T extends object, U>(
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeParameter)
 
 export function map<T extends object, U>(
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeParameter)
 
   data: T,
-> ^^^^: T   (TyTypeReference)
+> ^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   data: T,
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
-> ^^^^^^^^^^: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>   (TyTypeReference)
+> ^^^^^^^^^^: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>   (TyTypeReference) (BindingIdentifier)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->             ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>             ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (TSTypeReference)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->             ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>             ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (IdentifierReference)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional) (TSTypeReference)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional)
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: T extends readonly (infer Item)[] ? Item : T extends object ? T[keyof T & string] : never   (TyConditional) (IdentifierReference)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->                                                        ^: any   (TyAny)
+>                                                        ^: any   (TyAny) (TSTypeReference)
 
   callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>,
->                                                            ^: any   (TyAny)
+>                                                            ^: any   (TyAny) (TSTypeReference)
 
 ): U[]
->  ^: any   (TyAny)
+>  ^: any   (TyAny) (TSTypeReference)
 
 export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
->               ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
+>               ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject) (BindingIdentifier)
 
 export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
->                   ^^^^: unknown   (TyUnknown)
+>                   ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
->                                  ^^^^^^^^^^: LazyEvaluator<any, any>   (TyTypeReference)
+>                                  ^^^^^^^^^^: LazyEvaluator<any, any>   (TyTypeReference) (BindingIdentifier)
 
 export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
->                                              ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>                                              ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (TSTypeReference)
 
 export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
->                                              ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction)
+>                                              ^^^^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => R   (TyFunction) (IdentifierReference)
 
   return Array.isArray(data)
->        ^^^^^: ArrayConstructor   (TyTypeReference)
+>        ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
   return Array.isArray(data)
->              ^^^^^^^: (arg: any) => arg is any[]   (TyFunction)
+>              ^^^^^^^: (arg: any) => arg is any[]   (TyFunction) (StaticMemberExpression)
 
   return Array.isArray(data)
->                      ^^^^: unknown   (TyUnknown)
+>                      ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->     ^^^^: any[]   (TyArray)
+>     ^^^^: any[]   (TyArray) (IdentifierReference)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->          ^^^: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]   (TyFunction)
+>          ^^^: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]   (TyFunction) (StaticMemberExpression)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->               ^^^^^: any   (TyAny)
+>               ^^^^^: any   (TyAny) (BindingIdentifier)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->                      ^^^^^: number   (TyNumber)
+>                      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->                                ^^^^^^^^^^: LazyEvaluator<any, any>   (TyTypeReference)
+>                                ^^^^^^^^^^: LazyEvaluator<any, any>   (TyTypeReference) (IdentifierReference)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->                                           ^^^^^: any   (TyAny)
+>                                           ^^^^^: any   (TyAny) (IdentifierReference)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->                                                  ^^^^^: number   (TyNumber)
+>                                                  ^^^^^: number   (TyNumber) (IdentifierReference)
 
     ? data.map((value, index) => callbackfn(value, index, data))
->                                                         ^^^^: unknown   (TyUnknown)
+>                                                         ^^^^: unknown   (TyUnknown) (IdentifierReference)
                                                       expected: any[]
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->     ^^^^^^: ObjectConstructor   (TyTypeReference)
+>     ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->            ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject)
+>            ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject) (StaticMemberExpression)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                   ^^^^: unknown   (TyUnknown)
+>                   ^^^^: unknown   (TyUnknown) (IdentifierReference)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                   ^^^: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]   (TyFunction)
+>                                   ^^^: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]   (TyFunction) (StaticMemberExpression)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                        ^^^^^: any   (TyAny)
+>                                        ^^^^^: any   (TyAny) (BindingIdentifier)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                               ^^^^^: number   (TyNumber)
+>                                               ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                      ^^^^^^: any[]   (TyArray)
+>                                                      ^^^^^^: any[]   (TyArray) (BindingIdentifier)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                 ^^^^^^^^^^: LazyEvaluator<any, any>   (TyTypeReference)
+>                                                                 ^^^^^^^^^^: LazyEvaluator<any, any>   (TyTypeReference) (IdentifierReference)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                            ^^^^^: any   (TyAny)
+>                                                                            ^^^^^: any   (TyAny) (IdentifierReference)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                                   ^^^^^: number   (TyNumber)
+>                                                                                   ^^^^^: number   (TyNumber) (IdentifierReference)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                                          ^^^^^^: any[]   (TyArray)
+>                                                                                          ^^^^^^: any[]   (TyArray) (IdentifierReference)
 
 import type { Pred } from './internal/types'
->             ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction)
+>             ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction) (BindingIdentifier)
 
 export function filter<T, S extends T>(
->               ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject)
+>               ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject) (BindingIdentifier)
 
 export function filter<T, S extends T>(
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 export function filter<T, S extends T>(
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeParameter)
 
 export function filter<T, S extends T>(
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
   data: readonly T[],
-> ^^^^: readonly T[]   (TyArray)
+> ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
   data: readonly T[],
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeReference)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
-> ^^^^^^^^^: (value: T, index: number, data: readonly T[]) => value is S   (TyFunction)
+> ^^^^^^^^^: (value: T, index: number, data: readonly T[]) => value is S   (TyFunction) (BindingIdentifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->             ^^^^^: T   (TyTypeReference)
+>             ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeReference)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->                       ^^^^^: number   (TyNumber)
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->                                      ^^^^: readonly T[]   (TyArray)
+>                                      ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSTypeReference)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->                                                             ^^^^^: T   (TyTypeReference)
+>                                                             ^^^^^: T   (TyTypeReference) (IdentifierName)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->                                                                      ^: any   (TyAny)
+>                                                                      ^: any   (TyAny) (TSTypeReference)
 
 ): S[]
->  ^: any   (TyAny)
+>  ^: any   (TyAny) (TSTypeReference)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->               ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject)
+>               ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject) (BindingIdentifier)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                         ^^^^: readonly T[]   (TyArray)
+>                         ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                                        ^: any   (TyAny)
+>                                        ^: any   (TyAny) (TSTypeReference)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                                             ^^^^^^^^^: Pred<T>   (TyTypeReference)
+>                                             ^^^^^^^^^: Pred<T>   (TyTypeReference) (BindingIdentifier)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                                                        ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction)
+>                                                        ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction) (TSTypeReference)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                                                        ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction)
+>                                                        ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction) (IdentifierReference)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                                                             ^: any   (TyAny)
+>                                                             ^: any   (TyAny) (TSTypeReference)
 
 export function filter<T>(data: readonly T[], predicate: Pred<T>): T[]
->                                                                  ^: any   (TyAny)
+>                                                                  ^: any   (TyAny) (TSTypeReference)
 
 export function filter(data: readonly unknown[], predicate: Pred<any>): unknown[] {
->               ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject)
+>               ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject) (BindingIdentifier)
 
 export function filter(data: readonly unknown[], predicate: Pred<any>): unknown[] {
->                      ^^^^: readonly unknown[]   (TyArray)
+>                      ^^^^: readonly unknown[]   (TyArray) (BindingIdentifier)
 
 export function filter(data: readonly unknown[], predicate: Pred<any>): unknown[] {
->                                                ^^^^^^^^^: Pred<any>   (TyTypeReference)
+>                                                ^^^^^^^^^: Pred<any>   (TyTypeReference) (BindingIdentifier)
 
 export function filter(data: readonly unknown[], predicate: Pred<any>): unknown[] {
->                                                           ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction)
+>                                                           ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction) (TSTypeReference)
 
 export function filter(data: readonly unknown[], predicate: Pred<any>): unknown[] {
->                                                           ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction)
+>                                                           ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (TyFunction) (IdentifierReference)
 
   return data.filter((value, index) => predicate(value, index, data))
->        ^^^^: readonly unknown[]   (TyArray)
+>        ^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
 
   return data.filter((value, index) => predicate(value, index, data))
->             ^^^^^^: { <S extends unknown>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }   (TyObject)
+>             ^^^^^^: { <S extends unknown>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }   (TyObject) (StaticMemberExpression)
             expected: { <S>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }
 
   return data.filter((value, index) => predicate(value, index, data))
->                     ^^^^^: unknown   (TyUnknown)
+>                     ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
   return data.filter((value, index) => predicate(value, index, data))
->                            ^^^^^: number   (TyNumber)
+>                            ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   return data.filter((value, index) => predicate(value, index, data))
->                                      ^^^^^^^^^: Pred<any>   (TyTypeReference)
+>                                      ^^^^^^^^^: Pred<any>   (TyTypeReference) (IdentifierReference)
 
   return data.filter((value, index) => predicate(value, index, data))
->                                                ^^^^^: unknown   (TyUnknown)
+>                                                ^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
   return data.filter((value, index) => predicate(value, index, data))
->                                                       ^^^^^: number   (TyNumber)
+>                                                       ^^^^^: number   (TyNumber) (IdentifierReference)
 
   return data.filter((value, index) => predicate(value, index, data))
->                                                              ^^^^: readonly unknown[]   (TyArray)
+>                                                              ^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
 
 export function groupBy<T, Key extends PropertyKey>(
->               ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction)
+>               ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction) (BindingIdentifier)
 
 export function groupBy<T, Key extends PropertyKey>(
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 export function groupBy<T, Key extends PropertyKey>(
->                          ^^^: any   (TyAny)
+>                          ^^^: any   (TyAny) (TSTypeParameter)
 
 export function groupBy<T, Key extends PropertyKey>(
->                                      ^^^^^^^^^^^: any   (TyAny)
+>                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   data: readonly T[],
-> ^^^^: readonly T[]   (TyArray)
+> ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
   data: readonly T[],
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeReference)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
-> ^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => Key   (TyFunction)
+> ^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => Key   (TyFunction) (BindingIdentifier)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
->              ^^^^^: T   (TyTypeReference)
+>              ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeReference)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
->                        ^^^^^: number   (TyNumber)
+>                        ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
->                                       ^^^^: readonly T[]   (TyArray)
+>                                       ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
->                                                      ^: any   (TyAny)
+>                                                      ^: any   (TyAny) (TSTypeReference)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
->                                                              ^^^: any   (TyAny)
+>                                                              ^^^: any   (TyAny) (TSTypeReference)
 
 ): Partial<Record<Key, T[]>> {
->  ^^^^^^^: any   (TyAny)
+>  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 ): Partial<Record<Key, T[]>> {
->          ^^^^^^: any   (TyAny)
+>          ^^^^^^: any   (TyAny) (TSTypeReference)
 
 ): Partial<Record<Key, T[]>> {
->                 ^^^: any   (TyAny)
+>                 ^^^: any   (TyAny) (TSTypeReference)
 
 ): Partial<Record<Key, T[]>> {
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
   const out: Partial<Record<Key, T[]>> = {}
->       ^^^: Partial<Record<Key, T[]>>   (TyTypeReference)
+>       ^^^: Partial<Record<Key, T[]>>   (TyTypeReference) (BindingIdentifier)
 
   const out: Partial<Record<Key, T[]>> = {}
->            ^^^^^^^: any   (TyAny)
+>            ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   const out: Partial<Record<Key, T[]>> = {}
->                    ^^^^^^: any   (TyAny)
+>                    ^^^^^^: any   (TyAny) (TSTypeReference)
 
   const out: Partial<Record<Key, T[]>> = {}
->                           ^^^: any   (TyAny)
+>                           ^^^: any   (TyAny) (TSTypeReference)
 
   const out: Partial<Record<Key, T[]>> = {}
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeReference)
 
   for (let index = 0; index < data.length; index++) {
->          ^^^^^: number   (TyNumber)
+>          ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   for (let index = 0; index < data.length; index++) {
->                     ^^^^^: number   (TyNumber)
+>                     ^^^^^: number   (TyNumber) (IdentifierReference)
 
   for (let index = 0; index < data.length; index++) {
->                             ^^^^: readonly T[]   (TyArray)
+>                             ^^^^: readonly T[]   (TyArray) (IdentifierReference)
 
   for (let index = 0; index < data.length; index++) {
->                                  ^^^^^^: number   (TyNumber)
+>                                  ^^^^^^: number   (TyNumber) (StaticMemberExpression)
 
   for (let index = 0; index < data.length; index++) {
->                                          ^^^^^: number   (TyNumber)
+>                                          ^^^^^: number   (TyNumber) (IdentifierReference)
 
     const value = data[index]
->         ^^^^^: any   (TyAny)
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
        expected: T
 
     const value = data[index]
->                 ^^^^: readonly T[]   (TyArray)
+>                 ^^^^: readonly T[]   (TyArray) (IdentifierReference)
 
     const value = data[index]
->                      ^^^^^: number   (TyNumber)
+>                      ^^^^^: number   (TyNumber) (IdentifierReference)
 
     const key = callbackfn(value, index, data)
->         ^^^: Key   (TyTypeReference)
+>         ^^^: Key   (TyTypeReference) (BindingIdentifier)
 
     const key = callbackfn(value, index, data)
->               ^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => Key   (TyFunction)
+>               ^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => Key   (TyFunction) (IdentifierReference)
 
     const key = callbackfn(value, index, data)
->                          ^^^^^: any   (TyAny)
+>                          ^^^^^: any   (TyAny) (IdentifierReference)
                         expected: T
 
     const key = callbackfn(value, index, data)
->                                 ^^^^^: number   (TyNumber)
+>                                 ^^^^^: number   (TyNumber) (IdentifierReference)
 
     const key = callbackfn(value, index, data)
->                                        ^^^^: readonly T[]   (TyArray)
+>                                        ^^^^: readonly T[]   (TyArray) (IdentifierReference)
 
     ;(out[key] ??= []).push(value)
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
                           expected: number
 
     ;(out[key] ??= []).push(value)
->     ^^^: Partial<Record<Key, T[]>>   (TyTypeReference)
+>     ^^^: Partial<Record<Key, T[]>>   (TyTypeReference) (IdentifierReference)
 
     ;(out[key] ??= []).push(value)
->         ^^^: Key   (TyTypeReference)
+>         ^^^: Key   (TyTypeReference) (IdentifierReference)
 
     ;(out[key] ??= []).push(value)
->                      ^^^^: any   (TyAny)
+>                      ^^^^: any   (TyAny) (StaticMemberExpression)
                    expected: (...items: T[]) => number
 
     ;(out[key] ??= []).push(value)
->                           ^^^^^: any   (TyAny)
+>                           ^^^^^: any   (TyAny) (IdentifierReference)
                          expected: T
 
   return out
->        ^^^: Partial<Record<Key, T[]>>   (TyTypeReference)
+>        ^^^: Partial<Record<Key, T[]>>   (TyTypeReference) (IdentifierReference)
 
 import type { Merge, NonEmptyArray } from './internal/types'
->             ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped)
+>             ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped) (BindingIdentifier)
 
 import type { Merge, NonEmptyArray } from './internal/types'
->                    ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple)
+>                    ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple) (BindingIdentifier)
 
 export function pick<T extends object, Keys extends keyof T>(
->               ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction)
+>               ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction) (BindingIdentifier)
 
 export function pick<T extends object, Keys extends keyof T>(
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeParameter)
 
 export function pick<T extends object, Keys extends keyof T>(
->                                      ^^^^: any   (TyAny)
+>                                      ^^^^: any   (TyAny) (TSTypeParameter)
 
 export function pick<T extends object, Keys extends keyof T>(
->                                                         ^: any   (TyAny)
+>                                                         ^: any   (TyAny) (TSTypeReference)
 
   data: T,
-> ^^^^: T   (TyTypeReference)
+> ^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   data: T,
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
   keys: NonEmptyArray<Keys>,
-> ^^^^: NonEmptyArray<Keys>   (TyTypeReference)
+> ^^^^: NonEmptyArray<Keys>   (TyTypeReference) (BindingIdentifier)
 
   keys: NonEmptyArray<Keys>,
->       ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple)
+>       ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple) (TSTypeReference)
 
   keys: NonEmptyArray<Keys>,
->       ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple)
+>       ^^^^^^^^^^^^^: readonly [T, ...T[]]   (TyTuple) (IdentifierReference)
 
   keys: NonEmptyArray<Keys>,
->                     ^^^^: any   (TyAny)
+>                     ^^^^: any   (TyAny) (TSTypeReference)
 
 ): Merge<Pick<T, Keys>> {
->  ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped)
+>  ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped) (TSTypeReference)
 
 ): Merge<Pick<T, Keys>> {
->  ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped)
+>  ^^^^^: { [Key in keyof ObjectType]: ObjectType[Key]; }   (TyMapped) (IdentifierReference)
 
 ): Merge<Pick<T, Keys>> {
->        ^^^^: any   (TyAny)
+>        ^^^^: any   (TyAny) (TSTypeReference)
 
 ): Merge<Pick<T, Keys>> {
->             ^: any   (TyAny)
+>             ^: any   (TyAny) (TSTypeReference)
 
 ): Merge<Pick<T, Keys>> {
->                ^^^^: any   (TyAny)
+>                ^^^^: any   (TyAny) (TSTypeReference)
 
   const out = {} as Pick<T, Keys>
->       ^^^: Pick<T, Keys>   (TyTypeReference)
+>       ^^^: Pick<T, Keys>   (TyTypeReference) (BindingIdentifier)
 
   const out = {} as Pick<T, Keys>
->                   ^^^^: any   (TyAny)
+>                   ^^^^: any   (TyAny) (TSTypeReference)
 
   const out = {} as Pick<T, Keys>
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeReference)
 
   const out = {} as Pick<T, Keys>
->                           ^^^^: any   (TyAny)
+>                           ^^^^: any   (TyAny) (TSTypeReference)
 
   for (const key of keys) {
->            ^^^: any   (TyAny)
+>            ^^^: any   (TyAny) (BindingIdentifier)
         expected: Keys
 
   for (const key of keys) {
->                   ^^^^: NonEmptyArray<Keys>   (TyTypeReference)
+>                   ^^^^: NonEmptyArray<Keys>   (TyTypeReference) (IdentifierReference)
 
     out[key] = data[key]
->   ^^^: Pick<T, Keys>   (TyTypeReference)
+>   ^^^: Pick<T, Keys>   (TyTypeReference) (IdentifierReference)
 
     out[key] = data[key]
->   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
                 expected: T[Keys]
 
     out[key] = data[key]
->       ^^^: any   (TyAny)
+>       ^^^: any   (TyAny) (IdentifierReference)
    expected: Keys
 
     out[key] = data[key]
->              ^^^^: T   (TyTypeReference)
+>              ^^^^: T   (TyTypeReference) (IdentifierReference)
 
     out[key] = data[key]
->                   ^^^: any   (TyAny)
+>                   ^^^: any   (TyAny) (IdentifierReference)
                expected: Keys
 
   return out
->        ^^^: Pick<T, Keys>   (TyTypeReference)
+>        ^^^: Pick<T, Keys>   (TyTypeReference) (IdentifierReference)
 
 export function pipe<A>(value: A): A
->               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
+>               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject) (BindingIdentifier)
 
 export function pipe<A>(value: A): A
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A>(value: A): A
->                       ^^^^^: A   (TyTypeReference)
+>                       ^^^^^: A   (TyTypeReference) (BindingIdentifier)
 
 export function pipe<A>(value: A): A
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A>(value: A): A
->                                  ^: any   (TyAny)
+>                                  ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
+>               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject) (BindingIdentifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                          ^^^^^: A   (TyTypeReference)
+>                          ^^^^^: A   (TyTypeReference) (BindingIdentifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                                    ^^^: (input: A) => B   (TyFunction)
+>                                    ^^^: (input: A) => B   (TyFunction) (BindingIdentifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                                          ^^^^^: A   (TyTypeReference)
+>                                          ^^^^^: A   (TyTypeReference) (BindingIdentifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                                                 ^: any   (TyAny)
+>                                                 ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                                                           ^: any   (TyAny)
+>                                                           ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
+>               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject) (BindingIdentifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                             ^^^^^: A   (TyTypeReference)
+>                             ^^^^^: A   (TyTypeReference) (BindingIdentifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                    ^: any   (TyAny)
+>                                    ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                       ^^^: (input: A) => B   (TyFunction)
+>                                       ^^^: (input: A) => B   (TyFunction) (BindingIdentifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                             ^^^^^: A   (TyTypeReference)
+>                                             ^^^^^: A   (TyTypeReference) (BindingIdentifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                    ^: any   (TyAny)
+>                                                    ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                          ^: any   (TyAny)
+>                                                          ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                             ^^^: (input: B) => C   (TyFunction)
+>                                                             ^^^: (input: B) => C   (TyFunction) (BindingIdentifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                                   ^^^^^: B   (TyTypeReference)
+>                                                                   ^^^^^: B   (TyTypeReference) (BindingIdentifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                                          ^: any   (TyAny)
+>                                                                          ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                                                ^: any   (TyAny)
+>                                                                                ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                                                    ^: any   (TyAny)
+>                                                                                    ^: any   (TyAny) (TSTypeReference)
 
 export function pipe<A, B, C, D>(
->               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
+>               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject) (BindingIdentifier)
 
 export function pipe<A, B, C, D>(
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B, C, D>(
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B, C, D>(
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeParameter)
 
 export function pipe<A, B, C, D>(
->                             ^: any   (TyAny)
+>                             ^: any   (TyAny) (TSTypeParameter)
 
   value: A,
-> ^^^^^: A   (TyTypeReference)
+> ^^^^^: A   (TyTypeReference) (BindingIdentifier)
 
   value: A,
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeReference)
 
   op1: (input: A) => B,
-> ^^^: (input: A) => B   (TyFunction)
+> ^^^: (input: A) => B   (TyFunction) (BindingIdentifier)
 
   op1: (input: A) => B,
->       ^^^^^: A   (TyTypeReference)
+>       ^^^^^: A   (TyTypeReference) (BindingIdentifier)
 
   op1: (input: A) => B,
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
   op1: (input: A) => B,
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeReference)
 
   op2: (input: B) => C,
-> ^^^: (input: B) => C   (TyFunction)
+> ^^^: (input: B) => C   (TyFunction) (BindingIdentifier)
 
   op2: (input: B) => C,
->       ^^^^^: B   (TyTypeReference)
+>       ^^^^^: B   (TyTypeReference) (BindingIdentifier)
 
   op2: (input: B) => C,
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
   op2: (input: B) => C,
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeReference)
 
   op3: (input: C) => D,
-> ^^^: (input: C) => D   (TyFunction)
+> ^^^: (input: C) => D   (TyFunction) (BindingIdentifier)
 
   op3: (input: C) => D,
->       ^^^^^: C   (TyTypeReference)
+>       ^^^^^: C   (TyTypeReference) (BindingIdentifier)
 
   op3: (input: C) => D,
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
   op3: (input: C) => D,
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeReference)
 
 ): D
->  ^: any   (TyAny)
+>  ^: any   (TyAny) (TSTypeReference)
 
 export function pipe(value: unknown, ...operations: Array<(input: any) => any>): unknown {
->               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
+>               ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject) (BindingIdentifier)
 
 export function pipe(value: unknown, ...operations: Array<(input: any) => any>): unknown {
->                    ^^^^^: unknown   (TyUnknown)
+>                    ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 export function pipe(value: unknown, ...operations: Array<(input: any) => any>): unknown {
->                                       ^^^^^^^^^^: ((input: any) => any)[]   (TyArray)
+>                                       ^^^^^^^^^^: ((input: any) => any)[]   (TyArray) (BindingIdentifier)
 
 export function pipe(value: unknown, ...operations: Array<(input: any) => any>): unknown {
->                                                   ^^^^^: ArrayConstructor   (TyTypeReference)
+>                                                   ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
 export function pipe(value: unknown, ...operations: Array<(input: any) => any>): unknown {
->                                                   ^^^^^: ArrayConstructor   (TyTypeReference)
+>                                                   ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
 export function pipe(value: unknown, ...operations: Array<(input: any) => any>): unknown {
->                                                          ^^^^^: any   (TyAny)
+>                                                          ^^^^^: any   (TyAny) (BindingIdentifier)
 
   return operations.reduce((current, operation) => operation(current), value)
->        ^^^^^^^^^^: ((input: any) => any)[]   (TyArray)
+>        ^^^^^^^^^^: ((input: any) => any)[]   (TyArray) (IdentifierReference)
 
   return operations.reduce((current, operation) => operation(current), value)
->                   ^^^^^^: { (callbackfn: (previousValue: (input: any) => any, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => (input: any) => any): (input: any) => any; (callbackfn: (previousValue: (input: any) => any, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => (input: any) => any, initialValue: (input: any) => any): (input: any) => any; <U>(callbackfn: (previousValue: U, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => U, initialValue: U): U; }   (TyObject)
+>                   ^^^^^^: { (callbackfn: (previousValue: (input: any) => any, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => (input: any) => any): (input: any) => any; (callbackfn: (previousValue: (input: any) => any, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => (input: any) => any, initialValue: (input: any) => any): (input: any) => any; <U>(callbackfn: (previousValue: U, currentValue: (input: any) => any, currentIndex: number, array: ((input: any) => any)[]) => U, initialValue: U): U; }   (TyObject) (StaticMemberExpression)
 
   return operations.reduce((current, operation) => operation(current), value)
->                           ^^^^^^^: (input: any) => any   (TyFunction)
+>                           ^^^^^^^: (input: any) => any   (TyFunction) (BindingIdentifier)
                            expected: unknown
 
   return operations.reduce((current, operation) => operation(current), value)
->                                    ^^^^^^^^^: (input: any) => any   (TyFunction)
+>                                    ^^^^^^^^^: (input: any) => any   (TyFunction) (BindingIdentifier)
 
   return operations.reduce((current, operation) => operation(current), value)
->                                                  ^^^^^^^^^: (input: any) => any   (TyFunction)
+>                                                  ^^^^^^^^^: (input: any) => any   (TyFunction) (IdentifierReference)
 
   return operations.reduce((current, operation) => operation(current), value)
->                                                            ^^^^^^^: (input: any) => any   (TyFunction)
+>                                                            ^^^^^^^: (input: any) => any   (TyFunction) (IdentifierReference)
                                                             expected: unknown
 
   return operations.reduce((current, operation) => operation(current), value)
->                                                                      ^^^^^: unknown   (TyUnknown)
+>                                                                      ^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
 import { filter } from '../src/filter'
->        ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject)
+>        ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject) (BindingIdentifier)
 
 import { groupBy } from '../src/groupBy'
->        ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction)
+>        ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction) (BindingIdentifier)
 
 import { map } from '../src/map'
->        ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
+>        ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject) (BindingIdentifier)
 
 import { pick } from '../src/pick'
->        ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction)
+>        ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction) (BindingIdentifier)
 
 import { pipe } from '../src/pipe'
->        ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
+>        ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject) (BindingIdentifier)
 
 type Task = {
->    ^^^^: { id: string; status: "todo" | "done"; points?: number; }   (TyObject)
+>    ^^^^: { id: string; status: "todo" | "done"; points?: number; }   (TyObject) (TSTypeAliasDeclaration)
 
   id: string
-> ^^: string   (TyString)
+> ^^: string   (TyString) (TSPropertySignature)
 
   status: 'todo' | 'done'
-> ^^^^^^: "todo" | "done"   (TyUnion)
+> ^^^^^^: "todo" | "done"   (TyUnion) (TSPropertySignature)
 
   points?: number
-> ^^^^^^: number | undefined   (TyUnion)
+> ^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
 const tasks: Task[] = [
->     ^^^^^: Task[]   (TyArray)
+>     ^^^^^: Task[]   (TyArray) (BindingIdentifier)
 
 const tasks: Task[] = [
->            ^^^^: any   (TyAny)
+>            ^^^^: any   (TyAny) (TSTypeReference)
 
   { id: 'a', status: 'todo' },
->   ^^: string   (TyString)
+>   ^^: string   (TyString) (ObjectProperty)
 
   { id: 'a', status: 'todo' },
->            ^^^^^^: string   (TyString)
+>            ^^^^^^: string   (TyString) (ObjectProperty)
            expected: "todo"
 
   { id: 'b', status: 'done', points: 3 },
->   ^^: string   (TyString)
+>   ^^: string   (TyString) (ObjectProperty)
 
   { id: 'b', status: 'done', points: 3 },
->            ^^^^^^: string   (TyString)
+>            ^^^^^^: string   (TyString) (ObjectProperty)
            expected: "done"
 
   { id: 'b', status: 'done', points: 3 },
->                            ^^^^^^: number   (TyNumber)
+>                            ^^^^^^: number   (TyNumber) (ObjectProperty)
 
 const doneTasks = filter(
->     ^^^^^^^^^: Task[]   (TyArray)
+>     ^^^^^^^^^: Task[]   (TyArray) (BindingIdentifier)
        expected: (Task & { status: "done"; points: number; })[]
 
 const doneTasks = filter(
->                 ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject)
+>                 ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject) (IdentifierReference)
 
   tasks,
-> ^^^^^: Task[]   (TyArray)
+> ^^^^^: Task[]   (TyArray) (IdentifierReference)
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->  ^^^^: T   (TyTypeReference)
+>  ^^^^: T   (TyTypeReference) (BindingIdentifier)
 expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->         ^^^^: any   (TyAny)
+>         ^^^^: any   (TyAny) (IdentifierName)
       expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->                 ^^^^: any   (TyAny)
+>                 ^^^^: any   (TyAny) (TSTypeReference)
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->                          ^^^^^^: "done"   (TyStringLiteral)
+>                          ^^^^^^: "done"   (TyStringLiteral) (TSPropertySignature)
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->                                          ^^^^^^: number   (TyNumber)
+>                                          ^^^^^^: number   (TyNumber) (TSPropertySignature)
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->                                                              ^^^^: T   (TyTypeReference)
+>                                                              ^^^^: T   (TyTypeReference) (IdentifierReference)
                                                            expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->                                                                   ^^^^^^: any   (TyAny)
+>                                                                   ^^^^^^: any   (TyAny) (StaticMemberExpression)
                                                                   expected: "todo" | "done"
 
 const donePoints = map(doneTasks, task => task.points)
->     ^^^^^^^^^^: U[]   (TyArray)
+>     ^^^^^^^^^^: U[]   (TyArray) (BindingIdentifier)
         expected: number[]
 
 const donePoints = map(doneTasks, task => task.points)
->                  ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
+>                  ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject) (IdentifierReference)
 
 const donePoints = map(doneTasks, task => task.points)
->                      ^^^^^^^^^: Task[]   (TyArray)
+>                      ^^^^^^^^^: Task[]   (TyArray) (IdentifierReference)
                         expected: (Task & { status: "done"; points: number; })[]
 
 const donePoints = map(doneTasks, task => task.points)
->                                 ^^^^: T   (TyTypeReference)
+>                                 ^^^^: T   (TyTypeReference) (BindingIdentifier)
                               expected: Task & { status: "done"; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
->                                         ^^^^: T   (TyTypeReference)
+>                                         ^^^^: T   (TyTypeReference) (IdentifierReference)
                                       expected: Task & { status: "done"; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
->                                              ^^^^^^: any   (TyAny)
+>                                              ^^^^^^: any   (TyAny) (StaticMemberExpression)
                                              expected: number
 
 const groupedTasks = groupBy(tasks, task => task.status)
->     ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference)
+>     ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference) (BindingIdentifier)
           expected: Partial<Record<"todo" | "done", Task[]>>
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                    ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction)
+>                    ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction) (IdentifierReference)
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                            ^^^^^: Task[]   (TyArray)
+>                            ^^^^^: Task[]   (TyArray) (IdentifierReference)
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                                   ^^^^: T   (TyTypeReference)
+>                                   ^^^^: T   (TyTypeReference) (BindingIdentifier)
                                 expected: Task
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                                           ^^^^: T   (TyTypeReference)
+>                                           ^^^^: T   (TyTypeReference) (IdentifierReference)
                                         expected: Task
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                                                ^^^^^^: any   (TyAny)
+>                                                ^^^^^^: any   (TyAny) (StaticMemberExpression)
                                                expected: "todo" | "done"
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
->     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference)
+>     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference) (BindingIdentifier)
          expected: { id: string; points?: number | undefined; }
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
->                   ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction)
+>                   ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction) (IdentifierReference)
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
->                        ^^^^^: Task[]   (TyArray)
+>                        ^^^^^: Task[]   (TyArray) (IdentifierReference)
 
 const pointTotal = pipe(
->     ^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: number
 
 const pointTotal = pipe(
->                  ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject)
+>                  ^^^^: { <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }   (TyObject) (IdentifierReference)
 
   doneTasks,
-> ^^^^^^^^^: Task[]   (TyArray)
+> ^^^^^^^^^: Task[]   (TyArray) (IdentifierReference)
    expected: (Task & { status: "done"; points: number; })[]
 
   items => map(items, item => item.points),
-> ^^^^^: any   (TyAny)
+> ^^^^^: any   (TyAny) (BindingIdentifier)
 expected: (Task & { status: "done"; points: number; })[]
 
   items => map(items, item => item.points),
->          ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject)
+>          ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject) (IdentifierReference)
 
   items => map(items, item => item.points),
->              ^^^^^: any   (TyAny)
+>              ^^^^^: any   (TyAny) (IdentifierReference)
             expected: (Task & { status: "done"; points: number; })[]
 
   items => map(items, item => item.points),
->                     ^^^^: T   (TyTypeReference)
+>                     ^^^^: T   (TyTypeReference) (BindingIdentifier)
                   expected: Task & { status: "done"; points: number; }
 
   items => map(items, item => item.points),
->                             ^^^^: T   (TyTypeReference)
+>                             ^^^^: T   (TyTypeReference) (IdentifierReference)
                           expected: Task & { status: "done"; points: number; }
 
   items => map(items, item => item.points),
->                                  ^^^^^^: any   (TyAny)
+>                                  ^^^^^^: any   (TyAny) (StaticMemberExpression)
                                  expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
-> ^^^^^^: any   (TyAny)
+> ^^^^^^: any   (TyAny) (BindingIdentifier)
 expected: number[]
 
   points => points.reduce((sum, point) => sum + point, 0),
->           ^^^^^^: any   (TyAny)
+>           ^^^^^^: any   (TyAny) (IdentifierReference)
           expected: number[]
 
   points => points.reduce((sum, point) => sum + point, 0),
->                  ^^^^^^: any   (TyAny)
+>                  ^^^^^^: any   (TyAny) (StaticMemberExpression)
                  expected: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: number[]) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: number[]) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: number[]) => U, initialValue: U): U; }
 
   points => points.reduce((sum, point) => sum + point, 0),
->                          ^^^: any   (TyAny)
+>                          ^^^: any   (TyAny) (BindingIdentifier)
                       expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
->                               ^^^^^: any   (TyAny)
+>                               ^^^^^: any   (TyAny) (BindingIdentifier)
                              expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
->                                         ^^^: any   (TyAny)
+>                                         ^^^: any   (TyAny) (IdentifierReference)
                                      expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
->                                               ^^^^^: any   (TyAny)
+>                                               ^^^^^: any   (TyAny) (IdentifierReference)
                                              expected: number
 
 const groupedDone = groupedTasks.done
->     ^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: Task[] | undefined
 
 const groupedDone = groupedTasks.done
->                   ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference)
+>                   ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference) (IdentifierReference)
                         expected: Partial<Record<"todo" | "done", Task[]>>
 
 const groupedDone = groupedTasks.done
->                                ^^^^: any   (TyAny)
+>                                ^^^^: any   (TyAny) (StaticMemberExpression)
                              expected: Task[] | undefined
 
 const summaryId = taskSummary.id
->     ^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
        expected: string
 
 const summaryId = taskSummary.id
->                 ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference)
+>                 ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference) (IdentifierReference)
                      expected: { id: string; points?: number | undefined; }
 
 const summaryId = taskSummary.id
->                             ^^: any   (TyAny)
+>                             ^^: any   (TyAny) (StaticMemberExpression)
                         expected: string
 
 const summaryPoints = taskSummary.points
->     ^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
            expected: number | undefined
 
 const summaryPoints = taskSummary.points
->                     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference)
+>                     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference) (IdentifierReference)
                          expected: { id: string; points?: number | undefined; }
 
 const summaryPoints = taskSummary.points
->                                 ^^^^^^: any   (TyAny)
+>                                 ^^^^^^: any   (TyAny) (StaticMemberExpression)
                                 expected: number | undefined
 
 const firstPoint = donePoints[0]
->     ^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: number
 
 const firstPoint = donePoints[0]
->                  ^^^^^^^^^^: U[]   (TyArray)
+>                  ^^^^^^^^^^: U[]   (TyArray) (IdentifierReference)
                      expected: number[]

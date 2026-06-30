@@ -1,51 +1,51 @@
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     readonly matchAll: unique symbol;
->            ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>            ^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeParameter)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                         ^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                                        ^: any   (TyAny)
+>                                                        ^: any   (TyAny) (TSTypeReference)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                                           ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                           ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): RegExpStringIterator<T>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     [Symbol.iterator](): RegExpStringIterator<T>;
->           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
     [Symbol.iterator](): RegExpStringIterator<T>;
->                        ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): RegExpStringIterator<T>;
->                                             ^: any   (TyAny)
+>                                             ^: any   (TyAny) (TSTypeReference)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: RegExpConstructor
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
->           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
->                     ^^^: string   (TyString)
+>                     ^^^: string   (TyString) (BindingIdentifier)
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
->                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
->                                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

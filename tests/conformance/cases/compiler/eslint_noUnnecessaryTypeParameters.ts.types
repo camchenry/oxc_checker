@@ -1,230 +1,230 @@
 function second<A, B>(a: A, b: B): B {
->        ^^^^^^: <A, B>(a: A, b: B) => B   (TyFunction)
+>        ^^^^^^: <A, B>(a: A, b: B) => B   (TyFunction) (BindingIdentifier)
 
 function second<A, B>(a: A, b: B): B {
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeParameter)
 
 function second<A, B>(a: A, b: B): B {
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeParameter)
 
 function second<A, B>(a: A, b: B): B {
->                     ^: A   (TyTypeReference)
+>                     ^: A   (TyTypeReference) (BindingIdentifier)
 
 function second<A, B>(a: A, b: B): B {
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeReference)
 
 function second<A, B>(a: A, b: B): B {
->                           ^: B   (TyTypeReference)
+>                           ^: B   (TyTypeReference) (BindingIdentifier)
 
 function second<A, B>(a: A, b: B): B {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
 function second<A, B>(a: A, b: B): B {
->                                  ^: any   (TyAny)
+>                                  ^: any   (TyAny) (TSTypeReference)
 
   return b;
->        ^: B   (TyTypeReference)
+>        ^: B   (TyTypeReference) (IdentifierReference)
 
 function parseJSON<T>(input: string): T {
->        ^^^^^^^^^: <T>(input: string) => T   (TyFunction)
+>        ^^^^^^^^^: <T>(input: string) => T   (TyFunction) (BindingIdentifier)
 
 function parseJSON<T>(input: string): T {
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeParameter)
 
 function parseJSON<T>(input: string): T {
->                     ^^^^^: string   (TyString)
+>                     ^^^^^: string   (TyString) (BindingIdentifier)
 
 function parseJSON<T>(input: string): T {
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeReference)
 
   return JSON.parse(input);
->        ^^^^: JSON   (TyTypeReference)
+>        ^^^^: JSON   (TyTypeReference) (IdentifierReference)
 
   return JSON.parse(input);
->             ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction)
+>             ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction) (StaticMemberExpression)
 
   return JSON.parse(input);
->                   ^^^^^: string   (TyString)
+>                   ^^^^^: string   (TyString) (IdentifierReference)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->        ^^^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => void   (TyFunction)
+>        ^^^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => void   (TyFunction) (BindingIdentifier)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeParameter)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                                            ^^^: T   (TyTypeReference)
+>                                            ^^^: T   (TyTypeReference) (BindingIdentifier)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                                                 ^: any   (TyAny)
+>                                                 ^: any   (TyAny) (TSTypeReference)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                                                    ^^^: K   (TyTypeReference)
+>                                                    ^^^: K   (TyTypeReference) (BindingIdentifier)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                                                         ^: any   (TyAny)
+>                                                         ^: any   (TyAny) (TSTypeReference)
 
   console.log(obj[key]);
-> ^^^^^^^: Console   (TyTypeReference)
+> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
   console.log(obj[key]);
-> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
   console.log(obj[key]);
->         ^^^: (...data: any[]) => void   (TyFunction)
+>         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
   console.log(obj[key]);
->             ^^^: T   (TyTypeReference)
+>             ^^^: T   (TyTypeReference) (IdentifierReference)
 
   console.log(obj[key]);
->                 ^^^: K   (TyTypeReference)
+>                 ^^^: K   (TyTypeReference) (IdentifierReference)
 
 function second<B>(a: unknown, b: B): B {
->        ^^^^^^: <B>(a: unknown, b: B) => B   (TyFunction)
+>        ^^^^^^: <B>(a: unknown, b: B) => B   (TyFunction) (BindingIdentifier)
 
 function second<B>(a: unknown, b: B): B {
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeParameter)
 
 function second<B>(a: unknown, b: B): B {
->                  ^: unknown   (TyUnknown)
+>                  ^: unknown   (TyUnknown) (BindingIdentifier)
 
 function second<B>(a: unknown, b: B): B {
->                              ^: B   (TyTypeReference)
+>                              ^: B   (TyTypeReference) (BindingIdentifier)
 
 function second<B>(a: unknown, b: B): B {
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeReference)
 
 function second<B>(a: unknown, b: B): B {
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeReference)
 
   return b;
->        ^: B   (TyTypeReference)
+>        ^: B   (TyTypeReference) (IdentifierReference)
 
 function parseJSON(input: string): unknown {
->        ^^^^^^^^^: (input: string) => unknown   (TyFunction)
+>        ^^^^^^^^^: (input: string) => unknown   (TyFunction) (BindingIdentifier)
 
 function parseJSON(input: string): unknown {
->                  ^^^^^: string   (TyString)
+>                  ^^^^^: string   (TyString) (BindingIdentifier)
 
   return JSON.parse(input);
->        ^^^^: JSON   (TyTypeReference)
+>        ^^^^: JSON   (TyTypeReference) (IdentifierReference)
 
   return JSON.parse(input);
->             ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction)
+>             ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction) (StaticMemberExpression)
 
   return JSON.parse(input);
->                   ^^^^^: string   (TyString)
+>                   ^^^^^: string   (TyString) (IdentifierReference)
 
 function printProperty<T>(obj: T, key: keyof T) {
->        ^^^^^^^^^^^^^: <T>(obj: T, key: keyof T) => void   (TyFunction)
+>        ^^^^^^^^^^^^^: <T>(obj: T, key: keyof T) => void   (TyFunction) (BindingIdentifier)
 
 function printProperty<T>(obj: T, key: keyof T) {
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 function printProperty<T>(obj: T, key: keyof T) {
->                         ^^^: T   (TyTypeReference)
+>                         ^^^: T   (TyTypeReference) (BindingIdentifier)
 
 function printProperty<T>(obj: T, key: keyof T) {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
 function printProperty<T>(obj: T, key: keyof T) {
->                                 ^^^: keyof T   (TyKeyof)
+>                                 ^^^: keyof T   (TyKeyof) (BindingIdentifier)
 
 function printProperty<T>(obj: T, key: keyof T) {
->                                            ^: any   (TyAny)
+>                                            ^: any   (TyAny) (TSTypeReference)
 
   console.log(obj[key]);
-> ^^^^^^^: Console   (TyTypeReference)
+> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
   console.log(obj[key]);
-> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
   console.log(obj[key]);
->         ^^^: (...data: any[]) => void   (TyFunction)
+>         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
   console.log(obj[key]);
->             ^^^: T   (TyTypeReference)
+>             ^^^: T   (TyTypeReference) (IdentifierReference)
 
   console.log(obj[key]);
->                 ^^^: keyof T   (TyKeyof)
+>                 ^^^: keyof T   (TyKeyof) (IdentifierReference)
 
 function identity<T>(arg: T): T {
->        ^^^^^^^^: <T>(arg: T) => T   (TyFunction)
+>        ^^^^^^^^: <T>(arg: T) => T   (TyFunction) (BindingIdentifier)
 
 function identity<T>(arg: T): T {
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeParameter)
 
 function identity<T>(arg: T): T {
->                    ^^^: T   (TyTypeReference)
+>                    ^^^: T   (TyTypeReference) (BindingIdentifier)
 
 function identity<T>(arg: T): T {
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeReference)
 
 function identity<T>(arg: T): T {
->                             ^: any   (TyAny)
+>                             ^: any   (TyAny) (TSTypeReference)
 
   return arg;
->        ^^^: T   (TyTypeReference)
+>        ^^^: T   (TyTypeReference) (IdentifierReference)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->        ^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => any   (TyFunction)
+>        ^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => any   (TyFunction) (BindingIdentifier)
             expected: <T, K extends keyof T>(obj: T, key: K) => T[K]
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                    ^: any   (TyAny)
+>                    ^: any   (TyAny) (TSTypeParameter)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                                       ^: any   (TyAny)
+>                                       ^: any   (TyAny) (TSTypeReference)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                                          ^^^: T   (TyTypeReference)
+>                                          ^^^: T   (TyTypeReference) (BindingIdentifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                                                  ^^^: K   (TyTypeReference)
+>                                                  ^^^: K   (TyTypeReference) (BindingIdentifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
   return obj[key];
->        ^^^: T   (TyTypeReference)
+>        ^^^: T   (TyTypeReference) (IdentifierReference)
 
   return obj[key];
->            ^^^: K   (TyTypeReference)
+>            ^^^: K   (TyTypeReference) (IdentifierReference)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
->                ^^^^^^: <T>(array: readonly T[]) => number   (TyFunction)
+>                ^^^^^^: <T>(array: readonly T[]) => number   (TyFunction) (BindingIdentifier)
                expected: <T>(array: ReadonlyArray<T>) => number
 
 declare function length<T>(array: ReadonlyArray<T>): number;
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
->                          ^^^^^: readonly T[]   (TyArray)
+>                          ^^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
->                                 ^^^^^^^^^^^^^: any   (TyAny)
+>                                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
 declare function length2(array: ReadonlyArray<unknown>): number;
->                ^^^^^^^: (array: readonly unknown[]) => number   (TyFunction)
+>                ^^^^^^^: (array: readonly unknown[]) => number   (TyFunction) (BindingIdentifier)
                 expected: (array: ReadonlyArray<unknown>) => number
 
 declare function length2(array: ReadonlyArray<unknown>): number;
->                        ^^^^^: readonly unknown[]   (TyArray)
+>                        ^^^^^: readonly unknown[]   (TyArray) (BindingIdentifier)
 
 declare function length2(array: ReadonlyArray<unknown>): number;
->                               ^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

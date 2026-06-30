@@ -1,23 +1,23 @@
 const x1 = 5;
->     ^^: 5   (TyNumberLiteral)
+>     ^^: 5   (TyNumberLiteral) (BindingIdentifier)
 
 const x2 = 1 + 2;
->     ^^: number   (TyNumber)
+>     ^^: number   (TyNumber) (BindingIdentifier)
 
 const x3 = "";
->     ^^: ""   (TyStringLiteral)
+>     ^^: ""   (TyStringLiteral) (BindingIdentifier)
 
 const x4 = "foo" + "bar";
->     ^^: string   (TyString)
+>     ^^: string   (TyString) (BindingIdentifier)
 
 const x5 = 1 + "";
->     ^^: string   (TyString)
+>     ^^: string   (TyString) (BindingIdentifier)
 
 const x6 = "" + 1;
->     ^^: string   (TyString)
+>     ^^: string   (TyString) (BindingIdentifier)
 
 const x7 = -5;
->     ^^: -5   (TyNumberLiteral)
+>     ^^: -5   (TyNumberLiteral) (BindingIdentifier)
 
 const x8 = false;
->     ^^: false   (TyBooleanLiteral)
+>     ^^: false   (TyBooleanLiteral) (BindingIdentifier)

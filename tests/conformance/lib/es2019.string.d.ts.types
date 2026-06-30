@@ -1,15 +1,15 @@
 interface String {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
     trimEnd(): string;
->   ^^^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     trimStart(): string;
->   ^^^^^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     trimLeft(): string;
->   ^^^^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     trimRight(): string;
->   ^^^^^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)

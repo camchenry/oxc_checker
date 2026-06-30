@@ -1,41 +1,41 @@
 void (() => {})();
->^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+>^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
 function foo() {}
->        ^^^: () => void   (TyFunction)
+>        ^^^: () => void   (TyFunction) (BindingIdentifier)
 
 void foo();
->^^^^^^^^^^^: undefined   (TyUndefined)
+>^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
 void foo();
->    ^^^: () => void   (TyFunction)
+>    ^^^: () => void   (TyFunction) (IdentifierReference)
 
 (() => {})();
->^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 function foo() {}
->        ^^^: () => void   (TyFunction)
+>        ^^^: () => void   (TyFunction) (BindingIdentifier)
 
 foo(); // nothing to discard
->^^^: () => void   (TyFunction)
+>^^^: () => void   (TyFunction) (IdentifierReference)
 
 foo(); // nothing to discard
->^^^^^^: void   (TyVoid)
+>^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 function bar(x: number) {
->        ^^^: (x: number) => number   (TyFunction)
+>        ^^^: (x: number) => number   (TyFunction) (BindingIdentifier)
 
 function bar(x: number) {
->            ^: number   (TyNumber)
+>            ^: number   (TyNumber) (BindingIdentifier)
 
   void x; // discarding a number
-> ^^^^^^^: undefined   (TyUndefined)
+> ^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
   void x; // discarding a number
->      ^: number   (TyNumber)
+>      ^: number   (TyNumber) (IdentifierReference)
 
 void bar(1); // discarding a number
->^^^^^^^^^^^^: undefined   (TyUndefined)
+>^^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
 void bar(1); // discarding a number
->    ^^^: (x: number) => number   (TyFunction)
+>    ^^^: (x: number) => number   (TyFunction) (IdentifierReference)

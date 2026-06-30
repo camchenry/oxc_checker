@@ -1,113 +1,113 @@
 interface PromiseFulfilledResult<T> {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface PromiseFulfilledResult<T> {
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeParameter)
 
     status: "fulfilled";
->   ^^^^^^: "fulfilled"   (TyStringLiteral)
+>   ^^^^^^: "fulfilled"   (TyStringLiteral) (TSPropertySignature)
 
     value: T;
->   ^^^^^: T   (TyTypeReference)
+>   ^^^^^: T   (TyTypeReference) (TSPropertySignature)
 
     value: T;
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeReference)
 
 interface PromiseRejectedResult {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     status: "rejected";
->   ^^^^^^: "rejected"   (TyStringLiteral)
+>   ^^^^^^: "rejected"   (TyStringLiteral) (TSPropertySignature)
 
     reason: any;
->   ^^^^^^: any   (TyAny)
+>   ^^^^^^: any   (TyAny) (TSPropertySignature)
 
 type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
->    ^^^^^^^^^^^^^^^^^^^^: PromiseFulfilledResult<T> | PromiseRejectedResult   (TyUnion)
+>    ^^^^^^^^^^^^^^^^^^^^: PromiseFulfilledResult<T> | PromiseRejectedResult   (TyUnion) (TSTypeAliasDeclaration)
 
 type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeParameter)
 
 type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
->                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSTypeReference)
 
 type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
->                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->   ^^^^^^^^^^: { <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; }   (TyObject)
+>   ^^^^^^^^^^: { <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; }   (TyObject) (TSMethodSignature)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeParameter)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                 ^^^^^^: T   (TyTypeReference)
+>                                                 ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                         ^: any   (TyAny)
+>                                                         ^: any   (TyAny) (TSTypeReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                             ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                             ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                                                  ^: any   (TyAny)
+>                                                                                  ^: any   (TyAny) (TSMappedType)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                                                             ^: any   (TyAny)
+>                                                                                             ^: any   (TyAny) (TSTypeReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                                                                 ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                 ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                                                                                      ^^^^^^^: any   (TyAny)
+>                                                                                                                      ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                                                                                              ^: any   (TyAny)
+>                                                                                                                              ^: any   (TyAny) (TSTypeReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                                                                                                ^: any   (TyAny)
+>                                                                                                                                ^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->   ^^^^^^^^^^: { <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; }   (TyObject)
+>   ^^^^^^^^^^: { <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; }   (TyObject) (TSMethodSignature)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeParameter)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                 ^^^^^^: Iterable<T | PromiseLike<T>>   (TyTypeReference)
+>                 ^^^^^^: Iterable<T | PromiseLike<T>>   (TyTypeReference) (BindingIdentifier)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                         ^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                  ^: any   (TyAny)
+>                                  ^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                      ^^^^^^^^^^^: any   (TyAny)
+>                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                                        ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                        ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                                        ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                                                        ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                                                                     ^^^^^^^: any   (TyAny)
+>                                                                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                                                                             ^: any   (TyAny)
+>                                                                                             ^: any   (TyAny) (TSTypeReference)

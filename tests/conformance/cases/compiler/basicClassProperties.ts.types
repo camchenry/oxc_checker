@@ -1,140 +1,140 @@
 class ClassPropertyItem {
->     ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery)
+>     ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (BindingIdentifier)
 
   name: string = "item";
-> ^^^^: string   (TyString)
+> ^^^^: string   (TyString) (PropertyDefinition)
 
 class ClassPropertyExample {
->     ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery)
+>     ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (BindingIdentifier)
 
   ready: boolean = false;
-> ^^^^^: boolean   (TyBoolean)
+> ^^^^^: boolean   (TyBoolean) (PropertyDefinition)
 
   count = 1;
-> ^^^^^: number   (TyNumber)
+> ^^^^^: number   (TyNumber) (PropertyDefinition)
 
   item: ClassPropertyItem = new ClassPropertyItem();
-> ^^^^: ClassPropertyItem   (TyTypeReference)
+> ^^^^: ClassPropertyItem   (TyTypeReference) (PropertyDefinition)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery)
+>       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (TSTypeReference)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery)
+>       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (IdentifierReference)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->                               ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery)
+>                               ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (IdentifierReference)
 
   static enabled: boolean = true;
->        ^^^^^^^: boolean   (TyBoolean)
+>        ^^^^^^^: boolean   (TyBoolean) (PropertyDefinition)
 
   getReady() {
-> ^^^^^^^^: () => boolean   (TyFunction)
+> ^^^^^^^^: () => boolean   (TyFunction) (MethodDefinition)
 
     return this.ready;
->               ^^^^^: boolean   (TyBoolean)
+>               ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
 
   getCount() {
-> ^^^^^^^^: () => number   (TyFunction)
+> ^^^^^^^^: () => number   (TyFunction) (MethodDefinition)
 
     return this.count;
->               ^^^^^: number   (TyNumber)
+>               ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
   getItemName() {
-> ^^^^^^^^^^^: () => string   (TyFunction)
+> ^^^^^^^^^^^: () => string   (TyFunction) (MethodDefinition)
 
     return this.item.name;
->               ^^^^: ClassPropertyItem   (TyTypeReference)
+>               ^^^^: ClassPropertyItem   (TyTypeReference) (StaticMemberExpression)
 
     return this.item.name;
->                    ^^^^: string   (TyString)
+>                    ^^^^: string   (TyString) (StaticMemberExpression)
 
   static getEnabled() {
->        ^^^^^^^^^^: () => boolean   (TyFunction)
+>        ^^^^^^^^^^: () => boolean   (TyFunction) (MethodDefinition)
 
     return ClassPropertyExample.enabled;
->          ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery)
+>          ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
 
     return ClassPropertyExample.enabled;
->                               ^^^^^^^: boolean   (TyBoolean)
+>                               ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
 
 const _classPropertyInstance = new ClassPropertyExample();
->     ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference)
+>     ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (BindingIdentifier)
 
 const _classPropertyInstance = new ClassPropertyExample();
->                                  ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery)
+>                                  ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->     ^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+>     ^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->                                                  ^^^^^: boolean   (TyBoolean)
+>                                                  ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
 
 const _classPropertyCount = _classPropertyInstance.count;
->     ^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const _classPropertyCount = _classPropertyInstance.count;
->                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
 
 const _classPropertyCount = _classPropertyInstance.count;
->                                                  ^^^^^: number   (TyNumber)
+>                                                  ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->     ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                              ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference)
+>                              ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                                                     ^^^^: ClassPropertyItem   (TyTypeReference)
+>                                                     ^^^^: ClassPropertyItem   (TyTypeReference) (StaticMemberExpression)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                                                          ^^^^: string   (TyString)
+>                                                          ^^^^: string   (TyString) (StaticMemberExpression)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference)
+>                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->                                                          ^^^^^^^^: () => boolean   (TyFunction)
+>                                                          ^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference)
+>                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->                                                          ^^^^^^^^: () => number   (TyFunction)
+>                                                          ^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->                                  ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference)
+>                                  ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->                                                         ^^^^^^^^^^^: () => string   (TyFunction)
+>                                                         ^^^^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->     ^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+>     ^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->                             ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery)
+>                             ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->                                                  ^^^^^^^: boolean   (TyBoolean)
+>                                                  ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->                                       ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery)
+>                                       ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->                                                            ^^^^^^^^^^: () => boolean   (TyFunction)
+>                                                            ^^^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)

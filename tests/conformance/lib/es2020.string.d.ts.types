@@ -1,60 +1,60 @@
 interface String {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->   ^^^^^^^^: { (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; }   (TyObject)
+>   ^^^^^^^^: { (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; }   (TyObject) (TSMethodSignature)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->            ^^^^^^: RegExp   (TyTypeReference)
+>            ^^^^^^: RegExp   (TyTypeReference) (BindingIdentifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+>                    ^^^^^^: RegExpConstructor   (TyTypeReference) (TSTypeReference)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                    ^^^^^^: RegExpConstructor   (TyTypeReference)
+>                    ^^^^^^: RegExpConstructor   (TyTypeReference) (IdentifierReference)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                                                  ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+>                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
                      expected: Intl.LocalesArgument
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+>                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
                      expected: Intl.LocalesArgument
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }   (TyObject)
+>   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }   (TyObject) (TSMethodSignature)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                 ^^^^: string   (TyString)
+>                 ^^^^: string   (TyString) (BindingIdentifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                               ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+>                               ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
                                expected: Intl.LocalesArgument
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                                               ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion)
+>                                                               ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

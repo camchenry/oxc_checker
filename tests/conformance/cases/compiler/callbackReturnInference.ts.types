@@ -1,50 +1,50 @@
 declare function useCallback<T>(callback: () => T): T;
->                ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction)
+>                ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction) (BindingIdentifier)
 
 declare function useCallback<T>(callback: () => T): T;
->                            ^: any   (TyAny)
+>                            ^: any   (TyAny) (TSTypeParameter)
 
 declare function useCallback<T>(callback: () => T): T;
->                               ^^^^^^^^: () => T   (TyFunction)
+>                               ^^^^^^^^: () => T   (TyFunction) (BindingIdentifier)
 
 declare function useCallback<T>(callback: () => T): T;
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
 declare function useCallback<T>(callback: () => T): T;
->                                                   ^: any   (TyAny)
+>                                                   ^: any   (TyAny) (TSTypeReference)
 
 declare function configure<T>(options: { create: () => T }): T;
->                ^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction)
+>                ^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction) (BindingIdentifier)
 
 declare function configure<T>(options: { create: () => T }): T;
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeParameter)
 
 declare function configure<T>(options: { create: () => T }): T;
->                             ^^^^^^^: { create: () => T; }   (TyObject)
+>                             ^^^^^^^: { create: () => T; }   (TyObject) (BindingIdentifier)
 
 declare function configure<T>(options: { create: () => T }): T;
->                                        ^^^^^^: () => T   (TyFunction)
+>                                        ^^^^^^: () => T   (TyFunction) (TSPropertySignature)
 
 declare function configure<T>(options: { create: () => T }): T;
->                                                      ^: any   (TyAny)
+>                                                      ^: any   (TyAny) (TSTypeReference)
 
 declare function configure<T>(options: { create: () => T }): T;
->                                                            ^: any   (TyAny)
+>                                                            ^: any   (TyAny) (TSTypeReference)
 
 const callbackValue = useCallback(() => 1);
->     ^^^^^^^^^^^^^: number   (TyNumber)
+>     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const callbackValue = useCallback(() => 1);
->                     ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction)
+>                     ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction) (IdentifierReference)
 
 const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
->     ^^^^^^^^^^^^^^^^^^^: { value: number; }   (TyObject)
+>     ^^^^^^^^^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
 
 const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
->                           ^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction)
+>                           ^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction) (IdentifierReference)
 
 const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
->                                       ^^^^^^: () => { value: number; }   (TyFunction)
+>                                       ^^^^^^: () => { value: number; }   (TyFunction) (ObjectProperty)
 
 const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
->                                                        ^^^^^: number   (TyNumber)
+>                                                        ^^^^^: number   (TyNumber) (ObjectProperty)

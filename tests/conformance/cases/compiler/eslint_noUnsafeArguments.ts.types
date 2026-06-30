@@ -1,257 +1,257 @@
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                ^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>                ^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (BindingIdentifier)
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                    ^^^^: string   (TyString)
+>                    ^^^^: string   (TyString) (BindingIdentifier)
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                                  ^^^^: number   (TyNumber)
+>                                  ^^^^: number   (TyNumber) (BindingIdentifier)
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                                                ^^^^: string   (TyString)
+>                                                ^^^^: string   (TyString) (BindingIdentifier)
 
 const anyTyped = 1 as any;
->     ^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 foo(...anyTyped);
->^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
 foo(...anyTyped);
->^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 foo(...anyTyped);
->      ^^^^^^^^: any   (TyAny)
+>      ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 foo(anyTyped, 1, 'a');
->^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
 foo(anyTyped, 1, 'a');
->^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 foo(anyTyped, 1, 'a');
->   ^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 const anyArray: any[] = [];
->     ^^^^^^^^: any[]   (TyArray)
+>     ^^^^^^^^: any[]   (TyArray) (BindingIdentifier)
 
 foo(...anyArray);
->^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
 foo(...anyArray);
->^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 foo(...anyArray);
->      ^^^^^^^^: any[]   (TyArray)
+>      ^^^^^^^^: any[]   (TyArray) (IdentifierReference)
 
 const tuple1 = ['a', anyTyped, 'b'] as const;
->     ^^^^^^: readonly ["a", any, "b"]   (TyTuple)
+>     ^^^^^^: readonly ["a", any, "b"]   (TyTuple) (BindingIdentifier)
 
 const tuple1 = ['a', anyTyped, 'b'] as const;
->                    ^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 const tuple1 = ['a', anyTyped, 'b'] as const;
->                                      ^^^^^: any   (TyAny)
+>                                      ^^^^^: any   (TyAny) (TSTypeReference)
 
 foo(...tuple1);
->^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
 foo(...tuple1);
->^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 foo(...tuple1);
->      ^^^^^^: readonly ["a", any, "b"]   (TyTuple)
+>      ^^^^^^: readonly ["a", any, "b"]   (TyTuple) (IdentifierReference)
 
 const tuple2 = [1] as const;
->     ^^^^^^: readonly [1]   (TyTuple)
+>     ^^^^^^: readonly [1]   (TyTuple) (BindingIdentifier)
 
 const tuple2 = [1] as const;
->                     ^^^^^: any   (TyAny)
+>                     ^^^^^: any   (TyAny) (TSTypeReference)
 
 foo('a', ...tuple2, anyTyped);
->^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
 foo('a', ...tuple2, anyTyped);
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 foo('a', ...tuple2, anyTyped);
->           ^^^^^^: readonly [1]   (TyTuple)
+>           ^^^^^^: readonly [1]   (TyTuple) (IdentifierReference)
 
 foo('a', ...tuple2, anyTyped);
->                   ^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                ^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction)
+>                ^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction) (BindingIdentifier)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                    ^^^^: string   (TyString)
+>                    ^^^^: string   (TyString) (BindingIdentifier)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                                  ^^^^: number   (TyNumber)
+>                                  ^^^^: number   (TyNumber) (BindingIdentifier)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                                                   ^^^^: string[]   (TyArray)
+>                                                   ^^^^: string[]   (TyArray) (BindingIdentifier)
 
 const x = [1, 2] as [number, ...number[]];
->     ^: [number, ...number[]]   (TyTuple)
+>     ^: [number, ...number[]]   (TyTuple) (BindingIdentifier)
 
 bar('a', ...x, anyTyped);
->^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction) (IdentifierReference)
 
 bar('a', ...x, anyTyped);
->^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 bar('a', ...x, anyTyped);
->           ^: [number, ...number[]]   (TyTuple)
+>           ^: [number, ...number[]]   (TyTuple) (IdentifierReference)
 
 bar('a', ...x, anyTyped);
->              ^^^^^^^^: any   (TyAny)
+>              ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                ^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction)
+>                ^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction) (BindingIdentifier)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                    ^^^^: Set<string>   (TyTypeReference)
+>                    ^^^^: Set<string>   (TyTypeReference) (BindingIdentifier)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                          ^^^: SetConstructor   (TyTypeReference)
+>                          ^^^: SetConstructor   (TyTypeReference) (TSTypeReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                          ^^^: SetConstructor   (TyTypeReference)
+>                          ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                                       ^^^^: Map<string, string>   (TyTypeReference)
+>                                       ^^^^: Map<string, string>   (TyTypeReference) (BindingIdentifier)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                                             ^^^: MapConstructor   (TyTypeReference)
+>                                             ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                                             ^^^: MapConstructor   (TyTypeReference)
+>                                             ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 baz(new Set<any>(), new Map<any, string>());
->^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction)
+>^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction) (IdentifierReference)
 
 baz(new Set<any>(), new Map<any, string>());
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 baz(new Set<any>(), new Map<any, string>());
->       ^^^: SetConstructor   (TyTypeReference)
+>       ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
 baz(new Set<any>(), new Map<any, string>());
->                       ^^^: MapConstructor   (TyTypeReference)
+>                       ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                ^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>                ^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (BindingIdentifier)
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                    ^^^^: string   (TyString)
+>                    ^^^^: string   (TyString) (BindingIdentifier)
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                                  ^^^^: number   (TyNumber)
+>                                  ^^^^: number   (TyNumber) (BindingIdentifier)
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
->                                                ^^^^: string   (TyString)
+>                                                ^^^^: string   (TyString) (BindingIdentifier)
 
 foo('a', 1, 'b');
->^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
 foo('a', 1, 'b');
->^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 const tuple1 = ['a', 1, 'b'] as const;
->     ^^^^^^: readonly ["a", 1, "b"]   (TyTuple)
+>     ^^^^^^: readonly ["a", 1, "b"]   (TyTuple) (BindingIdentifier)
 
 const tuple1 = ['a', 1, 'b'] as const;
->                               ^^^^^: any   (TyAny)
+>                               ^^^^^: any   (TyAny) (TSTypeReference)
 
 foo(...tuple1);
->^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
 foo(...tuple1);
->^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 foo(...tuple1);
->      ^^^^^^: readonly ["a", 1, "b"]   (TyTuple)
+>      ^^^^^^: readonly ["a", 1, "b"]   (TyTuple) (IdentifierReference)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                ^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction)
+>                ^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction) (BindingIdentifier)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                    ^^^^: string   (TyString)
+>                    ^^^^: string   (TyString) (BindingIdentifier)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                                  ^^^^: number   (TyNumber)
+>                                  ^^^^: number   (TyNumber) (BindingIdentifier)
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
->                                                   ^^^^: string[]   (TyArray)
+>                                                   ^^^^: string[]   (TyArray) (BindingIdentifier)
 
 const array: string[] = ['a'];
->     ^^^^^: string[]   (TyArray)
+>     ^^^^^: string[]   (TyArray) (BindingIdentifier)
 
 bar('a', 1, ...array);
->^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction)
+>^^^: (arg1: string, arg2: number, ...rest: string[]) => void   (TyFunction) (IdentifierReference)
 
 bar('a', 1, ...array);
->^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 bar('a', 1, ...array);
->              ^^^^^: string[]   (TyArray)
+>              ^^^^^: string[]   (TyArray) (IdentifierReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                ^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction)
+>                ^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction) (BindingIdentifier)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                    ^^^^: Set<string>   (TyTypeReference)
+>                    ^^^^: Set<string>   (TyTypeReference) (BindingIdentifier)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                          ^^^: SetConstructor   (TyTypeReference)
+>                          ^^^: SetConstructor   (TyTypeReference) (TSTypeReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                          ^^^: SetConstructor   (TyTypeReference)
+>                          ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                                       ^^^^: Map<string, string>   (TyTypeReference)
+>                                       ^^^^: Map<string, string>   (TyTypeReference) (BindingIdentifier)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                                             ^^^: MapConstructor   (TyTypeReference)
+>                                             ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
 declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
->                                             ^^^: MapConstructor   (TyTypeReference)
+>                                             ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 baz(new Set<string>(), new Map<string, string>());
->^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction)
+>^^^: (arg1: Set<string>, arg2: Map<string, string>) => void   (TyFunction) (IdentifierReference)
 
 baz(new Set<string>(), new Map<string, string>());
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 baz(new Set<string>(), new Map<string, string>());
->       ^^^: SetConstructor   (TyTypeReference)
+>       ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
 baz(new Set<string>(), new Map<string, string>());
->                          ^^^: MapConstructor   (TyTypeReference)
+>                          ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
->                ^^^: (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void   (TyFunction)
+>                ^^^: (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void   (TyFunction) (BindingIdentifier)
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
->                    ^^^^: unknown   (TyUnknown)
+>                    ^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
->                                   ^^^^: Set<unknown>   (TyTypeReference)
+>                                   ^^^^: Set<unknown>   (TyTypeReference) (BindingIdentifier)
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
->                                         ^^^: SetConstructor   (TyTypeReference)
+>                                         ^^^: SetConstructor   (TyTypeReference) (TSTypeReference)
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
->                                         ^^^: SetConstructor   (TyTypeReference)
+>                                         ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
->                                                       ^^^^: unknown[]   (TyArray)
+>                                                       ^^^^: unknown[]   (TyArray) (BindingIdentifier)
 
 foo(1 as any, new Set<any>(), [] as any[]);
->^^^: (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void   (TyFunction)
+>^^^: (arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void   (TyFunction) (IdentifierReference)
 
 foo(1 as any, new Set<any>(), [] as any[]);
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 foo(1 as any, new Set<any>(), [] as any[]);
->                 ^^^: SetConstructor   (TyTypeReference)
+>                 ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)

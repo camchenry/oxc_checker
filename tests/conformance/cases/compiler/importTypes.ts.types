@@ -1,113 +1,113 @@
 function process<T>(x: T) {
->        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (BindingIdentifier)
 
 function process<T>(x: T) {
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeParameter)
 
 function process<T>(x: T) {
->                   ^: T   (TyTypeReference)
+>                   ^: T   (TyTypeReference) (BindingIdentifier)
 
 function process<T>(x: T) {
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
   if (x) {
->     ^: T   (TyTypeReference)
+>     ^: T   (TyTypeReference) (IdentifierReference)
 
   return x;
->        ^: T   (TyTypeReference)
+>        ^: T   (TyTypeReference) (IdentifierReference)
 
 const mod = { process };
->     ^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
+>     ^^^: { process: <T>(x: T) => 1 | T; }   (TyObject) (BindingIdentifier)
 
 const mod = { process };
->             ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>             ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (ObjectProperty)
 
 const mod = { process };
->             ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>             ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (IdentifierReference)
 
 export { process };
->        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (IdentifierReference)
 
 export default mod;
->              ^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
+>              ^^^: { process: <T>(x: T) => 1 | T; }   (TyObject) (IdentifierReference)
 
 import { process } from './a.ts'
->        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>        ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (BindingIdentifier)
 
 const num: number = 5
->     ^^^: number   (TyNumber)
+>     ^^^: number   (TyNumber) (BindingIdentifier)
 
 const str: string = "foo"
->     ^^^: string   (TyString)
+>     ^^^: string   (TyString) (BindingIdentifier)
 
 const i1_num = process(num)
->     ^^^^^^: number   (TyNumber)
+>     ^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const i1_num = process(num)
->              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (IdentifierReference)
 
 const i1_num = process(num)
->                      ^^^: number   (TyNumber)
+>                      ^^^: number   (TyNumber) (IdentifierReference)
 
 const i1_str = process(str)
->     ^^^^^^: 1 | string   (TyUnion)
+>     ^^^^^^: 1 | string   (TyUnion) (BindingIdentifier)
 
 const i1_str = process(str)
->              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>              ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (IdentifierReference)
 
 const i1_str = process(str)
->                      ^^^: string   (TyString)
+>                      ^^^: string   (TyString) (IdentifierReference)
 
 import modDefault from './a.ts'
->      ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
+>      ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject) (BindingIdentifier)
 
 const i2_num = modDefault.process(num)
->     ^^^^^^: number   (TyNumber)
+>     ^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const i2_num = modDefault.process(num)
->              ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
+>              ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject) (IdentifierReference)
 
 const i2_num = modDefault.process(num)
->                         ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>                         ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (StaticMemberExpression)
 
 const i2_num = modDefault.process(num)
->                                 ^^^: number   (TyNumber)
+>                                 ^^^: number   (TyNumber) (IdentifierReference)
 
 const i2_str = modDefault.process(str)
->     ^^^^^^: 1 | string   (TyUnion)
+>     ^^^^^^: 1 | string   (TyUnion) (BindingIdentifier)
 
 const i2_str = modDefault.process(str)
->              ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject)
+>              ^^^^^^^^^^: { process: <T>(x: T) => 1 | T; }   (TyObject) (IdentifierReference)
 
 const i2_str = modDefault.process(str)
->                         ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>                         ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (StaticMemberExpression)
 
 const i2_str = modDefault.process(str)
->                                 ^^^: string   (TyString)
+>                                 ^^^: string   (TyString) (IdentifierReference)
 
 import * as modNamespace from './a.ts'
->           ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace)
+>           ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace) (BindingIdentifier)
 
 const i3_num = modNamespace.process(num)
->     ^^^^^^: number   (TyNumber)
+>     ^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const i3_num = modNamespace.process(num)
->              ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace)
+>              ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace) (IdentifierReference)
 
 const i3_num = modNamespace.process(num)
->                           ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>                           ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (StaticMemberExpression)
 
 const i3_num = modNamespace.process(num)
->                                   ^^^: number   (TyNumber)
+>                                   ^^^: number   (TyNumber) (IdentifierReference)
 
 const i3_str = modNamespace.process(str)
->     ^^^^^^: 1 | string   (TyUnion)
+>     ^^^^^^: 1 | string   (TyUnion) (BindingIdentifier)
 
 const i3_str = modNamespace.process(str)
->              ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace)
+>              ^^^^^^^^^^^^: typeof modNamespace   (TyModuleNamespace) (IdentifierReference)
 
 const i3_str = modNamespace.process(str)
->                           ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction)
+>                           ^^^^^^^: <T>(x: T) => 1 | T   (TyFunction) (StaticMemberExpression)
 
 const i3_str = modNamespace.process(str)
->                                   ^^^: string   (TyString)
+>                                   ^^^: string   (TyString) (IdentifierReference)

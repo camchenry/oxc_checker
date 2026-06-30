@@ -1,119 +1,119 @@
 function* g1() {
->         ^^: () => Generator<1 | "foo", void, unknown>   (TyFunction)
+>         ^^: () => Generator<1 | "foo", void, unknown>   (TyFunction) (BindingIdentifier)
 
   yield 1
-> ^^^^^^^: any   (TyAny)
+> ^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
 function* g2() {
->         ^^: () => Generator<never, string, unknown>   (TyFunction)
+>         ^^: () => Generator<never, string, unknown>   (TyFunction) (BindingIdentifier)
 
 function* g3() {
->         ^^: () => Generator<string, void, unknown>   (TyFunction)
+>         ^^: () => Generator<string, void, unknown>   (TyFunction) (BindingIdentifier)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
 async function* g4() {
->               ^^: () => AsyncGenerator<string, string, unknown>   (TyFunction)
+>               ^^: () => AsyncGenerator<string, string, unknown>   (TyFunction) (BindingIdentifier)
           expected: () => AsyncGenerator<string, "bar" | undefined, unknown>
 
   if (Math.random() > 0.5) {
->     ^^^^: Math   (TyTypeReference)
+>     ^^^^: Math   (TyTypeReference) (IdentifierReference)
 
   if (Math.random() > 0.5) {
->          ^^^^^^: () => number   (TyFunction)
+>          ^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
 async function* g5() {
->               ^^: () => AsyncGenerator<"foo" | 1 | 3, string, unknown>   (TyFunction)
+>               ^^: () => AsyncGenerator<"foo" | 1 | 3, string, unknown>   (TyFunction) (BindingIdentifier)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->           ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>           ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                   ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                   ^^^^^^^: (value: unknown) => void   (TyFunction) (BindingIdentifier)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+>                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction) (IdentifierReference)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                                         ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                                         ^^^^^^^: (value: unknown) => void   (TyFunction) (IdentifierReference)
 
   yield 1
-> ^^^^^^^: any   (TyAny)
+> ^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->           ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>           ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                   ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                   ^^^^^^^: (value: unknown) => void   (TyFunction) (BindingIdentifier)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+>                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction) (IdentifierReference)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                                         ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                                         ^^^^^^^: (value: unknown) => void   (TyFunction) (IdentifierReference)
 
   yield 3
-> ^^^^^^^: any   (TyAny)
+> ^^^^^^^: any   (TyAny) (ExpressionStatement)
 
 async function* g6() {
->               ^^: () => AsyncGenerator<"foo" | 1 | 2 | 3, "err" | "bar", unknown>   (TyFunction)
+>               ^^: () => AsyncGenerator<"foo" | 1 | 2 | 3, "err" | "bar", unknown>   (TyFunction) (BindingIdentifier)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (TyUnknown) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->           ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>           ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                   ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                   ^^^^^^^: (value: unknown) => void   (TyFunction) (BindingIdentifier)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction)
+>                              ^^^^^^^^^^: (handler: TimerHandler, timeout?: number, ...arguments: any[]) => number   (TyFunction) (IdentifierReference)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
->                                         ^^^^^^^: (value: unknown) => void   (TyFunction)
+>                                         ^^^^^^^: (value: unknown) => void   (TyFunction) (IdentifierReference)
 
   yield 1
-> ^^^^^^^: any   (TyAny)
+> ^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     yield 2
->   ^^^^^^^: any   (TyAny)
+>   ^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   } catch (e) {
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (BindingIdentifier)
     expected: unknown
 
     console.error(e)
->   ^^^^^^^: Console   (TyTypeReference)
+>   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
     console.error(e)
->   ^^^^^^^^^^^^^^^^: void   (TyVoid)
+>   ^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
     console.error(e)
->           ^^^^^: (...data: any[]) => void   (TyFunction)
+>           ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
     console.error(e)
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (IdentifierReference)
            expected: unknown
 
   yield 3
-> ^^^^^^^: any   (TyAny)
+> ^^^^^^^: any   (TyAny) (ExpressionStatement)

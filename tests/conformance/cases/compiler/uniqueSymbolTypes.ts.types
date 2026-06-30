@@ -1,50 +1,50 @@
 export declare const dataTagSymbol: unique symbol;
->                    ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                    ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
 export declare const dataTagErrorSymbol: unique symbol;
->                    ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                    ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
 export declare const unsetMarker: unique symbol;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 export type UnsetMarker = typeof unsetMarker;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
 
 export type UnsetMarker = typeof unsetMarker;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 export type UnsetMarker = typeof unsetMarker;
->                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
 export type AnyDataTag = {
->           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject)
+>           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject) (TSTypeAliasDeclaration)
 
 	[dataTagSymbol]: any;
-> ^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
 
 	[dataTagSymbol]: any;
-> ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+> ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
 	[dataTagErrorSymbol]: any;
-> ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
 
 	[dataTagErrorSymbol]: any;
-> ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+> ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)

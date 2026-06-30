@@ -1,215 +1,215 @@
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery)
+>                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
     type LDMLPluralRule = "zero" | "one" | "two" | "few" | "many" | "other";
->        ^^^^^^^^^^^^^^: "zero" | "one" | "two" | "few" | "many" | "other"   (TyUnion)
+>        ^^^^^^^^^^^^^^: "zero" | "one" | "two" | "few" | "many" | "other"   (TyUnion) (TSTypeAliasDeclaration)
 
     type PluralRuleType = "cardinal" | "ordinal";
->        ^^^^^^^^^^^^^^: "cardinal" | "ordinal"   (TyUnion)
+>        ^^^^^^^^^^^^^^: "cardinal" | "ordinal"   (TyUnion) (TSTypeAliasDeclaration)
 
     interface PluralRulesOptions {
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         localeMatcher?: "lookup" | "best fit" | undefined;
->       ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion) (TSPropertySignature)
 
         type?: PluralRuleType | undefined;
->       ^^^^: PluralRuleType | undefined   (TyUnion)
+>       ^^^^: PluralRuleType | undefined   (TyUnion) (TSPropertySignature)
 
         type?: PluralRuleType | undefined;
->              ^^^^^^^^^^^^^^: any   (TyAny)
+>              ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         minimumIntegerDigits?: number | undefined;
->       ^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
         minimumFractionDigits?: number | undefined;
->       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
         maximumFractionDigits?: number | undefined;
->       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
         minimumSignificantDigits?: number | undefined;
->       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
         maximumSignificantDigits?: number | undefined;
->       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
     interface ResolvedPluralRulesOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         locale: string;
->       ^^^^^^: string   (TyString)
+>       ^^^^^^: string   (TyString) (TSPropertySignature)
 
         pluralCategories: LDMLPluralRule[];
->       ^^^^^^^^^^^^^^^^: LDMLPluralRule[]   (TyArray)
+>       ^^^^^^^^^^^^^^^^: LDMLPluralRule[]   (TyArray) (TSPropertySignature)
 
         pluralCategories: LDMLPluralRule[];
->                         ^^^^^^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         type: PluralRuleType;
->       ^^^^: PluralRuleType   (TyTypeReference)
+>       ^^^^: PluralRuleType   (TyTypeReference) (TSPropertySignature)
 
         type: PluralRuleType;
->             ^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         minimumIntegerDigits: number;
->       ^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>       ^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
         minimumFractionDigits: number;
->       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
         maximumFractionDigits: number;
->       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber)
+>       ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
         minimumSignificantDigits?: number;
->       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
         maximumSignificantDigits?: number;
->       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
     interface PluralRules {
->             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+>             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (BindingIdentifier)
                  expected: PluralRulesConstructor
 
     interface PluralRules {
->             ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                  expected: PluralRulesConstructor
 
         resolvedOptions(): ResolvedPluralRulesOptions;
->       ^^^^^^^^^^^^^^^: () => ResolvedPluralRulesOptions   (TyFunction)
+>       ^^^^^^^^^^^^^^^: () => ResolvedPluralRulesOptions   (TyFunction) (TSMethodSignature)
 
         resolvedOptions(): ResolvedPluralRulesOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         select(n: number): LDMLPluralRule;
->       ^^^^^^: (n: number) => LDMLPluralRule   (TyFunction)
+>       ^^^^^^: (n: number) => LDMLPluralRule   (TyFunction) (TSMethodSignature)
 
         select(n: number): LDMLPluralRule;
->              ^: number   (TyNumber)
+>              ^: number   (TyNumber) (BindingIdentifier)
 
         select(n: number): LDMLPluralRule;
->                          ^^^^^^^^^^^^^^: any   (TyAny)
+>                          ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface PluralRulesConstructor {
->             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->            ^^^^^^^: string | readonly string[] | undefined   (TyUnion)
+>            ^^^^^^^: string | readonly string[] | undefined   (TyUnion) (BindingIdentifier)
 
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                                  ^^^^^^^: PluralRulesOptions | undefined   (TyUnion)
+>                                                  ^^^^^^^: PluralRulesOptions | undefined   (TyUnion) (BindingIdentifier)
 
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                                                                 ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+>                                                                                 ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (TSTypeReference)
 
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                                                                 ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+>                                                                                 ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (IdentifierReference)
 
         (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->        ^^^^^^^: string | readonly string[] | undefined   (TyUnion)
+>        ^^^^^^^: string | readonly string[] | undefined   (TyUnion) (BindingIdentifier)
 
         (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                              ^^^^^^^: PluralRulesOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: PluralRulesOptions | undefined   (TyUnion) (BindingIdentifier)
 
         (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                                        ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+>                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (TSTypeReference)
 
         (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
->                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+>                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (IdentifierReference)
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->       ^^^^^^^^^^^^^^^^^^: (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }) => string[]   (TyFunction)
+>       ^^^^^^^^^^^^^^^^^^: (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }) => string[]   (TyFunction) (TSMethodSignature)
                   expected: { (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; }
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->                          ^^^^^^^: string | readonly string[]   (TyUnion)
+>                          ^^^^^^^: string | readonly string[]   (TyUnion) (BindingIdentifier)
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->                                                               ^^^^^^^: { localeMatcher?: "lookup" | "best fit"; } | undefined   (TyUnion)
+>                                                               ^^^^^^^: { localeMatcher?: "lookup" | "best fit"; } | undefined   (TyUnion) (BindingIdentifier)
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->                                                                           ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion)
+>                                                                           ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion) (TSPropertySignature)
 
     const PluralRules: PluralRulesConstructor;
->         ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference)
+>         ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (BindingIdentifier)
 
     const PluralRules: PluralRulesConstructor;
->                      ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface NumberFormatPartTypeRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         literal: never;
->       ^^^^^^^: never   (TyNever)
+>       ^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         nan: never;
->       ^^^: never   (TyNever)
+>       ^^^: never   (TyNever) (TSPropertySignature)
 
         infinity: never;
->       ^^^^^^^^: never   (TyNever)
+>       ^^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         percent: never;
->       ^^^^^^^: never   (TyNever)
+>       ^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         integer: never;
->       ^^^^^^^: never   (TyNever)
+>       ^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         group: never;
->       ^^^^^: never   (TyNever)
+>       ^^^^^: never   (TyNever) (TSPropertySignature)
 
         decimal: never;
->       ^^^^^^^: never   (TyNever)
+>       ^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         fraction: never;
->       ^^^^^^^^: never   (TyNever)
+>       ^^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         plusSign: never;
->       ^^^^^^^^: never   (TyNever)
+>       ^^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         minusSign: never;
->       ^^^^^^^^^: never   (TyNever)
+>       ^^^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         percentSign: never;
->       ^^^^^^^^^^^: never   (TyNever)
+>       ^^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
 
         currency: never;
->       ^^^^^^^^: never   (TyNever)
+>       ^^^^^^^^: never   (TyNever) (TSPropertySignature)
 
     type NumberFormatPartTypes = keyof NumberFormatPartTypeRegistry;
->        ^^^^^^^^^^^^^^^^^^^^^: keyof NumberFormatPartTypeRegistry   (TyKeyof)
+>        ^^^^^^^^^^^^^^^^^^^^^: keyof NumberFormatPartTypeRegistry   (TyKeyof) (TSTypeAliasDeclaration)
 
     type NumberFormatPartTypes = keyof NumberFormatPartTypeRegistry;
->                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface NumberFormatPart {
->             ^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         type: NumberFormatPartTypes;
->       ^^^^: NumberFormatPartTypes   (TyTypeReference)
+>       ^^^^: NumberFormatPartTypes   (TyTypeReference) (TSPropertySignature)
     expected: keyof NumberFormatPartTypeRegistry
 
         type: NumberFormatPartTypes;
->             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         value: string;
->       ^^^^^: string   (TyString)
+>       ^^^^^: string   (TyString) (TSPropertySignature)
 
     interface NumberFormat {
->             ^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                   expected: NumberFormatConstructor
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
->       ^^^^^^^^^^^^^: (number?: number | bigint) => NumberFormatPart[]   (TyFunction)
+>       ^^^^^^^^^^^^^: (number?: number | bigint) => NumberFormatPart[]   (TyFunction) (TSMethodSignature)
              expected: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (number?: number | bigint): NumberFormatPart[]; }
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
->                     ^^^^^^: number | bigint | undefined   (TyUnion)
+>                     ^^^^^^: number | bigint | undefined   (TyUnion) (BindingIdentifier)
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
->                                                ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

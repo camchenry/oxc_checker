@@ -1,402 +1,402 @@
 const promise = Promise.resolve('value');
->     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (BindingIdentifier)
      expected: Promise<string>
 
 const promise = Promise.resolve('value');
->               ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>               ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 const promise = Promise.resolve('value');
->                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
 if (promise) {
->   ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>   ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
    expected: Promise<string>
 
 const val = promise ? 123 : 456;
->     ^^^: 123 | 456   (TyUnion)
+>     ^^^: 123 | 456   (TyUnion) (BindingIdentifier)
 
 const val = promise ? 123 : 456;
->           ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>           ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
            expected: Promise<string>
 
 [1, 2, 3].filter(() => promise);
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray) (ExpressionStatement)
 
 [1, 2, 3].filter(() => promise);
->         ^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }   (TyObject)
+>         ^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }   (TyObject) (StaticMemberExpression)
         expected: { <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }
 
 [1, 2, 3].filter(() => promise);
->                      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>                      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
                       expected: Promise<string>
 
 while (promise) {
->      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
       expected: Promise<string>
 
 const promise = Promise.resolve('value');
->     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (BindingIdentifier)
      expected: Promise<string>
 
 const promise = Promise.resolve('value');
->               ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>               ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 const promise = Promise.resolve('value');
->                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject)
+>                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
 if (await promise) {
->         ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>         ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
          expected: Promise<string>
 
 const val = (await promise) ? 123 : 456;
->     ^^^: 123 | 456   (TyUnion)
+>     ^^^: 123 | 456   (TyUnion) (BindingIdentifier)
 
 const val = (await promise) ? 123 : 456;
->                  ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>                  ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
                   expected: Promise<string>
 
 const returnVal = await promise;
->     ^^^^^^^^^: string   (TyString)
+>     ^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const returnVal = await promise;
->                       ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>                       ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
                        expected: Promise<string>
 
 [1, 2, 3].filter(() => returnVal);
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray) (ExpressionStatement)
 
 [1, 2, 3].filter(() => returnVal);
->         ^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }   (TyObject)
+>         ^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }   (TyObject) (StaticMemberExpression)
         expected: { <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }
 
 [1, 2, 3].filter(() => returnVal);
->                      ^^^^^^^^^: string   (TyString)
+>                      ^^^^^^^^^: string   (TyString) (IdentifierReference)
 
 while (await promise) {
->            ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference)
+>            ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
             expected: Promise<string>
 
 [1, 2, 3].forEach(async value => {
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 [1, 2, 3].forEach(async value => {
->         ^^^^^^^: (callbackfn: (value: number, index: number, array: number[]) => void, thisArg?: any) => void   (TyFunction)
+>         ^^^^^^^: (callbackfn: (value: number, index: number, array: number[]) => void, thisArg?: any) => void   (TyFunction) (StaticMemberExpression)
 
 [1, 2, 3].forEach(async value => {
->                       ^^^^^: number   (TyNumber)
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   await fetch(`/${value}`);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: Response   (TyTypeReference) (ExpressionStatement)
 
   await fetch(`/${value}`);
->       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction) (IdentifierReference)
 
   await fetch(`/${value}`);
->                 ^^^^^: number   (TyNumber)
+>                 ^^^^^: number   (TyNumber) (IdentifierReference)
 
 new Promise<void>(async (resolve, reject) => {
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference) (ExpressionStatement)
 
 new Promise<void>(async (resolve, reject) => {
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 new Promise<void>(async (resolve, reject) => {
->                        ^^^^^^^: (value: void | PromiseLike<void>) => void   (TyFunction)
+>                        ^^^^^^^: (value: void | PromiseLike<void>) => void   (TyFunction) (BindingIdentifier)
 
 new Promise<void>(async (resolve, reject) => {
->                                 ^^^^^^: (reason?: any) => void   (TyFunction)
+>                                 ^^^^^^: (reason?: any) => void   (TyFunction) (BindingIdentifier)
 
   await fetch('/');
-> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference) (ExpressionStatement)
 
   await fetch('/');
->       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction) (IdentifierReference)
 
   resolve();
-> ^^^^^^^: (value: void | PromiseLike<void>) => void   (TyFunction)
+> ^^^^^^^: (value: void | PromiseLike<void>) => void   (TyFunction) (IdentifierReference)
 
   resolve();
-> ^^^^^^^^^^: void   (TyVoid)
+> ^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 document.addEventListener('click', async () => {
->^^^^^^^^: Document   (TyTypeReference)
+>^^^^^^^^: Document   (TyTypeReference) (IdentifierReference)
 
 document.addEventListener('click', async () => {
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 document.addEventListener('click', async () => {
->        ^^^^^^^^^^^^^^^^: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }   (TyObject)
+>        ^^^^^^^^^^^^^^^^: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }   (TyObject) (StaticMemberExpression)
 
   console.log('synchronous call');
-> ^^^^^^^: Console   (TyTypeReference)
+> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
   console.log('synchronous call');
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
   console.log('synchronous call');
->         ^^^: (...data: any[]) => void   (TyFunction)
+>         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
   await fetch('/');
-> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference) (ExpressionStatement)
 
   await fetch('/');
->       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction) (IdentifierReference)
 
   console.log('synchronous call');
-> ^^^^^^^: Console   (TyTypeReference)
+> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
   console.log('synchronous call');
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
   console.log('synchronous call');
->         ^^^: (...data: any[]) => void   (TyFunction)
+>         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 interface MySyncInterface {
->         ^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   setThing(): void;
-> ^^^^^^^^: () => void   (TyFunction)
+> ^^^^^^^^: () => void   (TyFunction) (TSMethodSignature)
 
 class MyClass implements MySyncInterface {
->     ^^^^^^^: typeof MyClass   (TyTypeQuery)
+>     ^^^^^^^: typeof MyClass   (TyTypeQuery) (BindingIdentifier)
 
 class MyClass implements MySyncInterface {
->                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
 
   async setThing(): Promise<void> {
->       ^^^^^^^^: () => Promise<void>   (TyFunction)
+>       ^^^^^^^^: () => Promise<void>   (TyFunction) (MethodDefinition)
 
   async setThing(): Promise<void> {
->                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
   async setThing(): Promise<void> {
->                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     this.thing = await fetchThing();
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     this.thing = await fetchThing();
->        ^^^^^: any   (TyAny)
+>        ^^^^^: any   (TyAny) (StaticMemberExpression)
 
 for (const value of [1, 2, 3]) {
->          ^^^^^: number   (TyNumber)
+>          ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   await doSomething(value);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   await doSomething(value);
->                   ^^^^^: number   (TyNumber)
+>                   ^^^^^: number   (TyNumber) (IdentifierReference)
 
 Promise.all(
->^^^^^^^: PromiseConstructor   (TyTypeReference)
+>^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 Promise.all(
->^^^^^^^^^^^^: Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; }>   (TyTypeReference)
+>^^^^^^^^^^^^: Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; }>   (TyTypeReference) (ExpressionStatement)
      expected: Promise<void[]>
 
 Promise.all(
->       ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject)
+>       ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject) (StaticMemberExpression)
 
   [1, 2, 3].map(async value => {
->           ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (TyFunction)
+>           ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (TyFunction) (StaticMemberExpression)
 
   [1, 2, 3].map(async value => {
->                     ^^^^^: number   (TyNumber)
+>                     ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     await doSomething(value);
->   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     await doSomething(value);
->                     ^^^^^: number   (TyNumber)
+>                     ^^^^^: number   (TyNumber) (IdentifierReference)
 
 ).catch(handleError);
-> ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; } | TResult>   (TyFunction)
+> ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; } | TResult>   (TyFunction) (StaticMemberExpression)
 expected: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void[] | TResult>
 
 new Promise((resolve, reject) => {
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<unknown>   (TyTypeReference)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<unknown>   (TyTypeReference) (ExpressionStatement)
 
 new Promise((resolve, reject) => {
->   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 new Promise((resolve, reject) => {
->            ^^^^^^^: (value: unknown) => void   (TyFunction)
+>            ^^^^^^^: (value: unknown) => void   (TyFunction) (BindingIdentifier)
 
 new Promise((resolve, reject) => {
->                     ^^^^^^: (reason?: any) => void   (TyFunction)
+>                     ^^^^^^: (reason?: any) => void   (TyFunction) (BindingIdentifier)
 
   void (async () => {
-> ^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+> ^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
     await doSomething();
->   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     resolve();
->   ^^^^^^^: (value: unknown) => void   (TyFunction)
+>   ^^^^^^^: (value: unknown) => void   (TyFunction) (IdentifierReference)
 
     resolve();
->   ^^^^^^^^^^: void   (TyVoid)
+>   ^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 document.addEventListener('click', () => {
->^^^^^^^^: Document   (TyTypeReference)
+>^^^^^^^^: Document   (TyTypeReference) (IdentifierReference)
 
 document.addEventListener('click', () => {
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 document.addEventListener('click', () => {
->        ^^^^^^^^^^^^^^^^: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }   (TyObject)
+>        ^^^^^^^^^^^^^^^^: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }   (TyObject) (StaticMemberExpression)
 
   const handler = async () => {
->       ^^^^^^^: () => Promise<void>   (TyFunction)
+>       ^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
     await doSomething();
->   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     otherSynchronousCall();
->   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     synchronousCall();
->   ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   } catch (err) {
->          ^^^: any   (TyAny)
+>          ^^^: any   (TyAny) (BindingIdentifier)
       expected: unknown
 
     handleSpecificError(err);
->   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     handleSpecificError(err);
->                       ^^^: any   (TyAny)
+>                       ^^^: any   (TyAny) (IdentifierReference)
                    expected: unknown
 
   handler().catch(handleError);
-> ^^^^^^^: () => Promise<void>   (TyFunction)
+> ^^^^^^^: () => Promise<void>   (TyFunction) (IdentifierReference)
 
   handler().catch(handleError);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference) (ExpressionStatement)
 
   handler().catch(handleError);
->           ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void | TResult>   (TyFunction)
+>           ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void | TResult>   (TyFunction) (StaticMemberExpression)
 
 interface MyAsyncInterface {
->         ^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   setThing(): Promise<void>;
-> ^^^^^^^^: () => Promise<void>   (TyFunction)
+> ^^^^^^^^: () => Promise<void>   (TyFunction) (TSMethodSignature)
 
   setThing(): Promise<void>;
->             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>             ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
   setThing(): Promise<void>;
->             ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>             ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 class MyClass implements MyAsyncInterface {
->     ^^^^^^^: typeof MyClass   (TyTypeQuery)
+>     ^^^^^^^: typeof MyClass   (TyTypeQuery) (BindingIdentifier)
 
 class MyClass implements MyAsyncInterface {
->                        ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
 
   async setThing(): Promise<void> {
->       ^^^^^^^^: () => Promise<void>   (TyFunction)
+>       ^^^^^^^^: () => Promise<void>   (TyFunction) (MethodDefinition)
 
   async setThing(): Promise<void> {
->                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
   async setThing(): Promise<void> {
->                   ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     this.thing = await fetchThing();
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     this.thing = await fetchThing();
->        ^^^^^: any   (TyAny)
+>        ^^^^^: any   (TyAny) (StaticMemberExpression)
 
 const getData = () => fetch('/');
->     ^^^^^^^: () => Promise<Response>   (TyFunction)
+>     ^^^^^^^: () => Promise<Response>   (TyFunction) (BindingIdentifier)
 
 const getData = () => fetch('/');
->                     ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+>                     ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction) (IdentifierReference)
 
 console.log({ foo: 42, ...getData() });
->^^^^^^^: Console   (TyTypeReference)
+>^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
 console.log({ foo: 42, ...getData() });
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 console.log({ foo: 42, ...getData() });
->       ^^^: (...data: any[]) => void   (TyFunction)
+>       ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 console.log({ foo: 42, ...getData() });
->             ^^^: number   (TyNumber)
+>             ^^^: number   (TyNumber) (ObjectProperty)
 
 console.log({ foo: 42, ...getData() });
->                         ^^^^^^^: () => Promise<Response>   (TyFunction)
+>                         ^^^^^^^: () => Promise<Response>   (TyFunction) (IdentifierReference)
 
 const awaitData = async () => {
->     ^^^^^^^^^: () => Promise<void>   (TyFunction)
+>     ^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   await fetch('/');
-> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference) (ExpressionStatement)
 
   await fetch('/');
->       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction) (IdentifierReference)
 
 console.log({ foo: 42, ...awaitData() });
->^^^^^^^: Console   (TyTypeReference)
+>^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
 console.log({ foo: 42, ...awaitData() });
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 console.log({ foo: 42, ...awaitData() });
->       ^^^: (...data: any[]) => void   (TyFunction)
+>       ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 console.log({ foo: 42, ...awaitData() });
->             ^^^: number   (TyNumber)
+>             ^^^: number   (TyNumber) (ObjectProperty)
 
 console.log({ foo: 42, ...awaitData() });
->                         ^^^^^^^^^: () => Promise<void>   (TyFunction)
+>                         ^^^^^^^^^: () => Promise<void>   (TyFunction) (IdentifierReference)
 
 const getData = () => fetch('/');
->     ^^^^^^^: () => Promise<Response>   (TyFunction)
+>     ^^^^^^^: () => Promise<Response>   (TyFunction) (BindingIdentifier)
 
 const getData = () => fetch('/');
->                     ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+>                     ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction) (IdentifierReference)
 
 console.log({ foo: 42, ...(await getData()) });
->^^^^^^^: Console   (TyTypeReference)
+>^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
 console.log({ foo: 42, ...(await getData()) });
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 console.log({ foo: 42, ...(await getData()) });
->       ^^^: (...data: any[]) => void   (TyFunction)
+>       ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 console.log({ foo: 42, ...(await getData()) });
->             ^^^: number   (TyNumber)
+>             ^^^: number   (TyNumber) (ObjectProperty)
 
 console.log({ foo: 42, ...(await getData()) });
->                                ^^^^^^^: () => Promise<Response>   (TyFunction)
+>                                ^^^^^^^: () => Promise<Response>   (TyFunction) (IdentifierReference)
 
 const awaitData = async () => {
->     ^^^^^^^^^: () => Promise<void>   (TyFunction)
+>     ^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   await fetch('/');
-> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference)
+> ^^^^^^^^^^^^^^^^^: Response   (TyTypeReference) (ExpressionStatement)
 
   await fetch('/');
->       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction)
+>       ^^^^^: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>   (TyFunction) (IdentifierReference)
 
 console.log({ foo: 42, ...(await awaitData()) });
->^^^^^^^: Console   (TyTypeReference)
+>^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
 console.log({ foo: 42, ...(await awaitData()) });
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 console.log({ foo: 42, ...(await awaitData()) });
->       ^^^: (...data: any[]) => void   (TyFunction)
+>       ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 console.log({ foo: 42, ...(await awaitData()) });
->             ^^^: number   (TyNumber)
+>             ^^^: number   (TyNumber) (ObjectProperty)
 
 console.log({ foo: 42, ...(await awaitData()) });
->                                ^^^^^^^^^: () => Promise<void>   (TyFunction)
+>                                ^^^^^^^^^: () => Promise<void>   (TyFunction) (IdentifierReference)

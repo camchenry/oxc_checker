@@ -1,6 +1,6 @@
 interface Symbol {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: SymbolConstructor
 
     readonly description: string | undefined;
->            ^^^^^^^^^^^: string | undefined   (TyUnion)
+>            ^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)

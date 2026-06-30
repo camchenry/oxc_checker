@@ -1,48 +1,48 @@
 const foo1 = 3;
->     ^^^^: 3   (TyNumberLiteral)
+>     ^^^^: 3   (TyNumberLiteral) (BindingIdentifier)
 
 const bar = foo!;
->     ^^^: any   (TyAny)
+>     ^^^: any   (TyAny) (BindingIdentifier)
 
 const foo1_1 = <number>3;
->     ^^^^^^: number   (TyNumber)
+>     ^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const foo2 = <number>(3 + 5);
->     ^^^^: number   (TyNumber)
+>     ^^^^: number   (TyNumber) (BindingIdentifier)
 
 const foo2_1 = 3 as number;
->     ^^^^^^: number   (TyNumber)
+>     ^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 type Foo = number;
->    ^^^: number   (TyNumber)
+>    ^^^: number   (TyNumber) (TSTypeAliasDeclaration)
 
 const foo3 = <Foo>(3 + 5);
->     ^^^^: Foo   (TyTypeReference)
+>     ^^^^: Foo   (TyTypeReference) (BindingIdentifier)
   expected: number
 
 const foo3 = <Foo>(3 + 5);
->             ^^^: any   (TyAny)
+>             ^^^: any   (TyAny) (TSTypeReference)
 
 function foo4(x: number): number {
->        ^^^^: (x: number) => number   (TyFunction)
+>        ^^^^: (x: number) => number   (TyFunction) (BindingIdentifier)
 
 function foo4(x: number): number {
->             ^: number   (TyNumber)
+>             ^: number   (TyNumber) (BindingIdentifier)
 
   return x!; // unnecessary non-null
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (IdentifierReference)
 
 let foo5 = 'foo' as const;
->   ^^^^: "foo"   (TyStringLiteral)
+>   ^^^^: "foo"   (TyStringLiteral) (BindingIdentifier)
 
 let foo5 = 'foo' as const;
->                   ^^^^^: any   (TyAny)
+>                   ^^^^^: any   (TyAny) (TSTypeReference)
 
 function foo6(x: number | undefined): number {
->        ^^^^: (x: number | undefined) => number   (TyFunction)
+>        ^^^^: (x: number | undefined) => number   (TyFunction) (BindingIdentifier)
 
 function foo6(x: number | undefined): number {
->             ^: number | undefined   (TyUnion)
+>             ^: number | undefined   (TyUnion) (BindingIdentifier)
 
   return x!;
->        ^: number | undefined   (TyUnion)
+>        ^: number | undefined   (TyUnion) (IdentifierReference)

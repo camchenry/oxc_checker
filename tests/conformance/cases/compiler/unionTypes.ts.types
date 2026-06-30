@@ -1,50 +1,50 @@
 function unionized(x: string | number | boolean) {
->        ^^^^^^^^^: (x: string | number | boolean) => string | number | boolean   (TyFunction)
+>        ^^^^^^^^^: (x: string | number | boolean) => string | number | boolean   (TyFunction) (BindingIdentifier)
 
 function unionized(x: string | number | boolean) {
->                  ^: string | number | boolean   (TyUnion)
+>                  ^: string | number | boolean   (TyUnion) (BindingIdentifier)
 
   return x
->        ^: string | number | boolean   (TyUnion)
+>        ^: string | number | boolean   (TyUnion) (IdentifierReference)
 
 const unionReturn = unionized("hello");
->     ^^^^^^^^^^^: string | number | boolean   (TyUnion)
+>     ^^^^^^^^^^^: string | number | boolean   (TyUnion) (BindingIdentifier)
 
 const unionReturn = unionized("hello");
->                   ^^^^^^^^^: (x: string | number | boolean) => string | number | boolean   (TyFunction)
+>                   ^^^^^^^^^: (x: string | number | boolean) => string | number | boolean   (TyFunction) (IdentifierReference)
 
 function padLeft(value: string, padding: string | number) {
->        ^^^^^^^: (value: string, padding: string | number) => string   (TyFunction)
+>        ^^^^^^^: (value: string, padding: string | number) => string   (TyFunction) (BindingIdentifier)
 
 function padLeft(value: string, padding: string | number) {
->                ^^^^^: string   (TyString)
+>                ^^^^^: string   (TyString) (BindingIdentifier)
 
 function padLeft(value: string, padding: string | number) {
->                               ^^^^^^^: string | number   (TyUnion)
+>                               ^^^^^^^: string | number   (TyUnion) (BindingIdentifier)
 
   return value
->        ^^^^^: string   (TyString)
+>        ^^^^^: string   (TyString) (IdentifierReference)
 
 let indentedString = padLeft("Hello world", true);
->   ^^^^^^^^^^^^^^: string   (TyString)
+>   ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 let indentedString = padLeft("Hello world", true);
->                    ^^^^^^^: (value: string, padding: string | number) => string   (TyFunction)
+>                    ^^^^^^^: (value: string, padding: string | number) => string   (TyFunction) (IdentifierReference)
 
 export type Expression = BooleanLogicExpression | 'true' | 'false';
->           ^^^^^^^^^^: BooleanLogicExpression | "true" | "false"   (TyUnion)
+>           ^^^^^^^^^^: BooleanLogicExpression | "true" | "false"   (TyUnion) (TSTypeAliasDeclaration)
 
 export type Expression = BooleanLogicExpression | 'true' | 'false';
->                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
->           ^^^^^^^^^^^^^^^^^^^^^^: ["and", ...Expression[]] | ["not", Expression]   (TyUnion)
+>           ^^^^^^^^^^^^^^^^^^^^^^: ["and", ...Expression[]] | ["not", Expression]   (TyUnion) (TSTypeAliasDeclaration)
 
 export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
->                                               ^^^^^^^^^^: any   (TyAny)
+>                                               ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type BooleanLogicExpression = ['and', ...Expression[]] | ['not', Expression]; 
->                                                                       ^^^^^^^^^^: any   (TyAny)
+>                                                                       ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type AllLiterals = 'string' | false | 123 | 123n | `test` | `test${string}`
->    ^^^^^^^^^^^: "string" | false | 123 | 123n | `test${string}`   (TyUnion)
+>    ^^^^^^^^^^^: "string" | false | 123 | 123n | `test${string}`   (TyUnion) (TSTypeAliasDeclaration)

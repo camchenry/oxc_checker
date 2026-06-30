@@ -1,148 +1,148 @@
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->         ^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeParameter)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->                                ^^^^^^^: any   (TyAny)
+>                                ^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->                                               ^^^^^: any   (TyAny)
+>                                               ^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->                                                                    ^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                    ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->                                                                                   ^: any   (TyAny)
+>                                                                                   ^: any   (TyAny) (TSTypeReference)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->                                                                                      ^^^^^^^: any   (TyAny)
+>                                                                                      ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
->                                                                                               ^^^^^: any   (TyAny)
+>                                                                                               ^^^^^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->   ^^^^: { (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }   (TyObject)
+>   ^^^^: { (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }   (TyObject) (TSMethodSignature)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->            ^^^^^: any   (TyAny)
+>            ^^^^^: any   (TyAny) (BindingIdentifier)
           expected: TNext | undefined
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->                          ^^^^^: any   (TyAny)
+>                          ^^^^^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->                                   ^^^^^^^^^^^^^^: any   (TyAny)
+>                                   ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
->                                                     ^^^^^^^: any   (TyAny)
+>                                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->   ^^^^^^: { (value: TReturn): IteratorResult<T, TReturn>; (value: TReturn): IteratorResult<T, TReturn>; }   (TyObject)
+>   ^^^^^^: { (value: TReturn): IteratorResult<T, TReturn>; (value: TReturn): IteratorResult<T, TReturn>; }   (TyObject) (TSMethodSignature)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->          ^^^^^: TReturn   (TyTypeReference)
+>          ^^^^^: TReturn   (TyTypeReference) (BindingIdentifier)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->                 ^^^^^^^: any   (TyAny)
+>                 ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->                           ^^^^^^^^^^^^^^: any   (TyAny)
+>                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->                                          ^: any   (TyAny)
+>                                          ^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->                                             ^^^^^^^: any   (TyAny)
+>                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     throw(e: any): IteratorResult<T, TReturn>;
->   ^^^^^: { (e: any): IteratorResult<T, TReturn>; (e: any): IteratorResult<T, TReturn>; }   (TyObject)
+>   ^^^^^: { (e: any): IteratorResult<T, TReturn>; (e: any): IteratorResult<T, TReturn>; }   (TyObject) (TSMethodSignature)
 
     throw(e: any): IteratorResult<T, TReturn>;
->         ^: any   (TyAny)
+>         ^: any   (TyAny) (BindingIdentifier)
 
     throw(e: any): IteratorResult<T, TReturn>;
->                  ^^^^^^^^^^^^^^: any   (TyAny)
+>                  ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     throw(e: any): IteratorResult<T, TReturn>;
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeReference)
 
     throw(e: any): IteratorResult<T, TReturn>;
->                                    ^^^^^^^: any   (TyAny)
+>                                    ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference)
+>    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
->           ^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
->                        ^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
->                                  ^: any   (TyAny)
+>                                  ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
->                                     ^^^^^^^: any   (TyAny)
+>                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
->                                              ^^^^^: any   (TyAny)
+>                                              ^^^^^: any   (TyAny) (TSTypeReference)
 
 interface GeneratorFunction {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new (...args: any[]): Generator;
->           ^^^^: any[]   (TyArray)
+>           ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     new (...args: any[]): Generator;
->                         ^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (...args: any[]): Generator;
->       ^^^^: any[]   (TyArray)
+>       ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     (...args: any[]): Generator;
->                     ^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly length: number;
->            ^^^^^^: number   (TyNumber)
+>            ^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     readonly name: string;
->            ^^^^: string   (TyString)
+>            ^^^^: string   (TyString) (TSPropertySignature)
 
     readonly prototype: Generator;
->            ^^^^^^^^^: Generator   (TyTypeReference)
+>            ^^^^^^^^^: Generator   (TyTypeReference) (TSPropertySignature)
               expected: Generator<unknown, any, any>
 
     readonly prototype: Generator;
->                       ^^^^^^^^^: any   (TyAny)
+>                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface GeneratorFunctionConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new (...args: string[]): GeneratorFunction;
->           ^^^^: string[]   (TyArray)
+>           ^^^^: string[]   (TyArray) (BindingIdentifier)
 
     new (...args: string[]): GeneratorFunction;
->                            ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                            ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (...args: string[]): GeneratorFunction;
->       ^^^^: string[]   (TyArray)
+>       ^^^^: string[]   (TyArray) (BindingIdentifier)
 
     (...args: string[]): GeneratorFunction;
->                        ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly length: number;
->            ^^^^^^: number   (TyNumber)
+>            ^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     readonly name: string;
->            ^^^^: string   (TyString)
+>            ^^^^: string   (TyString) (TSPropertySignature)
 
     readonly prototype: GeneratorFunction;
->            ^^^^^^^^^: GeneratorFunction   (TyTypeReference)
+>            ^^^^^^^^^: GeneratorFunction   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: GeneratorFunction;
->                       ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                       ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

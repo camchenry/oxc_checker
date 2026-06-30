@@ -1,116 +1,116 @@
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+>                ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction) (BindingIdentifier)
 
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                          ^^^^^: { [P in keyof T]: T[P]; }   (TyMapped)
+>                          ^^^^^: { [P in keyof T]: T[P]; }   (TyMapped) (BindingIdentifier)
 
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                                    ^: any   (TyAny)
+>                                    ^: any   (TyAny) (TSMappedType)
 
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                                                   ^: any   (TyAny)
+>                                                   ^: any   (TyAny) (TSTypeReference)
 
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSTypeReference)
 
 declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
->                                                            ^: any   (TyAny)
+>                                                            ^: any   (TyAny) (TSTypeReference)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                ^^^^^^^^^^^^^^: <T>(value: { readonly [P in keyof T]: T[P]; }) => T   (TyFunction)
+>                ^^^^^^^^^^^^^^: <T>(value: { readonly [P in keyof T]: T[P]; }) => T   (TyFunction) (BindingIdentifier)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                               ^: any   (TyAny)
+>                               ^: any   (TyAny) (TSTypeParameter)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                                  ^^^^^: { readonly [P in keyof T]: T[P]; }   (TyMapped)
+>                                  ^^^^^: { readonly [P in keyof T]: T[P]; }   (TyMapped) (BindingIdentifier)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSMappedType)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                                                                ^: any   (TyAny)
+>                                                                ^: any   (TyAny) (TSTypeReference)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                                                                    ^: any   (TyAny)
+>                                                                    ^: any   (TyAny) (TSTypeReference)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                                                                      ^: any   (TyAny)
+>                                                                      ^: any   (TyAny) (TSTypeReference)
 
 declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
->                                                                             ^: any   (TyAny)
+>                                                                             ^: any   (TyAny) (TSTypeReference)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                ^^^^^^^: <T, K extends keyof T>(value: { [P in K]: T[P]; }) => T   (TyFunction)
+>                ^^^^^^^: <T, K extends keyof T>(value: { [P in K]: T[P]; }) => T   (TyFunction) (BindingIdentifier)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeParameter)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeParameter)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                                           ^: any   (TyAny)
+>                                           ^: any   (TyAny) (TSTypeReference)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                                              ^^^^^: { [P in K]: T[P]; }   (TyMapped)
+>                                              ^^^^^: { [P in K]: T[P]; }   (TyMapped) (BindingIdentifier)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                                                        ^: any   (TyAny)
+>                                                        ^: any   (TyAny) (TSMappedType)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                                                             ^: any   (TyAny)
+>                                                             ^: any   (TyAny) (TSTypeReference)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                                                                 ^: any   (TyAny)
+>                                                                 ^: any   (TyAny) (TSTypeReference)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                                                                   ^: any   (TyAny)
+>                                                                   ^: any   (TyAny) (TSTypeReference)
 
 declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
->                                                                          ^: any   (TyAny)
+>                                                                          ^: any   (TyAny) (TSTypeReference)
 
 const objectValue = unwrap({ value: 1, name: "ready" });
->     ^^^^^^^^^^^: { value: number; name: string; }   (TyObject)
+>     ^^^^^^^^^^^: { value: number; name: string; }   (TyObject) (BindingIdentifier)
 
 const objectValue = unwrap({ value: 1, name: "ready" });
->                   ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+>                   ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction) (IdentifierReference)
 
 const objectValue = unwrap({ value: 1, name: "ready" });
->                            ^^^^^: number   (TyNumber)
+>                            ^^^^^: number   (TyNumber) (ObjectProperty)
 
 const objectValue = unwrap({ value: 1, name: "ready" });
->                                      ^^^^: string   (TyString)
+>                                      ^^^^: string   (TyString) (ObjectProperty)
 
 const arrayValue = unwrap([1, 2] as number[]);
->     ^^^^^^^^^^: number[]   (TyArray)
+>     ^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
 
 const arrayValue = unwrap([1, 2] as number[]);
->                  ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+>                  ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction) (IdentifierReference)
 
 const tupleValue = unwrap([1, "ready"] as [number, string]);
->     ^^^^^^^^^^: [number, string]   (TyTuple)
+>     ^^^^^^^^^^: [number, string]   (TyTuple) (BindingIdentifier)
 
 const tupleValue = unwrap([1, "ready"] as [number, string]);
->                  ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction)
+>                  ^^^^^^: <T>(value: { [P in keyof T]: T[P]; }) => T   (TyFunction) (IdentifierReference)
 
 const readonlyTupleValue = unwrapReadonly([1, "ready"] as readonly [number, string]);
->     ^^^^^^^^^^^^^^^^^^: readonly [number, string]   (TyTuple)
+>     ^^^^^^^^^^^^^^^^^^: readonly [number, string]   (TyTuple) (BindingIdentifier)
 
 const readonlyTupleValue = unwrapReadonly([1, "ready"] as readonly [number, string]);
->                          ^^^^^^^^^^^^^^: <T>(value: { readonly [P in keyof T]: T[P]; }) => T   (TyFunction)
+>                          ^^^^^^^^^^^^^^: <T>(value: { readonly [P in keyof T]: T[P]; }) => T   (TyFunction) (IdentifierReference)
 
 const pickValue = pickish({ value: 1 });
->     ^^^^^^^^^: { value: number; }   (TyObject)
+>     ^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
 
 const pickValue = pickish({ value: 1 });
->                 ^^^^^^^: <T, K extends keyof T>(value: { [P in K]: T[P]; }) => T   (TyFunction)
+>                 ^^^^^^^: <T, K extends keyof T>(value: { [P in K]: T[P]; }) => T   (TyFunction) (IdentifierReference)
 
 const pickValue = pickish({ value: 1 });
->                           ^^^^^: number   (TyNumber)
+>                           ^^^^^: number   (TyNumber) (ObjectProperty)

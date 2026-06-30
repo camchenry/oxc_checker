@@ -1,287 +1,287 @@
 type DirectInfer = string extends infer U ? U : never;
->    ^^^^^^^^^^^: string   (TyString)
+>    ^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type DirectInfer = string extends infer U ? U : never;
->                                       ^: any   (TyAny)
+>                                       ^: any   (TyAny) (TSTypeParameter)
 
 type DirectInfer = string extends infer U ? U : never;
->                                           ^: any   (TyAny)
+>                                           ^: any   (TyAny) (TSTypeReference)
 
 type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
->    ^^^^^^^^^^^^^: number   (TyNumber)
+>    ^^^^^^^^^^^^^: number   (TyNumber) (TSTypeAliasDeclaration)
 
 type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
->                      ^^^^^: number   (TyNumber)
+>                      ^^^^^: number   (TyNumber) (TSPropertySignature)
 
 type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
->                                                ^^^^^: U   (TyTypeReference)
+>                                                ^^^^^: U   (TyTypeReference) (TSPropertySignature)
 
 type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
->                                                             ^: any   (TyAny)
+>                                                             ^: any   (TyAny) (TSTypeParameter)
 
 type PropertyInfer = { value: number } extends { value: infer U } ? U : never;
->                                                                   ^: any   (TyAny)
+>                                                                   ^: any   (TyAny) (TSTypeReference)
 
 type MissingProperty = { other: string } extends { value: infer U } ? U : never;
->    ^^^^^^^^^^^^^^^: never   (TyNever)
+>    ^^^^^^^^^^^^^^^: never   (TyNever) (TSTypeAliasDeclaration)
 
 type MissingProperty = { other: string } extends { value: infer U } ? U : never;
->                        ^^^^^: string   (TyString)
+>                        ^^^^^: string   (TyString) (TSPropertySignature)
 
 type MissingProperty = { other: string } extends { value: infer U } ? U : never;
->                                                  ^^^^^: U   (TyTypeReference)
+>                                                  ^^^^^: U   (TyTypeReference) (TSPropertySignature)
 
 type MissingProperty = { other: string } extends { value: infer U } ? U : never;
->                                                               ^: any   (TyAny)
+>                                                               ^: any   (TyAny) (TSTypeParameter)
 
 type MissingProperty = { other: string } extends { value: infer U } ? U : never;
->                                                                     ^: any   (TyAny)
+>                                                                     ^: any   (TyAny) (TSTypeReference)
 
 type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
->    ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral)
+>    ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
 type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
->                                                 ^: any   (TyAny)
+>                                                 ^: any   (TyAny) (TSTypeParameter)
 
 type ConstrainedInferTrue = "ready" extends infer U extends string ? U : never;
->                                                                    ^: any   (TyAny)
+>                                                                    ^: any   (TyAny) (TSTypeReference)
 
 type ConstrainedInferFalse = number extends infer U extends string ? U : never;
->    ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
+>    ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever) (TSTypeAliasDeclaration)
 
 type ConstrainedInferFalse = number extends infer U extends string ? U : never;
->                                                 ^: any   (TyAny)
+>                                                 ^: any   (TyAny) (TSTypeParameter)
 
 type ConstrainedInferFalse = number extends infer U extends string ? U : never;
->                                                                    ^: any   (TyAny)
+>                                                                    ^: any   (TyAny) (TSTypeReference)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->    ^^^^^^^^^^^^^: string | number   (TyUnion)
+>    ^^^^^^^^^^^^^: string | number   (TyUnion) (TSTypeAliasDeclaration)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                      ^: string   (TyString)
+>                      ^: string   (TyString) (TSPropertySignature)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                 ^: number   (TyNumber)
+>                                 ^: number   (TyNumber) (TSPropertySignature)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                       ^: U   (TyTypeReference)
+>                                                       ^: U   (TyTypeReference) (TSPropertySignature)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                ^: any   (TyAny)
+>                                                                ^: any   (TyAny) (TSTypeParameter)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                   ^: U   (TyTypeReference)
+>                                                                   ^: U   (TyTypeReference) (TSPropertySignature)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                            ^: any   (TyAny)
+>                                                                            ^: any   (TyAny) (TSTypeParameter)
 
 type RepeatedInfer = { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                                  ^: any   (TyAny)
+>                                                                                  ^: any   (TyAny) (TSTypeReference)
 
 type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->    ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple)
+>    ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple) (TSTypeAliasDeclaration)
 
 type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->                                                              ^^^^: any   (TyAny)
+>                                                              ^^^^: any   (TyAny) (TSTypeParameter)
 
 type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->                                                                             ^^^^: any   (TyAny)
+>                                                                             ^^^^: any   (TyAny) (TSTypeParameter)
 
 type TupleRestInfer = [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->                                                                                     ^^^^: any   (TyAny)
+>                                                                                     ^^^^: any   (TyAny) (TSTypeReference)
 
 type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
->    ^^^^^^^^^^^^^^^^^: string   (TyString)
+>    ^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
->                                                ^: any   (TyAny)
+>                                                ^: any   (TyAny) (TSTypeParameter)
 
 type ArrayElementInfer = string[] extends (infer T)[] ? T : never;
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
->    ^^^^^^^^^^: string | number   (TyUnion)
+>    ^^^^^^^^^^: string | number   (TyUnion) (TSTypeAliasDeclaration)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
->                   ^^^^^: string   (TyString)
+>                   ^^^^^: string   (TyString) (TSPropertySignature)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                       ^^^^^: number   (TyNumber)
+>                                       ^^^^^: number   (TyNumber) (TSPropertySignature)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                                                 ^^^^^: U   (TyTypeReference)
+>                                                                 ^^^^^: U   (TyTypeReference) (TSPropertySignature)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                                                              ^: any   (TyAny)
+>                                                                              ^: any   (TyAny) (TSTypeParameter)
 
 type UnionInfer = { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                                                                    ^: any   (TyAny)
+>                                                                                    ^: any   (TyAny) (TSTypeReference)
 
 type FunctionReturnInfer = (() => string) extends (() => infer R) ? R : never;
->    ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>    ^^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type FunctionReturnInfer = (() => string) extends (() => infer R) ? R : never;
->                                                              ^: any   (TyAny)
+>                                                              ^: any   (TyAny) (TSTypeParameter)
 
 type FunctionReturnInfer = (() => string) extends (() => infer R) ? R : never;
->                                                                   ^: any   (TyAny)
+>                                                                   ^: any   (TyAny) (TSTypeReference)
 
 type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->    ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>    ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                               ^^^^^: string   (TyString)
+>                               ^^^^^: string   (TyString) (BindingIdentifier)
 
 type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                                                                 ^^^^^: P   (TyTypeReference)
+>                                                                 ^^^^^: P   (TyTypeReference) (BindingIdentifier)
 
 type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                                                                              ^: any   (TyAny)
+>                                                                              ^: any   (TyAny) (TSTypeParameter)
 
 type FunctionParameterInfer = ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                                                                                            ^: any   (TyAny)
+>                                                                                            ^: any   (TyAny) (TSTypeReference)
 
 declare const directInfer: string extends infer U ? U : never;
->             ^^^^^^^^^^^: string   (TyString)
+>             ^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 declare const directInfer: string extends infer U ? U : never;
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeParameter)
 
 declare const directInfer: string extends infer U ? U : never;
->                                                   ^: any   (TyAny)
+>                                                   ^: any   (TyAny) (TSTypeReference)
 
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
->             ^^^^^^^^^^^^^: number   (TyNumber)
+>             ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
->                              ^^^^^: number   (TyNumber)
+>                              ^^^^^: number   (TyNumber) (TSPropertySignature)
 
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
->                                                        ^^^^^: U   (TyTypeReference)
+>                                                        ^^^^^: U   (TyTypeReference) (TSPropertySignature)
 
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
->                                                                     ^: any   (TyAny)
+>                                                                     ^: any   (TyAny) (TSTypeParameter)
 
 declare const propertyInfer: { value: number } extends { value: infer U } ? U : never;
->                                                                           ^: any   (TyAny)
+>                                                                           ^: any   (TyAny) (TSTypeReference)
 
 declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
->             ^^^^^^^^^^^^^^^: never   (TyNever)
+>             ^^^^^^^^^^^^^^^: never   (TyNever) (BindingIdentifier)
 
 declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
->                                ^^^^^: string   (TyString)
+>                                ^^^^^: string   (TyString) (TSPropertySignature)
 
 declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
->                                                          ^^^^^: U   (TyTypeReference)
+>                                                          ^^^^^: U   (TyTypeReference) (TSPropertySignature)
 
 declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
->                                                                       ^: any   (TyAny)
+>                                                                       ^: any   (TyAny) (TSTypeParameter)
 
 declare const missingProperty: { other: string } extends { value: infer U } ? U : never;
->                                                                             ^: any   (TyAny)
+>                                                                             ^: any   (TyAny) (TSTypeReference)
 
 declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
->             ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral)
+>             ^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
 
 declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
->                                                         ^: any   (TyAny)
+>                                                         ^: any   (TyAny) (TSTypeParameter)
 
 declare const constrainedInferTrue: "ready" extends infer U extends string ? U : never;
->                                                                            ^: any   (TyAny)
+>                                                                            ^: any   (TyAny) (TSTypeReference)
 
 declare const constrainedInferFalse: number extends infer U extends string ? U : never;
->             ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever)
+>             ^^^^^^^^^^^^^^^^^^^^^: never   (TyNever) (BindingIdentifier)
 
 declare const constrainedInferFalse: number extends infer U extends string ? U : never;
->                                                         ^: any   (TyAny)
+>                                                         ^: any   (TyAny) (TSTypeParameter)
 
 declare const constrainedInferFalse: number extends infer U extends string ? U : never;
->                                                                            ^: any   (TyAny)
+>                                                                            ^: any   (TyAny) (TSTypeReference)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->             ^^^^^^^^^^^^^: string | number   (TyUnion)
+>             ^^^^^^^^^^^^^: string | number   (TyUnion) (BindingIdentifier)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                              ^: string   (TyString)
+>                              ^: string   (TyString) (TSPropertySignature)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                         ^: number   (TyNumber)
+>                                         ^: number   (TyNumber) (TSPropertySignature)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                               ^: U   (TyTypeReference)
+>                                                               ^: U   (TyTypeReference) (TSPropertySignature)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                        ^: any   (TyAny)
+>                                                                        ^: any   (TyAny) (TSTypeParameter)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                           ^: U   (TyTypeReference)
+>                                                                           ^: U   (TyTypeReference) (TSPropertySignature)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                                    ^: any   (TyAny)
+>                                                                                    ^: any   (TyAny) (TSTypeParameter)
 
 declare const repeatedInfer: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
->                                                                                          ^: any   (TyAny)
+>                                                                                          ^: any   (TyAny) (TSTypeReference)
 
 declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->             ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple)
+>             ^^^^^^^^^^^^^^: [number, boolean]   (TyTuple) (BindingIdentifier)
 
 declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->                                                                      ^^^^: any   (TyAny)
+>                                                                      ^^^^: any   (TyAny) (TSTypeParameter)
 
 declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->                                                                                     ^^^^: any   (TyAny)
+>                                                                                     ^^^^: any   (TyAny) (TSTypeParameter)
 
 declare const tupleRestInfer: [string, number, boolean] extends [infer Head, ...infer Rest] ? Rest : never;
->                                                                                             ^^^^: any   (TyAny)
+>                                                                                             ^^^^: any   (TyAny) (TSTypeReference)
 
 declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
->             ^^^^^^^^^^^^^^^^^: string   (TyString)
+>             ^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
->                                                        ^: any   (TyAny)
+>                                                        ^: any   (TyAny) (TSTypeParameter)
 
 declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
->                                                               ^: any   (TyAny)
+>                                                               ^: any   (TyAny) (TSTypeReference)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
->             ^^^^^^^^^^: string | number   (TyUnion)
+>             ^^^^^^^^^^: string | number   (TyUnion) (BindingIdentifier)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
->                           ^^^^^: string   (TyString)
+>                           ^^^^^: string   (TyString) (TSPropertySignature)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                               ^^^^^: number   (TyNumber)
+>                                               ^^^^^: number   (TyNumber) (TSPropertySignature)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                                                         ^^^^^: U   (TyTypeReference)
+>                                                                         ^^^^^: U   (TyTypeReference) (TSPropertySignature)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                                                                      ^: any   (TyAny)
+>                                                                                      ^: any   (TyAny) (TSTypeParameter)
 
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
->                                                                                            ^: any   (TyAny)
+>                                                                                            ^: any   (TyAny) (TSTypeReference)
 
 declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
->             ^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>             ^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
->                                                                      ^: any   (TyAny)
+>                                                                      ^: any   (TyAny) (TSTypeParameter)
 
 declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
->                                                                           ^: any   (TyAny)
+>                                                                           ^: any   (TyAny) (TSTypeReference)
 
 declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->             ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+>             ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                                       ^^^^^: string   (TyString)
+>                                       ^^^^^: string   (TyString) (BindingIdentifier)
 
 declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                                                                         ^^^^^: P   (TyTypeReference)
+>                                                                         ^^^^^: P   (TyTypeReference) (BindingIdentifier)
 
 declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                                                                                      ^: any   (TyAny)
+>                                                                                      ^: any   (TyAny) (TSTypeParameter)
 
 declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
->                                                                                                    ^: any   (TyAny)
+>                                                                                                    ^: any   (TyAny) (TSTypeReference)

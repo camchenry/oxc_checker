@@ -1,19 +1,19 @@
 interface Promise<T> {
->         ^^^^^^^: any   (TyAny)
+>         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
          expected: PromiseConstructor
 
 interface Promise<T> {
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeParameter)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->   ^^^^^^^: { (onfinally?: (() => void) | null | undefined): Promise<T>; (onfinally?: (() => void) | null | undefined): Promise<T>; }   (TyObject)
+>   ^^^^^^^: { (onfinally?: (() => void) | null | undefined): Promise<T>; (onfinally?: (() => void) | null | undefined): Promise<T>; }   (TyObject) (TSMethodSignature)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->           ^^^^^^^^^: (() => void) | null | undefined   (TyUnion)
+>           ^^^^^^^^^: (() => void) | null | undefined   (TyUnion) (BindingIdentifier)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->                                                         ^^^^^^^: any   (TyAny)
+>                                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
                                                          expected: PromiseConstructor
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->                                                                 ^: any   (TyAny)
+>                                                                 ^: any   (TyAny) (TSTypeReference)

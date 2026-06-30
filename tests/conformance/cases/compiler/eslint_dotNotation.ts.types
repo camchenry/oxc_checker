@@ -1,53 +1,53 @@
 class X {
->     ^: typeof X   (TyTypeQuery)
+>     ^: typeof X   (TyTypeQuery) (BindingIdentifier)
 
   private priv_prop = 123;
->         ^^^^^^^^^: number   (TyNumber)
+>         ^^^^^^^^^: number   (TyNumber) (PropertyDefinition)
 
 const x = new X();
->     ^: X   (TyTypeReference)
+>     ^: X   (TyTypeReference) (BindingIdentifier)
 
 const x = new X();
->             ^: typeof X   (TyTypeQuery)
+>             ^: typeof X   (TyTypeQuery) (IdentifierReference)
 
 x['priv_prop'] = 123;
->^: X   (TyTypeReference)
+>^: X   (TyTypeReference) (IdentifierReference)
 
 x['priv_prop'] = 123;
->^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral)
+>^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral) (ExpressionStatement)
 
 class X {
->     ^: typeof X   (TyTypeQuery)
+>     ^: typeof X   (TyTypeQuery) (BindingIdentifier)
 
   protected protected_prop = 123;
->           ^^^^^^^^^^^^^^: number   (TyNumber)
+>           ^^^^^^^^^^^^^^: number   (TyNumber) (PropertyDefinition)
 
 const x = new X();
->     ^: X   (TyTypeReference)
+>     ^: X   (TyTypeReference) (BindingIdentifier)
 
 const x = new X();
->             ^: typeof X   (TyTypeQuery)
+>             ^: typeof X   (TyTypeQuery) (IdentifierReference)
 
 x['protected_prop'] = 123;
->^: X   (TyTypeReference)
+>^: X   (TyTypeReference) (IdentifierReference)
 
 x['protected_prop'] = 123;
->^^^^^^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral) (ExpressionStatement)
 
 class X {
->     ^: typeof X   (TyTypeQuery)
+>     ^: typeof X   (TyTypeQuery) (BindingIdentifier)
 
   [key: string]: number;
->  ^^^: string   (TyString)
+>  ^^^: string   (TyString) (TSIndexSignatureName)
 
 const x = new X();
->     ^: X   (TyTypeReference)
+>     ^: X   (TyTypeReference) (BindingIdentifier)
 
 const x = new X();
->             ^: typeof X   (TyTypeQuery)
+>             ^: typeof X   (TyTypeQuery) (IdentifierReference)
 
 x['hello'] = 123;
->^: X   (TyTypeReference)
+>^: X   (TyTypeReference) (IdentifierReference)
 
 x['hello'] = 123;
->^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral)
+>^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral) (ExpressionStatement)

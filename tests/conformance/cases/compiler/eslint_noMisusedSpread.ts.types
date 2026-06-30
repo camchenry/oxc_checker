@@ -1,145 +1,145 @@
 declare const promise: Promise<number>;
->             ^^^^^^^: Promise<number>   (TyTypeReference)
+>             ^^^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
 
 declare const promise: Promise<number>;
->                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
 declare const promise: Promise<number>;
->                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 const spreadPromise = { ...promise };
->     ^^^^^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
            expected: { then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; finally(onfinally?: (() => void) | null | undefined): Promise<number>; [Symbol.toStringTag]: string; }
 
 const spreadPromise = { ...promise };
->                          ^^^^^^^: Promise<number>   (TyTypeReference)
+>                          ^^^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
 
 declare function getObject(): Record<string, string>;
->                ^^^^^^^^^: () => Record<string, string>   (TyFunction)
+>                ^^^^^^^^^: () => Record<string, string>   (TyFunction) (BindingIdentifier)
 
 declare function getObject(): Record<string, string>;
->                             ^^^^^^: any   (TyAny)
+>                             ^^^^^^: any   (TyAny) (TSTypeReference)
 
 const getObjectSpread = { ...getObject };
->     ^^^^^^^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
 
 const getObjectSpread = { ...getObject };
->                            ^^^^^^^^^: () => Record<string, string>   (TyFunction)
+>                            ^^^^^^^^^: () => Record<string, string>   (TyFunction) (IdentifierReference)
 
 declare const map: Map<string, number>;
->             ^^^: Map<string, number>   (TyTypeReference)
+>             ^^^: Map<string, number>   (TyTypeReference) (BindingIdentifier)
 
 declare const map: Map<string, number>;
->                  ^^^: MapConstructor   (TyTypeReference)
+>                  ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
 declare const map: Map<string, number>;
->                  ^^^: MapConstructor   (TyTypeReference)
+>                  ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 const mapSpread = { ...map };
->     ^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
        expected: { clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; [Symbol.iterator](): MapIterator<[string, number]>; [Symbol.toStringTag]: string; }
 
 const mapSpread = { ...map };
->                      ^^^: Map<string, number>   (TyTypeReference)
+>                      ^^^: Map<string, number>   (TyTypeReference) (IdentifierReference)
 
 declare const userName: string;
->             ^^^^^^^^: string   (TyString)
+>             ^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const characters = [...userName];
->     ^^^^^^^^^^: any[]   (TyArray)
+>     ^^^^^^^^^^: any[]   (TyArray) (BindingIdentifier)
         expected: string[]
 
 const characters = [...userName];
->                      ^^^^^^^^: string   (TyString)
+>                      ^^^^^^^^: string   (TyString) (IdentifierReference)
 
 declare class Box {
->             ^^^: typeof Box   (TyTypeQuery)
+>             ^^^: typeof Box   (TyTypeQuery) (BindingIdentifier)
 
   value: number;
-> ^^^^^: number   (TyNumber)
+> ^^^^^: number   (TyNumber) (PropertyDefinition)
 
 const boxSpread = { ...Box };
->     ^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
 
 const boxSpread = { ...Box };
->                      ^^^: typeof Box   (TyTypeQuery)
+>                      ^^^: typeof Box   (TyTypeQuery) (IdentifierReference)
 
 declare const instance: Box;
->             ^^^^^^^^: Box   (TyTypeReference)
+>             ^^^^^^^^: Box   (TyTypeReference) (BindingIdentifier)
 
 declare const instance: Box;
->                       ^^^: typeof Box   (TyTypeQuery)
+>                       ^^^: typeof Box   (TyTypeQuery) (TSTypeReference)
 
 declare const instance: Box;
->                       ^^^: typeof Box   (TyTypeQuery)
+>                       ^^^: typeof Box   (TyTypeQuery) (IdentifierReference)
 
 const instanceSpread = { ...instance };
->     ^^^^^^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
             expected: { value: number; }
 
 const instanceSpread = { ...instance };
->                           ^^^^^^^^: Box   (TyTypeReference)
+>                           ^^^^^^^^: Box   (TyTypeReference) (IdentifierReference)
 
 declare const promise: Promise<number>;
->             ^^^^^^^: Promise<number>   (TyTypeReference)
+>             ^^^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
 
 declare const promise: Promise<number>;
->                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
 
 declare const promise: Promise<number>;
->                      ^^^^^^^: PromiseConstructor   (TyTypeReference)
+>                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 const spreadPromise = { ...(await promise) };
->     ^^^^^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
            expected: any
 
 const spreadPromise = { ...(await promise) };
->                                 ^^^^^^^: Promise<number>   (TyTypeReference)
+>                                 ^^^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
 
 declare function getObject(): Record<string, string>;
->                ^^^^^^^^^: () => Record<string, string>   (TyFunction)
+>                ^^^^^^^^^: () => Record<string, string>   (TyFunction) (BindingIdentifier)
 
 declare function getObject(): Record<string, string>;
->                             ^^^^^^: any   (TyAny)
+>                             ^^^^^^: any   (TyAny) (TSTypeReference)
 
 const getObjectSpread = { ...getObject() };
->     ^^^^^^^^^^^^^^^: {}   (TyObject)
+>     ^^^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
              expected: { [x: string]: string; }
 
 const getObjectSpread = { ...getObject() };
->                            ^^^^^^^^^: () => Record<string, string>   (TyFunction)
+>                            ^^^^^^^^^: () => Record<string, string>   (TyFunction) (IdentifierReference)
 
 declare const map: Map<string, number>;
->             ^^^: Map<string, number>   (TyTypeReference)
+>             ^^^: Map<string, number>   (TyTypeReference) (BindingIdentifier)
 
 declare const map: Map<string, number>;
->                  ^^^: MapConstructor   (TyTypeReference)
+>                  ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
 declare const map: Map<string, number>;
->                  ^^^: MapConstructor   (TyTypeReference)
+>                  ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 const mapObject = Object.fromEntries(map);
->     ^^^^^^^^^: { [k: string]: any; }   (TyObject)
+>     ^^^^^^^^^: { [k: string]: any; }   (TyObject) (BindingIdentifier)
        expected: { [k: string]: number; }
 
 const mapObject = Object.fromEntries(map);
->                 ^^^^^^: ObjectConstructor   (TyTypeReference)
+>                 ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
 
 const mapObject = Object.fromEntries(map);
->                        ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (TyObject)
+>                        ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (TyObject) (StaticMemberExpression)
 
 const mapObject = Object.fromEntries(map);
->                                    ^^^: Map<string, number>   (TyTypeReference)
+>                                    ^^^: Map<string, number>   (TyTypeReference) (IdentifierReference)
 
 declare const userName: string;
->             ^^^^^^^^: string   (TyString)
+>             ^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const characters = userName.split('');
->     ^^^^^^^^^^: string[]   (TyArray)
+>     ^^^^^^^^^^: string[]   (TyArray) (BindingIdentifier)
 
 const characters = userName.split('');
->                  ^^^^^^^^: string   (TyString)
+>                  ^^^^^^^^: string   (TyString) (IdentifierReference)
 
 const characters = userName.split('');
->                           ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; }   (TyObject)
+>                           ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; }   (TyObject) (StaticMemberExpression)
                          expected: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }

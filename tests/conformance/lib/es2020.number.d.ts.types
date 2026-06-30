@@ -1,19 +1,19 @@
 interface Number {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: NumberConstructor
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion)
+>                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
                   expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                                                  ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                                  ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                                                            ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                            ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

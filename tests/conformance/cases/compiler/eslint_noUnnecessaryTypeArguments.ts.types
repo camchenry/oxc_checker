@@ -1,141 +1,141 @@
 function f<T = number>() {}
->        ^: <T = number>() => void   (TyFunction)
+>        ^: <T = number>() => void   (TyFunction) (BindingIdentifier)
 
 function f<T = number>() {}
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
 f<number>();
->^: <T = number>() => void   (TyFunction)
+>^: <T = number>() => void   (TyFunction) (IdentifierReference)
 
 f<number>();
->^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 function g<T = number, U = string>() {}
->        ^: <T = number, U = string>() => void   (TyFunction)
+>        ^: <T = number, U = string>() => void   (TyFunction) (BindingIdentifier)
 
 function g<T = number, U = string>() {}
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
 function g<T = number, U = string>() {}
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 g<string, string>();
->^: <T = number, U = string>() => void   (TyFunction)
+>^: <T = number, U = string>() => void   (TyFunction) (IdentifierReference)
 
 g<string, string>();
->^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 class C<T = number> {}
->     ^: typeof C   (TyTypeQuery)
+>     ^: typeof C   (TyTypeQuery) (BindingIdentifier)
 
 class C<T = number> {}
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeParameter)
 
 new C<number>();
->^^^^^^^^^^^^^^^^: C   (TyTypeReference)
+>^^^^^^^^^^^^^^^^: C   (TyTypeReference) (ExpressionStatement)
          expected: C<number>
 
 new C<number>();
->   ^: typeof C   (TyTypeQuery)
+>   ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 class D extends C<number> {}
->     ^: typeof D   (TyTypeQuery)
+>     ^: typeof D   (TyTypeQuery) (BindingIdentifier)
 
 class D extends C<number> {}
->               ^: typeof C   (TyTypeQuery)
+>               ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 interface I<T = number> {}
->         ^: any   (TyAny)
+>         ^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface I<T = number> {}
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeParameter)
 
 class Impl implements I<number> {}
->     ^^^^: typeof Impl   (TyTypeQuery)
+>     ^^^^: typeof Impl   (TyTypeQuery) (BindingIdentifier)
 
 class Impl implements I<number> {}
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSClassImplements)
 
 function f<T = number>() {}
->        ^: <T = number>() => void   (TyFunction)
+>        ^: <T = number>() => void   (TyFunction) (BindingIdentifier)
 
 function f<T = number>() {}
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
 f();
->^: <T = number>() => void   (TyFunction)
+>^: <T = number>() => void   (TyFunction) (IdentifierReference)
 
 f();
->^^^^: void   (TyVoid)
+>^^^^: void   (TyVoid) (ExpressionStatement)
 
 f<string>();
->^: <T = number>() => void   (TyFunction)
+>^: <T = number>() => void   (TyFunction) (IdentifierReference)
 
 f<string>();
->^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 function g<T = number, U = string>() {}
->        ^: <T = number, U = string>() => void   (TyFunction)
+>        ^: <T = number, U = string>() => void   (TyFunction) (BindingIdentifier)
 
 function g<T = number, U = string>() {}
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
 function g<T = number, U = string>() {}
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 g<string>();
->^: <T = number, U = string>() => void   (TyFunction)
+>^: <T = number, U = string>() => void   (TyFunction) (IdentifierReference)
 
 g<string>();
->^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 g<number, number>();
->^: <T = number, U = string>() => void   (TyFunction)
+>^: <T = number, U = string>() => void   (TyFunction) (IdentifierReference)
 
 g<number, number>();
->^^^^^^^^^^^^^^^^^^^^: void   (TyVoid)
+>^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
 class C<T = number> {}
->     ^: typeof C   (TyTypeQuery)
+>     ^: typeof C   (TyTypeQuery) (BindingIdentifier)
 
 class C<T = number> {}
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeParameter)
 
 new C();
->^^^^^^^^: C   (TyTypeReference)
+>^^^^^^^^: C   (TyTypeReference) (ExpressionStatement)
  expected: C<number>
 
 new C();
->   ^: typeof C   (TyTypeQuery)
+>   ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 new C<string>();
->^^^^^^^^^^^^^^^^: C   (TyTypeReference)
+>^^^^^^^^^^^^^^^^: C   (TyTypeReference) (ExpressionStatement)
          expected: C<string>
 
 new C<string>();
->   ^: typeof C   (TyTypeQuery)
+>   ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 class D extends C {}
->     ^: typeof D   (TyTypeQuery)
+>     ^: typeof D   (TyTypeQuery) (BindingIdentifier)
 
 class D extends C {}
->               ^: typeof C   (TyTypeQuery)
+>               ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 class D extends C<string> {}
->     ^: typeof D   (TyTypeQuery)
+>     ^: typeof D   (TyTypeQuery) (BindingIdentifier)
 expected: { new <string>(): {}; }
 
 class D extends C<string> {}
->               ^: typeof C   (TyTypeQuery)
+>               ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 interface I<T = number> {}
->         ^: any   (TyAny)
+>         ^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface I<T = number> {}
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeParameter)
 
 class Impl implements I<string> {}
->     ^^^^: typeof Impl   (TyTypeQuery)
+>     ^^^^: typeof Impl   (TyTypeQuery) (BindingIdentifier)
 
 class Impl implements I<string> {}
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSClassImplements)

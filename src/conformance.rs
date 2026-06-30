@@ -107,6 +107,7 @@ struct TypeRecord {
     end: u32,
     text: String,
     ty_variant: Option<&'static str>,
+    ast_kind: Option<String>,
     ty_repr: String,
 }
 
@@ -141,6 +142,7 @@ impl TypeRecord {
             end,
             text,
             ty_variant: None,
+            ast_kind: None,
             ty_repr: ty,
         })
     }
@@ -1626,6 +1628,7 @@ fn actual_export_specifier_records<'a>(
                 end: key.end,
                 text: key.text,
                 ty_variant: Some(ty_variant),
+                ast_kind: Some("ExportSpecifier".to_string()),
                 ty_repr: sanitize(&ty_repr),
             })
         })
@@ -1831,6 +1834,7 @@ fn actual_identifier_record<'a>(
     }
 
     let ty_variant = ty.enum_variant_name();
+    let ast_kind = format!("{:?}", kind.ty());
     let ty_repr = checker.type_to_string(ty, node_ref);
 
     Some(TypeRecord {
@@ -1839,6 +1843,7 @@ fn actual_identifier_record<'a>(
         end: span.end,
         text: sanitize(text.as_ref()),
         ty_variant: Some(ty_variant),
+        ast_kind: Some(ast_kind),
         ty_repr: sanitize(&ty_repr),
     })
 }
@@ -2427,6 +2432,11 @@ fn write_type_output_for_source_file(
             output.push_str(ty_variant);
             output.push(')');
         }
+        if let Some(ast_kind) = &record.ast_kind {
+            output.push_str(" (");
+            output.push_str(ast_kind);
+            output.push(')');
+        }
         output.push('\n');
 
         if let Some(expected_type) = mismatches.and_then(|mismatches| mismatches.get(&record.key()))
@@ -2822,6 +2832,7 @@ mod tests {
             end: 32,
             text: "label".to_string(),
             ty_variant: Some("TyString"),
+            ast_kind: Some("IdentifierReference".to_string()),
             ty_repr: "string".to_string(),
         };
         let mut output = String::new();
@@ -2830,7 +2841,7 @@ mod tests {
 
         assert_eq!(
             output,
-            "let label: string = \"ready\";\n>   ^^^^^: string   (TyString)\n"
+            "let label: string = \"ready\";\n>   ^^^^^: string   (TyString) (IdentifierReference)\n"
         );
     }
 
@@ -2843,6 +2854,7 @@ mod tests {
             end: 9,
             text: "count".to_string(),
             ty_variant: Some("TyString"),
+            ast_kind: Some("IdentifierReference".to_string()),
             ty_repr: "string".to_string(),
         };
         let mut mismatches = TypeRecordMap::new();
@@ -2853,7 +2865,7 @@ mod tests {
 
         assert_eq!(
             output,
-            "let count: number = 1;\n>   ^^^^^: string   (TyString)\n expected: number\n"
+            "let count: number = 1;\n>   ^^^^^: string   (TyString) (IdentifierReference)\n expected: number\n"
         );
     }
 
@@ -2899,6 +2911,7 @@ mod tests {
             end: 5,
             text: "value".to_string(),
             ty_variant: None,
+            ast_kind: None,
             ty_repr: "<T, U = B | T>(value: A | B) => B | A".to_string(),
         };
         let actual = TypeRecord {

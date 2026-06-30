@@ -1,15 +1,15 @@
 interface ObjectConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->   ^^^^^^: (o: object, v: PropertyKey) => boolean   (TyFunction)
+>   ^^^^^^: (o: object, v: PropertyKey) => boolean   (TyFunction) (TSMethodSignature)
   expected: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }
 
     hasOwn(o: object, v: PropertyKey): boolean;
->          ^: object   (TyPrimitiveObject)
+>          ^: object   (TyPrimitiveObject) (BindingIdentifier)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->                     ^: PropertyKey   (TyTypeReference)
+>                     ^: PropertyKey   (TyTypeReference) (BindingIdentifier)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->                        ^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

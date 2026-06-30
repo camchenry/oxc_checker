@@ -1,41 +1,41 @@
 interface RegExpMatchArray {
->         ^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     indices?: RegExpIndicesArray;
->   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion)
+>   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion) (TSPropertySignature)
 
     indices?: RegExpIndicesArray;
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface RegExpExecArray {
->         ^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     indices?: RegExpIndicesArray;
->   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion)
+>   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion) (TSPropertySignature)
 
     indices?: RegExpIndicesArray;
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->                                    ^^^^^: ArrayConstructor   (TyTypeReference)
+>                                    ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
                                   expected: ArrayConstructor
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->                                    ^^^^^: any   (TyAny)
+>                                    ^^^^^: any   (TyAny) (TSInterfaceHeritage)
                                   expected: ArrayConstructor
 
     groups?: {
->   ^^^^^^: { [key: string]: [number, number]; } | undefined   (TyUnion)
+>   ^^^^^^: { [key: string]: [number, number]; } | undefined   (TyUnion) (TSPropertySignature)
 
         [key: string]: [number, number];
->        ^^^: string   (TyString)
+>        ^^^: string   (TyString) (TSIndexSignatureName)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: RegExpConstructor
 
     readonly hasIndices: boolean;
->            ^^^^^^^^^^: boolean   (TyBoolean)
+>            ^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)

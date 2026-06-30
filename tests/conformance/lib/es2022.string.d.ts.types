@@ -1,10 +1,10 @@
 interface String {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
     at(index: number): string | undefined;
->   ^^: (index: number) => string | undefined   (TyFunction)
+>   ^^: (index: number) => string | undefined   (TyFunction) (TSMethodSignature)
 expected: { (index: number): string | undefined; (index: number): string | undefined; }
 
     at(index: number): string | undefined;
->      ^^^^^: number   (TyNumber)
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)

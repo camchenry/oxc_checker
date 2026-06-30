@@ -1,95 +1,95 @@
 interface ButtonProps {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   onClick: () => void;
-> ^^^^^^^: () => void   (TyFunction)
+> ^^^^^^^: () => void   (TyFunction) (TSPropertySignature)
 
 class Button implements ButtonProps {
->     ^^^^^^: typeof Button   (TyTypeQuery)
+>     ^^^^^^: typeof Button   (TyTypeQuery) (BindingIdentifier)
 
 class Button implements ButtonProps {
->                       ^^^^^^^^^^^: any   (TyAny)
+>                       ^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
 
   onClick = () => console.log('button!');
-> ^^^^^^^: () => void   (TyFunction)
+> ^^^^^^^: () => void   (TyFunction) (PropertyDefinition)
 
   onClick = () => console.log('button!');
->                 ^^^^^^^: Console   (TyTypeReference)
+>                 ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
   onClick = () => console.log('button!');
->                         ^^^: (...data: any[]) => void   (TyFunction)
+>                         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 export { Button, ButtonProps };
->        ^^^^^^: typeof Button   (TyTypeQuery)
+>        ^^^^^^: typeof Button   (TyTypeQuery) (ExportSpecifier)
 
 export { Button, ButtonProps };
->        ^^^^^^: typeof Button   (TyTypeQuery)
+>        ^^^^^^: typeof Button   (TyTypeQuery) (IdentifierReference)
 
 export { Button, ButtonProps };
->                ^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^: any   (TyAny) (ExportSpecifier)
 
 interface ButtonProps {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   onClick: () => void;
-> ^^^^^^^: () => void   (TyFunction)
+> ^^^^^^^: () => void   (TyFunction) (TSPropertySignature)
 
 class Button implements ButtonProps {
->     ^^^^^^: typeof Button   (TyTypeQuery)
+>     ^^^^^^: typeof Button   (TyTypeQuery) (BindingIdentifier)
 
 class Button implements ButtonProps {
->                       ^^^^^^^^^^^: any   (TyAny)
+>                       ^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
 
   onClick = () => console.log('button!');
-> ^^^^^^^: () => void   (TyFunction)
+> ^^^^^^^: () => void   (TyFunction) (PropertyDefinition)
 
   onClick = () => console.log('button!');
->                 ^^^^^^^: Console   (TyTypeReference)
+>                 ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
 
   onClick = () => console.log('button!');
->                         ^^^: (...data: any[]) => void   (TyFunction)
+>                         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 export { Button };
->        ^^^^^^: typeof Button   (TyTypeQuery)
+>        ^^^^^^: typeof Button   (TyTypeQuery) (ExportSpecifier)
 
 export { Button };
->        ^^^^^^: typeof Button   (TyTypeQuery)
+>        ^^^^^^: typeof Button   (TyTypeQuery) (IdentifierReference)
 
 export type { ButtonProps };
->             ^^^^^^^^^^^: any   (TyAny)
+>             ^^^^^^^^^^^: any   (TyAny) (ExportSpecifier)
 
 const x = 1;
->     ^: 1   (TyNumberLiteral)
+>     ^: 1   (TyNumberLiteral) (BindingIdentifier)
 
 type T = number;
->    ^: number   (TyNumber)
+>    ^: number   (TyNumber) (TSTypeAliasDeclaration)
 
 export { x, T };
->        ^: 1   (TyNumberLiteral)
+>        ^: 1   (TyNumberLiteral) (IdentifierReference)
 
 export { x, T };
->           ^: number   (TyNumber)
+>           ^: number   (TyNumber) (ExportSpecifier)
 
 const x = 1;
->     ^: 1   (TyNumberLiteral)
+>     ^: 1   (TyNumberLiteral) (BindingIdentifier)
 
 type T = number;
->    ^: number   (TyNumber)
+>    ^: number   (TyNumber) (TSTypeAliasDeclaration)
 
 export { x, type T };
->        ^: 1   (TyNumberLiteral)
+>        ^: 1   (TyNumberLiteral) (IdentifierReference)
 
 export { x, type T };
->                ^: number   (TyNumber)
+>                ^: number   (TyNumber) (ExportSpecifier)
 
 const x = 1;
->     ^: 1   (TyNumberLiteral)
+>     ^: 1   (TyNumberLiteral) (BindingIdentifier)
 
 type T = number;
->    ^: number   (TyNumber)
+>    ^: number   (TyNumber) (TSTypeAliasDeclaration)
 
 export type { T };
->             ^: number   (TyNumber)
+>             ^: number   (TyNumber) (ExportSpecifier)
 
 export { x };
->        ^: 1   (TyNumberLiteral)
+>        ^: 1   (TyNumberLiteral) (IdentifierReference)

@@ -1,1046 +1,1046 @@
 interface Array<T> {
->         ^^^^^: any   (TyAny)
+>         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
        expected: ArrayConstructor
 
 interface Array<T> {
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeParameter)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject)
+>   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                     ^^^^^^^^^: (value: T, index: number, obj: T[]) => value is S   (TyFunction)
+>                     ^^^^^^^^^: (value: T, index: number, obj: T[]) => value is S   (TyFunction) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                 ^^^^^: T   (TyTypeReference)
+>                                 ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                        ^: any   (TyAny)
+>                                        ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                           ^^^^^: number   (TyNumber)
+>                                           ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                                          ^^^: T[]   (TyArray)
+>                                                          ^^^: T[]   (TyArray) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                                               ^: any   (TyAny)
+>                                                               ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                                                       ^^^^^: T   (TyTypeReference)
+>                                                                       ^^^^^: T   (TyTypeReference) (IdentifierName)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                ^: any   (TyAny)
+>                                                                                ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                   ^^^^^^^: any   (TyAny)
+>                                                                                   ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                                   ^: any   (TyAny)
+>                                                                                                   ^: any   (TyAny) (TSTypeReference)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject)
+>   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->        ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (TyFunction)
+>        ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (TyFunction) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                    ^^^^^: T   (TyTypeReference)
+>                    ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeReference)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                              ^^^^^: number   (TyNumber)
+>                              ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                                             ^^^: T[]   (TyArray)
+>                                             ^^^: T[]   (TyArray) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                                                                   ^^^^^^^: any   (TyAny)
+>                                                                   ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                                                                                   ^: any   (TyAny)
+>                                                                                   ^: any   (TyAny) (TSTypeReference)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->   ^^^^^^^^^: { (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number; }   (TyObject)
+>   ^^^^^^^^^: { (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->             ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (TyFunction)
+>             ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (TyFunction) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->                         ^^^^^: T   (TyTypeReference)
+>                         ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeReference)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->                                   ^^^^^: number   (TyNumber)
+>                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->                                                  ^^^: T[]   (TyArray)
+>                                                  ^^^: T[]   (TyArray) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->                                                                        ^^^^^^^: any   (TyAny)
+>                                                                        ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     fill(value: T, start?: number, end?: number): this;
->   ^^^^: { (value: T, start?: number, end?: number): this; (value: T, start?: number, end?: number): this; }   (TyObject)
+>   ^^^^: { (value: T, start?: number, end?: number): this; (value: T, start?: number, end?: number): this; }   (TyObject) (TSMethodSignature)
 
     fill(value: T, start?: number, end?: number): this;
->        ^^^^^: T   (TyTypeReference)
+>        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     fill(value: T, start?: number, end?: number): this;
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeReference)
 
     fill(value: T, start?: number, end?: number): this;
->                  ^^^^^: number | undefined   (TyUnion)
+>                  ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     fill(value: T, start?: number, end?: number): this;
->                                  ^^^: number | undefined   (TyUnion)
+>                                  ^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     copyWithin(target: number, start: number, end?: number): this;
->   ^^^^^^^^^^: { (target: number, start: number, end?: number): this; (target: number, start: number, end?: number): this; }   (TyObject)
+>   ^^^^^^^^^^: { (target: number, start: number, end?: number): this; (target: number, start: number, end?: number): this; }   (TyObject) (TSMethodSignature)
 
     copyWithin(target: number, start: number, end?: number): this;
->              ^^^^^^: number   (TyNumber)
+>              ^^^^^^: number   (TyNumber) (BindingIdentifier)
 
     copyWithin(target: number, start: number, end?: number): this;
->                              ^^^^^: number   (TyNumber)
+>                              ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     copyWithin(target: number, start: number, end?: number): this;
->                                             ^^^: number | undefined   (TyUnion)
+>                                             ^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion)
+>                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface ArrayConstructor {
->         ^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
->   ^^^^: { <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }   (TyObject)
+>   ^^^^: { <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }   (TyObject) (TSMethodSignature)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
->           ^^^^^^^^^: ArrayLike<T>   (TyTypeReference)
+>           ^^^^^^^^^: ArrayLike<T>   (TyTypeReference) (BindingIdentifier)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
->                      ^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeReference)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->   ^^^^: { <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }   (TyObject)
+>   ^^^^: { <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }   (TyObject) (TSMethodSignature)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeParameter)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->              ^^^^^^^^^: ArrayLike<T>   (TyTypeReference)
+>              ^^^^^^^^^: ArrayLike<T>   (TyTypeReference) (BindingIdentifier)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                         ^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                       ^^^^^: (v: T, k: number) => U   (TyFunction)
+>                                       ^^^^^: (v: T, k: number) => U   (TyFunction) (BindingIdentifier)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                               ^: T   (TyTypeReference)
+>                                               ^: T   (TyTypeReference) (BindingIdentifier)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                                     ^: number   (TyNumber)
+>                                                     ^: number   (TyNumber) (BindingIdentifier)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                                                   ^: any   (TyAny)
+>                                                                   ^: any   (TyAny) (TSTypeReference)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                                                      ^^^^^^^: any   (TyAny)
+>                                                                      ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                                                                      ^: any   (TyAny)
+>                                                                                      ^: any   (TyAny) (TSTypeReference)
 
     of<T>(...items: T[]): T[];
->   ^^: { <T>(...items: T[]): T[]; <T>(...items: T[]): T[]; }   (TyObject)
+>   ^^: { <T>(...items: T[]): T[]; <T>(...items: T[]): T[]; }   (TyObject) (TSMethodSignature)
 
     of<T>(...items: T[]): T[];
->      ^: any   (TyAny)
+>      ^: any   (TyAny) (TSTypeParameter)
 
     of<T>(...items: T[]): T[];
->            ^^^^^: T[]   (TyArray)
+>            ^^^^^: T[]   (TyArray) (BindingIdentifier)
 
     of<T>(...items: T[]): T[];
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeReference)
 
     of<T>(...items: T[]): T[];
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeReference)
 
 interface DateConstructor {
->         ^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new (value: number | string | Date): Date;
->        ^^^^^: number | string | Date   (TyUnion)
+>        ^^^^^: number | string | Date   (TyUnion) (BindingIdentifier)
 
     new (value: number | string | Date): Date;
->                                 ^^^^: DateConstructor   (TyTypeReference)
+>                                 ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
 
     new (value: number | string | Date): Date;
->                                 ^^^^: DateConstructor   (TyTypeReference)
+>                                 ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
 
     new (value: number | string | Date): Date;
->                                        ^^^^: DateConstructor   (TyTypeReference)
+>                                        ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
 
     new (value: number | string | Date): Date;
->                                        ^^^^: DateConstructor   (TyTypeReference)
+>                                        ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
 
 interface Function {
->         ^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
           expected: FunctionConstructor
 
     readonly name: string;
->            ^^^^: string   (TyString)
+>            ^^^^: string   (TyString) (TSPropertySignature)
 
 interface Math {
->         ^^^^: any   (TyAny)
+>         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
       expected: Math
 
     clz32(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     clz32(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     imul(x: number, y: number): number;
->   ^^^^: { (x: number, y: number): number; (x: number, y: number): number; }   (TyObject)
+>   ^^^^: { (x: number, y: number): number; (x: number, y: number): number; }   (TyObject) (TSMethodSignature)
 
     imul(x: number, y: number): number;
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (BindingIdentifier)
 
     imul(x: number, y: number): number;
->                   ^: number   (TyNumber)
+>                   ^: number   (TyNumber) (BindingIdentifier)
 
     sign(x: number): number;
->   ^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     sign(x: number): number;
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (BindingIdentifier)
 
     log10(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     log10(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     log2(x: number): number;
->   ^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     log2(x: number): number;
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (BindingIdentifier)
 
     log1p(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     log1p(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     expm1(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     expm1(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     cosh(x: number): number;
->   ^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     cosh(x: number): number;
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (BindingIdentifier)
 
     sinh(x: number): number;
->   ^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     sinh(x: number): number;
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (BindingIdentifier)
 
     tanh(x: number): number;
->   ^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     tanh(x: number): number;
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (BindingIdentifier)
 
     acosh(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     acosh(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     asinh(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     asinh(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     atanh(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     atanh(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     hypot(...values: number[]): number;
->   ^^^^^: { (...values: number[]): number; (...values: number[]): number; }   (TyObject)
+>   ^^^^^: { (...values: number[]): number; (...values: number[]): number; }   (TyObject) (TSMethodSignature)
 
     hypot(...values: number[]): number;
->            ^^^^^^: number[]   (TyArray)
+>            ^^^^^^: number[]   (TyArray) (BindingIdentifier)
 
     trunc(x: number): number;
->   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     trunc(x: number): number;
->         ^: number   (TyNumber)
+>         ^: number   (TyNumber) (BindingIdentifier)
 
     fround(x: number): number;
->   ^^^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     fround(x: number): number;
->          ^: number   (TyNumber)
+>          ^: number   (TyNumber) (BindingIdentifier)
 
     cbrt(x: number): number;
->   ^^^^: { (x: number): number; (x: number): number; }   (TyObject)
+>   ^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
 
     cbrt(x: number): number;
->        ^: number   (TyNumber)
+>        ^: number   (TyNumber) (BindingIdentifier)
 
 interface NumberConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     readonly EPSILON: number;
->            ^^^^^^^: number   (TyNumber)
+>            ^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     isFinite(number: unknown): boolean;
->   ^^^^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject)
+>   ^^^^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject) (TSMethodSignature)
 
     isFinite(number: unknown): boolean;
->            ^^^^^^: unknown   (TyUnknown)
+>            ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     isInteger(number: unknown): boolean;
->   ^^^^^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject)
+>   ^^^^^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject) (TSMethodSignature)
 
     isInteger(number: unknown): boolean;
->             ^^^^^^: unknown   (TyUnknown)
+>             ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     isNaN(number: unknown): boolean;
->   ^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject)
+>   ^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject) (TSMethodSignature)
 
     isNaN(number: unknown): boolean;
->         ^^^^^^: unknown   (TyUnknown)
+>         ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     isSafeInteger(number: unknown): boolean;
->   ^^^^^^^^^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject)
+>   ^^^^^^^^^^^^^: { (number: unknown): boolean; (number: unknown): boolean; }   (TyObject) (TSMethodSignature)
 
     isSafeInteger(number: unknown): boolean;
->                 ^^^^^^: unknown   (TyUnknown)
+>                 ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     readonly MAX_SAFE_INTEGER: number;
->            ^^^^^^^^^^^^^^^^: number   (TyNumber)
+>            ^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     readonly MIN_SAFE_INTEGER: number;
->            ^^^^^^^^^^^^^^^^: number   (TyNumber)
+>            ^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     parseFloat(string: string): number;
->   ^^^^^^^^^^: { (string: string): number; (string: string): number; }   (TyObject)
+>   ^^^^^^^^^^: { (string: string): number; (string: string): number; }   (TyObject) (TSMethodSignature)
 
     parseFloat(string: string): number;
->              ^^^^^^: string   (TyString)
+>              ^^^^^^: string   (TyString) (BindingIdentifier)
 
     parseInt(string: string, radix?: number): number;
->   ^^^^^^^^: { (string: string, radix?: number): number; (string: string, radix?: number): number; }   (TyObject)
+>   ^^^^^^^^: { (string: string, radix?: number): number; (string: string, radix?: number): number; }   (TyObject) (TSMethodSignature)
 
     parseInt(string: string, radix?: number): number;
->            ^^^^^^: string   (TyString)
+>            ^^^^^^: string   (TyString) (BindingIdentifier)
 
     parseInt(string: string, radix?: number): number;
->                            ^^^^^: number | undefined   (TyUnion)
+>                            ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
 interface ObjectConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject)
+>   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject) (TSMethodSignature)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                           ^^^^^^: T   (TyTypeReference)
+>                           ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                                      ^^^^^^: U   (TyTypeReference)
+>                                      ^^^^^^: U   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                                              ^: any   (TyAny)
+>                                              ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                                                      ^: any   (TyAny)
+>                                                      ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject)
+>   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject) (TSMethodSignature)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                              ^^^^^^: T   (TyTypeReference)
+>                              ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                      ^: any   (TyAny)
+>                                      ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                         ^^^^^^^: U   (TyTypeReference)
+>                                         ^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                                     ^^^^^^^: V   (TyTypeReference)
+>                                                     ^^^^^^^: V   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                                              ^: any   (TyAny)
+>                                                              ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                                                  ^: any   (TyAny)
+>                                                                  ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                                                      ^: any   (TyAny)
+>                                                                      ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                                                          ^: any   (TyAny)
+>                                                                          ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject)
+>   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject) (TSMethodSignature)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeParameter)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                 ^^^^^^: T   (TyTypeReference)
+>                                 ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                            ^^^^^^^: U   (TyTypeReference)
+>                                            ^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                        ^^^^^^^: V   (TyTypeReference)
+>                                                        ^^^^^^^: V   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                 ^: any   (TyAny)
+>                                                                 ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                    ^^^^^^^: W   (TyTypeReference)
+>                                                                    ^^^^^^^: W   (TyTypeReference) (BindingIdentifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                             ^: any   (TyAny)
+>                                                                             ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                                 ^: any   (TyAny)
+>                                                                                 ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                                     ^: any   (TyAny)
+>                                                                                     ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                                         ^: any   (TyAny)
+>                                                                                         ^: any   (TyAny) (TSTypeReference)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                                             ^: any   (TyAny)
+>                                                                                             ^: any   (TyAny) (TSTypeReference)
 
     assign(target: object, ...sources: any[]): any;
->   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject)
+>   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject) (TSMethodSignature)
 
     assign(target: object, ...sources: any[]): any;
->          ^^^^^^: object   (TyPrimitiveObject)
+>          ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
 
     assign(target: object, ...sources: any[]): any;
->                             ^^^^^^^: any[]   (TyArray)
+>                             ^^^^^^^: any[]   (TyArray) (BindingIdentifier)
 
     getOwnPropertySymbols(o: any): symbol[];
->   ^^^^^^^^^^^^^^^^^^^^^: { (o: any): symbol[]; (o: any): symbol[]; }   (TyObject)
+>   ^^^^^^^^^^^^^^^^^^^^^: { (o: any): symbol[]; (o: any): symbol[]; }   (TyObject) (TSMethodSignature)
 
     getOwnPropertySymbols(o: any): symbol[];
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (BindingIdentifier)
 
     keys(o: {}): string[];
->   ^^^^: { (o: object): string[]; (o: {}): string[]; (o: {}): string[]; }   (TyObject)
+>   ^^^^: { (o: object): string[]; (o: {}): string[]; (o: {}): string[]; }   (TyObject) (TSMethodSignature)
 
     keys(o: {}): string[];
->        ^: {}   (TyObject)
+>        ^: {}   (TyObject) (BindingIdentifier)
 
     is(value1: any, value2: any): boolean;
->   ^^: { (value1: any, value2: any): boolean; (value1: any, value2: any): boolean; }   (TyObject)
+>   ^^: { (value1: any, value2: any): boolean; (value1: any, value2: any): boolean; }   (TyObject) (TSMethodSignature)
 
     is(value1: any, value2: any): boolean;
->      ^^^^^^: any   (TyAny)
+>      ^^^^^^: any   (TyAny) (BindingIdentifier)
 
     is(value1: any, value2: any): boolean;
->                   ^^^^^^: any   (TyAny)
+>                   ^^^^^^: any   (TyAny) (BindingIdentifier)
 
     setPrototypeOf(o: any, proto: object | null): any;
->   ^^^^^^^^^^^^^^: { (o: any, proto: object | null): any; (o: any, proto: object | null): any; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (o: any, proto: object | null): any; (o: any, proto: object | null): any; }   (TyObject) (TSMethodSignature)
 
     setPrototypeOf(o: any, proto: object | null): any;
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (BindingIdentifier)
 
     setPrototypeOf(o: any, proto: object | null): any;
->                          ^^^^^: object | null   (TyUnion)
+>                          ^^^^^: object | null   (TyUnion) (BindingIdentifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ReadonlyArray<T> {
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject)
+>   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                     ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => value is S   (TyFunction)
+>                     ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => value is S   (TyFunction) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                 ^^^^^: T   (TyTypeReference)
+>                                 ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                        ^: any   (TyAny)
+>                                        ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                           ^^^^^: number   (TyNumber)
+>                                           ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                                          ^^^: readonly T[]   (TyArray)
+>                                                          ^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                                                        ^: any   (TyAny)
+>                                                                        ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                ^^^^^: T   (TyTypeReference)
+>                                                                                ^^^^^: T   (TyTypeReference) (IdentifierName)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                         ^: any   (TyAny)
+>                                                                                         ^: any   (TyAny) (TSTypeReference)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                            ^^^^^^^: any   (TyAny)
+>                                                                                            ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                                            ^: any   (TyAny)
+>                                                                                                            ^: any   (TyAny) (TSTypeReference)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject)
+>   ^^^^: { <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->        ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (TyFunction)
+>        ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (TyFunction) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                    ^^^^^: T   (TyTypeReference)
+>                    ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeReference)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                              ^^^^^: number   (TyNumber)
+>                              ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                                             ^^^: readonly T[]   (TyArray)
+>                                             ^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                                                           ^: any   (TyAny)
+>                                                           ^: any   (TyAny) (TSTypeReference)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                                                                            ^^^^^^^: any   (TyAny)
+>                                                                            ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                                                                                            ^: any   (TyAny)
+>                                                                                            ^: any   (TyAny) (TSTypeReference)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->   ^^^^^^^^^: { (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number; }   (TyObject)
+>   ^^^^^^^^^: { (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->             ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (TyFunction)
+>             ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (TyFunction) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->                         ^^^^^: T   (TyTypeReference)
+>                         ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeReference)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->                                   ^^^^^: number   (TyNumber)
+>                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->                                                  ^^^: readonly T[]   (TyArray)
+>                                                  ^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->                                                                ^: any   (TyAny)
+>                                                                ^: any   (TyAny) (TSTypeReference)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->                                                                                 ^^^^^^^: any   (TyAny)
+>                                                                                 ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion)
+>                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: RegExpConstructor
 
     readonly flags: string;
->            ^^^^^: string   (TyString)
+>            ^^^^^: string   (TyString) (TSPropertySignature)
 
     readonly sticky: boolean;
->            ^^^^^^: boolean   (TyBoolean)
+>            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
     readonly unicode: boolean;
->            ^^^^^^^: boolean   (TyBoolean)
+>            ^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
 interface RegExpConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new (pattern: RegExp | string, flags?: string): RegExp;
->        ^^^^^^^: RegExp | string   (TyUnion)
+>        ^^^^^^^: RegExp | string   (TyUnion) (BindingIdentifier)
 
     new (pattern: RegExp | string, flags?: string): RegExp;
->                 ^^^^^^: any   (TyAny)
+>                 ^^^^^^: any   (TyAny) (TSTypeReference)
                 expected: RegExpConstructor
 
     new (pattern: RegExp | string, flags?: string): RegExp;
->                                  ^^^^^: string | undefined   (TyUnion)
+>                                  ^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
     new (pattern: RegExp | string, flags?: string): RegExp;
->                                                   ^^^^^^: any   (TyAny)
+>                                                   ^^^^^^: any   (TyAny) (TSTypeReference)
                                                   expected: RegExpConstructor
 
     (pattern: RegExp | string, flags?: string): RegExp;
->    ^^^^^^^: RegExp | string   (TyUnion)
+>    ^^^^^^^: RegExp | string   (TyUnion) (BindingIdentifier)
 
     (pattern: RegExp | string, flags?: string): RegExp;
->             ^^^^^^: any   (TyAny)
+>             ^^^^^^: any   (TyAny) (TSTypeReference)
             expected: RegExpConstructor
 
     (pattern: RegExp | string, flags?: string): RegExp;
->                              ^^^^^: string | undefined   (TyUnion)
+>                              ^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
     (pattern: RegExp | string, flags?: string): RegExp;
->                                               ^^^^^^: any   (TyAny)
+>                                               ^^^^^^: any   (TyAny) (TSTypeReference)
                                               expected: RegExpConstructor
 
 interface String {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
     codePointAt(pos: number): number | undefined;
->   ^^^^^^^^^^^: { (pos: number): number | undefined; (pos: number): number | undefined; }   (TyObject)
+>   ^^^^^^^^^^^: { (pos: number): number | undefined; (pos: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     codePointAt(pos: number): number | undefined;
->               ^^^: number   (TyNumber)
+>               ^^^: number   (TyNumber) (BindingIdentifier)
 
     includes(searchString: string, position?: number): boolean;
->   ^^^^^^^^: { (searchString: string, position?: number): boolean; (searchString: string, position?: number): boolean; }   (TyObject)
+>   ^^^^^^^^: { (searchString: string, position?: number): boolean; (searchString: string, position?: number): boolean; }   (TyObject) (TSMethodSignature)
 
     includes(searchString: string, position?: number): boolean;
->            ^^^^^^^^^^^^: string   (TyString)
+>            ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     includes(searchString: string, position?: number): boolean;
->                                  ^^^^^^^^: number | undefined   (TyUnion)
+>                                  ^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     endsWith(searchString: string, endPosition?: number): boolean;
->   ^^^^^^^^: { (searchString: string, endPosition?: number): boolean; (searchString: string, endPosition?: number): boolean; }   (TyObject)
+>   ^^^^^^^^: { (searchString: string, endPosition?: number): boolean; (searchString: string, endPosition?: number): boolean; }   (TyObject) (TSMethodSignature)
 
     endsWith(searchString: string, endPosition?: number): boolean;
->            ^^^^^^^^^^^^: string   (TyString)
+>            ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     endsWith(searchString: string, endPosition?: number): boolean;
->                                  ^^^^^^^^^^^: number | undefined   (TyUnion)
+>                                  ^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     normalize(form: "NFC" | "NFD" | "NFKC" | "NFKD"): string;
->   ^^^^^^^^^: { (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; }   (TyObject)
+>   ^^^^^^^^^: { (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; }   (TyObject) (TSMethodSignature)
 
     normalize(form: "NFC" | "NFD" | "NFKC" | "NFKD"): string;
->             ^^^^: "NFC" | "NFD" | "NFKC" | "NFKD"   (TyUnion)
+>             ^^^^: "NFC" | "NFD" | "NFKC" | "NFKD"   (TyUnion) (BindingIdentifier)
 
     normalize(form?: string): string;
->   ^^^^^^^^^: { (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; }   (TyObject)
+>   ^^^^^^^^^: { (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string): string; }   (TyObject) (TSMethodSignature)
 
     normalize(form?: string): string;
->             ^^^^: string | undefined   (TyUnion)
+>             ^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
     repeat(count: number): string;
->   ^^^^^^: { (count: number): string; (count: number): string; }   (TyObject)
+>   ^^^^^^: { (count: number): string; (count: number): string; }   (TyObject) (TSMethodSignature)
 
     repeat(count: number): string;
->          ^^^^^: number   (TyNumber)
+>          ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     startsWith(searchString: string, position?: number): boolean;
->   ^^^^^^^^^^: { (searchString: string, position?: number): boolean; (searchString: string, position?: number): boolean; }   (TyObject)
+>   ^^^^^^^^^^: { (searchString: string, position?: number): boolean; (searchString: string, position?: number): boolean; }   (TyObject) (TSMethodSignature)
 
     startsWith(searchString: string, position?: number): boolean;
->              ^^^^^^^^^^^^: string   (TyString)
+>              ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     startsWith(searchString: string, position?: number): boolean;
->                                    ^^^^^^^^: number | undefined   (TyUnion)
+>                                    ^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     anchor(name: string): string;
->   ^^^^^^: { (name: string): string; (name: string): string; }   (TyObject)
+>   ^^^^^^: { (name: string): string; (name: string): string; }   (TyObject) (TSMethodSignature)
 
     anchor(name: string): string;
->          ^^^^: string   (TyString)
+>          ^^^^: string   (TyString) (BindingIdentifier)
 
     big(): string;
->   ^^^: { (): string; (): string; }   (TyObject)
+>   ^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     blink(): string;
->   ^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     bold(): string;
->   ^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     fixed(): string;
->   ^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     fontcolor(color: string): string;
->   ^^^^^^^^^: { (color: string): string; (color: string): string; }   (TyObject)
+>   ^^^^^^^^^: { (color: string): string; (color: string): string; }   (TyObject) (TSMethodSignature)
 
     fontcolor(color: string): string;
->             ^^^^^: string   (TyString)
+>             ^^^^^: string   (TyString) (BindingIdentifier)
 
     fontsize(size: number): string;
->   ^^^^^^^^: { (size: number): string; (size: string): string; (size: number): string; (size: string): string; }   (TyObject)
+>   ^^^^^^^^: { (size: number): string; (size: string): string; (size: number): string; (size: string): string; }   (TyObject) (TSMethodSignature)
 
     fontsize(size: number): string;
->            ^^^^: number   (TyNumber)
+>            ^^^^: number   (TyNumber) (BindingIdentifier)
 
     fontsize(size: string): string;
->   ^^^^^^^^: { (size: number): string; (size: string): string; (size: number): string; (size: string): string; }   (TyObject)
+>   ^^^^^^^^: { (size: number): string; (size: string): string; (size: number): string; (size: string): string; }   (TyObject) (TSMethodSignature)
 
     fontsize(size: string): string;
->            ^^^^: string   (TyString)
+>            ^^^^: string   (TyString) (BindingIdentifier)
 
     italics(): string;
->   ^^^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     link(url: string): string;
->   ^^^^: { (url: string): string; (url: string): string; }   (TyObject)
+>   ^^^^: { (url: string): string; (url: string): string; }   (TyObject) (TSMethodSignature)
 
     link(url: string): string;
->        ^^^: string   (TyString)
+>        ^^^: string   (TyString) (BindingIdentifier)
 
     small(): string;
->   ^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     strike(): string;
->   ^^^^^^: { (): string; (): string; }   (TyObject)
+>   ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     sub(): string;
->   ^^^: { (): string; (): string; }   (TyObject)
+>   ^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
     sup(): string;
->   ^^^: { (): string; (): string; }   (TyObject)
+>   ^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
 interface StringConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     fromCodePoint(...codePoints: number[]): string;
->   ^^^^^^^^^^^^^: { (...codePoints: number[]): string; (...codePoints: number[]): string; }   (TyObject)
+>   ^^^^^^^^^^^^^: { (...codePoints: number[]): string; (...codePoints: number[]): string; }   (TyObject) (TSMethodSignature)
 
     fromCodePoint(...codePoints: number[]): string;
->                    ^^^^^^^^^^: number[]   (TyArray)
+>                    ^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
->   ^^^: { (template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string; (template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string; }   (TyObject)
+>   ^^^: { (template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string; (template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string; }   (TyObject) (TSMethodSignature)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
->       ^^^^^^^^: { raw: readonly string[] | ArrayLike<string>; }   (TyObject)
+>       ^^^^^^^^: { raw: readonly string[] | ArrayLike<string>; }   (TyObject) (BindingIdentifier)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
->                   ^^^: readonly string[] | ArrayLike<string>   (TyUnion)
+>                   ^^^: readonly string[] | ArrayLike<string>   (TyUnion) (TSPropertySignature)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
->                                            ^^^^^^^^^: any   (TyAny)
+>                                            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
->                                                                     ^^^^^^^^^^^^^: any[]   (TyArray)
+>                                                                     ^^^^^^^^^^^^^: any[]   (TyArray) (BindingIdentifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                   ^^^^^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                           ^^^^^^^^^^^^: any   (TyAny)
+>                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject)
+>   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: string | string[]   (TyUnion)
+>                  ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion)
+>                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

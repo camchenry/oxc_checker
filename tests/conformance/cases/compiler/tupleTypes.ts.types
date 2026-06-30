@@ -1,41 +1,41 @@
 const stringArray: string[] = ["sugar", "tea", "rum"];
->     ^^^^^^^^^^^: string[]   (TyArray)
+>     ^^^^^^^^^^^: string[]   (TyArray) (BindingIdentifier)
 
 const singleStringTuple: [string] = ["sugar", "tea", "rum"];
->     ^^^^^^^^^^^^^^^^^: [string]   (TyTuple)
+>     ^^^^^^^^^^^^^^^^^: [string]   (TyTuple) (BindingIdentifier)
 
 const stringNumberTuple: [string, number] = ["Weeks from shore", 2];
->     ^^^^^^^^^^^^^^^^^: [string, number]   (TyTuple)
+>     ^^^^^^^^^^^^^^^^^: [string, number]   (TyTuple) (BindingIdentifier)
 
 type StringsThenConfig = [...string[], { huh: boolean }];
->    ^^^^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (TyTuple)
+>    ^^^^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (TyTuple) (TSTypeAliasDeclaration)
 
 type StringsThenConfig = [...string[], { huh: boolean }];
->                                        ^^^: boolean   (TyBoolean)
+>                                        ^^^: boolean   (TyBoolean) (TSPropertySignature)
 
 const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
->     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
+>     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference) (BindingIdentifier)
 
 const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
->                  ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                  ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
->                                                                          ^^^: true   (TyBooleanLiteral)
+>                                                                          ^^^: true   (TyBooleanLiteral) (ObjectProperty)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
->     ^^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
+>     ^^^^^^^^^^^^: StringsThenConfig   (TyTypeReference) (BindingIdentifier)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
->                   ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
->                                                                         ^^^: false   (TyBooleanLiteral)
+>                                                                         ^^^: false   (TyBooleanLiteral) (ObjectProperty)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
->     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference)
+>     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference) (BindingIdentifier)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
->                  ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                  ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
->                                                                      ^^^: true   (TyBooleanLiteral)
+>                                                                      ^^^: true   (TyBooleanLiteral) (ObjectProperty)

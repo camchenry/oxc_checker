@@ -1,35 +1,35 @@
 interface ObjectConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (TyObject)
+>   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (TyObject) (TSMethodSignature)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeParameter)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                        ^^^^^^^: Iterable<readonly [PropertyKey, T]>   (TyTypeReference)
+>                        ^^^^^^^: Iterable<readonly [PropertyKey, T]>   (TyTypeReference) (BindingIdentifier)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                                 ^^^^^^^^: any   (TyAny)
+>                                 ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                                                    ^^^^^^^^^^^: any   (TyAny)
+>                                                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                                                                 ^: any   (TyAny)
+>                                                                 ^: any   (TyAny) (TSTypeReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                                                                          ^: string   (TyString)
+>                                                                          ^: string   (TyString) (TSIndexSignatureName)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                                                                                      ^: any   (TyAny)
+>                                                                                      ^: any   (TyAny) (TSTypeReference)
 
     fromEntries(entries: Iterable<readonly any[]>): any;
->   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (TyObject)
+>   ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (TyObject) (TSMethodSignature)
 
     fromEntries(entries: Iterable<readonly any[]>): any;
->               ^^^^^^^: Iterable<readonly any[]>   (TyTypeReference)
+>               ^^^^^^^: Iterable<readonly any[]>   (TyTypeReference) (BindingIdentifier)
 
     fromEntries(entries: Iterable<readonly any[]>): any;
->                        ^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^: any   (TyAny) (TSTypeReference)

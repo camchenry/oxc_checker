@@ -1,747 +1,747 @@
 interface SharedArrayBuffer {
->         ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>         ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (BindingIdentifier)
                    expected: SharedArrayBufferConstructor
 
 interface SharedArrayBuffer {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                    expected: SharedArrayBufferConstructor
 
     readonly byteLength: number;
->            ^^^^^^^^^^: number   (TyNumber)
+>            ^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     slice(begin?: number, end?: number): SharedArrayBuffer;
->   ^^^^^: { (begin?: number, end?: number): SharedArrayBuffer; (begin?: number, end?: number): SharedArrayBuffer; }   (TyObject)
+>   ^^^^^: { (begin?: number, end?: number): SharedArrayBuffer; (begin?: number, end?: number): SharedArrayBuffer; }   (TyObject) (TSMethodSignature)
 
     slice(begin?: number, end?: number): SharedArrayBuffer;
->         ^^^^^: number | undefined   (TyUnion)
+>         ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     slice(begin?: number, end?: number): SharedArrayBuffer;
->                         ^^^: number | undefined   (TyUnion)
+>                         ^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     slice(begin?: number, end?: number): SharedArrayBuffer;
->                                        ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                                        ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     slice(begin?: number, end?: number): SharedArrayBuffer;
->                                        ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                                        ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "SharedArrayBuffer";
->             ^^^^^^: SymbolConstructor   (TyTypeReference)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "SharedArrayBuffer";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
 interface SharedArrayBufferConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     readonly prototype: SharedArrayBuffer;
->            ^^^^^^^^^: SharedArrayBuffer   (TyTypeReference)
+>            ^^^^^^^^^: SharedArrayBuffer   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: SharedArrayBuffer;
->                       ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                       ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly prototype: SharedArrayBuffer;
->                       ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                       ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
     new (byteLength?: number): SharedArrayBuffer;
->        ^^^^^^^^^^: number | undefined   (TyUnion)
+>        ^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     new (byteLength?: number): SharedArrayBuffer;
->                              ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                              ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     new (byteLength?: number): SharedArrayBuffer;
->                              ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                              ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly [Symbol.species]: SharedArrayBufferConstructor;
->             ^^^^^^: SymbolConstructor   (TyTypeReference)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly [Symbol.species]: SharedArrayBufferConstructor;
->                    ^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                    ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
     readonly [Symbol.species]: SharedArrayBufferConstructor;
->                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare var SharedArrayBuffer: SharedArrayBufferConstructor;
->           ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>           ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var SharedArrayBuffer: SharedArrayBufferConstructor;
->                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface ArrayBufferTypes {
->         ^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     SharedArrayBuffer: SharedArrayBuffer;
->   ^^^^^^^^^^^^^^^^^: SharedArrayBuffer   (TyTypeReference)
+>   ^^^^^^^^^^^^^^^^^: SharedArrayBuffer   (TyTypeReference) (TSPropertySignature)
 
     SharedArrayBuffer: SharedArrayBuffer;
->                      ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                      ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     SharedArrayBuffer: SharedArrayBuffer;
->                      ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference)
+>                      ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
 interface Atomics {
->         ^^^^^^^: Atomics   (TyTypeReference)
+>         ^^^^^^^: Atomics   (TyTypeReference) (BindingIdentifier)
          expected: Atomics
 
 interface Atomics {
->         ^^^^^^^: any   (TyAny)
+>         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
          expected: Atomics
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                             ^^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                       ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                                      ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                             ^^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                       ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     and(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                                      ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->   ^^^^^^^^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number; }   (TyObject)
+>   ^^^^^^^^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number; }   (TyObject) (TSMethodSignature)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                   ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>                   ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                               ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                               ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                               ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                               ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                            ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                            ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                            ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                            ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                       ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                          ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                                          ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                          ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                                          ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                        ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                                        ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                        ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                                        ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                    ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                       ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                       ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                       ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                       ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                                  ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                                                     ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                                     ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                                                     ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                                     ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                                                                 ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                                                                                   ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                                                                                                  ^^^^^^^^^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                                  ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
     compareExchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number;
->                                                                                                                                                                                                                                                         ^^^^^^^^^^^^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                                                         ^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->   ^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)
+>   ^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->            ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>            ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                        ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                        ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                        ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                        ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                  ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                     ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                     ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                     ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                     ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                   ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                                   ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                   ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                                   ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                              ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                              ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                 ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                                 ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                 ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                                 ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                             ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                              ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                              ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                              ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                              ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                            ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                            ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     exchange(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                                           ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                           ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     isLockFree(size: number): boolean;
->   ^^^^^^^^^^: { (size: number): boolean; (size: number): boolean; }   (TyObject)
+>   ^^^^^^^^^^: { (size: number): boolean; (size: number): boolean; }   (TyObject) (TSMethodSignature)
 
     isLockFree(size: number): boolean;
->              ^^^^: number   (TyNumber)
+>              ^^^^: number   (TyNumber) (BindingIdentifier)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->   ^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number; }   (TyObject)
+>   ^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number; }   (TyObject) (TSMethodSignature)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->        ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>        ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                    ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                    ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                    ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                    ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                              ^^^^^^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                 ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                 ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                 ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                 ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                            ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                               ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                               ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                               ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                               ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                             ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                             ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                             ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                             ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                                            ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                            ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                                            ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                            ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                                                       ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                                                                          ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                          ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                                                                          ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                          ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     load(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number;
->                                                                                                                                                                                                        ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                        ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->   ^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)
+>   ^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->      ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>      ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                  ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                  ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                  ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                  ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                            ^^^^^^^^^^^^^^^: any   (TyAny)
+>                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                               ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                               ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                               ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                               ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                             ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                             ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                             ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                             ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                       ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                          ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                          ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                          ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                          ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                        ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                        ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                        ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                        ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                    ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                      ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     or(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                                     ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->   ^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)
+>   ^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->         ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>         ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                     ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                     ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                     ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                     ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                               ^^^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                  ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                  ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                  ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                  ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                             ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                                ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                                ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                              ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                              ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                              ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                              ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                          ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                             ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                             ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                             ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                             ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                       ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                         ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                         ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     store(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                                        ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                        ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                             ^^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                       ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     sub(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                                      ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->   ^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out"; }   (TyObject)
+>   ^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out"; }   (TyObject) (TSMethodSignature)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->        ^^^^^^^^^^: Int32Array<ArrayBufferLike>   (TyTypeReference)
+>        ^^^^^^^^^^: Int32Array<ArrayBufferLike>   (TyTypeReference) (BindingIdentifier)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->                    ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                    ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->                    ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                    ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->                               ^^^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                                 ^^^^^: number   (TyNumber)
+>                                                 ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                                                ^^^^^: number   (TyNumber)
+>                                                                ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     wait(typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                                                               ^^^^^^^: number | undefined   (TyUnion)
+>                                                                               ^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     notify(typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number;
->   ^^^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; }   (TyObject)
+>   ^^^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; }   (TyObject) (TSMethodSignature)
 
     notify(typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number;
->          ^^^^^^^^^^: Int32Array<ArrayBufferLike>   (TyTypeReference)
+>          ^^^^^^^^^^: Int32Array<ArrayBufferLike>   (TyTypeReference) (BindingIdentifier)
 
     notify(typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number;
->                      ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                      ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     notify(typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number;
->                      ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                      ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     notify(typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number;
->                                 ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     notify(typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number;
->                                                   ^^^^^: number   (TyNumber)
+>                                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     notify(typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number;
->                                                                  ^^^^^: number | undefined   (TyUnion)
+>                                                                  ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion)
+>       ^^^^^^^^^^: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference)
+>                   ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                             ^^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference)
+>                                                ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                           ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference)
+>                                                                              ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference)
+>                                                                                                            ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference)
+>                                                                                                                                                                         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                                                                                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                       ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     xor(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
->                                                                                                                                                                                                                      ^^^^^: number   (TyNumber)
+>                                                                                                                                                                                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     readonly [Symbol.toStringTag]: "Atomics";
->             ^^^^^^: SymbolConstructor   (TyTypeReference)
+>             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "Atomics";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol)
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
 declare var Atomics: Atomics;
->           ^^^^^^^: Atomics   (TyTypeReference)
+>           ^^^^^^^: Atomics   (TyTypeReference) (BindingIdentifier)
 
 declare var Atomics: Atomics;
->                    ^^^^^^^: Atomics   (TyTypeReference)
+>                    ^^^^^^^: Atomics   (TyTypeReference) (TSTypeReference)
 
 declare var Atomics: Atomics;
->                    ^^^^^^^: Atomics   (TyTypeReference)
+>                    ^^^^^^^: Atomics   (TyTypeReference) (IdentifierReference)

@@ -1,21 +1,21 @@
 interface String {
->         ^^^^^^: any   (TyAny)
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
     padStart(maxLength: number, fillString?: string): string;
->   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject)
+>   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject) (TSMethodSignature)
 
     padStart(maxLength: number, fillString?: string): string;
->            ^^^^^^^^^: number   (TyNumber)
+>            ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
     padStart(maxLength: number, fillString?: string): string;
->                               ^^^^^^^^^^: string | undefined   (TyUnion)
+>                               ^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
     padEnd(maxLength: number, fillString?: string): string;
->   ^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject)
+>   ^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject) (TSMethodSignature)
 
     padEnd(maxLength: number, fillString?: string): string;
->          ^^^^^^^^^: number   (TyNumber)
+>          ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
     padEnd(maxLength: number, fillString?: string): string;
->                             ^^^^^^^^^^: string | undefined   (TyUnion)
+>                             ^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)

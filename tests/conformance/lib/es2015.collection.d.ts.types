@@ -1,582 +1,582 @@
 interface Map<K, V> {
->         ^^^: MapConstructor   (TyTypeReference)
+>         ^^^: MapConstructor   (TyTypeReference) (BindingIdentifier)
      expected: MapConstructor
 
 interface Map<K, V> {
->         ^^^: any   (TyAny)
+>         ^^^: any   (TyAny) (TSInterfaceDeclaration)
      expected: MapConstructor
 
 interface Map<K, V> {
->             ^: any   (TyAny)
+>             ^: any   (TyAny) (TSTypeParameter)
 
 interface Map<K, V> {
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeParameter)
 
     clear(): void;
->   ^^^^^: { (): void; (): void; }   (TyObject)
+>   ^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
 
     delete(key: K): boolean;
->   ^^^^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject)
+>   ^^^^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject) (TSMethodSignature)
 
     delete(key: K): boolean;
->          ^^^: K   (TyTypeReference)
+>          ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     delete(key: K): boolean;
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->   ^^^^^^^: { (callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void; (callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void; }   (TyObject)
+>   ^^^^^^^: { (callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void; (callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void; }   (TyObject) (TSMethodSignature)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->           ^^^^^^^^^^: (value: V, key: K, map: Map<K, V>) => void   (TyFunction)
+>           ^^^^^^^^^^: (value: V, key: K, map: Map<K, V>) => void   (TyFunction) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                        ^^^^^: V   (TyTypeReference)
+>                        ^^^^^: V   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                               ^: any   (TyAny)
+>                               ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                  ^^^: K   (TyTypeReference)
+>                                  ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                       ^: any   (TyAny)
+>                                       ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                          ^^^: Map<K, V>   (TyTypeReference)
+>                                          ^^^: Map<K, V>   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                               ^^^: MapConstructor   (TyTypeReference)
+>                                               ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                               ^^^: MapConstructor   (TyTypeReference)
+>                                               ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                                   ^: any   (TyAny)
+>                                                   ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                                      ^: any   (TyAny)
+>                                                      ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                                                   ^^^^^^^: any   (TyAny)
+>                                                                   ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     get(key: K): V | undefined;
->   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (TyObject)
+>   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (TyObject) (TSMethodSignature)
 
     get(key: K): V | undefined;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     get(key: K): V | undefined;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     get(key: K): V | undefined;
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeReference)
 
     has(key: K): boolean;
->   ^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject)
+>   ^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject) (TSMethodSignature)
 
     has(key: K): boolean;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     has(key: K): boolean;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     set(key: K, value: V): this;
->   ^^^: { (key: K, value: V): this; (key: K, value: V): this; }   (TyObject)
+>   ^^^: { (key: K, value: V): this; (key: K, value: V): this; }   (TyObject) (TSMethodSignature)
 
     set(key: K, value: V): this;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     set(key: K, value: V): this;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     set(key: K, value: V): this;
->               ^^^^^: V   (TyTypeReference)
+>               ^^^^^: V   (TyTypeReference) (BindingIdentifier)
 
     set(key: K, value: V): this;
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
     readonly size: number;
->            ^^^^: number   (TyNumber)
+>            ^^^^: number   (TyNumber) (TSPropertySignature)
 
 interface MapConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new (): Map<any, any>;
->           ^^^: MapConstructor   (TyTypeReference)
+>           ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
     new (): Map<any, any>;
->           ^^^: MapConstructor   (TyTypeReference)
+>           ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeParameter)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion)
+>              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion) (BindingIdentifier)
               expected: readonly (readonly [K, V])[] | null | undefined
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->                                            ^: any   (TyAny)
+>                                            ^: any   (TyAny) (TSTypeReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->                                                              ^^^: MapConstructor   (TyTypeReference)
+>                                                              ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->                                                              ^^^: MapConstructor   (TyTypeReference)
+>                                                              ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->                                                                  ^: any   (TyAny)
+>                                                                  ^: any   (TyAny) (TSTypeReference)
 
     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
->                                                                     ^: any   (TyAny)
+>                                                                     ^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: Map<any, any>;
->            ^^^^^^^^^: Map<any, any>   (TyTypeReference)
+>            ^^^^^^^^^: Map<any, any>   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: Map<any, any>;
->                       ^^^: MapConstructor   (TyTypeReference)
+>                       ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly prototype: Map<any, any>;
->                       ^^^: MapConstructor   (TyTypeReference)
+>                       ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 declare var Map: MapConstructor;
->           ^^^: MapConstructor   (TyTypeReference)
+>           ^^^: MapConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var Map: MapConstructor;
->                ^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface ReadonlyMap<K, V> {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ReadonlyMap<K, V> {
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeParameter)
 
 interface ReadonlyMap<K, V> {
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeParameter)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->   ^^^^^^^: { (callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void; (callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void; }   (TyObject)
+>   ^^^^^^^: { (callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void; (callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void; }   (TyObject) (TSMethodSignature)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->           ^^^^^^^^^^: (value: V, key: K, map: ReadonlyMap<K, V>) => void   (TyFunction)
+>           ^^^^^^^^^^: (value: V, key: K, map: ReadonlyMap<K, V>) => void   (TyFunction) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                        ^^^^^: V   (TyTypeReference)
+>                        ^^^^^: V   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                               ^: any   (TyAny)
+>                               ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                  ^^^: K   (TyTypeReference)
+>                                  ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                       ^: any   (TyAny)
+>                                       ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                          ^^^: ReadonlyMap<K, V>   (TyTypeReference)
+>                                          ^^^: ReadonlyMap<K, V>   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                               ^^^^^^^^^^^: any   (TyAny)
+>                                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                                           ^: any   (TyAny)
+>                                                           ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                                              ^: any   (TyAny)
+>                                                              ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                                                           ^^^^^^^: any   (TyAny)
+>                                                                           ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     get(key: K): V | undefined;
->   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (TyObject)
+>   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (TyObject) (TSMethodSignature)
 
     get(key: K): V | undefined;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     get(key: K): V | undefined;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     get(key: K): V | undefined;
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeReference)
 
     has(key: K): boolean;
->   ^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject)
+>   ^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject) (TSMethodSignature)
 
     has(key: K): boolean;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     has(key: K): boolean;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     readonly size: number;
->            ^^^^: number   (TyNumber)
+>            ^^^^: number   (TyNumber) (TSPropertySignature)
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+>         ^^^^^^^: WeakMapConstructor   (TyTypeReference) (BindingIdentifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: any   (TyAny)
+>         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeParameter)
 
 interface WeakMap<K extends WeakKey, V> {
->                           ^^^^^^^: any   (TyAny)
+>                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface WeakMap<K extends WeakKey, V> {
->                                    ^: any   (TyAny)
+>                                    ^: any   (TyAny) (TSTypeParameter)
 
     delete(key: K): boolean;
->   ^^^^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject)
+>   ^^^^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject) (TSMethodSignature)
 
     delete(key: K): boolean;
->          ^^^: K   (TyTypeReference)
+>          ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     delete(key: K): boolean;
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeReference)
 
     get(key: K): V | undefined;
->   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (TyObject)
+>   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (TyObject) (TSMethodSignature)
 
     get(key: K): V | undefined;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     get(key: K): V | undefined;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     get(key: K): V | undefined;
->                ^: any   (TyAny)
+>                ^: any   (TyAny) (TSTypeReference)
 
     has(key: K): boolean;
->   ^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject)
+>   ^^^: { (key: K): boolean; (key: K): boolean; }   (TyObject) (TSMethodSignature)
 
     has(key: K): boolean;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     has(key: K): boolean;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     set(key: K, value: V): this;
->   ^^^: { (key: K, value: V): this; (key: K, value: V): this; }   (TyObject)
+>   ^^^: { (key: K, value: V): this; (key: K, value: V): this; }   (TyObject) (TSMethodSignature)
 
     set(key: K, value: V): this;
->       ^^^: K   (TyTypeReference)
+>       ^^^: K   (TyTypeReference) (BindingIdentifier)
 
     set(key: K, value: V): this;
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
     set(key: K, value: V): this;
->               ^^^^^: V   (TyTypeReference)
+>               ^^^^^: V   (TyTypeReference) (BindingIdentifier)
 
     set(key: K, value: V): this;
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeReference)
 
 interface WeakMapConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                  ^^^^^^^: any   (TyAny)
+>                  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                            ^^^^^^^: any   (TyAny)
+>                            ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeParameter)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion)
+>                                              ^^^^^^^: readonly readonly [K, V][] | null | undefined   (TyUnion) (BindingIdentifier)
                                               expected: readonly (readonly [K, V])[] | null | undefined
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                                                            ^: any   (TyAny)
+>                                                                            ^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                                                               ^: any   (TyAny)
+>                                                                               ^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                                                                              ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+>                                                                                              ^^^^^^^: WeakMapConstructor   (TyTypeReference) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                                                                              ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+>                                                                                              ^^^^^^^: WeakMapConstructor   (TyTypeReference) (IdentifierReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                                                                                      ^: any   (TyAny)
+>                                                                                                      ^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                                                                                                         ^: any   (TyAny)
+>                                                                                                         ^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: WeakMap<WeakKey, any>;
->            ^^^^^^^^^: WeakMap<WeakKey, any>   (TyTypeReference)
+>            ^^^^^^^^^: WeakMap<WeakKey, any>   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: WeakMap<WeakKey, any>;
->                       ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+>                       ^^^^^^^: WeakMapConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly prototype: WeakMap<WeakKey, any>;
->                       ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+>                       ^^^^^^^: WeakMapConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly prototype: WeakMap<WeakKey, any>;
->                               ^^^^^^^: any   (TyAny)
+>                               ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare var WeakMap: WeakMapConstructor;
->           ^^^^^^^: WeakMapConstructor   (TyTypeReference)
+>           ^^^^^^^: WeakMapConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var WeakMap: WeakMapConstructor;
->                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Set<T> {
->         ^^^: SetConstructor   (TyTypeReference)
+>         ^^^: SetConstructor   (TyTypeReference) (BindingIdentifier)
      expected: SetConstructor
 
 interface Set<T> {
->         ^^^: any   (TyAny)
+>         ^^^: any   (TyAny) (TSInterfaceDeclaration)
      expected: SetConstructor
 
 interface Set<T> {
->             ^: any   (TyAny)
+>             ^: any   (TyAny) (TSTypeParameter)
 
     add(value: T): this;
->   ^^^: { (value: T): this; (value: T): this; }   (TyObject)
+>   ^^^: { (value: T): this; (value: T): this; }   (TyObject) (TSMethodSignature)
 
     add(value: T): this;
->       ^^^^^: T   (TyTypeReference)
+>       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     add(value: T): this;
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
     clear(): void;
->   ^^^^^: { (): void; (): void; }   (TyObject)
+>   ^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
 
     delete(value: T): boolean;
->   ^^^^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject)
+>   ^^^^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject) (TSMethodSignature)
 
     delete(value: T): boolean;
->          ^^^^^: T   (TyTypeReference)
+>          ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     delete(value: T): boolean;
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->   ^^^^^^^: { (callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void; (callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void; }   (TyObject)
+>   ^^^^^^^: { (callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void; (callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void; }   (TyObject) (TSMethodSignature)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->           ^^^^^^^^^^: (value: T, value2: T, set: Set<T>) => void   (TyFunction)
+>           ^^^^^^^^^^: (value: T, value2: T, set: Set<T>) => void   (TyFunction) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                        ^^^^^: T   (TyTypeReference)
+>                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                               ^: any   (TyAny)
+>                               ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                  ^^^^^^: T   (TyTypeReference)
+>                                  ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                          ^: any   (TyAny)
+>                                          ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                             ^^^: Set<T>   (TyTypeReference)
+>                                             ^^^: Set<T>   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                                  ^^^: SetConstructor   (TyTypeReference)
+>                                                  ^^^: SetConstructor   (TyTypeReference) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                                  ^^^: SetConstructor   (TyTypeReference)
+>                                                  ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                                      ^: any   (TyAny)
+>                                                      ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                                                   ^^^^^^^: any   (TyAny)
+>                                                                   ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     has(value: T): boolean;
->   ^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject)
+>   ^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject) (TSMethodSignature)
 
     has(value: T): boolean;
->       ^^^^^: T   (TyTypeReference)
+>       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     has(value: T): boolean;
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
     readonly size: number;
->            ^^^^: number   (TyNumber)
+>            ^^^^: number   (TyNumber) (TSPropertySignature)
 
 interface SetConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
->                 ^^^^^^: readonly T[] | null | undefined   (TyUnion)
+>                 ^^^^^^: readonly T[] | null | undefined   (TyUnion) (BindingIdentifier)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
->                                                ^^^: SetConstructor   (TyTypeReference)
+>                                                ^^^: SetConstructor   (TyTypeReference) (TSTypeReference)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
->                                                ^^^: SetConstructor   (TyTypeReference)
+>                                                ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
     new <T = any>(values?: readonly T[] | null): Set<T>;
->                                                    ^: any   (TyAny)
+>                                                    ^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: Set<any>;
->            ^^^^^^^^^: Set<any>   (TyTypeReference)
+>            ^^^^^^^^^: Set<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: Set<any>;
->                       ^^^: SetConstructor   (TyTypeReference)
+>                       ^^^: SetConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly prototype: Set<any>;
->                       ^^^: SetConstructor   (TyTypeReference)
+>                       ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
 
 declare var Set: SetConstructor;
->           ^^^: SetConstructor   (TyTypeReference)
+>           ^^^: SetConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var Set: SetConstructor;
->                ^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface ReadonlySet<T> {
->         ^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ReadonlySet<T> {
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeParameter)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->   ^^^^^^^: { (callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void; (callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void; }   (TyObject)
+>   ^^^^^^^: { (callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void; (callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void; }   (TyObject) (TSMethodSignature)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->           ^^^^^^^^^^: (value: T, value2: T, set: ReadonlySet<T>) => void   (TyFunction)
+>           ^^^^^^^^^^: (value: T, value2: T, set: ReadonlySet<T>) => void   (TyFunction) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                        ^^^^^: T   (TyTypeReference)
+>                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                               ^: any   (TyAny)
+>                               ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                                  ^^^^^^: T   (TyTypeReference)
+>                                  ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                                          ^: any   (TyAny)
+>                                          ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                                             ^^^: ReadonlySet<T>   (TyTypeReference)
+>                                             ^^^: ReadonlySet<T>   (TyTypeReference) (BindingIdentifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                                                  ^^^^^^^^^^^: any   (TyAny)
+>                                                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                                                              ^: any   (TyAny)
+>                                                              ^: any   (TyAny) (TSTypeReference)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                                                                           ^^^^^^^: any   (TyAny)
+>                                                                           ^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     has(value: T): boolean;
->   ^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject)
+>   ^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject) (TSMethodSignature)
 
     has(value: T): boolean;
->       ^^^^^: T   (TyTypeReference)
+>       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     has(value: T): boolean;
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
     readonly size: number;
->            ^^^^: number   (TyNumber)
+>            ^^^^: number   (TyNumber) (TSPropertySignature)
 
 interface WeakSet<T extends WeakKey> {
->         ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+>         ^^^^^^^: WeakSetConstructor   (TyTypeReference) (BindingIdentifier)
          expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {
->         ^^^^^^^: any   (TyAny)
+>         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
          expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeParameter)
 
 interface WeakSet<T extends WeakKey> {
->                           ^^^^^^^: any   (TyAny)
+>                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(value: T): this;
->   ^^^: { (value: T): this; (value: T): this; }   (TyObject)
+>   ^^^: { (value: T): this; (value: T): this; }   (TyObject) (TSMethodSignature)
 
     add(value: T): this;
->       ^^^^^: T   (TyTypeReference)
+>       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     add(value: T): this;
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
     delete(value: T): boolean;
->   ^^^^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject)
+>   ^^^^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject) (TSMethodSignature)
 
     delete(value: T): boolean;
->          ^^^^^: T   (TyTypeReference)
+>          ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     delete(value: T): boolean;
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeReference)
 
     has(value: T): boolean;
->   ^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject)
+>   ^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject) (TSMethodSignature)
 
     has(value: T): boolean;
->       ^^^^^: T   (TyTypeReference)
+>       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     has(value: T): boolean;
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
 interface WeakSetConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->        ^: any   (TyAny)
+>        ^: any   (TyAny) (TSTypeParameter)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                  ^^^^^^^: any   (TyAny)
+>                  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                            ^^^^^^^: any   (TyAny)
+>                            ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                                     ^^^^^^: readonly T[] | null | undefined   (TyUnion)
+>                                     ^^^^^^: readonly T[] | null | undefined   (TyUnion) (BindingIdentifier)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                                                                    ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+>                                                                    ^^^^^^^: WeakSetConstructor   (TyTypeReference) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                                                                    ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+>                                                                    ^^^^^^^: WeakSetConstructor   (TyTypeReference) (IdentifierReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                                                                            ^: any   (TyAny)
+>                                                                            ^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: WeakSet<WeakKey>;
->            ^^^^^^^^^: WeakSet<WeakKey>   (TyTypeReference)
+>            ^^^^^^^^^: WeakSet<WeakKey>   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: WeakSet<WeakKey>;
->                       ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+>                       ^^^^^^^: WeakSetConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly prototype: WeakSet<WeakKey>;
->                       ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+>                       ^^^^^^^: WeakSetConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly prototype: WeakSet<WeakKey>;
->                               ^^^^^^^: any   (TyAny)
+>                               ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare var WeakSet: WeakSetConstructor;
->           ^^^^^^^: WeakSetConstructor   (TyTypeReference)
+>           ^^^^^^^: WeakSetConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var WeakSet: WeakSetConstructor;
->                    ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

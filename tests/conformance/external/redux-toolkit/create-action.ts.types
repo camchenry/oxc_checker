@@ -1,1490 +1,1490 @@
 export interface Action<T extends string = string> {
->                ^^^^^^: any   (TyAny)
+>                ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 export interface Action<T extends string = string> {
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeParameter)
 
   type: T
-> ^^^^: T   (TyTypeReference)
+> ^^^^: T   (TyTypeReference) (TSPropertySignature)
 
   type: T
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
 export function isAction(action: unknown): action is Action {
->               ^^^^^^^^: (action: unknown) => action is Action   (TyFunction)
+>               ^^^^^^^^: (action: unknown) => action is Action   (TyFunction) (BindingIdentifier)
 
 export function isAction(action: unknown): action is Action {
->                        ^^^^^^: unknown   (TyUnknown)
+>                        ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 export function isAction(action: unknown): action is Action {
->                                          ^^^^^^: unknown   (TyUnknown)
+>                                          ^^^^^^: unknown   (TyUnknown) (IdentifierName)
 
 export function isAction(action: unknown): action is Action {
->                                                    ^^^^^^: any   (TyAny)
+>                                                    ^^^^^^: any   (TyAny) (TSTypeReference)
 
   return typeof action === 'object' && action !== null && 'type' in action
->               ^^^^^^: unknown   (TyUnknown)
+>               ^^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
   return typeof action === 'object' && action !== null && 'type' in action
->                                      ^^^^^^: object | null   (TyUnion)
+>                                      ^^^^^^: object | null   (TyUnion) (IdentifierReference)
 
   return typeof action === 'object' && action !== null && 'type' in action
->                                                                   ^^^^^^: object   (TyPrimitiveObject)
+>                                                                   ^^^^^^: object   (TyPrimitiveObject) (IdentifierReference)
 
 export type IsAny<T, True, False = never> = true | false extends (T extends never
->           ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional)
+>           ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional) (TSTypeAliasDeclaration)
 
 export type IsAny<T, True, False = never> = true | false extends (T extends never
->                 ^: any   (TyAny)
+>                 ^: any   (TyAny) (TSTypeParameter)
 
 export type IsAny<T, True, False = never> = true | false extends (T extends never
->                    ^^^^: any   (TyAny)
+>                    ^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsAny<T, True, False = never> = true | false extends (T extends never
->                          ^^^^^: any   (TyAny)
+>                          ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsAny<T, True, False = never> = true | false extends (T extends never
->                                                                 ^: any   (TyAny)
+>                                                                 ^: any   (TyAny) (TSTypeReference)
 
   ? True
->   ^^^^: any   (TyAny)
+>   ^^^^: any   (TyAny) (TSTypeReference)
 
   : False
->   ^^^^^: any   (TyAny)
+>   ^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IsUnknown<T, True, False = never> = unknown extends T
->           ^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
+>           ^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional) (TSTypeAliasDeclaration)
 
 export type IsUnknown<T, True, False = never> = unknown extends T
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeParameter)
 
 export type IsUnknown<T, True, False = never> = unknown extends T
->                        ^^^^: any   (TyAny)
+>                        ^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsUnknown<T, True, False = never> = unknown extends T
->                              ^^^^^: any   (TyAny)
+>                              ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsUnknown<T, True, False = never> = unknown extends T
->                                                               ^: any   (TyAny)
+>                                                               ^: any   (TyAny) (TSTypeReference)
 
   ? IsAny<T, False, True>
->   ^^^^^: any   (TyAny)
+>   ^^^^^: any   (TyAny) (TSTypeReference)
 
   ? IsAny<T, False, True>
->         ^: any   (TyAny)
+>         ^: any   (TyAny) (TSTypeReference)
 
   ? IsAny<T, False, True>
->            ^^^^^: any   (TyAny)
+>            ^^^^^: any   (TyAny) (TSTypeReference)
 
   ? IsAny<T, False, True>
->                   ^^^^: any   (TyAny)
+>                   ^^^^: any   (TyAny) (TSTypeReference)
 
   : False
->   ^^^^^: any   (TyAny)
+>   ^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IfMaybeUndefined<P, True, False> = [undefined] extends [P]
->           ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional)
+>           ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional) (TSTypeAliasDeclaration)
 
 export type IfMaybeUndefined<P, True, False> = [undefined] extends [P]
->                            ^: any   (TyAny)
+>                            ^: any   (TyAny) (TSTypeParameter)
 
 export type IfMaybeUndefined<P, True, False> = [undefined] extends [P]
->                               ^^^^: any   (TyAny)
+>                               ^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IfMaybeUndefined<P, True, False> = [undefined] extends [P]
->                                     ^^^^^: any   (TyAny)
+>                                     ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IfMaybeUndefined<P, True, False> = [undefined] extends [P]
->                                                                   ^: any   (TyAny)
+>                                                                   ^: any   (TyAny) (TSTypeReference)
 
   ? True
->   ^^^^: any   (TyAny)
+>   ^^^^: any   (TyAny) (TSTypeReference)
 
   : False
->   ^^^^^: any   (TyAny)
+>   ^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IfVoid<P, True, False> = [void] extends [P] ? True : False
->           ^^^^^^: [void] extends [P] ? True : False   (TyConditional)
+>           ^^^^^^: [void] extends [P] ? True : False   (TyConditional) (TSTypeAliasDeclaration)
 
 export type IfVoid<P, True, False> = [void] extends [P] ? True : False
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeParameter)
 
 export type IfVoid<P, True, False> = [void] extends [P] ? True : False
->                     ^^^^: any   (TyAny)
+>                     ^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IfVoid<P, True, False> = [void] extends [P] ? True : False
->                           ^^^^^: any   (TyAny)
+>                           ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IfVoid<P, True, False> = [void] extends [P] ? True : False
->                                                    ^: any   (TyAny)
+>                                                    ^: any   (TyAny) (TSTypeReference)
 
 export type IfVoid<P, True, False> = [void] extends [P] ? True : False
->                                                         ^^^^: any   (TyAny)
+>                                                         ^^^^: any   (TyAny) (TSTypeReference)
 
 export type IfVoid<P, True, False> = [void] extends [P] ? True : False
->                                                                ^^^^^: any   (TyAny)
+>                                                                ^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IsEmptyObj<T, True, False = never> = T extends any
->           ^^^^^^^^^^: T extends any ? keyof T extends never ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>> : False : never   (TyConditional)
+>           ^^^^^^^^^^: T extends any ? keyof T extends never ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>> : False : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type IsEmptyObj<T, True, False = never> = T extends any
->                      ^: any   (TyAny)
+>                      ^: any   (TyAny) (TSTypeParameter)
 
 export type IsEmptyObj<T, True, False = never> = T extends any
->                         ^^^^: any   (TyAny)
+>                         ^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsEmptyObj<T, True, False = never> = T extends any
->                               ^^^^^: any   (TyAny)
+>                               ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsEmptyObj<T, True, False = never> = T extends any
->                                                ^: any   (TyAny)
+>                                                ^: any   (TyAny) (TSTypeReference)
 
   ? keyof T extends never
->         ^: any   (TyAny)
+>         ^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->     ^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->               ^: any   (TyAny)
+>               ^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                  ^^^^^: any   (TyAny)
+>                  ^^^^^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                         ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                                          ^: any   (TyAny)
+>                                          ^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                                             ^^^^^: any   (TyAny)
+>                                             ^^^^^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                                                    ^^^^^^: any   (TyAny)
+>                                                    ^^^^^^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                                                           ^: any   (TyAny)
+>                                                           ^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                                                              ^^^^^: any   (TyAny)
+>                                                              ^^^^^: any   (TyAny) (TSTypeReference)
 
     ? IsUnknown<T, False, IfMaybeUndefined<T, False, IfVoid<T, False, True>>>
->                                                                     ^^^^: any   (TyAny)
+>                                                                     ^^^^: any   (TyAny) (TSTypeReference)
 
     : False
->     ^^^^^: any   (TyAny)
+>     ^^^^^: any   (TyAny) (TSTypeReference)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->           ^^^^^^^^^^^: True   (TyTypeReference)
+>           ^^^^^^^^^^^: True   (TyTypeReference) (TSTypeAliasDeclaration)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->                       ^^^^: any   (TyAny)
+>                       ^^^^: any   (TyAny) (TSTypeParameter)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->                             ^^^^^: any   (TyAny)
+>                             ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->                                       ^^^^: any   (TyAny)
+>                                       ^^^^: any   (TyAny) (TSTypeReference)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->                                             ^^^^^: any   (TyAny)
+>                                             ^^^^^: any   (TyAny) (TSTypeReference)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->                                                    ^^^^^^^^^: any   (TyAny)
+>                                                    ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ReturnType<<T>() => T>,
-> ^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ReturnType<<T>() => T>,
->             ^: any   (TyAny)
+>             ^: any   (TyAny) (TSTypeParameter)
 
   ReturnType<<T>() => T>,
->                     ^: any   (TyAny)
+>                     ^: any   (TyAny) (TSTypeReference)
 
 export type IsUnknownOrNonInferrable<T, True, False> = AtLeastTS35<
->           ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional) (TSTypeAliasDeclaration)
 
 export type IsUnknownOrNonInferrable<T, True, False> = AtLeastTS35<
->                                    ^: any   (TyAny)
+>                                    ^: any   (TyAny) (TSTypeParameter)
 
 export type IsUnknownOrNonInferrable<T, True, False> = AtLeastTS35<
->                                       ^^^^: any   (TyAny)
+>                                       ^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsUnknownOrNonInferrable<T, True, False> = AtLeastTS35<
->                                             ^^^^^: any   (TyAny)
+>                                             ^^^^^: any   (TyAny) (TSTypeParameter)
 
 export type IsUnknownOrNonInferrable<T, True, False> = AtLeastTS35<
->                                                      ^^^^^^^^^^^: any   (TyAny)
+>                                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   IsUnknown<T, True, False>,
-> ^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   IsUnknown<T, True, False>,
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeReference)
 
   IsUnknown<T, True, False>,
->              ^^^^: any   (TyAny)
+>              ^^^^: any   (TyAny) (TSTypeReference)
 
   IsUnknown<T, True, False>,
->                    ^^^^^: any   (TyAny)
+>                    ^^^^^: any   (TyAny) (TSTypeReference)
 
   IsEmptyObj<T, True, IsUnknown<T, True, False>>
-> ^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   IsEmptyObj<T, True, IsUnknown<T, True, False>>
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
   IsEmptyObj<T, True, IsUnknown<T, True, False>>
->               ^^^^: any   (TyAny)
+>               ^^^^: any   (TyAny) (TSTypeReference)
 
   IsEmptyObj<T, True, IsUnknown<T, True, False>>
->                     ^^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   IsEmptyObj<T, True, IsUnknown<T, True, False>>
->                               ^: any   (TyAny)
+>                               ^: any   (TyAny) (TSTypeReference)
 
   IsEmptyObj<T, True, IsUnknown<T, True, False>>
->                                  ^^^^: any   (TyAny)
+>                                  ^^^^: any   (TyAny) (TSTypeReference)
 
   IsEmptyObj<T, True, IsUnknown<T, True, False>>
->                                        ^^^^^: any   (TyAny)
+>                                        ^^^^^: any   (TyAny) (TSTypeReference)
 
 export interface TypeGuard<T> {
->                ^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 export interface TypeGuard<T> {
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeParameter)
 
   (value: any): value is T
->  ^^^^^: any   (TyAny)
+>  ^^^^^: any   (TyAny) (BindingIdentifier)
 
   (value: any): value is T
->               ^^^^^: any   (TyAny)
+>               ^^^^^: any   (TyAny) (IdentifierName)
 
   (value: any): value is T
->                        ^: any   (TyAny)
+>                        ^: any   (TyAny) (TSTypeReference)
 
 export interface HasMatchFunction<T> {
->                ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 export interface HasMatchFunction<T> {
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeParameter)
 
   match: TypeGuard<T>
-> ^^^^^: TypeGuard<T>   (TyTypeReference)
+> ^^^^^: TypeGuard<T>   (TyTypeReference) (TSPropertySignature)
 
   match: TypeGuard<T>
->        ^^^^^^^^^: any   (TyAny)
+>        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   match: TypeGuard<T>
->                  ^: any   (TyAny)
+>                  ^: any   (TyAny) (TSTypeReference)
 
 export type Matcher<T> = HasMatchFunction<T> | TypeGuard<T>
->           ^^^^^^^: HasMatchFunction<T> | TypeGuard<T>   (TyUnion)
+>           ^^^^^^^: HasMatchFunction<T> | TypeGuard<T>   (TyUnion) (TSTypeAliasDeclaration)
 
 export type Matcher<T> = HasMatchFunction<T> | TypeGuard<T>
->                   ^: any   (TyAny)
+>                   ^: any   (TyAny) (TSTypeParameter)
 
 export type Matcher<T> = HasMatchFunction<T> | TypeGuard<T>
->                        ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type Matcher<T> = HasMatchFunction<T> | TypeGuard<T>
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
 export type Matcher<T> = HasMatchFunction<T> | TypeGuard<T>
->                                              ^^^^^^^^^: any   (TyAny)
+>                                              ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type Matcher<T> = HasMatchFunction<T> | TypeGuard<T>
->                                                        ^: any   (TyAny)
+>                                                        ^: any   (TyAny) (TSTypeReference)
 
 export type ActionFromMatcher<M extends Matcher<any>> = M extends Matcher<
->           ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type ActionFromMatcher<M extends Matcher<any>> = M extends Matcher<
->                             ^: any   (TyAny)
+>                             ^: any   (TyAny) (TSTypeParameter)
 
 export type ActionFromMatcher<M extends Matcher<any>> = M extends Matcher<
->                                       ^^^^^^^: any   (TyAny)
+>                                       ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type ActionFromMatcher<M extends Matcher<any>> = M extends Matcher<
->                                                       ^: any   (TyAny)
+>                                                       ^: any   (TyAny) (TSTypeReference)
 
 export type ActionFromMatcher<M extends Matcher<any>> = M extends Matcher<
->                                                                 ^^^^^^^: any   (TyAny)
+>                                                                 ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   infer T
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeParameter)
 
   ? T
->   ^: any   (TyAny)
+>   ^: any   (TyAny) (TSTypeReference)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->               ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction)
+>               ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction) (BindingIdentifier)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeParameter)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->                                   ^^^^^: Matcher<T>   (TyTypeReference)
+>                                   ^^^^^: Matcher<T>   (TyTypeReference) (BindingIdentifier)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->                                          ^^^^^^^: any   (TyAny)
+>                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeReference)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->                                                       ^^^^^: Matcher<T>   (TyTypeReference)
+>                                                       ^^^^^: Matcher<T>   (TyTypeReference) (IdentifierName)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->                                                                ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export function hasMatchFunction<T>(value: Matcher<T>): value is HasMatchFunction<T> {
->                                                                                 ^: any   (TyAny)
+>                                                                                 ^: any   (TyAny) (TSTypeReference)
 
   return !!value && typeof (value as HasMatchFunction<T>).match === 'function'
->          ^^^^^: Matcher<T>   (TyTypeReference)
+>          ^^^^^: Matcher<T>   (TyTypeReference) (IdentifierReference)
 
   return !!value && typeof (value as HasMatchFunction<T>).match === 'function'
->                           ^^^^^: Matcher<T>   (TyTypeReference)
+>                           ^^^^^: Matcher<T>   (TyTypeReference) (IdentifierReference)
 
   return !!value && typeof (value as HasMatchFunction<T>).match === 'function'
->                                    ^^^^^^^^^^^^^^^^: any   (TyAny)
+>                                    ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   return !!value && typeof (value as HasMatchFunction<T>).match === 'function'
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSTypeReference)
 
   return !!value && typeof (value as HasMatchFunction<T>).match === 'function'
->                                                         ^^^^^: TypeGuard<T>   (TyTypeReference)
+>                                                         ^^^^^: TypeGuard<T>   (TyTypeReference) (StaticMemberExpression)
 
 import { isAction } from './reduxImports'
->        ^^^^^^^^: (action: unknown) => action is Action   (TyFunction)
+>        ^^^^^^^^: (action: unknown) => action is Action   (TyFunction) (BindingIdentifier)
 
   IfMaybeUndefined,
-> ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional)
+> ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional) (BindingIdentifier)
 
   IfVoid,
-> ^^^^^^: [void] extends [P] ? True : False   (TyConditional)
+> ^^^^^^: [void] extends [P] ? True : False   (TyConditional) (BindingIdentifier)
 
   IsAny,
-> ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional)
+> ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional) (BindingIdentifier)
 
   IsUnknownOrNonInferrable,
-> ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
+> ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional) (BindingIdentifier)
 
 import { hasMatchFunction } from './tsHelpers'
->        ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction)
+>        ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction) (BindingIdentifier)
 
 export type PayloadAction<
->           ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection)
+>           ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection) (TSTypeAliasDeclaration)
 
   P = void,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   T extends string = string,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   M = never,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   E = never,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   payload: P
-> ^^^^^^^: P   (TyTypeReference)
+> ^^^^^^^: P   (TyTypeReference) (TSPropertySignature)
 
   payload: P
->          ^: any   (TyAny)
+>          ^: any   (TyAny) (TSTypeReference)
 
   type: T
-> ^^^^: T   (TyTypeReference)
+> ^^^^: T   (TyTypeReference) (TSPropertySignature)
 
   type: T
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
 } & ([M] extends [never]
->     ^: any   (TyAny)
+>     ^: any   (TyAny) (TSTypeReference)
 
       meta: M
->     ^^^^: M   (TyTypeReference)
+>     ^^^^: M   (TyTypeReference) (TSPropertySignature)
 
       meta: M
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeReference)
 
   ([E] extends [never]
->   ^: any   (TyAny)
+>   ^: any   (TyAny) (TSTypeReference)
 
         error: E
->       ^^^^^: E   (TyTypeReference)
+>       ^^^^^: E   (TyTypeReference) (TSPropertySignature)
 
         error: E
->              ^: any   (TyAny)
+>              ^: any   (TyAny) (TSTypeReference)
 
 export type PrepareAction<P> =
->           ^^^^^^^^^^^^^: ((...args: any[]) => { payload: P; }) | ((...args: any[]) => { payload: P; meta: any; }) | ((...args: any[]) => { payload: P; error: any; }) | ((...args: any[]) => { payload: P; meta: any; error: any; })   (TyUnion)
+>           ^^^^^^^^^^^^^: ((...args: any[]) => { payload: P; }) | ((...args: any[]) => { payload: P; meta: any; }) | ((...args: any[]) => { payload: P; error: any; }) | ((...args: any[]) => { payload: P; meta: any; error: any; })   (TyUnion) (TSTypeAliasDeclaration)
 
 export type PrepareAction<P> =
->                         ^: any   (TyAny)
+>                         ^: any   (TyAny) (TSTypeParameter)
 
   | ((...args: any[]) => { payload: P })
->        ^^^^: any[]   (TyArray)
+>        ^^^^: any[]   (TyArray) (BindingIdentifier)
 
   | ((...args: any[]) => { payload: P })
->                          ^^^^^^^: P   (TyTypeReference)
+>                          ^^^^^^^: P   (TyTypeReference) (TSPropertySignature)
 
   | ((...args: any[]) => { payload: P })
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
   | ((...args: any[]) => { payload: P; meta: any })
->        ^^^^: any[]   (TyArray)
+>        ^^^^: any[]   (TyArray) (BindingIdentifier)
 
   | ((...args: any[]) => { payload: P; meta: any })
->                          ^^^^^^^: P   (TyTypeReference)
+>                          ^^^^^^^: P   (TyTypeReference) (TSPropertySignature)
 
   | ((...args: any[]) => { payload: P; meta: any })
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
   | ((...args: any[]) => { payload: P; meta: any })
->                                      ^^^^: any   (TyAny)
+>                                      ^^^^: any   (TyAny) (TSPropertySignature)
 
   | ((...args: any[]) => { payload: P; error: any })
->        ^^^^: any[]   (TyArray)
+>        ^^^^: any[]   (TyArray) (BindingIdentifier)
 
   | ((...args: any[]) => { payload: P; error: any })
->                          ^^^^^^^: P   (TyTypeReference)
+>                          ^^^^^^^: P   (TyTypeReference) (TSPropertySignature)
 
   | ((...args: any[]) => { payload: P; error: any })
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
   | ((...args: any[]) => { payload: P; error: any })
->                                      ^^^^^: any   (TyAny)
+>                                      ^^^^^: any   (TyAny) (TSPropertySignature)
 
   | ((...args: any[]) => { payload: P; meta: any; error: any })
->        ^^^^: any[]   (TyArray)
+>        ^^^^: any[]   (TyArray) (BindingIdentifier)
 
   | ((...args: any[]) => { payload: P; meta: any; error: any })
->                          ^^^^^^^: P   (TyTypeReference)
+>                          ^^^^^^^: P   (TyTypeReference) (TSPropertySignature)
 
   | ((...args: any[]) => { payload: P; meta: any; error: any })
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
   | ((...args: any[]) => { payload: P; meta: any; error: any })
->                                      ^^^^: any   (TyAny)
+>                                      ^^^^: any   (TyAny) (TSPropertySignature)
 
   | ((...args: any[]) => { payload: P; meta: any; error: any })
->                                                 ^^^^^: any   (TyAny)
+>                                                 ^^^^^: any   (TyAny) (TSPropertySignature)
 
 export type _ActionCreatorWithPreparedPayload<
->           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: PA extends PrepareAction<infer P> ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: PA extends PrepareAction<infer P> ? ActionCreatorWithPreparedPayload<Parameters<PA>, P, T, ReturnType<PA> extends { error: infer E; } ? E : never, ReturnType<PA> extends { meta: infer M; } ? M : never> : void   (TyConditional) (TSTypeAliasDeclaration)
 
   PA extends PrepareAction<any> | void,
-> ^^: any   (TyAny)
+> ^^: any   (TyAny) (TSTypeParameter)
 
   PA extends PrepareAction<any> | void,
->            ^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   T extends string = string,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
 > = PA extends PrepareAction<infer P>
->   ^^: any   (TyAny)
+>   ^^: any   (TyAny) (TSTypeReference)
 
 > = PA extends PrepareAction<infer P>
->              ^^^^^^^^^^^^^: any   (TyAny)
+>              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 > = PA extends PrepareAction<infer P>
->                                  ^: any   (TyAny)
+>                                  ^: any   (TyAny) (TSTypeParameter)
 
   ? ActionCreatorWithPreparedPayload<
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       Parameters<PA>,
->     ^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       Parameters<PA>,
->                ^^: any   (TyAny)
+>                ^^: any   (TyAny) (TSTypeReference)
 
       P,
->     ^: any   (TyAny)
+>     ^: any   (TyAny) (TSTypeReference)
 
       T,
->     ^: any   (TyAny)
+>     ^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
->     ^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
->                ^^: any   (TyAny)
+>                ^^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
->                              ^^^^^: E   (TyTypeReference)
+>                              ^^^^^: E   (TyTypeReference) (TSPropertySignature)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
->                                           ^: any   (TyAny)
+>                                           ^: any   (TyAny) (TSTypeParameter)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
->                                                 ^: any   (TyAny)
+>                                                 ^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
->     ^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
->                ^^: any   (TyAny)
+>                ^^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
->                              ^^^^: M   (TyTypeReference)
+>                              ^^^^: M   (TyTypeReference) (TSPropertySignature)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
->                                          ^: any   (TyAny)
+>                                          ^: any   (TyAny) (TSTypeParameter)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
->                                                ^: any   (TyAny)
+>                                                ^: any   (TyAny) (TSTypeReference)
 
 export type BaseActionCreator<P, T extends string, M = never, E = never> = {
->           ^^^^^^^^^^^^^^^^^: { type: T; match: (action: unknown) => action is PayloadAction<P, T, M, E>; }   (TyObject)
+>           ^^^^^^^^^^^^^^^^^: { type: T; match: (action: unknown) => action is PayloadAction<P, T, M, E>; }   (TyObject) (TSTypeAliasDeclaration)
 
 export type BaseActionCreator<P, T extends string, M = never, E = never> = {
->                             ^: any   (TyAny)
+>                             ^: any   (TyAny) (TSTypeParameter)
 
 export type BaseActionCreator<P, T extends string, M = never, E = never> = {
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeParameter)
 
 export type BaseActionCreator<P, T extends string, M = never, E = never> = {
->                                                  ^: any   (TyAny)
+>                                                  ^: any   (TyAny) (TSTypeParameter)
 
 export type BaseActionCreator<P, T extends string, M = never, E = never> = {
->                                                             ^: any   (TyAny)
+>                                                             ^: any   (TyAny) (TSTypeParameter)
 
   type: T
-> ^^^^: T   (TyTypeReference)
+> ^^^^: T   (TyTypeReference) (TSPropertySignature)
 
   type: T
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
-> ^^^^^: (action: unknown) => action is PayloadAction<P, T, M, E>   (TyFunction)
+> ^^^^^: (action: unknown) => action is PayloadAction<P, T, M, E>   (TyFunction) (TSPropertySignature)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
->         ^^^^^^: unknown   (TyUnknown)
+>         ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
->                             ^^^^^^: unknown   (TyUnknown)
+>                             ^^^^^^: unknown   (TyUnknown) (IdentifierName)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
->                                       ^^^^^^^^^^^^^: any   (TyAny)
+>                                       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
->                                                     ^: any   (TyAny)
+>                                                     ^: any   (TyAny) (TSTypeReference)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
->                                                        ^: any   (TyAny)
+>                                                        ^: any   (TyAny) (TSTypeReference)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
->                                                           ^: any   (TyAny)
+>                                                           ^: any   (TyAny) (TSTypeReference)
 
   match: (action: unknown) => action is PayloadAction<P, T, M, E>
->                                                              ^: any   (TyAny)
+>                                                              ^: any   (TyAny) (TSTypeReference)
 
 export interface ActionCreatorWithPreparedPayload<
->                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   Args extends unknown[],
-> ^^^^: any   (TyAny)
+> ^^^^: any   (TyAny) (TSTypeParameter)
 
   P,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   T extends string = string,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   E = never,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   M = never,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
 > extends BaseActionCreator<P, T, M, E> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
 > extends BaseActionCreator<P, T, M, E> {
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeReference)
 
 > extends BaseActionCreator<P, T, M, E> {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
 > extends BaseActionCreator<P, T, M, E> {
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeReference)
 
 > extends BaseActionCreator<P, T, M, E> {
->                                    ^: any   (TyAny)
+>                                    ^: any   (TyAny) (TSTypeReference)
 
   (...args: Args): PayloadAction<P, T, M, E>
->     ^^^^: Args   (TyTypeReference)
+>     ^^^^: Args   (TyTypeReference) (BindingIdentifier)
 
   (...args: Args): PayloadAction<P, T, M, E>
->           ^^^^: any   (TyAny)
+>           ^^^^: any   (TyAny) (TSTypeReference)
 
   (...args: Args): PayloadAction<P, T, M, E>
->                  ^^^^^^^^^^^^^: any   (TyAny)
+>                  ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   (...args: Args): PayloadAction<P, T, M, E>
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeReference)
 
   (...args: Args): PayloadAction<P, T, M, E>
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
   (...args: Args): PayloadAction<P, T, M, E>
->                                      ^: any   (TyAny)
+>                                      ^: any   (TyAny) (TSTypeReference)
 
   (...args: Args): PayloadAction<P, T, M, E>
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeReference)
 
 export interface ActionCreatorWithOptionalPayload<P, T extends string = string>
->                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 export interface ActionCreatorWithOptionalPayload<P, T extends string = string>
->                                                 ^: any   (TyAny)
+>                                                 ^: any   (TyAny) (TSTypeParameter)
 
 export interface ActionCreatorWithOptionalPayload<P, T extends string = string>
->                                                    ^: any   (TyAny)
+>                                                    ^: any   (TyAny) (TSTypeParameter)
 
   extends BaseActionCreator<P, T> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
   extends BaseActionCreator<P, T> {
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeReference)
 
   extends BaseActionCreator<P, T> {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
   (payload?: P): PayloadAction<P, T>
->  ^^^^^^^: P | undefined   (TyUnion)
+>  ^^^^^^^: P | undefined   (TyUnion) (BindingIdentifier)
 
   (payload?: P): PayloadAction<P, T>
->            ^: any   (TyAny)
+>            ^: any   (TyAny) (TSTypeReference)
 
   (payload?: P): PayloadAction<P, T>
->                ^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   (payload?: P): PayloadAction<P, T>
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
   (payload?: P): PayloadAction<P, T>
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeReference)
 
 export interface ActionCreatorWithoutPayload<T extends string = string>
->                ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 export interface ActionCreatorWithoutPayload<T extends string = string>
->                                            ^: any   (TyAny)
+>                                            ^: any   (TyAny) (TSTypeParameter)
 
   extends BaseActionCreator<undefined, T> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
   extends BaseActionCreator<undefined, T> {
->                                      ^: any   (TyAny)
+>                                      ^: any   (TyAny) (TSTypeReference)
 
   (noArgument?: void): PayloadAction<undefined, T>
->  ^^^^^^^^^^: void | undefined   (TyUnion)
+>  ^^^^^^^^^^: void | undefined   (TyUnion) (BindingIdentifier)
 
   (noArgument?: void): PayloadAction<undefined, T>
->                      ^^^^^^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   (noArgument?: void): PayloadAction<undefined, T>
->                                               ^: any   (TyAny)
+>                                               ^: any   (TyAny) (TSTypeReference)
 
 export interface ActionCreatorWithPayload<P, T extends string = string>
->                ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 export interface ActionCreatorWithPayload<P, T extends string = string>
->                                         ^: any   (TyAny)
+>                                         ^: any   (TyAny) (TSTypeParameter)
 
 export interface ActionCreatorWithPayload<P, T extends string = string>
->                                            ^: any   (TyAny)
+>                                            ^: any   (TyAny) (TSTypeParameter)
 
   extends BaseActionCreator<P, T> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
   extends BaseActionCreator<P, T> {
->                           ^: any   (TyAny)
+>                           ^: any   (TyAny) (TSTypeReference)
 
   extends BaseActionCreator<P, T> {
->                              ^: any   (TyAny)
+>                              ^: any   (TyAny) (TSTypeReference)
 
   (payload: P): PayloadAction<P, T>
->  ^^^^^^^: P   (TyTypeReference)
+>  ^^^^^^^: P   (TyTypeReference) (BindingIdentifier)
 
   (payload: P): PayloadAction<P, T>
->           ^: any   (TyAny)
+>           ^: any   (TyAny) (TSTypeReference)
 
   (payload: P): PayloadAction<P, T>
->               ^^^^^^^^^^^^^: any   (TyAny)
+>               ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   (payload: P): PayloadAction<P, T>
->                             ^: any   (TyAny)
+>                             ^: any   (TyAny) (TSTypeReference)
 
   (payload: P): PayloadAction<P, T>
->                                ^: any   (TyAny)
+>                                ^: any   (TyAny) (TSTypeReference)
 
 export interface ActionCreatorWithNonInferrablePayload<
->                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   T extends string = string,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
 > extends BaseActionCreator<unknown, T> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
 > extends BaseActionCreator<unknown, T> {
->                                    ^: any   (TyAny)
+>                                    ^: any   (TyAny) (TSTypeReference)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
->  ^^: any   (TyAny)
+>  ^^: any   (TyAny) (TSTypeParameter)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
->                      ^^^^^^^: PT   (TyTypeReference)
+>                      ^^^^^^^: PT   (TyTypeReference) (BindingIdentifier)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
->                               ^^: any   (TyAny)
+>                               ^^: any   (TyAny) (TSTypeReference)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
->                                    ^^^^^^^^^^^^^: any   (TyAny)
+>                                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
->                                                  ^^: any   (TyAny)
+>                                                  ^^: any   (TyAny) (TSTypeReference)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
->                                                      ^: any   (TyAny)
+>                                                      ^: any   (TyAny) (TSTypeReference)
 
 export type PayloadActionCreator<
->           ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional) (TSTypeAliasDeclaration)
 
   P = void,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   T extends string = string,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
   PA extends PrepareAction<P> | void = void,
-> ^^: any   (TyAny)
+> ^^: any   (TyAny) (TSTypeParameter)
 
   PA extends PrepareAction<P> | void = void,
->            ^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   PA extends PrepareAction<P> | void = void,
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeReference)
 
 > = IfPrepareActionMethodProvided<
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   PA,
-> ^^: any   (TyAny)
+> ^^: any   (TyAny) (TSTypeReference)
 
   _ActionCreatorWithPreparedPayload<PA, T>,
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   _ActionCreatorWithPreparedPayload<PA, T>,
->                                   ^^: any   (TyAny)
+>                                   ^^: any   (TyAny) (TSTypeReference)
 
   _ActionCreatorWithPreparedPayload<PA, T>,
->                                       ^: any   (TyAny)
+>                                       ^: any   (TyAny) (TSTypeReference)
 
   IsAny<
-> ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional)
+> ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional) (TSTypeReference)
 
   IsAny<
-> ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional)
+> ^^^^^: boolean extends (T extends never ? true : false) ? True : False   (TyConditional) (IdentifierReference)
 
     P,
->   ^: any   (TyAny)
+>   ^: any   (TyAny) (TSTypeReference)
 
     ActionCreatorWithPayload<any, T>,
->   ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     ActionCreatorWithPayload<any, T>,
->                                 ^: any   (TyAny)
+>                                 ^: any   (TyAny) (TSTypeReference)
 
     IsUnknownOrNonInferrable<
->   ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional) (TSTypeReference)
 
     IsUnknownOrNonInferrable<
->   ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: unknown extends T ? IsAny<T, False, True> : False   (TyConditional) (IdentifierReference)
 
       P,
->     ^: any   (TyAny)
+>     ^: any   (TyAny) (TSTypeReference)
 
       ActionCreatorWithNonInferrablePayload<T>,
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       ActionCreatorWithNonInferrablePayload<T>,
->                                           ^: any   (TyAny)
+>                                           ^: any   (TyAny) (TSTypeReference)
 
       IfVoid<
->     ^^^^^^: [void] extends [P] ? True : False   (TyConditional)
+>     ^^^^^^: [void] extends [P] ? True : False   (TyConditional) (TSTypeReference)
 
       IfVoid<
->     ^^^^^^: [void] extends [P] ? True : False   (TyConditional)
+>     ^^^^^^: [void] extends [P] ? True : False   (TyConditional) (IdentifierReference)
 
         P,
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
         ActionCreatorWithoutPayload<T>,
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         ActionCreatorWithoutPayload<T>,
->                                   ^: any   (TyAny)
+>                                   ^: any   (TyAny) (TSTypeReference)
 
         IfMaybeUndefined<
->       ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional)
+>       ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional) (TSTypeReference)
 
         IfMaybeUndefined<
->       ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional)
+>       ^^^^^^^^^^^^^^^^: [undefined] extends [P] ? True : False   (TyConditional) (IdentifierReference)
 
           P,
->         ^: any   (TyAny)
+>         ^: any   (TyAny) (TSTypeReference)
 
           ActionCreatorWithOptionalPayload<P, T>,
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
           ActionCreatorWithOptionalPayload<P, T>,
->                                          ^: any   (TyAny)
+>                                          ^: any   (TyAny) (TSTypeReference)
 
           ActionCreatorWithOptionalPayload<P, T>,
->                                             ^: any   (TyAny)
+>                                             ^: any   (TyAny) (TSTypeReference)
 
           ActionCreatorWithPayload<P, T>
->         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
           ActionCreatorWithPayload<P, T>
->                                  ^: any   (TyAny)
+>                                  ^: any   (TyAny) (TSTypeReference)
 
           ActionCreatorWithPayload<P, T>
->                                     ^: any   (TyAny)
+>                                     ^: any   (TyAny) (TSTypeReference)
 
 export function createAction<P = void, T extends string = string>(
->               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (BindingIdentifier)
 
 export function createAction<P = void, T extends string = string>(
->                            ^: any   (TyAny)
+>                            ^: any   (TyAny) (TSTypeParameter)
 
 export function createAction<P = void, T extends string = string>(
->                                      ^: any   (TyAny)
+>                                      ^: any   (TyAny) (TSTypeParameter)
 
   type: T,
-> ^^^^: T   (TyTypeReference)
+> ^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   type: T,
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
 ): PayloadActionCreator<P, T>
->  ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>  ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 ): PayloadActionCreator<P, T>
->                       ^: any   (TyAny)
+>                       ^: any   (TyAny) (TSTypeReference)
 
 ): PayloadActionCreator<P, T>
->                          ^: any   (TyAny)
+>                          ^: any   (TyAny) (TSTypeReference)
 
 export function createAction<
->               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (BindingIdentifier)
 
   PA extends PrepareAction<any>,
-> ^^: any   (TyAny)
+> ^^: any   (TyAny) (TSTypeParameter)
 
   PA extends PrepareAction<any>,
->            ^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   T extends string = string,
-> ^: any   (TyAny)
+> ^: any   (TyAny) (TSTypeParameter)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
-> ^^^^: T   (TyTypeReference)
+> ^^^^: T   (TyTypeReference) (BindingIdentifier)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->       ^: any   (TyAny)
+>       ^: any   (TyAny) (TSTypeReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->          ^^^^^^^^^^^^^: PA   (TyTypeReference)
+>          ^^^^^^^^^^^^^: PA   (TyTypeReference) (BindingIdentifier)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->                         ^^: any   (TyAny)
+>                         ^^: any   (TyAny) (TSTypeReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->                              ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->                                                   ^^^^^^^^^^: any   (TyAny)
+>                                                   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->                                                              ^^: any   (TyAny)
+>                                                              ^^: any   (TyAny) (TSTypeReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->                                                                              ^: any   (TyAny)
+>                                                                              ^: any   (TyAny) (TSTypeReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->                                                                                 ^^: any   (TyAny)
+>                                                                                 ^^: any   (TyAny) (TSTypeReference)
 
 export function createAction(type: string, prepareAction?: Function): any {
->               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (BindingIdentifier)
 
 export function createAction(type: string, prepareAction?: Function): any {
->                            ^^^^: string   (TyString)
+>                            ^^^^: string   (TyString) (BindingIdentifier)
 
 export function createAction(type: string, prepareAction?: Function): any {
->                                          ^^^^^^^^^^^^^: Function | undefined   (TyUnion)
+>                                          ^^^^^^^^^^^^^: Function | undefined   (TyUnion) (BindingIdentifier)
 
 export function createAction(type: string, prepareAction?: Function): any {
->                                                          ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+>                                                          ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSTypeReference)
 
 export function createAction(type: string, prepareAction?: Function): any {
->                                                          ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+>                                                          ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
   function actionCreator(...args: any[]) {
->          ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject)
+>          ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (BindingIdentifier)
                 expected: { (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
 
   function actionCreator(...args: any[]) {
->                           ^^^^: any[]   (TyArray)
+>                           ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     if (prepareAction) {
->       ^^^^^^^^^^^^^: Function | undefined   (TyUnion)
+>       ^^^^^^^^^^^^^: Function | undefined   (TyUnion) (IdentifierReference)
 
       const prepared = prepareAction(...args)
->           ^^^^^^^^: any   (TyAny)
+>           ^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
       const prepared = prepareAction(...args)
->                      ^^^^^^^^^^^^^: Function   (TyTypeReference)
+>                      ^^^^^^^^^^^^^: Function   (TyTypeReference) (IdentifierReference)
 
       const prepared = prepareAction(...args)
->                                       ^^^^: any[]   (TyArray)
+>                                       ^^^^: any[]   (TyArray) (IdentifierReference)
 
         type,
->       ^^^^: string   (TyString)
+>       ^^^^: string   (TyString) (ObjectProperty)
 
         type,
->       ^^^^: string   (TyString)
+>       ^^^^: string   (TyString) (IdentifierReference)
 
         payload: prepared.payload,
->       ^^^^^^^: any   (TyAny)
+>       ^^^^^^^: any   (TyAny) (ObjectProperty)
 
         payload: prepared.payload,
->                ^^^^^^^^: any   (TyAny)
+>                ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         payload: prepared.payload,
->                         ^^^^^^^: any   (TyAny)
+>                         ^^^^^^^: any   (TyAny) (StaticMemberExpression)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                     ^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                                   ^^^^: any   (TyAny)
+>                                   ^^^^: any   (TyAny) (ObjectProperty)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                                         ^^^^^^^^: any   (TyAny)
+>                                         ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                                                  ^^^^: any   (TyAny)
+>                                                  ^^^^: any   (TyAny) (StaticMemberExpression)
 
         ...('error' in prepared && { error: prepared.error }),
->                      ^^^^^^^^: any   (TyAny)
+>                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         ...('error' in prepared && { error: prepared.error }),
->                                    ^^^^^: any   (TyAny)
+>                                    ^^^^^: any   (TyAny) (ObjectProperty)
 
         ...('error' in prepared && { error: prepared.error }),
->                                           ^^^^^^^^: any   (TyAny)
+>                                           ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         ...('error' in prepared && { error: prepared.error }),
->                                                    ^^^^^: any   (TyAny)
+>                                                    ^^^^^: any   (TyAny) (StaticMemberExpression)
 
     return { type, payload: args[0] }
->            ^^^^: string   (TyString)
+>            ^^^^: string   (TyString) (ObjectProperty)
 
     return { type, payload: args[0] }
->            ^^^^: string   (TyString)
+>            ^^^^: string   (TyString) (IdentifierReference)
 
     return { type, payload: args[0] }
->                  ^^^^^^^: any   (TyAny)
+>                  ^^^^^^^: any   (TyAny) (ObjectProperty)
 
     return { type, payload: args[0] }
->                           ^^^^: any[]   (TyArray)
+>                           ^^^^: any[]   (TyArray) (IdentifierReference)
 
   actionCreator.type = type
-> ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject)
+> ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (IdentifierReference)
        expected: { (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
 
   actionCreator.type = type
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
   actionCreator.type = type
->               ^^^^: string   (TyString)
+>               ^^^^: string   (TyString) (StaticMemberExpression)
 
   actionCreator.type = type
->                      ^^^^: string   (TyString)
+>                      ^^^^: string   (TyString) (IdentifierReference)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
-> ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject)
+> ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (IdentifierReference)
        expected: { (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: (action: unknown) => action is PayloadAction   (TyFunction)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: (action: unknown) => action is PayloadAction   (TyFunction) (ExpressionStatement)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
->               ^^^^^: (action: unknown) => action is PayloadAction   (TyFunction)
+>               ^^^^^: (action: unknown) => action is PayloadAction   (TyFunction) (StaticMemberExpression)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
->                        ^^^^^^: unknown   (TyUnknown)
+>                        ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
->                                          ^^^^^^: unknown   (TyUnknown)
+>                                          ^^^^^^: unknown   (TyUnknown) (IdentifierName)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
->                                                    ^^^^^^^^^^^^^: any   (TyAny)
+>                                                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     isAction(action) && action.type === type
->   ^^^^^^^^: (action: unknown) => action is Action   (TyFunction)
+>   ^^^^^^^^: (action: unknown) => action is Action   (TyFunction) (IdentifierReference)
 
     isAction(action) && action.type === type
->            ^^^^^^: unknown   (TyUnknown)
+>            ^^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
     isAction(action) && action.type === type
->                       ^^^^^^: Action<string>   (TyTypeReference)
+>                       ^^^^^^: Action<string>   (TyTypeReference) (IdentifierReference)
 
     isAction(action) && action.type === type
->                              ^^^^: string   (TyString)
+>                              ^^^^: string   (TyString) (StaticMemberExpression)
 
     isAction(action) && action.type === type
->                                       ^^^^: string   (TyString)
+>                                       ^^^^: string   (TyString) (IdentifierReference)
 
   return actionCreator
->        ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject)
+>        ^^^^^^^^^^^^^: { (...args: any[]): { type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (IdentifierReference)
               expected: { (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
 
 export function isActionCreator(
->               ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (TyFunction)
+>               ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (TyFunction) (BindingIdentifier)
 
   action: unknown,
-> ^^^^^^: unknown   (TyUnknown)
+> ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 ): action is BaseActionCreator<unknown, string> & Function {
->  ^^^^^^: unknown   (TyUnknown)
+>  ^^^^^^: unknown   (TyUnknown) (IdentifierName)
 
 ): action is BaseActionCreator<unknown, string> & Function {
->            ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 ): action is BaseActionCreator<unknown, string> & Function {
->                                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+>                                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSTypeReference)
 
 ): action is BaseActionCreator<unknown, string> & Function {
->                                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference)
+>                                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
   return typeof action === 'function' && 'type' in action && hasMatchFunction(action as any)
->               ^^^^^^: unknown   (TyUnknown)
+>               ^^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
   return typeof action === 'function' && 'type' in action && hasMatchFunction(action as any)
->                                                  ^^^^^^: Function   (TyTypeReference)
+>                                                  ^^^^^^: Function   (TyTypeReference) (IdentifierReference)
 
   return typeof action === 'function' && 'type' in action && hasMatchFunction(action as any)
->                                                            ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction)
+>                                                            ^^^^^^^^^^^^^^^^: <T>(value: Matcher<T>) => value is HasMatchFunction<T>   (TyFunction) (IdentifierReference)
 
   return typeof action === 'function' && 'type' in action && hasMatchFunction(action as any)
->                                                                             ^^^^^^: Function & Record<"type", unknown>   (TyIntersection)
+>                                                                             ^^^^^^: Function & Record<"type", unknown>   (TyIntersection) (IdentifierReference)
 
 type IfPrepareActionMethodProvided<
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? True : False   (TyConditional)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? True : False   (TyConditional) (TSTypeAliasDeclaration)
 
   PA extends PrepareAction<any> | void,
-> ^^: any   (TyAny)
+> ^^: any   (TyAny) (TSTypeParameter)
 
   PA extends PrepareAction<any> | void,
->            ^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   True,
-> ^^^^: any   (TyAny)
+> ^^^^: any   (TyAny) (TSTypeParameter)
 
   False,
-> ^^^^^: any   (TyAny)
+> ^^^^^: any   (TyAny) (TSTypeParameter)
 
 > = PA extends (...args: any[]) => any ? True : False
->   ^^: any   (TyAny)
+>   ^^: any   (TyAny) (TSTypeReference)
 
 > = PA extends (...args: any[]) => any ? True : False
->                  ^^^^: any[]   (TyArray)
+>                  ^^^^: any[]   (TyArray) (BindingIdentifier)
 
 > = PA extends (...args: any[]) => any ? True : False
->                                        ^^^^: any   (TyAny)
+>                                        ^^^^: any   (TyAny) (TSTypeReference)
 
 > = PA extends (...args: any[]) => any ? True : False
->                                               ^^^^^: any   (TyAny)
+>                                               ^^^^^: any   (TyAny) (TSTypeReference)
 
 import { createAction, isActionCreator } from '../packages/toolkit/src/createAction'
->        ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>        ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (BindingIdentifier)
 
 import { createAction, isActionCreator } from '../packages/toolkit/src/createAction'
->                      ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (TyFunction)
+>                      ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (TyFunction) (BindingIdentifier)
 
   PayloadAction,
-> ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection)
+> ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection) (BindingIdentifier)
 
   PayloadActionCreator,
-> ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
+> ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional) (BindingIdentifier)
 
 import type { ActionFromMatcher } from '../packages/toolkit/src/tsHelpers'
->             ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
+>             ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional) (BindingIdentifier)
 
 export const increment = createAction<number, 'counter/increment'>('counter/increment')
->            ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
+>            ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (BindingIdentifier)
               expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export const increment = createAction<number, 'counter/increment'>('counter/increment')
->                        ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>                        ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (IdentifierReference)
 
 export const incrementAction = increment(5)
->            ^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                     expected: { payload: number; type: "counter/increment"; }
 
 export const incrementAction = increment(5)
->                              ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
+>                              ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (IdentifierReference)
                                 expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export const incrementPayload = incrementAction.payload
->            ^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                      expected: number
 
 export const incrementPayload = incrementAction.payload
->                               ^^^^^^^^^^^^^^^: any   (TyAny)
+>                               ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                        expected: { payload: number; type: "counter/increment"; }
 
 export const incrementPayload = incrementAction.payload
->                                               ^^^^^^^: any   (TyAny)
+>                                               ^^^^^^^: any   (TyAny) (StaticMemberExpression)
                                                expected: number
 
 export const reset = createAction('counter/reset')
->            ^^^^^: PayloadActionCreator<void, "counter/reset">   (TyTypeReference)
+>            ^^^^^: PayloadActionCreator<void, "counter/reset">   (TyTypeReference) (BindingIdentifier)
           expected: ActionCreatorWithoutPayload<"counter/reset">
 
 export const reset = createAction('counter/reset')
->                    ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>                    ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (IdentifierReference)
 
 export const resetAction = reset()
->            ^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                 expected: { payload: undefined; type: "counter/reset"; }
 
 export const resetAction = reset()
->                          ^^^^^: PayloadActionCreator<void, "counter/reset">   (TyTypeReference)
+>                          ^^^^^: PayloadActionCreator<void, "counter/reset">   (TyTypeReference) (IdentifierReference)
                         expected: ActionCreatorWithoutPayload<"counter/reset">
 
 export const resetPayload = resetAction.payload
->            ^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                  expected: undefined
 
 export const resetPayload = resetAction.payload
->                           ^^^^^^^^^^^: any   (TyAny)
+>                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                expected: { payload: undefined; type: "counter/reset"; }
 
 export const resetPayload = resetAction.payload
->                                       ^^^^^^^: any   (TyAny)
+>                                       ^^^^^^^: any   (TyAny) (StaticMemberExpression)
                                        expected: undefined
 
 export const setName = createAction<string | undefined, 'user/nameChanged'>(
->            ^^^^^^^: PayloadActionCreator<string | undefined, "user/nameChanged">   (TyTypeReference)
+>            ^^^^^^^: PayloadActionCreator<string | undefined, "user/nameChanged">   (TyTypeReference) (BindingIdentifier)
             expected: ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
 
 export const setName = createAction<string | undefined, 'user/nameChanged'>(
->                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (IdentifierReference)
 
 export const missingNameAction = setName()
->            ^^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                       expected: { payload: string | undefined; type: "user/nameChanged"; }
 
 export const missingNameAction = setName()
->                                ^^^^^^^: PayloadActionCreator<string | undefined, "user/nameChanged">   (TyTypeReference)
+>                                ^^^^^^^: PayloadActionCreator<string | undefined, "user/nameChanged">   (TyTypeReference) (IdentifierReference)
                                 expected: ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
 
 export const namedAction = setName('Ada')
->            ^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                 expected: { payload: string | undefined; type: "user/nameChanged"; }
 
 export const namedAction = setName('Ada')
->                          ^^^^^^^: PayloadActionCreator<string | undefined, "user/nameChanged">   (TyTypeReference)
+>                          ^^^^^^^: PayloadActionCreator<string | undefined, "user/nameChanged">   (TyTypeReference) (IdentifierReference)
                           expected: ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
 
 export const addTodo = createAction(
->            ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference)
+>            ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference) (BindingIdentifier)
             expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export const addTodo = createAction(
->                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject)
+>                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (IdentifierReference)
 
   (title: string, priority = 1) => ({
->  ^^^^^: string   (TyString)
+>  ^^^^^: string   (TyString) (BindingIdentifier)
 
   (title: string, priority = 1) => ({
->                 ^^^^^^^^: any   (TyAny)
+>                 ^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     payload: { title, priority },
->   ^^^^^^^: { title: string; priority: any; }   (TyObject)
+>   ^^^^^^^: { title: string; priority: any; }   (TyObject) (ObjectProperty)
 
     payload: { title, priority },
->              ^^^^^: string   (TyString)
+>              ^^^^^: string   (TyString) (ObjectProperty)
 
     payload: { title, priority },
->              ^^^^^: string   (TyString)
+>              ^^^^^: string   (TyString) (IdentifierReference)
 
     payload: { title, priority },
->                     ^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^: any   (TyAny) (ObjectProperty)
 
     payload: { title, priority },
->                     ^^^^^^^^: any   (TyAny)
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     meta: { createdAt: 1 },
->   ^^^^: { createdAt: number; }   (TyObject)
+>   ^^^^: { createdAt: number; }   (TyObject) (ObjectProperty)
 
     meta: { createdAt: 1 },
->           ^^^^^^^^^: number   (TyNumber)
+>           ^^^^^^^^^: number   (TyNumber) (ObjectProperty)
 
     error: false as boolean,
->   ^^^^^: boolean   (TyBoolean)
+>   ^^^^^: boolean   (TyBoolean) (ObjectProperty)
 
 export const preparedTodoAction = addTodo('read fixture', 2)
->            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                        expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedTodoAction = addTodo('read fixture', 2)
->                                 ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference)
+>                                 ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference) (IdentifierReference)
                                  expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export const preparedPayload = preparedTodoAction.payload
->            ^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                     expected: { title: string; priority: any; }
 
 export const preparedPayload = preparedTodoAction.payload
->                              ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                          expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedPayload = preparedTodoAction.payload
->                                                 ^^^^^^^: any   (TyAny)
+>                                                 ^^^^^^^: any   (TyAny) (StaticMemberExpression)
                                                  expected: { title: string; priority: any; }
 
 export const preparedMeta = preparedTodoAction.meta
->            ^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                  expected: { createdAt: number; }
 
 export const preparedMeta = preparedTodoAction.meta
->                           ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                           ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                       expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedMeta = preparedTodoAction.meta
->                                              ^^^^: any   (TyAny)
+>                                              ^^^^: any   (TyAny) (StaticMemberExpression)
                                            expected: { createdAt: number; }
 
 export const preparedError = preparedTodoAction.error
->            ^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                   expected: boolean
 
 export const preparedError = preparedTodoAction.error
->                            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                        expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedError = preparedTodoAction.error
->                                               ^^^^^: any   (TyAny)
+>                                               ^^^^^: any   (TyAny) (StaticMemberExpression)
                                              expected: boolean
 
 declare const unknownAction: unknown
->             ^^^^^^^^^^^^^: unknown   (TyUnknown)
+>             ^^^^^^^^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
 
 if (increment.match(unknownAction)) {
->   ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
+>   ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (IdentifierReference)
      expected: ActionCreatorWithPayload<number, "counter/increment">
 
 if (increment.match(unknownAction)) {
->             ^^^^^: any   (TyAny)
+>             ^^^^^: any   (TyAny) (StaticMemberExpression)
            expected: (action: unknown) => action is { payload: number; type: "counter/increment"; }
 
 if (increment.match(unknownAction)) {
->                   ^^^^^^^^^^^^^: unknown   (TyUnknown)
+>                   ^^^^^^^^^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
   const matchedPayload = unknownAction.payload
->       ^^^^^^^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
               expected: number
 
   const matchedPayload = unknownAction.payload
->                        ^^^^^^^^^^^^^: unknown   (TyUnknown)
+>                        ^^^^^^^^^^^^^: unknown   (TyUnknown) (IdentifierReference)
                               expected: { payload: number; type: "counter/increment"; }
 
   const matchedPayload = unknownAction.payload
->                                      ^^^^^^^: any   (TyAny)
+>                                      ^^^^^^^: any   (TyAny) (StaticMemberExpression)
                                       expected: number
 
   const matchedType = unknownAction.type
->       ^^^^^^^^^^^: any   (TyAny)
+>       ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
            expected: "counter/increment"
 
   const matchedType = unknownAction.type
->                     ^^^^^^^^^^^^^: unknown   (TyUnknown)
+>                     ^^^^^^^^^^^^^: unknown   (TyUnknown) (IdentifierReference)
                            expected: { payload: number; type: "counter/increment"; }
 
   const matchedType = unknownAction.type
->                                   ^^^^: any   (TyAny)
+>                                   ^^^^: any   (TyAny) (StaticMemberExpression)
                                 expected: "counter/increment"
 
   void matchedPayload
-> ^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+> ^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
   void matchedPayload
->      ^^^^^^^^^^^^^^: any   (TyAny)
+>      ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
              expected: number
 
   void matchedType
-> ^^^^^^^^^^^^^^^^: undefined   (TyUndefined)
+> ^^^^^^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
   void matchedType
->      ^^^^^^^^^^^: any   (TyAny)
+>      ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
           expected: "counter/increment"
 
 export type IncrementAction = ReturnType<typeof increment>
->           ^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends (...args: any) => infer R ? R : any   (TyConditional)
+>           ^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends (...args: any) => infer R ? R : any   (TyConditional) (TSTypeAliasDeclaration)
                    expected: { payload: number; type: "counter/increment"; }
 
 export type IncrementAction = ReturnType<typeof increment>
->                             ^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IncrementAction = ReturnType<typeof increment>
->                                               ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
+>                                               ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (IdentifierReference)
                                                  expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export type TodoAction = ReturnType<typeof addTodo>
->           ^^^^^^^^^^: ActionCreatorWithoutPayload<"todos/add"> extends (...args: any) => infer R ? R : any   (TyConditional)
+>           ^^^^^^^^^^: ActionCreatorWithoutPayload<"todos/add"> extends (...args: any) => infer R ? R : any   (TyConditional) (TSTypeAliasDeclaration)
               expected: { payload: { title: string; priority: any; }; type: "todos/add"; } & { meta: { createdAt: number; }; } & { error: boolean; }
 
 export type TodoAction = ReturnType<typeof addTodo>
->                        ^^^^^^^^^^: any   (TyAny)
+>                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
->                                          ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference)
+>                                          ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference) (IdentifierReference)
                                           expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->           ^^^^^^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends Matcher<infer T> ? T : never   (TyConditional)
+>           ^^^^^^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends Matcher<infer T> ? T : never   (TyConditional) (TSTypeAliasDeclaration)
                         expected: { payload: number; type: "counter/increment"; }
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->                                  ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
+>                                  ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional) (TSTypeReference)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->                                  ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional)
+>                                  ^^^^^^^^^^^^^^^^^: M extends Matcher<infer T> ? T : never   (TyConditional) (IdentifierReference)
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->                                                           ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
+>                                                           ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (IdentifierReference)
                                                              expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export type UnknownCreator = PayloadActionCreator<unknown, 'unknown/value'>
->           ^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"unknown/value">   (TyTypeReference)
+>           ^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"unknown/value">   (TyTypeReference) (TSTypeAliasDeclaration)
 
 export type UnknownCreator = PayloadActionCreator<unknown, 'unknown/value'>
->                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
+>                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional) (TSTypeReference)
 
 export type UnknownCreator = PayloadActionCreator<unknown, 'unknown/value'>
->                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
+>                            ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional) (IdentifierReference)
 
 export type AnythingCreator = PayloadActionCreator<any, 'anything/value'>
->           ^^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"anything/value">   (TyTypeReference)
+>           ^^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"anything/value">   (TyTypeReference) (TSTypeAliasDeclaration)
                    expected: ActionCreatorWithPayload<any, "anything/value">
 
 export type AnythingCreator = PayloadActionCreator<any, 'anything/value'>
->                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
+>                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional) (TSTypeReference)
 
 export type AnythingCreator = PayloadActionCreator<any, 'anything/value'>
->                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional)
+>                             ^^^^^^^^^^^^^^^^^^^^: PA extends (...args: any[]) => any ? _ActionCreatorWithPreparedPayload<PA, T> : IsAny<P, ActionCreatorWithPayload<any, T>, IsUnknownOrNonInferrable<P, ActionCreatorWithNonInferrablePayload<T>, IfVoid<P, ActionCreatorWithoutPayload<T>, IfMaybeUndefined<P, ActionCreatorWithOptionalPayload<P, T>, ActionCreatorWithPayload<P, T>>>>>   (TyConditional) (IdentifierReference)
 
 export type GenericCreator = ActionCreatorWithNonInferrablePayload<'generic/value'>
->           ^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"generic/value">   (TyTypeReference)
+>           ^^^^^^^^^^^^^^: ActionCreatorWithNonInferrablePayload<"generic/value">   (TyTypeReference) (TSTypeAliasDeclaration)
 
 export type GenericCreator = ActionCreatorWithNonInferrablePayload<'generic/value'>
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const unknownCreator: UnknownCreator
->             ^^^^^^^^^^^^^^: UnknownCreator   (TyTypeReference)
+>             ^^^^^^^^^^^^^^: UnknownCreator   (TyTypeReference) (BindingIdentifier)
                     expected: ActionCreatorWithNonInferrablePayload<"unknown/value">
 
 declare const unknownCreator: UnknownCreator
->                             ^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const anythingCreator: AnythingCreator
->             ^^^^^^^^^^^^^^^: AnythingCreator   (TyTypeReference)
+>             ^^^^^^^^^^^^^^^: AnythingCreator   (TyTypeReference) (BindingIdentifier)
                      expected: ActionCreatorWithPayload<any, "anything/value">
 
 declare const anythingCreator: AnythingCreator
->                              ^^^^^^^^^^^^^^^: any   (TyAny)
+>                              ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const genericCreator: GenericCreator
->             ^^^^^^^^^^^^^^: GenericCreator   (TyTypeReference)
+>             ^^^^^^^^^^^^^^: GenericCreator   (TyTypeReference) (BindingIdentifier)
 
 declare const genericCreator: GenericCreator
->                             ^^^^^^^^^^^^^^: any   (TyAny)
+>                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export const unknownValueAction = unknownCreator({ nested: true })
->            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                        expected: { payload: { nested: boolean; }; type: "unknown/value"; }
 
 export const unknownValueAction = unknownCreator({ nested: true })
->                                 ^^^^^^^^^^^^^^: UnknownCreator   (TyTypeReference)
+>                                 ^^^^^^^^^^^^^^: UnknownCreator   (TyTypeReference) (IdentifierReference)
                                         expected: ActionCreatorWithNonInferrablePayload<"unknown/value">
 
 export const unknownValueAction = unknownCreator({ nested: true })
->                                                  ^^^^^^: boolean   (TyBoolean)
+>                                                  ^^^^^^: boolean   (TyBoolean) (ObjectProperty)
                                                  expected: true
 
 export const anythingValueAction = anythingCreator({ count: 1 })
->            ^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                         expected: { payload: any; type: "anything/value"; }
 
 export const anythingValueAction = anythingCreator({ count: 1 })
->                                  ^^^^^^^^^^^^^^^: AnythingCreator   (TyTypeReference)
+>                                  ^^^^^^^^^^^^^^^: AnythingCreator   (TyTypeReference) (IdentifierReference)
                                           expected: ActionCreatorWithPayload<any, "anything/value">
 
 export const anythingValueAction = anythingCreator({ count: 1 })
->                                                    ^^^^^: number   (TyNumber)
+>                                                    ^^^^^: number   (TyNumber) (ObjectProperty)
 
 export const genericValueAction = genericCreator(['a', 'b'])
->            ^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                        expected: { payload: string[]; type: "generic/value"; }
 
 export const genericValueAction = genericCreator(['a', 'b'])
->                                 ^^^^^^^^^^^^^^: GenericCreator   (TyTypeReference)
+>                                 ^^^^^^^^^^^^^^: GenericCreator   (TyTypeReference) (IdentifierReference)
 
 export const matcherAction: IncrementFromMatcher = increment(9)
->            ^^^^^^^^^^^^^: IncrementFromMatcher   (TyTypeReference)
+>            ^^^^^^^^^^^^^: IncrementFromMatcher   (TyTypeReference) (BindingIdentifier)
                   expected: { payload: number; type: "counter/increment"; }
 
 export const matcherAction: IncrementFromMatcher = increment(9)
->                           ^^^^^^^^^^^^^^^^^^^^: any   (TyAny)
+>                           ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export const matcherAction: IncrementFromMatcher = increment(9)
->                                                  ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference)
+>                                                  ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (IdentifierReference)
                                                     expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export const explicitAction: PayloadAction<number, 'counter/increment'> = incrementAction
->            ^^^^^^^^^^^^^^: PayloadAction<number, "counter/increment">   (TyTypeReference)
+>            ^^^^^^^^^^^^^^: PayloadAction<number, "counter/increment">   (TyTypeReference) (BindingIdentifier)
                    expected: { payload: number; type: "counter/increment"; }
 
 export const explicitAction: PayloadAction<number, 'counter/increment'> = incrementAction
->                            ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection)
+>                            ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection) (TSTypeReference)
 
 export const explicitAction: PayloadAction<number, 'counter/increment'> = incrementAction
->                            ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection)
+>                            ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection) (IdentifierReference)
 
 export const explicitAction: PayloadAction<number, 'counter/increment'> = incrementAction
->                                                                         ^^^^^^^^^^^^^^^: any   (TyAny)
+>                                                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                                                                  expected: { payload: number; type: "counter/increment"; }
 
 export const creatorCheck = isActionCreator(addTodo)
->            ^^^^^^^^^^^^: boolean   (TyBoolean)
+>            ^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 export const creatorCheck = isActionCreator(addTodo)
->                           ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (TyFunction)
+>                           ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (TyFunction) (IdentifierReference)
 
 export const creatorCheck = isActionCreator(addTodo)
->                                           ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference)
+>                                           ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference) (IdentifierReference)
                                            expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
