@@ -767,8 +767,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         );
                         computed_member_type.or_undefined(self.arena())
                     }
+                    ChainElement::CallExpression(call_expr) => self
+                        .get_type_of_call_expression(program_id, call_expr, node_id)
+                        .or_undefined(self.arena()),
                     // TODO(completeness): Complete these expressions
-                    ChainElement::CallExpression(_) => Ty::any(),
                     ChainElement::TSNonNullExpression(_) => Ty::any(),
                     ChainElement::PrivateFieldExpression(_) => Ty::any(),
                 }
