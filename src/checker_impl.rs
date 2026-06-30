@@ -3341,6 +3341,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
         let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
         let property_name = member.property.name.as_str();
+        let in_chain = if let Some(node_id) = node_id {
+            matches!(
+                self.semantic(program_id).nodes().parent_kind(node_id),
+                AstKind::ChainExpression(_)
+            )
+        } else {
+            false
+        };
         let ty = self
             .get_property_type_of_structural_type(program_id, object_type, property_name)
             .or_else(|| {
@@ -3378,10 +3386,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             })
             .unwrap_or_else(Ty::any);
-        if matches!(ty, Ty::Function(_)) {
+        let ty = if matches!(ty, Ty::Function(_)) {
             ty
         } else {
             self.get_apparent_type_at_use(program_id, ty, 0)
+        };
+        if in_chain {
+            Ty::union(self.arena(), vec![ty, Ty::undefined()])
+        } else {
+            ty
         }
     }
 

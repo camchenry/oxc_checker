@@ -139,8 +139,7 @@ const optionalName = maybeUser?.name
 >                    ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalName = maybeUser?.name
->                               ^^^^: string   (TyString) (StaticMemberExpression)
-                            expected: string | undefined
+>                               ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalAge = maybeUser?.age
 >     ^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
@@ -172,8 +171,7 @@ const optionalNestedProperty = maybeUser?.nested?.count
                                         expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalNestedProperty = maybeUser?.nested?.count
->                                                 ^^^^^: number   (TyNumber) (StaticMemberExpression)
-                                               expected: number | undefined
+>                                                 ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >     ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -333,8 +331,7 @@ const optionalCallProperty = callback?.(1)?.length
 >                            ^^^^^^^^: ((value: number) => string) | undefined   (TyUnion) (IdentifierReference)
 
 const optionalCallProperty = callback?.(1)?.length
->                                           ^^^^^^: number   (TyNumber) (StaticMemberExpression)
-                                          expected: number | undefined
+>                                           ^^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalServiceCall = service.getUser?.("primary")
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -356,8 +353,7 @@ const optionalServiceCallName = service.getUser?.("primary")?.name
 >                                       ^^^^^^^: ((id: string) => Profile | undefined) | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalServiceCallName = service.getUser?.("primary")?.name
->                                                             ^^^^: string   (TyString) (StaticMemberExpression)
-                                                          expected: string | undefined
+>                                                             ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalMaybeServiceCall = maybeService?.getUser?.("secondary")
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -379,8 +375,7 @@ const optionalMaybeServiceCallName = maybeService?.getUser?.("secondary")?.name
 >                                                  ^^^^^^^: ((id: string) => Profile | undefined) | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalMaybeServiceCallName = maybeService?.getUser?.("secondary")?.name
->                                                                          ^^^^: string   (TyString) (StaticMemberExpression)
-                                                                       expected: string | undefined
+>                                                                          ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalFactoryCall = getFactory?.()
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -408,8 +403,7 @@ const optionalFactoryUserName = getFactory?.().user?.name
 >                                              ^^^^: Profile | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalFactoryUserName = getFactory?.().user?.name
->                                                    ^^^^: string   (TyString) (StaticMemberExpression)
-                                                 expected: string | undefined
+>                                                    ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalFactoryServiceUser = getFactory?.().service?.getUser?.("factory")
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -435,8 +429,7 @@ const optionalWithNonNull = maybeUser?.nested!.count
                                      expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalWithNonNull = maybeUser?.nested!.count
->                                              ^^^^^: number   (TyNumber) (StaticMemberExpression)
-                                            expected: number | undefined
+>                                              ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
 >     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -463,8 +456,7 @@ const optionalGrouped = (maybeUser?.nested)?.count
                                   expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
 
 const optionalGrouped = (maybeUser?.nested)?.count
->                                            ^^^^^: number   (TyNumber) (StaticMemberExpression)
-                                          expected: number | undefined
+>                                            ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalGroupedCall = (maybeUser?.greet)?.("grouped")
 >     ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -483,8 +475,7 @@ const optionalNullish = maybeUser?.name ?? "anonymous"
 >                       ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalNullish = maybeUser?.name ?? "anonymous"
->                                  ^^^^: string   (TyString) (StaticMemberExpression)
-                               expected: string | undefined
+>                                  ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >     ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -515,8 +506,7 @@ const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >                           ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
->                                      ^^^^: string   (TyString) (StaticMemberExpression)
-                                   expected: string | undefined
+>                                      ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >                                             ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
@@ -532,8 +522,7 @@ const optionalTemplate = `user-${maybeUser?.name}`
 >                                ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalTemplate = `user-${maybeUser?.name}`
->                                           ^^^^: string   (TyString) (StaticMemberExpression)
-                                        expected: string | undefined
+>                                           ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const definiteOptionalProperty = definiteUser.tags?.[0]
 >     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -576,8 +565,7 @@ const optionalSatisfies = maybeUser?.name satisfies string | undefined
 >                         ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalSatisfies = maybeUser?.name satisfies string | undefined
->                                    ^^^^: string   (TyString) (StaticMemberExpression)
-                                 expected: string | undefined
+>                                    ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalAs = maybeUser?.age as number | undefined
 >     ^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)

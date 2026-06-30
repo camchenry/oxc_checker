@@ -295,8 +295,7 @@ const narrowed = maybePoint?.x satisfies number | undefined
 >                ^^^^^^^^^^: Point | undefined   (TyUnion) (IdentifierReference)
 
 const narrowed = maybePoint?.x satisfies number | undefined
->                            ^: number   (TyNumber) (StaticMemberExpression)
-                      expected: number | undefined
+>                            ^: number | undefined   (TyUnion) (StaticMemberExpression)
 
 declare function takesPoint<T extends Point>(value: T): T
 >                ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction) (BindingIdentifier)
