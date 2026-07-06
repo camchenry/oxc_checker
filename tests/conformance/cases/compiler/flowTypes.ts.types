@@ -215,5 +215,4 @@ if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAc
 >             ^^^^^^^^^^^: object & Record<"type", unknown>   (TyIntersection) (IdentifierReference)
 
   console.log(maybeAction.type);
->                         ^^^^: any   (TyAny) (StaticMemberExpression)
-                      expected: unknown
+>                         ^^^^: unknown   (TyUnknown) (StaticMemberExpression)

@@ -757,37 +757,31 @@ declare const unionMember: UnionMember;
 >                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const unionKind = unionMember.kind;
->     ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-       expected: "text" | "count"
+>     ^^^^^^^^^: "text" | "count"   (TyUnion) (BindingIdentifier)
 
 const unionKind = unionMember.kind;
 >                 ^^^^^^^^^^^: UnionMember   (TyTypeReference) (IdentifierReference)
 
 const unionKind = unionMember.kind;
->                             ^^^^: any   (TyAny) (StaticMemberExpression)
-                          expected: "text" | "count"
+>                             ^^^^: "text" | "count"   (TyUnion) (StaticMemberExpression)
 
 const unionValue = unionMember.value;
->     ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-        expected: string | number
+>     ^^^^^^^^^^: string | number   (TyUnion) (BindingIdentifier)
 
 const unionValue = unionMember.value;
 >                  ^^^^^^^^^^^: UnionMember   (TyTypeReference) (IdentifierReference)
 
 const unionValue = unionMember.value;
->                              ^^^^^: any   (TyAny) (StaticMemberExpression)
-                            expected: string | number
+>                              ^^^^^: string | number   (TyUnion) (StaticMemberExpression)
 
 const unionCommon = unionMember.common;
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-         expected: boolean
+>     ^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 const unionCommon = unionMember.common;
 >                   ^^^^^^^^^^^: UnionMember   (TyTypeReference) (IdentifierReference)
 
 const unionCommon = unionMember.common;
->                               ^^^^^^: any   (TyAny) (StaticMemberExpression)
-                              expected: boolean
+>                               ^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
 
 type IntersectionMember = { left: string } & { right: number };
 >    ^^^^^^^^^^^^^^^^^^: { left: string; } & { right: number; }   (TyIntersection) (TSTypeAliasDeclaration)

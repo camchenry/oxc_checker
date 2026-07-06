@@ -3907,12 +3907,18 @@ mod test {
 
             const hash: Record<string, string> = { a: '1', b: '2' };
             const hashValue = hash.a;
+
+            declare const rec: Record<'type', unknown>;
+            const recValue = rec.type;
+            const recValue2 = rec.x;
             ",
         );
 
         assert_eq!(get_global_symbol_type(&ret, "userId"), Ty::number());
         assert_eq!(get_global_symbol_type(&ret, "userName"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "hashValue"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "recValue"), Ty::unknown());
+        assert_eq!(get_global_symbol_type(&ret, "recValue2"), Ty::any());
     }
 
     #[test]

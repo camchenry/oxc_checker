@@ -3398,7 +3398,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty<'a>> {
         match ty {
-            Ty::Object(_) | Ty::ModuleNamespace(_) => ty.property_type(self.arena(), property_name),
             Ty::Union(union) => {
                 // TODO(correctness): check if there are cases we don't want to do this.
                 // By default, if we are accessing a property on a type that might be null or undefined,
@@ -3420,25 +3419,56 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Ty::TypeReference(_) => {
                 // Resolve type reference into its underlying type
                 let resolved_type = self.expand_type_at_use(program_id, ty, 0);
-
-                // 1) Try to get a property from the resolved type
-                if let Some(prop_type) = resolved_type.property_type(self.arena(), property_name) {
-                    return Some(prop_type);
+                if matches!(resolved_type, Ty::TypeReference(_)) {
+                    return None;
                 }
-                // 2) Try to get an index signature from the resolved type
-                if let Some(index_infos) = resolved_type.index_infos() {
-                    for index_info in index_infos {
-                        // TODO(correctness): Don't hard-code the key type here
-                        if index_info.key_type == Ty::string() {
-                            return Some(index_info.value_type);
-                        }
-                    }
-                }
-                None
+                self.get_property_type_of_structural_type(program_id, resolved_type, property_name)
             }
             Ty::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_of_structural_type(program_id, *ty, property_name)
             }),
+            Ty::Object(object) => {
+                // Try to get an index signature from the resolved type
+                for index_info in &object.index_infos {
+                    // TODO(correctness): Don't hard-code the key type here
+                    if index_info.key_type == Ty::string() {
+                        return Some(index_info.value_type);
+                    }
+                }
+
+                object.properties.iter().find_map(|property| {
+                    // TODO(correctness): handle all readonly/optional cases
+                    (property.name == property_name && !property.computed).then_some(
+                        if property.optional {
+                            Ty::union(self.arena(), [property.ty, Ty::Undefined])
+                        } else {
+                            property.ty
+                        },
+                    )
+                })
+            }
+            Ty::ModuleNamespace(namespace) => namespace.properties.iter().find_map(|property| {
+                // TODO(correctness): handle all readonly/optional cases
+                (property.name == property_name && !property.computed).then_some(
+                    if property.optional {
+                        Ty::union(self.arena(), [property.ty, Ty::Undefined])
+                    } else {
+                        property.ty
+                    },
+                )
+            }),
+            Ty::Mapped(map) => match map.constraint {
+                Ty::StringLiteral(string_lit) => {
+                    if string_lit.value == property_name {
+                        Some(map.template)
+                    } else {
+                        None
+                    }
+                }
+                // TODO(completeness): handle more cases
+                _ => None,
+            },
+            // TODO(completeness): handle all types explicitly
             _ => None,
         }
     }
