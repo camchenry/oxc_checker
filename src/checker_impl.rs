@@ -28,7 +28,8 @@ use std::collections::HashSet;
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
     checker::{
-        Checker, CheckerReturn, ClassMemberResolution, NodeRef, SymbolRef, TypeParameterResolution,
+        Checker, CheckerReturn, ClassMemberResolution, NodeRef, SymbolRef, TypeAliasMetadata,
+        TypeParameterResolution,
     },
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
@@ -444,9 +445,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if mapped != ty {
                     mapped
                 } else {
-                    Ty::type_reference_with_display_type_argument_count(
-                        self.arena(),
-                        reference.name,
+                    self.rebuild_type_reference_with_display_type_argument_count(
+                        ty,
                         reference
                             .type_arguments
                             .iter()
@@ -1407,9 +1407,93 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_annotation: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Ty<'a> {
         type_annotation.map_or_else(Ty::any, |type_annotation| {
-            self.get_type_from_ts_type(program_id, &type_annotation.type_annotation)
-                .with_implicit_type_arguments_visible(self.arena())
+            let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
+            self.with_implicit_type_arguments_visible(ty)
         })
+    }
+
+    pub(crate) fn with_implicit_type_arguments_visible(&self, ty: Ty<'a>) -> Ty<'a> {
+        match self.arena().type_data(ty) {
+            TypeData::TypeReference(reference) => {
+                let display_type_argument_count = if reference.display_type_argument_count == 0 {
+                    reference.type_arguments.len()
+                } else {
+                    reference.display_type_argument_count
+                };
+                self.rebuild_type_reference_with_display_type_argument_count(
+                    ty,
+                    reference
+                        .type_arguments
+                        .iter()
+                        .map(|ty| self.with_implicit_type_arguments_visible(*ty)),
+                    display_type_argument_count,
+                )
+            }
+            TypeData::Union(union) => Ty::union(
+                self.arena(),
+                union
+                    .types
+                    .iter()
+                    .map(|ty| self.with_implicit_type_arguments_visible(*ty)),
+            ),
+            TypeData::Intersection(intersection) => Ty::intersection(
+                self.arena(),
+                intersection
+                    .types
+                    .iter()
+                    .map(|ty| self.with_implicit_type_arguments_visible(*ty)),
+            ),
+            TypeData::Array(array) => {
+                let element_type = self.with_implicit_type_arguments_visible(array.element_type);
+                if array.readonly {
+                    Ty::readonly_array(self.arena(), element_type)
+                } else {
+                    Ty::array(self.arena(), element_type)
+                }
+            }
+            TypeData::Tuple(tuple) => {
+                let elements = tuple
+                    .elements
+                    .iter()
+                    .map(|element| match element {
+                        TupleElement::Regular(ty) => {
+                            TupleElement::Regular(self.with_implicit_type_arguments_visible(*ty))
+                        }
+                        TupleElement::Rest(ty) => {
+                            TupleElement::Rest(self.with_implicit_type_arguments_visible(*ty))
+                        }
+                        TupleElement::Optional(ty) => {
+                            TupleElement::Optional(self.with_implicit_type_arguments_visible(*ty))
+                        }
+                    })
+                    .collect::<Vec<_>>();
+                if tuple.readonly {
+                    Ty::readonly_tuple(self.arena(), elements)
+                } else {
+                    Ty::tuple(self.arena(), elements)
+                }
+            }
+            _ => ty,
+        }
+    }
+
+    fn rebuild_type_reference_with_display_type_argument_count(
+        &self,
+        source: Ty<'a>,
+        type_arguments: impl IntoIterator<Item = Ty<'a>>,
+        display_type_argument_count: usize,
+    ) -> Ty<'a> {
+        let TypeData::TypeReference(reference) = self.arena().type_data(source) else {
+            return source;
+        };
+        let rebuilt = Ty::type_reference_with_display_type_argument_count(
+            self.arena(),
+            reference.name,
+            type_arguments,
+            display_type_argument_count,
+        );
+        self.copy_type_alias_metadata(source, rebuilt);
+        rebuilt
     }
 
     fn get_type_from_property_signature_annotation(
@@ -2040,8 +2124,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         match self.arena().type_data(ty) {
-            TypeData::TypeReference(reference) => self
-                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+            TypeData::TypeReference(_) => self
+                .get_expanded_type_alias_reference_type(program_id, ty, depth + 1)
                 .map(|(_, expanded)| expanded)
                 .filter(|expanded| expanded.is_index_signature_object(self.arena()))
                 .unwrap_or(ty),
@@ -2119,7 +2203,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
             }
             TypeData::TypeReference(reference) => self
-                .get_expanded_type_alias_reference_type(program_id, reference, 0)
+                .get_expanded_type_alias_reference_type(program_id, object_type, 0)
                 .and_then(|(expanded_program_id, expanded)| {
                     self.get_property_type_for_indexed_access(
                         expanded_program_id,
@@ -2234,9 +2318,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1))
                     .collect::<Vec<_>>();
-                Ty::type_reference_with_display_type_argument_count(
-                    self.arena(),
-                    reference.name,
+                self.rebuild_type_reference_with_display_type_argument_count(
+                    ty,
                     type_arguments,
                     reference.display_type_argument_count,
                 )
@@ -2263,8 +2346,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.expand_type_at_use(program_id, reference.type_arguments[0], depth + 1);
                 self.get_awaited_type(program_id, target)
             }
-            TypeData::TypeReference(reference) => self
-                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+            TypeData::TypeReference(_) => self
+                .get_expanded_type_alias_reference_type(program_id, ty, depth + 1)
                 .map(|(expanded_program_id, expanded)| {
                     self.expand_type_at_use(expanded_program_id, expanded, depth + 1)
                 })
@@ -2353,17 +2436,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1))
                     .collect::<Vec<_>>();
-                let reference_ty = Ty::type_reference_with_display_type_argument_count(
-                    self.arena(),
-                    reference.name,
+                let reference_ty = self.rebuild_type_reference_with_display_type_argument_count(
+                    ty,
                     expanded_arguments,
                     reference.display_type_argument_count,
                 );
-                let TypeData::TypeReference(reference) = self.arena().type_data(reference_ty)
-                else {
-                    return reference_ty;
-                };
-                self.get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                self.get_expanded_type_alias_reference_type(program_id, reference_ty, depth + 1)
                     .map(|(expanded_program_id, expanded)| {
                         self.expand_type_for_index_lookup(expanded_program_id, expanded, depth + 1)
                     })
@@ -2601,8 +2679,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 Some(properties)
             }
-            TypeData::TypeReference(reference) => self
-                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+            TypeData::TypeReference(_) => self
+                .get_expanded_type_alias_reference_type(program_id, ty, depth + 1)
                 .and_then(|(expanded_program_id, expanded)| {
                     self.properties_for_keyof_type(expanded_program_id, expanded, depth + 1)
                 }),
@@ -2658,8 +2736,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             {
                 ty
             }
-            TypeData::TypeReference(reference) => self
-                .get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+            TypeData::TypeReference(_) => self
+                .get_expanded_type_alias_reference_type(program_id, ty, depth + 1)
                 .map(|(expanded_program_id, expanded)| {
                     self.expand_type_at_use(expanded_program_id, expanded, depth + 1)
                 })
@@ -2919,7 +2997,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .unwrap_or_else(|| self.get_type_from_ts_type_reference(program_id, reference)),
             _ => self.get_type_from_ts_type(program_id, ty),
         };
-        ty.with_implicit_type_arguments_visible(self.arena())
+        self.with_implicit_type_arguments_visible(ty)
     }
 
     fn get_transparent_type_alias_assertion_type(
@@ -2987,6 +3065,62 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn type_alias_declaration_node(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+    ) -> Option<NodeId> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSTypeAliasDeclaration(_) => Some(declaration),
+            AstKind::BindingIdentifier(_) => self.type_alias_declaration_node(
+                program_id,
+                self.nodes(program_id).parent_id(declaration),
+            ),
+            _ => None,
+        }
+    }
+
+    fn register_type_alias_metadata(&self, reference_program_id: program::ProgramId, ty: Ty<'a>) {
+        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
+            return;
+        };
+        let Some((alias_symbol, declaration)) =
+            self.get_type_symbol_and_declaration_for_name(reference_program_id, reference.name)
+        else {
+            return;
+        };
+        let Some(declaration) =
+            self.type_alias_declaration_node(alias_symbol.program_id, declaration)
+        else {
+            return;
+        };
+        self.set_type_alias_metadata(
+            ty,
+            TypeAliasMetadata {
+                reference_program_id,
+                alias_symbol,
+                declaration: NodeRef::new(alias_symbol.program_id, declaration),
+            },
+        );
+    }
+
+    fn type_reference_with_display_type_argument_count(
+        &self,
+        program_id: program::ProgramId,
+        name: &'a str,
+        type_arguments: impl IntoIterator<Item = Ty<'a>>,
+        display_type_argument_count: usize,
+    ) -> Ty<'a> {
+        let ty = Ty::type_reference_with_display_type_argument_count(
+            self.arena(),
+            name,
+            type_arguments,
+            display_type_argument_count,
+        );
+        self.register_type_alias_metadata(program_id, ty);
+        ty
+    }
+
     fn get_type_from_ts_type_reference(
         &self,
         program_id: program::ProgramId,
@@ -3012,8 +3146,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return alias_type;
         }
 
-        Ty::type_reference_with_display_type_argument_count(
-            self.arena(),
+        self.type_reference_with_display_type_argument_count(
+            program_id,
             name,
             type_arguments.iter().copied(),
             explicit_type_argument_count
@@ -7032,7 +7166,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::TypeReference(reference) => self
                 .get_property_type_of_structural_type(program_id, object_type, property_name)
                 .or_else(|| {
-                    self.get_expanded_type_alias_reference_type(program_id, reference, depth + 1)
+                    self.get_expanded_type_alias_reference_type(program_id, object_type, depth + 1)
                         .and_then(|(expanded_program_id, expanded)| {
                             self.get_destructured_property_type_at_depth(
                                 expanded_program_id,
@@ -7052,21 +7186,38 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn get_expanded_type_alias_reference_type(
         &self,
         program_id: program::ProgramId,
-        reference: &TyTypeReference<'a>,
+        ty: Ty<'a>,
         depth: usize,
     ) -> Option<(program::ProgramId, Ty<'a>)> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return None;
         }
-        let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
-        let type_arguments = if symbol.program_id != program_id {
+        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
+            return None;
+        };
+        let (reference_program_id, alias_symbol, declaration) =
+            if let Some(metadata) = self.type_alias_metadata(ty) {
+                (
+                    metadata.reference_program_id,
+                    metadata.alias_symbol,
+                    metadata.declaration,
+                )
+            } else {
+                let (alias_symbol, declaration) =
+                    self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+                (
+                    program_id,
+                    alias_symbol,
+                    NodeRef::new(alias_symbol.program_id, declaration),
+                )
+            };
+        let type_arguments = if alias_symbol.program_id != reference_program_id {
             reference
                 .type_arguments
                 .iter()
                 .map(|ty| {
                     self.expand_type_alias_argument_for_foreign_declaration(
-                        program_id,
+                        reference_program_id,
                         *ty,
                         depth + 1,
                     )
@@ -7076,12 +7227,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             reference.type_arguments.iter().copied().collect::<Vec<_>>()
         };
         self.get_expanded_type_alias_declaration(
-            symbol.program_id,
-            declaration,
+            declaration.program_id,
+            declaration.node_id,
             &type_arguments,
             depth + 1,
         )
-        .map(|ty| (symbol.program_id, ty))
+        .map(|ty| (declaration.program_id, ty))
     }
 
     fn get_declared_type_of_formal_parameter(
@@ -7381,6 +7532,65 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         } else {
             false
         }
+    }
+
+    fn location_expands_transparent_type_aliases(&self, location: NodeRef) -> bool {
+        match self.node_kind(location) {
+            AstKind::TSPropertySignature(_)
+            | AstKind::PropertyDefinition(_)
+            | AstKind::FormalParameter(_)
+            | AstKind::FormalParameterRest(_)
+            | AstKind::TSThisParameter(_) => true,
+            AstKind::BindingIdentifier(_) => self
+                .nodes(location.program_id)
+                .ancestor_kinds(location.node_id)
+                .any(|kind| {
+                    matches!(
+                        kind,
+                        AstKind::FormalParameter(_)
+                            | AstKind::FormalParameterRest(_)
+                            | AstKind::TSThisParameter(_)
+                    )
+                }),
+            _ => false,
+        }
+    }
+
+    fn transparent_type_alias_target_at_location(
+        &self,
+        ty: Ty<'a>,
+        location: NodeRef,
+    ) -> Option<Ty<'a>> {
+        let metadata = self.type_alias_metadata(ty)?;
+        let is_default_lib_alias = self
+            .store
+            .entry(metadata.declaration.program_id)
+            .is_some_and(program::ProgramEntry::is_lib);
+        if !is_default_lib_alias && !self.location_expands_transparent_type_aliases(location) {
+            return None;
+        }
+        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
+            return None;
+        };
+        let AstKind::TSTypeAliasDeclaration(alias) = self
+            .nodes(metadata.declaration.program_id)
+            .kind(metadata.declaration.node_id)
+        else {
+            return None;
+        };
+        let substitutions = self.type_parameter_substitutions_for_reference(
+            metadata.declaration.program_id,
+            alias.type_parameters.as_deref(),
+            reference,
+        );
+        let target =
+            self.get_type_from_ts_type(metadata.declaration.program_id, &alias.type_annotation);
+        let target = self.instantiate_type(target, &substitutions.to_mapper(self.arena()));
+        // TODO(correctness): preserve alias-chain display provenance without forwarding through
+        // unrelated reconstructed references.
+        target
+            .is_transparent_type_alias_union_constituent(self.arena())
+            .then_some(target)
     }
 }
 
@@ -7973,8 +8183,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         CheckerReturn::is_assignable_to(self, source, target)
     }
 
-    fn type_to_string(&self, t: Ty<'a>, _location: NodeRef) -> String {
-        t.to_type_string(self.arena())
+    fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String {
+        t.to_type_string_with(self.arena(), &|ty| {
+            self.transparent_type_alias_target_at_location(ty, location)
+        })
     }
 
     fn symbol_to_string(&self, s: SymbolRef, _location: NodeRef) -> String {

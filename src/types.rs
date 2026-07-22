@@ -8,6 +8,7 @@ use oxc_ast::ast::{
     BindingPattern, NumberBase, PropertyKey, TSMappedTypeModifierOperator, TSType,
     TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
 };
+use oxc_index::Idx;
 use oxc_str::Str;
 use std::{cell::RefCell, marker::PhantomData, num::NonZeroU32};
 
@@ -105,6 +106,18 @@ impl TypeId {
 
     pub const fn get(self) -> u32 {
         self.0.get()
+    }
+}
+
+impl Idx for TypeId {
+    const MAX: usize = u32::MAX as usize - 1;
+
+    unsafe fn from_usize_unchecked(index: usize) -> Self {
+        Self(NonZeroU32::new(index as u32 + 1).expect("type IDs must be nonzero"))
+    }
+
+    fn index(self) -> usize {
+        Self::index(self)
     }
 }
 
@@ -1488,6 +1501,14 @@ impl<'a> Ty<'a> {
 
     #[allow(dead_code)]
     pub(crate) fn to_type_string(self, arena: CheckerArena<'a>) -> String {
+        self.to_type_string_with(arena, &|_| None)
+    }
+
+    pub(crate) fn to_type_string_with(
+        self,
+        arena: CheckerArena<'a>,
+        replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
+    ) -> String {
         TYPE_STRING_DEPTH.with(|depth| {
             let current = depth.get();
             if current >= TYPE_STRING_MAX_DEPTH {
@@ -1495,13 +1516,17 @@ impl<'a> Ty<'a> {
             }
 
             depth.set(current + 1);
-            let result = self.to_type_string_inner(arena);
+            let result = self.to_type_string_inner(arena, replace_type_reference);
             depth.set(current);
             result
         })
     }
 
-    fn to_type_string_inner(self, arena: CheckerArena<'a>) -> String {
+    fn to_type_string_inner(
+        self,
+        arena: CheckerArena<'a>,
+        replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
+    ) -> String {
         match arena.type_data(self) {
             TypeData::None => "none".to_string(),
             TypeData::Number => "number".to_string(),
@@ -1539,8 +1564,10 @@ impl<'a> Ty<'a> {
                             "{}[{}: {}]: {};",
                             readonly,
                             info.name,
-                            info.key_type.to_type_string(arena),
-                            info.value_type.to_type_string(arena)
+                            info.key_type
+                                .to_type_string_with(arena, replace_type_reference),
+                            info.value_type
+                                .to_type_string_with(arena, replace_type_reference)
                         )
                     }))
                     .chain(object.properties.iter().map(|property| {
@@ -1559,7 +1586,9 @@ impl<'a> Ty<'a> {
                                 "{}{}: {};",
                                 readonly,
                                 property_name_to_type_string(property),
-                                property.ty.to_type_string(arena)
+                                property
+                                    .ty
+                                    .to_type_string_with(arena, replace_type_reference)
                             )
                         }
                     }))
@@ -1570,6 +1599,11 @@ impl<'a> Ty<'a> {
             TypeData::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
             TypeData::Function(function) => function_type_to_string(arena, function),
             TypeData::TypeReference(reference) => {
+                if let Some(replacement) = replace_type_reference(self)
+                    && replacement != self
+                {
+                    return replacement.to_type_string_with(arena, replace_type_reference);
+                }
                 if reference.display_type_argument_count == 0 {
                     reference.name.to_string()
                 } else {
@@ -1577,7 +1611,7 @@ impl<'a> Ty<'a> {
                         .type_arguments
                         .iter()
                         .take(reference.display_type_argument_count)
-                        .map(|ty| ty.to_type_string(arena))
+                        .map(|ty| ty.to_type_string_with(arena, replace_type_reference))
                         .collect::<Vec<_>>()
                         .join(", ");
                     format!("{}<{type_arguments}>", reference.name)
@@ -1590,7 +1624,7 @@ impl<'a> Ty<'a> {
                     let type_arguments = query
                         .type_arguments
                         .iter()
-                        .map(|ty| ty.to_type_string(arena))
+                        .map(|ty| ty.to_type_string_with(arena, replace_type_reference))
                         .collect::<Vec<_>>()
                         .join(", ");
                     format!("typeof {}<{type_arguments}>", query.name)
@@ -1628,7 +1662,9 @@ impl<'a> Ty<'a> {
                     repr.push_str(quasi.value);
                     if let Some(expression) = template_literal.expressions.get(index) {
                         repr.push_str("${");
-                        repr.push_str(&expression.to_type_string(arena));
+                        repr.push_str(
+                            &expression.to_type_string_with(arena, replace_type_reference),
+                        );
                         repr.push('}');
                     }
                 }
@@ -1640,7 +1676,9 @@ impl<'a> Ty<'a> {
                         .skip(template_literal.quasis.len())
                     {
                         repr.push_str("${");
-                        repr.push_str(&expression.to_type_string(arena));
+                        repr.push_str(
+                            &expression.to_type_string_with(arena, replace_type_reference),
+                        );
                         repr.push('}');
                     }
                 }
@@ -1649,7 +1687,9 @@ impl<'a> Ty<'a> {
                 repr
             }
             TypeData::Array(array) => {
-                let element_type = array.element_type.to_type_string(arena);
+                let element_type = array
+                    .element_type
+                    .to_type_string_with(arena, replace_type_reference);
                 let body = if array.element_type.display_needs_parentheses(arena) {
                     format!("({element_type})[]")
                 } else {
@@ -1666,10 +1706,15 @@ impl<'a> Ty<'a> {
                     .elements
                     .iter()
                     .map(|element| match element {
-                        TupleElement::Regular(ty) => ty.to_type_string(arena),
-                        TupleElement::Rest(ty) => format!("...{}", ty.to_type_string(arena)),
+                        TupleElement::Regular(ty) => {
+                            ty.to_type_string_with(arena, replace_type_reference)
+                        }
+                        TupleElement::Rest(ty) => format!(
+                            "...{}",
+                            ty.to_type_string_with(arena, replace_type_reference)
+                        ),
                         TupleElement::Optional(ty) => {
-                            let ty = ty.to_type_string(arena);
+                            let ty = ty.to_type_string_with(arena, replace_type_reference);
                             if element_type_needs_parentheses(arena, element) {
                                 format!("({ty})?")
                             } else {
@@ -1689,7 +1734,7 @@ impl<'a> Ty<'a> {
                 .types
                 .iter()
                 .map(|ty| {
-                    let type_string = ty.to_type_string(arena);
+                    let type_string = ty.to_type_string_with(arena, replace_type_reference);
                     if ty.display_needs_parentheses(arena) {
                         format!("({type_string})")
                     } else {
@@ -1702,7 +1747,7 @@ impl<'a> Ty<'a> {
                 .types
                 .iter()
                 .map(|ty| {
-                    let type_string = ty.to_type_string(arena);
+                    let type_string = ty.to_type_string_with(arena, replace_type_reference);
                     if ty.display_needs_parentheses(arena) {
                         format!("({type_string})")
                     } else {
@@ -1712,7 +1757,9 @@ impl<'a> Ty<'a> {
                 .collect::<Vec<_>>()
                 .join(" & "),
             TypeData::Keyof(keyof) => {
-                let target = keyof.target.to_type_string(arena);
+                let target = keyof
+                    .target
+                    .to_type_string_with(arena, replace_type_reference);
                 if keyof.target.display_needs_parentheses(arena) {
                     format!("keyof ({target})")
                 } else {
@@ -1720,8 +1767,12 @@ impl<'a> Ty<'a> {
                 }
             }
             TypeData::IndexedAccess(indexed_access) => {
-                let object_type = indexed_access.object_type.to_type_string(arena);
-                let index_type = indexed_access.index_type.to_type_string(arena);
+                let object_type = indexed_access
+                    .object_type
+                    .to_type_string_with(arena, replace_type_reference);
+                let index_type = indexed_access
+                    .index_type
+                    .to_type_string_with(arena, replace_type_reference);
                 if indexed_access.object_type.display_needs_parentheses(arena) {
                     format!("({object_type})[{index_type}]")
                 } else {
@@ -1729,8 +1780,12 @@ impl<'a> Ty<'a> {
                 }
             }
             TypeData::Conditional(conditional) => {
-                let check_type = conditional.check_type.to_type_string(arena);
-                let extends_type = conditional.extends_type.to_type_string(arena);
+                let check_type = conditional
+                    .check_type
+                    .to_type_string_with(arena, replace_type_reference);
+                let extends_type = conditional
+                    .extends_type
+                    .to_type_string_with(arena, replace_type_reference);
                 let check_type = if conditional.check_type.display_needs_parentheses(arena) {
                     format!("({check_type})")
                 } else {
@@ -1746,8 +1801,12 @@ impl<'a> Ty<'a> {
                 };
                 format!(
                     "{check_type} extends {extends_type} ? {} : {}",
-                    conditional.true_type.to_type_string(arena),
-                    conditional.false_type.to_type_string(arena)
+                    conditional
+                        .true_type
+                        .to_type_string_with(arena, replace_type_reference),
+                    conditional
+                        .false_type
+                        .to_type_string_with(arena, replace_type_reference)
                 )
             }
             TypeData::Infer(infer) => format!(
@@ -1766,10 +1825,14 @@ impl<'a> Ty<'a> {
                 s.push('[');
                 s.push_str(mapped.key);
                 s.push_str(" in ");
-                s.push_str(&mapped.constraint.to_type_string(arena));
+                s.push_str(
+                    &mapped
+                        .constraint
+                        .to_type_string_with(arena, replace_type_reference),
+                );
                 if let Some(name_type) = mapped.name_type {
                     s.push_str(" as ");
-                    s.push_str(&name_type.to_type_string(arena));
+                    s.push_str(&name_type.to_type_string_with(arena, replace_type_reference));
                 }
                 s.push(']');
                 let suffix = match mapped.optional {
@@ -1780,7 +1843,11 @@ impl<'a> Ty<'a> {
                 };
                 s.push_str(suffix);
                 s.push_str(": ");
-                s.push_str(&mapped.template.to_type_string(arena));
+                s.push_str(
+                    &mapped
+                        .template
+                        .to_type_string_with(arena, replace_type_reference),
+                );
                 s.push_str("; }");
                 s
             }
@@ -1797,74 +1864,6 @@ impl<'a> Ty<'a> {
                 | TypeData::Conditional(_)
                 | TypeData::Infer(_)
         )
-    }
-
-    pub(crate) fn with_implicit_type_arguments_visible(self, arena: CheckerArena<'a>) -> Self {
-        match arena.type_data(self) {
-            TypeData::TypeReference(reference) => {
-                let display_type_argument_count = if reference.display_type_argument_count == 0 {
-                    reference.type_arguments.len()
-                } else {
-                    reference.display_type_argument_count
-                };
-                Self::type_reference_with_display_type_argument_count(
-                    arena,
-                    reference.name,
-                    reference
-                        .type_arguments
-                        .iter()
-                        .map(|ty| ty.with_implicit_type_arguments_visible(arena)),
-                    display_type_argument_count,
-                )
-            }
-            TypeData::Union(union) => Self::r#union(
-                arena,
-                union
-                    .types
-                    .iter()
-                    .map(|ty| ty.with_implicit_type_arguments_visible(arena)),
-            ),
-            TypeData::Intersection(intersection) => Self::intersection(
-                arena,
-                intersection
-                    .types
-                    .iter()
-                    .map(|ty| ty.with_implicit_type_arguments_visible(arena)),
-            ),
-            TypeData::Array(array) => {
-                let element_type = array
-                    .element_type
-                    .with_implicit_type_arguments_visible(arena);
-                if array.readonly {
-                    Self::readonly_array(arena, element_type)
-                } else {
-                    Self::array(arena, element_type)
-                }
-            }
-            TypeData::Tuple(tuple) => {
-                let elements = tuple
-                    .elements
-                    .iter()
-                    .map(|element| match element {
-                        TupleElement::Regular(ty) => {
-                            TupleElement::Regular(ty.with_implicit_type_arguments_visible(arena))
-                        }
-                        TupleElement::Rest(ty) => {
-                            TupleElement::Rest(ty.with_implicit_type_arguments_visible(arena))
-                        }
-                        TupleElement::Optional(ty) => {
-                            TupleElement::Optional(ty.with_implicit_type_arguments_visible(arena))
-                        }
-                    })
-                    .collect::<Vec<_>>();
-                if tuple.readonly {
-                    Self::readonly_tuple(arena, elements)
-                } else {
-                    Self::tuple(arena, elements)
-                }
-            }
-            _ => self,
-        }
     }
 
     pub(crate) fn with_signatures(

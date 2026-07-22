@@ -795,6 +795,106 @@ mod test {
     }
 
     #[test]
+    fn checker_renders_transparent_default_lib_type_aliases() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "const value: Base64URLString[] = []; interface Shape { method(value: Base64URLString): Base64URLString; }",
+        );
+        let checker = checker(&ret);
+        let alias_symbol = checker
+            .get_type_symbol_for_name(ret.program_id, "Base64URLString")
+            .expect("expected Base64URLString from the default library");
+        assert!(checker.entry(alias_symbol.program_id).is_lib());
+        let alias_declaration = checker
+            .semantic(alias_symbol.program_id)
+            .scoping()
+            .symbol_declaration(alias_symbol.symbol_id);
+        assert!(matches!(
+            checker.node_kind(NodeRef::new(alias_symbol.program_id, alias_declaration)),
+            AstKind::TSTypeAliasDeclaration(_) | AstKind::BindingIdentifier(_)
+        ));
+        let node_id = ret
+            .store
+            .entry(ret.program_id)
+            .unwrap()
+            .semantic()
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier) if identifier.name == Ident::from("value")
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+        let node = NodeRef::new(ret.program_id, node_id);
+        let ty = checker.get_type_at_location(node);
+        let TypeData::Array(array) = checker.arena.type_data(ty) else {
+            panic!("expected an array type");
+        };
+        let method_node_id = ret
+            .store
+            .entry(ret.program_id)
+            .unwrap()
+            .semantic()
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::TSMethodSignature(_)).then_some(node_id)
+            })
+            .unwrap();
+        let method_node = NodeRef::new(ret.program_id, method_node_id);
+        let method_type = checker.get_type_at_location(method_node);
+
+        assert!(checker.type_alias_metadata(array.element_type).is_some());
+        assert_eq!(ty.to_type_string(checker.arena), "Base64URLString[]");
+        assert_eq!(checker.type_to_string(ty, node), "string[]");
+        assert_eq!(
+            checker.type_to_string(method_type, method_node),
+            "(value: Base64URLString) => Base64URLString"
+        );
+    }
+
+    #[test]
+    fn checker_renders_transparent_local_type_aliases_by_display_context() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "type Text = string; interface Shape { property: Text; } const value: Text = \"\";",
+        );
+        let checker = checker(&ret);
+        let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+        let property_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::TSPropertySignature(_)).then_some(node_id)
+            })
+            .unwrap();
+        let value_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier) if identifier.name == Ident::from("value")
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+        let property_node = NodeRef::new(ret.program_id, property_node_id);
+        let value_node = NodeRef::new(ret.program_id, value_node_id);
+        let property_type = checker.get_type_at_location(property_node);
+        let value_type = checker.get_type_at_location(value_node);
+
+        assert_eq!(
+            checker.type_to_string(property_type, property_node),
+            "string"
+        );
+        assert_eq!(checker.type_to_string(value_type, value_node), "Text");
+    }
+
+    #[test]
     fn without_default_lib_has_no_global_type_symbols() {
         let allocator = Allocator::default();
         let host = TestProgramHost::new("/project").add_file("/project/main.ts", "const x = 1;");

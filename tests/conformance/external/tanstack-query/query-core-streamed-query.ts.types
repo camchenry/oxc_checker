@@ -998,19 +998,16 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference) (IdentifierReference)
 
   reducer: (data, todo) => ({
-> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: { id: number; title: string; }) => { pages: (Todo | { id: number; title: string; })[]; pageParams: number[]; }   (TyFunction) (ObjectProperty)
- expected: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }
+> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }   (TyFunction) (ObjectProperty)
 
   reducer: (data, todo) => ({
 >           ^^^^: InfiniteData<Todo, number>   (TyTypeReference) (BindingIdentifier)
 
   reducer: (data, todo) => ({
->                 ^^^^: { id: number; title: string; }   (TyObject) (BindingIdentifier)
-              expected: Todo
+>                 ^^^^: Todo   (TyTypeReference) (BindingIdentifier)
 
     pages: [...data.pages, todo],
->   ^^^^^: (Todo | { id: number; title: string; })[]   (TyArray) (ObjectProperty)
- expected: Todo[]
+>   ^^^^^: Todo[]   (TyArray) (ObjectProperty)
 
     pages: [...data.pages, todo],
 >              ^^^^: InfiniteData<Todo, number>   (TyTypeReference) (IdentifierReference)
@@ -1019,8 +1016,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                   ^^^^^: Todo[]   (TyArray) (StaticMemberExpression)
 
     pages: [...data.pages, todo],
->                          ^^^^: { id: number; title: string; }   (TyObject) (IdentifierReference)
-                       expected: Todo
+>                          ^^^^: Todo   (TyTypeReference) (IdentifierReference)
 
     pageParams: [...data.pageParams, pageParam],
 >   ^^^^^^^^^^: number[]   (TyArray) (ObjectProperty)

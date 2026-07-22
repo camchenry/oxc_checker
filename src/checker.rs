@@ -19,6 +19,13 @@ pub struct ClassMemberResolution {
     pub(crate) is_static: bool,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct TypeAliasMetadata {
+    pub(crate) reference_program_id: ProgramId,
+    pub(crate) alias_symbol: SymbolRef,
+    pub(crate) declaration: NodeRef,
+}
+
 pub struct CheckerReturn<'a, 'store> {
     pub store: &'store ProgramStore<'a>,
     pub arena: CheckerArena<'a>,
@@ -26,6 +33,7 @@ pub struct CheckerReturn<'a, 'store> {
     // TODO(perf): these should use the Arena Vec/HashMap?
     pub declared_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
     pub value_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
+    pub(crate) type_alias_metadata_by_type: RefCell<IndexVec<TypeId, Option<TypeAliasMetadata>>>,
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
@@ -53,6 +61,26 @@ impl<'a> CheckerReturn<'a, '_> {
 
     pub fn is_type_identical_to(&self, left: Ty<'a>, right: Ty<'a>) -> bool {
         self.arena.is_type_identical_to(left, right)
+    }
+
+    pub(crate) fn set_type_alias_metadata(&self, ty: Ty<'a>, metadata: TypeAliasMetadata) {
+        let mut metadata_by_type = self.type_alias_metadata_by_type.borrow_mut();
+        metadata_by_type.resize(self.arena.type_count(), None);
+        metadata_by_type[ty.id()] = Some(metadata);
+    }
+
+    pub(crate) fn type_alias_metadata(&self, ty: Ty<'a>) -> Option<TypeAliasMetadata> {
+        self.type_alias_metadata_by_type
+            .borrow()
+            .get(ty.id())
+            .copied()
+            .flatten()
+    }
+
+    pub(crate) fn copy_type_alias_metadata(&self, source: Ty<'a>, target: Ty<'a>) {
+        if let Some(metadata) = self.type_alias_metadata(source) {
+            self.set_type_alias_metadata(target, metadata);
+        }
     }
 }
 
@@ -159,6 +187,10 @@ impl CheckerBuilder {
                     })
                     .collect(),
             ),
+            type_alias_metadata_by_type: RefCell::new(IndexVec::from_vec(vec![
+                None;
+                arena.type_count()
+            ])),
             interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_type_aliases: RefCell::new(Vec::new()),
