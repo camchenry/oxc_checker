@@ -1,9 +1,9 @@
-- read the README, it's important
-- run `cargo conformance` for full verification after making any changes
-- architecture-wise, aim to be similar to `typescript-go` codebase and use that as a reference for correctness
-- if something should be addressed later, leave a TODO. for example:`TODO(perf)`, `TODO`, `TODO(correctness)`
-- don't hard-code things or overfit to the test data. do the more general and more correct method always, unless it's for performance.
-- don't just check global types by name, we have to take into account that types like `Record`, could just be named that by the user.
+- Read the README, it's important
+- Run `cargo conformance` for full verification after making any changes
+- Use `typescript-go` codebase as an architectural and correctness reference.
+- If something should be addressed later, leave a TODO. for example:`TODO(perf)`, `TODO`, `TODO(correctness)`
+- Altitude: Make sure each change is implemented at the right depth, not as a fragile bandaid. Special cases layered on shared infrastructure are a sign the fix isn't deep enough — prefer generalizing the underlying mechanism over adding special cases or overfitting to the test data.
+  - Example: Don't just check global types by name, we have to take into account that types like `Record`, could just be named that by the user.
 
 ## TypeScript conformance tests
 
