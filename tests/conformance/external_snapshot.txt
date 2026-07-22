@@ -250,7 +250,7 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-act
       actual:   PayloadActionCreator<void, "todos/add">
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:47 `IncrementFromMatcher` type mismatch
       expected: { payload: number; type: "counter/increment"; }
-      actual:   ActionCreatorWithPayload<number, "counter/increment"> extends Matcher<infer T> ? T : never
+      actual:   ActionCreatorWithPayload<number, "counter/increment"> extends HasMatchFunction<infer T> | TypeGuard<infer T> ? T : never
   - tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts:47 `increment` type mismatch
       expected: ActionCreatorWithPayload<number, "counter/increment">
       actual:   PayloadActionCreator<number, "counter/increment">
@@ -476,7 +476,7 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tes
       actual:   <missing>
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:15 `TaggedTodoData` type mismatch
       expected: Todo[]
-      actual:   (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string
+      actual:   (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : string
   - tests/conformance/external/tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts:15 `InferDataFromTag` type mismatch
       expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
       actual:   TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData

@@ -1,7 +1,7 @@
 use crate::{
     checker::CheckerReturn,
     limits::ASSIGNABILITY_MAX_DEPTH,
-    types::{Ty, TyTypePredicate},
+    types::{CheckerArena, Ty, TyTypePredicate, TypeData},
 };
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
@@ -10,32 +10,39 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 }
 
-pub(crate) fn is_assignable_to_without_checker<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
-    is_assignable_to_at_depth_without_checker(source, target, 0)
+pub(crate) fn is_assignable_to_without_checker<'a>(
+    arena: CheckerArena<'a>,
+    source: Ty<'a>,
+    target: Ty<'a>,
+) -> bool {
+    is_assignable_to_at_depth_without_checker(arena, source, target, 0)
 }
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn is_assignable_to_at_depth(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
-        is_assignable_to_at_depth(source, target, depth, |source, target, depth| {
-            self.is_assignable_to_at_depth(source, target, depth)
-        })
+        is_assignable_to_at_depth(
+            self.arena(),
+            source,
+            target,
+            depth,
+            |source, target, depth| self.is_assignable_to_at_depth(source, target, depth),
+        )
     }
 }
 
 fn is_assignable_to_at_depth_without_checker<'a>(
+    arena: CheckerArena<'a>,
     source: Ty<'a>,
     target: Ty<'a>,
     depth: usize,
 ) -> bool {
-    is_assignable_to_at_depth(
-        source,
-        target,
-        depth,
-        is_assignable_to_at_depth_without_checker,
-    )
+    is_assignable_to_at_depth(arena, source, target, depth, |source, target, depth| {
+        is_assignable_to_at_depth_without_checker(arena, source, target, depth)
+    })
 }
 
 fn is_assignable_to_at_depth<'a>(
+    arena: CheckerArena<'a>,
     source: Ty<'a>,
     target: Ty<'a>,
     depth: usize,
@@ -50,72 +57,74 @@ fn is_assignable_to_at_depth<'a>(
 
     let next_depth = depth + 1;
 
-    match (source, target) {
+    match (arena.type_data(source), arena.type_data(target)) {
         // `never` is not assignable to any type
-        (Ty::Never, _) => true,
+        (TypeData::Never, _) => true,
         // Nothing is assignable to `never`
-        (_, Ty::Never) => false,
+        (_, TypeData::Never) => false,
         // `any` is assignable to any type and any type is assignable to `any`
-        (_, Ty::Any) | (Ty::Any, _) => true,
+        (_, TypeData::Any) | (TypeData::Any, _) => true,
         // Any type is assignable to `unknown`
-        (_, Ty::Unknown) => true,
+        (_, TypeData::Unknown) => true,
         // Unlike `any`, `unknown` is not assignable to any type (except for `any`)
-        (Ty::Unknown, _) => false,
+        (TypeData::Unknown, _) => false,
         // `undefined` is assignable to `void`
-        (Ty::Undefined, Ty::Void) => true,
-        (Ty::Object(source), Ty::Object(target)) => properties_assignable_to(
+        (TypeData::Undefined, TypeData::Void) => true,
+        (TypeData::Object(source), TypeData::Object(target)) => properties_assignable_to(
             &source.properties,
             &target.properties,
             next_depth,
             is_assignable_to_at_depth,
         ),
-        (Ty::PrimitiveObject, Ty::Object(target)) => properties_assignable_to(
+        (TypeData::PrimitiveObject, TypeData::Object(target)) => properties_assignable_to(
             &[],
             &target.properties,
             next_depth,
             is_assignable_to_at_depth,
         ),
-        (Ty::Object(source), Ty::PrimitiveObject) => properties_assignable_to(
+        (TypeData::Object(source), TypeData::PrimitiveObject) => properties_assignable_to(
             &source.properties,
             &[],
             next_depth,
             is_assignable_to_at_depth,
         ),
-        (Ty::ModuleNamespace(source), Ty::Object(target)) => properties_assignable_to(
+        (TypeData::ModuleNamespace(source), TypeData::Object(target)) => properties_assignable_to(
             &source.properties,
             &target.properties,
             next_depth,
             is_assignable_to_at_depth,
         ),
-        (Ty::Object(source), Ty::ModuleNamespace(target)) => properties_assignable_to(
+        (TypeData::Object(source), TypeData::ModuleNamespace(target)) => properties_assignable_to(
             &source.properties,
             &target.properties,
             next_depth,
             is_assignable_to_at_depth,
         ),
-        (Ty::ModuleNamespace(source), Ty::ModuleNamespace(target)) => properties_assignable_to(
-            &source.properties,
-            &target.properties,
-            next_depth,
-            is_assignable_to_at_depth,
-        ),
-        (Ty::Union(source), target) => source
+        (TypeData::ModuleNamespace(source), TypeData::ModuleNamespace(target)) => {
+            properties_assignable_to(
+                &source.properties,
+                &target.properties,
+                next_depth,
+                is_assignable_to_at_depth,
+            )
+        }
+        (TypeData::Union(source_union), _) => source_union
             .types
             .iter()
             .all(|source_type| is_assignable_to_at_depth(*source_type, target, next_depth)),
-        (source, Ty::Union(target)) => target
+        (_, TypeData::Union(target_union)) => target_union
             .types
             .iter()
             .any(|target_type| is_assignable_to_at_depth(source, *target_type, next_depth)),
-        (Ty::Intersection(intersection), Ty::Object(obj)) => intersection
+        (TypeData::Intersection(intersection), TypeData::Object(_)) => intersection
             .types
             .iter()
-            .all(|t| is_assignable_to_at_depth(Ty::Object(obj), *t, next_depth)),
-        (Ty::Object(obj), Ty::Intersection(intersection)) => intersection
+            .all(|ty| is_assignable_to_at_depth(target, *ty, next_depth)),
+        (TypeData::Object(_), TypeData::Intersection(intersection)) => intersection
             .types
             .iter()
-            .all(|t| is_assignable_to_at_depth(Ty::Object(obj), *t, next_depth)),
-        (Ty::Function(source), Ty::Function(target)) => {
+            .all(|ty| is_assignable_to_at_depth(source, *ty, next_depth)),
+        (TypeData::Function(source), TypeData::Function(target)) => {
             source.parameters.len() == target.parameters.len()
                 && source.parameters.iter().zip(target.parameters.iter()).all(
                     |(source_parameter, target_parameter)| {
@@ -133,7 +142,7 @@ fn is_assignable_to_at_depth<'a>(
                     is_assignable_to_at_depth,
                 )
         }
-        (Ty::TypeReference(source), Ty::TypeReference(target)) => {
+        (TypeData::TypeReference(source), TypeData::TypeReference(target)) => {
             source.name == target.name
                 && source.type_arguments.len() == target.type_arguments.len()
                 && source
@@ -144,7 +153,7 @@ fn is_assignable_to_at_depth<'a>(
                         is_assignable_to_at_depth(*source_argument, *target_argument, next_depth)
                     })
         }
-        (Ty::TypeQuery(source), Ty::TypeQuery(target)) => {
+        (TypeData::TypeQuery(source), TypeData::TypeQuery(target)) => {
             source.name == target.name
                 && source.type_arguments.len() == target.type_arguments.len()
                 && source
@@ -156,19 +165,21 @@ fn is_assignable_to_at_depth<'a>(
                     })
         }
         // A `typeof X` query is transparently compatible with whatever the queried symbol's type allows.
-        (Ty::TypeQuery(source), _) => {
+        (TypeData::TypeQuery(source), _) => {
             is_assignable_to_at_depth(source.resolved, target, next_depth)
         }
-        (_, Ty::TypeQuery(target)) => {
+        (_, TypeData::TypeQuery(target)) => {
             is_assignable_to_at_depth(source, target.resolved, next_depth)
         }
-        (Ty::Array(source), Ty::Array(target)) => {
+        (TypeData::Array(source), TypeData::Array(target)) => {
             is_assignable_to_at_depth(source.element_type, target.element_type, next_depth)
         }
-        (Ty::Tuple(source), Ty::Array(target)) => source.elements.iter().all(|element| {
-            is_assignable_to_at_depth(element.ty(), target.element_type, next_depth)
-        }),
-        (Ty::Tuple(source), Ty::Tuple(target)) => {
+        (TypeData::Tuple(source), TypeData::Array(target)) => {
+            source.elements.iter().all(|element| {
+                is_assignable_to_at_depth(element.ty(), target.element_type, next_depth)
+            })
+        }
+        (TypeData::Tuple(source), TypeData::Tuple(target)) => {
             source.elements.len() == target.elements.len()
                 && source.elements.iter().zip(target.elements.iter()).all(
                     |(source_element, target_element)| {
@@ -181,46 +192,48 @@ fn is_assignable_to_at_depth<'a>(
                     },
                 )
         }
-        (Ty::UniqueSymbol(_), Ty::Symbol) => true,
-        (Ty::NumberLiteral(_), Ty::Number) => true,
-        (Ty::StringLiteral(_), Ty::String) => true,
-        (Ty::StringLiteral(source), Ty::StringLiteral(target)) => {
+        (TypeData::UniqueSymbol(_), TypeData::Symbol) => true,
+        (TypeData::NumberLiteral(_), TypeData::Number) => true,
+        (TypeData::StringLiteral(_), TypeData::String) => true,
+        (TypeData::StringLiteral(source), TypeData::StringLiteral(target)) => {
             string_literal_type_to_property_name(source.value)
                 == string_literal_type_to_property_name(target.value)
         }
-        (Ty::BooleanLiteral(_), Ty::Boolean) => true,
-        (source, Ty::Keyof(target)) => is_assignable_to_keyof(source, target.target, next_depth),
+        (TypeData::BooleanLiteral(_), TypeData::Boolean) => true,
+        (_, TypeData::Keyof(keyof)) => {
+            is_assignable_to_keyof(arena, source, keyof.target, next_depth)
+        }
         // Base case: if we can't find a more specific rule, we default to false but do so explicitly so that we can
         // catch any missing cases during development.
         (
-            Ty::Number
-            | Ty::String
-            | Ty::Bigint
-            | Ty::Boolean
-            | Ty::Null
-            | Ty::Undefined
-            | Ty::Void
-            | Ty::Symbol
-            | Ty::PrimitiveObject
-            | Ty::This
-            | Ty::BigIntLiteral(_)
-            | Ty::StringLiteral(_)
-            | Ty::NumberLiteral(_)
-            | Ty::TemplateLiteral(_)
-            | Ty::BooleanLiteral(_)
-            | Ty::Function(_)
-            | Ty::TypeReference(_)
-            | Ty::Array(_)
-            | Ty::Tuple(_)
-            | Ty::UniqueSymbol(_)
-            | Ty::Mapped(_)
-            | Ty::Object(_)
-            | Ty::Keyof(_)
-            | Ty::ModuleNamespace(_)
-            | Ty::Infer(_)
-            | Ty::Conditional(_)
-            | Ty::IndexedAccess(_)
-            | Ty::Intersection(_),
+            TypeData::Number
+            | TypeData::String
+            | TypeData::Bigint
+            | TypeData::Boolean
+            | TypeData::Null
+            | TypeData::Undefined
+            | TypeData::Void
+            | TypeData::Symbol
+            | TypeData::PrimitiveObject
+            | TypeData::This
+            | TypeData::BigIntLiteral(_)
+            | TypeData::StringLiteral(_)
+            | TypeData::NumberLiteral(_)
+            | TypeData::TemplateLiteral(_)
+            | TypeData::BooleanLiteral(_)
+            | TypeData::Function(_)
+            | TypeData::TypeReference(_)
+            | TypeData::Array(_)
+            | TypeData::Tuple(_)
+            | TypeData::UniqueSymbol(_)
+            | TypeData::Mapped(_)
+            | TypeData::Object(_)
+            | TypeData::Keyof(_)
+            | TypeData::ModuleNamespace(_)
+            | TypeData::Infer(_)
+            | TypeData::Conditional(_)
+            | TypeData::IndexedAccess(_)
+            | TypeData::Intersection(_),
             _,
         ) => {
             // panic!("I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}")
@@ -228,53 +241,60 @@ fn is_assignable_to_at_depth<'a>(
         }
         (
             _,
-            Ty::Number
-            | Ty::String
-            | Ty::Bigint
-            | Ty::Boolean
-            | Ty::Null
-            | Ty::Undefined
-            | Ty::Void
-            | Ty::Symbol
-            | Ty::PrimitiveObject
-            | Ty::This
-            | Ty::BigIntLiteral(_)
-            | Ty::StringLiteral(_)
-            | Ty::NumberLiteral(_)
-            | Ty::TemplateLiteral(_)
-            | Ty::BooleanLiteral(_)
-            | Ty::Function(_)
-            | Ty::TypeReference(_)
-            | Ty::Array(_)
-            | Ty::Tuple(_)
-            | Ty::UniqueSymbol(_)
-            | Ty::Mapped(_)
-            | Ty::Object(_)
-            | Ty::ModuleNamespace(_)
-            | Ty::Infer(_)
-            | Ty::Conditional(_)
-            | Ty::IndexedAccess(_),
+            TypeData::Number
+            | TypeData::String
+            | TypeData::Bigint
+            | TypeData::Boolean
+            | TypeData::Null
+            | TypeData::Undefined
+            | TypeData::Void
+            | TypeData::Symbol
+            | TypeData::PrimitiveObject
+            | TypeData::This
+            | TypeData::BigIntLiteral(_)
+            | TypeData::StringLiteral(_)
+            | TypeData::NumberLiteral(_)
+            | TypeData::TemplateLiteral(_)
+            | TypeData::BooleanLiteral(_)
+            | TypeData::Function(_)
+            | TypeData::TypeReference(_)
+            | TypeData::Array(_)
+            | TypeData::Tuple(_)
+            | TypeData::UniqueSymbol(_)
+            | TypeData::Mapped(_)
+            | TypeData::Object(_)
+            | TypeData::ModuleNamespace(_)
+            | TypeData::Infer(_)
+            | TypeData::Conditional(_)
+            | TypeData::IndexedAccess(_),
         ) => {
             // panic!("I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}")
             false
         }
-        (Ty::None, _) => false,
+        (TypeData::None, _) => false,
     }
 }
 
-fn is_assignable_to_keyof<'a>(source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
-    let Some(source_name) = property_name_from_key_type(source) else {
+fn is_assignable_to_keyof<'a>(
+    arena: CheckerArena<'a>,
+    source: Ty<'a>,
+    target: Ty<'a>,
+    depth: usize,
+) -> bool {
+    let Some(source_name) = property_name_from_key_type(arena, source) else {
         return false;
     };
-    keyof_type_contains_property(target, source_name, depth)
+    keyof_type_contains_property(arena, target, source_name, depth)
 }
 
-fn property_name_from_key_type(ty: Ty<'_>) -> Option<&str> {
-    match ty {
-        Ty::StringLiteral(literal) => Some(string_literal_type_to_property_name(literal.value)),
-        Ty::NumberLiteral(literal) => literal.raw.as_ref().map(|s| s.as_str()),
-        Ty::BooleanLiteral(true) => Some("true"),
-        Ty::BooleanLiteral(false) => Some("false"),
+fn property_name_from_key_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
+    match arena.type_data(ty) {
+        TypeData::StringLiteral(literal) => {
+            Some(string_literal_type_to_property_name(literal.value))
+        }
+        TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(|s| s.as_str()),
+        TypeData::BooleanLiteral(true) => Some("true"),
+        TypeData::BooleanLiteral(false) => Some("false"),
         _ => None,
     }
 }
@@ -292,20 +312,25 @@ fn string_literal_type_to_property_name(value: &str) -> &str {
     }
 }
 
-fn keyof_type_contains_property(target: Ty<'_>, name: &str, depth: usize) -> bool {
+fn keyof_type_contains_property<'a>(
+    arena: CheckerArena<'a>,
+    target: Ty<'a>,
+    name: &str,
+    depth: usize,
+) -> bool {
     if depth >= ASSIGNABILITY_MAX_DEPTH {
         return false;
     }
 
-    match target {
-        Ty::Object(object) => object
+    match arena.type_data(target) {
+        TypeData::Object(object) => object
             .properties
             .iter()
             .any(|property| !property.computed && property.name == name),
-        Ty::Intersection(intersection) => intersection
+        TypeData::Intersection(intersection) => intersection
             .types
             .iter()
-            .any(|ty| keyof_type_contains_property(*ty, name, depth + 1)),
+            .any(|ty| keyof_type_contains_property(arena, *ty, name, depth + 1)),
         _ => false,
     }
 }
@@ -396,12 +421,13 @@ mod tests {
 
     use super::*;
 
-    fn is_assignable_to<'a>(source: Ty<'a>, target: Ty<'a>) -> bool {
-        is_assignable_to_without_checker(source, target)
-    }
-
     #[test]
     fn test_any_unknown_object_void_undefined_null_never_assignability() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let is_assignable_to =
+            |source, target| is_assignable_to_without_checker(arena, source, target);
+
         // All types are assignable to themselves.
         assert!(is_assignable_to(Ty::any(), Ty::any()));
         assert!(is_assignable_to(Ty::unknown(), Ty::unknown()));
@@ -468,6 +494,8 @@ mod tests {
     fn test_intersection_assignability() {
         let allocator = Allocator::default();
         let arena = CheckerArena::new(&allocator);
+        let is_assignable_to =
+            |source, target| is_assignable_to_without_checker(arena, source, target);
 
         let number_and_string = Ty::intersection(
             arena,
@@ -516,6 +544,8 @@ mod tests {
     fn object_type_assignability() {
         let allocator = Allocator::default();
         let arena = CheckerArena::new(&allocator);
+        let is_assignable_to =
+            |source, target| is_assignable_to_without_checker(arena, source, target);
 
         // { a: number, b: string } is assignable to { a: number }
         assert!(is_assignable_to(
@@ -558,6 +588,8 @@ mod tests {
     fn test_primitive_object_type_assignability() {
         let allocator = Allocator::default();
         let arena = CheckerArena::new(&allocator);
+        let is_assignable_to =
+            |source, target| is_assignable_to_without_checker(arena, source, target);
 
         // primitive object is assignable to itself
         assert!(is_assignable_to(

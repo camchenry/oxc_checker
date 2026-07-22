@@ -2,7 +2,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use oxc_allocator::Vec as ArenaVec;
 
-use crate::types::{CheckerArena, Ty, TyTypeParameter};
+use crate::types::{CheckerArena, Ty, TyTypeParameter, TypeData};
 
 type TypeParameterResolver<'a> = Rc<RefCell<dyn FnMut(&str) -> Option<Ty<'a>> + 'a>>;
 
@@ -85,6 +85,7 @@ pub(crate) enum TypeMapper<'a> {
         fixed: RefCell<Vec<bool>>,
     },
     ContextualInference {
+        arena: CheckerArena<'a>,
         sources: ArenaVec<'a, Ty<'a>>,
         fallback_targets: ArenaVec<'a, Ty<'a>>,
         fixed: RefCell<Vec<bool>>,
@@ -125,6 +126,7 @@ impl<'a> TypeMapper<'a> {
             _ => {
                 let len = pairs.len();
                 Self::ContextualInference {
+                    arena,
                     sources: arena.vec_from_iter(pairs.iter().map(|(source, _)| *source)),
                     fallback_targets: arena
                         .vec_from_iter(pairs.into_iter().map(|(_, target)| target)),
@@ -142,7 +144,7 @@ impl<'a> TypeMapper<'a> {
         target: Ty<'a>,
     ) -> Self {
         let mut pairs = vec![(source, target)];
-        self.push_pairs_excluding(&mut pairs, source);
+        self.push_pairs_excluding(arena, &mut pairs, source);
         Self::from_pairs(arena, pairs)
     }
 
@@ -154,19 +156,21 @@ impl<'a> TypeMapper<'a> {
         let names = names.into_iter().collect::<Vec<_>>();
         let mut pairs = Vec::new();
         self.push_pairs(&mut pairs);
-        pairs.retain(|(source, _)| !is_bare_type_reference_with_name(*source, &names));
+        pairs.retain(|(source, _)| !is_bare_type_reference_with_name(arena, *source, &names));
         Self::from_pairs(arena, pairs)
     }
 
     pub(crate) fn has_non_identity_mapping_outside_names(
         &self,
+        arena: CheckerArena<'a>,
         names: impl IntoIterator<Item = &'a str>,
     ) -> bool {
         let names = names.into_iter().collect::<Vec<_>>();
         let mut pairs = Vec::new();
         self.push_pairs(&mut pairs);
         pairs.into_iter().any(|(source, target)| {
-            !is_bare_type_reference_with_name(source, &names) && source != target
+            !is_bare_type_reference_with_name(arena, source, &names)
+                && !arena.is_type_identical_to(source, target)
         })
     }
 
@@ -174,11 +178,11 @@ impl<'a> TypeMapper<'a> {
         matches!(self, Self::Empty)
     }
 
-    pub(crate) fn map(&self, ty: Ty<'a>) -> Ty<'a> {
+    pub(crate) fn map(&self, arena: CheckerArena<'a>, ty: Ty<'a>) -> Ty<'a> {
         match self {
             Self::Empty => ty,
             Self::Simple { source, target } => {
-                if ty == *source {
+                if arena.is_type_identical_to(ty, *source) {
                     *target
                 } else {
                     ty
@@ -187,7 +191,9 @@ impl<'a> TypeMapper<'a> {
             Self::Array { sources, targets } => sources
                 .iter()
                 .zip(targets.iter())
-                .find_map(|(source, target)| (ty == *source).then_some(*target))
+                .find_map(|(source, target)| {
+                    arena.is_type_identical_to(ty, *source).then_some(*target)
+                })
                 .unwrap_or(ty),
             Self::Inference {
                 sources,
@@ -198,7 +204,7 @@ impl<'a> TypeMapper<'a> {
                 .zip(targets.iter())
                 .enumerate()
                 .find_map(|(index, (source, target))| {
-                    if ty == *source {
+                    if arena.is_type_identical_to(ty, *source) {
                         fixed.borrow_mut()[index] = true;
                         Some(*target)
                     } else {
@@ -207,6 +213,7 @@ impl<'a> TypeMapper<'a> {
                 })
                 .unwrap_or(ty),
             Self::ContextualInference {
+                arena: contextual_arena,
                 sources,
                 fallback_targets,
                 fixed,
@@ -216,12 +223,14 @@ impl<'a> TypeMapper<'a> {
                 .zip(fallback_targets.iter())
                 .enumerate()
                 .find_map(|(index, (source, fallback_target))| {
-                    if ty != *source {
+                    if !arena.is_type_identical_to(ty, *source) {
                         return None;
                     }
                     fixed.borrow_mut()[index] = true;
-                    let resolved = match source {
-                        Ty::TypeReference(reference) if reference.type_arguments.is_empty() => {
+                    let resolved = match contextual_arena.type_data(*source) {
+                        TypeData::TypeReference(reference)
+                            if reference.type_arguments.is_empty() =>
+                        {
                             resolver.borrow_mut()(reference.name)
                         }
                         _ => None,
@@ -287,11 +296,16 @@ impl<'a> TypeMapper<'a> {
         }
     }
 
-    fn push_pairs_excluding(&self, pairs: &mut Vec<(Ty<'a>, Ty<'a>)>, excluded: Ty<'a>) {
+    fn push_pairs_excluding(
+        &self,
+        arena: CheckerArena<'a>,
+        pairs: &mut Vec<(Ty<'a>, Ty<'a>)>,
+        excluded: Ty<'a>,
+    ) {
         match self {
             Self::Empty => {}
             Self::Simple { source, target } => {
-                if *source != excluded {
+                if !arena.is_type_identical_to(*source, excluded) {
                     pairs.push((*source, *target));
                 }
             }
@@ -301,7 +315,7 @@ impl<'a> TypeMapper<'a> {
                         .iter()
                         .copied()
                         .zip(targets.iter().copied())
-                        .filter(|(source, _)| *source != excluded),
+                        .filter(|(source, _)| !arena.is_type_identical_to(*source, excluded)),
                 );
             }
             Self::Inference {
@@ -312,7 +326,7 @@ impl<'a> TypeMapper<'a> {
                         .iter()
                         .copied()
                         .zip(targets.iter().copied())
-                        .filter(|(source, _)| *source != excluded),
+                        .filter(|(source, _)| !arena.is_type_identical_to(*source, excluded)),
                 );
             }
             Self::ContextualInference {
@@ -325,15 +339,19 @@ impl<'a> TypeMapper<'a> {
                         .iter()
                         .copied()
                         .zip(fallback_targets.iter().copied())
-                        .filter(|(source, _)| *source != excluded),
+                        .filter(|(source, _)| !arena.is_type_identical_to(*source, excluded)),
                 );
             }
         }
     }
 }
 
-fn is_bare_type_reference_with_name<'a>(ty: Ty<'a>, names: &[&'a str]) -> bool {
-    matches!(ty, Ty::TypeReference(reference) if reference.type_arguments.is_empty() && names.contains(&reference.name))
+fn is_bare_type_reference_with_name<'a>(
+    arena: CheckerArena<'a>,
+    ty: Ty<'a>,
+    names: &[&'a str],
+) -> bool {
+    matches!(arena.type_data(ty), TypeData::TypeReference(reference) if reference.type_arguments.is_empty() && names.contains(&reference.name))
 }
 
 #[cfg(test)]
@@ -353,7 +371,7 @@ mod tests {
         substitutions.insert(type_parameter, Ty::string());
 
         let mapper = substitutions.to_inference_mapper(arena);
-        assert_eq!(mapper.map(source), Ty::string());
+        assert_eq!(mapper.map(arena, source), Ty::string());
 
         let TypeMapper::Inference { fixed, .. } = &mapper else {
             panic!("expected inference mapper");
@@ -380,7 +398,7 @@ mod tests {
             },
         );
 
-        assert_eq!(mapper.map(source), Ty::string());
+        assert_eq!(mapper.map(arena, source), Ty::string());
         assert_eq!(resolved_names.borrow().as_slice(), &["T".to_string()]);
 
         let TypeMapper::ContextualInference { fixed, .. } = &mapper else {

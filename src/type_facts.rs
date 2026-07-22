@@ -1,6 +1,6 @@
 use bitflags::bitflags;
 
-use crate::types::Ty;
+use crate::types::{CheckerArena, Ty, TypeData};
 
 bitflags! {
     /// Minimal facts about the possible runtime values of a type.
@@ -12,65 +12,76 @@ bitflags! {
     }
 }
 
-pub(crate) fn get_logical_not_type(ty: Ty<'_>) -> Ty<'_> {
-    match get_type_facts(ty, TypeFacts::TRUTHY | TypeFacts::FALSY) {
+pub(crate) fn get_logical_not_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Ty<'a> {
+    match get_type_facts(arena, ty, TypeFacts::TRUTHY | TypeFacts::FALSY) {
         TypeFacts::TRUTHY => Ty::boolean_false(),
         TypeFacts::FALSY => Ty::boolean_true(),
         _ => Ty::boolean(),
     }
 }
 
-pub(crate) fn get_type_facts(ty: Ty<'_>, mask: TypeFacts) -> TypeFacts {
-    get_type_facts_worker(ty, mask) & mask
+pub(crate) fn get_type_facts<'a>(
+    arena: CheckerArena<'a>,
+    ty: Ty<'a>,
+    mask: TypeFacts,
+) -> TypeFacts {
+    get_type_facts_worker(arena, ty, mask) & mask
 }
 
-fn get_type_facts_worker(ty: Ty<'_>, _caller_only_needs: TypeFacts) -> TypeFacts {
-    match ty {
-        Ty::String | Ty::Number | Ty::Boolean | Ty::Bigint | Ty::Any | Ty::Unknown => {
-            TypeFacts::TRUTHY | TypeFacts::FALSY
-        }
-        Ty::StringLiteral(literal) => {
+fn get_type_facts_worker<'a>(
+    arena: CheckerArena<'a>,
+    ty: Ty<'a>,
+    caller_only_needs: TypeFacts,
+) -> TypeFacts {
+    match arena.type_data(ty) {
+        TypeData::String
+        | TypeData::Number
+        | TypeData::Boolean
+        | TypeData::Bigint
+        | TypeData::Any
+        | TypeData::Unknown => TypeFacts::TRUTHY | TypeFacts::FALSY,
+        TypeData::StringLiteral(literal) => {
             if string_literal_value_is_empty(literal.value) {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
             }
         }
-        Ty::NumberLiteral(literal) => {
+        TypeData::NumberLiteral(literal) => {
             if literal.value == 0.0 {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
             }
         }
-        Ty::BooleanLiteral(value) => {
+        TypeData::BooleanLiteral(value) => {
             if value {
                 TypeFacts::TRUTHY
             } else {
                 TypeFacts::FALSY
             }
         }
-        Ty::BigIntLiteral(literal) => {
+        TypeData::BigIntLiteral(literal) => {
             if bigint_literal_value_is_zero(literal.value) {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
             }
         }
-        Ty::Undefined | Ty::Null | Ty::Void => TypeFacts::FALSY,
-        Ty::Symbol
-        | Ty::UniqueSymbol(_)
-        | Ty::PrimitiveObject
-        | Ty::ModuleNamespace(_)
-        | Ty::Function(_)
-        | Ty::Array(_)
-        | Ty::Tuple(_)
-        | Ty::TypeQuery(_) => TypeFacts::TRUTHY,
-        Ty::Object(object) if !object.is_empty() => TypeFacts::TRUTHY,
-        Ty::Union(union) => union.types.iter().fold(TypeFacts::NONE, |facts, ty| {
-            facts | get_type_facts_worker(*ty, _caller_only_needs)
+        TypeData::Undefined | TypeData::Null | TypeData::Void => TypeFacts::FALSY,
+        TypeData::Symbol
+        | TypeData::UniqueSymbol(_)
+        | TypeData::PrimitiveObject
+        | TypeData::ModuleNamespace(_)
+        | TypeData::Function(_)
+        | TypeData::Array(_)
+        | TypeData::Tuple(_)
+        | TypeData::TypeQuery(_) => TypeFacts::TRUTHY,
+        TypeData::Object(object) if !object.is_empty() => TypeFacts::TRUTHY,
+        TypeData::Union(union) => union.types.iter().fold(TypeFacts::NONE, |facts, ty| {
+            facts | get_type_facts_worker(arena, *ty, caller_only_needs)
         }),
-        Ty::Never => TypeFacts::NONE,
+        TypeData::Never => TypeFacts::NONE,
         _ => TypeFacts::TRUTHY | TypeFacts::FALSY,
     }
 }

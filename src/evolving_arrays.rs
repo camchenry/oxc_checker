@@ -10,7 +10,7 @@ use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     checker_impl::GetTypeFlags,
     program,
-    types::{TupleElement, Ty},
+    types::{TupleElement, Ty, TypeData},
 };
 
 enum EvolvingArrayEvent<'a> {
@@ -81,7 +81,10 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     for (_, event) in events {
         match event {
             EvolvingArrayEvent::Add(ty) => {
-                if !element_types.contains(&ty) {
+                if !element_types
+                    .iter()
+                    .any(|existing| checker.arena().is_type_identical_to(*existing, ty))
+                {
                     element_types.push(ty);
                 }
             }
@@ -97,7 +100,7 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     Some(Ty::array(
         checker.arena(),
         if element_types.is_empty() {
-            finalized_empty_element_type(base_type)
+            finalized_empty_element_type(checker, base_type)
         } else if element_types.len() == 1 {
             element_types[0]
         } else {
@@ -242,9 +245,9 @@ fn direct_assignment_event<'a>(
         GetTypeFlags::CONTEXT_FREE,
     );
 
-    match assigned_type {
-        Ty::Array(array) => Some(EvolvingArrayEvent::Reset(array.element_type)),
-        Ty::Tuple(tuple) => Some(EvolvingArrayEvent::Reset(Ty::union(
+    match checker.arena().type_data(assigned_type) {
+        TypeData::Array(array) => Some(EvolvingArrayEvent::Reset(array.element_type)),
+        TypeData::Tuple(tuple) => Some(EvolvingArrayEvent::Reset(Ty::union(
             checker.arena(),
             tuple.elements.iter().map(|element| match element {
                 TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => {
@@ -260,10 +263,10 @@ fn argument_expression<'a>(argument: &'a Argument<'a>) -> Option<&'a Expression<
     argument.as_expression()
 }
 
-fn finalized_empty_element_type(base_type: Ty<'_>) -> Ty<'_> {
-    match base_type {
-        Ty::Array(array) if array.element_type.is_never() => Ty::any(),
-        Ty::Array(array) => array.element_type,
+fn finalized_empty_element_type<'a>(checker: &CheckerReturn<'a, '_>, base_type: Ty<'a>) -> Ty<'a> {
+    match checker.arena().type_data(base_type) {
+        TypeData::Array(array) if array.element_type.is_never() => Ty::any(),
+        TypeData::Array(array) => array.element_type,
         _ => Ty::any(),
     }
 }

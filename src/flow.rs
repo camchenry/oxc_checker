@@ -8,7 +8,7 @@ use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays, program,
-    types::{Ty, TyTypePredicateKind},
+    types::{Ty, TyTypePredicateKind, TypeData},
 };
 
 /// A branch-local condition that may narrow identifier references inside an `if` arm.
@@ -475,11 +475,12 @@ fn narrow_by_in_property<'a>(
                 [Ty::property(property_name, Ty::unknown())],
             )
         });
-    match ty {
-        Ty::Unknown => property_record,
-        Ty::PrimitiveObject | Ty::Function(_) | Ty::TypeReference(_) | Ty::Object(_) => {
-            Ty::intersection(checker.arena(), [ty, property_record])
-        }
+    match checker.arena().type_data(ty) {
+        TypeData::Unknown => property_record,
+        TypeData::PrimitiveObject
+        | TypeData::Function(_)
+        | TypeData::TypeReference(_)
+        | TypeData::Object(_) => Ty::intersection(checker.arena(), [ty, property_record]),
         _ => ty,
     }
 }
@@ -489,8 +490,8 @@ fn remove_undefined_from_type<'a>(
     node: NodeRef,
     ty: Ty<'a>,
 ) -> Ty<'a> {
-    match ty {
-        Ty::Union(union) => {
+    match checker.arena().type_data(ty) {
+        TypeData::Union(union) => {
             let types = union
                 .types
                 .iter()
@@ -530,8 +531,8 @@ fn non_undefined_constituent<'a>(
 }
 
 fn remove_null_from_type<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
-    match ty {
-        Ty::Union(union) => {
+    match checker.arena().type_data(ty) {
+        TypeData::Union(union) => {
             let types = union
                 .types
                 .iter()
@@ -657,7 +658,7 @@ fn narrow_by_truthiness<'a>(
         return ty;
     }
 
-    filter_type(checker, ty, |ty| !is_definitely_falsy(ty))
+    filter_type(checker, ty, |ty| !is_definitely_falsy(checker, ty))
 }
 
 /// Apply a `typeof` witness or its negation to a type.
@@ -681,7 +682,7 @@ fn narrow_by_typeof<'a>(
     }
 
     filter_type(checker, ty, |ty| {
-        type_matches_typeof(ty, witness) == assume_true
+        type_matches_typeof(checker, ty, witness) == assume_true
     })
 }
 
@@ -719,8 +720,8 @@ fn filter_type<'a>(
     ty: Ty<'a>,
     keep: impl Fn(Ty<'a>) -> bool + Copy,
 ) -> Ty<'a> {
-    match ty {
-        Ty::Union(union) => {
+    match checker.arena().type_data(ty) {
+        TypeData::Union(union) => {
             let types = union
                 .types
                 .iter()
@@ -739,35 +740,46 @@ fn filter_type<'a>(
 }
 
 /// Return whether a type is definitely in the runtime domain named by a `typeof` witness.
-fn type_matches_typeof(ty: Ty<'_>, witness: TypeofWitness) -> bool {
+fn type_matches_typeof<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    ty: Ty<'a>,
+    witness: TypeofWitness,
+) -> bool {
+    let data = checker.arena().type_data(ty);
     match witness {
         TypeofWitness::String => matches!(
-            ty,
-            Ty::String | Ty::StringLiteral(_) | Ty::TemplateLiteral(_)
+            data,
+            TypeData::String | TypeData::StringLiteral(_) | TypeData::TemplateLiteral(_)
         ),
-        TypeofWitness::Number => matches!(ty, Ty::Number | Ty::NumberLiteral(_)),
-        TypeofWitness::Boolean => matches!(ty, Ty::Boolean | Ty::BooleanLiteral(_)),
-        TypeofWitness::Bigint => matches!(ty, Ty::Bigint | Ty::BigIntLiteral(_)),
-        TypeofWitness::Undefined => matches!(ty, Ty::Undefined | Ty::Void),
+        TypeofWitness::Number => {
+            matches!(data, TypeData::Number | TypeData::NumberLiteral(_))
+        }
+        TypeofWitness::Boolean => {
+            matches!(data, TypeData::Boolean | TypeData::BooleanLiteral(_))
+        }
+        TypeofWitness::Bigint => {
+            matches!(data, TypeData::Bigint | TypeData::BigIntLiteral(_))
+        }
+        TypeofWitness::Undefined => matches!(data, TypeData::Undefined | TypeData::Void),
         TypeofWitness::Object => matches!(
-            ty,
-            Ty::Null
-                | Ty::PrimitiveObject
-                | Ty::Object(_)
-                | Ty::ModuleNamespace(_)
-                | Ty::Array(_)
-                | Ty::Tuple(_)
-                | Ty::TypeReference(_)
+            data,
+            TypeData::Null
+                | TypeData::PrimitiveObject
+                | TypeData::Object(_)
+                | TypeData::ModuleNamespace(_)
+                | TypeData::Array(_)
+                | TypeData::Tuple(_)
+                | TypeData::TypeReference(_)
         ),
-        TypeofWitness::Function => matches!(ty, Ty::Function(_)),
+        TypeofWitness::Function => matches!(data, TypeData::Function(_)),
     }
 }
 
 /// Return whether a constituent is currently known to be removed by a truthy check.
-fn is_definitely_falsy(ty: Ty<'_>) -> bool {
-    match ty {
-        Ty::Undefined | Ty::Null => true,
-        Ty::BooleanLiteral(value) => !value,
+fn is_definitely_falsy<'a>(checker: &CheckerReturn<'a, '_>, ty: Ty<'a>) -> bool {
+    match checker.arena().type_data(ty) {
+        TypeData::Undefined | TypeData::Null => true,
+        TypeData::BooleanLiteral(value) => !value,
         _ => false,
     }
 }

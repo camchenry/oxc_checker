@@ -1579,17 +1579,30 @@ fn actual_identifier_records<'a>(
         .nodes()
         .iter_enumerated()
         .filter_map(|(node_id, node)| {
-            actual_identifier_record(&checker, entry, path, source_text, node_id, node.kind())
+            actual_identifier_record(
+                &checker,
+                checker.arena,
+                entry,
+                path,
+                source_text,
+                node_id,
+                node.kind(),
+            )
         })
         .collect::<Vec<_>>();
     records.extend(actual_export_specifier_records(
-        &checker, &records, entry, path,
+        &checker,
+        checker.arena,
+        &records,
+        entry,
+        path,
     ));
     records
 }
 
 fn actual_export_specifier_records<'a>(
     checker: &impl Checker<'a>,
+    arena: CheckerArena<'a>,
     existing_records: &[TypeRecord],
     entry: &program::ProgramEntry<'a>,
     path: &str,
@@ -1620,7 +1633,7 @@ fn actual_export_specifier_records<'a>(
             if ty.is_none() {
                 return None;
             }
-            let ty_variant = ty.enum_variant_name();
+            let ty_variant = ty.enum_variant_name(arena);
             let ty_repr = checker.type_to_string(ty, node_ref);
             Some(TypeRecord {
                 path: path.to_string(),
@@ -1659,6 +1672,7 @@ fn export_specifier_node_ref<'a>(
 
 fn actual_identifier_record<'a>(
     checker: &impl Checker<'a>,
+    arena: CheckerArena<'a>,
     entry: &program::ProgramEntry<'a>,
     path: &str,
     source_text: &str,
@@ -1833,7 +1847,7 @@ fn actual_identifier_record<'a>(
         return None;
     }
 
-    let ty_variant = ty.enum_variant_name();
+    let ty_variant = ty.enum_variant_name(arena);
     let ast_kind = format!("{:?}", kind.ty());
     let ty_repr = checker.type_to_string(ty, node_ref);
 

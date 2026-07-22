@@ -933,7 +933,7 @@ type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
 >                                                       ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->    ^^^^^^^^^^^^^^: (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : string   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^: (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : string   (TyConditional) (TSTypeAliasDeclaration)
            expected: Todo[]
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>

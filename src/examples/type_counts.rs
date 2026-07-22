@@ -43,7 +43,9 @@ fn run(path: PathBuf) -> Result<(), Box<dyn Error>> {
             if ty.is_none() {
                 continue;
             }
-            *counts.entry(ty.enum_variant_name()).or_insert(0usize) += 1;
+            *counts
+                .entry(ty.enum_variant_name(checker.arena))
+                .or_insert(0usize) += 1;
         }
     }
 

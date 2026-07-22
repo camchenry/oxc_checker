@@ -1366,7 +1366,7 @@ export type TodoAction = ReturnType<typeof addTodo>
                                           expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->           ^^^^^^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends Matcher<infer T> ? T : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends HasMatchFunction<infer T> | TypeGuard<infer T> ? T : never   (TyConditional) (TSTypeAliasDeclaration)
                         expected: { payload: number; type: "counter/increment"; }
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>

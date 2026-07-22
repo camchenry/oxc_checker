@@ -8,7 +8,7 @@ use oxc_span::Span;
 use crate::{
     global_types::GlobalSymbolTable,
     program::{ProgramId, ProgramStore},
-    types::{CheckerArena, IndexInfo, Signature, SignatureKind, Ty},
+    types::{CheckerArena, IndexInfo, Signature, SignatureKind, Ty, TypeId},
 };
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -32,6 +32,28 @@ pub struct CheckerReturn<'a, 'store> {
     pub resolving_type_aliases: RefCell<Vec<(ProgramId, NodeId)>>,
     pub resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
     pub resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
+}
+
+impl<'a> CheckerReturn<'a, '_> {
+    pub fn type_count(&self) -> usize {
+        self.arena.type_count()
+    }
+
+    pub fn types(&self) -> impl ExactSizeIterator<Item = Ty<'a>> {
+        self.arena.types()
+    }
+
+    pub fn type_ids(&self) -> impl ExactSizeIterator<Item = TypeId> {
+        self.arena.type_ids()
+    }
+
+    pub fn type_from_id(&self, id: TypeId) -> Option<Ty<'a>> {
+        self.arena.type_from_id(id)
+    }
+
+    pub fn is_type_identical_to(&self, left: Ty<'a>, right: Ty<'a>) -> bool {
+        self.arena.is_type_identical_to(left, right)
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -107,9 +129,17 @@ impl CheckerBuilder {
     }
 
     pub fn build<'a, 'store>(&self, store: &'store ProgramStore<'a>) -> CheckerReturn<'a, 'store> {
+        self.build_with_arena(store, CheckerArena::new(store.allocator()))
+    }
+
+    pub fn build_with_arena<'a, 'store>(
+        &self,
+        store: &'store ProgramStore<'a>,
+        arena: CheckerArena<'a>,
+    ) -> CheckerReturn<'a, 'store> {
         CheckerReturn {
             store,
-            arena: CheckerArena::new(store.allocator()),
+            arena,
             global_symbols: GlobalSymbolTable::new(store),
             declared_type_cache: RefCell::new(
                 store

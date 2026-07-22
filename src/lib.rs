@@ -38,18 +38,20 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
 }
 
 fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
-    match ty {
-        Ty::StringLiteral(literal) => {
+    match arena.type_data(ty) {
+        types::TypeData::StringLiteral(literal) => {
             Some(string_literal_type_to_property_name(arena, literal.value))
         }
-        Ty::NumberLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
-        Ty::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
-        Ty::TemplateLiteral(template) if template.expressions.is_empty() => {
+        types::TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
+        types::TypeData::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
+        types::TypeData::TemplateLiteral(template) if template.expressions.is_empty() => {
             Some(template.quasis[0].value)
         }
-        Ty::TypeReference(reference) if reference.type_arguments.is_empty() => Some(reference.name),
-        Ty::String => Some(arena.str("string")),
-        Ty::Number => Some(arena.str("number")),
+        types::TypeData::TypeReference(reference) if reference.type_arguments.is_empty() => {
+            Some(reference.name)
+        }
+        types::TypeData::String => Some(arena.str("string")),
+        types::TypeData::Number => Some(arena.str("number")),
         _ => None,
     }
 }
@@ -219,8 +221,8 @@ fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
     Some(literal.value as usize)
 }
 
-fn tuple_index_from_index_type(index_type: Ty<'_>) -> Option<usize> {
-    let Ty::NumberLiteral(literal) = index_type else {
+fn tuple_index_from_index_type<'a>(arena: CheckerArena<'a>, index_type: Ty<'a>) -> Option<usize> {
+    let types::TypeData::NumberLiteral(literal) = arena.type_data(index_type) else {
         return None;
     };
     if !literal.value.is_finite() || literal.value < 0.0 || literal.value.fract() != 0.0 {
@@ -232,8 +234,12 @@ fn tuple_index_from_index_type(index_type: Ty<'_>) -> Option<usize> {
     Some(literal.value as usize)
 }
 
-fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option<Ty<'a>> {
-    let Ty::Tuple(tuple) = object_type else {
+fn tuple_element_type_at_index<'a>(
+    arena: CheckerArena<'a>,
+    object_type: Ty<'a>,
+    index: usize,
+) -> Option<Ty<'a>> {
+    let types::TypeData::Tuple(tuple) = arena.type_data(object_type) else {
         return None;
     };
 
@@ -248,7 +254,7 @@ fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option
             }
             TupleElement::Rest(ty) => {
                 if index >= current_index {
-                    return Some(ty.array_element_type().unwrap_or(*ty));
+                    return Some(ty.array_element_type(arena).unwrap_or(*ty));
                 }
             }
         }
@@ -257,15 +263,18 @@ fn tuple_element_type_at_index<'a>(object_type: &Ty<'a>, index: usize) -> Option
     Some(Ty::undefined())
 }
 
-fn index_signature_key_types<'a>(constraint: Ty<'a>) -> Option<Vec<Ty<'a>>> {
-    match constraint {
-        Ty::String => Some(vec![Ty::string()]),
-        Ty::Number => Some(vec![Ty::number()]),
-        Ty::Symbol => Some(vec![Ty::symbol()]),
-        Ty::Union(union) => {
+fn index_signature_key_types<'a>(
+    arena: CheckerArena<'a>,
+    constraint: Ty<'a>,
+) -> Option<Vec<Ty<'a>>> {
+    match arena.type_data(constraint) {
+        types::TypeData::String => Some(vec![Ty::string()]),
+        types::TypeData::Number => Some(vec![Ty::number()]),
+        types::TypeData::Symbol => Some(vec![Ty::symbol()]),
+        types::TypeData::Union(union) => {
             let mut key_types = Vec::new();
             for ty in &union.types {
-                let keys = index_signature_key_types(*ty)?;
+                let keys = index_signature_key_types(arena, *ty)?;
                 for key in keys {
                     if !key_types.contains(&key) {
                         key_types.push(key);
@@ -392,7 +401,7 @@ mod conformance;
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::checker::{Checker, CheckerBuilder, NodeRef, SymbolRef};
+    use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef, SymbolRef};
     use crate::checker_impl::UNDEFINED_IDENT;
     use crate::mapper::TypeMapper;
     use crate::program::ProgramHost;
@@ -455,6 +464,7 @@ mod test {
     struct ParseAndCheck<'a> {
         store: program::ProgramStore<'a>,
         program_id: program::ProgramId,
+        arena: CheckerArena<'a>,
     }
 
     fn parse_and_check_source<'a>(
@@ -478,11 +488,20 @@ mod test {
             source_text
         );
 
-        ParseAndCheck { store, program_id }
+        let arena = CheckerArena::new(store.allocator());
+        ParseAndCheck {
+            store,
+            program_id,
+            arena,
+        }
+    }
+
+    fn checker<'a, 'store>(ret: &'store ParseAndCheck<'a>) -> CheckerReturn<'a, 'store> {
+        CheckerBuilder::new().build_with_arena(&ret.store, ret.arena)
     }
 
     fn get_global_symbol_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let scoping = ret
             .store
             .entry(ret.program_id)
@@ -494,7 +513,7 @@ mod test {
     }
 
     fn get_type_alias_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         let alias = semantic
             .nodes()
@@ -514,7 +533,7 @@ mod test {
         func_name: &str,
         param_name: &str,
     ) -> Ty<'a> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         let scoping = semantic.scoping();
         let func = scoping
@@ -534,7 +553,7 @@ mod test {
     }
 
     fn get_first_symbol_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         let scoping = semantic.scoping();
         let symbol_id = scoping
@@ -549,12 +568,12 @@ mod test {
         program_id: program::ProgramId,
         name: &str,
     ) -> Option<Ty<'a>> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         checker.get_global_type_reference(program_id, name, std::iter::empty())
     }
 
     fn get_object_property_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         semantic
             .nodes()
@@ -571,7 +590,7 @@ mod test {
     }
 
     fn get_ts_method_signature_types(ret: &ParseAndCheck<'_>, name: &str) -> Vec<String> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         semantic
             .nodes()
@@ -583,7 +602,7 @@ mod test {
                     Some(
                         checker
                             .get_type_at_location(NodeRef::new(ret.program_id, node_id))
-                            .to_type_string(),
+                            .to_type_string(ret.arena),
                     )
                 }
                 _ => None,
@@ -592,7 +611,7 @@ mod test {
     }
 
     fn get_ts_property_signature_types(ret: &ParseAndCheck<'_>, name: &str) -> Vec<String> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         semantic
             .nodes()
@@ -604,7 +623,7 @@ mod test {
                     Some(
                         checker
                             .get_type_at_location(NodeRef::new(ret.program_id, node_id))
-                            .to_type_string(),
+                            .to_type_string(ret.arena),
                     )
                 }
                 _ => None,
@@ -613,7 +632,7 @@ mod test {
     }
 
     fn get_identifier_reference_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         semantic
             .nodes()
@@ -630,7 +649,7 @@ mod test {
     }
 
     fn get_static_member_expression_types<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Vec<Ty<'a>> {
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         semantic
             .nodes()
@@ -647,7 +666,53 @@ mod test {
     }
 
     fn arena<'a>(ret: &ParseAndCheck<'a>) -> CheckerArena<'a> {
-        CheckerArena::new(ret.store.allocator())
+        ret.arena
+    }
+
+    trait TestTypeIdentity<'a> {
+        fn is_identical_to(&self, other: &Self, arena: CheckerArena<'a>) -> bool;
+    }
+
+    impl<'a> TestTypeIdentity<'a> for Ty<'a> {
+        fn is_identical_to(&self, other: &Self, arena: CheckerArena<'a>) -> bool {
+            arena.is_type_identical_to(*self, *other)
+        }
+    }
+
+    impl<'a> TestTypeIdentity<'a> for Option<Ty<'a>> {
+        fn is_identical_to(&self, other: &Self, arena: CheckerArena<'a>) -> bool {
+            match (*self, *other) {
+                (Some(left), Some(right)) => arena.is_type_identical_to(left, right),
+                (None, None) => true,
+                _ => false,
+            }
+        }
+    }
+
+    impl<'a> TestTypeIdentity<'a> for Vec<Ty<'a>> {
+        fn is_identical_to(&self, other: &Self, arena: CheckerArena<'a>) -> bool {
+            self.len() == other.len()
+                && self
+                    .iter()
+                    .zip(other)
+                    .all(|(left, right)| arena.is_type_identical_to(*left, *right))
+        }
+    }
+
+    fn assert_type_eq<'a, T>(arena: CheckerArena<'a>, left: T, right: T)
+    where
+        T: TestTypeIdentity<'a> + std::fmt::Debug,
+    {
+        assert!(
+            left.is_identical_to(&right, arena),
+            "type structures differ\n  left: {left:?}\n right: {right:?}"
+        );
+    }
+
+    fn contains_type<'a>(arena: CheckerArena<'a>, types: &[Ty<'a>], expected: Ty<'a>) -> bool {
+        types
+            .iter()
+            .any(|ty| arena.is_type_identical_to(*ty, expected))
     }
 
     #[test]
@@ -666,10 +731,42 @@ mod test {
     }
 
     #[test]
+    fn checker_enumerates_registered_types_by_id() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "const values = [1, 2];");
+        let checker = checker(&ret);
+        let symbol_id = ret
+            .store
+            .entry(ret.program_id)
+            .unwrap()
+            .semantic()
+            .scoping()
+            .get_root_binding(Ident::from("values"))
+            .unwrap();
+        let initial_count = checker.type_count();
+        let ty = checker.get_type_of_symbol(SymbolRef::new(ret.program_id, symbol_id));
+
+        assert!(checker.type_count() > initial_count);
+        let ids = checker.type_ids().collect::<Vec<_>>();
+        assert_eq!(ids.len(), checker.type_count());
+        assert!(
+            ids.iter()
+                .enumerate()
+                .all(|(index, id)| id.get() == u32::try_from(index + 1).unwrap())
+        );
+        assert_eq!(checker.types().map(Ty::id).collect::<Vec<_>>(), ids);
+        assert_eq!(checker.type_from_id(ty.id()), Some(ty));
+
+        let mut by_id = HashMap::new();
+        by_id.insert(ty.id(), "values");
+        assert_eq!(by_id.get(&ty.id()), Some(&"values"));
+    }
+
+    #[test]
     fn default_lib_provides_global_type_symbols() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "const x = 1;");
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(&ret);
 
         for (name, constructor_type) in [
             ("Array", "ArrayConstructor"),
@@ -689,7 +786,9 @@ mod test {
                 .get_value_symbol_for_name(ret.program_id, name)
                 .unwrap_or_else(|| panic!("expected default lib to provide global value `{name}`"));
             assert_eq!(
-                checker.get_type_of_symbol(value_symbol).to_type_string(),
+                checker
+                    .get_type_of_symbol(value_symbol)
+                    .to_type_string(checker.arena),
                 constructor_type
             );
         }
@@ -747,7 +846,7 @@ mod test {
         assert_eq!(
             checker
                 .get_type_of_symbol(SymbolRef::new(program_id, value_symbol_id))
-                .to_type_string(),
+                .to_type_string(checker.arena),
             "Shared"
         );
     }
@@ -764,9 +863,10 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "value"),
-            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)
+            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
         );
     }
 
@@ -782,13 +882,15 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "value"),
-            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)
+            Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_identifier_reference_types(&ret, "undefined"),
-            vec![Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)]
+            vec![Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)],
         );
     }
 
@@ -833,29 +935,35 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "arrayCtor"),
-            Ty::type_reference(arena, "ArrayConstructor", [])
+            Ty::type_reference(arena, "ArrayConstructor", []),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "promiseCtor"),
-            Ty::type_reference(arena, "PromiseConstructor", [])
+            Ty::type_reference(arena, "PromiseConstructor", []),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "mapCtor"),
-            Ty::type_reference(arena, "MapConstructor", [])
+            Ty::type_reference(arena, "MapConstructor", []),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "setCtor"),
-            Ty::type_reference(arena, "SetConstructor", [])
+            Ty::type_reference(arena, "SetConstructor", []),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "symbolCtor"),
-            Ty::type_reference(arena, "SymbolConstructor", [])
+            Ty::type_reference(arena, "SymbolConstructor", []),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "objectCtor"),
-            Ty::type_reference(arena, "ObjectConstructor", [])
+            Ty::type_reference(arena, "ObjectConstructor", []),
         );
     }
 
@@ -871,13 +979,15 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "keys"),
-            Ty::array(arena, Ty::string())
+            Ty::array(arena, Ty::string()),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "values"),
-            Ty::array(arena, Ty::number())
+            Ty::array(arena, Ty::number()),
         );
     }
 
@@ -912,7 +1022,7 @@ mod test {
         type Later = Promise<string>;
         ",
         );
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(&ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
 
         let type_reference_type = |name: &str| {
@@ -935,7 +1045,9 @@ mod test {
             let symbol = checker
                 .get_symbol_at_location(NodeRef::new(ret.program_id, node_id))
                 .unwrap_or_else(|| panic!("expected symbol for type reference `{name}`"));
-            checker.get_type_of_symbol(symbol).to_type_string()
+            checker
+                .get_type_of_symbol(symbol)
+                .to_type_string(checker.arena)
         };
 
         assert_eq!(type_reference_type("Array"), "ArrayConstructor");
@@ -976,14 +1088,16 @@ mod test {
 
         let reference_types = get_identifier_reference_types(&ret, "x");
         assert_eq!(reference_types.len(), 3);
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             reference_types[0],
-            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
         );
         assert_eq!(reference_types[1], Ty::string());
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             reference_types[2],
-            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
         );
     }
 
@@ -1004,14 +1118,16 @@ mod test {
 
         let reference_types = get_identifier_reference_types(&ret, "y");
         assert_eq!(reference_types.len(), 3);
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             reference_types[0],
-            Ty::union(arena(&ret), [Ty::string(), Ty::number(), Ty::boolean()])
+            Ty::union(arena(&ret), [Ty::string(), Ty::number(), Ty::boolean()]),
         );
         assert_eq!(reference_types[1], Ty::string());
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             reference_types[2],
-            Ty::union(arena(&ret), [Ty::number(), Ty::boolean()])
+            Ty::union(arena(&ret), [Ty::number(), Ty::boolean()]),
         );
     }
 
@@ -1039,14 +1155,14 @@ mod test {
         assert_eq!(
             get_identifier_reference_types(&ret, "value")
                 .into_iter()
-                .map(Ty::to_type_string)
+                .map(|ty| ty.to_type_string(ret.arena))
                 .collect::<Vec<_>>(),
             vec!["unknown".to_string(), "Action<string>".to_string()]
         );
         assert_eq!(
             get_identifier_reference_types(&ret, "baseValue")
                 .into_iter()
-                .map(Ty::to_type_string)
+                .map(|ty| ty.to_type_string(ret.arena))
                 .collect::<Vec<_>>(),
             vec!["unknown".to_string(), "Base<unknown, string>".to_string()]
         );
@@ -1068,7 +1184,7 @@ mod test {
         assert_eq!(
             get_identifier_reference_types(&ret, "Array")
                 .into_iter()
-                .map(Ty::to_type_string)
+                .map(|ty| ty.to_type_string(ret.arena))
                 .collect::<Vec<_>>(),
             vec!["ArrayConstructor".to_string()]
         );
@@ -1086,16 +1202,18 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "z"),
-            Ty::union(arena, [Ty::string(), Ty::undefined()])
+            Ty::union(arena, [Ty::string(), Ty::undefined()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_identifier_reference_types(&ret, "y"),
             vec![
                 Ty::union(arena, [Ty::string(), Ty::number(), Ty::boolean()]),
                 Ty::string(),
-            ]
+            ],
         );
     }
 
@@ -1112,13 +1230,13 @@ mod test {
         );
 
         assert_eq!(
-            get_first_symbol_type(&ret, "value").to_type_string(),
+            get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
             "TData | (TData & ({} | null))"
         );
         assert_eq!(
             get_identifier_reference_types(&ret, "previous")
                 .into_iter()
-                .map(Ty::to_type_string)
+                .map(|ty| ty.to_type_string(ret.arena))
                 .collect::<Vec<_>>(),
             vec![
                 "TData | undefined".to_string(),
@@ -1143,14 +1261,16 @@ mod test {
 
         let reference_types = get_identifier_reference_types(&ret, "y");
         assert_eq!(reference_types.len(), 3);
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             reference_types[0],
-            Ty::union(arena(&ret), [Ty::string(), Ty::number()])
+            Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
         );
         assert_eq!(reference_types[1], Ty::string());
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             reference_types[2],
-            Ty::union(arena(&ret), [Ty::string(), Ty::number()])
+            Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
         );
     }
 
@@ -1172,41 +1292,38 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "before"),
-            Ty::array(arena, Ty::any())
+            Ty::array(arena, Ty::any()),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "afterPush"),
-            Ty::array(arena, Ty::number())
+            Ty::array(arena, Ty::number()),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "afterWrite"),
-            Ty::array(arena, Ty::union(arena, [Ty::number(), Ty::string()]))
+            Ty::array(arena, Ty::union(arena, [Ty::number(), Ty::string()])),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "afterReset"),
-            Ty::array(arena, Ty::boolean())
+            Ty::array(arena, Ty::boolean()),
         );
     }
 
-    #[cfg(target_pointer_width = "64")]
     #[test]
-    fn type_enum_is_pointer_sized_payload_plus_discriminant() {
-        assert_eq!(std::mem::size_of::<Ty>(), 16);
-    }
-
-    #[cfg(target_pointer_width = "32")]
-    #[test]
-    fn type_enum_is_pointer_sized_payload_plus_discriminant() {
-        assert_eq!(std::mem::size_of::<Ty>(), 8);
+    fn type_handle_is_four_bytes() {
+        assert_eq!(std::mem::size_of::<Ty>(), 4);
     }
 
     #[test]
     fn assignability_handles_basic_and_structural_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "");
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(&ret);
         let arena = arena(&ret);
 
         assert!(checker.is_assignable_to(Ty::number(), Ty::number()));
@@ -1239,7 +1356,7 @@ mod test {
     fn assignability_handles_complex_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "");
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(&ret);
         let arena = arena(&ret);
 
         // Test that a function type is assignable to a more general function type
@@ -1323,32 +1440,37 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "streamedQuery").to_type_string(),
+            get_global_symbol_type(&ret, "streamedQuery").to_type_string(ret.arena),
             "<TQueryFnData, TData>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData>) => TData"
         );
         assert_eq!(
-            get_symbol_type_in_function(&ret, "streamedQuery", "streamFn").to_type_string(),
+            get_symbol_type_in_function(&ret, "streamedQuery", "streamFn")
+                .to_type_string(ret.arena),
             "(context: TQueryFnData) => TQueryFnData"
         );
         assert_eq!(
-            get_symbol_type_in_function(&ret, "streamedQuery", "refetchMode").to_type_string(),
+            get_symbol_type_in_function(&ret, "streamedQuery", "refetchMode")
+                .to_type_string(ret.arena),
             "\"append\" | \"reset\" | \"replace\""
         );
         assert_eq!(
-            get_symbol_type_in_function(&ret, "streamedQuery", "reducer").to_type_string(),
+            get_symbol_type_in_function(&ret, "streamedQuery", "reducer").to_type_string(ret.arena),
             "(acc: TData, chunk: TQueryFnData) => TData"
         );
         assert_eq!(
-            get_symbol_type_in_function(&ret, "streamedQuery", "initialValue").to_type_string(),
+            get_symbol_type_in_function(&ret, "streamedQuery", "initialValue")
+                .to_type_string(ret.arena),
             "TData"
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_first_symbol_type(&ret, "items"),
-            Ty::type_reference(arena(&ret), "TData", std::iter::empty())
+            Ty::type_reference(arena(&ret), "TData", std::iter::empty()),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_first_symbol_type(&ret, "chunk"),
-            Ty::type_reference(arena(&ret), "TQueryFnData", std::iter::empty())
+            Ty::type_reference(arena(&ret), "TQueryFnData", std::iter::empty()),
         );
     }
 
@@ -1407,17 +1529,31 @@ mod test {
         let infinite_data_type =
             Ty::type_reference(arena, "InfiniteData", [todo_type, Ty::number()]);
 
-        assert_eq!(get_first_symbol_type(&ret, "data"), infinite_data_type);
-        assert_eq!(get_first_symbol_type(&ret, "todo"), todo_type);
+        assert_type_eq(
+            arena,
+            get_first_symbol_type(&ret, "data"),
+            infinite_data_type,
+        );
+        assert_type_eq(arena, get_first_symbol_type(&ret, "todo"), todo_type);
         assert_eq!(
-            get_object_property_types(&ret, "reducer")[0].to_type_string(),
+            get_object_property_types(&ret, "reducer")[0].to_type_string(ret.arena),
             "(data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }"
         );
-        assert!(get_object_property_types(&ret, "pages").contains(&Ty::array(arena, todo_type)));
-        assert!(get_object_property_types(&ret, "pages").contains(&Ty::array(arena, Ty::never())));
-        assert!(
-            get_object_property_types(&ret, "pageParams").contains(&Ty::array(arena, Ty::never()))
-        );
+        assert!(contains_type(
+            arena,
+            &get_object_property_types(&ret, "pages"),
+            Ty::array(arena, todo_type),
+        ));
+        assert!(contains_type(
+            arena,
+            &get_object_property_types(&ret, "pages"),
+            Ty::array(arena, Ty::never()),
+        ));
+        assert!(contains_type(
+            arena,
+            &get_object_property_types(&ret, "pageParams"),
+            Ty::array(arena, Ty::never()),
+        ));
     }
 
     #[test]
@@ -1440,7 +1576,7 @@ mod test {
         );
 
         assert_eq!(
-            get_first_symbol_type(&ret, "context").to_type_string(),
+            get_first_symbol_type(&ret, "context").to_type_string(ret.arena),
             "{ queryKey: TQueryKey; pageParam?: unknown; }"
         );
     }
@@ -1467,11 +1603,11 @@ mod test {
         );
 
         assert_eq!(
-            get_first_symbol_type(&ret, "context").to_type_string(),
+            get_first_symbol_type(&ret, "context").to_type_string(ret.arena),
             "{ queryKey: TQueryKey; pageParam?: unknown; }"
         );
         assert_eq!(
-            get_symbol_type_in_function(&ret, "useParams", "streamFn").to_type_string(),
+            get_symbol_type_in_function(&ret, "useParams", "streamFn").to_type_string(ret.arena),
             "(context: { queryKey: TQueryKey; pageParam?: unknown; }) => void"
         );
     }
@@ -1501,11 +1637,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "box").to_type_string(),
+            get_global_symbol_type(&ret, "box").to_type_string(ret.arena),
             "<T>(value: T) => Box<T>"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "from").to_type_string(),
+            get_global_symbol_type(&ret, "from").to_type_string(ret.arena),
             "<T>(iterable: Iterable<T>): Array<T>"
         )
     }
@@ -1573,19 +1709,19 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "streamedQuery").to_type_string(),
+            get_global_symbol_type(&ret, "streamedQuery").to_type_string(ret.arena),
             "<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "QueryMeta").to_type_string(),
+            get_type_alias_type(&ret, "QueryMeta").to_type_string(ret.arena),
             "{ [x: string]: unknown; }"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "InferDataFromTag").to_type_string(),
+            get_type_alias_type(&ret, "InferDataFromTag").to_type_string(ret.arena),
             "TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "TaggedTodoData").to_type_string(),
+            get_type_alias_type(&ret, "TaggedTodoData").to_type_string(ret.arena),
             "Todo[]"
         );
         assert_eq!(
@@ -1597,11 +1733,11 @@ mod test {
         );
         assert_eq!(get_global_symbol_type(&ret, "pageParam"), Ty::number());
         assert_eq!(
-            get_first_symbol_type(&ret, "signalLessContext").to_type_string(),
+            get_first_symbol_type(&ret, "signalLessContext").to_type_string(ret.arena),
             "OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, \"signal\">"
         );
         assert_eq!(
-            get_first_symbol_type(&ret, "meta").to_type_string(),
+            get_first_symbol_type(&ret, "meta").to_type_string(ret.arena),
             "Record<string, unknown> | undefined"
         );
     }
@@ -1619,15 +1755,15 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "dataTagSymbol").to_type_string(),
+            get_global_symbol_type(&ret, "dataTagSymbol").to_type_string(ret.arena),
             "unique symbol"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "aliasValue").to_type_string(),
+            get_global_symbol_type(&ret, "aliasValue").to_type_string(ret.arena),
             "typeof dataTagSymbol"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "tagged").to_type_string(),
+            get_global_symbol_type(&ret, "tagged").to_type_string(ret.arena),
             "{ [dataTagSymbol]: any; }"
         );
 
@@ -1640,7 +1776,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "UnsetMarker").to_type_string(),
+            get_type_alias_type(&ret, "UnsetMarker").to_type_string(ret.arena),
             "unique symbol"
         );
     }
@@ -1649,7 +1785,7 @@ mod test {
     fn global_undefined_reference_has_type_at_location() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "const value = [undefined];");
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(&ret);
         let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
         let (node_id, _) = semantic
             .nodes()
@@ -1678,9 +1814,10 @@ mod test {
         ",
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "values"),
-            Ty::array(arena(&ret), Ty::number())
+            Ty::array(arena(&ret), Ty::number()),
         );
     }
 
@@ -1695,13 +1832,15 @@ mod test {
         ",
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "values"),
-            Ty::array(arena(&ret), Ty::number())
+            Ty::array(arena(&ret), Ty::number()),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "readonlyValues"),
-            Ty::readonly_array(arena(&ret), Ty::string())
+            Ty::readonly_array(arena(&ret), Ty::string()),
         );
     }
 
@@ -1718,7 +1857,6 @@ mod test {
             .build()
             .unwrap();
         let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
-        let expected_arena = CheckerArena::new(store.allocator());
         let checker = CheckerBuilder::new().build(&store);
         let symbol_id = store
             .entry(program_id)
@@ -1728,9 +1866,10 @@ mod test {
             .get_root_binding(Ident::from("values"))
             .unwrap();
 
-        assert_eq!(
+        assert_type_eq(
+            checker.arena,
             checker.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)),
-            Ty::type_reference(expected_arena, "Array", [Ty::number()])
+            Ty::type_reference(checker.arena, "Array", [Ty::number()]),
         );
     }
 
@@ -1746,11 +1885,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "variadic").to_type_string(),
+            get_global_symbol_type(&ret, "variadic").to_type_string(ret.arena),
             "[...string[], { huh: boolean; }]"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "optional").to_type_string(),
+            get_global_symbol_type(&ret, "optional").to_type_string(ret.arena),
             "[(number | undefined)?]"
         );
     }
@@ -1781,7 +1920,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "value").to_type_string(),
+            get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
             "T extends string ? number : boolean"
         );
     }
@@ -1797,7 +1936,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "value").to_type_string(),
+            get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
             "string"
         );
     }
@@ -1813,7 +1952,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "value").to_type_string(),
+            get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
             "number"
         );
     }
@@ -1829,7 +1968,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "value").to_type_string(),
+            get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
             "string | number"
         );
     }
@@ -1845,7 +1984,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "value").to_type_string(),
+            get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
             "\"ready\" | \"set\""
         );
     }
@@ -1861,7 +2000,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "value").to_type_string(),
+            get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
             "[number]"
         );
     }
@@ -1878,11 +2017,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "returnValue").to_type_string(),
+            get_global_symbol_type(&ret, "returnValue").to_type_string(ret.arena),
             "string"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "parameterValue").to_type_string(),
+            get_global_symbol_type(&ret, "parameterValue").to_type_string(ret.arena),
             "string"
         );
     }
@@ -1900,15 +2039,15 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "first").to_type_string(),
+            get_global_symbol_type(&ret, "first").to_type_string(ret.arena),
             "\"yes\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "second").to_type_string(),
+            get_global_symbol_type(&ret, "second").to_type_string(ret.arena),
             "\"no\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "either").to_type_string(),
+            get_global_symbol_type(&ret, "either").to_type_string(ret.arena),
             "\"yes\" | \"no\""
         );
     }
@@ -1925,7 +2064,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "Value").to_type_string(),
+            get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
             "unknown"
         );
     }
@@ -1946,11 +2085,11 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "Value").to_type_string(),
+            get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
             "\"yes\""
         );
         assert_eq!(
-            get_type_alias_type(&ret, "Deferred").to_type_string(),
+            get_type_alias_type(&ret, "Deferred").to_type_string(ret.arena),
             "unknown extends T ? IsAny<T, \"no\", \"yes\"> : \"no\""
         );
     }
@@ -1959,7 +2098,7 @@ mod test {
     fn conditional_infer_shadows_outer_type_parameter_substitution() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "const x = 1;");
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(&ret);
         let arena = arena(&ret);
         let outer_array = Ty::array(arena, Ty::string());
         let conditional = Ty::conditional(
@@ -1989,7 +2128,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "OmitKeyof").to_type_string(),
+            get_type_alias_type(&ret, "OmitKeyof").to_type_string(ret.arena),
             "{ [P in Exclude<keyof TObject, TKey>]: TObject[P]; }"
         );
     }
@@ -2018,23 +2157,23 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "PrimitiveAliases").to_type_string(),
+            get_type_alias_type(&ret, "PrimitiveAliases").to_type_string(ret.arena),
             "string"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "LiteralAliasWithPrimitive").to_type_string(),
+            get_type_alias_type(&ret, "LiteralAliasWithPrimitive").to_type_string(ret.arena),
             "string"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "LiteralAliases").to_type_string(),
+            get_type_alias_type(&ret, "LiteralAliases").to_type_string(ret.arena),
             "1 | 2"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "NamedUnionAlias").to_type_string(),
+            get_type_alias_type(&ret, "NamedUnionAlias").to_type_string(ret.arena),
             "BooleanLogicExpression | \"true\" | \"false\""
         );
         assert_eq!(
-            get_type_alias_type(&ret, "ObjectAlias").to_type_string(),
+            get_type_alias_type(&ret, "ObjectAlias").to_type_string(ret.arena),
             "ObjAlias | string"
         );
     }
@@ -2050,7 +2189,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "Params").to_type_string(),
+            get_type_alias_type(&ret, "Params").to_type_string(ret.arena),
             "{ refetchMode?: \"append\" | \"reset\"; }"
         );
     }
@@ -2075,7 +2214,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "OptionalFlat").to_type_string(),
+            get_type_alias_type(&ret, "OptionalFlat").to_type_string(ret.arena),
             "{ [K in keyof O]?: O[K] | undefined; }"
         );
         assert_eq!(
@@ -2116,23 +2255,23 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "Deferred").to_type_string(),
+            get_type_alias_type(&ret, "Deferred").to_type_string(ret.arena),
             "\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "DeferredWrapped").to_type_string(),
+            get_type_alias_type(&ret, "DeferredWrapped").to_type_string(ret.arena),
             "\"requireExactProps\" extends keyof Options ? Wrapper<Options[keyof Options & \"requireExactProps\"]> : false"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "Concrete").to_type_string(),
+            get_type_alias_type(&ret, "Concrete").to_type_string(ret.arena),
             "true"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "Outer").to_type_string(),
+            get_type_alias_type(&ret, "Outer").to_type_string(ret.arena),
             "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
         );
         assert_eq!(
-            get_type_alias_type(&ret, "OuterViaParameter").to_type_string(),
+            get_type_alias_type(&ret, "OuterViaParameter").to_type_string(ret.arena),
             "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
         );
     }
@@ -2161,9 +2300,10 @@ mod test {
         ",
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "value"),
-            Ty::union(arena(&ret), [Ty::boolean(), Ty::number()])
+            Ty::union(arena(&ret), [Ty::boolean(), Ty::number()]),
         );
     }
 
@@ -2216,13 +2356,15 @@ mod test {
         "#,
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "count"),
-            Ty::number_literal(arena(&ret), 1.0, "1", NumberBase::Decimal)
+            Ty::number_literal(arena(&ret), 1.0, "1", NumberBase::Decimal),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "label"),
-            Ty::string_literal(arena(&ret), "\"ready\"")
+            Ty::string_literal(arena(&ret), "\"ready\""),
         );
         assert_eq!(get_global_symbol_type(&ret, "enabled"), Ty::boolean_true());
     }
@@ -2233,7 +2375,7 @@ mod test {
         let arena = CheckerArena::new(&allocator);
 
         assert_eq!(
-            Ty::string_literal(arena, "expects a string literal").to_type_string(),
+            Ty::string_literal(arena, "expects a string literal").to_type_string(arena),
             "\"expects a string literal\""
         );
     }
@@ -2321,19 +2463,20 @@ mod test {
             Ty::string()
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "aliasBox").to_type_string(),
+            get_global_symbol_type(&ret, "aliasBox").to_type_string(ret.arena),
             "AliasBox<string>"
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "boxed"),
-            Ty::type_reference(arena(&ret), "Box", [Ty::number()])
+            Ty::type_reference(arena(&ret), "Box", [Ty::number()]),
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "boxed").to_type_string(),
+            get_global_symbol_type(&ret, "boxed").to_type_string(ret.arena),
             "Box<number>"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "explicitDefaultBox").to_type_string(),
+            get_global_symbol_type(&ret, "explicitDefaultBox").to_type_string(ret.arena),
             "Box<number>"
         );
         assert_eq!(get_global_symbol_type(&ret, "boxedValue"), Ty::number());
@@ -2373,7 +2516,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "declarations").to_type_string(),
+            get_global_symbol_type(&ret, "declarations").to_type_string(ret.arena),
             "{ view: BufferView; maybeView?: BufferView; stream: Stream; iterable: LocalIterable<string>; explicitIterable: LocalIterable<string, any, any>; float: Float32Array<ArrayBufferLike>; values: number[] | Float32Array<ArrayBufferLike>; }"
         );
     }
@@ -2395,13 +2538,15 @@ mod test {
         );
 
         let arena = arena(&ret);
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "x"),
-            Ty::number_literal(arena, 123.0, "123", NumberBase::Decimal)
+            Ty::number_literal(arena, 123.0, "123", NumberBase::Decimal),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "y"),
-            Ty::string_literal(arena, "\"test\"")
+            Ty::string_literal(arena, "\"test\""),
         );
         assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean_true());
     }
@@ -2423,11 +2568,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "foo3").to_type_string(),
+            get_global_symbol_type(&ret, "foo3").to_type_string(ret.arena),
             "<T>(x: T | null | undefined) => NonNullable<T>"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "stringValue").to_type_string(),
+            get_global_symbol_type(&ret, "stringValue").to_type_string(ret.arena),
             "\"hello\""
         );
         assert_eq!(get_global_symbol_type(&ret, "undefinedValue"), Ty::never());
@@ -2448,9 +2593,10 @@ mod test {
         "#,
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "value"),
-            Ty::string_literal(arena(&ret), "\"ready\"")
+            Ty::string_literal(arena(&ret), "\"ready\""),
         );
     }
 
@@ -2469,9 +2615,10 @@ mod test {
         "#,
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "result"),
-            Ty::string_literal(arena(&ret), "\"ready\"")
+            Ty::string_literal(arena(&ret), "\"ready\""),
         );
     }
 
@@ -2493,11 +2640,11 @@ mod test {
 
         assert_eq!(get_global_symbol_type(&ret, "firstValue"), Ty::number());
         assert_eq!(
-            get_global_symbol_type(&ret, "pairValue").to_type_string(),
+            get_global_symbol_type(&ret, "pairValue").to_type_string(ret.arena),
             "[number, string]"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "tailValue").to_type_string(),
+            get_global_symbol_type(&ret, "tailValue").to_type_string(ret.arena),
             "[number, boolean]"
         );
     }
@@ -2519,11 +2666,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "target").to_type_string(),
+            get_global_symbol_type(&ret, "target").to_type_string(ret.arena),
             "Box<number>"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "object").to_type_string(),
+            get_global_symbol_type(&ret, "object").to_type_string(ret.arena),
             "Box<number>"
         );
     }
@@ -2566,23 +2713,23 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "maybeValue").to_type_string(),
+            get_global_symbol_type(&ret, "maybeValue").to_type_string(ret.arena),
             "\"ready\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "nullableValue").to_type_string(),
+            get_global_symbol_type(&ret, "nullableValue").to_type_string(ret.arena),
             "\"ready\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "falsyValue").to_type_string(),
+            get_global_symbol_type(&ret, "falsyValue").to_type_string(ret.arena),
             "\"ready\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "promiseValue").to_type_string(),
+            get_global_symbol_type(&ret, "promiseValue").to_type_string(ret.arena),
             "string"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "directValue").to_type_string(),
+            get_global_symbol_type(&ret, "directValue").to_type_string(ret.arena),
             "\"ready\""
         );
     }
@@ -2601,7 +2748,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "extraValue").to_type_string(),
+            get_global_symbol_type(&ret, "extraValue").to_type_string(ret.arena),
             "{ extra: number; }"
         );
     }
@@ -2621,7 +2768,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "unwrapped").to_type_string(),
+            get_global_symbol_type(&ret, "unwrapped").to_type_string(ret.arena),
             "Box<number>"
         );
     }
@@ -2641,19 +2788,19 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "unwrapped").to_type_string(),
+            get_global_symbol_type(&ret, "unwrapped").to_type_string(ret.arena),
             "{ value: number; name: string; }"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "partial").to_type_string(),
+            get_global_symbol_type(&ret, "partial").to_type_string(ret.arena),
             "{ value: number; }"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "unwrap").to_type_string(),
+            get_global_symbol_type(&ret, "unwrap").to_type_string(ret.arena),
             "<T>(value: { [P in keyof T]: T[P]; }) => T"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "unwrapPartial").to_type_string(),
+            get_global_symbol_type(&ret, "unwrapPartial").to_type_string(ret.arena),
             "<T>(value: { [P in keyof T]?: T[P] | undefined; }) => T"
         );
     }
@@ -2674,15 +2821,15 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "arrayValue").to_type_string(),
+            get_global_symbol_type(&ret, "arrayValue").to_type_string(ret.arena),
             "number[]"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "tupleValue").to_type_string(),
+            get_global_symbol_type(&ret, "tupleValue").to_type_string(ret.arena),
             "[number, string]"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "readonlyTupleValue").to_type_string(),
+            get_global_symbol_type(&ret, "readonlyTupleValue").to_type_string(ret.arena),
             "readonly [number, string]"
         );
     }
@@ -2700,7 +2847,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "picked").to_type_string(),
+            get_global_symbol_type(&ret, "picked").to_type_string(ret.arena),
             "{ value: number; }"
         );
     }
@@ -2759,35 +2906,35 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "literalResult").to_type_string(),
+            get_global_symbol_type(&ret, "literalResult").to_type_string(ret.arena),
             "\"literal\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "genericResult").to_type_string(),
+            get_global_symbol_type(&ret, "genericResult").to_type_string(ret.arena),
             "string[]"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "tiedResult").to_type_string(),
+            get_global_symbol_type(&ret, "tiedResult").to_type_string(ret.arena),
             "\"first\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "tupleRestOne").to_type_string(),
+            get_global_symbol_type(&ret, "tupleRestOne").to_type_string(ret.arena),
             "\"one\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "tupleRestTwo").to_type_string(),
+            get_global_symbol_type(&ret, "tupleRestTwo").to_type_string(ret.arena),
             "\"two\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "optionalTupleRestOne").to_type_string(),
+            get_global_symbol_type(&ret, "optionalTupleRestOne").to_type_string(ret.arena),
             "\"optional\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "optionalTupleRestTwo").to_type_string(),
+            get_global_symbol_type(&ret, "optionalTupleRestTwo").to_type_string(ret.arena),
             "\"optional\""
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "optionalTupleRestThree").to_type_string(),
+            get_global_symbol_type(&ret, "optionalTupleRestThree").to_type_string(ret.arena),
             "\"three\""
         );
     }
@@ -2824,9 +2971,10 @@ mod test {
         "#,
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "value"),
-            Ty::string_literal(arena(&ret), "\"ready\"")
+            Ty::string_literal(arena(&ret), "\"ready\""),
         );
     }
 
@@ -2914,10 +3062,11 @@ mod test {
         let arena = arena(&ret);
 
         assert_eq!(
-            get_global_symbol_type(&ret, "Err").to_type_string(),
+            get_global_symbol_type(&ret, "Err").to_type_string(ret.arena),
             "typeof ErrImpl & (<T>() => T)"
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "e"),
             Ty::intersection(
                 arena,
@@ -2937,7 +3086,7 @@ mod test {
                     ),
                     Ty::function(arena, [], [], Ty::number()),
                 ],
-            )
+            ),
         );
     }
 
@@ -3000,7 +3149,8 @@ mod test {
             get_global_symbol_type(&ret, "afterBareResult"),
             Ty::string()
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "literalUnionResult"),
             Ty::union(
                 arena,
@@ -3008,7 +3158,7 @@ mod test {
                     Ty::number_literal(arena, 2.0, "2", NumberBase::Decimal),
                     Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
                 ],
-            )
+            ),
         );
         assert_eq!(
             get_global_symbol_type(&ret, "nestedFunctionResult"),
@@ -3022,7 +3172,7 @@ mod test {
         let ret = parse_and_check_source(&allocator, "var predicate = () => false;");
 
         assert_eq!(
-            get_global_symbol_type(&ret, "predicate").to_type_string(),
+            get_global_symbol_type(&ret, "predicate").to_type_string(ret.arena),
             "() => boolean"
         );
     }
@@ -3048,20 +3198,23 @@ mod test {
         let arena = arena(&ret);
 
         assert_eq!(
-            get_global_symbol_type(&ret, "returnsString").to_type_string(),
+            get_global_symbol_type(&ret, "returnsString").to_type_string(ret.arena),
             "() => Promise<string>"
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "stringResult"),
-            Ty::type_reference(arena, "Promise", [Ty::string()])
+            Ty::type_reference(arena, "Promise", [Ty::string()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "emptyResult"),
-            Ty::type_reference(arena, "Promise", [Ty::void()])
+            Ty::type_reference(arena, "Promise", [Ty::void()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "numberResult"),
-            Ty::type_reference(arena, "Promise", [Ty::number()])
+            Ty::type_reference(arena, "Promise", [Ty::number()]),
         );
     }
 
@@ -3083,11 +3236,11 @@ mod test {
         );
 
         assert_eq!(
-            get_first_symbol_type(&ret, "stream").to_type_string(),
+            get_first_symbol_type(&ret, "stream").to_type_string(ret.arena),
             "AsyncIterable<TQueryFnData>"
         );
         assert_eq!(
-            get_first_symbol_type(&ret, "chunk").to_type_string(),
+            get_first_symbol_type(&ret, "chunk").to_type_string(ret.arena),
             "Awaited<TQueryFnData>"
         );
     }
@@ -3132,16 +3285,17 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "promise"),
-            Ty::type_reference(arena, "Promise", [Ty::unknown()])
+            Ty::type_reference(arena, "Promise", [Ty::unknown()]),
         );
         assert_eq!(
-            get_first_symbol_type(&ret, "resolve").to_type_string(),
+            get_first_symbol_type(&ret, "resolve").to_type_string(ret.arena),
             "(value: unknown) => void"
         );
         assert_eq!(
-            get_first_symbol_type(&ret, "reject").to_type_string(),
+            get_first_symbol_type(&ret, "reject").to_type_string(ret.arena),
             "(reason?: any) => void"
         );
     }
@@ -3154,9 +3308,10 @@ mod test {
             "const rejected = Promise.reject('value').finally();",
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "rejected"),
-            Ty::type_reference(arena(&ret), "Promise", [Ty::never()])
+            Ty::type_reference(arena(&ret), "Promise", [Ty::never()]),
         );
     }
 
@@ -3177,24 +3332,27 @@ mod test {
         let arena = arena(&ret);
 
         assert_eq!(
-            get_global_symbol_type(&ret, "thenMethod").to_type_string(),
+            get_global_symbol_type(&ret, "thenMethod").to_type_string(ret.arena),
             "<TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>"
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "thenResult"),
-            Ty::type_reference(arena, "Promise", [Ty::void()])
+            Ty::type_reference(arena, "Promise", [Ty::void()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "defaultThenResult"),
-            Ty::type_reference(arena, "Promise", [Ty::string()])
+            Ty::type_reference(arena, "Promise", [Ty::string()]),
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "catchMethod").to_type_string(),
+            get_global_symbol_type(&ret, "catchMethod").to_type_string(ret.arena),
             "<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>"
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "catchResult"),
-            Ty::type_reference(arena, "Promise", [Ty::void()])
+            Ty::type_reference(arena, "Promise", [Ty::void()]),
         );
     }
 
@@ -3214,7 +3372,7 @@ mod test {
 
         assert_eq!(get_global_symbol_type(&ret, "callbackValue"), Ty::number());
         assert_eq!(
-            get_global_symbol_type(&ret, "objectCallbackValue").to_type_string(),
+            get_global_symbol_type(&ret, "objectCallbackValue").to_type_string(ret.arena),
             "{ value: number; }"
         );
     }
@@ -3240,11 +3398,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "result").to_type_string(),
+            get_global_symbol_type(&ret, "result").to_type_string(ret.arena),
             "{ value: number; }"
         );
         assert_eq!(
-            get_first_symbol_type(&ret, "item").to_type_string(),
+            get_first_symbol_type(&ret, "item").to_type_string(ret.arena),
             "{ value: number; }"
         );
         assert_eq!(get_first_symbol_type(&ret, "derivedValue"), Ty::number());
@@ -3268,11 +3426,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "result").to_type_string(),
+            get_global_symbol_type(&ret, "result").to_type_string(ret.arena),
             "{ value: number; }"
         );
         assert_eq!(
-            get_first_symbol_type(&ret, "item").to_type_string(),
+            get_first_symbol_type(&ret, "item").to_type_string(ret.arena),
             "{ value: number; }"
         );
         assert_eq!(get_first_symbol_type(&ret, "derivedValue"), Ty::number());
@@ -3290,7 +3448,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "Value").to_type_string(),
+            get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
             "{ value: Promise<number>; }"
         );
     }
@@ -3312,10 +3470,13 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "arrayOfPromises").to_type_string(),
+            get_global_symbol_type(&ret, "arrayOfPromises").to_type_string(ret.arena),
             "Promise<number>[]"
         );
-        assert_eq!(get_type_alias_type(&ret, "T1").to_type_string(), "number");
+        assert_eq!(
+            get_type_alias_type(&ret, "T1").to_type_string(ret.arena),
+            "number"
+        );
     }
 
     #[test]
@@ -3336,7 +3497,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "Nullish").to_type_string(),
+            get_type_alias_type(&ret, "Nullish").to_type_string(ret.arena),
             "null | undefined"
         );
     }
@@ -3356,7 +3517,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "StructuralThenable").to_type_string(),
+            get_type_alias_type(&ret, "StructuralThenable").to_type_string(ret.arena),
             "string"
         );
     }
@@ -3380,7 +3541,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "StructuralThenable").to_type_string(),
+            get_type_alias_type(&ret, "StructuralThenable").to_type_string(ret.arena),
             "string"
         );
     }
@@ -3405,11 +3566,11 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "Primitive").to_type_string(),
+            get_type_alias_type(&ret, "Primitive").to_type_string(ret.arena),
             "number"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "PlainObject").to_type_string(),
+            get_type_alias_type(&ret, "PlainObject").to_type_string(ret.arena),
             "{ value: string; }"
         );
     }
@@ -3438,19 +3599,19 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "StructuralThenable").to_type_string(),
+            get_type_alias_type(&ret, "StructuralThenable").to_type_string(ret.arena),
             "string"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "NestedStructuralThenable").to_type_string(),
+            get_type_alias_type(&ret, "NestedStructuralThenable").to_type_string(ret.arena),
             "number"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "PromiseValue").to_type_string(),
+            get_type_alias_type(&ret, "PromiseValue").to_type_string(ret.arena),
             "string"
         );
         assert_eq!(
-            get_type_alias_type(&ret, "NestedPromiseValue").to_type_string(),
+            get_type_alias_type(&ret, "NestedPromiseValue").to_type_string(ret.arena),
             "number"
         );
     }
@@ -3474,7 +3635,7 @@ mod test {
         );
 
         assert_eq!(
-            get_type_alias_type(&ret, "NonCallableThenArgument").to_type_string(),
+            get_type_alias_type(&ret, "NonCallableThenArgument").to_type_string(ret.arena),
             "never"
         );
     }
@@ -3502,10 +3663,15 @@ mod test {
             .build()
             .unwrap();
         let program_id = store.id_for_path(Path::new("/project/a.ts")).unwrap();
-        let ret = ParseAndCheck { store, program_id };
+        let arena = CheckerArena::new(store.allocator());
+        let ret = ParseAndCheck {
+            store,
+            program_id,
+            arena,
+        };
 
         assert_eq!(
-            get_global_symbol_type(&ret, "returnsPromise").to_type_string(),
+            get_global_symbol_type(&ret, "returnsPromise").to_type_string(ret.arena),
             "{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }"
         );
     }
@@ -3541,9 +3707,10 @@ mod test {
         "#,
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "x"),
-            Ty::object(arena(&ret), [Ty::property("value", Ty::number())])
+            Ty::object(arena(&ret), [Ty::property("value", Ty::number())]),
         );
     }
 
@@ -3565,17 +3732,20 @@ mod test {
         "#,
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "explicit"),
-            Ty::type_reference(arena(&ret), "Box", [Ty::string()])
+            Ty::type_reference(arena(&ret), "Box", [Ty::string()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "inferred"),
-            Ty::type_reference(arena(&ret), "Box", [Ty::number()])
+            Ty::type_reference(arena(&ret), "Box", [Ty::number()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "fromExplicitCall"),
-            Ty::type_reference(arena(&ret), "Box", [Ty::string()])
+            Ty::type_reference(arena(&ret), "Box", [Ty::string()]),
         );
     }
 
@@ -3600,28 +3770,31 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "fn").to_type_string(),
+            get_global_symbol_type(&ret, "fn").to_type_string(ret.arena),
             "<T = A>(x: T) => T"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "foo").to_type_string(),
+            get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
             "<T = A>(x?: T) => T"
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "fromDefault"),
-            Ty::type_reference(arena(&ret), "A", std::iter::empty())
+            Ty::type_reference(arena(&ret), "A", std::iter::empty()),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "fromInference"),
-            Ty::type_reference(arena(&ret), "A", std::iter::empty())
+            Ty::type_reference(arena(&ret), "A", std::iter::empty()),
         );
         assert_eq!(
             get_global_symbol_type(&ret, "fromDependentDefault"),
             Ty::string()
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "unresolvedValue"),
-            Ty::type_reference(arena(&ret), "T", std::iter::empty())
+            Ty::type_reference(arena(&ret), "T", std::iter::empty()),
         );
     }
 
@@ -3644,19 +3817,19 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "fn").to_type_string(),
+            get_global_symbol_type(&ret, "fn").to_type_string(ret.arena),
             "<T extends A>(x: T) => T"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "foo").to_type_string(),
+            get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
             "<T extends A, U extends T = T>(x?: T, y?: U) => [T, U]"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "fromConstraint").to_type_string(),
+            get_global_symbol_type(&ret, "fromConstraint").to_type_string(ret.arena),
             "[A, A]"
         );
         assert_eq!(
-            get_global_symbol_type(&ret, "fromInference").to_type_string(),
+            get_global_symbol_type(&ret, "fromInference").to_type_string(ret.arena),
             "[A, A]"
         );
         assert_eq!(
@@ -3680,7 +3853,7 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "source").to_type_string(),
+            get_global_symbol_type(&ret, "source").to_type_string(ret.arena),
             "{ <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any): void; }"
         );
     }
@@ -3701,13 +3874,15 @@ mod test {
         ",
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "c"),
-            Ty::type_reference(arena(&ret), "Foo", std::iter::empty())
+            Ty::type_reference(arena(&ret), "Foo", std::iter::empty()),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "x"),
-            Ty::object(arena(&ret), [Ty::property("b", Ty::number())])
+            Ty::object(arena(&ret), [Ty::property("b", Ty::number())]),
         );
     }
 
@@ -3809,9 +3984,10 @@ mod test {
         "#,
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_first_symbol_type(&ret, "val"),
-            Ty::type_reference(arena(&ret), "Ship", std::iter::empty())
+            Ty::type_reference(arena(&ret), "Ship", std::iter::empty()),
         );
         assert_eq!(get_global_symbol_type(&ret, "sunk"), Ty::boolean());
     }
@@ -3827,9 +4003,10 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "mapped"),
-            Ty::array(arena, Ty::type_reference(arena, "Promise", [Ty::number()]))
+            Ty::array(arena, Ty::type_reference(arena, "Promise", [Ty::number()])),
         );
         assert_eq!(get_first_symbol_type(&ret, "x"), Ty::number());
     }
@@ -3850,9 +4027,10 @@ mod test {
             get_static_member_expression_types(&ret, "length"),
             vec![Ty::number()]
         );
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_global_symbol_type(&ret, "lengths"),
-            Ty::array(arena, Ty::number())
+            Ty::array(arena, Ty::number()),
         );
     }
 
@@ -3956,26 +4134,31 @@ mod test {
             ",
         );
 
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "userId"),
-            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()])
+            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "userName"),
-            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "userId2"),
-            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()])
+            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "userName2"),
-            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()])
+            Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_symbol_type(&ret, "optionalNestedArray"),
             Ty::object(arena(&ret), [Ty::property("label", Ty::string())])
-                .or_undefined(arena(&ret))
+                .or_undefined(arena(&ret)),
         );
     }
 
@@ -3998,12 +4181,13 @@ mod test {
         let ret = parse_and_check_source(&allocator, "declare function foo(a?: number): number;");
 
         assert_eq!(
-            get_global_symbol_type(&ret, "foo").to_type_string(),
+            get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
             "(a?: number) => number"
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_symbol_type_in_function(&ret, "foo", "a"),
-            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()])
+            Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
         );
     }
 
@@ -4016,10 +4200,11 @@ mod test {
         );
 
         assert_eq!(
-            get_global_symbol_type(&ret, "foo").to_type_string(),
+            get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
             "(a: string, b?: string, c?: number, ...d: number[]) => void"
         );
-        let Ty::Function(function) = get_global_symbol_type(&ret, "foo") else {
+        let ty = get_global_symbol_type(&ret, "foo");
+        let TypeData::Function(function) = ret.arena.type_data(ty) else {
             panic!("expected function type");
         };
         let rest_parameter = function.parameters[3];
@@ -4036,7 +4221,8 @@ mod test {
         );
         let arena = arena(&ret);
 
-        assert_eq!(
+        assert_type_eq(
+            arena,
             get_first_symbol_type(&ret, "ab"),
             Ty::function(
                 arena,
@@ -4046,7 +4232,7 @@ mod test {
                     Ty::type_reference(arena, arena.str("A"), []),
                 )],
                 Ty::type_reference(arena, arena.str("B"), []),
-            )
+            ),
         );
     }
 
@@ -4064,11 +4250,11 @@ declare function acceptsPredicate<T, S extends T>(
         );
 
         assert_eq!(
-            get_first_symbol_type(&ret, "predicate").to_type_string(),
+            get_first_symbol_type(&ret, "predicate").to_type_string(ret.arena),
             "(value: T) => value is S"
         );
         assert_eq!(
-            get_first_symbol_type(&ret, "assertion").to_type_string(),
+            get_first_symbol_type(&ret, "assertion").to_type_string(ret.arena),
             "(value: unknown) => asserts value is string"
         );
     }
@@ -4077,24 +4263,26 @@ declare function acceptsPredicate<T, S extends T>(
     fn test_get_global_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "");
-        let checker = CheckerBuilder::new().build(&ret.store);
+        let checker = checker(&ret);
 
         // Now test things that should be in the global environment:
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             get_global_type(&ret, ret.program_id, "Promise"),
             Some(Ty::type_reference(
                 arena(&ret),
                 "Promise",
-                std::iter::empty()
-            ))
+                std::iter::empty(),
+            )),
         );
-        assert_eq!(
+        assert_type_eq(
+            ret.arena,
             checker.get_global_promise_type(ret.program_id),
             Some(Ty::type_reference(
                 arena(&ret),
                 "Promise",
-                std::iter::empty()
-            ))
+                std::iter::empty(),
+            )),
         );
     }
 }
