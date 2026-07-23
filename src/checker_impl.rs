@@ -37,7 +37,6 @@ use crate::{
     is_iterable_type_reference, is_mapped_empty_object_intersection,
     is_promise_like_type_reference,
     limits::{
-        INTERFACE_PROPERTY_RESOLUTION_STACK, TS_TYPE_RESOLUTION_DEPTH,
         TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_DEPTH,
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
@@ -1596,17 +1595,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: program::ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
-        TS_TYPE_RESOLUTION_DEPTH.with(|depth| {
-            let current = depth.get();
-            if current >= TS_TYPE_RESOLUTION_MAX_DEPTH {
-                return Ty::any();
-            }
+        let depth = &self.ts_type_resolution_depth;
+        let current = depth.get();
+        if current >= TS_TYPE_RESOLUTION_MAX_DEPTH {
+            return Ty::any();
+        }
 
-            depth.set(current + 1);
-            let result = self.get_type_from_ts_type_inner(program_id, ty);
-            depth.set(current);
-            result
-        })
+        depth.set(current + 1);
+        let result = self.get_type_from_ts_type_inner(program_id, ty);
+        depth.set(current);
+        result
     }
 
     fn get_type_from_ts_type_inner(
@@ -4700,7 +4698,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             reference.name.to_string(),
             property_name.to_string(),
         );
-        if INTERFACE_PROPERTY_RESOLUTION_STACK.with(|stack| {
+        let stack = &self.interface_property_resolution_stack;
+        let cycle_detected = {
             let mut stack = stack.borrow_mut();
             if stack.contains(&key) {
                 true
@@ -4708,7 +4707,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 stack.push(key.clone());
                 false
             }
-        }) {
+        };
+        if cycle_detected {
             return Some(Ty::any());
         }
 
@@ -4725,12 +4725,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             });
 
-        INTERFACE_PROPERTY_RESOLUTION_STACK.with(|stack| {
+        {
             let mut stack = stack.borrow_mut();
             if let Some(position) = stack.iter().rposition(|active| active == &key) {
                 stack.remove(position);
             }
-        });
+        }
 
         result
     }
@@ -8410,12 +8410,16 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String {
         let alias_chain_replacements =
             self.type_alias_chain_display_replacements_at_location(t, location);
-        t.to_type_string_with(self.arena(), &|ty| {
-            alias_chain_replacements
-                .get(&ty)
-                .copied()
-                .or_else(|| self.transparent_type_alias_target_at_location(ty, location))
-        })
+        t.to_type_string_with_depth(
+            self.arena(),
+            &|ty| {
+                alias_chain_replacements
+                    .get(&ty)
+                    .copied()
+                    .or_else(|| self.transparent_type_alias_target_at_location(ty, location))
+            },
+            &self.type_string_depth,
+        )
     }
 
     fn symbol_to_string(&self, s: SymbolRef, _location: NodeRef) -> String {

@@ -1,5 +1,3 @@
-use std::cell::{Cell, RefCell};
-
 /// Maximum recursion depth for expanding aliases, mapped types, indexed access,
 /// and apparent types at use sites before preserving the current unresolved type.
 pub(crate) const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
@@ -31,21 +29,3 @@ pub(crate) const TYPE_STRING_MAX_DEPTH: usize = 64;
 /// Maximum recursion depth for generic type traversal helpers before stopping
 /// traversal of the current branch.
 pub(crate) const TYPE_VISIT_MAX_DEPTH: usize = 256;
-
-/// Key used to identify an active interface property lookup and break recursive
-/// interface property resolution cycles.
-pub(crate) type InterfacePropertyResolutionKey = (usize, String, String);
-
-thread_local! {
-    /// Per-thread recursion depth for TypeScript AST type-node resolution.
-    pub(crate) static TS_TYPE_RESOLUTION_DEPTH: Cell<usize> = const { Cell::new(0) };
-
-    /// Per-thread stack of active interface property lookups used as a cycle guard.
-    pub(crate) static INTERFACE_PROPERTY_RESOLUTION_STACK: RefCell<Vec<InterfacePropertyResolutionKey>> = const { RefCell::new(Vec::new()) };
-
-    /// Per-thread recursion depth for conditional type resolution.
-    pub(crate) static CONDITIONAL_TYPE_DEPTH: Cell<usize> = const { Cell::new(0) };
-
-    /// Per-thread recursion depth for type string rendering.
-    pub(crate) static TYPE_STRING_DEPTH: Cell<usize> = const { Cell::new(0) };
-}

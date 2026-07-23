@@ -11,9 +11,7 @@ use crate::{
     checker::CheckerReturn,
     checker_impl::{FunctionKind, GetTypeFlags},
     index_type_to_property_name,
-    limits::{
-        CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH,
-    },
+    limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
     relations::is_assignable_to_without_checker,
@@ -795,30 +793,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         false_type: Ty<'a>,
         is_distributive: bool,
     ) -> Ty<'a> {
-        CONDITIONAL_TYPE_DEPTH.with(|depth| {
-            let current = depth.get();
-            if current >= CONDITIONAL_TYPE_MAX_DEPTH {
-                return Ty::conditional(
-                    self.arena(),
-                    check_type,
-                    extends_type,
-                    true_type,
-                    false_type,
-                    is_distributive,
-                );
-            }
-
-            depth.set(current + 1);
-            let result = self.conditional_type_inner(
+        let depth = &self.conditional_type_depth;
+        let current = depth.get();
+        if current >= CONDITIONAL_TYPE_MAX_DEPTH {
+            return Ty::conditional(
+                self.arena(),
                 check_type,
                 extends_type,
                 true_type,
                 false_type,
                 is_distributive,
             );
-            depth.set(current);
-            result
-        })
+        }
+
+        depth.set(current + 1);
+        let result = self.conditional_type_inner(
+            check_type,
+            extends_type,
+            true_type,
+            false_type,
+            is_distributive,
+        );
+        depth.set(current);
+        result
     }
 
     fn conditional_type_inner(

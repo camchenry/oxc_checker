@@ -1,5 +1,5 @@
 use crate::{
-    limits::{TYPE_STRING_DEPTH, TYPE_STRING_MAX_DEPTH, TYPE_VISIT_MAX_DEPTH},
+    limits::{TYPE_STRING_MAX_DEPTH, TYPE_VISIT_MAX_DEPTH},
     type_set::{reduce_intersection_type, reduce_union_type},
 };
 use bitflags::bitflags;
@@ -11,7 +11,11 @@ use oxc_ast::ast::{
 };
 use oxc_index::Idx;
 use oxc_str::Str;
-use std::{cell::RefCell, marker::PhantomData, num::NonZeroU32};
+use std::{
+    cell::{Cell, RefCell},
+    marker::PhantomData,
+    num::NonZeroU32,
+};
 
 const SYNTHETIC_INDEX_SIGNATURE_NAME: &str = "x";
 
@@ -1530,7 +1534,17 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     ) -> String {
-        self.to_type_string_with_flags(arena, replace_type_reference, TypeFormatFlags::NONE)
+        let depth = Cell::new(0);
+        self.to_type_string_with_depth(arena, replace_type_reference, &depth)
+    }
+
+    pub(crate) fn to_type_string_with_depth(
+        self,
+        arena: CheckerArena<'a>,
+        replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
+        depth: &Cell<usize>,
+    ) -> String {
+        self.to_type_string_with_flags(arena, replace_type_reference, TypeFormatFlags::NONE, depth)
     }
 
     fn to_type_string_with_flags(
@@ -1538,18 +1552,17 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
         flags: TypeFormatFlags,
+        depth: &Cell<usize>,
     ) -> String {
-        TYPE_STRING_DEPTH.with(|depth| {
-            let current = depth.get();
-            if current >= TYPE_STRING_MAX_DEPTH {
-                return "...".to_string();
-            }
+        let current = depth.get();
+        if current >= TYPE_STRING_MAX_DEPTH {
+            return "...".to_string();
+        }
 
-            depth.set(current + 1);
-            let result = self.to_type_string_inner(arena, replace_type_reference, flags);
-            depth.set(current);
-            result
-        })
+        depth.set(current + 1);
+        let result = self.to_type_string_inner(arena, replace_type_reference, flags, depth);
+        depth.set(current);
+        result
     }
 
     fn to_type_string_inner(
@@ -1557,6 +1570,7 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
         flags: TypeFormatFlags,
+        depth: &Cell<usize>,
     ) -> String {
         match arena.type_data(self) {
             TypeData::None => "none".to_string(),
@@ -1588,7 +1602,9 @@ impl<'a> Ty<'a> {
                 let members = object
                     .signatures
                     .iter()
-                    .map(|signature| signature.to_type_string_with_flags(arena, &|_| None, flags))
+                    .map(|signature| {
+                        signature.to_type_string_with_flags(arena, &|_| None, flags, depth)
+                    })
                     .chain(object.index_infos.iter().map(|info| {
                         let readonly = if info.readonly { "readonly " } else { "" };
                         format!(
@@ -1599,11 +1615,13 @@ impl<'a> Ty<'a> {
                                 arena,
                                 replace_type_reference,
                                 flags,
+                                depth,
                             ),
                             info.value_type.to_type_string_with_flags(
                                 arena,
                                 replace_type_reference,
                                 flags,
+                                depth,
                             )
                         )
                     }))
@@ -1616,7 +1634,7 @@ impl<'a> Ty<'a> {
                                 "{}{}{};",
                                 readonly,
                                 property_name_to_type_string(property),
-                                signature_to_type_string(arena, function, &|_| None, flags,)
+                                signature_to_type_string(arena, function, &|_| None, flags, depth,)
                             )
                         } else {
                             format!(
@@ -1627,6 +1645,7 @@ impl<'a> Ty<'a> {
                                     arena,
                                     replace_type_reference,
                                     flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
+                                    depth,
                                 )
                             )
                         }
@@ -1637,7 +1656,7 @@ impl<'a> Ty<'a> {
             }
             TypeData::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
             TypeData::Function(function) => {
-                function_type_to_string(arena, function, &|_| None, flags)
+                function_type_to_string(arena, function, &|_| None, flags, depth)
             }
             TypeData::TypeReference(reference) => {
                 if let Some(replacement) = replace_type_reference(self)
@@ -1647,6 +1666,7 @@ impl<'a> Ty<'a> {
                         arena,
                         replace_type_reference,
                         flags,
+                        depth,
                     );
                 }
                 if reference.display_type_argument_count == 0 {
@@ -1657,7 +1677,12 @@ impl<'a> Ty<'a> {
                         .iter()
                         .take(reference.display_type_argument_count)
                         .map(|ty| {
-                            ty.to_type_string_with_flags(arena, replace_type_reference, flags)
+                            ty.to_type_string_with_flags(
+                                arena,
+                                replace_type_reference,
+                                flags,
+                                depth,
+                            )
                         })
                         .collect::<Vec<_>>()
                         .join(", ");
@@ -1672,7 +1697,12 @@ impl<'a> Ty<'a> {
                         .type_arguments
                         .iter()
                         .map(|ty| {
-                            ty.to_type_string_with_flags(arena, replace_type_reference, flags)
+                            ty.to_type_string_with_flags(
+                                arena,
+                                replace_type_reference,
+                                flags,
+                                depth,
+                            )
                         })
                         .collect::<Vec<_>>()
                         .join(", ");
@@ -1715,6 +1745,7 @@ impl<'a> Ty<'a> {
                             arena,
                             replace_type_reference,
                             flags,
+                            depth,
                         ));
                         repr.push('}');
                     }
@@ -1731,6 +1762,7 @@ impl<'a> Ty<'a> {
                             arena,
                             replace_type_reference,
                             flags,
+                            depth,
                         ));
                         repr.push('}');
                     }
@@ -1744,6 +1776,7 @@ impl<'a> Ty<'a> {
                     arena,
                     replace_type_reference,
                     flags,
+                    depth,
                 );
                 if array.display_as_generic
                     && flags.contains(TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE)
@@ -1771,16 +1804,28 @@ impl<'a> Ty<'a> {
                     .elements
                     .iter()
                     .map(|element| match element {
-                        TupleElement::Regular(ty) => {
-                            ty.to_type_string_with_flags(arena, replace_type_reference, flags)
-                        }
+                        TupleElement::Regular(ty) => ty.to_type_string_with_flags(
+                            arena,
+                            replace_type_reference,
+                            flags,
+                            depth,
+                        ),
                         TupleElement::Rest(ty) => format!(
                             "...{}",
-                            ty.to_type_string_with_flags(arena, replace_type_reference, flags)
+                            ty.to_type_string_with_flags(
+                                arena,
+                                replace_type_reference,
+                                flags,
+                                depth,
+                            )
                         ),
                         TupleElement::Optional(ty) => {
-                            let ty =
-                                ty.to_type_string_with_flags(arena, replace_type_reference, flags);
+                            let ty = ty.to_type_string_with_flags(
+                                arena,
+                                replace_type_reference,
+                                flags,
+                                depth,
+                            );
                             if element_type_needs_parentheses(arena, element) {
                                 format!("({ty})?")
                             } else {
@@ -1801,7 +1846,7 @@ impl<'a> Ty<'a> {
                 .iter()
                 .map(|ty| {
                     let type_string =
-                        ty.to_type_string_with_flags(arena, replace_type_reference, flags);
+                        ty.to_type_string_with_flags(arena, replace_type_reference, flags, depth);
                     if ty.display_needs_parentheses(arena) {
                         format!("({type_string})")
                     } else {
@@ -1815,7 +1860,7 @@ impl<'a> Ty<'a> {
                 .iter()
                 .map(|ty| {
                     let type_string =
-                        ty.to_type_string_with_flags(arena, replace_type_reference, flags);
+                        ty.to_type_string_with_flags(arena, replace_type_reference, flags, depth);
                     if ty.display_needs_parentheses(arena) {
                         format!("({type_string})")
                     } else {
@@ -1825,10 +1870,12 @@ impl<'a> Ty<'a> {
                 .collect::<Vec<_>>()
                 .join(" & "),
             TypeData::Keyof(keyof) => {
-                let target =
-                    keyof
-                        .target
-                        .to_type_string_with_flags(arena, replace_type_reference, flags);
+                let target = keyof.target.to_type_string_with_flags(
+                    arena,
+                    replace_type_reference,
+                    flags,
+                    depth,
+                );
                 if keyof.target.display_needs_parentheses(arena) {
                     format!("keyof ({target})")
                 } else {
@@ -1840,11 +1887,13 @@ impl<'a> Ty<'a> {
                     arena,
                     replace_type_reference,
                     flags,
+                    depth,
                 );
                 let index_type = indexed_access.index_type.to_type_string_with_flags(
                     arena,
                     replace_type_reference,
                     flags,
+                    depth,
                 );
                 if indexed_access.object_type.display_needs_parentheses(arena) {
                     format!("({object_type})[{index_type}]")
@@ -1857,11 +1906,13 @@ impl<'a> Ty<'a> {
                     arena,
                     replace_type_reference,
                     flags,
+                    depth,
                 );
                 let extends_type = conditional.extends_type.to_type_string_with_flags(
                     arena,
                     replace_type_reference,
                     flags,
+                    depth,
                 );
                 let check_type = if conditional.check_type.display_needs_parentheses(arena) {
                     format!("({check_type})")
@@ -1881,18 +1932,26 @@ impl<'a> Ty<'a> {
                     conditional.true_type.to_type_string_with_flags(
                         arena,
                         replace_type_reference,
-                        flags
+                        flags,
+                        depth,
                     ),
                     conditional.false_type.to_type_string_with_flags(
                         arena,
                         replace_type_reference,
-                        flags
+                        flags,
+                        depth,
                     )
                 )
             }
             TypeData::Infer(infer) => format!(
                 "infer {}",
-                type_parameter_to_type_string(arena, &infer.type_parameter, &|_| None, flags,)
+                type_parameter_to_type_string(
+                    arena,
+                    &infer.type_parameter,
+                    &|_| None,
+                    flags,
+                    depth,
+                )
             ),
             TypeData::Mapped(mapped) => {
                 let mut s = String::from("{ ");
@@ -1910,6 +1969,7 @@ impl<'a> Ty<'a> {
                     arena,
                     replace_type_reference,
                     flags,
+                    depth,
                 ));
                 if let Some(name_type) = mapped.name_type {
                     s.push_str(" as ");
@@ -1917,6 +1977,7 @@ impl<'a> Ty<'a> {
                         arena,
                         replace_type_reference,
                         flags,
+                        depth,
                     ));
                 }
                 s.push(']');
@@ -1932,6 +1993,7 @@ impl<'a> Ty<'a> {
                     arena,
                     replace_type_reference,
                     flags,
+                    depth,
                 ));
                 s.push_str("; }");
                 s
@@ -2155,6 +2217,7 @@ fn type_parameter_to_type_string<'a>(
     type_parameter: &TyTypeParameter<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
+    depth: &Cell<usize>,
 ) -> String {
     let mut type_string = type_parameter.name.to_string();
     if let Some(constraint_type) = type_parameter.constraint_type {
@@ -2163,6 +2226,7 @@ fn type_parameter_to_type_string<'a>(
             arena,
             replace_type_reference,
             flags,
+            depth,
         ));
     }
     if type_parameter.display_default
@@ -2173,6 +2237,7 @@ fn type_parameter_to_type_string<'a>(
             arena,
             replace_type_reference,
             flags,
+            depth,
         ));
     }
     type_string
@@ -2207,16 +2272,17 @@ impl<'a> Signature<'a> {
         arena: CheckerArena<'a>,
         replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
         flags: TypeFormatFlags,
+        depth: &Cell<usize>,
     ) -> String {
         let function = self.function(arena);
         match self.kind {
             SignatureKind::Call => format!(
                 "{};",
-                signature_to_type_string(arena, function, replace_type_reference, flags)
+                signature_to_type_string(arena, function, replace_type_reference, flags, depth,)
             ),
             SignatureKind::Construct => format!(
                 "new {};",
-                signature_to_type_string(arena, function, replace_type_reference, flags)
+                signature_to_type_string(arena, function, replace_type_reference, flags, depth,)
             ),
         }
     }
@@ -2259,12 +2325,13 @@ fn function_type_to_string<'a>(
     function: &TyFunction<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
+    depth: &Cell<usize>,
 ) -> String {
     let (type_parameters, parameters) =
-        function_type_head_to_string(arena, function, replace_type_reference, flags);
+        function_type_head_to_string(arena, function, replace_type_reference, flags, depth);
     format!(
         "{type_parameters}({parameters}) => {}",
-        function_return_type_to_string(arena, function, replace_type_reference, flags)
+        function_return_type_to_string(arena, function, replace_type_reference, flags, depth)
     )
 }
 
@@ -2273,12 +2340,13 @@ fn signature_to_type_string<'a>(
     function: &TyFunction<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
+    depth: &Cell<usize>,
 ) -> String {
     let (type_parameters, parameters) =
-        function_type_head_to_string(arena, function, replace_type_reference, flags);
+        function_type_head_to_string(arena, function, replace_type_reference, flags, depth);
     format!(
         "{type_parameters}({parameters}): {}",
-        function_return_type_to_string(arena, function, replace_type_reference, flags)
+        function_return_type_to_string(arena, function, replace_type_reference, flags, depth)
     )
 }
 
@@ -2287,14 +2355,20 @@ fn function_return_type_to_string<'a>(
     function: &TyFunction<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
+    depth: &Cell<usize>,
 ) -> String {
     function.type_predicate.map_or_else(
         || {
-            function
-                .return_type
-                .to_type_string_with_flags(arena, replace_type_reference, flags)
+            function.return_type.to_type_string_with_flags(
+                arena,
+                replace_type_reference,
+                flags,
+                depth,
+            )
         },
-        |predicate| type_predicate_to_type_string(arena, predicate, replace_type_reference, flags),
+        |predicate| {
+            type_predicate_to_type_string(arena, predicate, replace_type_reference, flags, depth)
+        },
     )
 }
 
@@ -2303,6 +2377,7 @@ fn type_predicate_to_type_string<'a>(
     predicate: &TyTypePredicate<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
+    depth: &Cell<usize>,
 ) -> String {
     let parameter_name = predicate.parameter_name.unwrap_or("this");
     let mut type_string = String::new();
@@ -2316,6 +2391,7 @@ fn type_predicate_to_type_string<'a>(
             arena,
             replace_type_reference,
             flags,
+            depth,
         ));
     }
     type_string
@@ -2326,6 +2402,7 @@ fn function_type_head_to_string<'a>(
     function: &TyFunction<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
+    depth: &Cell<usize>,
 ) -> (String, String) {
     let type_parameters = if function.type_parameters.is_empty() {
         String::new()
@@ -2334,7 +2411,13 @@ fn function_type_head_to_string<'a>(
             .type_parameters
             .iter()
             .map(|type_parameter| {
-                type_parameter_to_type_string(arena, type_parameter, replace_type_reference, flags)
+                type_parameter_to_type_string(
+                    arena,
+                    type_parameter,
+                    replace_type_reference,
+                    flags,
+                    depth,
+                )
             })
             .collect::<Vec<_>>()
             .join(", ");
@@ -2344,7 +2427,13 @@ fn function_type_head_to_string<'a>(
         .parameters
         .iter()
         .flat_map(|parameter| {
-            function_parameter_to_type_strings(arena, parameter, replace_type_reference, flags)
+            function_parameter_to_type_strings(
+                arena,
+                parameter,
+                replace_type_reference,
+                flags,
+                depth,
+            )
         })
         .collect::<Vec<_>>()
         .join(", ");
@@ -2356,6 +2445,7 @@ fn function_parameter_to_type_strings<'a>(
     parameter: &TyParameter<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
+    depth: &Cell<usize>,
 ) -> Vec<String> {
     if parameter.rest
         && let TypeData::Tuple(tuple) = arena.type_data(parameter.ty)
@@ -2373,15 +2463,15 @@ fn function_parameter_to_type_strings<'a>(
                 match element {
                     TupleElement::Regular(ty) => format!(
                         "{name}: {}",
-                        ty.to_type_string_with_flags(arena, replace_type_reference, flags)
+                        ty.to_type_string_with_flags(arena, replace_type_reference, flags, depth,)
                     ),
                     TupleElement::Optional(ty) => format!(
                         "{name}?: {}",
-                        ty.to_type_string_with_flags(arena, replace_type_reference, flags)
+                        ty.to_type_string_with_flags(arena, replace_type_reference, flags, depth,)
                     ),
                     TupleElement::Rest(ty) => format!(
                         "...{name}: {}",
-                        ty.to_type_string_with_flags(arena, replace_type_reference, flags)
+                        ty.to_type_string_with_flags(arena, replace_type_reference, flags, depth,)
                     ),
                 }
             })
@@ -2394,7 +2484,7 @@ fn function_parameter_to_type_strings<'a>(
             parameter.name,
             parameter
                 .ty
-                .to_type_string_with_flags(arena, replace_type_reference, flags)
+                .to_type_string_with_flags(arena, replace_type_reference, flags, depth)
         )]
     } else if parameter.optional {
         vec![format!(
@@ -2402,7 +2492,7 @@ fn function_parameter_to_type_strings<'a>(
             parameter.name,
             parameter
                 .ty
-                .to_type_string_with_flags(arena, replace_type_reference, flags)
+                .to_type_string_with_flags(arena, replace_type_reference, flags, depth)
         )]
     } else {
         vec![format!(
@@ -2410,7 +2500,7 @@ fn function_parameter_to_type_strings<'a>(
             parameter.name,
             parameter
                 .ty
-                .to_type_string_with_flags(arena, replace_type_reference, flags)
+                .to_type_string_with_flags(arena, replace_type_reference, flags, depth)
         )]
     }
 }

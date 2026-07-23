@@ -1,4 +1,7 @@
-use std::{cell::RefCell, collections::HashMap};
+use std::{
+    cell::{Cell, RefCell},
+    collections::HashMap,
+};
 
 use oxc_ast::ast::TSInterfaceDeclaration;
 use oxc_index::IndexVec;
@@ -40,6 +43,10 @@ pub struct CheckerReturn<'a, 'store> {
     pub resolving_type_aliases: RefCell<Vec<(ProgramId, NodeId)>>,
     pub resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
     pub resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
+    pub(crate) interface_property_resolution_stack: RefCell<Vec<(usize, String, String)>>,
+    pub(crate) ts_type_resolution_depth: Cell<usize>,
+    pub(crate) conditional_type_depth: Cell<usize>,
+    pub(crate) type_string_depth: Cell<usize>,
 }
 
 impl<'a> CheckerReturn<'a, '_> {
@@ -196,6 +203,10 @@ impl CheckerBuilder {
             resolving_type_aliases: RefCell::new(Vec::new()),
             resolving_type_parameters: RefCell::new(Vec::new()),
             resolving_class_members: RefCell::new(Vec::new()),
+            interface_property_resolution_stack: RefCell::new(Vec::new()),
+            ts_type_resolution_depth: Cell::new(0),
+            conditional_type_depth: Cell::new(0),
+            type_string_depth: Cell::new(0),
         }
     }
 }
