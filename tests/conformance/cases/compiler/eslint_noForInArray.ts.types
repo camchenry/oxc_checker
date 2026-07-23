@@ -131,12 +131,10 @@ array.forEach((value, i) => {
 >                ^^^^^: string   (TyString) (IdentifierReference)
 
 for (const [i, value] of array.entries()) {
->           ^: [number, string]   (TyTuple) (BindingIdentifier)
-     expected: number
+>           ^: number   (TyNumber) (BindingIdentifier)
 
 for (const [i, value] of array.entries()) {
->              ^^^^^: [number, string]   (TyTuple) (BindingIdentifier)
-            expected: string
+>              ^^^^^: string   (TyString) (BindingIdentifier)
 
 for (const [i, value] of array.entries()) {
 >                        ^^^^^: string[]   (TyArray) (IdentifierReference)
@@ -154,9 +152,7 @@ for (const [i, value] of array.entries()) {
 >         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
   console.log(i, value);
->             ^: [number, string]   (TyTuple) (IdentifierReference)
-       expected: number
+>             ^: number   (TyNumber) (IdentifierReference)
 
   console.log(i, value);
->                ^^^^^: [number, string]   (TyTuple) (IdentifierReference)
-              expected: string
+>                ^^^^^: string   (TyString) (IdentifierReference)

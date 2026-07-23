@@ -8203,7 +8203,16 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
 
         let ty = if let Some((declaration, declarator)) = self.variable_declarator_for_symbol(sym) {
-            return self.get_type_of_variable_declarator(sym.program_id, declaration, declarator);
+            return self
+                .get_type_of_binding_pattern(
+                    sym.program_id,
+                    declaration,
+                    BindingPatternKind::VariableDeclarator(declarator),
+                    sym.symbol_id,
+                )
+                .unwrap_or_else(|| {
+                    self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
+                });
         } else {
             let declaration = self
                 .semantic(sym.program_id)
@@ -8398,7 +8407,19 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         .semantic(sym.program_id)
                         .scoping()
                         .symbol_declaration(sym.symbol_id);
-                    self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
+                    self.get_type_of_binding_pattern(
+                        sym.program_id,
+                        declaration,
+                        BindingPatternKind::VariableDeclarator(declarator),
+                        sym.symbol_id,
+                    )
+                    .unwrap_or_else(|| {
+                        self.get_type_of_variable_declarator(
+                            sym.program_id,
+                            declaration,
+                            declarator,
+                        )
+                    })
                 }
                 _ => self.get_declared_type_of_symbol(sym),
             }

@@ -781,7 +781,7 @@ export const create: Create = ((initializer?: StateCreator<any>) => {
 >                                                         ^^^^^^^^^^^^^^^: StateCreator<any>   (TyTypeReference) (IdentifierReference)
 
   const api = createStore(initializer)
->       ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference) (BindingIdentifier)
+>       ^^^: StoreApi<T>   (TyTypeReference) (BindingIdentifier)
    expected: StoreApi<any>
 
   const api = createStore(initializer)
@@ -807,19 +807,19 @@ export const create: Create = ((initializer?: StateCreator<any>) => {
 >                     ^^^^^^^^: (state: any) => any   (TyFunction) (IdentifierReference)
 
     return selector ? selector(api.getState()) : api.getState()
->                              ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference) (IdentifierReference)
+>                              ^^^: StoreApi<T>   (TyTypeReference) (IdentifierReference)
                           expected: StoreApi<any>
 
     return selector ? selector(api.getState()) : api.getState()
->                                  ^^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                  ^^^^^^^^: () => T   (TyFunction) (StaticMemberExpression)
                                    expected: () => any
 
     return selector ? selector(api.getState()) : api.getState()
->                                                ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference) (IdentifierReference)
+>                                                ^^^: StoreApi<T>   (TyTypeReference) (IdentifierReference)
                                             expected: StoreApi<any>
 
     return selector ? selector(api.getState()) : api.getState()
->                                                    ^^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                    ^^^^^^^^: () => T   (TyFunction) (StaticMemberExpression)
                                                      expected: () => any
 
   return Object.assign(useBoundStore, api)
@@ -832,7 +832,7 @@ export const create: Create = ((initializer?: StateCreator<any>) => {
 >                      ^^^^^^^^^^^^^: (selector?: (state: any) => any) => any   (TyFunction) (IdentifierReference)
 
   return Object.assign(useBoundStore, api)
->                                     ^^^: Mutate<StoreApi<T>, []>   (TyTypeReference) (IdentifierReference)
+>                                     ^^^: StoreApi<T>   (TyTypeReference) (IdentifierReference)
                                  expected: StoreApi<any>
 
 }) as Create

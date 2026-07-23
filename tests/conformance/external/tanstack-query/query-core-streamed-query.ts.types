@@ -948,8 +948,7 @@ declare const todoStream: AsyncIterable<Todo>
 >                                       ^^^^: any   (TyAny) (TSTypeReference)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->             ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference) (BindingIdentifier)
-             expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
+>             ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyObject) (BindingIdentifier)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
 >                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (TSTypeReference)
@@ -961,8 +960,7 @@ const pageParam = context.pageParam
 >     ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const pageParam = context.pageParam
->                 ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference) (IdentifierReference)
-                 expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
+>                 ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyObject) (IdentifierReference)
 
 const pageParam = context.pageParam
 >                         ^^^^^^^^^: number   (TyNumber) (StaticMemberExpression)
@@ -1054,5 +1052,4 @@ const queryResult = queryFn(context)
 >                   ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>   (TyTypeReference) (IdentifierReference)
 
 const queryResult = queryFn(context)
->                           ^^^^^^^: QueryFunctionContext<readonly ["todos"], number>   (TyTypeReference) (IdentifierReference)
-                           expected: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
+>                           ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyObject) (IdentifierReference)
