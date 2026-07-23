@@ -1343,10 +1343,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     node_id,
                     GetTypeFlags::PRESERVE_LITERALS,
                 );
-                value.push_str(self.template_substitution_static_value(expression_type)?);
+                value
+                    .push_str(self.template_expression_substitution_static_value(expression_type)?);
             }
         }
         Some(self.arena().str(&value))
+    }
+
+    fn template_expression_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {
+        match self.arena().type_data(ty) {
+            TypeData::StringLiteral(_) | TypeData::NumberLiteral(_) => {
+                self.template_substitution_static_value(ty)
+            }
+            _ => None,
+        }
     }
 
     fn template_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {

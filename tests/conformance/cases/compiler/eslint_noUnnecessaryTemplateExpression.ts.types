@@ -14,8 +14,7 @@ const stringWithNumber = `${'1 + 1 = '}${2}`;
 >     ^^^^^^^^^^^^^^^^: "1 + 1 = 2"   (TyStringLiteral) (BindingIdentifier)
 
 const stringWithBoolean = `${'true is '}${true}`;
->     ^^^^^^^^^^^^^^^^^: "true is true"   (TyStringLiteral) (BindingIdentifier)
-               expected: string
+>     ^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const text = 'a';
 >     ^^^^: "a"   (TyStringLiteral) (BindingIdentifier)
