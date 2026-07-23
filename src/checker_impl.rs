@@ -3645,6 +3645,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         } else {
             self.get_apparent_type_at_use(program_id, ty, 0)
         };
+        let ty = flow::get_flow_type_of_static_member_reference(self, program_id, member, ty);
         if in_chain {
             ty.or_undefined(self.arena())
         } else {

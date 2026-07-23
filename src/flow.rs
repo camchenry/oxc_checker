@@ -1,6 +1,9 @@
 use oxc_ast::{
     AstKind,
-    ast::{ConditionalExpression, Expression, IfStatement, LogicalExpression},
+    ast::{
+        ChainElement, ConditionalExpression, Expression, IfStatement, LogicalExpression,
+        StaticMemberExpression,
+    },
 };
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
@@ -87,6 +90,46 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     }
 
     narrowed_type
+}
+
+pub(crate) fn get_flow_type_of_static_member_reference<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: program::ProgramId,
+    member: &StaticMemberExpression<'_>,
+    base_type: Ty<'a>,
+) -> Ty<'a> {
+    let Expression::Identifier(identifier) = &member.object else {
+        return base_type;
+    };
+    let Some(symbol_id) = identifier.reference_id.get().and_then(|reference_id| {
+        checker
+            .semantic(program_id)
+            .scoping()
+            .get_reference(reference_id)
+            .symbol_id()
+    }) else {
+        return base_type;
+    };
+    let symbol = SymbolRef::new(program_id, symbol_id);
+    let node = NodeRef::new(program_id, identifier.node_id());
+    let property_name = member.property.name.as_str();
+
+    collect_branch_facts(checker, node)
+        .into_iter()
+        .find(|fact| {
+            fact.assume_true
+                && optional_chain_property_matches_symbol(
+                    checker,
+                    program_id,
+                    symbol,
+                    property_name,
+                    fact.condition,
+                )
+                && !has_intervening_write(checker, node, symbol, *fact)
+        })
+        .map_or(base_type, |_| {
+            narrow_by_truthiness(checker, base_type, true)
+        })
 }
 
 /// Collect enclosing `if` branch facts for a reference location, innermost first.
@@ -222,6 +265,12 @@ fn narrow_by_condition<'a>(
         return narrow_by_truthiness(checker, current_type, assume_true);
     }
 
+    if assume_true
+        && optional_chain_base_matches_symbol(checker, node.program_id, symbol, condition)
+    {
+        return narrow_by_truthiness(checker, current_type, true);
+    }
+
     if let Expression::LogicalExpression(logical) = condition {
         return narrow_by_logical_condition(
             checker,
@@ -291,6 +340,40 @@ fn narrow_by_condition<'a>(
         witness,
         effective_true,
     )
+}
+
+fn optional_chain_base_matches_symbol(
+    checker: &CheckerReturn<'_, '_>,
+    program_id: program::ProgramId,
+    symbol: SymbolRef,
+    expression: &Expression<'_>,
+) -> bool {
+    let Expression::ChainExpression(chain) = skip_parentheses(expression) else {
+        return false;
+    };
+    let object = match &chain.expression {
+        ChainElement::StaticMemberExpression(member) => &member.object,
+        ChainElement::ComputedMemberExpression(member) => &member.object,
+        _ => return false,
+    };
+    expression_matches_symbol(checker, program_id, symbol, object)
+}
+
+fn optional_chain_property_matches_symbol(
+    checker: &CheckerReturn<'_, '_>,
+    program_id: program::ProgramId,
+    symbol: SymbolRef,
+    property_name: &str,
+    expression: &Expression<'_>,
+) -> bool {
+    let Expression::ChainExpression(chain) = skip_parentheses(expression) else {
+        return false;
+    };
+    let ChainElement::StaticMemberExpression(member) = &chain.expression else {
+        return false;
+    };
+    member.property.name == property_name
+        && expression_matches_symbol(checker, program_id, symbol, &member.object)
 }
 
 fn narrow_by_logical_condition<'a>(

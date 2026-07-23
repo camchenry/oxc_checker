@@ -446,8 +446,7 @@ const optionalNullish = maybeUser?.name ?? "anonymous"
 >                                  ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
->     ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-             expected: string | 0 | undefined
+>     ^^^^^^^^^^^^^^^: 0 | undefined | string   (TyUnion) (BindingIdentifier)
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >                       ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
@@ -456,16 +455,13 @@ const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
 >                                  ^^^: number | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
->                                         ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
-                                           expected: Profile
+>                                         ^^^^^^^^^: Profile   (TyTypeReference) (IdentifierReference)
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
->                                                   ^^^: number | undefined   (TyUnion) (StaticMemberExpression)
-                                               expected: number
+>                                                   ^^^: number   (TyNumber) (StaticMemberExpression)
 
 const optionalLogical = maybeUser?.age && maybeUser.age.toFixed()
->                                                       ^^^^^^^: any   (TyAny) (StaticMemberExpression)
-                                                       expected: (fractionDigits?: number) => string
+>                                                       ^^^^^^^: (fractionDigits?: number) => string   (TyFunction) (StaticMemberExpression)
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >     ^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -477,8 +473,7 @@ const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >                                      ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
->                                             ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
-                                               expected: Profile
+>                                             ^^^^^^^^^: Profile   (TyTypeReference) (IdentifierReference)
 
 const optionalConditional = maybeUser?.name ? maybeUser.name : "missing"
 >                                                       ^^^^: string   (TyString) (StaticMemberExpression)
