@@ -71,8 +71,7 @@ const user: User = {
 >             ^^^^^^^: string   (TyString) (IdentifierReference)
 
     return `${message}, ${this.name}`;
->                              ^^^^: any   (TyAny) (StaticMemberExpression)
-                           expected: string
+>                              ^^^^: string   (TyString) (StaticMemberExpression)
 
   preferences: {
 > ^^^^^^^^^^^: { theme: string; }   (TyObject) (ObjectProperty)

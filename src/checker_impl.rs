@@ -825,6 +825,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             Expression::ThisExpression(_) => node_id
                 .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
+                .or_else(|| {
+                    node_id.and_then(|node_id| {
+                        self.get_contextual_this_type_of_object_literal_method(program_id, node_id)
+                    })
+                })
                 .unwrap_or_else(Ty::any),
             Expression::FunctionExpression(function) => self
                 .get_type_of_function_signature_with_node(
@@ -6001,7 +6006,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .get_contextual_type_of_object_property_value_from_intra_expression(
                 program_id, node_id, object, value_span,
             )
-            .or_else(|| self.get_contextual_type_of_call_argument(program_id, node_id, object.span))
+            .or_else(|| {
+                self.get_contextual_type_of_object_expression(program_id, node_id, object)
+            })?;
+
+        self.get_destructured_property_type(program_id, object_context, property_name)
+    }
+
+    fn get_contextual_type_of_object_expression(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+        object: &'a ObjectExpression<'a>,
+    ) -> Option<Ty<'a>> {
+        self.get_contextual_type_of_call_argument(program_id, node_id, object.span)
             .or_else(|| {
                 self.nodes(program_id)
                     .ancestors(node_id)
@@ -6031,9 +6049,36 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .or_else(|| {
                 self.get_contextual_type_of_object_property_value(program_id, node_id, object.span)
-            })?;
+            })
+    }
 
-        self.get_destructured_property_type(program_id, object_context, property_name)
+    fn get_contextual_this_type_of_object_literal_method(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+    ) -> Option<Ty<'a>> {
+        let mut function_span = None;
+        let mut is_object_method = false;
+
+        for ancestor in self.nodes(program_id).ancestors(node_id) {
+            match ancestor.kind() {
+                AstKind::Function(function) if function_span.is_none() => {
+                    function_span = Some(function.span);
+                }
+                AstKind::ObjectProperty(property)
+                    if function_span.is_some_and(|span| property.value.span() == span) =>
+                {
+                    is_object_method = true;
+                }
+                AstKind::ObjectExpression(object) if is_object_method => {
+                    return self
+                        .get_contextual_type_of_object_expression(program_id, node_id, object);
+                }
+                _ => {}
+            }
+        }
+
+        None
     }
 
     fn get_contextual_type_of_object_property_value_from_intra_expression(
