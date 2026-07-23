@@ -257,8 +257,7 @@ const optionalArrayElementMethod = maybeUsers?.[index]?.greet?.("hello")
 >                                                       ^^^^^: ((message: string) => string) | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalDictionaryLookup = dictionary?.[key]
->     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                      expected: Profile | undefined
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: Profile | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalDictionaryLookup = dictionary?.[key]
 >                                ^^^^^^^^^^: Record<string, Profile | undefined> | undefined   (TyUnion) (IdentifierReference)
@@ -267,8 +266,7 @@ const optionalDictionaryLookup = dictionary?.[key]
 >                                             ^^^: string   (TyString) (IdentifierReference)
 
 const optionalDictionaryName = dictionary?.[key]?.name
->     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                    expected: string | undefined
+>     ^^^^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalDictionaryName = dictionary?.[key]?.name
 >                              ^^^^^^^^^^: Record<string, Profile | undefined> | undefined   (TyUnion) (IdentifierReference)
@@ -277,12 +275,10 @@ const optionalDictionaryName = dictionary?.[key]?.name
 >                                           ^^^: string   (TyString) (IdentifierReference)
 
 const optionalDictionaryName = dictionary?.[key]?.name
->                                                 ^^^^: any   (TyAny) (StaticMemberExpression)
-                                              expected: string | undefined
+>                                                 ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalHandler = handlers?.[key]
->     ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-             expected: ((value: number) => string) | undefined
+>     ^^^^^^^^^^^^^^^: ((value: number) => string) | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalHandler = handlers?.[key]
 >                       ^^^^^^^^: Record<string, ((value: number) => string) | undefined> | undefined   (TyUnion) (IdentifierReference)
@@ -291,8 +287,7 @@ const optionalHandler = handlers?.[key]
 >                                  ^^^: string   (TyString) (IdentifierReference)
 
 const optionalHandlerCall = handlers?.[key]?.(123)
->     ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                 expected: string | undefined
+>     ^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalHandlerCall = handlers?.[key]?.(123)
 >                           ^^^^^^^^: Record<string, ((value: number) => string) | undefined> | undefined   (TyUnion) (IdentifierReference)

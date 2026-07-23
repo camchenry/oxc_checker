@@ -275,8 +275,7 @@ const dictionaryExtraDot = dictionary.extra;
 >                                     ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
->     ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-               expected: number
+>     ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const dictionaryDynamic = dictionary[dynamicStringKey];
 >                         ^^^^^^^^^^: StringDictionary   (TyTypeReference) (IdentifierReference)
@@ -309,22 +308,21 @@ const numericDictionary: NumericDictionary = {
 > ^: string   (TyString) (ObjectProperty)
 
 const numericZeroDot = numericDictionary[0];
->     ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: "zero" | "one" | "many" | undefined   (TyUnion) (BindingIdentifier)
             expected: "zero"
 
 const numericZeroDot = numericDictionary[0];
 >                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)
 
 const numericOneBracket = numericDictionary[1];
->     ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: "zero" | "one" | "many" | undefined   (TyUnion) (BindingIdentifier)
                expected: "one" | undefined
 
 const numericOneBracket = numericDictionary[1];
 >                         ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)
 
 const numericDynamic = numericDictionary[42];
->     ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-            expected: "zero" | "one" | "many" | undefined
+>     ^^^^^^^^^^^^^^: "zero" | "one" | "many" | undefined   (TyUnion) (BindingIdentifier)
 
 const numericDynamic = numericDictionary[42];
 >                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)

@@ -2653,7 +2653,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 key_type,
             );
             let ty = self.instantiate_type(mapped.template, &mapper);
-            let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+            let ty = self.expand_index_signature_alias_result(program_id, ty, depth + 1);
             IndexInfo::synthetic(
                 key_type,
                 ty,
@@ -3776,6 +3776,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .array_element_type(self.arena())
         {
             return element_type;
+        }
+
+        // Try accessing as an object with an index signature
+        let object_type = self.remove_null_or_undefined(object_type);
+        let (object_program_id, object_type) = self
+            .get_expanded_type_alias_reference_preserving_arguments(program_id, object_type, 0)
+            .unwrap_or((program_id, object_type));
+        let object_type = self.expand_type_at_use(object_program_id, object_type, 0);
+        if let TypeData::Object(object) = self.arena().type_data(object_type)
+            && let Some(index_info) = object
+                .index_infos
+                .iter()
+                .find(|index_info| self.is_assignable_to(key_type, index_info.key_type))
+        {
+            return index_info.value_type;
         }
 
         Ty::any()
@@ -7364,6 +7379,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             declaration.program_id,
             declaration.node_id,
             &type_arguments,
+            depth + 1,
+        )
+        .map(|ty| (declaration.program_id, ty))
+    }
+
+    fn get_expanded_type_alias_reference_preserving_arguments(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Option<(program::ProgramId, Ty<'a>)> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
+            return None;
+        };
+        let declaration = if let Some(metadata) = self.type_alias_metadata(ty) {
+            metadata.declaration
+        } else {
+            let (alias_symbol, declaration) =
+                self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+            NodeRef::new(alias_symbol.program_id, declaration)
+        };
+        self.get_expanded_type_alias_declaration(
+            declaration.program_id,
+            declaration.node_id,
+            &reference.type_arguments,
             depth + 1,
         )
         .map(|ty| (declaration.program_id, ty))
