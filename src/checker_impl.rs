@@ -1370,6 +1370,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_template_literal_type(
+        &self,
+        quasis: impl IntoIterator<Item = TemplateLiteralElement<'a>>,
+        expressions: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Ty<'a> {
+        let quasis = quasis.into_iter().collect::<Vec<_>>();
+        let expressions = expressions.into_iter().collect::<Vec<_>>();
+
+        if quasis.len() == expressions.len() + 1 {
+            let mut value = String::from(quasis[0].value);
+            let mut is_static = true;
+            for (expression, quasi) in expressions.iter().zip(&quasis[1..]) {
+                let Some(substitution) = self.template_substitution_static_value(*expression)
+                else {
+                    is_static = false;
+                    break;
+                };
+                value.push_str(substitution);
+                value.push_str(quasi.value);
+            }
+            if is_static {
+                return Ty::string_literal(self.arena(), self.arena().str(&value));
+            }
+        }
+
+        Ty::template_literal(self.arena(), quasis, expressions)
+    }
+
     fn get_type_of_conditional_expression(
         &self,
         program_id: program::ProgramId,
@@ -1759,8 +1787,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TSType::TSParenthesizedType(parenthesized) => {
                 self.get_type_from_ts_type(program_id, &parenthesized.type_annotation)
             }
-            TSType::TSTemplateLiteralType(template_literal) => Ty::template_literal(
-                self.arena(),
+            TSType::TSTemplateLiteralType(template_literal) => self.get_template_literal_type(
                 template_literal
                     .quasis
                     .iter()
