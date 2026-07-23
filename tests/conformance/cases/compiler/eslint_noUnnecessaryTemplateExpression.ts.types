@@ -29,8 +29,7 @@ type Text = 'A';
 >    ^^^^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
 type WrappedText = `${Text}`;
->    ^^^^^^^^^^^: `${Text}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
-        expected: "A"
+>    ^^^^^^^^^^^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
 type WrappedText = `${Text}`;
 >                     ^^^^: any   (TyAny) (TSTypeReference)

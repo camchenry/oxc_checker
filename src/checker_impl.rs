@@ -1382,6 +1382,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_template_literal_type(
         &self,
+        program_id: program::ProgramId,
         quasis: impl IntoIterator<Item = TemplateLiteralElement<'a>>,
         expressions: impl IntoIterator<Item = Ty<'a>>,
     ) -> Ty<'a> {
@@ -1392,8 +1393,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let mut value = String::from(quasis[0].value);
             let mut is_static = true;
             for (expression, quasi) in expressions.iter().zip(&quasis[1..]) {
-                let Some(substitution) = self.template_substitution_static_value(*expression)
-                else {
+                let expression = self.expand_type_at_use(program_id, *expression, 0);
+                let Some(substitution) = self.template_substitution_static_value(expression) else {
                     is_static = false;
                     break;
                 };
@@ -1798,6 +1799,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_from_ts_type(program_id, &parenthesized.type_annotation)
             }
             TSType::TSTemplateLiteralType(template_literal) => self.get_template_literal_type(
+                program_id,
                 template_literal
                     .quasis
                     .iter()
