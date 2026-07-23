@@ -11123,12 +11123,10 @@ interface Attr extends Node {
 >   ^^^^^: string   (TyString) (TSPropertySignature)
 
     get textContent(): string;
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string
+>       ^^^^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set textContent(value: string | null);
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string | null
+>       ^^^^^^^^^^^: string | null   (TyUnion) (TSMethodSignature)
 
     set textContent(value: string | null);
 >                   ^^^^^: string | null   (TyUnion) (BindingIdentifier)
@@ -15092,8 +15090,7 @@ interface CSSFontFaceRule extends CSSRule {
 >                                 ^^^^^^^: { new (): CSSRule; prototype: CSSRule; readonly STYLE_RULE: 1; readonly CHARSET_RULE: 2; readonly IMPORT_RULE: 3; readonly MEDIA_RULE: 4; readonly FONT_FACE_RULE: 5; readonly PAGE_RULE: 6; readonly MARGIN_RULE: 9; readonly NAMESPACE_RULE: 10; readonly KEYFRAMES_RULE: 7; readonly KEYFRAME_RULE: 8; readonly SUPPORTS_RULE: 12; readonly COUNTER_STYLE_RULE: 11; readonly FONT_FEATURE_VALUES_RULE: 14; }   (TyObject) (IdentifierReference)
 
     get style(): CSSStyleDeclaration;
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: CSSStyleDeclaration
+>       ^^^^^: CSSStyleDeclaration   (TyTypeReference) (TSMethodSignature)
 
     get style(): CSSStyleDeclaration;
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (TSTypeReference)
@@ -15102,8 +15099,7 @@ interface CSSFontFaceRule extends CSSRule {
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (IdentifierReference)
 
     set style(cssText: string);
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set style(cssText: string);
 >             ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -15304,8 +15300,7 @@ interface CSSImportRule extends CSSRule {
 >            ^^^^^^^^^: string | null   (TyUnion) (TSPropertySignature)
 
     get media(): MediaList;
->       ^^^^^: { (): MediaList; (mediaText: string): any; (): MediaList; (mediaText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: MediaList
+>       ^^^^^: MediaList   (TyTypeReference) (TSMethodSignature)
 
     get media(): MediaList;
 >                ^^^^^^^^^: { new (): MediaList; prototype: MediaList; }   (TyObject) (TSTypeReference)
@@ -15314,8 +15309,7 @@ interface CSSImportRule extends CSSRule {
 >                ^^^^^^^^^: { new (): MediaList; prototype: MediaList; }   (TyObject) (IdentifierReference)
 
     set media(mediaText: string);
->       ^^^^^: { (): MediaList; (mediaText: string): any; (): MediaList; (mediaText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set media(mediaText: string);
 >             ^^^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -15366,8 +15360,7 @@ interface CSSKeyframeRule extends CSSRule {
 >   ^^^^^^^: string   (TyString) (TSPropertySignature)
 
     get style(): CSSStyleDeclaration;
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: CSSStyleDeclaration
+>       ^^^^^: CSSStyleDeclaration   (TyTypeReference) (TSMethodSignature)
 
     get style(): CSSStyleDeclaration;
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (TSTypeReference)
@@ -15376,8 +15369,7 @@ interface CSSKeyframeRule extends CSSRule {
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (IdentifierReference)
 
     set style(cssText: string);
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set style(cssText: string);
 >             ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -16031,8 +16023,7 @@ interface CSSMediaRule extends CSSConditionRule {
 >                              ^^^^^^^^^^^^^^^^: { new (): CSSConditionRule; prototype: CSSConditionRule; }   (TyObject) (IdentifierReference)
 
     get media(): MediaList;
->       ^^^^^: { (): MediaList; (mediaText: string): any; (): MediaList; (mediaText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: MediaList
+>       ^^^^^: MediaList   (TyTypeReference) (TSMethodSignature)
 
     get media(): MediaList;
 >                ^^^^^^^^^: { new (): MediaList; prototype: MediaList; }   (TyObject) (TSTypeReference)
@@ -16041,8 +16032,7 @@ interface CSSMediaRule extends CSSConditionRule {
 >                ^^^^^^^^^: { new (): MediaList; prototype: MediaList; }   (TyObject) (IdentifierReference)
 
     set media(mediaText: string);
->       ^^^^^: { (): MediaList; (mediaText: string): any; (): MediaList; (mediaText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set media(mediaText: string);
 >             ^^^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -16114,8 +16104,7 @@ interface CSSNestedDeclarations extends CSSRule {
 >                                       ^^^^^^^: { new (): CSSRule; prototype: CSSRule; readonly STYLE_RULE: 1; readonly CHARSET_RULE: 2; readonly IMPORT_RULE: 3; readonly MEDIA_RULE: 4; readonly FONT_FACE_RULE: 5; readonly PAGE_RULE: 6; readonly MARGIN_RULE: 9; readonly NAMESPACE_RULE: 10; readonly KEYFRAMES_RULE: 7; readonly KEYFRAME_RULE: 8; readonly SUPPORTS_RULE: 12; readonly COUNTER_STYLE_RULE: 11; readonly FONT_FEATURE_VALUES_RULE: 14; }   (TyObject) (IdentifierReference)
 
     get style(): CSSStyleDeclaration;
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: CSSStyleDeclaration
+>       ^^^^^: CSSStyleDeclaration   (TyTypeReference) (TSMethodSignature)
 
     get style(): CSSStyleDeclaration;
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (TSTypeReference)
@@ -16124,8 +16113,7 @@ interface CSSNestedDeclarations extends CSSRule {
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (IdentifierReference)
 
     set style(cssText: string);
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set style(cssText: string);
 >             ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -16458,8 +16446,7 @@ interface CSSPageRule extends CSSGroupingRule {
 >   ^^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
 
     get style(): CSSPageDescriptors;
->       ^^^^^: { (): CSSPageDescriptors; (cssText: string): any; (): CSSPageDescriptors; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: CSSPageDescriptors
+>       ^^^^^: CSSPageDescriptors   (TyTypeReference) (TSMethodSignature)
 
     get style(): CSSPageDescriptors;
 >                ^^^^^^^^^^^^^^^^^^: { new (): CSSPageDescriptors; prototype: CSSPageDescriptors; }   (TyObject) (TSTypeReference)
@@ -16468,8 +16455,7 @@ interface CSSPageRule extends CSSGroupingRule {
 >                ^^^^^^^^^^^^^^^^^^: { new (): CSSPageDescriptors; prototype: CSSPageDescriptors; }   (TyObject) (IdentifierReference)
 
     set style(cssText: string);
->       ^^^^^: { (): CSSPageDescriptors; (cssText: string): any; (): CSSPageDescriptors; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set style(cssText: string);
 >             ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -16787,8 +16773,7 @@ interface CSSPositionTryRule extends CSSRule {
 >            ^^^^: string   (TyString) (TSPropertySignature)
 
     get style(): CSSPositionTryDescriptors;
->       ^^^^^: { (): CSSPositionTryDescriptors; (cssText: string): any; (): CSSPositionTryDescriptors; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: CSSPositionTryDescriptors
+>       ^^^^^: CSSPositionTryDescriptors   (TyTypeReference) (TSMethodSignature)
 
     get style(): CSSPositionTryDescriptors;
 >                ^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): CSSPositionTryDescriptors; prototype: CSSPositionTryDescriptors; }   (TyObject) (TSTypeReference)
@@ -16797,8 +16782,7 @@ interface CSSPositionTryRule extends CSSRule {
 >                ^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): CSSPositionTryDescriptors; prototype: CSSPositionTryDescriptors; }   (TyObject) (IdentifierReference)
 
     set style(cssText: string);
->       ^^^^^: { (): CSSPositionTryDescriptors; (cssText: string): any; (): CSSPositionTryDescriptors; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set style(cssText: string);
 >             ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -19159,8 +19143,7 @@ interface CSSStyleRule extends CSSGroupingRule {
 >   ^^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
 
     get style(): CSSStyleDeclaration;
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: CSSStyleDeclaration
+>       ^^^^^: CSSStyleDeclaration   (TyTypeReference) (TSMethodSignature)
 
     get style(): CSSStyleDeclaration;
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (TSTypeReference)
@@ -19169,8 +19152,7 @@ interface CSSStyleRule extends CSSGroupingRule {
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (IdentifierReference)
 
     set style(cssText: string);
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set style(cssText: string);
 >             ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -21824,12 +21806,10 @@ interface CharacterData extends Node, ChildNode, NonDocumentTypeChildNode {
 >                                 ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     get textContent(): string;
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string
+>       ^^^^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set textContent(value: string | null);
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string | null
+>       ^^^^^^^^^^^: string | null   (TyUnion) (TSMethodSignature)
 
     set textContent(value: string | null);
 >                   ^^^^^: string | null   (TyUnion) (BindingIdentifier)
@@ -26234,8 +26214,7 @@ interface Document extends Node, DocumentOrShadowRoot, FontFaceSource, GlobalEve
 >                                                        ^^^^^^^^^^^^^^^: { new (): HTMLAreaElement; prototype: HTMLAreaElement; }   (TyObject) (IdentifierReference)
 
     get location(): Location;
->       ^^^^^^^^: { (): Location; (href: string): any; (): Location; (href: string): any; }   (TyObject) (TSMethodSignature)
-        expected: Location
+>       ^^^^^^^^: Location   (TyTypeReference) (TSMethodSignature)
 
     get location(): Location;
 >                   ^^^^^^^^: { new (): Location; prototype: Location; }   (TyObject) (TSTypeReference)
@@ -26244,8 +26223,7 @@ interface Document extends Node, DocumentOrShadowRoot, FontFaceSource, GlobalEve
 >                   ^^^^^^^^: { new (): Location; prototype: Location; }   (TyObject) (IdentifierReference)
 
     set location(href: string);
->       ^^^^^^^^: { (): Location; (href: string): any; (): Location; (href: string): any; }   (TyObject) (TSMethodSignature)
-        expected: string
+>       ^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set location(href: string);
 >                ^^^^: string   (TyString) (BindingIdentifier)
@@ -28247,8 +28225,7 @@ interface Document extends Node, DocumentOrShadowRoot, FontFaceSource, GlobalEve
 >              ^^^^: string[]   (TyArray) (BindingIdentifier)
 
     get textContent(): null;
->       ^^^^^^^^^^^: { (): null; (): null; }   (TyObject) (TSMethodSignature)
-           expected: null
+>       ^^^^^^^^^^^: null   (TyNull) (TSMethodSignature)
 
     addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >   ^^^^^^^^^^^^^^^^: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }   (TyObject) (TSMethodSignature)
@@ -28440,12 +28417,10 @@ interface DocumentFragment extends Node, NonElementParentNode, ParentNode {
 >                                      ^^^^^^^^^^^: { new (): HTMLElement; prototype: HTMLElement; }   (TyObject) (IdentifierReference)
 
     get textContent(): string;
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string
+>       ^^^^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set textContent(value: string | null);
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string | null
+>       ^^^^^^^^^^^: string | null   (TyUnion) (TSMethodSignature)
 
     set textContent(value: string | null);
 >                   ^^^^^: string | null   (TyUnion) (BindingIdentifier)
@@ -28643,8 +28618,7 @@ interface DocumentType extends Node, ChildNode {
 >            ^^^^^^^^: string   (TyString) (TSPropertySignature)
 
     get textContent(): null;
->       ^^^^^^^^^^^: { (): null; (): null; }   (TyObject) (TSMethodSignature)
-           expected: null
+>       ^^^^^^^^^^^: null   (TyNull) (TSMethodSignature)
 
 declare var DocumentType: {
 >           ^^^^^^^^^^^^: { new (): DocumentType; prototype: DocumentType; }   (TyObject) (BindingIdentifier)
@@ -28983,8 +28957,7 @@ interface Element extends Node, ARIAMixin, Animatable, ChildNode, NonDocumentTyp
 >                        ^^^^^^^^^^^^: { new (): NamedNodeMap; prototype: NamedNodeMap; }   (TyObject) (IdentifierReference)
 
     get classList(): DOMTokenList;
->       ^^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-         expected: DOMTokenList
+>       ^^^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get classList(): DOMTokenList;
 >                    ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -28993,8 +28966,7 @@ interface Element extends Node, ARIAMixin, Animatable, ChildNode, NonDocumentTyp
 >                    ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set classList(value: string);
->       ^^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-         expected: string
+>       ^^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set classList(value: string);
 >                 ^^^^^: string   (TyString) (BindingIdentifier)
@@ -29093,8 +29065,7 @@ interface Element extends Node, ARIAMixin, Animatable, ChildNode, NonDocumentTyp
 >                           ^^^^^^^^: { new (): Document; prototype: Document; parseHTMLUnsafe(html: string): Document; }   (TyObject) (IdentifierReference)
 
     get part(): DOMTokenList;
->       ^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-    expected: DOMTokenList
+>       ^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get part(): DOMTokenList;
 >               ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -29103,8 +29074,7 @@ interface Element extends Node, ARIAMixin, Animatable, ChildNode, NonDocumentTyp
 >               ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set part(value: string);
->       ^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-    expected: string
+>       ^^^^: string   (TyString) (TSMethodSignature)
 
     set part(value: string);
 >            ^^^^^: string   (TyString) (BindingIdentifier)
@@ -29887,12 +29857,10 @@ interface Element extends Node, ARIAMixin, Animatable, ChildNode, NonDocumentTyp
 >                         ^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     get textContent(): string;
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string
+>       ^^^^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set textContent(value: string | null);
->       ^^^^^^^^^^^: { (): string; (value: string | null): any; (): string; (value: string | null): any; }   (TyObject) (TSMethodSignature)
-           expected: string | null
+>       ^^^^^^^^^^^: string | null   (TyUnion) (TSMethodSignature)
 
     set textContent(value: string | null);
 >                   ^^^^^: string | null   (TyUnion) (BindingIdentifier)
@@ -30048,8 +30016,7 @@ interface ElementCSSInlineStyle {
 >                               ^^^^^^^^^^^^^^^^: { new (): StylePropertyMap; prototype: StylePropertyMap; }   (TyObject) (IdentifierReference)
 
     get style(): CSSStyleDeclaration;
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: CSSStyleDeclaration
+>       ^^^^^: CSSStyleDeclaration   (TyTypeReference) (TSMethodSignature)
 
     get style(): CSSStyleDeclaration;
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (TSTypeReference)
@@ -30058,8 +30025,7 @@ interface ElementCSSInlineStyle {
 >                ^^^^^^^^^^^^^^^^^^^: { new (): CSSStyleDeclaration; prototype: CSSStyleDeclaration; }   (TyObject) (IdentifierReference)
 
     set style(cssText: string);
->       ^^^^^: { (): CSSStyleDeclaration; (cssText: string): any; (): CSSStyleDeclaration; (cssText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set style(cssText: string);
 >             ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -39278,8 +39244,7 @@ interface HTMLAnchorElement extends HTMLElement, HTMLHyperlinkElementUtils {
 >   ^^^: string   (TyString) (TSPropertySignature)
 
     get relList(): DOMTokenList;
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: DOMTokenList
+>       ^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get relList(): DOMTokenList;
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -39288,8 +39253,7 @@ interface HTMLAnchorElement extends HTMLElement, HTMLHyperlinkElementUtils {
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set relList(value: string);
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: string
+>       ^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set relList(value: string);
 >               ^^^^^: string   (TyString) (BindingIdentifier)
@@ -39484,8 +39448,7 @@ interface HTMLAreaElement extends HTMLElement, HTMLHyperlinkElementUtils {
 >   ^^^: string   (TyString) (TSPropertySignature)
 
     get relList(): DOMTokenList;
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: DOMTokenList
+>       ^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get relList(): DOMTokenList;
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -39494,8 +39457,7 @@ interface HTMLAreaElement extends HTMLElement, HTMLHyperlinkElementUtils {
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set relList(value: string);
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: string
+>       ^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set relList(value: string);
 >               ^^^^^: string   (TyString) (BindingIdentifier)
@@ -43085,8 +43047,7 @@ interface HTMLFormElement extends HTMLElement {
 >   ^^^: string   (TyString) (TSPropertySignature)
 
     get relList(): DOMTokenList;
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: DOMTokenList
+>       ^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get relList(): DOMTokenList;
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -43095,8 +43056,7 @@ interface HTMLFormElement extends HTMLElement {
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set relList(value: string);
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: string
+>       ^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set relList(value: string);
 >               ^^^^^: string   (TyString) (BindingIdentifier)
@@ -44361,8 +44321,7 @@ interface HTMLIFrameElement extends HTMLElement {
 >                   ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     get sandbox(): DOMTokenList;
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: DOMTokenList
+>       ^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get sandbox(): DOMTokenList;
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -44371,8 +44330,7 @@ interface HTMLIFrameElement extends HTMLElement {
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set sandbox(value: string);
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: string
+>       ^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set sandbox(value: string);
 >               ^^^^^: string   (TyString) (BindingIdentifier)
@@ -45701,8 +45659,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >   ^^: string   (TyString) (TSPropertySignature)
 
     get blocking(): DOMTokenList;
->       ^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-        expected: DOMTokenList
+>       ^^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get blocking(): DOMTokenList;
 >                   ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -45711,8 +45668,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >                   ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set blocking(value: string);
->       ^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-        expected: string
+>       ^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set blocking(value: string);
 >                ^^^^^: string   (TyString) (BindingIdentifier)
@@ -45754,8 +45710,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >   ^^^: string   (TyString) (TSPropertySignature)
 
     get relList(): DOMTokenList;
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: DOMTokenList
+>       ^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get relList(): DOMTokenList;
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -45764,8 +45719,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set relList(value: string);
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: string
+>       ^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set relList(value: string);
 >               ^^^^^: string   (TyString) (BindingIdentifier)
@@ -45774,8 +45728,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >   ^^^: string   (TyString) (TSPropertySignature)
 
     get sizes(): DOMTokenList;
->       ^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-     expected: DOMTokenList
+>       ^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get sizes(): DOMTokenList;
 >                ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -45784,8 +45737,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >                ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set sizes(value: string);
->       ^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set sizes(value: string);
 >             ^^^^^: string   (TyString) (BindingIdentifier)
@@ -48312,8 +48264,7 @@ interface HTMLOutputElement extends HTMLElement {
 >                  ^^^^^^^^^^^^^^^: { new (): HTMLFormElement; prototype: HTMLFormElement; }   (TyObject) (IdentifierReference)
 
     get htmlFor(): DOMTokenList;
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: DOMTokenList
+>       ^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get htmlFor(): DOMTokenList;
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -48322,8 +48273,7 @@ interface HTMLOutputElement extends HTMLElement {
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set htmlFor(value: string);
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: string
+>       ^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set htmlFor(value: string);
 >               ^^^^^: string   (TyString) (BindingIdentifier)
@@ -49472,8 +49422,7 @@ interface HTMLScriptElement extends HTMLElement {
 >   ^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
     get blocking(): DOMTokenList;
->       ^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-        expected: DOMTokenList
+>       ^^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get blocking(): DOMTokenList;
 >                   ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -49482,8 +49431,7 @@ interface HTMLScriptElement extends HTMLElement {
 >                   ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set blocking(value: string);
->       ^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-        expected: string
+>       ^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set blocking(value: string);
 >                ^^^^^: string   (TyString) (BindingIdentifier)
@@ -50536,8 +50484,7 @@ interface HTMLStyleElement extends HTMLElement, LinkStyle {
 >                                               ^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     get blocking(): DOMTokenList;
->       ^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-        expected: DOMTokenList
+>       ^^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get blocking(): DOMTokenList;
 >                   ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -50546,8 +50493,7 @@ interface HTMLStyleElement extends HTMLElement, LinkStyle {
 >                   ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set blocking(value: string);
->       ^^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-        expected: string
+>       ^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set blocking(value: string);
 >                ^^^^^: string   (TyString) (BindingIdentifier)
@@ -75492,8 +75438,7 @@ interface SVGAElement extends SVGGraphicsElement, SVGURIReference {
 >   ^^^: string   (TyString) (TSPropertySignature)
 
     get relList(): DOMTokenList;
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: DOMTokenList
+>       ^^^^^^^: DOMTokenList   (TyTypeReference) (TSMethodSignature)
 
     get relList(): DOMTokenList;
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (TSTypeReference)
@@ -75502,8 +75447,7 @@ interface SVGAElement extends SVGGraphicsElement, SVGURIReference {
 >                  ^^^^^^^^^^^^: { new (): DOMTokenList; prototype: DOMTokenList; }   (TyObject) (IdentifierReference)
 
     set relList(value: string);
->       ^^^^^^^: { (): DOMTokenList; (value: string): any; (): DOMTokenList; (value: string): any; }   (TyObject) (TSMethodSignature)
-       expected: string
+>       ^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set relList(value: string);
 >               ^^^^^: string   (TyString) (BindingIdentifier)
@@ -94997,8 +94941,7 @@ interface StyleSheet {
 >            ^^^^: string | null   (TyUnion) (TSPropertySignature)
 
     get media(): MediaList;
->       ^^^^^: { (): MediaList; (mediaText: string): any; (): MediaList; (mediaText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: MediaList
+>       ^^^^^: MediaList   (TyTypeReference) (TSMethodSignature)
 
     get media(): MediaList;
 >                ^^^^^^^^^: { new (): MediaList; prototype: MediaList; }   (TyObject) (TSTypeReference)
@@ -95007,8 +94950,7 @@ interface StyleSheet {
 >                ^^^^^^^^^: { new (): MediaList; prototype: MediaList; }   (TyObject) (IdentifierReference)
 
     set media(mediaText: string);
->       ^^^^^: { (): MediaList; (mediaText: string): any; (): MediaList; (mediaText: string): any; }   (TyObject) (TSMethodSignature)
-     expected: string
+>       ^^^^^: string   (TyString) (TSMethodSignature)
 
     set media(mediaText: string);
 >             ^^^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -113818,8 +113760,7 @@ interface Window extends EventTarget, AnimationFrameProvider, GlobalEventHandler
 >            ^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     get location(): Location;
->       ^^^^^^^^: { (): Location; (href: string): any; (): Location; (href: string): any; }   (TyObject) (TSMethodSignature)
-        expected: Location
+>       ^^^^^^^^: Location   (TyTypeReference) (TSMethodSignature)
 
     get location(): Location;
 >                   ^^^^^^^^: { new (): Location; prototype: Location; }   (TyObject) (TSTypeReference)
@@ -113828,8 +113769,7 @@ interface Window extends EventTarget, AnimationFrameProvider, GlobalEventHandler
 >                   ^^^^^^^^: { new (): Location; prototype: Location; }   (TyObject) (IdentifierReference)
 
     set location(href: string);
->       ^^^^^^^^: { (): Location; (href: string): any; (): Location; (href: string): any; }   (TyObject) (TSMethodSignature)
-        expected: string
+>       ^^^^^^^^: string   (TyString) (TSMethodSignature)
 
     set location(href: string);
 >                ^^^^: string   (TyString) (BindingIdentifier)

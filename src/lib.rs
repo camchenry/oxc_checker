@@ -3216,6 +3216,48 @@ mod test {
     }
 
     #[test]
+    fn interface_accessor_signature_locations_use_property_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface TextLike {
+            get textContent(): string;
+            set textContent(value: string | null);
+        }
+        interface ReversedTextLike {
+            set textContent(value: string | null);
+            get textContent(): string;
+        }
+        declare const value: TextLike;
+        declare const reversedValue: ReversedTextLike;
+        declare const literalValue: {
+            get textContent(): string;
+            set textContent(value: string | null);
+        };
+        const text = value.textContent;
+        const reversedText = reversedValue.textContent;
+        const literalText = literalValue.textContent;
+        "#,
+        );
+
+        assert_eq!(
+            get_ts_method_signature_types(&ret, "textContent"),
+            vec![
+                "string".to_string(),
+                "string | null".to_string(),
+                "string | null".to_string(),
+                "string".to_string(),
+                "string".to_string(),
+                "string | null".to_string(),
+            ]
+        );
+        assert_eq!(get_global_symbol_type(&ret, "text"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "reversedText"), Ty::string());
+        assert_eq!(get_global_symbol_type(&ret, "literalText"), Ty::string());
+    }
+
+    #[test]
     fn merged_interface_method_signature_locations_use_overload_object_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
