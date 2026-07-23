@@ -71,6 +71,8 @@ pub(crate) fn reduce_intersection_type<'a>(
         type_set.retain(|ty| *ty != Ty::Unknown);
     }
 
+    remove_redundant_primitive_intersection_types(arena, &mut type_set);
+
     let has_object_like_member = type_set
         .iter()
         .any(|ty| is_empty_object_intersection_identity_target(arena, *ty));
@@ -105,6 +107,35 @@ fn is_empty_object_intersection_identity_target<'a>(arena: CheckerArena<'a>, ty:
         TypeData::Object(object) => !object.is_empty(),
         _ => false,
     }
+}
+
+fn remove_redundant_primitive_intersection_types<'a>(
+    arena: CheckerArena<'a>,
+    type_set: &mut Vec<Ty<'a>>,
+) {
+    let has_string_literal = type_set.iter().any(|ty| {
+        matches!(
+            arena.type_data(*ty),
+            TypeData::StringLiteral(_) | TypeData::TemplateLiteral(_)
+        )
+    });
+    let has_number_literal = type_set
+        .iter()
+        .any(|ty| matches!(arena.type_data(*ty), TypeData::NumberLiteral(_)));
+    let has_boolean_literal = type_set
+        .iter()
+        .any(|ty| matches!(arena.type_data(*ty), TypeData::BooleanLiteral(_)));
+    let has_bigint_literal = type_set
+        .iter()
+        .any(|ty| matches!(arena.type_data(*ty), TypeData::BigIntLiteral(_)));
+
+    type_set.retain(|ty| match arena.type_data(*ty) {
+        TypeData::String => !has_string_literal,
+        TypeData::Number => !has_number_literal,
+        TypeData::Boolean => !has_boolean_literal,
+        TypeData::Bigint => !has_bigint_literal,
+        _ => true,
+    });
 }
 
 fn normalize_null_undefined_order(type_set: &mut [Ty<'_>]) {

@@ -2753,6 +2753,36 @@ mod tests {
     }
 
     #[test]
+    fn intersection_reduction_collapses_primitive_to_literal_types() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let number_literal = Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal);
+        let string_literal = Ty::string_literal(arena, "ready");
+        let bigint_literal = Ty::bigint_literal(arena, "1");
+
+        assert_eq!(
+            Ty::intersection(arena, [Ty::boolean(), Ty::boolean_false()]),
+            Ty::boolean_false()
+        );
+        assert_eq!(
+            Ty::intersection(arena, [Ty::boolean_false(), Ty::boolean()]),
+            Ty::boolean_false()
+        );
+        assert_eq!(
+            Ty::intersection(arena, [Ty::number(), number_literal]),
+            number_literal
+        );
+        assert_eq!(
+            Ty::intersection(arena, [Ty::string(), string_literal]),
+            string_literal
+        );
+        assert_eq!(
+            Ty::intersection(arena, [Ty::bigint(), bigint_literal]),
+            bigint_literal
+        );
+    }
+
+    #[test]
     fn union_reduction_flattens_deduplicates_and_returns_singletons() {
         let allocator = Allocator::default();
         let arena = arena(&allocator);

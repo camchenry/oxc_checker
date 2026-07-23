@@ -26,16 +26,13 @@ type IntersectionNever = string | never;
 >    ^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type IntersectionBooleanLiteral = boolean & false;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean & false   (TyIntersection) (TSTypeAliasDeclaration)
-                       expected: false
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral) (TSTypeAliasDeclaration)
 
 type IntersectionNumberLiteral = number & 1;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: number & 1   (TyIntersection) (TSTypeAliasDeclaration)
-                      expected: 1
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: 1   (TyNumberLiteral) (TSTypeAliasDeclaration)
 
 type IntersectionStringLiteral = string & 'foo';
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: string & "foo"   (TyIntersection) (TSTypeAliasDeclaration)
-                      expected: "foo"
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: "foo"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
 type UnionAny = any;
 >    ^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
