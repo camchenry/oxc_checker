@@ -65,8 +65,7 @@ const ab2 = `ab`;
 >     ^^^: "ab"   (TyStringLiteral) (BindingIdentifier)
 
 type AB = `AB`;
->    ^^: `AB`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
-expected: "AB"
+>    ^^: "AB"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
 type ABCUnion = `${ABC}`;
 >    ^^^^^^^^: `${ABC}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)

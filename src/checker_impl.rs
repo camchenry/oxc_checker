@@ -1876,7 +1876,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             GetTypeFlags::NONE,
                         )
                     });
-                    Ty::template_literal(self.arena(), quasis, expressions)
+                    self.get_template_literal_type(program_id, quasis, expressions)
                 }
                 TSLiteral::UnaryExpression(_) => Ty::none(),
             },
