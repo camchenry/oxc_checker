@@ -10,10 +10,12 @@ interface Number {
                   expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+                                         expected: any
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
 >                                                  ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                                                            ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                 ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                             expected: any

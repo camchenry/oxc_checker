@@ -1910,23 +1910,15 @@ fn module_export_name_span_and_text<'a>(
 }
 
 fn ts_type_name_span_and_text<'a>(name: &'a TSTypeName<'a>) -> Option<(Span, Cow<'a, str>)> {
-    let span = match name {
-        TSTypeName::IdentifierReference(identifier) => identifier.span,
-        TSTypeName::QualifiedName(qualified) => qualified.span,
-        TSTypeName::ThisExpression(_) => return None,
-    };
-    Some((span, ts_type_name_text(name)))
-}
-
-fn ts_type_name_text<'a>(name: &'a TSTypeName<'a>) -> Cow<'a, str> {
     match name {
-        TSTypeName::IdentifierReference(identifier) => Cow::Borrowed(identifier.name.as_str()),
-        TSTypeName::QualifiedName(qualified) => Cow::Owned(format!(
-            "{}.{}",
-            ts_type_name_text(&qualified.left),
-            qualified.right.name
+        TSTypeName::IdentifierReference(identifier) => {
+            Some((identifier.span, Cow::Borrowed(identifier.name.as_str())))
+        }
+        TSTypeName::QualifiedName(qualified) => Some((
+            qualified.right.span,
+            Cow::Borrowed(qualified.right.name.as_str()),
         )),
-        TSTypeName::ThisExpression(_) => Cow::Borrowed("this"),
+        TSTypeName::ThisExpression(_) => None,
     }
 }
 

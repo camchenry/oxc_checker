@@ -28,7 +28,8 @@ interface String {
                      expected: Intl.LocalesArgument
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+                                            expected: any
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
 >   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject) (TSMethodSignature)
@@ -38,7 +39,8 @@ interface String {
                      expected: Intl.LocalesArgument
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+                                            expected: any
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
 >   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }   (TyObject) (TSMethodSignature)
@@ -51,10 +53,12 @@ interface String {
                                expected: Intl.LocalesArgument
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+                                                      expected: any
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
 >                                                               ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                              ^^^^^^^^^^^^^^^: Intl.CollatorOptions   (TyTypeReference) (TSTypeReference)
+                                                                                      expected: any

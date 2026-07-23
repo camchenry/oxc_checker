@@ -11489,7 +11489,8 @@ interface String {
 >                                                            ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
 
     localeCompare(that: string, locales?: string | string[], options?: Intl.CollatorOptions): number;
->                                                                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                           ^^^^^^^^^^^^^^^: Intl.CollatorOptions   (TyTypeReference) (TSTypeReference)
+                                                                                   expected: any
 
 interface Number {
 >         ^^^^^^: NumberConstructor   (TyTypeReference) (BindingIdentifier)
@@ -11509,7 +11510,8 @@ interface Number {
 >                                               ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                          expected: any
 
 interface Date {
 >         ^^^^: DateConstructor   (TyTypeReference) (BindingIdentifier)
@@ -11529,7 +11531,8 @@ interface Date {
 >                                               ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
->                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                            expected: any
 
     toLocaleDateString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -11541,7 +11544,8 @@ interface Date {
 >                                                   ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleDateString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
->                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                  ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                                expected: any
 
     toLocaleTimeString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -11553,4 +11557,5 @@ interface Date {
 >                                                   ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleTimeString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
->                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                  ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                                expected: any

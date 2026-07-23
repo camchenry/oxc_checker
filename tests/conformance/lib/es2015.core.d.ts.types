@@ -132,10 +132,12 @@ interface Array<T> {
 >                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                        ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                                                      expected: any
 
 interface ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -662,10 +664,12 @@ interface ReadonlyArray<T> {
 >                                              ^^^^^^^: (Intl.NumberFormatOptions & Intl.DateTimeFormatOptions) | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string;
->                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                        ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                                                      expected: any
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -867,7 +871,8 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -889,7 +894,8 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -911,7 +917,8 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -933,7 +940,8 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -955,7 +963,8 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -977,7 +986,8 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -999,7 +1009,8 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -1021,7 +1032,8 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -1043,4 +1055,5 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                              ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
->                                                        ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                         expected: any

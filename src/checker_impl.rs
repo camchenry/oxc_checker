@@ -1402,9 +1402,45 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
             return None;
         };
+        if let Some((symbol, declaration)) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+        {
+            return self.get_enum_literal_union_from_declaration(symbol.program_id, declaration);
+        }
+
+        let (enum_name, member_name) = reference.name.rsplit_once('.')?;
         let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
-        self.get_enum_literal_union_from_declaration(symbol.program_id, declaration)
+            self.get_type_symbol_and_declaration_for_name(program_id, enum_name)?;
+        self.get_enum_member_literal_from_declaration(symbol.program_id, declaration, member_name)
+    }
+
+    fn get_enum_member_literal_from_declaration(
+        &self,
+        program_id: ProgramId,
+        declaration: NodeId,
+        member_name: &str,
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSEnumDeclaration(enum_declaration) => {
+                let member = enum_declaration
+                    .body
+                    .members
+                    .iter()
+                    .find(|member| member.id.static_name() == member_name)?;
+                Some(self.get_type_of_expression_with_node(
+                    program_id,
+                    member.initializer.as_ref()?,
+                    None,
+                    GetTypeFlags::PRESERVE_LITERALS,
+                ))
+            }
+            AstKind::BindingIdentifier(_) => self.get_enum_member_literal_from_declaration(
+                program_id,
+                self.nodes(program_id).parent_id(declaration),
+                member_name,
+            ),
+            _ => None,
+        }
     }
 
     fn get_enum_literal_union_from_declaration(
@@ -1430,6 +1466,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         .into()
                     })
                     .collect::<Option<Vec<_>>>()?,
+            )),
+            AstKind::TSEnumMember(member) => Some(self.get_type_of_expression_with_node(
+                program_id,
+                member.initializer.as_ref()?,
+                None,
+                GetTypeFlags::PRESERVE_LITERALS,
             )),
             AstKind::BindingIdentifier(_) => self.get_enum_literal_union_from_declaration(
                 program_id,
@@ -8391,6 +8433,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::TSMappedType(_) => Ty::any(),
             AstKind::TSClassImplements(_) => Ty::any(),
             AstKind::TSInterfaceHeritage(_) => Ty::any(),
+            AstKind::TSTypeReference(reference)
+                if matches!(reference.type_name, TSTypeName::QualifiedName(_)) =>
+            {
+                self.get_type_from_ts_type_reference(node.program_id, reference)
+            }
             AstKind::TSTypeReference(_) => {
                 let ty = self
                     .get_symbol_at_location(node)

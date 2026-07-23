@@ -2340,6 +2340,26 @@ mod test {
     }
 
     #[test]
+    fn template_literal_type_resolves_qualified_enum_member() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+            enum ABC {
+                A = "A",
+                B = "B",
+            }
+            type Value = `${ABC.A}`;
+            "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
+            "\"A\""
+        );
+    }
+
+    #[test]
     fn type_alias_union_constituents_match_typescript_alias_display_rules() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
