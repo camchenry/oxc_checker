@@ -6001,8 +6001,36 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .get_contextual_type_of_object_property_value_from_intra_expression(
                 program_id, node_id, object, value_span,
             )
+            .or_else(|| self.get_contextual_type_of_call_argument(program_id, node_id, object.span))
             .or_else(|| {
-                self.get_contextual_type_of_call_argument(program_id, node_id, object.span)
+                self.nodes(program_id)
+                    .ancestors(node_id)
+                    .find_map(|node| match node.kind() {
+                        AstKind::VariableDeclarator(declarator)
+                            if declarator
+                                .init
+                                .as_ref()
+                                .is_some_and(|initializer| initializer.span() == object.span) =>
+                        {
+                            declarator.type_annotation.as_deref().map(|annotation| {
+                                self.get_type_from_ts_type_annotation(program_id, Some(annotation))
+                            })
+                        }
+                        AstKind::PropertyDefinition(property)
+                            if property
+                                .value
+                                .as_ref()
+                                .is_some_and(|initializer| initializer.span() == object.span) =>
+                        {
+                            property.type_annotation.as_deref().map(|annotation| {
+                                self.get_type_from_ts_type_annotation(program_id, Some(annotation))
+                            })
+                        }
+                        _ => None,
+                    })
+            })
+            .or_else(|| {
+                self.get_contextual_type_of_object_property_value(program_id, node_id, object.span)
             })?;
 
         self.get_destructured_property_type(program_id, object_context, property_name)
@@ -8356,18 +8384,26 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 )
             }
             AstKind::ObjectProperty(property) => {
-                if self.is_in_contextually_typed_initializer(node.program_id, node.node_id)
-                    && let Expression::BooleanLiteral(literal) = &property.value
+                let contextual_type = self.get_contextual_type_of_object_property_value(
+                    node.program_id,
+                    node.node_id,
+                    property.value.span(),
+                );
+                let flags = if (matches!(property.value, Expression::BooleanLiteral(_))
+                    && self.is_in_contextually_typed_initializer(node.program_id, node.node_id))
+                    || contextual_type
+                        .is_some_and(|ty| type_contains_literal_type(self.arena(), ty, 0))
                 {
-                    Ty::boolean_literal(literal.value)
+                    GetTypeFlags::PRESERVE_LITERALS
                 } else {
-                    self.get_type_of_expression_with_node(
-                        node.program_id,
-                        &property.value,
-                        Some(node.node_id),
-                        GetTypeFlags::NONE,
-                    )
-                }
+                    GetTypeFlags::NONE
+                };
+                self.get_type_of_expression_with_node(
+                    node.program_id,
+                    &property.value,
+                    Some(node.node_id),
+                    flags,
+                )
             }
             AstKind::StaticMemberExpression(member) => self.get_type_of_static_member_expression(
                 node.program_id,

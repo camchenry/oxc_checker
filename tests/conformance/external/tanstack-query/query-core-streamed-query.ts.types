@@ -1029,8 +1029,7 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 >                            ^^^^^^^^^^: never[]   (TyArray) (ObjectProperty)
 
   refetchMode: 'append',
-> ^^^^^^^^^^^: string   (TyString) (ObjectProperty)
-     expected: "append"
+> ^^^^^^^^^^^: "append"   (TyStringLiteral) (ObjectProperty)
 
 const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
 >     ^^^^^^^^^^: TaggedTodoData   (TyTypeReference) (BindingIdentifier)

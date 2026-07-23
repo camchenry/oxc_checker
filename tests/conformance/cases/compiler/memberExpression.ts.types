@@ -50,8 +50,7 @@ const user: User = {
 > ^^^: number   (TyNumber) (ObjectProperty)
 
   id: "user_Alice",
-> ^^: string   (TyString) (ObjectProperty)
-expected: "user_Alice"
+> ^^: "user_Alice"   (TyStringLiteral) (ObjectProperty)
 
   address: {
 > ^^^^^^^: { city: string; zip: number; }   (TyObject) (ObjectProperty)
@@ -80,8 +79,7 @@ expected: "user_Alice"
      expected: { theme: "dark"; }
 
     theme: "dark",
->   ^^^^^: string   (TyString) (ObjectProperty)
- expected: "dark"
+>   ^^^^^: "dark"   (TyStringLiteral) (ObjectProperty)
 
 const userName = user.name;
 >     ^^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -302,7 +300,7 @@ const numericDictionary: NumericDictionary = {
 >                        ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   0: "zero",
-> ^: string   (TyString) (ObjectProperty)
+> ^: "zero"   (TyStringLiteral) (ObjectProperty)
 
   2: "many",
 > ^: string   (TyString) (ObjectProperty)

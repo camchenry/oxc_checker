@@ -504,12 +504,10 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 >                          ^^^^^: any   (TyAny) (IdentifierReference)
 
     subscribe(listener) {
->   ^^^^^^^^^: (listener: any) => () => boolean   (TyFunction) (ObjectProperty)
-     expected: (listener: (state: any, prevState: any) => void) => () => boolean
+>   ^^^^^^^^^: (listener: (state: any, prevState: any) => void) => () => boolean   (TyFunction) (ObjectProperty)
 
     subscribe(listener) {
->             ^^^^^^^^: any   (TyAny) (BindingIdentifier)
-              expected: (state: any, prevState: any) => void
+>             ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (BindingIdentifier)
 
       listeners.add(listener)
 >     ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (IdentifierReference)
@@ -523,8 +521,7 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
            expected: (value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>
 
       listeners.add(listener)
->                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
-                    expected: (state: any, prevState: any) => void
+>                   ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (IdentifierReference)
 
       return () => listeners.delete(listener)
 >                  ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (IdentifierReference)
@@ -533,8 +530,7 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 >                            ^^^^^^: (value: (state: any, prevState: any) => void) => boolean   (TyFunction) (StaticMemberExpression)
 
       return () => listeners.delete(listener)
->                                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
-                                    expected: (state: any, prevState: any) => void
+>                                   ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (IdentifierReference)
 
   state = initializer(api.setState, api.getState, api)
 > ^^^^^: any   (TyAny) (IdentifierReference)
