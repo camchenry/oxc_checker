@@ -63,6 +63,10 @@ pub(crate) fn reduce_intersection_type<'a>(
         add_type_to_intersection(arena, &mut type_set, ty);
     }
 
+    if type_set.contains(&Ty::Any) {
+        return Ty::any();
+    }
+
     if type_set.len() > 1 {
         type_set.retain(|ty| *ty != Ty::Unknown);
     }

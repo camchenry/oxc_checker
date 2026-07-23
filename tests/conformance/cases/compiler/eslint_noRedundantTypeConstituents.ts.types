@@ -17,8 +17,7 @@ type UnionStringLiteral = string | 'foo';
 >    ^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type IntersectionAny = any & 'foo';
->    ^^^^^^^^^^^^^^^: any & "foo"   (TyIntersection) (TSTypeAliasDeclaration)
-            expected: any
+>    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
 
 type IntersectionUnknown = string & unknown;
 >    ^^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)

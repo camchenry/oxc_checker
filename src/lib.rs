@@ -1515,6 +1515,17 @@ mod test {
     }
 
     #[test]
+    fn intersection_with_any_reduces_to_any() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "");
+        let arena = arena(&ret);
+        let literal = Ty::string_literal(arena, "foo");
+
+        assert_eq!(Ty::intersection(arena, [Ty::any(), literal]), Ty::any());
+        assert_eq!(Ty::intersection(arena, [literal, Ty::any()]), Ty::any());
+    }
+
+    #[test]
     fn assignability_handles_basic_and_structural_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "");
