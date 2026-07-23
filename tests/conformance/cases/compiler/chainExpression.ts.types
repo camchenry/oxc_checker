@@ -215,8 +215,7 @@ const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                                                    ^^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalElement = maybeUser?.tags?.[0]
->     ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-             expected: string | undefined
+>     ^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const optionalElement = maybeUser?.tags?.[0]
 >                       ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
@@ -499,8 +498,7 @@ const optionalTemplate = `user-${maybeUser?.name}`
 >                                           ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
 
 const definiteOptionalProperty = definiteUser.tags?.[0]
->     ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                      expected: string | undefined
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const definiteOptionalProperty = definiteUser.tags?.[0]
 >                                ^^^^^^^^^^^^: Profile   (TyTypeReference) (IdentifierReference)

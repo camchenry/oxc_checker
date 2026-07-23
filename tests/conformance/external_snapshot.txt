@@ -380,7 +380,7 @@ FAIL tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts 
       actual:   any
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:24 `taskSummary` type mismatch
       expected: { id: string; points?: number | undefined; }
-      actual:   Merge<Pick<any, keyof any>>
+      actual:   Merge<Pick<object, keyof object>>
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:25 `pointTotal` type mismatch
       expected: number
       actual:   any
@@ -437,7 +437,7 @@ FAIL tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts 
       actual:   any
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:32 `taskSummary` type mismatch
       expected: { id: string; points?: number | undefined; }
-      actual:   Merge<Pick<any, keyof any>>
+      actual:   Merge<Pick<object, keyof object>>
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:32 `id` type mismatch
       expected: string
       actual:   any
@@ -446,13 +446,13 @@ FAIL tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts 
       actual:   any
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:33 `taskSummary` type mismatch
       expected: { id: string; points?: number | undefined; }
-      actual:   Merge<Pick<any, keyof any>>
+      actual:   Merge<Pick<object, keyof object>>
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:33 `points` type mismatch
       expected: number | undefined
       actual:   any
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:34 `firstPoint` type mismatch
       expected: number
-      actual:   any
+      actual:   U
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:34 `donePoints` type mismatch
       expected: number[]
       actual:   U[]

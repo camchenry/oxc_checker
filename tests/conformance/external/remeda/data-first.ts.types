@@ -904,7 +904,7 @@ const groupedTasks = groupBy(tasks, task => task.status)
                                                expected: "todo" | "done"
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
->     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: Merge<Pick<object, keyof object>>   (TyTypeReference) (BindingIdentifier)
          expected: { id: string; points?: number | undefined; }
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
@@ -992,7 +992,7 @@ const summaryId = taskSummary.id
        expected: string
 
 const summaryId = taskSummary.id
->                 ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference) (IdentifierReference)
+>                 ^^^^^^^^^^^: Merge<Pick<object, keyof object>>   (TyTypeReference) (IdentifierReference)
                      expected: { id: string; points?: number | undefined; }
 
 const summaryId = taskSummary.id
@@ -1004,7 +1004,7 @@ const summaryPoints = taskSummary.points
            expected: number | undefined
 
 const summaryPoints = taskSummary.points
->                     ^^^^^^^^^^^: Merge<Pick<any, keyof any>>   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^^^^^^: Merge<Pick<object, keyof object>>   (TyTypeReference) (IdentifierReference)
                          expected: { id: string; points?: number | undefined; }
 
 const summaryPoints = taskSummary.points
@@ -1012,7 +1012,7 @@ const summaryPoints = taskSummary.points
                                 expected: number | undefined
 
 const firstPoint = donePoints[0]
->     ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
         expected: number
 
 const firstPoint = donePoints[0]

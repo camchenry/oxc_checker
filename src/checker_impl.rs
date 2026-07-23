@@ -3763,9 +3763,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         // Try accessing like tuple with specific numeric key
         if key_type.is_number_index_type(self.arena())
             && let Some(index) = tuple_index_from_expression(&member.expression)
+            && let Some(element_type) =
+                tuple_element_type_at_index(self.arena(), object_type, index)
         {
-            return tuple_element_type_at_index(self.arena(), object_type, index)
-                .unwrap_or_else(Ty::any);
+            return element_type;
         };
 
         // Try accessing as array with a generic numeric key
