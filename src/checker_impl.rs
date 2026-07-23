@@ -1341,7 +1341,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     program_id,
                     expression,
                     node_id,
-                    GetTypeFlags::PRESERVE_LITERALS,
+                    GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
                 );
                 value
                     .push_str(self.template_expression_substitution_static_value(expression_type)?);

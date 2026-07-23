@@ -137,8 +137,7 @@ const arg = 'something';
 >     ^^^: "something"   (TyStringLiteral) (BindingIdentifier)
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
-  expected: "something" | "arg = something"
+>     ^^^^: "something" | "arg = something"   (TyUnion) (BindingIdentifier)
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 >                   ^^^: "something"   (TyStringLiteral) (IdentifierReference)

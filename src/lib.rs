@@ -1413,6 +1413,51 @@ mod test {
     }
 
     #[test]
+    fn conditional_template_uses_declared_literal_in_unreachable_arm() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        const arg = 'something';
+        const msg = typeof arg === 'string' ? arg : `arg = ${arg}`;
+        ",
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "msg").to_type_string(ret.arena),
+            "\"something\" | \"arg = something\""
+        );
+        assert_eq!(
+            get_identifier_reference_types(&ret, "arg")
+                .into_iter()
+                .map(|ty| ty.to_type_string(ret.arena))
+                .collect::<Vec<_>>(),
+            vec![
+                "\"something\"".to_string(),
+                "\"something\"".to_string(),
+                "never".to_string(),
+            ]
+        );
+    }
+
+    #[test]
+    fn conditional_template_does_not_fold_flow_narrowed_mutable_value() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare let value: "a" | "b";
+        const msg = value === "a" ? `${value}` : "fallback";
+        "#,
+        );
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "msg").to_type_string(ret.arena),
+            "string"
+        );
+    }
+
+    #[test]
     fn flow_narrows_undefined_equality_conditional_expression_arms() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
