@@ -1,6 +1,5 @@
 type Profile = {
->    ^^^^^^^: { name: string; age?: number; greet?: (message: string) => string; tags?: string[]; nested?: { count: number; getCount?: () => number; values?: { label: string; }[]; }; }   (TyObject) (TSTypeAliasDeclaration)
-    expected: { name: string; age?: number; greet?: (message: string) => string; tags?: string[]; nested?: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; }; }
+>    ^^^^^^^: { name: string; age?: number; greet?: (message: string) => string; tags?: string[]; nested?: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; }; }   (TyObject) (TSTypeAliasDeclaration)
 
 	name: string
 >^^^^: string   (TyString) (TSPropertySignature)
@@ -18,8 +17,7 @@ type Profile = {
 >^^^^: string[] | undefined   (TyUnion) (TSPropertySignature)
 
 	nested?: {
->^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (TSPropertySignature)
-expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (TSPropertySignature)
 
 		count: number
 > ^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -166,8 +164,7 @@ const optionalNestedProperty = maybeUser?.nested?.count
 >                              ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalNestedProperty = maybeUser?.nested?.count
->                                         ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                        expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                         ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNestedProperty = maybeUser?.nested?.count
 >                                                 ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
@@ -179,8 +176,7 @@ const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >                            ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalNestedMethod = maybeUser?.nested?.getCount?.()
->                                       ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                      expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                       ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNestedMethod = maybeUser?.nested?.getCount?.()
 >                                               ^^^^^^^^: (() => number) | undefined   (TyUnion) (StaticMemberExpression)
@@ -192,8 +188,7 @@ const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >                           ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
->                                      ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                     expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                      ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNestedArray = maybeUser?.nested?.values?.[index]
 >                                              ^^^^^^: { label: string; }[] | undefined   (TyUnion) (StaticMemberExpression)
@@ -208,8 +203,7 @@ const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
->                                           ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                          expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                           ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNestedArrayLabel = maybeUser?.nested?.values?.[index]?.label
 >                                                   ^^^^^^: { label: string; }[] | undefined   (TyUnion) (StaticMemberExpression)
@@ -410,8 +404,7 @@ const optionalWithNonNull = maybeUser?.nested!.count
 >                           ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalWithNonNull = maybeUser?.nested!.count
->                                      ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                     expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                      ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalWithNonNull = maybeUser?.nested!.count
 >                                              ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
@@ -423,8 +416,7 @@ const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
 >                             ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
->                                        ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                       expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                        ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalNonNullMethod = maybeUser?.nested!.getCount?.()
 >                                                ^^^^^^^^: (() => number) | undefined   (TyUnion) (StaticMemberExpression)
@@ -436,8 +428,7 @@ const optionalGrouped = (maybeUser?.nested)?.count
 >                        ^^^^^^^^^: Profile | undefined   (TyUnion) (IdentifierReference)
 
 const optionalGrouped = (maybeUser?.nested)?.count
->                                   ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                  expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                   ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const optionalGrouped = (maybeUser?.nested)?.count
 >                                            ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
@@ -533,8 +524,7 @@ const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >                                    ^^^^^^^^^^^^: Profile   (TyTypeReference) (IdentifierReference)
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
->                                                 ^^^^^^: { count: number; getCount?: () => number; values?: { label: string; }[]; } | undefined   (TyUnion) (StaticMemberExpression)
-                                                expected: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined
+>                                                 ^^^^^^: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; } | undefined   (TyUnion) (StaticMemberExpression)
 
 const definiteNestedOptionalMethod = definiteUser.nested?.getCount?.()
 >                                                         ^^^^^^^^: (() => number) | undefined   (TyUnion) (StaticMemberExpression)

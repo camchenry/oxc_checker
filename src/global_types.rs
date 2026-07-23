@@ -226,11 +226,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         {
             return None;
         }
-        Some(if readonly {
-            Ty::readonly_array(self.arena(), *element_type)
-        } else {
-            Ty::array(self.arena(), *element_type)
-        })
+        Some(Ty::generic_array(self.arena(), *element_type, readonly))
     }
 
     pub(crate) fn get_global_array_type(

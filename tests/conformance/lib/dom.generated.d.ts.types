@@ -68678,11 +68678,9 @@ declare var PerformanceNavigationTiming: {
 
 interface PerformanceObserver {
 >         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                     expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
 
 interface PerformanceObserver {
->         ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (BindingIdentifier)
-                     expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>         ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (BindingIdentifier)
 
     disconnect(): void;
 >   ^^^^^^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
@@ -68703,19 +68701,16 @@ interface PerformanceObserver {
 >                  ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare var PerformanceObserver: {
->           ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (BindingIdentifier)
-                       expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>           ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (BindingIdentifier)
 
     prototype: PerformanceObserver;
 >   ^^^^^^^^^: PerformanceObserver   (TyTypeReference) (TSPropertySignature)
 
     prototype: PerformanceObserver;
->              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (TSTypeReference)
-                          expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (TSTypeReference)
 
     prototype: PerformanceObserver;
->              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (IdentifierReference)
-                          expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>              ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (IdentifierReference)
 
     new(callback: PerformanceObserverCallback): PerformanceObserver;
 >       ^^^^^^^^: PerformanceObserverCallback   (TyTypeReference) (BindingIdentifier)
@@ -68724,12 +68719,10 @@ declare var PerformanceObserver: {
 >                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new(callback: PerformanceObserverCallback): PerformanceObserver;
->                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (TSTypeReference)
-                                                           expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (TSTypeReference)
 
     new(callback: PerformanceObserverCallback): PerformanceObserver;
->                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (IdentifierReference)
-                                                           expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>                                               ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (IdentifierReference)
 
     readonly supportedEntryTypes: ReadonlyArray<string>;
 >            ^^^^^^^^^^^^^^^^^^^: readonly string[]   (TyArray) (TSPropertySignature)
@@ -70213,11 +70206,9 @@ declare var PublicKeyCredential: {
 
 interface PushManager {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-             expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
 
 interface PushManager {
->         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (BindingIdentifier)
-             expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (BindingIdentifier)
 
     getSubscription(): Promise<PushSubscription | null>;
 >   ^^^^^^^^^^^^^^^: { (): Promise<PushSubscription | null>; (): Promise<PushSubscription | null>; }   (TyObject) (TSMethodSignature)
@@ -70274,27 +70265,22 @@ interface PushManager {
 >                                                             ^^^^^^^^^^^^^^^^: { new (): PushSubscription; prototype: PushSubscription; }   (TyObject) (IdentifierReference)
 
 declare var PushManager: {
->           ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (BindingIdentifier)
-               expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>           ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (BindingIdentifier)
 
     prototype: PushManager;
 >   ^^^^^^^^^: PushManager   (TyTypeReference) (TSPropertySignature)
 
     prototype: PushManager;
->              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (TSTypeReference)
-                  expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (TSTypeReference)
 
     prototype: PushManager;
->              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (IdentifierReference)
-                  expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>              ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (IdentifierReference)
 
     new(): PushManager;
->          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (TSTypeReference)
-              expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (TSTypeReference)
 
     new(): PushManager;
->          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (IdentifierReference)
-              expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>          ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (IdentifierReference)
 
     readonly supportedContentEncodings: ReadonlyArray<string>;
 >            ^^^^^^^^^^^^^^^^^^^^^^^^^: readonly string[]   (TyArray) (TSPropertySignature)
@@ -70309,12 +70295,10 @@ interface PushManagerAttribute {
 >            ^^^^^^^^^^^: PushManager   (TyTypeReference) (TSPropertySignature)
 
     readonly pushManager: PushManager;
->                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (TSTypeReference)
-                             expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (TSTypeReference)
 
     readonly pushManager: PushManager;
->                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: readonly string[]; }   (TyObject) (IdentifierReference)
-                             expected: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }
+>                         ^^^^^^^^^^^: { new (): PushManager; prototype: PushManager; readonly supportedContentEncodings: ReadonlyArray<string>; }   (TyObject) (IdentifierReference)
 
 interface PushSubscription {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -119767,12 +119751,10 @@ interface PerformanceObserverCallback {
 >                                           ^^^^^^^^: PerformanceObserver   (TyTypeReference) (BindingIdentifier)
 
     (entries: PerformanceObserverEntryList, observer: PerformanceObserver): void;
->                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (TSTypeReference)
-                                                                 expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (TSTypeReference)
 
     (entries: PerformanceObserverEntryList, observer: PerformanceObserver): void;
->                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: readonly string[]; }   (TyObject) (IdentifierReference)
-                                                                 expected: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }
+>                                                     ^^^^^^^^^^^^^^^^^^^: { new (callback: PerformanceObserverCallback): PerformanceObserver; prototype: PerformanceObserver; readonly supportedEntryTypes: ReadonlyArray<string>; }   (TyObject) (IdentifierReference)
 
 interface PositionCallback {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

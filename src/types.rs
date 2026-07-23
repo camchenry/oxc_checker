@@ -10,9 +10,17 @@ use oxc_ast::ast::{
 };
 use oxc_index::Idx;
 use oxc_str::Str;
-use std::{cell::RefCell, marker::PhantomData, num::NonZeroU32};
+use std::{
+    cell::{Cell, RefCell},
+    marker::PhantomData,
+    num::NonZeroU32,
+};
 
 const SYNTHETIC_INDEX_SIGNATURE_NAME: &str = "x";
+
+thread_local! {
+    static PRESERVE_ARRAY_DECLARATION_SYNTAX: Cell<bool> = const { Cell::new(false) };
+}
 
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
@@ -503,6 +511,8 @@ pub struct TyArray<'a> {
     pub(crate) element_type: Ty<'a>,
     /// `true` when produced from `readonly T[]` or `ReadonlyArray<T>`.
     pub(crate) readonly: bool,
+    /// Whether to display this array using `Array<T>` or `ReadonlyArray<T>` syntax.
+    pub(crate) display_as_generic: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -1298,6 +1308,7 @@ impl<'a> Ty<'a> {
         arena.alloc_type(TypeData::Array(arena.alloc(TyArray {
             element_type,
             readonly: false,
+            display_as_generic: false,
         })))
     }
 
@@ -1305,6 +1316,15 @@ impl<'a> Ty<'a> {
         arena.alloc_type(TypeData::Array(arena.alloc(TyArray {
             element_type,
             readonly: true,
+            display_as_generic: false,
+        })))
+    }
+
+    pub fn generic_array(arena: CheckerArena<'a>, element_type: Ty<'a>, readonly: bool) -> Self {
+        arena.alloc_type(TypeData::Array(arena.alloc(TyArray {
+            element_type,
+            readonly,
+            display_as_generic: true,
         })))
     }
 
@@ -1586,9 +1606,14 @@ impl<'a> Ty<'a> {
                                 "{}{}: {};",
                                 readonly,
                                 property_name_to_type_string(property),
-                                property
-                                    .ty
-                                    .to_type_string_with(arena, replace_type_reference)
+                                PRESERVE_ARRAY_DECLARATION_SYNTAX.with(|preserve| {
+                                    let previous = preserve.replace(true);
+                                    let result = property
+                                        .ty
+                                        .to_type_string_with(arena, replace_type_reference);
+                                    preserve.set(previous);
+                                    result
+                                })
                             )
                         }
                     }))
@@ -1690,6 +1715,14 @@ impl<'a> Ty<'a> {
                 let element_type = array
                     .element_type
                     .to_type_string_with(arena, replace_type_reference);
+                if array.display_as_generic && PRESERVE_ARRAY_DECLARATION_SYNTAX.with(Cell::get) {
+                    let name = if array.readonly {
+                        "ReadonlyArray"
+                    } else {
+                        "Array"
+                    };
+                    return format!("{name}<{element_type}>");
+                }
                 let body = if array.element_type.display_needs_parentheses(arena) {
                     format!("({element_type})[]")
                 } else {
@@ -2660,6 +2693,27 @@ mod tests {
         assert_eq!(
             Ty::object(arena, [readonly]).to_type_string(arena),
             "{ readonly x: string; }"
+        );
+    }
+
+    #[test]
+    fn object_property_preserves_generic_array_declaration_syntax() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let array = Ty::generic_array(arena, Ty::string(), false);
+        let values = TyProperty {
+            name: "values",
+            ty: array,
+            computed: false,
+            optional: true,
+            method: false,
+            readonly: false,
+        };
+
+        assert_eq!(array.to_type_string(arena), "string[]");
+        assert_eq!(
+            Ty::object(arena, [values]).to_type_string(arena),
+            "{ values?: Array<string>; }"
         );
     }
 }
