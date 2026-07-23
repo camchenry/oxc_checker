@@ -4,6 +4,7 @@
 - If something should be addressed later, leave a TODO. for example:`TODO(perf)`, `TODO`, `TODO(correctness)`
 - Altitude: Make sure each change is implemented at the right depth, not as a fragile bandaid. Special cases layered on shared infrastructure are a sign the fix isn't deep enough — prefer generalizing the underlying mechanism over adding special cases or overfitting to the test data.
   - Example: Don't just check global types by name, we have to take into account that types like `Record`, could just be named that by the user.
+- Comments: In general, use comments sparingly within functions unless it isn't clear why we are doing something. Comments should also be used to help separate distinct steps of a larger process. Doc comments should be used whenever possible.
 
 ## TypeScript conformance tests
 
