@@ -173,11 +173,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         match self.nodes(symbol.program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(_)
             | AstKind::TSTypeAliasDeclaration(_)
+            | AstKind::TSEnumDeclaration(_)
             | AstKind::Class(_) => true,
             AstKind::BindingIdentifier(_) => matches!(
                 self.nodes(symbol.program_id).parent_kind(declaration),
                 AstKind::TSInterfaceDeclaration(_)
                     | AstKind::TSTypeAliasDeclaration(_)
+                    | AstKind::TSEnumDeclaration(_)
                     | AstKind::Class(_)
             ),
             AstKind::ImportSpecifier(_)

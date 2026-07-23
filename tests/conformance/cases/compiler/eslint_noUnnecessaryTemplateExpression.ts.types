@@ -68,8 +68,7 @@ type AB = `AB`;
 >    ^^: "AB"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
 type ABCUnion = `${ABC}`;
->    ^^^^^^^^: `${ABC}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
-     expected: "A" | "B" | "C"
+>    ^^^^^^^^: "A" | "B" | "C"   (TyUnion) (TSTypeAliasDeclaration)
 
 type ABCUnion = `${ABC}`;
 >                  ^^^: any   (TyAny) (TSTypeReference)

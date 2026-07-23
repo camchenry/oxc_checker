@@ -1380,6 +1380,69 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn template_substitution_static_values(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+    ) -> Option<Vec<&'a str>> {
+        let ty = self.expand_type_at_use(program_id, ty, 0);
+        let ty = self
+            .get_enum_literal_union_type(program_id, ty)
+            .unwrap_or(ty);
+        match self.arena().type_data(ty) {
+            TypeData::Union(union) => union.types.iter().try_fold(Vec::new(), |mut values, ty| {
+                values.extend(self.template_substitution_static_values(program_id, *ty)?);
+                Some(values)
+            }),
+            _ => Some(vec![self.template_substitution_static_value(ty)?]),
+        }
+    }
+
+    fn get_enum_literal_union_type(
+        &self,
+        program_id: program::ProgramId,
+        ty: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
+            return None;
+        };
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+        self.get_enum_literal_union_from_declaration(symbol.program_id, declaration)
+    }
+
+    fn get_enum_literal_union_from_declaration(
+        &self,
+        program_id: program::ProgramId,
+        declaration: NodeId,
+    ) -> Option<Ty<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            // TODO(correctness): Evaluate implicit and computed enum member values.
+            AstKind::TSEnumDeclaration(enum_declaration) => Some(Ty::union(
+                self.arena(),
+                enum_declaration
+                    .body
+                    .members
+                    .iter()
+                    .map(|member| {
+                        self.get_type_of_expression_with_node(
+                            program_id,
+                            member.initializer.as_ref()?,
+                            None,
+                            GetTypeFlags::PRESERVE_LITERALS,
+                        )
+                        .into()
+                    })
+                    .collect::<Option<Vec<_>>>()?,
+            )),
+            AstKind::BindingIdentifier(_) => self.get_enum_literal_union_from_declaration(
+                program_id,
+                self.nodes(program_id).parent_id(declaration),
+            ),
+            _ => None,
+        }
+    }
+
     fn get_template_literal_type(
         &self,
         program_id: program::ProgramId,
@@ -1390,19 +1453,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let expressions = expressions.into_iter().collect::<Vec<_>>();
 
         if quasis.len() == expressions.len() + 1 {
-            let mut value = String::from(quasis[0].value);
+            let mut values = vec![String::from(quasis[0].value)];
             let mut is_static = true;
             for (expression, quasi) in expressions.iter().zip(&quasis[1..]) {
-                let expression = self.expand_type_at_use(program_id, *expression, 0);
-                let Some(substitution) = self.template_substitution_static_value(expression) else {
+                let Some(substitutions) =
+                    self.template_substitution_static_values(program_id, *expression)
+                else {
                     is_static = false;
                     break;
                 };
-                value.push_str(substitution);
-                value.push_str(quasi.value);
+                values = values
+                    .iter()
+                    .flat_map(|value| {
+                        substitutions.iter().map(|substitution| {
+                            let mut value = value.clone();
+                            value.push_str(substitution);
+                            value.push_str(quasi.value);
+                            value
+                        })
+                    })
+                    .collect();
             }
             if is_static {
-                return Ty::string_literal(self.arena(), self.arena().str(&value));
+                return Ty::union(
+                    self.arena(),
+                    values
+                        .iter()
+                        .map(|value| Ty::string_literal(self.arena(), self.arena().str(value))),
+                );
             }
         }
 
