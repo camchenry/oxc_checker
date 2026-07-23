@@ -895,6 +895,31 @@ mod test {
     }
 
     #[test]
+    fn checker_renders_alias_chains_to_named_unions() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "interface Shape { hash: HashWrapper; } interface HashAlgorithm {} type HashTarget = HashAlgorithm | string; type HashWrapper = HashTarget;",
+        );
+        let checker = checker(&ret);
+        let hash_node_id = ret
+            .store
+            .entry(ret.program_id)
+            .unwrap()
+            .semantic()
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::TSPropertySignature(_)).then_some(node_id)
+            })
+            .unwrap();
+        let hash_node = NodeRef::new(ret.program_id, hash_node_id);
+        let hash_type = checker.get_type_at_location(hash_node);
+
+        assert_eq!(checker.type_to_string(hash_type, hash_node), "HashTarget");
+    }
+
+    #[test]
     fn without_default_lib_has_no_global_type_symbols() {
         let allocator = Allocator::default();
         let host = TestProgramHost::new("/project").add_file("/project/main.ts", "const x = 1;");
@@ -916,6 +941,34 @@ mod test {
             checker
                 .get_value_symbol_for_name(program_id, "Array")
                 .is_none()
+        );
+    }
+
+    #[test]
+    fn checker_preserves_named_alias_chains_for_formal_parameters() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "type Lazy<T, R> = () => R; type Pred<T> = Lazy<T, boolean>; declare function filter<T>(predicate: Pred<T>): void;",
+        );
+        let checker = checker(&ret);
+        let parameter_node_id = ret
+            .store
+            .entry(ret.program_id)
+            .unwrap()
+            .semantic()
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::FormalParameter(_)).then_some(node_id)
+            })
+            .unwrap();
+        let parameter_node = NodeRef::new(ret.program_id, parameter_node_id);
+        let parameter_type = checker.get_type_at_location(parameter_node);
+
+        assert_eq!(
+            checker.type_to_string(parameter_type, parameter_node),
+            "Pred<T>"
         );
     }
 

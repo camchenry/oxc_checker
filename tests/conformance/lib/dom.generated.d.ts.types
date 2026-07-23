@@ -1844,8 +1844,7 @@ interface EcdsaParams extends Algorithm {
 >                             ^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     hash: HashAlgorithmIdentifier;
->   ^^^^: HashAlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
-expected: AlgorithmIdentifier
+>   ^^^^: AlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
 
     hash: HashAlgorithmIdentifier;
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -3678,8 +3677,7 @@ interface HkdfParams extends Algorithm {
 >                            ^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     hash: HashAlgorithmIdentifier;
->   ^^^^: HashAlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
-expected: AlgorithmIdentifier
+>   ^^^^: AlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
 
     hash: HashAlgorithmIdentifier;
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -3703,8 +3701,7 @@ interface HmacImportParams extends Algorithm {
 >                                  ^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     hash: HashAlgorithmIdentifier;
->   ^^^^: HashAlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
-expected: AlgorithmIdentifier
+>   ^^^^: AlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
 
     hash: HashAlgorithmIdentifier;
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -3734,8 +3731,7 @@ interface HmacKeyGenParams extends Algorithm {
 >                                  ^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     hash: HashAlgorithmIdentifier;
->   ^^^^: HashAlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
-expected: AlgorithmIdentifier
+>   ^^^^: AlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
 
     hash: HashAlgorithmIdentifier;
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -5700,8 +5696,7 @@ interface Pbkdf2Params extends Algorithm {
 >                              ^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     hash: HashAlgorithmIdentifier;
->   ^^^^: HashAlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
-expected: AlgorithmIdentifier
+>   ^^^^: AlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
 
     hash: HashAlgorithmIdentifier;
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -7645,8 +7640,7 @@ interface RsaHashedImportParams extends Algorithm {
 >                                       ^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     hash: HashAlgorithmIdentifier;
->   ^^^^: HashAlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
-expected: AlgorithmIdentifier
+>   ^^^^: AlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
 
     hash: HashAlgorithmIdentifier;
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -7670,8 +7664,7 @@ interface RsaHashedKeyGenParams extends RsaKeyGenParams {
 >                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     hash: HashAlgorithmIdentifier;
->   ^^^^: HashAlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
-expected: AlgorithmIdentifier
+>   ^^^^: AlgorithmIdentifier   (TyTypeReference) (TSPropertySignature)
 
     hash: HashAlgorithmIdentifier;
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

@@ -23,7 +23,7 @@ use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator},
 };
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
@@ -7556,7 +7556,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn transparent_type_alias_target_at_location(
+    fn type_alias_target_for_display_at_location(
         &self,
         ty: Ty<'a>,
         location: NodeRef,
@@ -7585,12 +7585,93 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
         let target =
             self.get_type_from_ts_type(metadata.declaration.program_id, &alias.type_annotation);
-        let target = self.instantiate_type(target, &substitutions.to_mapper(self.arena()));
-        // TODO(correctness): preserve alias-chain display provenance without forwarding through
-        // unrelated reconstructed references.
+        Some(self.instantiate_type(target, &substitutions.to_mapper(self.arena())))
+    }
+
+    fn transparent_type_alias_target_at_location(
+        &self,
+        ty: Ty<'a>,
+        location: NodeRef,
+    ) -> Option<Ty<'a>> {
+        let target = self.type_alias_target_for_display_at_location(ty, location)?;
         target
             .is_transparent_type_alias_union_constituent(self.arena())
             .then_some(target)
+    }
+
+    fn location_expands_named_type_alias_chains(&self, location: NodeRef) -> bool {
+        matches!(
+            self.node_kind(location),
+            AstKind::TSPropertySignature(_) | AstKind::PropertyDefinition(_)
+        )
+    }
+
+    fn type_alias_chain_display_replacements_at_location(
+        &self,
+        ty: Ty<'a>,
+        location: NodeRef,
+    ) -> HashMap<Ty<'a>, Ty<'a>> {
+        let mut replacements = HashMap::new();
+        if !self.location_expands_named_type_alias_chains(location) {
+            return replacements;
+        }
+        self.collect_type_alias_chain_display_replacements(ty, location, &mut replacements);
+        replacements
+    }
+
+    fn collect_type_alias_chain_display_replacements(
+        &self,
+        ty: Ty<'a>,
+        location: NodeRef,
+        replacements: &mut HashMap<Ty<'a>, Ty<'a>>,
+    ) {
+        if matches!(self.arena().type_data(ty), TypeData::TypeReference(_)) {
+            self.insert_type_alias_chain_display_replacements(ty, location, replacements);
+        }
+
+        // TypeScript forwards alias wrappers through these exposed structural positions, but not
+        // through members of an anonymous object type.
+        let children = match self.arena().type_data(ty) {
+            TypeData::TypeReference(reference) => {
+                reference.type_arguments.iter().copied().collect()
+            }
+            TypeData::Array(array) => vec![array.element_type],
+            TypeData::Tuple(tuple) => tuple.elements.iter().map(TupleElement::ty).collect(),
+            TypeData::Union(union) => union.types.iter().copied().collect(),
+            _ => Vec::new(),
+        };
+        for child in children {
+            self.collect_type_alias_chain_display_replacements(child, location, replacements);
+        }
+    }
+
+    fn insert_type_alias_chain_display_replacements(
+        &self,
+        ty: Ty<'a>,
+        location: NodeRef,
+        replacements: &mut HashMap<Ty<'a>, Ty<'a>>,
+    ) {
+        let mut current = ty;
+        let mut seen = HashSet::new();
+        while seen.insert(current) {
+            let Some(target) = self.type_alias_target_for_display_at_location(current, location)
+            else {
+                return;
+            };
+            if !matches!(self.arena().type_data(target), TypeData::TypeReference(_))
+                || self.type_alias_metadata(target).is_none()
+            {
+                return;
+            }
+            if target == current {
+                return;
+            }
+            replacements.insert(current, target);
+            current = target;
+        }
+
+        // TODO(correctness): validate named-alias chain display in non-property formatter
+        // positions before widening the location policy.
     }
 }
 
@@ -8184,8 +8265,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String {
+        let alias_chain_replacements =
+            self.type_alias_chain_display_replacements_at_location(t, location);
         t.to_type_string_with(self.arena(), &|ty| {
-            self.transparent_type_alias_target_at_location(ty, location)
+            alias_chain_replacements
+                .get(&ty)
+                .copied()
+                .or_else(|| self.transparent_type_alias_target_at_location(ty, location))
         })
     }
 
