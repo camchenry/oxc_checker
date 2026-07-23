@@ -638,8 +638,7 @@ export function object<TEntries extends ObjectEntries>(
 >                ^^^^^^: any   (TyAny) (TSTypeReference)
 
       for (const key in entries) {
->                ^^^: any   (TyAny) (BindingIdentifier)
-            expected: Extract<keyof TEntries, string>
+>                ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (BindingIdentifier)
 
       for (const key in entries) {
 >                       ^^^^^^^: TEntries   (TyTypeReference) (IdentifierReference)
@@ -651,15 +650,13 @@ export function object<TEntries extends ObjectEntries>(
 >       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->           ^^^: any   (TyAny) (IdentifierReference)
-       expected: Extract<keyof TEntries, string>
+>           ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >                  ^^^^^^^: TEntries   (TyTypeReference) (IdentifierReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                          ^^^: any   (TyAny) (IdentifierReference)
-                      expected: Extract<keyof TEntries, string>
+>                          ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >                                        ^^^^^: any   (TyAny) (IdentifierReference)
@@ -669,8 +666,7 @@ export function object<TEntries extends ObjectEntries>(
 >                                                 ^^^^^^: any   (TyAny) (TSTypeReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                                                                          ^^^: any   (TyAny) (IdentifierReference)
-                                                                      expected: Extract<keyof TEntries, string>
+>                                                                          ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
 
       return out as ObjectOutput<TEntries>
 >            ^^^: Record<string, unknown>   (TyTypeReference) (IdentifierReference)

@@ -2,8 +2,7 @@ declare const array: string[];
 >             ^^^^^: string[]   (TyArray) (BindingIdentifier)
 
 for (const i in array) {
->          ^: any   (TyAny) (BindingIdentifier)
-    expected: string
+>          ^: string   (TyString) (BindingIdentifier)
 
 for (const i in array) {
 >               ^^^^^: string[]   (TyArray) (IdentifierReference)
@@ -21,12 +20,10 @@ for (const i in array) {
 >             ^^^^^: string[]   (TyArray) (IdentifierReference)
 
   console.log(array[i]);
->                   ^: any   (TyAny) (IdentifierReference)
-             expected: string
+>                   ^: string   (TyString) (IdentifierReference)
 
 for (const i in array) {
->          ^: any   (TyAny) (BindingIdentifier)
-    expected: string
+>          ^: string   (TyString) (BindingIdentifier)
 
 for (const i in array) {
 >               ^^^^^: string[]   (TyArray) (IdentifierReference)
@@ -41,15 +38,13 @@ for (const i in array) {
 >         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
   console.log(i, array[i]);
->             ^: any   (TyAny) (IdentifierReference)
-       expected: string
+>             ^: string   (TyString) (IdentifierReference)
 
   console.log(i, array[i]);
 >                ^^^^^: string[]   (TyArray) (IdentifierReference)
 
   console.log(i, array[i]);
->                      ^: any   (TyAny) (IdentifierReference)
-                expected: string
+>                      ^: string   (TyString) (IdentifierReference)
 
 declare const array: string[];
 >             ^^^^^: string[]   (TyArray) (BindingIdentifier)

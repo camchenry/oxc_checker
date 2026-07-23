@@ -25,6 +25,7 @@ const BIGINT_TYPE_NAME: &str = "BigInt";
 const REGEXP_TYPE_NAME: &str = "RegExp";
 const AWAITED_TYPE_NAME: &str = "Awaited";
 const NON_NULLABLE_TYPE_NAME: &str = "NonNullable";
+const EXTRACT_TYPE_NAME: &str = "Extract";
 const RECORD_TYPE_NAME: &str = "Record";
 const GENERATOR_TYPE_NAME: &str = "Generator";
 const ASYNC_GENERATOR_TYPE_NAME: &str = "AsyncGenerator";
@@ -316,6 +317,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
             .then(|| Ty::type_reference(self.arena(), NON_NULLABLE_TYPE_NAME, [target_type]))
+    }
+
+    pub(crate) fn get_global_extract_type(
+        &self,
+        program_id: program::ProgramId,
+        target_type: Ty<'a>,
+        constraint_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        self.is_default_lib_type(program_id, EXTRACT_TYPE_NAME)
+            .then(|| {
+                Ty::type_reference(
+                    self.arena(),
+                    EXTRACT_TYPE_NAME,
+                    [target_type, constraint_type],
+                )
+            })
     }
 
     pub(crate) fn get_global_generator_type(

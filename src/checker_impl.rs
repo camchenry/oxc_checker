@@ -6989,7 +6989,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // TODO: Rework this to not use map_or_else and check if we are in for-loop context first
             declarator.init.as_ref().map_or_else(
                 || {
-                    self.get_type_of_for_of_declarator(program_id, declaration, declarator)
+                    self.get_type_of_for_statement_declarator(program_id, declaration, declarator)
                         .unwrap_or_else(Ty::any)
                 },
                 |expression| {
@@ -7038,31 +7038,53 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn get_type_of_for_of_declarator(
+    fn get_type_of_for_statement_declarator(
         &self,
         program_id: program::ProgramId,
         declaration: NodeId,
         declarator: &'a VariableDeclarator<'a>,
     ) -> Option<Ty<'a>> {
-        let (for_of_node_id, for_of) = self
-            .nodes(program_id)
-            .ancestors_enumerated(declaration)
-            .find_map(|(ancestor_id, node)| match node.kind() {
+        for (ancestor_id, node) in self.nodes(program_id).ancestors_enumerated(declaration) {
+            match node.kind() {
+                AstKind::ForInStatement(for_in)
+                    if for_statement_left_contains_declarator(&for_in.left, declarator) =>
+                {
+                    let object_type = self.get_type_of_expression_with_node(
+                        program_id,
+                        &for_in.right,
+                        Some(ancestor_id),
+                        GetTypeFlags::NONE,
+                    );
+                    if self.is_scoped_type_parameter_reference(program_id, ancestor_id, object_type)
+                    {
+                        return self.get_global_extract_type(
+                            program_id,
+                            Ty::keyof(self.arena(), object_type),
+                            Ty::string(),
+                        );
+                    }
+                    return Some(Ty::string());
+                }
                 AstKind::ForOfStatement(for_of)
                     if for_statement_left_contains_declarator(&for_of.left, declarator) =>
                 {
-                    Some((ancestor_id, for_of))
+                    let iterable_type = self.get_type_of_expression_with_node(
+                        program_id,
+                        &for_of.right,
+                        Some(ancestor_id),
+                        GetTypeFlags::NONE,
+                    );
+                    return self.get_iteration_element_type(
+                        program_id,
+                        ancestor_id,
+                        iterable_type,
+                        for_of.r#await,
+                    );
                 }
-                _ => None,
-            })?;
-
-        let iterable_type = self.get_type_of_expression_with_node(
-            program_id,
-            &for_of.right,
-            Some(for_of_node_id),
-            GetTypeFlags::NONE,
-        );
-        self.get_iteration_element_type(program_id, for_of_node_id, iterable_type, for_of.r#await)
+                _ => {}
+            }
+        }
+        None
     }
 
     fn get_type_of_binding_pattern(

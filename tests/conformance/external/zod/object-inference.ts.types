@@ -395,7 +395,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >              ^^^^^^: any   (TyAny) (TSTypeReference)
 
     for (const key in this.shape) {
->              ^^^: any   (TyAny) (BindingIdentifier)
+>              ^^^: string   (TyString) (BindingIdentifier)
           expected: Extract<keyof Shape, string>
 
     for (const key in this.shape) {
@@ -409,7 +409,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->         ^^^: any   (TyAny) (IdentifierReference)
+>         ^^^: string   (TyString) (IdentifierReference)
      expected: Extract<keyof Shape, string>
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
@@ -417,7 +417,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
                    expected: Shape
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                           ^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^: string   (TyString) (IdentifierReference)
                        expected: Extract<keyof Shape, string>
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
@@ -431,7 +431,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >                                               ^^^^^^: any   (TyAny) (TSTypeReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                                                                        ^^^: any   (TyAny) (IdentifierReference)
+>                                                                        ^^^: string   (TyString) (IdentifierReference)
                                                                     expected: Extract<keyof Shape, string>
 
     return out as objectOutputType<Shape>
@@ -496,8 +496,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >                                                    ^^^^^: any   (TyAny) (TSTypeReference)
 
     for (const key in mask) {
->              ^^^: any   (TyAny) (BindingIdentifier)
-          expected: Extract<keyof Mask, string>
+>              ^^^: Extract<keyof Mask, string>   (TyTypeReference) (BindingIdentifier)
 
     for (const key in mask) {
 >                     ^^^^: Mask   (TyTypeReference) (IdentifierReference)
@@ -510,8 +509,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
                                                                    expected: Shape[keyof Shape]
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->         ^^^: any   (TyAny) (IdentifierReference)
-     expected: Extract<keyof Mask, string>
+>         ^^^: Extract<keyof Mask, string>   (TyTypeReference) (IdentifierReference)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
 >                      ^^^^: any   (TyAny) (TSTypeReference)
@@ -524,8 +522,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
                                                expected: Shape
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->                                                       ^^^: any   (TyAny) (IdentifierReference)
-                                                   expected: Extract<keyof Mask, string>
+>                                                       ^^^: Extract<keyof Mask, string>   (TyTypeReference) (IdentifierReference)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
 >                                                                    ^^^^^: any   (TyAny) (TSTypeReference)
