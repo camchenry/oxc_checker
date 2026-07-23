@@ -1439,6 +1439,100 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_type_of_enum_declaration(
+        &self,
+        declaration: &'a oxc_ast::ast::TSEnumDeclaration<'a>,
+    ) -> Ty<'a> {
+        let enum_name = declaration.id.name.as_str();
+        let member_types = declaration
+            .body
+            .members
+            .iter()
+            .map(|member| {
+                let member_name = member.id.static_name();
+                Ty::type_reference(
+                    self.arena(),
+                    self.arena().str(&format!("{enum_name}.{member_name}")),
+                    [],
+                )
+            })
+            .collect::<Vec<_>>();
+        let object_type =
+            Ty::object(
+                self.arena(),
+                declaration
+                    .body
+                    .members
+                    .iter()
+                    .zip(&member_types)
+                    .map(|(member, ty)| {
+                        let member_name = member.id.static_name();
+                        TyProperty {
+                            name: member_name.as_str(),
+                            ty: *ty,
+                            computed: false,
+                            optional: false,
+                            method: false,
+                            readonly: true,
+                        }
+                    }),
+            )
+            .with_index_infos(
+                self.arena(),
+                [IndexInfo::new(
+                    "x",
+                    Ty::string(),
+                    if declaration.body.members.iter().all(|member| {
+                        matches!(member.initializer, Some(Expression::StringLiteral(_)))
+                    }) {
+                        Ty::type_reference(self.arena(), enum_name, [])
+                    } else {
+                        Ty::union(
+                            self.arena(),
+                            std::iter::once(Ty::string()).chain(
+                                declaration
+                                    .body
+                                    .members
+                                    .iter()
+                                    .zip(member_types)
+                                    .filter_map(|(member, ty)| {
+                                        (!matches!(
+                                            member.initializer,
+                                            Some(Expression::StringLiteral(_))
+                                        ))
+                                        .then_some(ty)
+                                    }),
+                            ),
+                        )
+                    },
+                    true,
+                )],
+            );
+        Ty::type_query(self.arena(), enum_name, object_type, [])
+    }
+
+    fn get_type_of_enum_member(
+        &self,
+        program_id: ProgramId,
+        member: &'a oxc_ast::ast::TSEnumMember<'a>,
+    ) -> Ty<'a> {
+        let enum_name = self
+            .nodes(program_id)
+            .ancestor_kinds(member.node_id())
+            .find_map(|kind| match kind {
+                AstKind::TSEnumDeclaration(declaration) => Some(declaration.id.name.as_str()),
+                _ => None,
+            });
+        enum_name.map_or_else(Ty::none, |enum_name| {
+            let member_name = member.id.static_name();
+            Ty::type_reference(
+                self.arena(),
+                self.arena().str(&format!("{enum_name}.{member_name}")),
+                [],
+            )
+        })
+    }
+
     fn get_template_literal_type(
         &self,
         program_id: ProgramId,
@@ -3786,6 +3880,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 self.get_property_type_of_structural_type(program_id, resolved_type, property_name)
             }
+            TypeData::TypeQuery(query) => {
+                self.get_property_type_of_structural_type(program_id, query.resolved, property_name)
+            }
             TypeData::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_of_structural_type(program_id, *ty, property_name)
             }),
@@ -4147,11 +4244,52 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             if left_type == right_type {
                 continue;
             }
-            left_better |= self.is_assignable_to(left_type, right_type);
-            right_better |= self.is_assignable_to(right_type, left_type);
+            if self.is_empty_object_type(left_type) && !self.is_empty_object_type(right_type) {
+                if self.candidate_has_complete_inference(right) {
+                    right_better = true;
+                    continue;
+                }
+            } else if self.is_empty_object_type(right_type)
+                && !self.is_empty_object_type(left_type)
+                && self.candidate_has_complete_inference(left)
+            {
+                left_better = true;
+                continue;
+            }
+            let left_assignable = self.is_assignable_to(left_type, right_type);
+            let right_assignable = self.is_assignable_to(right_type, left_type);
+            if left_assignable && right_assignable {
+                left_better |=
+                    self.is_empty_object_type(right_type) && !self.is_empty_object_type(left_type);
+                right_better |=
+                    self.is_empty_object_type(left_type) && !self.is_empty_object_type(right_type);
+            } else {
+                left_better |= left_assignable;
+                right_better |= right_assignable;
+            }
         }
 
         left_better && !right_better
+    }
+
+    fn is_empty_object_type(&self, ty: Ty<'a>) -> bool {
+        matches!(self.arena().type_data(ty), TypeData::PrimitiveObject)
+            || matches!(self.arena().type_data(ty), TypeData::Object(object) if object.is_empty())
+    }
+
+    fn candidate_has_complete_inference(&self, candidate: &ResolvedSignatureCandidate<'a>) -> bool {
+        candidate
+            .signature
+            .function(self.arena())
+            .type_parameters
+            .iter()
+            .all(|parameter| {
+                candidate
+                    .inference
+                    .substitutions()
+                    .get(*parameter)
+                    .is_some()
+            })
     }
 
     fn candidate_parameter_type_at(
@@ -8226,6 +8364,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 let ty = self.get_type_of_type_alias_declaration(node.program_id, alias);
                 if ty.is_none() { Ty::any() } else { ty }
             }
+            AstKind::TSEnumDeclaration(declaration) => {
+                self.get_type_of_enum_declaration(declaration)
+            }
+            AstKind::TSEnumMember(member) => self.get_type_of_enum_member(node.program_id, member),
             AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
             AstKind::TSInterfaceDeclaration(_) => Ty::any(),
             AstKind::ExportSpecifier(specifier) => {
@@ -8372,6 +8514,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     self.get_type_of_type_alias_declaration(sym.program_id, alias)
                 }
                 AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
+                AstKind::TSEnumDeclaration(declaration) => {
+                    self.get_type_of_enum_declaration(declaration)
+                }
                 AstKind::BindingIdentifier(identifier) => {
                     if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
                         sym.program_id,
@@ -8416,6 +8561,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             self.get_type_of_type_alias_declaration(sym.program_id, alias)
                         }
                         AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
+                        AstKind::TSEnumDeclaration(declaration) => {
+                            self.get_type_of_enum_declaration(declaration)
+                        }
                         _ => Ty::none(),
                     }
                 }

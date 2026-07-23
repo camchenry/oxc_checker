@@ -67,16 +67,36 @@ const ab2 = `ab`;
 type AB = `AB`;
 >    ^^: "AB"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
+enum ABC {
+>    ^^^: typeof ABC   (TyTypeQuery) (TSEnumDeclaration)
+
+enum ABC {
+>    ^^^: typeof ABC   (TyTypeQuery) (BindingIdentifier)
+
+  A = 'A',
+> ^: ABC.A   (TyTypeReference) (TSEnumMember)
+
+  B = 'B',
+> ^: ABC.B   (TyTypeReference) (TSEnumMember)
+
+  C = 'C',
+> ^: ABC.C   (TyTypeReference) (TSEnumMember)
+
 type ABCUnion = `${ABC}`;
 >    ^^^^^^^^: "A" | "B" | "C"   (TyUnion) (TSTypeAliasDeclaration)
 
 type ABCUnion = `${ABC}`;
->                  ^^^: any   (TyAny) (TSTypeReference)
-              expected: typeof ABC
+>                  ^^^: typeof ABC   (TyTypeQuery) (TSTypeReference)
+
+type ABCUnion = `${ABC}`;
+>                  ^^^: typeof ABC   (TyTypeQuery) (IdentifierReference)
 
 type A = `${ABC.A}`;
 >    ^: `${ABC.A}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
 expected: "A"
+
+type A = `${ABC.A}`;
+>           ^^^: typeof ABC   (TyTypeQuery) (IdentifierReference)
 
 type A = `${ABC.A}`;
 >           ^^^^^: any   (TyAny) (TSTypeReference)

@@ -1652,6 +1652,14 @@ fn infer_types_with_variance<'a>(
             priority,
             arena,
         ),
+        (_, TypeData::TypeQuery(argument_query)) => infer_types_with_variance(
+            parameter_type,
+            argument_query.resolved,
+            context,
+            variance,
+            priority.structural(),
+            arena,
+        ),
         (TypeData::TypeReference(reference), _) if reference.type_arguments.is_empty() => {
             let Some(type_parameter) = context
                 .inference_by_name_mut(reference.name)
@@ -1699,6 +1707,23 @@ fn infer_types_with_variance<'a>(
                     priority.structural(),
                     arena,
                 );
+            }
+            for parameter_index in &parameter_object.index_infos {
+                if let Some(argument_index) =
+                    argument_object.index_infos.iter().find(|argument_index| {
+                        arena
+                            .is_type_identical_to(parameter_index.key_type, argument_index.key_type)
+                    })
+                {
+                    infer_types_with_variance(
+                        parameter_index.value_type,
+                        argument_index.value_type,
+                        context,
+                        variance,
+                        priority.structural(),
+                        arena,
+                    );
+                }
             }
         }
         (TypeData::Function(parameter_function), TypeData::Function(argument_function)) => {

@@ -1785,6 +1785,16 @@ fn actual_identifier_record<'a>(
             Cow::Borrowed(interface.id.name.as_str()),
             checker.get_type_at_location(node_ref),
         ),
+        AstKind::TSEnumDeclaration(declaration) => (
+            declaration.id.span,
+            Cow::Borrowed(declaration.id.name.as_str()),
+            checker.get_type_at_location(node_ref),
+        ),
+        AstKind::TSEnumMember(member) => (
+            member.id.span(),
+            Cow::Owned(member.id.static_name().to_string()),
+            checker.get_type_at_location(node_ref),
+        ),
         AstKind::TSModuleDeclaration(module) => {
             let (span, text) = ts_module_declaration_name_span_and_text(&module.id)?;
             (
