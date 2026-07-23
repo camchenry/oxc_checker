@@ -5,9 +5,6 @@ export type dataTagSymbol = typeof dataTagSymbol;
 >           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
-
-export type dataTagSymbol = typeof dataTagSymbol;
 >                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
 export declare const dataTagErrorSymbol: unique symbol;
@@ -17,9 +14,6 @@ export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
 >           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
-
-export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
 >                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
 
 export declare const unsetMarker: unique symbol;
@@ -27,9 +21,6 @@ export declare const unsetMarker: unique symbol;
 
 export type UnsetMarker = typeof unsetMarker;
 >           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
-
-export type UnsetMarker = typeof unsetMarker;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
 
 export type UnsetMarker = typeof unsetMarker;
 >                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)

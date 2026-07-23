@@ -795,6 +795,48 @@ mod test {
     }
 
     #[test]
+    fn type_alias_binding_location_uses_type_meaning_for_merged_symbol() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            type NodeFilter = ((value: string) => number) | { accept(value: string): number };
+            declare var NodeFilter: { readonly VALUE: 1 };
+            const nodeFilterValue = NodeFilter;
+            ",
+        );
+        let checker = checker(&ret);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let alias_name_node = semantic
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| match node.kind() {
+                AstKind::BindingIdentifier(identifier)
+                    if identifier.name == Ident::from("NodeFilter")
+                        && matches!(
+                            semantic.nodes().parent_kind(node_id),
+                            AstKind::TSTypeAliasDeclaration(_)
+                        ) =>
+                {
+                    Some(node_id)
+                }
+                _ => None,
+            })
+            .expect("expected type alias binding identifier");
+
+        assert_eq!(
+            checker
+                .get_type_at_location(NodeRef::new(ret.program_id, alias_name_node))
+                .to_type_string(ret.arena),
+            "((value: string) => number) | { accept(value: string): number; }"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "nodeFilterValue").to_type_string(ret.arena),
+            "{ readonly VALUE: 1; }"
+        );
+    }
+
+    #[test]
     fn checker_renders_transparent_default_lib_type_aliases() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

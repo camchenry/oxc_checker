@@ -7798,15 +7798,25 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 
     fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         match self.node_kind(node) {
-            AstKind::BindingIdentifier(identifier) => identifier.symbol_id.get().map_or_else(
-                || {
-                    self.get_type_of_binding_identifier_without_symbol(
-                        node.program_id,
-                        node.node_id,
+            AstKind::BindingIdentifier(identifier) => {
+                if let AstKind::TSTypeAliasDeclaration(alias) =
+                    self.nodes(node.program_id).parent_kind(node.node_id)
+                {
+                    self.get_type_of_type_alias_declaration(node.program_id, alias)
+                } else {
+                    identifier.symbol_id.get().map_or_else(
+                        || {
+                            self.get_type_of_binding_identifier_without_symbol(
+                                node.program_id,
+                                node.node_id,
+                            )
+                        },
+                        |symbol_id| {
+                            self.get_type_of_symbol(SymbolRef::new(node.program_id, symbol_id))
+                        },
                     )
-                },
-                |symbol_id| self.get_type_of_symbol(SymbolRef::new(node.program_id, symbol_id)),
-            ),
+                }
+            }
             AstKind::IdentifierReference(identifier) => {
                 self.get_symbol_at_location(node).map_or_else(
                     || {

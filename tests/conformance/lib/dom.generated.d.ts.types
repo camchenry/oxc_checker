@@ -9465,11 +9465,6 @@ interface WriteParams {
 
 type NodeFilter = ((node: Node) => number) | { acceptNode(node: Node): number; };
 >    ^^^^^^^^^^: ((node: Node) => number) | { acceptNode(node: Node): number; }   (TyUnion) (TSTypeAliasDeclaration)
-       expected: ((node: Node) => number) | { acceptNode(node: Node): number; }
-
-type NodeFilter = ((node: Node) => number) | { acceptNode(node: Node): number; };
->    ^^^^^^^^^^: { readonly FILTER_ACCEPT: 1; readonly FILTER_REJECT: 2; readonly FILTER_SKIP: 3; readonly SHOW_ALL: 4294967295; readonly SHOW_ELEMENT: 1; readonly SHOW_ATTRIBUTE: 2; readonly SHOW_TEXT: 4; readonly SHOW_CDATA_SECTION: 8; readonly SHOW_ENTITY_REFERENCE: 16; readonly SHOW_ENTITY: 32; readonly SHOW_PROCESSING_INSTRUCTION: 64; readonly SHOW_COMMENT: 128; readonly SHOW_DOCUMENT: 256; readonly SHOW_DOCUMENT_TYPE: 512; readonly SHOW_DOCUMENT_FRAGMENT: 1024; readonly SHOW_NOTATION: 2048; }   (TyObject) (BindingIdentifier)
-       expected: ((node: Node) => number) | { acceptNode(node: Node): number; }
 
 type NodeFilter = ((node: Node) => number) | { acceptNode(node: Node): number; };
 >                   ^^^^: Node   (TyTypeReference) (BindingIdentifier)
@@ -24228,11 +24223,6 @@ declare var DOMMatrix: {
 
 type SVGMatrix = DOMMatrix;
 >    ^^^^^^^^^: DOMMatrix   (TyTypeReference) (TSTypeAliasDeclaration)
-      expected: DOMMatrix
-
-type SVGMatrix = DOMMatrix;
->    ^^^^^^^^^: typeof DOMMatrix   (TyTypeQuery) (BindingIdentifier)
-      expected: DOMMatrix
 
 type SVGMatrix = DOMMatrix;
 >                ^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (TSTypeReference)
@@ -24249,11 +24239,6 @@ declare var SVGMatrix: typeof DOMMatrix;
 
 type WebKitCSSMatrix = DOMMatrix;
 >    ^^^^^^^^^^^^^^^: DOMMatrix   (TyTypeReference) (TSTypeAliasDeclaration)
-            expected: DOMMatrix
-
-type WebKitCSSMatrix = DOMMatrix;
->    ^^^^^^^^^^^^^^^: typeof DOMMatrix   (TyTypeQuery) (BindingIdentifier)
-            expected: DOMMatrix
 
 type WebKitCSSMatrix = DOMMatrix;
 >                      ^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (TSTypeReference)
@@ -24795,11 +24780,6 @@ declare var DOMPoint: {
 
 type SVGPoint = DOMPoint;
 >    ^^^^^^^^: DOMPoint   (TyTypeReference) (TSTypeAliasDeclaration)
-     expected: DOMPoint
-
-type SVGPoint = DOMPoint;
->    ^^^^^^^^: typeof DOMPoint   (TyTypeQuery) (BindingIdentifier)
-     expected: DOMPoint
 
 type SVGPoint = DOMPoint;
 >               ^^^^^^^^: { new (x?: number, y?: number, z?: number, w?: number): DOMPoint; prototype: DOMPoint; fromPoint(other?: DOMPointInit): DOMPoint; }   (TyObject) (TSTypeReference)
@@ -25092,11 +25072,6 @@ declare var DOMRect: {
 
 type SVGRect = DOMRect;
 >    ^^^^^^^: DOMRect   (TyTypeReference) (TSTypeAliasDeclaration)
-    expected: DOMRect
-
-type SVGRect = DOMRect;
->    ^^^^^^^: typeof DOMRect   (TyTypeQuery) (BindingIdentifier)
-    expected: DOMRect
 
 type SVGRect = DOMRect;
 >              ^^^^^^^: { new (x?: number, y?: number, width?: number, height?: number): DOMRect; prototype: DOMRect; fromRect(other?: DOMRectInit): DOMRect; }   (TyObject) (TSTypeReference)
@@ -98447,11 +98422,6 @@ declare var URL: {
 
 type webkitURL = URL;
 >    ^^^^^^^^^: URL   (TyTypeReference) (TSTypeAliasDeclaration)
-      expected: URL
-
-type webkitURL = URL;
->    ^^^^^^^^^: typeof URL   (TyTypeQuery) (BindingIdentifier)
-      expected: URL
 
 type webkitURL = URL;
 >                ^^^: { new (url: string | URL, base?: string | URL): URL; prototype: URL; canParse(url: string | URL, base?: string | URL): boolean; createObjectURL(obj: Blob | MediaSource): string; parse(url: string | URL, base?: string | URL): URL | null; revokeObjectURL(url: string): void; }   (TyObject) (TSTypeReference)

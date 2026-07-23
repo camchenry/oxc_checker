@@ -1682,6 +1682,14 @@ fn actual_identifier_record<'a>(
     let program_id = entry.id();
     let node_ref = NodeRef::new(program_id, node_id);
     let (span, text, ty): (Span, Cow<'_, str>, Ty<'_>) = match kind {
+        AstKind::BindingIdentifier(_)
+            if matches!(
+                entry.semantic().nodes().parent_kind(node_id),
+                AstKind::TSTypeAliasDeclaration(_)
+            ) =>
+        {
+            return None;
+        }
         AstKind::BindingIdentifier(identifier) => (
             identifier.span,
             Cow::Borrowed(identifier.name.as_str()),
@@ -2835,6 +2843,33 @@ mod tests {
         assert!(!records.iter().any(|record| {
             record.text == "value" && record.ty_repr == "{ (): number; (): number; }"
         }));
+    }
+
+    #[test]
+    fn type_alias_name_emits_one_type_meaning_record_for_merged_symbol() {
+        let source_text = "type NodeFilter = ((value: string) => number) | { accept(value: string): number };\ndeclare var NodeFilter: { readonly VALUE: 1 };";
+        let alias_start = u32::try_from(source_text.find("NodeFilter").unwrap()).unwrap();
+        let alias_end = alias_start + u32::try_from("NodeFilter".len()).unwrap();
+
+        let records = collect_oxc_records_from_source(
+            Path::new("tests/conformance/cases"),
+            Path::new("tests/conformance/cases/compiler/mergedTypeValueSymbol.ts"),
+            source_text,
+        );
+        let alias_records = records
+            .iter()
+            .filter(|record| record.start == alias_start && record.end == alias_end)
+            .collect::<Vec<_>>();
+
+        assert_eq!(alias_records.len(), 1);
+        assert_eq!(
+            alias_records[0].ty_repr,
+            "((value: string) => number) | { accept(value: string): number; }"
+        );
+        assert_eq!(
+            alias_records[0].ast_kind.as_deref(),
+            Some("TSTypeAliasDeclaration")
+        );
     }
 
     #[test]
