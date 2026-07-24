@@ -694,7 +694,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Ty::any()
             }
             Expression::ObjectExpression(object) => {
-                self.get_type_of_object_expression(program_id, object, node_id)
+                self.get_type_of_object_expression(program_id, object, node_id, context)
             }
             Expression::BinaryExpression(binary_expression) => {
                 self.get_type_of_binary_expression(program_id, binary_expression, node_id, flags)
@@ -3809,7 +3809,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: ProgramId,
         object: &'a ObjectExpression<'a>,
         node_id: Option<NodeId>,
+        context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
+        let mut property_flags = context.flags;
+        if !context.check_mode.const_context()
+            && context
+                .contextual_type
+                .is_none_or(|ty| !type_contains_literal_type(self.arena(), ty, 0))
+        {
+            property_flags.remove(GetTypeFlags::PRESERVE_LITERALS);
+        }
+
         Ty::object(
             self.arena(),
             object.properties.iter().filter_map(|property| {
@@ -3821,7 +3831,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     program_id,
                     &property.value,
                     node_id,
-                    GetTypeFlags::NONE,
+                    property_flags,
                 );
                 Some(Ty::property(name, ty))
             }),
@@ -8254,6 +8264,10 @@ fn type_contains_literal_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>, depth: us
         | TypeData::BooleanLiteral(_)
         | TypeData::BigIntLiteral(_)
         | TypeData::TemplateLiteral(_) => true,
+        TypeData::Object(object) => object
+            .properties
+            .iter()
+            .any(|property| type_contains_literal_type(arena, property.ty, depth + 1)),
         TypeData::Array(array) => type_contains_literal_type(arena, array.element_type, depth + 1),
         TypeData::Tuple(tuple) => tuple
             .elements
@@ -8443,11 +8457,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 } else {
                     GetTypeFlags::NONE
                 };
-                self.get_type_of_expression_with_node(
+                let mut context = ExpressionCheckContext::new(flags);
+                if let Some(contextual_type) = contextual_type {
+                    context = context.with_contextual_type(contextual_type, CheckMode::CONTEXTUAL);
+                }
+                self.check_expression_with_context(
                     node.program_id,
                     &property.value,
                     Some(node.node_id),
-                    flags,
+                    context,
                 )
             }
             AstKind::StaticMemberExpression(member) => self.get_type_of_static_member_expression(
