@@ -689,8 +689,7 @@ const symbolRegular = symbolObject.regular;
 >                                  ^^^^^^^: string   (TyString) (StaticMemberExpression)
 
 type Hyphenated = {
->    ^^^^^^^^^^: { data-id: string; aria-label?: string; }   (TyObject) (TSTypeAliasDeclaration)
-       expected: { "data-id": string; "aria-label"?: string; }
+>    ^^^^^^^^^^: { "data-id": string; "aria-label"?: string; }   (TyObject) (TSTypeAliasDeclaration)
 
   "data-id": string;
 > ^^^^^^^^^: string   (TyString) (TSPropertySignature)

@@ -558,58 +558,58 @@ FAIL tests/conformance/external/type-fest/object-utilities.ts::tests/object-util
 FAIL tests/conformance/external/valibot/schema-output.ts::library/schemas.ts matched_types=110 mismatched_types=39 total_types=149 match_percentage=73.83%
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:3 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:4 `GenericSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
-      actual:   { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }
+      actual:   { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:10 `StringSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: BaseIssue<"string">; } | undefined; readonly '~run': (input: unknown) => string; }
-      actual:   { readonly ~types?: { readonly input: string; readonly output: string; readonly issue: { readonly kind: "schema"; readonly expected: "string"; readonly message: string; }; }; readonly ~run: (input: unknown) => string; }
+      actual:   { readonly "~types"?: { readonly input: string; readonly output: string; readonly issue: { readonly kind: "schema"; readonly expected: "string"; readonly message: string; }; }; readonly "~run": (input: unknown) => string; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:10 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:11 `NumberSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: BaseIssue<"number">; } | undefined; readonly '~run': (input: unknown) => number; }
-      actual:   { readonly ~types?: { readonly input: number; readonly output: number; readonly issue: { readonly kind: "schema"; readonly expected: "number"; readonly message: string; }; }; readonly ~run: (input: unknown) => number; }
+      actual:   { readonly "~types"?: { readonly input: number; readonly output: number; readonly issue: { readonly kind: "schema"; readonly expected: "number"; readonly message: string; }; }; readonly "~run": (input: unknown) => number; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:11 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:12 `BooleanSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: BaseIssue<"boolean">; } | undefined; readonly '~run': (input: unknown) => boolean; }
-      actual:   { readonly ~types?: { readonly input: boolean; readonly output: boolean; readonly issue: { readonly kind: "schema"; readonly expected: "boolean"; readonly message: string; }; }; readonly ~run: (input: unknown) => boolean; }
+      actual:   { readonly "~types"?: { readonly input: boolean; readonly output: boolean; readonly issue: { readonly kind: "schema"; readonly expected: "boolean"; readonly message: string; }; }; readonly "~run": (input: unknown) => boolean; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:12 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:14 `OptionalSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: InferInput<TWrapped> | undefined; readonly output: TDefault | InferOutput<TWrapped>; readonly issue: InferIssue<TWrapped>; } | undefined; readonly '~run': (input: unknown) => TDefault | InferOutput<TWrapped>; }
-      actual:   { readonly ~types?: { readonly input: (TWrapped["~types"] & {})["input"] | undefined; readonly output: (TWrapped["~types"] & {})["output"] | TDefault; readonly issue: (TWrapped["~types"] & {})["issue"]; }; readonly ~run: (input: unknown) => (TWrapped["~types"] & {})["output"] | TDefault; }
+      actual:   { readonly "~types"?: { readonly input: (TWrapped["~types"] & {})["input"] | undefined; readonly output: (TWrapped["~types"] & {})["output"] | TDefault; readonly issue: (TWrapped["~types"] & {})["issue"]; }; readonly "~run": (input: unknown) => (TWrapped["~types"] & {})["output"] | TDefault; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:14 `GenericSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
-      actual:   { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }
+      actual:   { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:14 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:20 `ArraySchema` type mismatch
       expected: { readonly '~types'?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: InferIssue<TItem>; } | undefined; readonly '~run': (input: unknown) => InferOutput<TItem>[]; }
-      actual:   { readonly ~types?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: (TItem["~types"] & {})["issue"]; }; readonly ~run: (input: unknown) => InferOutput<TItem>[]; }
+      actual:   { readonly "~types"?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: (TItem["~types"] & {})["issue"]; }; readonly "~run": (input: unknown) => InferOutput<TItem>[]; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:20 `GenericSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
-      actual:   { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }
+      actual:   { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:20 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:26 `ObjectEntries` type mismatch
       expected: { [x: string]: GenericSchema; }
-      actual:   { [x: string]: { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }; }
+      actual:   { [x: string]: { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:26 `GenericSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
-      actual:   { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }
+      actual:   { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:40 `ObjectSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: ObjectInput<TEntries>; readonly output: ObjectOutput<TEntries>; readonly issue: ObjectIssue<TEntries>; } | undefined; readonly '~run': (input: unknown) => ObjectOutput<TEntries>; }
-      actual:   { readonly ~types?: { readonly input: { [Key in keyof TEntries]: InferInput<TEntries[Key]>; }; readonly output: { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; readonly issue: { [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]; }; readonly ~run: (input: unknown) => { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; }
+      actual:   { readonly "~types"?: { readonly input: { [Key in keyof TEntries]: InferInput<TEntries[Key]>; }; readonly output: { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; readonly issue: { [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]; }; readonly "~run": (input: unknown) => { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:40 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:47 `input` type mismatch
       expected: unknown
       actual:   any
@@ -630,7 +630,7 @@ FAIL tests/conformance/external/valibot/schema-output.ts::library/schemas.ts mat
       actual:   any
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:58 `GenericSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
-      actual:   { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }
+      actual:   { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:62 `input` type mismatch
       expected: unknown
       actual:   any
@@ -642,7 +642,7 @@ FAIL tests/conformance/external/valibot/schema-output.ts::library/schemas.ts mat
       actual:   any
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:65 `GenericSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
-      actual:   { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }
+      actual:   { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }
   - tests/conformance/external/valibot/schema-output.ts::library/schemas.ts:66 `input` type mismatch
       expected: unknown
       actual:   any
@@ -676,10 +676,10 @@ FAIL tests/conformance/external/valibot/schema-output.ts::library/schemas.ts mat
 FAIL tests/conformance/external/valibot/schema-output.ts::library/types.ts matched_types=35 mismatched_types=4 total_types=39 match_percentage=89.74%
   - tests/conformance/external/valibot/schema-output.ts::library/types.ts:7 `BaseSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-      actual:   { readonly ~types?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly ~run: (input: unknown) => Output; }
+      actual:   { readonly "~types"?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly "~run": (input: unknown) => Output; }
   - tests/conformance/external/valibot/schema-output.ts::library/types.ts:16 `GenericSchema` type mismatch
       expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
-      actual:   { readonly ~types?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly ~run: (input: unknown) => any; }
+      actual:   { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }
   - tests/conformance/external/valibot/schema-output.ts::library/types.ts:8 `~types` extra in oxc output
       expected: <missing>
       actual:   { readonly input: Input; readonly output: Output; readonly issue: Issue; } | undefined

@@ -11,6 +11,7 @@ use oxc_ast::ast::{
 };
 use oxc_index::Idx;
 use oxc_str::Str;
+use oxc_syntax::identifier::is_identifier_name;
 use std::{
     cell::{Cell, RefCell},
     marker::PhantomData,
@@ -2595,14 +2596,38 @@ fn property_key_to_binding_pattern_string(key: &PropertyKey<'_>) -> Option<Strin
 fn property_name_to_type_string(property: &TyProperty<'_>) -> String {
     let name = if property.computed {
         format!("[{}]", property.name)
-    } else {
+    } else if is_identifier_name(property.name) || is_numeric_property_name(property.name) {
         property.name.to_string()
+    } else {
+        format!("{:?}", property.name)
     };
     if property.optional {
         format!("{name}?")
     } else {
         name
     }
+}
+
+fn is_numeric_property_name(name: &str) -> bool {
+    name.parse::<f64>().is_ok()
+        || name
+            .strip_prefix("0x")
+            .or_else(|| name.strip_prefix("0X"))
+            .is_some_and(|digits| {
+                !digits.is_empty() && digits.chars().all(|char| char.is_ascii_hexdigit())
+            })
+        || name
+            .strip_prefix("0b")
+            .or_else(|| name.strip_prefix("0B"))
+            .is_some_and(|digits| {
+                !digits.is_empty() && digits.chars().all(|char| matches!(char, '0' | '1'))
+            })
+        || name
+            .strip_prefix("0o")
+            .or_else(|| name.strip_prefix("0O"))
+            .is_some_and(|digits| {
+                !digits.is_empty() && digits.chars().all(|char| matches!(char, '0'..='7'))
+            })
 }
 
 pub(crate) fn binding_pattern_to_parameter_name<'a>(
