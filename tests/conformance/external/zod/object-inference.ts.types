@@ -167,9 +167,6 @@ export class ZodOptional<T extends ZodTypeAny> extends ZodType<
 >       ^: any   (TyAny) (TSTypeReference)
 
   constructor(readonly innerType: T) {
-> ^^^^^^^^^^^: (innerType: T) => void   (TyFunction) (MethodDefinition)
-
-  constructor(readonly innerType: T) {
 >                      ^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
   constructor(readonly innerType: T) {
@@ -234,9 +231,6 @@ export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
 >                                                                              ^: any   (TyAny) (TSTypeReference)
-
-  constructor(readonly element: T) {
-> ^^^^^^^^^^^: (element: T) => void   (TyFunction) (MethodDefinition)
 
   constructor(readonly element: T) {
 >                      ^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -360,9 +354,6 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 
   objectInputType<Shape>
 >                 ^^^^^: any   (TyAny) (TSTypeReference)
-
-  constructor(readonly shape: Shape) {
-> ^^^^^^^^^^^: (shape: Shape) => void   (TyFunction) (MethodDefinition)
 
   constructor(readonly shape: Shape) {
 >                      ^^^^^: Shape   (TyTypeReference) (BindingIdentifier)

@@ -17,7 +17,7 @@ use std::{
 use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
-    ast::{PropertyKey, Statement},
+    ast::{MethodDefinitionKind, PropertyKey, Statement},
 };
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
@@ -1732,6 +1732,9 @@ fn actual_identifier_record<'a>(
             checker.get_type_at_location(node_ref),
         ),
         AstKind::MethodDefinition(method) => {
+            if method.kind == MethodDefinitionKind::Constructor {
+                return None;
+            }
             let (span, text) = identifier_property_key_span_and_text(&method.key)?;
             (
                 span,

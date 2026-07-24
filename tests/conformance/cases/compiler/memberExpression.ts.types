@@ -509,9 +509,6 @@ class Counter {
 >              ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
   constructor(public value: number) {}
-> ^^^^^^^^^^^: (value: number) => void   (TyFunction) (MethodDefinition)
-
-  constructor(public value: number) {}
 >                    ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   increment() {
