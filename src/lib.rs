@@ -4107,6 +4107,26 @@ mod test {
         ];
         declare const voidPromises: Promise<void>[];
         const all = Promise.all(voidPromises);
+        declare const tupleOfPromises: readonly [Promise<number>, Promise<string>];
+        const allTuple = Promise.all(tupleOfPromises);
+        declare const readonlyTuple: readonly [number, string];
+        declare function readonlyCopy<T extends readonly unknown[]>(value: T): { readonly [P in keyof T]: T[P] };
+        declare function mutableCopy<T extends readonly unknown[]>(value: T): { -readonly [P in keyof T]: T[P] };
+        declare function optionalCopy<T extends readonly unknown[]>(value: T): { [P in keyof T]?: T[P] };
+        declare function requiredCopy<T extends readonly unknown[]>(value: T): { [P in keyof T]-?: T[P] };
+        interface AllConstructor {
+            new<T extends readonly unknown[]>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]> }>;
+        }
+        declare const All: AllConstructor;
+        const readonlyCopyOfTuple = readonlyCopy([1, "ready"] as [number, string]);
+        const mutableCopyOfTuple = mutableCopy(readonlyTuple);
+        const optionalCopyOfTuple = optionalCopy([1, "ready"] as [number, string]);
+        const requiredCopyOfTuple = requiredCopy([1, "ready"] as [number?, string?]);
+        declare const optionalUndefinedTuple: [undefined?];
+        declare const optionalUnionUndefinedTuple: [(number | undefined)?];
+        const requiredCopyOfOptionalUndefined = requiredCopy(optionalUndefinedTuple);
+        const requiredCopyOfOptionalUnionUndefined = requiredCopy(optionalUnionUndefinedTuple);
+        const constructedAll = new All(tupleOfPromises);
         type T1 = Awaited<number>;
         "#,
         );
@@ -4118,6 +4138,40 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "all").to_type_string(ret.arena),
             "Promise<void[]>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "allTuple").to_type_string(ret.arena),
+            "Promise<[number, string]>"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "readonlyCopyOfTuple").to_type_string(ret.arena),
+            "readonly [number, string]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "mutableCopyOfTuple").to_type_string(ret.arena),
+            "[number, string]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "optionalCopyOfTuple").to_type_string(ret.arena),
+            "[(number | undefined)?, (string | undefined)?]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "requiredCopyOfTuple").to_type_string(ret.arena),
+            "[number, string]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "requiredCopyOfOptionalUndefined")
+                .to_type_string(ret.arena),
+            "[never]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "requiredCopyOfOptionalUnionUndefined")
+                .to_type_string(ret.arena),
+            "[number]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "constructedAll").to_type_string(ret.arena),
+            "Promise<[number, string]>"
         );
         assert_eq!(
             get_type_alias_type(&ret, "T1").to_type_string(ret.arena),

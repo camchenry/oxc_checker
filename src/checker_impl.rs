@@ -1196,6 +1196,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn remove_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
+        match self.arena().type_data(ty) {
+            TypeData::Undefined => Ty::never(),
+            TypeData::Union(union) => Ty::union(
+                self.arena(),
+                union.types.iter().filter_map(|ty| {
+                    let ty = self.remove_undefined(*ty);
+                    if ty.is_never() { None } else { Some(ty) }
+                }),
+            ),
+            _ => ty,
+        }
+    }
+
     fn get_non_null_assertion_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         let non_nullish = self.remove_null_or_undefined(ty);
         if self.could_contain_type_variables(non_nullish)
@@ -2903,7 +2917,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn expand_array_mapped_type_arguments_at_use(
+    fn normalize_instantiated_signature_return_type(
         &self,
         program_id: ProgramId,
         ty: Ty<'a>,
@@ -2914,13 +2928,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         match self.arena().type_data(ty) {
+            TypeData::IndexedAccess(_) => self.expand_type_at_use(program_id, ty, depth + 1),
             TypeData::TypeReference(reference) => {
                 let type_arguments = reference
                     .type_arguments
                     .iter()
                     .map(|ty| match self.arena().type_data(*ty) {
                         TypeData::Mapped(mapped) => self
-                            .expand_array_mapped_type(program_id, mapped, depth + 1)
+                            .materialize_homomorphic_mapped_type(program_id, mapped, depth + 1)
                             .unwrap_or(*ty),
                         _ => *ty,
                     })
@@ -2932,7 +2947,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             }
             TypeData::Mapped(mapped) => self
-                .expand_array_mapped_type(program_id, mapped, depth + 1)
+                .materialize_homomorphic_mapped_type(program_id, mapped, depth + 1)
                 .unwrap_or(ty),
             _ => ty,
         }
@@ -3055,7 +3070,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         mapped: &TyMapped<'a>,
         depth: usize,
     ) -> Option<Ty<'a>> {
-        if let Some(ty) = self.expand_array_mapped_type(program_id, mapped, depth + 1) {
+        if let Some(ty) = self.materialize_homomorphic_mapped_type(program_id, mapped, depth + 1) {
             return Some(ty);
         }
 
@@ -3099,7 +3114,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Some(Ty::object(self.arena(), expanded))
     }
 
-    fn expand_array_mapped_type(
+    fn materialize_homomorphic_mapped_type(
         &self,
         program_id: ProgramId,
         mapped: &TyMapped<'a>,
@@ -3109,20 +3124,100 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         };
         let target = self.expand_type_at_use(program_id, keyof.target, depth + 1);
-        let TypeData::Array(_) = self.arena().type_data(target) else {
-            return None;
-        };
         if mapped.name_type.is_some() {
             return None;
         }
 
+        match self.arena().type_data(target) {
+            TypeData::Array(array) => {
+                let element_type = self.instantiate_mapped_type_template(
+                    program_id,
+                    mapped,
+                    Ty::number(),
+                    depth + 1,
+                );
+                Some(if self.mapped_readonly(mapped.readonly, array.readonly) {
+                    Ty::readonly_array(self.arena(), element_type)
+                } else {
+                    Ty::array(self.arena(), element_type)
+                })
+            }
+            TypeData::Tuple(tuple) => {
+                let elements = tuple
+                    .elements
+                    .iter()
+                    .enumerate()
+                    .map(|(index, element)| {
+                        let raw = self.arena().str(&index.to_string());
+                        let key_type = Ty::number_literal(
+                            self.arena(),
+                            index as f64,
+                            raw,
+                            NumberBase::Decimal,
+                        );
+                        let element_type = self.instantiate_mapped_type_template(
+                            program_id,
+                            mapped,
+                            key_type,
+                            depth + 1,
+                        );
+                        self.materialize_mapped_tuple_element(
+                            mapped.optional,
+                            *element,
+                            element_type,
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                Some(if self.mapped_readonly(mapped.readonly, tuple.readonly) {
+                    Ty::readonly_tuple(self.arena(), elements)
+                } else {
+                    Ty::tuple(self.arena(), elements)
+                })
+            }
+            _ => None,
+        }
+    }
+
+    fn instantiate_mapped_type_template(
+        &self,
+        program_id: ProgramId,
+        mapped: &TyMapped<'a>,
+        key_type: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
         let mapper = TypeMapper::single(
             Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
-            Ty::number(),
+            key_type,
         );
-        let element_type = self.instantiate_type(mapped.template, &mapper);
-        let element_type = self.expand_type_at_use(program_id, element_type, depth + 1);
-        Some(Ty::array(self.arena(), element_type))
+        let template = self.instantiate_type(mapped.template, &mapper);
+        self.expand_type_at_use(program_id, template, depth + 1)
+    }
+
+    fn materialize_mapped_tuple_element(
+        &self,
+        optional: MappedModifier,
+        source: TupleElement<'a>,
+        ty: Ty<'a>,
+    ) -> TupleElement<'a> {
+        match (optional, source) {
+            (MappedModifier::True | MappedModifier::Plus, TupleElement::Rest(_)) => {
+                TupleElement::Rest(ty)
+            }
+            (MappedModifier::True | MappedModifier::Plus, _) => TupleElement::Optional(ty),
+            (MappedModifier::Minus, TupleElement::Rest(_)) => TupleElement::Rest(ty),
+            (MappedModifier::Minus, _) => TupleElement::Regular(self.remove_undefined(ty)),
+            (MappedModifier::None, TupleElement::Regular(_)) => TupleElement::Regular(ty),
+            (MappedModifier::None, TupleElement::Rest(_)) => TupleElement::Rest(ty),
+            (MappedModifier::None, TupleElement::Optional(_)) => TupleElement::Optional(ty),
+        }
+    }
+
+    fn mapped_readonly(&self, modifier: MappedModifier, source_readonly: bool) -> bool {
+        match modifier {
+            MappedModifier::None => source_readonly,
+            MappedModifier::True | MappedModifier::Plus => true,
+            MappedModifier::Minus => false,
+        }
     }
 
     fn expand_index_signature_mapped_type(
@@ -5274,6 +5369,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         )
     }
 
+    fn instantiate_signature_return_type(
+        &self,
+        program_id: ProgramId,
+        return_type: Ty<'a>,
+        mapper: &TypeMapper<'a>,
+    ) -> Ty<'a> {
+        let return_type =
+            self.get_non_nullable_type(program_id, self.instantiate_type(return_type, mapper));
+        self.normalize_instantiated_signature_return_type(program_id, return_type, 0)
+    }
+
     fn resolve_call_signature_candidate(
         &self,
         program_id: ProgramId,
@@ -5289,20 +5395,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             call_expression,
             node_id,
         );
-        let instantiated = self.get_non_nullable_type(
+        let instantiated = self.instantiate_signature_return_type(
             program_id,
-            self.instantiate_type(function.return_type, inference.mapper()),
+            function.return_type,
+            inference.mapper(),
         );
-        let instantiated = if matches!(
-            self.arena().type_data(instantiated),
-            TypeData::IndexedAccess(_)
-        ) {
-            self.expand_type_at_use(program_id, instantiated, 0)
-        } else {
-            instantiated
-        };
-        let instantiated =
-            self.expand_array_mapped_type_arguments_at_use(program_id, instantiated, 0);
 
         if require_applicable
             && !self.is_call_signature_applicable(
@@ -5573,20 +5670,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        let instantiated = self.get_non_nullable_type(
+        let instantiated = self.instantiate_signature_return_type(
             program_id,
-            self.instantiate_type(function.return_type, inference.mapper()),
+            function.return_type,
+            inference.mapper(),
         );
-        let instantiated = if matches!(
-            self.arena().type_data(instantiated),
-            TypeData::IndexedAccess(_)
-        ) {
-            self.expand_type_at_use(program_id, instantiated, 0)
-        } else {
-            instantiated
-        };
-        let instantiated =
-            self.expand_array_mapped_type_arguments_at_use(program_id, instantiated, 0);
         Some(ResolvedSignatureCandidate {
             signature,
             inference,
