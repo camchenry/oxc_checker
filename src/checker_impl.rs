@@ -838,12 +838,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     return Ty::undefined();
                 }
                 if identifier.name == GLOBAL_THIS_IDENT {
-                    return Ty::type_query(
-                        self.arena(),
-                        GLOBAL_THIS_IDENT.as_str(),
-                        Ty::any(),
-                        std::iter::empty(),
-                    );
+                    return Ty::global_this();
                 }
                 Ty::any()
             }
@@ -2454,14 +2449,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         let resolved = match &query.expr_name {
-            TSTypeQueryExprName::IdentifierReference(identifier) => self
-                .symbol_for_identifier_reference(program_id, identifier)
-                .map(|symbol| self.get_type_of_symbol(symbol))
-                .or_else(|| {
-                    self.get_value_symbol_for_name(program_id, name)
-                        .map(|symbol| self.get_type_of_symbol(symbol))
-                })
-                .unwrap_or_else(Ty::any),
+            TSTypeQueryExprName::IdentifierReference(identifier) => {
+                let symbol = self
+                    .symbol_for_identifier_reference(program_id, identifier)
+                    .or_else(|| self.get_value_symbol_for_name(program_id, name));
+                match symbol {
+                    Some(symbol) => self.get_type_of_symbol(symbol),
+                    None if identifier.name == GLOBAL_THIS_IDENT => return Ty::global_this(),
+                    None => Ty::any(),
+                }
+            }
             // TODO(correctness): resolve qualified-name and `this` typeof targets to a
             // real symbol so `resolved` is meaningful instead of `Ty::any`.
             _ => Ty::any(),
@@ -2495,6 +2492,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name)
         {
             let query_type = self.get_type_from_ts_type_query(program_id, query);
+            if matches!(self.arena().type_data(query_type), TypeData::GlobalThis) {
+                return query_type;
+            }
             if let TypeData::TypeQuery(query) = self.arena().type_data(query_type)
                 && matches!(
                     self.arena().type_data(query.resolved),
@@ -2661,6 +2661,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         computed: bool,
     ) -> Option<Ty<'a>> {
         match self.arena().type_data(object_type) {
+            TypeData::GlobalThis if !computed => {
+                if property_name == GLOBAL_THIS_IDENT.as_str() {
+                    Some(Ty::global_this())
+                } else {
+                    self.global_symbols
+                        .global_this_value_symbol(property_name)
+                        .map(|symbol| self.get_type_of_symbol(symbol))
+                }
+            }
             TypeData::Object(object) => object.properties.iter().find_map(|property| {
                 if property.computed != computed || property.name != property_name {
                     return None;
@@ -3289,6 +3298,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .filter(|property| !property.computed)
                     .collect(),
             ),
+            TypeData::GlobalThis => {
+                let mut symbols = self
+                    .global_symbols
+                    .global_this_value_symbols()
+                    .collect::<Vec<_>>();
+                symbols.sort_unstable_by_key(|(name, _)| *name);
+                let mut properties = symbols
+                    .into_iter()
+                    .map(|(name, symbol)| {
+                        Ty::property(self.arena().str(name), self.get_type_of_symbol(symbol))
+                    })
+                    .collect::<Vec<_>>();
+                properties.push(Ty::property(
+                    self.arena().str(GLOBAL_THIS_IDENT.as_str()),
+                    Ty::global_this(),
+                ));
+                Some(properties)
+            }
             TypeData::Intersection(intersection) => {
                 let mut properties = Vec::new();
                 for ty in &intersection.types {
@@ -4804,9 +4831,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 return (!property_types.is_empty())
                     .then(|| Ty::intersection(self.arena(), property_types));
             }
-            TypeData::TypeQuery(query) if query.name == "globalThis" => {
+            TypeData::GlobalThis => {
+                if property_name == GLOBAL_THIS_IDENT.as_str() {
+                    return Some(Ty::global_this());
+                }
                 return self
-                    .get_value_symbol_for_name(program_id, property_name)
+                    .global_symbols
+                    .global_this_value_symbol(property_name)
                     .map(|symbol| self.get_type_of_symbol(symbol));
             }
             TypeData::Array(array) if array.readonly => {
@@ -9991,12 +10022,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         if identifier.name == UNDEFINED_IDENT {
                             Ty::undefined()
                         } else if identifier.name == GLOBAL_THIS_IDENT {
-                            Ty::type_query(
-                                self.arena(),
-                                GLOBAL_THIS_IDENT.as_str(),
-                                Ty::any(),
-                                std::iter::empty(),
-                            )
+                            Ty::global_this()
                         } else {
                             self.get_value_symbol_for_name(
                                 node.program_id,

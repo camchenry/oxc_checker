@@ -896,6 +896,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
         }
 
+        let contains_global_this = |ty| {
+            let mut contains = false;
+            visit_type(self.arena(), ty, &mut |ty| {
+                contains |= matches!(self.arena().type_data(ty), TypeData::GlobalThis);
+            });
+            contains
+        };
+        if (contains_global_this(check_type) || contains_global_this(extends_type))
+            && !self.could_contain_type_variables(check_type)
+            && !self.could_contain_type_variables(extends_type)
+        {
+            return if self.is_assignable_to(check_type, extends_type) {
+                true_type
+            } else {
+                false_type
+            };
+        }
+
         Ty::conditional(
             self.arena(),
             check_type,

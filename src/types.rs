@@ -57,6 +57,7 @@ impl<'a> CheckerArena<'a> {
                 TypeData::This,
                 TypeData::BooleanLiteral(false),
                 TypeData::BooleanLiteral(true),
+                TypeData::GlobalThis,
             ] {
                 types.push(data);
             }
@@ -200,6 +201,7 @@ impl<'a> Ty<'a> {
 
     const BOOLEAN_FALSE: Self = Self::from_raw(15);
     const BOOLEAN_TRUE: Self = Self::from_raw(16);
+    const GLOBAL_THIS: Self = Self::from_raw(17);
 }
 
 #[repr(C, u8)]
@@ -221,6 +223,8 @@ pub(crate) enum TypeData<'a> {
     /// Primitive `object` keyword (not to be confused with `{}`)
     PrimitiveObject,
     This,
+    /// Checker-owned global object whose properties are resolved lazily.
+    GlobalThis,
     Object(&'a TyObject<'a>),
     ModuleNamespace(&'a TyModuleNamespace<'a>),
     Function(&'a TyFunction<'a>),
@@ -680,7 +684,8 @@ impl<'a> TypeIdentity<'a> {
             | (TypeData::Void, TypeData::Void)
             | (TypeData::Never, TypeData::Never)
             | (TypeData::PrimitiveObject, TypeData::PrimitiveObject)
-            | (TypeData::This, TypeData::This) => true,
+            | (TypeData::This, TypeData::This)
+            | (TypeData::GlobalThis, TypeData::GlobalThis) => true,
             (TypeData::UniqueSymbol(left), TypeData::UniqueSymbol(right)) => left == right,
             (TypeData::Object(left), TypeData::Object(right)) => {
                 self.objects_are_identical(left, right)
@@ -1123,6 +1128,10 @@ impl<'a> Ty<'a> {
         Self::This
     }
 
+    pub(crate) fn global_this() -> Self {
+        Self::GLOBAL_THIS
+    }
+
     pub fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty {
             name,
@@ -1537,6 +1546,7 @@ impl<'a> Ty<'a> {
             TypeData::ModuleNamespace(_) => "TyModuleNamespace",
             TypeData::PrimitiveObject => "TyPrimitiveObject",
             TypeData::This => "TyThis",
+            TypeData::GlobalThis => "TyGlobalThis",
             TypeData::Function(_) => "TyFunction",
             TypeData::TypeReference(_) => "TyTypeReference",
             TypeData::TypeQuery(_) => "TyTypeQuery",
@@ -1739,6 +1749,7 @@ impl<'a> Ty<'a> {
                     format!("typeof {}<{type_arguments}>", query.name)
                 }
             }
+            TypeData::GlobalThis => "typeof globalThis".to_string(),
             TypeData::StringLiteral(string_literal) => {
                 let content = string_literal
                     .value

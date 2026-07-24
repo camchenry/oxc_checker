@@ -33,6 +33,7 @@ const ASYNC_GENERATOR_TYPE_NAME: &str = "AsyncGenerator";
 #[derive(Clone, Copy, Debug, Default)]
 struct GlobalSymbolEntry {
     value_symbol: Option<SymbolRef>,
+    global_this_value_symbol: Option<SymbolRef>,
     type_symbol: Option<SymbolRef>,
 }
 
@@ -57,6 +58,12 @@ impl GlobalSymbolTable {
                 if flags.intersects(SymbolFlags::Value | SymbolFlags::Import) {
                     table.insert_value(name, symbol);
                 }
+                if (entry.is_lib() || !entry.module_record().has_module_syntax)
+                    && flags.intersects(SymbolFlags::Value)
+                    && !flags.intersects(SymbolFlags::BlockScoped)
+                {
+                    table.insert_global_this_value(name, symbol);
+                }
                 if flags
                     .intersects(SymbolFlags::Type | SymbolFlags::TypeImport | SymbolFlags::Import)
                 {
@@ -76,6 +83,14 @@ impl GlobalSymbolTable {
             .get_or_insert(symbol);
     }
 
+    fn insert_global_this_value(&mut self, name: &str, symbol: SymbolRef) {
+        self.symbols
+            .entry(name.to_string())
+            .or_default()
+            .global_this_value_symbol
+            .get_or_insert(symbol);
+    }
+
     fn insert_type(&mut self, name: &str, symbol: SymbolRef) {
         self.symbols
             .entry(name.to_string())
@@ -86,6 +101,20 @@ impl GlobalSymbolTable {
 
     pub(crate) fn value_symbol(&self, name: &str) -> Option<SymbolRef> {
         self.symbols.get(name).and_then(|entry| entry.value_symbol)
+    }
+
+    pub(crate) fn global_this_value_symbol(&self, name: &str) -> Option<SymbolRef> {
+        self.symbols
+            .get(name)
+            .and_then(|entry| entry.global_this_value_symbol)
+    }
+
+    pub(crate) fn global_this_value_symbols(&self) -> impl Iterator<Item = (&str, SymbolRef)> {
+        self.symbols.iter().filter_map(|(name, entry)| {
+            entry
+                .global_this_value_symbol
+                .map(|symbol| (name.as_str(), symbol))
+        })
     }
 
     pub(crate) fn type_symbol(&self, name: &str) -> Option<SymbolRef> {

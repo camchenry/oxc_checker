@@ -76,6 +76,7 @@ fn get_type_facts_worker<'a>(
         | TypeData::Function(_)
         | TypeData::Array(_)
         | TypeData::Tuple(_)
+        | TypeData::GlobalThis
         | TypeData::TypeQuery(_) => TypeFacts::TRUTHY,
         TypeData::Object(object) if !object.is_empty() => TypeFacts::TRUTHY,
         TypeData::Union(union) => union.types.iter().fold(TypeFacts::NONE, |facts, ty| {

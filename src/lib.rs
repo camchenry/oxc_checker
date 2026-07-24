@@ -1195,6 +1195,100 @@ mod test {
     }
 
     #[test]
+    fn global_this_exposes_script_var_but_not_lexical_bindings() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            var objectProperty = 1;
+            let lexicalBinding = \"hidden\";
+            const direct = globalThis.objectProperty;
+            const computed = globalThis[\"objectProperty\"];
+            const excluded = globalThis.lexicalBinding;
+            const selfReference = globalThis.globalThis;
+            type GlobalKeys = keyof typeof globalThis;
+            type HasObjectProperty = \"objectProperty\" extends keyof typeof globalThis ? true : false;
+            type IndexedObjectProperty = (typeof globalThis)[\"objectProperty\"];
+            type MappedGlobals = { [Key in keyof typeof globalThis]: (typeof globalThis)[Key] };
+            type MappedObjectProperty = MappedGlobals[\"objectProperty\"];
+            type MappedSelfReference = MappedGlobals[\"globalThis\"];
+            ",
+        );
+        let arena = arena(&ret);
+
+        assert_type_eq(arena, get_global_symbol_type(&ret, "direct"), Ty::number());
+        assert_type_eq(
+            arena,
+            get_global_symbol_type(&ret, "computed"),
+            Ty::number(),
+        );
+        assert_type_eq(arena, get_global_symbol_type(&ret, "excluded"), Ty::any());
+        assert_eq!(
+            get_global_symbol_type(&ret, "selfReference").to_type_string(arena),
+            "typeof globalThis",
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "GlobalKeys").to_type_string(arena),
+            "keyof typeof globalThis",
+        );
+        assert_type_eq(
+            arena,
+            get_type_alias_type(&ret, "HasObjectProperty"),
+            Ty::boolean_true(),
+        );
+        assert_type_eq(
+            arena,
+            get_type_alias_type(&ret, "IndexedObjectProperty"),
+            Ty::number(),
+        );
+        assert_type_eq(
+            arena,
+            get_type_alias_type(&ret, "MappedObjectProperty"),
+            Ty::number(),
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "MappedSelfReference").to_type_string(arena),
+            "typeof globalThis",
+        );
+
+        let global_this = get_global_symbol_type(&ret, "selfReference");
+        let checker = checker(&ret);
+        assert!(checker.is_assignable_to(
+            global_this,
+            Ty::object(
+                arena,
+                [Ty::property(arena.str("objectProperty"), Ty::number())],
+            ),
+        ));
+        assert!(!checker.is_assignable_to(
+            global_this,
+            Ty::object(
+                arena,
+                [Ty::property(arena.str("lexicalBinding"), Ty::string())],
+            ),
+        ));
+    }
+
+    #[test]
+    fn global_this_excludes_module_scoped_variables() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            export {};
+            var moduleScoped = 1;
+            const leaked = globalThis.moduleScoped;
+            ",
+        );
+
+        assert_type_eq(
+            arena(&ret),
+            get_global_symbol_type(&ret, "leaked"),
+            Ty::any(),
+        );
+    }
+
+    #[test]
     fn callable_types_expose_function_and_object_members() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

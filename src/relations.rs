@@ -1,5 +1,5 @@
 use crate::{
-    checker::CheckerReturn,
+    checker::{Checker, CheckerReturn},
     limits::ASSIGNABILITY_MAX_DEPTH,
     types::{CheckerArena, Ty, TyTypePredicate, TypeData},
 };
@@ -25,6 +25,60 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
         if depth >= ASSIGNABILITY_MAX_DEPTH {
             return false;
+        }
+
+        if matches!(self.arena().type_data(source), TypeData::GlobalThis) {
+            let property_type = |name| {
+                if name == "globalThis" {
+                    Some(Ty::global_this())
+                } else {
+                    self.global_symbols
+                        .global_this_value_symbol(name)
+                        .map(|symbol| self.get_type_of_symbol(symbol))
+                }
+            };
+            match self.arena().type_data(target) {
+                TypeData::PrimitiveObject => return true,
+                TypeData::Object(object) => {
+                    return object.properties.iter().all(|property| {
+                        property.optional
+                            || (!property.computed
+                                && property_type(property.name).is_some_and(|source_type| {
+                                    self.is_assignable_to_at_depth(
+                                        source_type,
+                                        property.ty,
+                                        depth + 1,
+                                    )
+                                }))
+                    });
+                }
+                TypeData::Intersection(intersection) => {
+                    return intersection
+                        .types
+                        .iter()
+                        .all(|target| self.is_assignable_to_at_depth(source, *target, depth + 1));
+                }
+                _ => {}
+            }
+        }
+
+        if let TypeData::Keyof(keyof) = self.arena().type_data(target)
+            && matches!(self.arena().type_data(keyof.target), TypeData::GlobalThis)
+            && !matches!(
+                self.arena().type_data(source),
+                TypeData::Any | TypeData::Never
+            )
+        {
+            return match self.arena().type_data(source) {
+                TypeData::Union(union) => union
+                    .types
+                    .iter()
+                    .all(|source| self.is_assignable_to_at_depth(*source, target, depth + 1)),
+                _ => property_name_from_key_type(self.arena(), source).is_some_and(|name| {
+                    name == "globalThis"
+                        || self.global_symbols.global_this_value_symbol(name).is_some()
+                }),
+            };
         }
 
         let references_match = matches!(
@@ -249,6 +303,7 @@ fn is_assignable_to_at_depth<'a>(
             | TypeData::Symbol
             | TypeData::PrimitiveObject
             | TypeData::This
+            | TypeData::GlobalThis
             | TypeData::BigIntLiteral(_)
             | TypeData::StringLiteral(_)
             | TypeData::NumberLiteral(_)
@@ -284,6 +339,7 @@ fn is_assignable_to_at_depth<'a>(
             | TypeData::Symbol
             | TypeData::PrimitiveObject
             | TypeData::This
+            | TypeData::GlobalThis
             | TypeData::BigIntLiteral(_)
             | TypeData::StringLiteral(_)
             | TypeData::NumberLiteral(_)
