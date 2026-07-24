@@ -8,8 +8,8 @@ use oxc_ast::{
         ConditionalExpression, ExportSpecifier, Expression, FormalParameter, FormalParameterRest,
         FormalParameters, Function, IdentifierReference, LogicalExpression, MethodDefinition,
         MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase, ObjectExpression,
-        ObjectPropertyKind, PropertyDefinition, StaticMemberExpression, StringLiteral,
-        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignatureKind,
+        ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition, StaticMemberExpression,
+        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignatureKind,
         TSModuleDeclarationName, TSSignature, TSThisParameter, TSTupleElement, TSType,
         TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
         TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
@@ -789,9 +789,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     ChainElement::CallExpression(call_expr) => self
                         .get_type_of_call_expression(program_id, call_expr, node_id)
                         .or_undefined(self.arena()),
+                    ChainElement::PrivateFieldExpression(member) => self
+                        .get_type_of_private_field_expression(program_id, member, node_id, flags)
+                        .or_undefined(self.arena()),
                     // TODO(completeness): Complete these expressions
                     ChainElement::TSNonNullExpression(_) => Ty::any(),
-                    ChainElement::PrivateFieldExpression(_) => Ty::any(),
                 }
             }
 
@@ -868,6 +870,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     satisfies_context,
                 )
             }
+            Expression::PrivateFieldExpression(member) => {
+                self.get_type_of_private_field_expression(program_id, member, node_id, flags)
+            }
             Expression::NullLiteral(_) => Ty::null(),
             Expression::NumericLiteral(literal) => {
                 if flags.preserve_literals() {
@@ -942,7 +947,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::JSXFragment(_) => Ty::any(),
             Expression::TSInstantiationExpression(_) => Ty::any(),
             Expression::V8IntrinsicExpression(_) => Ty::any(),
-            Expression::PrivateFieldExpression(_) => Ty::any(),
         }
     }
 
@@ -3950,6 +3954,66 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
         let ty = flow::get_flow_type_of_static_member_reference(self, program_id, member, ty);
         if in_chain {
+            ty.or_undefined(self.arena())
+        } else {
+            ty
+        }
+    }
+
+    fn get_type_of_private_field_expression(
+        &self,
+        program_id: ProgramId,
+        member: &'a PrivateFieldExpression<'a>,
+        node_id: Option<NodeId>,
+        flags: GetTypeFlags,
+    ) -> Ty<'a> {
+        let object_type =
+            self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
+        let (class_name, is_static) = match self.arena().type_data(object_type) {
+            TypeData::TypeReference(reference) => (reference.name, false),
+            TypeData::TypeQuery(query) => (query.name, true),
+            _ => return Ty::any(),
+        };
+        let Some(class_symbol) = self.get_class_symbol_for_type(program_id, class_name) else {
+            return Ty::any();
+        };
+        let Some((class_node_id, class)) = self.get_class_for_symbol(class_symbol) else {
+            return Ty::any();
+        };
+        let private_name = member.field.name.as_str();
+        let ty = class.body.body.iter().find_map(|element| match element {
+            ClassElement::MethodDefinition(method)
+                if method.r#static == is_static
+                    && matches!(
+                        &method.key,
+                        oxc_ast::ast::PropertyKey::PrivateIdentifier(identifier)
+                            if identifier.name == private_name
+                    ) =>
+            {
+                Some(self.get_type_of_method_definition(
+                    class_symbol.program_id,
+                    method,
+                    class_node_id,
+                ))
+            }
+            ClassElement::PropertyDefinition(property)
+                if property.r#static == is_static
+                    && matches!(
+                        &property.key,
+                        oxc_ast::ast::PropertyKey::PrivateIdentifier(identifier)
+                            if identifier.name == private_name
+                    ) =>
+            {
+                Some(self.get_type_of_property_definition(
+                    class_symbol.program_id,
+                    property,
+                    Some(class_node_id),
+                ))
+            }
+            _ => None,
+        });
+        let ty = ty.unwrap_or_else(Ty::any);
+        if member.optional {
             ty.or_undefined(self.arena())
         } else {
             ty

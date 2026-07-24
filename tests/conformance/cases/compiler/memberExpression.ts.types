@@ -539,8 +539,7 @@ class Counter {
 >               ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
   readSecret() {
-> ^^^^^^^^^^: () => any   (TyFunction) (MethodDefinition)
-    expected: () => number
+> ^^^^^^^^^^: () => number   (TyFunction) (MethodDefinition)
 
 const counter = new Counter(1);
 >     ^^^^^^^: Counter   (TyTypeReference) (BindingIdentifier)
@@ -576,15 +575,13 @@ const counterIncrementResult = counter.increment();
 >                                      ^^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const counterSecret = counter.readSecret();
->     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-           expected: number
+>     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const counterSecret = counter.readSecret();
 >                     ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterSecret = counter.readSecret();
->                             ^^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
-                                expected: () => number
+>                             ^^^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const counterStaticLabel = Counter.label;
 >     ^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
