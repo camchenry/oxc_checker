@@ -2449,9 +2449,36 @@ compiler/typePredicates.ts	36	41	value	unknown
 compiler/typePredicates.ts	361	366	value	T
 compiler/typePredicates.ts	370	371	S	any
 compiler/typePredicates.ts	391	392	S	any
+compiler/typePredicates.ts	409	432	MethodSignatureCoverage	any
+compiler/typePredicates.ts	433	434	T	any
+compiler/typePredicates.ts	442	448	narrow	<U extends T>(this: MethodSignatureCoverage<T>, value: U) => value is U
+compiler/typePredicates.ts	449	450	U	any
+compiler/typePredicates.ts	459	460	T	any
+compiler/typePredicates.ts	462	466	this	MethodSignatureCoverage<T>
+compiler/typePredicates.ts	468	491	MethodSignatureCoverage	any
+compiler/typePredicates.ts	492	493	T	any
+compiler/typePredicates.ts	496	501	value	U
 compiler/typePredicates.ts	5	13	IsString	(value: unknown) => value is string
+compiler/typePredicates.ts	503	504	U	any
+compiler/typePredicates.ts	507	512	value	U
+compiler/typePredicates.ts	516	517	U	any
+compiler/typePredicates.ts	523	531	overload	{ (value: string): string; (value: number): number; }
+compiler/typePredicates.ts	532	537	value	string
+compiler/typePredicates.ts	560	568	overload	{ (value: string): string; (value: number): number; }
+compiler/typePredicates.ts	569	574	value	number
 compiler/typePredicates.ts	58	70	AssertString	(value: unknown) => asserts value is string
+compiler/typePredicates.ts	610	626	methodSignatures	MethodSignatureCoverage<string>
+compiler/typePredicates.ts	628	651	MethodSignatureCoverage	any
+compiler/typePredicates.ts	668	675	_narrow	boolean
+compiler/typePredicates.ts	678	694	methodSignatures	MethodSignatureCoverage<string>
+compiler/typePredicates.ts	695	701	narrow	<U>(this: MethodSignatureCoverage<string>, value: U) => value is U
+compiler/typePredicates.ts	718	733	_stringOverload	string
+compiler/typePredicates.ts	736	752	methodSignatures	MethodSignatureCoverage<string>
 compiler/typePredicates.ts	74	79	value	unknown
+compiler/typePredicates.ts	753	761	overload	{ (value: string): string; (value: number): number; }
+compiler/typePredicates.ts	778	793	_numberOverload	number
+compiler/typePredicates.ts	796	812	methodSignatures	MethodSignatureCoverage<string>
+compiler/typePredicates.ts	813	821	overload	{ (value: string): string; (value: number): number; }
 compiler/unaryExpressions.ts	104	107	foo	{ bar: string | undefined; }
 compiler/unaryExpressions.ts	112	115	bar	string | undefined
 compiler/unaryExpressions.ts	153	155	x7	boolean

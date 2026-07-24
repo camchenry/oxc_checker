@@ -10,11 +10,11 @@ use oxc_ast::{
         MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase, ObjectExpression,
         ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition, PropertyKey,
         StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType,
-        TSMethodSignatureKind, TSModuleDeclarationName, TSSignature, TSThisParameter,
-        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
-        TSTypeParameter, TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery,
-        TSTypeQueryExprName, TSTypeReference, TemplateLiteral, VariableDeclarationKind,
-        VariableDeclarator,
+        TSMethodSignature, TSMethodSignatureKind, TSModuleDeclarationName, TSSignature,
+        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -3930,14 +3930,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             continue;
                         }
 
-                        let signature = self.signature_from_function_parts_with_this(
-                            program_id,
-                            SignatureKind::Call,
-                            method.type_parameters.as_deref(),
-                            method.this_param.as_deref(),
-                            method.params.as_ref(),
-                            method.return_type.as_deref(),
-                        );
+                        let signature = self.signature_from_ts_method_signature(program_id, method);
                         let signature = self.instantiate_signature(signature, &mapper);
                         properties.push(TyProperty {
                             name,
@@ -5195,6 +5188,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         ))
     }
 
+    fn signature_from_ts_method_signature(
+        &self,
+        program_id: ProgramId,
+        method: &'a TSMethodSignature<'a>,
+    ) -> Signature<'a> {
+        self.signature_from_function_parts_with_this(
+            program_id,
+            SignatureKind::Call,
+            method.type_parameters.as_deref(),
+            method.this_param.as_deref(),
+            method.params.as_ref(),
+            method.return_type.as_deref(),
+        )
+    }
+
     fn signature_from_function_parts(
         &self,
         program_id: ProgramId,
@@ -5792,15 +5800,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         && self.resolved_property_key_name(program_id, &method.key)
                             == Some(property_name))
                     .then(|| {
-                        let signature = self.signature_from_function_parts_with_this(
-                            program_id,
-                            SignatureKind::Call,
-                            method.type_parameters.as_deref(),
-                            method.this_param.as_deref(),
-                            method.params.as_ref(),
-                            method.return_type.as_deref(),
-                        );
-                        self.instantiate_signature(signature, &mapper)
+                        self.instantiate_signature(
+                            self.signature_from_ts_method_signature(program_id, method),
+                            &mapper,
+                        )
                     })
                 })
             })
@@ -5872,15 +5875,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         (method.kind == TSMethodSignatureKind::Method
                             && property_key_name_str(&method.key) == Some(property_name))
                         .then(|| {
-                            let signature = self.signature_from_function_parts_with_this(
-                                program_id,
-                                SignatureKind::Call,
-                                method.type_parameters.as_deref(),
-                                method.this_param.as_deref(),
-                                method.params.as_ref(),
-                                method.return_type.as_deref(),
-                            );
-                            self.instantiate_signature(signature, &mapper)
+                            self.instantiate_signature(
+                                self.signature_from_ts_method_signature(program_id, method),
+                                &mapper,
+                            )
                         })
                     })
                     .collect::<Vec<_>>();
@@ -5945,15 +5943,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let default_function = || {
-            let signature = self.signature_from_function_parts_with_this(
-                program_id,
-                SignatureKind::Call,
-                method.type_parameters.as_deref(),
-                method.this_param.as_deref(),
-                method.params.as_ref(),
-                method.return_type.as_deref(),
-            );
-            signature.ty
+            self.signature_from_ts_method_signature(program_id, method)
+                .ty
         };
         let Some(method_name) = property_key_name_str(&method.key) else {
             return default_function();
@@ -5996,15 +5987,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     (candidate.kind == TSMethodSignatureKind::Method
                         && property_key_name_str(&candidate.key) == Some(method_name))
                     .then(|| {
-                        let signature = self.signature_from_function_parts_with_this(
-                            interface_program_id,
-                            SignatureKind::Call,
-                            candidate.type_parameters.as_deref(),
-                            candidate.this_param.as_deref(),
-                            candidate.params.as_ref(),
-                            candidate.return_type.as_deref(),
-                        );
-                        self.instantiate_signature(signature, &mapper)
+                        self.instantiate_signature(
+                            self.signature_from_ts_method_signature(
+                                interface_program_id,
+                                candidate,
+                            ),
+                            &mapper,
+                        )
                     })
                 })
             })
@@ -6012,15 +6001,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         match method_signatures.as_slice() {
             [] => {
-                let signature = self.signature_from_function_parts_with_this(
-                    program_id,
-                    SignatureKind::Call,
-                    method.type_parameters.as_deref(),
-                    method.this_param.as_deref(),
-                    method.params.as_ref(),
-                    method.return_type.as_deref(),
-                );
-                signature.ty
+                self.signature_from_ts_method_signature(program_id, method)
+                    .ty
             }
             [signature] => signature.ty,
             _ => Ty::object_with_signatures(self.arena(), [], method_signatures),
@@ -9393,14 +9375,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 &method.key,
                             ) == Some(resolver.property_name()) =>
                     {
-                        let signature = self.signature_from_function_parts_with_this(
-                            symbol.program_id,
-                            SignatureKind::Call,
-                            method.type_parameters.as_deref(),
-                            method.this_param.as_deref(),
-                            method.params.as_ref(),
-                            method.return_type.as_deref(),
-                        );
+                        let signature =
+                            self.signature_from_ts_method_signature(symbol.program_id, method);
                         method_signatures.push(self.instantiate_signature(signature, &mapper));
                     }
                     _ => {}

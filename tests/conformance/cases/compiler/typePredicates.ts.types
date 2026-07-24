@@ -78,3 +78,84 @@ interface PredicateArray<T> {
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
 >                                                                                                                 ^: any   (TyAny) (TSTypeReference)
+
+interface MethodSignatureCoverage<T> {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface MethodSignatureCoverage<T> {
+>                                 ^: any   (TyAny) (TSTypeParameter)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>   ^^^^^^: <U extends T>(this: MethodSignatureCoverage<T>, value: U) => value is U   (TyFunction) (TSMethodSignature)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>          ^: any   (TyAny) (TSTypeParameter)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                    ^: any   (TyAny) (TSTypeReference)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                       ^^^^: MethodSignatureCoverage<T>   (TyTypeReference) (TSThisParameter)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                                                     ^: any   (TyAny) (TSTypeReference)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                                                         ^^^^^: U   (TyTypeReference) (BindingIdentifier)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                                                                ^: any   (TyAny) (TSTypeReference)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                                                                    ^^^^^: U   (TyTypeReference) (IdentifierName)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                                                                             ^: any   (TyAny) (TSTypeReference)
+
+    overload(value: string): string;
+>   ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (TSMethodSignature)
+
+    overload(value: string): string;
+>            ^^^^^: string   (TyString) (BindingIdentifier)
+
+    overload(value: number): number;
+>   ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (TSMethodSignature)
+
+    overload(value: number): number;
+>            ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+declare const methodSignatures: MethodSignatureCoverage<string>;
+>             ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (BindingIdentifier)
+
+declare const methodSignatures: MethodSignatureCoverage<string>;
+>                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+const _narrow = methodSignatures.narrow("value");
+>     ^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+const _narrow = methodSignatures.narrow("value");
+>               ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (IdentifierReference)
+
+const _narrow = methodSignatures.narrow("value");
+>                                ^^^^^^: <U>(this: MethodSignatureCoverage<string>, value: U) => value is U   (TyFunction) (StaticMemberExpression)
+
+const _stringOverload = methodSignatures.overload("value");
+>     ^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+const _stringOverload = methodSignatures.overload("value");
+>                       ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (IdentifierReference)
+
+const _stringOverload = methodSignatures.overload("value");
+>                                        ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (StaticMemberExpression)
+
+const _numberOverload = methodSignatures.overload(1);
+>     ^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _numberOverload = methodSignatures.overload(1);
+>                       ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (IdentifierReference)
+
+const _numberOverload = methodSignatures.overload(1);
+>                                        ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (StaticMemberExpression)
