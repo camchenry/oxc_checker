@@ -1996,146 +1996,160 @@ compiler/memberExpression.ts	2159	2161	ok	true
 compiler/memberExpression.ts	2169	2180	tupleLength	3
 compiler/memberExpression.ts	2183	2188	tuple	readonly ["ready", 200, { readonly ok: true; }]
 compiler/memberExpression.ts	2189	2195	length	3
-compiler/memberExpression.ts	2204	2210	matrix	readonly [readonly [1, 2], readonly [3, 4]]
-compiler/memberExpression.ts	2233	2238	const	any
-compiler/memberExpression.ts	2246	2260	matrixFirstRow	readonly [1, 2]
+compiler/memberExpression.ts	2203	2221	tupleBracketLength	3
+compiler/memberExpression.ts	2224	2229	tuple	readonly ["ready", 200, { readonly ok: true; }]
 compiler/memberExpression.ts	225	238	notifications	boolean | undefined
-compiler/memberExpression.ts	2263	2269	matrix	readonly [readonly [1, 2], readonly [3, 4]]
-compiler/memberExpression.ts	2280	2296	matrixFirstValue	1
-compiler/memberExpression.ts	2299	2305	matrix	readonly [readonly [1, 2], readonly [3, 4]]
-compiler/memberExpression.ts	2319	2339	CallableWithProperty	{ (value: number): string; description: string; }
-compiler/memberExpression.ts	2347	2352	value	number
-compiler/memberExpression.ts	2373	2384	description	string
-compiler/memberExpression.ts	2411	2431	callableWithProperty	CallableWithProperty
-compiler/memberExpression.ts	2433	2453	CallableWithProperty	any
-compiler/memberExpression.ts	2461	2475	callableResult	string
-compiler/memberExpression.ts	2478	2498	callableWithProperty	CallableWithProperty
-compiler/memberExpression.ts	2511	2530	callableDescription	string
-compiler/memberExpression.ts	2533	2553	callableWithProperty	CallableWithProperty
-compiler/memberExpression.ts	2554	2565	description	string
-compiler/memberExpression.ts	2573	2586	callableApply	{ <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
-compiler/memberExpression.ts	2589	2609	callableWithProperty	CallableWithProperty
-compiler/memberExpression.ts	2610	2615	apply	{ <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
-compiler/memberExpression.ts	2624	2631	Counter	typeof Counter
+compiler/memberExpression.ts	2256	2269	optionalTuple	readonly [string, (number | undefined)?]
+compiler/memberExpression.ts	2305	2324	optionalTupleLength	1 | 2
+compiler/memberExpression.ts	2327	2340	optionalTuple	readonly [string, (number | undefined)?]
+compiler/memberExpression.ts	2341	2347	length	1 | 2
+compiler/memberExpression.ts	2355	2381	optionalTupleBracketLength	1 | 2
+compiler/memberExpression.ts	2384	2397	optionalTuple	readonly [string, (number | undefined)?]
+compiler/memberExpression.ts	2424	2433	restTuple	readonly [string, ...number[]]
+compiler/memberExpression.ts	2473	2488	restTupleLength	number
+compiler/memberExpression.ts	2491	2500	restTuple	readonly [string, ...number[]]
+compiler/memberExpression.ts	2501	2507	length	number
+compiler/memberExpression.ts	2515	2537	restTupleBracketLength	number
+compiler/memberExpression.ts	2540	2549	restTuple	readonly [string, ...number[]]
+compiler/memberExpression.ts	2568	2574	matrix	readonly [readonly [1, 2], readonly [3, 4]]
+compiler/memberExpression.ts	2597	2602	const	any
+compiler/memberExpression.ts	2610	2624	matrixFirstRow	readonly [1, 2]
+compiler/memberExpression.ts	2627	2633	matrix	readonly [readonly [1, 2], readonly [3, 4]]
 compiler/memberExpression.ts	264	268	user	User
-compiler/memberExpression.ts	2643	2648	label	string
-compiler/memberExpression.ts	2671	2677	create	() => Counter
-compiler/memberExpression.ts	2697	2704	Counter	typeof Counter
+compiler/memberExpression.ts	2644	2660	matrixFirstValue	1
+compiler/memberExpression.ts	2663	2669	matrix	readonly [readonly [1, 2], readonly [3, 4]]
+compiler/memberExpression.ts	2683	2703	CallableWithProperty	{ (value: number): string; description: string; }
 compiler/memberExpression.ts	270	274	User	any
-compiler/memberExpression.ts	2752	2757	value	number
-compiler/memberExpression.ts	2773	2782	increment	() => number
-compiler/memberExpression.ts	2791	2807	this.value += 1;	number
-compiler/memberExpression.ts	2796	2801	value	number
+compiler/memberExpression.ts	2711	2716	value	number
+compiler/memberExpression.ts	2737	2748	description	string
+compiler/memberExpression.ts	2775	2795	callableWithProperty	CallableWithProperty
+compiler/memberExpression.ts	2797	2817	CallableWithProperty	any
 compiler/memberExpression.ts	281	285	name	string
-compiler/memberExpression.ts	2824	2829	value	number
-compiler/memberExpression.ts	2838	2848	readSecret	() => number
-compiler/memberExpression.ts	2891	2898	counter	Counter
-compiler/memberExpression.ts	2905	2912	Counter	typeof Counter
-compiler/memberExpression.ts	2923	2935	counterValue	number
-compiler/memberExpression.ts	2938	2945	counter	Counter
-compiler/memberExpression.ts	2946	2951	value	number
-compiler/memberExpression.ts	2959	2975	counterIncrement	() => number
-compiler/memberExpression.ts	2978	2985	counter	Counter
+compiler/memberExpression.ts	2825	2839	callableResult	string
+compiler/memberExpression.ts	2842	2862	callableWithProperty	CallableWithProperty
+compiler/memberExpression.ts	2875	2894	callableDescription	string
+compiler/memberExpression.ts	2897	2917	callableWithProperty	CallableWithProperty
+compiler/memberExpression.ts	2918	2929	description	string
+compiler/memberExpression.ts	2937	2950	callableApply	{ <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
+compiler/memberExpression.ts	2953	2973	callableWithProperty	CallableWithProperty
+compiler/memberExpression.ts	2974	2979	apply	{ <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
 compiler/memberExpression.ts	298	301	age	number
-compiler/memberExpression.ts	2986	2995	increment	() => number
-compiler/memberExpression.ts	3003	3025	counterIncrementResult	number
-compiler/memberExpression.ts	3028	3035	counter	Counter
-compiler/memberExpression.ts	3036	3045	increment	() => number
-compiler/memberExpression.ts	3055	3068	counterSecret	number
-compiler/memberExpression.ts	3071	3078	counter	Counter
-compiler/memberExpression.ts	3079	3089	readSecret	() => number
+compiler/memberExpression.ts	2988	2995	Counter	typeof Counter
+compiler/memberExpression.ts	3007	3012	label	string
+compiler/memberExpression.ts	3035	3041	create	() => Counter
+compiler/memberExpression.ts	3061	3068	Counter	typeof Counter
 compiler/memberExpression.ts	309	311	id	"user_Alice"
-compiler/memberExpression.ts	3099	3117	counterStaticLabel	string
-compiler/memberExpression.ts	3120	3127	Counter	typeof Counter
-compiler/memberExpression.ts	3128	3133	label	string
-compiler/memberExpression.ts	3141	3161	counterStaticFactory	() => Counter
-compiler/memberExpression.ts	3164	3171	Counter	typeof Counter
-compiler/memberExpression.ts	3172	3178	create	() => Counter
-compiler/memberExpression.ts	3186	3205	counterStaticResult	Counter
+compiler/memberExpression.ts	3116	3121	value	number
+compiler/memberExpression.ts	3137	3146	increment	() => number
+compiler/memberExpression.ts	3155	3171	this.value += 1;	number
+compiler/memberExpression.ts	3160	3165	value	number
+compiler/memberExpression.ts	3188	3193	value	number
 compiler/memberExpression.ts	32	35	age	number
-compiler/memberExpression.ts	3208	3215	Counter	typeof Counter
-compiler/memberExpression.ts	3216	3222	create	() => Counter
-compiler/memberExpression.ts	3233	3247	DerivedCounter	typeof DerivedCounter
-compiler/memberExpression.ts	3256	3263	Counter	typeof Counter
-compiler/memberExpression.ts	3268	3286	readSuperIncrement	() => number
+compiler/memberExpression.ts	3202	3212	readSecret	() => number
+compiler/memberExpression.ts	3255	3262	counter	Counter
+compiler/memberExpression.ts	3269	3276	Counter	typeof Counter
+compiler/memberExpression.ts	3287	3299	counterValue	number
 compiler/memberExpression.ts	329	336	address	{ city: string; zip: number; }
-compiler/memberExpression.ts	3308	3317	increment	() => number
-compiler/memberExpression.ts	3334	3341	derived	DerivedCounter
-compiler/memberExpression.ts	3348	3362	DerivedCounter	typeof DerivedCounter
-compiler/memberExpression.ts	3373	3391	derivedSuperResult	number
-compiler/memberExpression.ts	3394	3401	derived	DerivedCounter
-compiler/memberExpression.ts	3402	3420	readSuperIncrement	() => number
-compiler/memberExpression.ts	3431	3440	uniqueKey	unique symbol
+compiler/memberExpression.ts	3302	3309	counter	Counter
+compiler/memberExpression.ts	3310	3315	value	number
+compiler/memberExpression.ts	3323	3339	counterIncrement	() => number
+compiler/memberExpression.ts	3342	3349	counter	Counter
+compiler/memberExpression.ts	3350	3359	increment	() => number
+compiler/memberExpression.ts	3367	3389	counterIncrementResult	number
+compiler/memberExpression.ts	3392	3399	counter	Counter
+compiler/memberExpression.ts	3400	3409	increment	() => number
+compiler/memberExpression.ts	3419	3432	counterSecret	number
+compiler/memberExpression.ts	3435	3442	counter	Counter
 compiler/memberExpression.ts	344	348	city	string
-compiler/memberExpression.ts	3458	3464	Symbol	SymbolConstructor
-compiler/memberExpression.ts	3484	3496	SymbolObject	{ regular: string; [uniqueKey]: number; }
-compiler/memberExpression.ts	3504	3513	uniqueKey	unique symbol
-compiler/memberExpression.ts	3526	3533	regular	string
-compiler/memberExpression.ts	3552	3564	symbolObject	SymbolObject
-compiler/memberExpression.ts	3566	3578	SymbolObject	any
-compiler/memberExpression.ts	3586	3595	uniqueKey	unique symbol
-compiler/memberExpression.ts	3604	3611	regular	string
-compiler/memberExpression.ts	3629	3640	symbolValue	number
+compiler/memberExpression.ts	3443	3453	readSecret	() => number
+compiler/memberExpression.ts	3463	3481	counterStaticLabel	string
+compiler/memberExpression.ts	3484	3491	Counter	typeof Counter
+compiler/memberExpression.ts	3492	3497	label	string
+compiler/memberExpression.ts	3505	3525	counterStaticFactory	() => Counter
+compiler/memberExpression.ts	3528	3535	Counter	typeof Counter
+compiler/memberExpression.ts	3536	3542	create	() => Counter
+compiler/memberExpression.ts	3550	3569	counterStaticResult	Counter
+compiler/memberExpression.ts	3572	3579	Counter	typeof Counter
+compiler/memberExpression.ts	3580	3586	create	() => Counter
+compiler/memberExpression.ts	3597	3611	DerivedCounter	typeof DerivedCounter
+compiler/memberExpression.ts	3620	3627	Counter	typeof Counter
 compiler/memberExpression.ts	363	366	zip	number
-compiler/memberExpression.ts	3643	3655	symbolObject	SymbolObject
-compiler/memberExpression.ts	3656	3665	uniqueKey	unique symbol
-compiler/memberExpression.ts	3674	3687	symbolRegular	string
-compiler/memberExpression.ts	3690	3702	symbolObject	SymbolObject
-compiler/memberExpression.ts	3703	3710	regular	string
-compiler/memberExpression.ts	3718	3728	Hyphenated	{ "data-id": string; "aria-label"?: string; }
-compiler/memberExpression.ts	3788	3798	hyphenated	Hyphenated
-compiler/memberExpression.ts	3800	3810	Hyphenated	any
+compiler/memberExpression.ts	3632	3650	readSuperIncrement	() => number
+compiler/memberExpression.ts	3672	3681	increment	() => number
+compiler/memberExpression.ts	3698	3705	derived	DerivedCounter
+compiler/memberExpression.ts	3712	3726	DerivedCounter	typeof DerivedCounter
+compiler/memberExpression.ts	3737	3755	derivedSuperResult	number
+compiler/memberExpression.ts	3758	3765	derived	DerivedCounter
+compiler/memberExpression.ts	3766	3784	readSuperIncrement	() => number
+compiler/memberExpression.ts	3795	3804	uniqueKey	unique symbol
 compiler/memberExpression.ts	382	387	greet	(message: string) => string
-compiler/memberExpression.ts	3848	3864	hyphenatedDataId	string
-compiler/memberExpression.ts	3867	3877	hyphenated	Hyphenated
+compiler/memberExpression.ts	3822	3828	Symbol	SymbolConstructor
+compiler/memberExpression.ts	3848	3860	SymbolObject	{ regular: string; [uniqueKey]: number; }
+compiler/memberExpression.ts	3868	3877	uniqueKey	unique symbol
 compiler/memberExpression.ts	388	395	message	string
-compiler/memberExpression.ts	3896	3915	hyphenatedAriaLabel	string | undefined
-compiler/memberExpression.ts	3918	3928	hyphenated	Hyphenated
-compiler/memberExpression.ts	3950	3961	UnionMember	{ kind: "text"; value: string; common: boolean; } | { kind: "count"; value: number; common: boolean; }
-compiler/memberExpression.ts	3970	3974	kind	"text"
-compiler/memberExpression.ts	3984	3989	value	string
-compiler/memberExpression.ts	3999	4005	common	boolean
-compiler/memberExpression.ts	4023	4027	kind	"count"
-compiler/memberExpression.ts	4038	4043	value	number
-compiler/memberExpression.ts	4053	4059	common	boolean
-compiler/memberExpression.ts	4086	4097	unionMember	UnionMember
-compiler/memberExpression.ts	4099	4110	UnionMember	any
-compiler/memberExpression.ts	4118	4127	unionKind	"text" | "count"
-compiler/memberExpression.ts	4130	4141	unionMember	UnionMember
-compiler/memberExpression.ts	4142	4146	kind	"text" | "count"
-compiler/memberExpression.ts	4154	4164	unionValue	string | number
-compiler/memberExpression.ts	4167	4178	unionMember	UnionMember
-compiler/memberExpression.ts	4179	4184	value	string | number
-compiler/memberExpression.ts	4192	4203	unionCommon	boolean
-compiler/memberExpression.ts	4206	4217	unionMember	UnionMember
+compiler/memberExpression.ts	3890	3897	regular	string
+compiler/memberExpression.ts	3916	3928	symbolObject	SymbolObject
+compiler/memberExpression.ts	3930	3942	SymbolObject	any
+compiler/memberExpression.ts	3950	3959	uniqueKey	unique symbol
+compiler/memberExpression.ts	3968	3975	regular	string
+compiler/memberExpression.ts	3993	4004	symbolValue	number
+compiler/memberExpression.ts	4007	4019	symbolObject	SymbolObject
+compiler/memberExpression.ts	4020	4029	uniqueKey	unique symbol
+compiler/memberExpression.ts	4038	4051	symbolRegular	string
+compiler/memberExpression.ts	4054	4066	symbolObject	SymbolObject
+compiler/memberExpression.ts	4067	4074	regular	string
+compiler/memberExpression.ts	4082	4092	Hyphenated	{ "data-id": string; "aria-label"?: string; }
+compiler/memberExpression.ts	4152	4162	hyphenated	Hyphenated
+compiler/memberExpression.ts	4164	4174	Hyphenated	any
 compiler/memberExpression.ts	421	428	message	string
-compiler/memberExpression.ts	4218	4224	common	boolean
-compiler/memberExpression.ts	4232	4250	IntersectionMember	{ left: string; } & { right: number; }
-compiler/memberExpression.ts	4255	4259	left	string
-compiler/memberExpression.ts	4274	4279	right	number
-compiler/memberExpression.ts	4305	4323	intersectionMember	IntersectionMember
-compiler/memberExpression.ts	4325	4343	IntersectionMember	any
-compiler/memberExpression.ts	4351	4367	intersectionLeft	string
-compiler/memberExpression.ts	4370	4388	intersectionMember	IntersectionMember
+compiler/memberExpression.ts	4212	4228	hyphenatedDataId	string
+compiler/memberExpression.ts	4231	4241	hyphenated	Hyphenated
+compiler/memberExpression.ts	4260	4279	hyphenatedAriaLabel	string | undefined
+compiler/memberExpression.ts	4282	4292	hyphenated	Hyphenated
+compiler/memberExpression.ts	4314	4325	UnionMember	{ kind: "text"; value: string; common: boolean; } | { kind: "count"; value: number; common: boolean; }
+compiler/memberExpression.ts	4334	4338	kind	"text"
+compiler/memberExpression.ts	4348	4353	value	string
+compiler/memberExpression.ts	4363	4369	common	boolean
 compiler/memberExpression.ts	438	442	name	string
-compiler/memberExpression.ts	4389	4393	left	string
-compiler/memberExpression.ts	4401	4418	intersectionRight	number
-compiler/memberExpression.ts	4421	4439	intersectionMember	IntersectionMember
-compiler/memberExpression.ts	4440	4445	right	number
-compiler/memberExpression.ts	4454	4473	parenthesizedMember	string
-compiler/memberExpression.ts	4477	4481	user	User
-compiler/memberExpression.ts	4483	4487	name	string
-compiler/memberExpression.ts	4495	4509	assertedMember	number
-compiler/memberExpression.ts	4513	4517	user	User
-compiler/memberExpression.ts	4521	4525	User	any
-compiler/memberExpression.ts	4527	4530	age	number
+compiler/memberExpression.ts	4387	4391	kind	"count"
+compiler/memberExpression.ts	4402	4407	value	number
+compiler/memberExpression.ts	4417	4423	common	boolean
+compiler/memberExpression.ts	4450	4461	unionMember	UnionMember
+compiler/memberExpression.ts	4463	4474	UnionMember	any
+compiler/memberExpression.ts	4482	4491	unionKind	"text" | "count"
+compiler/memberExpression.ts	4494	4505	unionMember	UnionMember
+compiler/memberExpression.ts	4506	4510	kind	"text" | "count"
+compiler/memberExpression.ts	4518	4528	unionValue	string | number
 compiler/memberExpression.ts	453	464	preferences	{ theme: "dark"; }
-compiler/memberExpression.ts	4538	4553	satisfiesMember	number
-compiler/memberExpression.ts	4559	4564	value	number
-compiler/memberExpression.ts	4582	4587	value	number
-compiler/memberExpression.ts	4599	4604	value	number
+compiler/memberExpression.ts	4531	4542	unionMember	UnionMember
+compiler/memberExpression.ts	4543	4548	value	string | number
+compiler/memberExpression.ts	4556	4567	unionCommon	boolean
+compiler/memberExpression.ts	4570	4581	unionMember	UnionMember
+compiler/memberExpression.ts	4582	4588	common	boolean
+compiler/memberExpression.ts	4596	4614	IntersectionMember	{ left: string; } & { right: number; }
+compiler/memberExpression.ts	4619	4623	left	string
+compiler/memberExpression.ts	4638	4643	right	number
+compiler/memberExpression.ts	4669	4687	intersectionMember	IntersectionMember
+compiler/memberExpression.ts	4689	4707	IntersectionMember	any
 compiler/memberExpression.ts	47	49	id	`user_${string}`
+compiler/memberExpression.ts	4715	4731	intersectionLeft	string
 compiler/memberExpression.ts	472	477	theme	"dark"
+compiler/memberExpression.ts	4734	4752	intersectionMember	IntersectionMember
+compiler/memberExpression.ts	4753	4757	left	string
+compiler/memberExpression.ts	4765	4782	intersectionRight	number
+compiler/memberExpression.ts	4785	4803	intersectionMember	IntersectionMember
+compiler/memberExpression.ts	4804	4809	right	number
+compiler/memberExpression.ts	4818	4837	parenthesizedMember	string
+compiler/memberExpression.ts	4841	4845	user	User
+compiler/memberExpression.ts	4847	4851	name	string
+compiler/memberExpression.ts	4859	4873	assertedMember	number
+compiler/memberExpression.ts	4877	4881	user	User
+compiler/memberExpression.ts	4885	4889	User	any
+compiler/memberExpression.ts	4891	4894	age	number
+compiler/memberExpression.ts	4902	4917	satisfiesMember	number
+compiler/memberExpression.ts	4923	4928	value	number
+compiler/memberExpression.ts	4946	4951	value	number
+compiler/memberExpression.ts	4963	4968	value	number
 compiler/memberExpression.ts	5	9	User	{ name: string; age: number; id: `user_${string}`; active?: boolean; address: { city: string; zip: number; }; greet(message: string): string; preferences: { theme: "light" | "dark"; notifications?: boolean; }; }
 compiler/memberExpression.ts	502	510	userName	string
 compiler/memberExpression.ts	513	517	user	User

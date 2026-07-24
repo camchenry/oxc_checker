@@ -90,6 +90,15 @@ const tupleStatus = tuple[0];
 const tupleCode = tuple[1];
 const tupleObjectOk = tuple[2].ok;
 const tupleLength = tuple.length;
+const tupleBracketLength = tuple["length"];
+
+declare const optionalTuple: readonly [string, number?];
+const optionalTupleLength = optionalTuple.length;
+const optionalTupleBracketLength = optionalTuple["length"];
+
+declare const restTuple: readonly [string, ...number[]];
+const restTupleLength = restTuple.length;
+const restTupleBracketLength = restTuple["length"];
 
 const matrix = [[1, 2], [3, 4]] as const;
 const matrixFirstRow = matrix[0];

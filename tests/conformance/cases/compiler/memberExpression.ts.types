@@ -353,15 +353,13 @@ const firstUserName = users[0].name;
 >                              ^^^^: string   (TyString) (StaticMemberExpression)
 
 const usersLength = users.length;
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-         expected: 2
+>     ^^^^^^^^^^^: 2   (TyNumberLiteral) (BindingIdentifier)
 
 const usersLength = users.length;
 >                   ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (TyTuple) (IdentifierReference)
 
 const usersLength = users.length;
->                         ^^^^^^: any   (TyAny) (StaticMemberExpression)
-                        expected: 2
+>                         ^^^^^^: 2   (TyNumberLiteral) (StaticMemberExpression)
 
 const arrayMapMethod = users.map;
 >     ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
@@ -405,15 +403,55 @@ const tupleObjectOk = tuple[2].ok;
 >                              ^^: true   (TyBooleanLiteral) (StaticMemberExpression)
 
 const tupleLength = tuple.length;
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-         expected: 3
+>     ^^^^^^^^^^^: 3   (TyNumberLiteral) (BindingIdentifier)
 
 const tupleLength = tuple.length;
 >                   ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (TyTuple) (IdentifierReference)
 
 const tupleLength = tuple.length;
->                         ^^^^^^: any   (TyAny) (StaticMemberExpression)
-                        expected: 3
+>                         ^^^^^^: 3   (TyNumberLiteral) (StaticMemberExpression)
+
+const tupleBracketLength = tuple["length"];
+>     ^^^^^^^^^^^^^^^^^^: 3   (TyNumberLiteral) (BindingIdentifier)
+
+const tupleBracketLength = tuple["length"];
+>                          ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (TyTuple) (IdentifierReference)
+
+declare const optionalTuple: readonly [string, number?];
+>             ^^^^^^^^^^^^^: readonly [string, (number | undefined)?]   (TyTuple) (BindingIdentifier)
+
+const optionalTupleLength = optionalTuple.length;
+>     ^^^^^^^^^^^^^^^^^^^: 1 | 2   (TyUnion) (BindingIdentifier)
+
+const optionalTupleLength = optionalTuple.length;
+>                           ^^^^^^^^^^^^^: readonly [string, (number | undefined)?]   (TyTuple) (IdentifierReference)
+
+const optionalTupleLength = optionalTuple.length;
+>                                         ^^^^^^: 1 | 2   (TyUnion) (StaticMemberExpression)
+
+const optionalTupleBracketLength = optionalTuple["length"];
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^: 1 | 2   (TyUnion) (BindingIdentifier)
+
+const optionalTupleBracketLength = optionalTuple["length"];
+>                                  ^^^^^^^^^^^^^: readonly [string, (number | undefined)?]   (TyTuple) (IdentifierReference)
+
+declare const restTuple: readonly [string, ...number[]];
+>             ^^^^^^^^^: readonly [string, ...number[]]   (TyTuple) (BindingIdentifier)
+
+const restTupleLength = restTuple.length;
+>     ^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const restTupleLength = restTuple.length;
+>                       ^^^^^^^^^: readonly [string, ...number[]]   (TyTuple) (IdentifierReference)
+
+const restTupleLength = restTuple.length;
+>                                 ^^^^^^: number   (TyNumber) (StaticMemberExpression)
+
+const restTupleBracketLength = restTuple["length"];
+>     ^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const restTupleBracketLength = restTuple["length"];
+>                              ^^^^^^^^^: readonly [string, ...number[]]   (TyTuple) (IdentifierReference)
 
 const matrix = [[1, 2], [3, 4]] as const;
 >     ^^^^^^: readonly [readonly [1, 2], readonly [3, 4]]   (TyTuple) (BindingIdentifier)

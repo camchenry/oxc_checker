@@ -2479,6 +2479,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_for_indexed_access(program_id, *ty, property_name)
             }),
+            TypeData::Tuple(tuple) => {
+                self.get_property_type_of_tuple(object_type, tuple, property_name)
+            }
             TypeData::Mapped(mapped) => {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
             }
@@ -3995,6 +3998,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_of_structural_type(program_id, *ty, property_name)
             }),
+            TypeData::Tuple(tuple) => self.get_property_type_of_tuple(ty, tuple, property_name),
             TypeData::Object(object) => {
                 // Try to get an index signature from the resolved type
                 for index_info in &object.index_infos {
@@ -4041,6 +4045,41 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // TODO(completeness): handle all types explicitly
             _ => None,
         }
+    }
+
+    fn get_property_type_of_tuple(
+        &self,
+        tuple_type: Ty<'a>,
+        tuple: &crate::types::TyTuple<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        if property_name == "length" {
+            if tuple
+                .elements
+                .iter()
+                .any(|element| matches!(element, TupleElement::Rest(_)))
+            {
+                return Some(Ty::number());
+            }
+
+            let minimum_length = tuple
+                .elements
+                .iter()
+                .filter(|element| matches!(element, TupleElement::Regular(_)))
+                .count();
+            return Some(Ty::union(
+                self.arena(),
+                (minimum_length..=tuple.elements.len()).map(|length| {
+                    let raw = self.arena().str(&length.to_string());
+                    Ty::number_literal(self.arena(), length as f64, raw, NumberBase::Decimal)
+                }),
+            ));
+        }
+
+        let index = property_name.parse::<usize>().ok()?;
+        (index.to_string() == property_name)
+            .then(|| tuple_element_type_at_index(self.arena(), tuple_type, index))
+            .flatten()
     }
 
     fn get_type_of_computed_member_expression(
