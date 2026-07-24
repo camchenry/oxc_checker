@@ -280,12 +280,6 @@ const dictionaryDynamic = dictionary[dynamicStringKey];
 type NumericDictionary = {
 >    ^^^^^^^^^^^^^^^^^: { [index: number]: "zero" | "one" | "many" | undefined; 0: "zero"; 1?: "one"; }   (TyObject) (TSTypeAliasDeclaration)
 
-  0: "zero";
-> ^: "zero"   (TyStringLiteral) (TSPropertySignature)
-
-  1?: "one";
-> ^: "one" | undefined   (TyUnion) (TSPropertySignature)
-
   [index: number]: "zero" | "one" | "many" | undefined;
 >  ^^^^^: number   (TyNumber) (TSIndexSignatureName)
 
@@ -294,12 +288,6 @@ const numericDictionary: NumericDictionary = {
 
 const numericDictionary: NumericDictionary = {
 >                        ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
-
-  0: "zero",
-> ^: "zero"   (TyStringLiteral) (ObjectProperty)
-
-  2: "many",
-> ^: string   (TyString) (ObjectProperty)
 
 const numericZeroDot = numericDictionary[0];
 >     ^^^^^^^^^^^^^^: "zero"   (TyStringLiteral) (BindingIdentifier)
@@ -691,20 +679,11 @@ const symbolRegular = symbolObject.regular;
 type Hyphenated = {
 >    ^^^^^^^^^^: { "data-id": string; "aria-label"?: string; }   (TyObject) (TSTypeAliasDeclaration)
 
-  "data-id": string;
-> ^^^^^^^^^: string   (TyString) (TSPropertySignature)
-
-  "aria-label"?: string;
-> ^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
-
 const hyphenated: Hyphenated = {
 >     ^^^^^^^^^^: Hyphenated   (TyTypeReference) (BindingIdentifier)
 
 const hyphenated: Hyphenated = {
 >                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
-
-  "data-id": "item-1",
-> ^^^^^^^^^: string   (TyString) (ObjectProperty)
 
 const hyphenatedDataId = hyphenated["data-id"];
 >     ^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)

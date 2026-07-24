@@ -32,9 +32,6 @@ export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
 export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
 >                                                   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
-  readonly '~types'?: {
->          ^^^^^^^^: { readonly input: Input; readonly output: Output; readonly issue: Issue; } | undefined   (TyUnion) (TSPropertySignature)
-
     readonly input: Input
 >            ^^^^^: Input   (TyTypeReference) (TSPropertySignature)
 
@@ -52,9 +49,6 @@ export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
 
     readonly issue: Issue
 >                   ^^^^^: any   (TyAny) (TSTypeReference)
-
-  readonly '~run': (input: unknown) => Output
->          ^^^^^^: (input: unknown) => Output   (TyFunction) (TSPropertySignature)
 
   readonly '~run': (input: unknown) => Output
 >                   ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
@@ -439,9 +433,6 @@ export function string(): StringSchema {
 >                         ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   return { '~run': input => String(input) }
->          ^^^^^^: (input: any) => string   (TyFunction) (ObjectProperty)
-
-  return { '~run': input => String(input) }
 >                  ^^^^^: any   (TyAny) (BindingIdentifier)
                 expected: unknown
 
@@ -459,9 +450,6 @@ export function number(): NumberSchema {
 >                         ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   return { '~run': input => Number(input) }
->          ^^^^^^: (input: any) => number   (TyFunction) (ObjectProperty)
-
-  return { '~run': input => Number(input) }
 >                  ^^^^^: any   (TyAny) (BindingIdentifier)
                 expected: unknown
 
@@ -477,9 +465,6 @@ export function boolean(): BooleanSchema {
 
 export function boolean(): BooleanSchema {
 >                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
-
-  return { '~run': input => Boolean(input) }
->          ^^^^^^: (input: any) => boolean   (TyFunction) (ObjectProperty)
 
   return { '~run': input => Boolean(input) }
 >                  ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -531,9 +516,6 @@ export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
 >                           ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->          ^^^^^^: (input: any) => any   (TyFunction) (ObjectProperty)
-
-  return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
 >                  ^^^^^: any   (TyAny) (BindingIdentifier)
                 expected: unknown
 
@@ -581,9 +563,6 @@ export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TIt
 >                                                                            ^^^^^: any   (TyAny) (TSTypeReference)
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->          ^^^^^^: (input: any) => any[]   (TyFunction) (ObjectProperty)
-
-  return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
 >                  ^^^^^: any   (TyAny) (BindingIdentifier)
                 expected: unknown
 
@@ -623,9 +602,6 @@ export function object<TEntries extends ObjectEntries>(
 
 ): ObjectSchema<TEntries> {
 >               ^^^^^^^^: any   (TyAny) (TSTypeReference)
-
-    '~run': input => {
->   ^^^^^^: (input: any) => ObjectOutput<TEntries>   (TyFunction) (ObjectProperty)
 
     '~run': input => {
 >           ^^^^^: any   (TyAny) (BindingIdentifier)

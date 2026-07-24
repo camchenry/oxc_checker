@@ -15,10 +15,13 @@ use std::{
 };
 
 use oxc_allocator::Allocator;
-use oxc_ast::{AstKind, ast::Statement};
+use oxc_ast::{
+    AstKind,
+    ast::{PropertyKey, Statement},
+};
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
-use oxc_span::GetSpan;
+use oxc_span::{GetSpan, Span};
 use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
 
@@ -1708,8 +1711,7 @@ fn actual_identifier_record<'a>(
             (identifier.span, Cow::Borrowed(identifier.name.as_str()), ty)
         }
         AstKind::TSPropertySignature(property) => {
-            let span = property.key.span();
-            let text = property_key_name_str(&property.key)?;
+            let (span, text) = identifier_property_key_span_and_text(&property.key)?;
             (
                 span,
                 Cow::Borrowed(text),
@@ -1717,8 +1719,7 @@ fn actual_identifier_record<'a>(
             )
         }
         AstKind::ObjectProperty(property) => {
-            let span = property.key.span();
-            let text = property_key_name_str(&property.key)?;
+            let (span, text) = identifier_property_key_span_and_text(&property.key)?;
             (
                 span,
                 Cow::Borrowed(text),
@@ -1731,8 +1732,7 @@ fn actual_identifier_record<'a>(
             checker.get_type_at_location(node_ref),
         ),
         AstKind::MethodDefinition(method) => {
-            let span = method.key.span();
-            let text = property_key_name_str(&method.key)?;
+            let (span, text) = identifier_property_key_span_and_text(&method.key)?;
             (
                 span,
                 Cow::Borrowed(text),
@@ -1740,8 +1740,7 @@ fn actual_identifier_record<'a>(
             )
         }
         AstKind::TSMethodSignature(method) => {
-            let span = method.key.span();
-            let text = property_key_name_str(&method.key)?;
+            let (span, text) = identifier_property_key_span_and_text(&method.key)?;
             (
                 span,
                 Cow::Borrowed(text),
@@ -1762,8 +1761,7 @@ fn actual_identifier_record<'a>(
             checker.get_type_at_location(node_ref),
         ),
         AstKind::PropertyDefinition(property) => {
-            let span = property.key.span();
-            let text = property_key_name_str(&property.key)?;
+            let (span, text) = identifier_property_key_span_and_text(&property.key)?;
             (
                 span,
                 Cow::Borrowed(text),
@@ -1878,6 +1876,16 @@ fn actual_identifier_record<'a>(
         ast_kind: Some(ast_kind),
         ty_repr: sanitize(&ty_repr),
     })
+}
+
+fn identifier_property_key_span_and_text<'a>(key: &'a PropertyKey<'a>) -> Option<(Span, &'a str)> {
+    match key {
+        PropertyKey::StaticIdentifier(identifier) => {
+            Some((identifier.span, identifier.name.as_str()))
+        }
+        PropertyKey::Identifier(identifier) => Some((identifier.span, identifier.name.as_str())),
+        _ => None,
+    }
 }
 
 fn ts_module_declaration_name_span_and_text<'a>(

@@ -1910,9 +1910,6 @@ interface RegExpMatchArray extends Array<string> {
     input?: string;
 >   ^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
 
-    0: string;
->   ^: string   (TyString) (TSPropertySignature)
-
 interface RegExpExecArray extends Array<string> {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
@@ -1929,9 +1926,6 @@ interface RegExpExecArray extends Array<string> {
 
     input: string;
 >   ^^^^^: string   (TyString) (TSPropertySignature)
-
-    0: string;
->   ^: string   (TyString) (TSPropertySignature)
 
 interface RegExp {
 >         ^^^^^^: RegExpConstructor   (TyTypeReference) (BindingIdentifier)
@@ -2038,70 +2032,10 @@ interface RegExpConstructor {
 >                                      ^^^^^^: RegExpConstructor   (TyTypeReference) (IdentifierReference)
 
     readonly "prototype": RegExp;
->            ^^^^^^^^^^^: RegExp   (TyTypeReference) (TSPropertySignature)
-
-    readonly "prototype": RegExp;
 >                         ^^^^^^: RegExpConstructor   (TyTypeReference) (TSTypeReference)
 
     readonly "prototype": RegExp;
 >                         ^^^^^^: RegExpConstructor   (TyTypeReference) (IdentifierReference)
-
-    "$1": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$2": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$3": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$4": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$5": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$6": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$7": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$8": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "$9": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "input": string;
->   ^^^^^^^: string   (TyString) (TSPropertySignature)
-
-    "$_": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "lastMatch": string;
->   ^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
-
-    "$&": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "lastParen": string;
->   ^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
-
-    "$+": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "leftContext": string;
->   ^^^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
-
-    "$`": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
-
-    "rightContext": string;
->   ^^^^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
-
-    "$'": string;
->   ^^^^: string   (TyString) (TSPropertySignature)
 
 declare var RegExp: RegExpConstructor;
 >           ^^^^^^: RegExpConstructor   (TyTypeReference) (BindingIdentifier)
