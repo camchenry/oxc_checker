@@ -2903,6 +2903,41 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn expand_array_mapped_type_arguments_at_use(
+        &self,
+        program_id: ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match self.arena().type_data(ty) {
+            TypeData::TypeReference(reference) => {
+                let type_arguments = reference
+                    .type_arguments
+                    .iter()
+                    .map(|ty| match self.arena().type_data(*ty) {
+                        TypeData::Mapped(mapped) => self
+                            .expand_array_mapped_type(program_id, mapped, depth + 1)
+                            .unwrap_or(*ty),
+                        _ => *ty,
+                    })
+                    .collect::<Vec<_>>();
+                self.rebuild_type_reference_with_display_type_argument_count(
+                    ty,
+                    type_arguments,
+                    reference.display_type_argument_count,
+                )
+            }
+            TypeData::Mapped(mapped) => self
+                .expand_array_mapped_type(program_id, mapped, depth + 1)
+                .unwrap_or(ty),
+            _ => ty,
+        }
+    }
+
     fn expand_type_for_index_lookup(
         &self,
         program_id: ProgramId,
@@ -5266,6 +5301,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         } else {
             instantiated
         };
+        let instantiated =
+            self.expand_array_mapped_type_arguments_at_use(program_id, instantiated, 0);
 
         if require_applicable
             && !self.is_call_signature_applicable(
@@ -5548,6 +5585,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         } else {
             instantiated
         };
+        let instantiated =
+            self.expand_array_mapped_type_arguments_at_use(program_id, instantiated, 0);
         Some(ResolvedSignatureCandidate {
             signature,
             inference,

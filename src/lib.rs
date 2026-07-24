@@ -4105,6 +4105,8 @@ mod test {
             Promise.resolve(2),
             Promise.resolve(3),
         ];
+        declare const voidPromises: Promise<void>[];
+        const all = Promise.all(voidPromises);
         type T1 = Awaited<number>;
         "#,
         );
@@ -4112,6 +4114,10 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "arrayOfPromises").to_type_string(ret.arena),
             "Promise<number>[]"
+        );
+        assert_eq!(
+            get_global_symbol_type(&ret, "all").to_type_string(ret.arena),
+            "Promise<void[]>"
         );
         assert_eq!(
             get_type_alias_type(&ret, "T1").to_type_string(ret.arena),

@@ -179,8 +179,7 @@ Promise.all(
 >^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 Promise.all(
->^^^^^^^^^^^^: Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; }>   (TyTypeReference) (ExpressionStatement)
-     expected: Promise<void[]>
+>^^^^^^^^^^^^: Promise<void[]>   (TyTypeReference) (ExpressionStatement)
 
 Promise.all(
 >       ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject) (StaticMemberExpression)
@@ -198,8 +197,7 @@ Promise.all(
 >                     ^^^^^: number   (TyNumber) (IdentifierReference)
 
 ).catch(handleError);
-> ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<{ -readonly [P in keyof Promise<void>[]]: Awaited<Promise<void>[][P]>; } | TResult>   (TyFunction) (StaticMemberExpression)
-expected: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void[] | TResult>
+> ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void[] | TResult>   (TyFunction) (StaticMemberExpression)
 
 new Promise((resolve, reject) => {
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<unknown>   (TyTypeReference) (ExpressionStatement)
