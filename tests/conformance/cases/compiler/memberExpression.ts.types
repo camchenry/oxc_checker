@@ -617,12 +617,10 @@ class DerivedCounter extends Counter {
 >                            ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
   readSuperIncrement() {
-> ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction) (MethodDefinition)
-            expected: () => number
+> ^^^^^^^^^^^^^^^^^^: () => number   (TyFunction) (MethodDefinition)
 
     return super.increment();
->                ^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
-                  expected: () => number
+>                ^^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const derived = new DerivedCounter(5);
 >     ^^^^^^^: DerivedCounter   (TyTypeReference) (BindingIdentifier)
@@ -631,15 +629,13 @@ const derived = new DerivedCounter(5);
 >                   ^^^^^^^^^^^^^^: typeof DerivedCounter   (TyTypeQuery) (IdentifierReference)
 
 const derivedSuperResult = derived.readSuperIncrement();
->     ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                expected: number
+>     ^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const derivedSuperResult = derived.readSuperIncrement();
 >                          ^^^^^^^: DerivedCounter   (TyTypeReference) (IdentifierReference)
 
 const derivedSuperResult = derived.readSuperIncrement();
->                                  ^^^^^^^^^^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
-                                             expected: () => number
+>                                  ^^^^^^^^^^^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const uniqueKey: unique symbol = Symbol("uniqueKey");
 >     ^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)

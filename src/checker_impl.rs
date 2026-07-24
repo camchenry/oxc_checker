@@ -933,9 +933,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::RegExpLiteral(_) => {
                 self.get_global_regexp_type(program_id).unwrap_or(Ty::any())
             }
+            Expression::Super(_) => node_id
+                .and_then(|node_id| {
+                    self.get_enclosing_base_class_instance_type(program_id, node_id)
+                })
+                .unwrap_or_else(Ty::any),
             // TODO(correctness): Handle all of these cases.
             Expression::MetaProperty(_) => Ty::any(),
-            Expression::Super(_) => Ty::any(),
             Expression::ClassExpression(_) => Ty::any(),
             Expression::ImportExpression(_) => Ty::any(),
             Expression::SequenceExpression(_) => Ty::any(),
@@ -3810,6 +3814,42 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }),
                 _ => None,
             })
+    }
+
+    /// Return the base instance type for the nearest enclosing derived class.
+    fn get_enclosing_base_class_instance_type(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+    ) -> Option<Ty<'a>> {
+        let class = if let AstKind::Class(class) = self.node_kind(NodeRef::new(program_id, node_id))
+        {
+            Some(class)
+        } else {
+            self.nodes(program_id)
+                .ancestors(node_id)
+                .find_map(|node| match node.kind() {
+                    AstKind::Class(class) => Some(class),
+                    _ => None,
+                })
+        }?;
+        let super_class = class.super_class.as_ref()?;
+        let super_type = self.get_type_of_expression_with_node(
+            program_id,
+            super_class,
+            Some(class.node_id.get()),
+            GetTypeFlags::NONE,
+        );
+        let TypeData::TypeQuery(query) = self.arena().type_data(super_type) else {
+            return None;
+        };
+        let type_arguments = class
+            .super_type_arguments
+            .iter()
+            .flat_map(|arguments| arguments.params.iter())
+            .map(|argument| self.get_type_from_ts_type(program_id, argument));
+
+        Some(Ty::type_reference(self.arena(), query.name, type_arguments))
     }
 
     fn get_type_of_object_expression(
