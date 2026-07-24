@@ -101,16 +101,9 @@ pub(crate) fn get_flow_type_of_static_member_reference<'a>(
     let Expression::Identifier(identifier) = &member.object else {
         return base_type;
     };
-    let Some(symbol_id) = identifier.reference_id.get().and_then(|reference_id| {
-        checker
-            .semantic(program_id)
-            .scoping()
-            .get_reference(reference_id)
-            .symbol_id()
-    }) else {
+    let Some(symbol) = checker.symbol_for_identifier_reference(program_id, identifier) else {
         return base_type;
     };
-    let symbol = SymbolRef::new(program_id, symbol_id);
     let node = NodeRef::new(program_id, identifier.node_id());
     let property_name = member.property.name.as_str();
 
@@ -722,13 +715,7 @@ fn expression_matches_symbol(
         return false;
     };
 
-    identifier.reference_id.get().and_then(|reference_id| {
-        checker
-            .semantic(program_id)
-            .scoping()
-            .get_reference(reference_id)
-            .symbol_id()
-    }) == Some(symbol.symbol_id)
+    checker.symbol_for_identifier_reference(program_id, identifier) == Some(symbol)
 }
 
 /// Apply the currently supported true-branch truthiness facts.

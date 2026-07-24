@@ -816,16 +816,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let flags = context.flags;
         match expression {
             Expression::Identifier(identifier) => {
-                let symbol = identifier
-                    .reference_id
-                    .get()
-                    .and_then(|reference_id| {
-                        self.semantic(program_id)
-                            .scoping()
-                            .get_reference(reference_id)
-                            .symbol_id()
-                    })
-                    .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                let symbol = self
+                    .symbol_for_identifier_reference(program_id, identifier)
                     .or_else(|| {
                         self.get_value_symbol_for_name(program_id, identifier.name.as_str())
                     });
@@ -1378,16 +1370,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         match target {
             AssignmentTarget::AssignmentTargetIdentifier(identifier) => {
-                let symbol = identifier
-                    .reference_id
-                    .get()
-                    .and_then(|reference_id| {
-                        self.semantic(program_id)
-                            .scoping()
-                            .get_reference(reference_id)
-                            .symbol_id()
-                    })
-                    .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+                let symbol = self
+                    .symbol_for_identifier_reference(program_id, identifier)
                     .or_else(|| {
                         self.get_value_symbol_for_name(program_id, identifier.name.as_str())
                     });
@@ -2447,16 +2431,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         let resolved = match &query.expr_name {
-            TSTypeQueryExprName::IdentifierReference(identifier) => identifier
-                .reference_id
-                .get()
-                .and_then(|reference_id| {
-                    self.semantic(program_id)
-                        .scoping()
-                        .get_reference(reference_id)
-                        .symbol_id()
-                })
-                .map(|symbol_id| self.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)))
+            TSTypeQueryExprName::IdentifierReference(identifier) => self
+                .symbol_for_identifier_reference(program_id, identifier)
+                .map(|symbol| self.get_type_of_symbol(symbol))
                 .or_else(|| {
                     self.get_value_symbol_for_name(program_id, name)
                         .map(|symbol| self.get_type_of_symbol(symbol))
@@ -5474,16 +5451,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::any();
         };
 
-        let constructor_type = identifier
-            .reference_id
-            .get()
-            .and_then(|reference_id| {
-                self.semantic(program_id)
-                    .scoping()
-                    .get_reference(reference_id)
-                    .symbol_id()
-            })
-            .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+        let constructor_type = self
+            .symbol_for_identifier_reference(program_id, identifier)
             .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))
             .map(|symbol| self.get_type_of_symbol(symbol));
 
@@ -6178,6 +6147,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.semantic(program_id)
             .scoping()
             .get_root_binding(Ident::from(name))
+            .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+    }
+
+    #[inline]
+    pub(crate) fn symbol_for_identifier_reference(
+        &self,
+        program_id: ProgramId,
+        identifier: &IdentifierReference<'_>,
+    ) -> Option<SymbolRef> {
+        identifier
+            .reference_id
+            .get()
+            .and_then(|reference_id| {
+                self.semantic(program_id)
+                    .scoping()
+                    .get_reference(reference_id)
+                    .symbol_id()
+            })
             .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
     }
 
@@ -9775,16 +9762,8 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 .symbol_id
                 .get()
                 .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id)),
-            AstKind::IdentifierReference(identifier) => identifier
-                .reference_id
-                .get()
-                .and_then(|reference_id| {
-                    self.semantic(node.program_id)
-                        .scoping()
-                        .get_reference(reference_id)
-                        .symbol_id()
-                        .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
-                })
+            AstKind::IdentifierReference(identifier) => self
+                .symbol_for_identifier_reference(node.program_id, identifier)
                 .or_else(|| {
                     self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
                 })
@@ -9796,16 +9775,8 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     )
                 }),
             AstKind::TSTypeReference(reference) => match &reference.type_name {
-                TSTypeName::IdentifierReference(identifier) => identifier
-                    .reference_id
-                    .get()
-                    .and_then(|reference_id| {
-                        self.semantic(node.program_id)
-                            .scoping()
-                            .get_reference(reference_id)
-                            .symbol_id()
-                            .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
-                    })
+                TSTypeName::IdentifierReference(identifier) => self
+                    .symbol_for_identifier_reference(node.program_id, identifier)
                     .or_else(|| {
                         self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
                             .or_else(|| {
