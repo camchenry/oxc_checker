@@ -206,8 +206,7 @@ const literalKeyValue = user[literalKey];
 >                            ^^^^^^^^^^: "name"   (TyStringLiteral) (IdentifierReference)
 
 const unionKeyValue = user[unionKey];
->     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-           expected: string
+>     ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const unionKeyValue = user[unionKey];
 >                     ^^^^: User   (TyTypeReference) (IdentifierReference)
@@ -303,15 +302,13 @@ const numericDictionary: NumericDictionary = {
 > ^: string   (TyString) (ObjectProperty)
 
 const numericZeroDot = numericDictionary[0];
->     ^^^^^^^^^^^^^^: "zero" | "one" | "many" | undefined   (TyUnion) (BindingIdentifier)
-            expected: "zero"
+>     ^^^^^^^^^^^^^^: "zero"   (TyStringLiteral) (BindingIdentifier)
 
 const numericZeroDot = numericDictionary[0];
 >                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)
 
 const numericOneBracket = numericDictionary[1];
->     ^^^^^^^^^^^^^^^^^: "zero" | "one" | "many" | undefined   (TyUnion) (BindingIdentifier)
-               expected: "one" | undefined
+>     ^^^^^^^^^^^^^^^^^: "one" | undefined   (TyUnion) (BindingIdentifier)
 
 const numericOneBracket = numericDictionary[1];
 >                         ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)

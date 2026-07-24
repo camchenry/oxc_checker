@@ -4007,12 +4007,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             flags | GetTypeFlags::PRESERVE_LITERALS,
         );
 
-        // Try accessing like a structural / property type
-        if let Some(property_name) = key_type.string_value(self.arena())
-            && let Some(prop_type) =
-                self.get_property_type_of_structural_type(program_id, object_type, property_name)
+        if let Some(indexed_type) =
+            self.resolve_indexed_access_type(program_id, object_type, key_type)
         {
-            return prop_type;
+            return indexed_type;
         }
 
         // Try accessing like tuple with specific numeric key
