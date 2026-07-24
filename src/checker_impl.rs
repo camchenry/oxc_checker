@@ -3363,12 +3363,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let (symbol, declaration) =
             self.get_type_symbol_and_declaration_for_name(program_id, name)?;
-        self.get_transparent_type_alias_declaration_assertion_type(
+        if let Some(ty) = self.get_transparent_type_alias_declaration_assertion_type(
             symbol.program_id,
             declaration,
             &type_arguments,
             depth + 1,
-        )
+        ) {
+            return Some(ty);
+        }
+
+        let expanded = self.get_expanded_type_alias_declaration(
+            symbol.program_id,
+            declaration,
+            &type_arguments,
+            depth + 1,
+        )?;
+        expanded
+            .is_transparent_type_alias_union_constituent(self.arena())
+            .then_some(expanded)
     }
 
     fn get_transparent_type_alias_declaration_assertion_type(

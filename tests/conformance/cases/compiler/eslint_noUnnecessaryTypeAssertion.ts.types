@@ -17,8 +17,7 @@ type Foo = number;
 >    ^^^: number   (TyNumber) (TSTypeAliasDeclaration)
 
 const foo3 = <Foo>(3 + 5);
->     ^^^^: Foo   (TyTypeReference) (BindingIdentifier)
-  expected: number
+>     ^^^^: number   (TyNumber) (BindingIdentifier)
 
 const foo3 = <Foo>(3 + 5);
 >             ^^^: any   (TyAny) (TSTypeReference)
