@@ -185,8 +185,7 @@ const nestedObject = {
 >                                ^^^^^: any   (TyAny) (TSTypeReference)
 
 const methodObject = {
->     ^^^^^^^^^^^^: { scale: (value: number) => number; }   (TyObject) (BindingIdentifier)
-          expected: { scale(value: number): number; }
+>     ^^^^^^^^^^^^: { scale(value: number): number; }   (TyObject) (BindingIdentifier)
 
 	scale(value: number) {
 >^^^^^: (value: number) => number   (TyFunction) (ObjectProperty)

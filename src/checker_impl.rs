@@ -3820,21 +3820,73 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             property_flags.remove(GetTypeFlags::PRESERVE_LITERALS);
         }
 
+        let mut explicit_properties: Vec<TyProperty<'a>> = Vec::new();
+        let mut spread_properties: Vec<TyProperty<'a>> = Vec::new();
+        for property in &object.properties {
+            match property {
+                ObjectPropertyKind::ObjectProperty(property) => {
+                    let Some(name) = property_key_name_str(&property.key) else {
+                        continue;
+                    };
+                    let ty = self.get_type_of_expression_with_node(
+                        program_id,
+                        &property.value,
+                        node_id,
+                        property_flags,
+                    );
+                    let property = TyProperty {
+                        name,
+                        ty,
+                        computed: false,
+                        optional: false,
+                        method: property.method,
+                        readonly: context.check_mode.const_context(),
+                    };
+                    spread_properties.retain(|existing| existing.name != name);
+                    if let Some(existing) = explicit_properties
+                        .iter_mut()
+                        .find(|existing| existing.name == name)
+                    {
+                        *existing = property;
+                    } else {
+                        explicit_properties.push(property);
+                    }
+                }
+                ObjectPropertyKind::SpreadProperty(spread) => {
+                    let spread_type = self.get_type_of_expression_with_node(
+                        program_id,
+                        &spread.argument,
+                        node_id,
+                        property_flags,
+                    );
+                    let spread_type = self.expand_type_at_use(program_id, spread_type, 0);
+                    let TypeData::Object(spread_object) = self.arena().type_data(spread_type)
+                    else {
+                        continue;
+                    };
+                    for spread_property in &spread_object.properties {
+                        let property = TyProperty {
+                            method: false,
+                            readonly: context.check_mode.const_context(),
+                            ..*spread_property
+                        };
+                        explicit_properties.retain(|existing| existing.name != property.name);
+                        if let Some(existing) = spread_properties
+                            .iter_mut()
+                            .find(|existing| existing.name == property.name)
+                        {
+                            *existing = property;
+                        } else {
+                            spread_properties.push(property);
+                        }
+                    }
+                }
+            }
+        }
+
         Ty::object(
             self.arena(),
-            object.properties.iter().filter_map(|property| {
-                let ObjectPropertyKind::ObjectProperty(property) = property else {
-                    return None;
-                };
-                let name = property_key_name_str(&property.key)?;
-                let ty = self.get_type_of_expression_with_node(
-                    program_id,
-                    &property.value,
-                    node_id,
-                    property_flags,
-                );
-                Some(Ty::property(name, ty))
-            }),
+            explicit_properties.into_iter().chain(spread_properties),
         )
     }
 

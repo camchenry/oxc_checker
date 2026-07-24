@@ -320,8 +320,7 @@ const numericDynamic = numericDictionary[42];
 >                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TyTypeReference) (IdentifierReference)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->     ^^^^^: readonly [User, { name: "Bob"; id: "user_Bob"; }]   (TyTuple) (BindingIdentifier)
-   expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+>     ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (TyTuple) (BindingIdentifier)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >              ^^^^: User   (TyTypeReference) (IdentifierReference)
@@ -344,15 +343,13 @@ const firstUser = users[0];
 >     ^^^^^^^^^: User   (TyTypeReference) (BindingIdentifier)
 
 const firstUser = users[0];
->                 ^^^^^: readonly [User, { name: "Bob"; id: "user_Bob"; }]   (TyTuple) (IdentifierReference)
-               expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+>                 ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (TyTuple) (IdentifierReference)
 
 const firstUserName = users[0].name;
 >     ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const firstUserName = users[0].name;
->                     ^^^^^: readonly [User, { name: "Bob"; id: "user_Bob"; }]   (TyTuple) (IdentifierReference)
-                   expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+>                     ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (TyTuple) (IdentifierReference)
 
 const firstUserName = users[0].name;
 >                              ^^^^: string   (TyString) (StaticMemberExpression)
@@ -362,8 +359,7 @@ const usersLength = users.length;
          expected: 2
 
 const usersLength = users.length;
->                   ^^^^^: readonly [User, { name: "Bob"; id: "user_Bob"; }]   (TyTuple) (IdentifierReference)
-                 expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+>                   ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (TyTuple) (IdentifierReference)
 
 const usersLength = users.length;
 >                         ^^^^^^: any   (TyAny) (StaticMemberExpression)
@@ -374,16 +370,14 @@ const arrayMapMethod = users.map;
             expected: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
 
 const arrayMapMethod = users.map;
->                      ^^^^^: readonly [User, { name: "Bob"; id: "user_Bob"; }]   (TyTuple) (IdentifierReference)
-                    expected: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+>                      ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (TyTuple) (IdentifierReference)
 
 const arrayMapMethod = users.map;
 >                            ^^^: any   (TyAny) (StaticMemberExpression)
                         expected: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
 
 const tuple = ["ready", 200, { ok: true }] as const;
->     ^^^^^: readonly ["ready", 200, { ok: true; }]   (TyTuple) (BindingIdentifier)
-   expected: readonly ["ready", 200, { readonly ok: true; }]
+>     ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (TyTuple) (BindingIdentifier)
 
 const tuple = ["ready", 200, { ok: true }] as const;
 >                              ^^: boolean   (TyBoolean) (ObjectProperty)
@@ -396,22 +390,19 @@ const tupleStatus = tuple[0];
 >     ^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
 
 const tupleStatus = tuple[0];
->                   ^^^^^: readonly ["ready", 200, { ok: true; }]   (TyTuple) (IdentifierReference)
-                 expected: readonly ["ready", 200, { readonly ok: true; }]
+>                   ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (TyTuple) (IdentifierReference)
 
 const tupleCode = tuple[1];
 >     ^^^^^^^^^: 200   (TyNumberLiteral) (BindingIdentifier)
 
 const tupleCode = tuple[1];
->                 ^^^^^: readonly ["ready", 200, { ok: true; }]   (TyTuple) (IdentifierReference)
-               expected: readonly ["ready", 200, { readonly ok: true; }]
+>                 ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (TyTuple) (IdentifierReference)
 
 const tupleObjectOk = tuple[2].ok;
 >     ^^^^^^^^^^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
 
 const tupleObjectOk = tuple[2].ok;
->                     ^^^^^: readonly ["ready", 200, { ok: true; }]   (TyTuple) (IdentifierReference)
-                   expected: readonly ["ready", 200, { readonly ok: true; }]
+>                     ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (TyTuple) (IdentifierReference)
 
 const tupleObjectOk = tuple[2].ok;
 >                              ^^: true   (TyBooleanLiteral) (StaticMemberExpression)
@@ -421,8 +412,7 @@ const tupleLength = tuple.length;
          expected: 3
 
 const tupleLength = tuple.length;
->                   ^^^^^: readonly ["ready", 200, { ok: true; }]   (TyTuple) (IdentifierReference)
-                 expected: readonly ["ready", 200, { readonly ok: true; }]
+>                   ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (TyTuple) (IdentifierReference)
 
 const tupleLength = tuple.length;
 >                         ^^^^^^: any   (TyAny) (StaticMemberExpression)
