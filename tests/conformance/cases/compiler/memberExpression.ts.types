@@ -644,8 +644,7 @@ const uniqueKey: unique symbol = Symbol("uniqueKey");
 >                                ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
 type SymbolObject = {
->    ^^^^^^^^^^^^: { [uniqueKey]: number; regular: string; }   (TyObject) (TSTypeAliasDeclaration)
-         expected: { regular: string; [uniqueKey]: number; }
+>    ^^^^^^^^^^^^: { regular: string; [uniqueKey]: number; }   (TyObject) (TSTypeAliasDeclaration)
 
   [uniqueKey]: number;
 >  ^^^^^^^^^: number   (TyNumber) (TSPropertySignature)

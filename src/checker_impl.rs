@@ -8,12 +8,13 @@ use oxc_ast::{
         ConditionalExpression, ExportSpecifier, Expression, FormalParameter, FormalParameterRest,
         FormalParameters, Function, IdentifierReference, LogicalExpression, MethodDefinition,
         MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase, ObjectExpression,
-        ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition, StaticMemberExpression,
-        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignatureKind,
-        TSModuleDeclarationName, TSSignature, TSThisParameter, TSTupleElement, TSType,
-        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
-        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition, PropertyKey,
+        StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType,
+        TSMethodSignatureKind, TSModuleDeclarationName, TSSignature, TSThisParameter,
+        TSTupleElement, TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator,
+        TSTypeParameter, TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery,
+        TSTypeQueryExprName, TSTypeReference, TemplateLiteral, VariableDeclarationKind,
+        VariableDeclarator,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -1855,6 +1856,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn is_late_bound_type_literal_member(member: &TSSignature<'_>) -> bool {
+        match member {
+            TSSignature::TSPropertySignature(property) => {
+                property.computed && matches!(property.key, PropertyKey::Identifier(_))
+            }
+            TSSignature::TSMethodSignature(method) => {
+                method.computed && matches!(method.key, PropertyKey::Identifier(_))
+            }
+            _ => false,
+        }
+    }
+
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
         let depth = &self.ts_type_resolution_depth;
@@ -1889,6 +1902,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 type_literal
                     .members
                     .iter()
+                    .filter(|member| !Self::is_late_bound_type_literal_member(member))
+                    .chain(
+                        type_literal
+                            .members
+                            .iter()
+                            .filter(|member| Self::is_late_bound_type_literal_member(member)),
+                    )
                     .filter_map(|member| match member {
                         TSSignature::TSPropertySignature(property) => {
                             let name = property_key_name_str(&property.key)?;
