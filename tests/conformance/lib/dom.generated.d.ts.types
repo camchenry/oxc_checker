@@ -25916,6 +25916,9 @@ interface Document extends Node, DocumentOrShadowRoot, FontFaceSource, GlobalEve
     readonly defaultView: (WindowProxy & typeof globalThis) | null;
 >                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly defaultView: (WindowProxy & typeof globalThis) | null;
+>                                               ^^^^^^^^^^: typeof globalThis   (TyTypeQuery) (IdentifierReference)
+
     designMode: string;
 >   ^^^^^^^^^^: string   (TyString) (TSPropertySignature)
 
@@ -113045,6 +113048,9 @@ interface Window extends EventTarget, AnimationFrameProvider, GlobalEventHandler
     readonly self: Window & typeof globalThis;
 >                  ^^^^^^: { new (): Window; prototype: Window; }   (TyObject) (IdentifierReference)
 
+    readonly self: Window & typeof globalThis;
+>                                  ^^^^^^^^^^: typeof globalThis   (TyTypeQuery) (IdentifierReference)
+
     readonly speechSynthesis: SpeechSynthesis;
 >            ^^^^^^^^^^^^^^^: SpeechSynthesis   (TyTypeReference) (TSPropertySignature)
 
@@ -113099,6 +113105,9 @@ interface Window extends EventTarget, AnimationFrameProvider, GlobalEventHandler
 
     readonly window: Window & typeof globalThis;
 >                    ^^^^^^: { new (): Window; prototype: Window; }   (TyObject) (IdentifierReference)
+
+    readonly window: Window & typeof globalThis;
+>                                    ^^^^^^^^^^: typeof globalThis   (TyTypeQuery) (IdentifierReference)
 
     alert(message?: any): void;
 >   ^^^^^: { (message?: any): void; (message?: any): void; }   (TyObject) (TSMethodSignature)
@@ -120869,6 +120878,9 @@ declare var self: Window & typeof globalThis;
 declare var self: Window & typeof globalThis;
 >                 ^^^^^^: { new (): Window; prototype: Window; }   (TyObject) (IdentifierReference)
 
+declare var self: Window & typeof globalThis;
+>                                 ^^^^^^^^^^: typeof globalThis   (TyTypeQuery) (IdentifierReference)
+
 declare var speechSynthesis: SpeechSynthesis;
 >           ^^^^^^^^^^^^^^^: SpeechSynthesis   (TyTypeReference) (BindingIdentifier)
 
@@ -120923,6 +120935,9 @@ declare var window: Window & typeof globalThis;
 
 declare var window: Window & typeof globalThis;
 >                   ^^^^^^: { new (): Window; prototype: Window; }   (TyObject) (IdentifierReference)
+
+declare var window: Window & typeof globalThis;
+>                                   ^^^^^^^^^^: typeof globalThis   (TyTypeQuery) (IdentifierReference)
 
 declare function alert(message?: any): void;
 >                ^^^^^: (message?: any) => void   (TyFunction) (BindingIdentifier)

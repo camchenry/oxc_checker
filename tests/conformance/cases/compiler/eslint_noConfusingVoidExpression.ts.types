@@ -29,8 +29,7 @@ promise.then(value => window.postMessage(value));
 >                     ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
 
 promise.then(value => window.postMessage(value));
->                            ^^^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
-                                expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
+>                            ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
 
 promise.then(value => window.postMessage(value));
 >                                        ^^^^^: any   (TyAny) (IdentifierReference)
@@ -90,12 +89,10 @@ promise.then(value => {
 > ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
 
   window.postMessage(value);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
-                    expected: void
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
 
   window.postMessage(value);
->        ^^^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
-            expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
+>        ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
 
   window.postMessage(value);
 >                    ^^^^^: any   (TyAny) (IdentifierReference)
@@ -167,8 +164,7 @@ promise.then(value => window.postMessage(value));
 >                     ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
 
 promise.then(value => window.postMessage(value));
->                            ^^^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
-                                expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
+>                            ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
 
 promise.then(value => window.postMessage(value));
 >                                        ^^^^^: any   (TyAny) (IdentifierReference)
@@ -186,8 +182,7 @@ promise.then(value => void window.postMessage(value));
 >                          ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
 
 promise.then(value => void window.postMessage(value));
->                                 ^^^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
-                                     expected: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }
+>                                 ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
 
 promise.then(value => void window.postMessage(value));
 >                                             ^^^^^: any   (TyAny) (IdentifierReference)

@@ -73,6 +73,7 @@ fn span_contains(outer: Span, inner: Span) -> bool {
 
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 
+const GLOBAL_THIS_IDENT: Ident = static_ident!("globalThis");
 const SYMBOL_ITERATOR_PROPERTY_NAME: &str = "Symbol.iterator";
 const SYMBOL_ASYNC_ITERATOR_PROPERTY_NAME: &str = "Symbol.asyncIterator";
 
@@ -835,6 +836,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 if identifier.name == UNDEFINED_IDENT {
                     return Ty::undefined();
+                }
+                if identifier.name == GLOBAL_THIS_IDENT {
+                    return Ty::type_query(
+                        self.arena(),
+                        GLOBAL_THIS_IDENT.as_str(),
+                        Ty::any(),
+                        std::iter::empty(),
+                    );
                 }
                 Ty::any()
             }
@@ -4459,11 +4468,56 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
-        let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
         let property_name = member.property.name.as_str();
         let in_chain = self.is_in_chain_expression(program_id, node_id);
-        let ty = self
-            .get_property_type_of_structural_type(program_id, object_type, property_name)
+        let ty = match self.arena().type_data(object_type) {
+            TypeData::Intersection(intersection) => {
+                let property_types = intersection
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        self.get_property_type_of_static_member_type(program_id, *ty, property_name)
+                    })
+                    .collect::<Vec<_>>();
+                (!property_types.is_empty()).then(|| Ty::intersection(self.arena(), property_types))
+            }
+            _ => {
+                self.get_property_type_of_static_member_type(program_id, object_type, property_name)
+            }
+        }
+        .or_else(|| {
+            if matches!(member.object, Expression::ThisExpression(_)) {
+                node_id
+                    .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
+                    .and_then(|this_type| {
+                        self.get_property_type_of_named_type(program_id, &this_type, property_name)
+                    })
+            } else {
+                None
+            }
+        })
+        .unwrap_or_else(Ty::any);
+        let ty = if ty.is_function(self.arena()) {
+            ty
+        } else {
+            self.get_apparent_type_at_use(program_id, ty, 0)
+        };
+        let ty = flow::get_flow_type_of_static_member_reference(self, program_id, member, ty);
+        if in_chain {
+            ty.or_undefined(self.arena())
+        } else {
+            ty
+        }
+    }
+
+    fn get_property_type_of_static_member_type(
+        &self,
+        program_id: ProgramId,
+        object_type: Ty<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
+        self.get_property_type_of_structural_type(program_id, object_type, property_name)
             .or_else(|| {
                 self.get_property_type_of_structural_type(
                     program_id,
@@ -4481,35 +4535,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .or_else(|| {
                 self.get_property_type_of_named_type(program_id, &object_type, property_name)
             })
-            .or_else(|| {
-                if matches!(member.object, Expression::ThisExpression(_)) {
-                    node_id
-                        .and_then(|node_id| {
-                            self.get_enclosing_class_instance_type(program_id, node_id)
-                        })
-                        .and_then(|this_type| {
-                            self.get_property_type_of_named_type(
-                                program_id,
-                                &this_type,
-                                property_name,
-                            )
-                        })
-                } else {
-                    None
-                }
-            })
-            .unwrap_or_else(Ty::any);
-        let ty = if ty.is_function(self.arena()) {
-            ty
-        } else {
-            self.get_apparent_type_at_use(program_id, ty, 0)
-        };
-        let ty = flow::get_flow_type_of_static_member_reference(self, program_id, member, ty);
-        if in_chain {
-            ty.or_undefined(self.arena())
-        } else {
-            ty
-        }
     }
 
     fn get_type_of_private_field_expression(
@@ -4764,6 +4789,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty<'a>> {
         let interface_type = match self.arena().type_data(object_type) {
+            TypeData::Intersection(intersection) => {
+                let property_types = intersection
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        self.get_property_type_of_global_interface_type(
+                            program_id,
+                            *ty,
+                            property_name,
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                return (!property_types.is_empty())
+                    .then(|| Ty::intersection(self.arena(), property_types));
+            }
+            TypeData::TypeQuery(query) if query.name == "globalThis" => {
+                return self
+                    .get_value_symbol_for_name(program_id, property_name)
+                    .map(|symbol| self.get_type_of_symbol(symbol));
+            }
             TypeData::Array(array) if array.readonly => {
                 self.get_global_readonly_array_type(program_id, array.element_type)
             }
@@ -7973,7 +8018,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let is_root_function =
             scoping.get_root_binding(Ident::from(function_name)) == Some(symbol_id);
 
-        if !is_root_function || !self.is_global_script_entry(program_id) {
+        if !is_root_function
+            || !self.is_global_script_entry(program_id)
+            || self
+                .store
+                .entry(program_id)
+                .is_some_and(program::ProgramEntry::is_lib)
+        {
             return self.function_declarations_for_symbol(program_id, symbol_id);
         }
 
@@ -9939,6 +9990,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     || {
                         if identifier.name == UNDEFINED_IDENT {
                             Ty::undefined()
+                        } else if identifier.name == GLOBAL_THIS_IDENT {
+                            Ty::type_query(
+                                self.arena(),
+                                GLOBAL_THIS_IDENT.as_str(),
+                                Ty::any(),
+                                std::iter::empty(),
+                            )
                         } else {
                             self.get_value_symbol_for_name(
                                 node.program_id,

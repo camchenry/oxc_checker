@@ -1168,6 +1168,33 @@ mod test {
     }
 
     #[test]
+    fn window_and_global_this_expose_global_function_overloads() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            const bare = postMessage;
+            const global = globalThis.postMessage;
+            const windowPost = window.postMessage;
+            ",
+        );
+        let type_strings = get_static_member_expression_types(&ret, "postMessage")
+            .into_iter()
+            .map(|ty| ty.to_type_string(ret.arena))
+            .collect::<Vec<_>>();
+        let expected = "{ (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }";
+
+        assert_eq!(
+            get_global_symbol_type(&ret, "bare").to_type_string(ret.arena),
+            expected
+        );
+        assert_eq!(
+            type_strings,
+            vec![expected.to_string(), format!("{expected} & {expected}")]
+        );
+    }
+
+    #[test]
     fn callable_types_expose_function_and_object_members() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
