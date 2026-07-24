@@ -481,32 +481,48 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|type_parameter| type_parameter.name)
                     .collect::<Vec<_>>();
-                let has_non_identity_outer_substitution = mapper
-                    .has_non_identity_mapping_outside_names(
-                        self.arena(),
-                        type_parameter_names.iter().copied(),
-                    );
                 let mapper = mapper.without_type_parameter_names(
                     self.arena(),
                     type_parameter_names.iter().copied(),
                 );
 
-                Ty::function_with_type_predicate(
-                    self.arena(),
-                    function.type_parameters.iter().map(|type_parameter| {
+                let mut was_semantically_instantiated = false;
+                let type_parameters = function
+                    .type_parameters
+                    .iter()
+                    .map(|type_parameter| {
+                        let constraint_type = type_parameter
+                            .constraint_type
+                            .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1));
+                        let default_type = type_parameter
+                            .default_type
+                            .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1));
+                        was_semantically_instantiated |= type_parameter
+                            .constraint_type
+                            .zip(constraint_type)
+                            .is_some_and(|(original, instantiated)| {
+                                !self.arena().is_type_identical_to(original, instantiated)
+                            })
+                            || type_parameter.default_type.zip(default_type).is_some_and(
+                                |(original, instantiated)| {
+                                    !self.arena().is_type_identical_to(original, instantiated)
+                                },
+                            );
                         Ty::type_parameter_with_display_default(
                             type_parameter.name,
-                            type_parameter
-                                .constraint_type
-                                .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
-                            type_parameter
-                                .default_type
-                                .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
-                            type_parameter.display_default && !has_non_identity_outer_substitution,
+                            constraint_type,
+                            default_type,
+                            type_parameter.display_default,
                         )
-                    }),
-                    function.parameters.iter().map(|parameter| {
+                    })
+                    .collect::<Vec<_>>();
+                let parameters = function
+                    .parameters
+                    .iter()
+                    .map(|parameter| {
                         let ty = self.instantiate_type_at_depth(parameter.ty, &mapper, depth + 1);
+                        was_semantically_instantiated |=
+                            !self.arena().is_type_identical_to(parameter.ty, ty);
                         if parameter.rest {
                             Ty::rest_parameter(parameter.name, ty)
                         } else if parameter.optional {
@@ -514,11 +530,38 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         } else {
                             Ty::parameter(parameter.name, ty)
                         }
-                    }),
-                    self.instantiate_type_at_depth(function.return_type, &mapper, depth + 1),
-                    function.type_predicate.map(|predicate| {
-                        self.instantiate_type_predicate_at_depth(*predicate, &mapper, depth + 1)
-                    }),
+                    })
+                    .collect::<Vec<_>>();
+                let return_type =
+                    self.instantiate_type_at_depth(function.return_type, &mapper, depth + 1);
+                was_semantically_instantiated |= !self
+                    .arena()
+                    .is_type_identical_to(function.return_type, return_type);
+                let type_predicate = function.type_predicate.map(|predicate| {
+                    let target_type = predicate
+                        .target_type
+                        .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1));
+                    was_semantically_instantiated |= predicate
+                        .target_type
+                        .zip(target_type)
+                        .is_some_and(|(original, instantiated)| {
+                            !self.arena().is_type_identical_to(original, instantiated)
+                        });
+                    TyTypePredicate {
+                        kind: predicate.kind,
+                        parameter_name: predicate.parameter_name,
+                        parameter_index: predicate.parameter_index,
+                        target_type,
+                    }
+                });
+
+                Ty::function_with_type_predicate_and_display(
+                    self.arena(),
+                    type_parameters,
+                    parameters,
+                    return_type,
+                    type_predicate,
+                    function.display_type_parameters_as_arguments || was_semantically_instantiated,
                 )
             }
             TypeData::TypeReference(reference) => {
@@ -6563,7 +6606,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.get_apparent_type_at_use(program_id, *ty, depth + 1)),
             ),
-            TypeData::Function(function) => Ty::function_with_type_predicate(
+            TypeData::Function(function) => Ty::function_with_type_predicate_and_display(
                 self.arena(),
                 function.type_parameters.iter().copied(),
                 function.parameters.iter().map(|parameter| {
@@ -6578,6 +6621,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }),
                 self.get_apparent_type_at_use(program_id, function.return_type, depth + 1),
                 function.type_predicate.copied(),
+                function.display_type_parameters_as_arguments,
             ),
             _ => ty,
         }

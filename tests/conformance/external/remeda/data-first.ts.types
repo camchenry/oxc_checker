@@ -345,8 +345,7 @@ export function filter(data: readonly unknown[], predicate: Pred<any>): unknown[
 >        ^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
 
   return data.filter((value, index) => predicate(value, index, data))
->             ^^^^^^: { <S extends unknown>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }   (TyObject) (StaticMemberExpression)
-            expected: { <S>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }
+>             ^^^^^^: { <S>(predicate: (value: unknown, index: number, array: readonly unknown[]) => value is S, thisArg?: any): S[]; (predicate: (value: unknown, index: number, array: readonly unknown[]) => unknown, thisArg?: any): unknown[]; }   (TyObject) (StaticMemberExpression)
 
   return data.filter((value, index) => predicate(value, index, data))
 >                     ^^^^^: unknown   (TyUnknown) (BindingIdentifier)

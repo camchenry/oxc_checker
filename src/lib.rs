@@ -3296,6 +3296,52 @@ mod test {
     }
 
     #[test]
+    fn instantiated_interface_method_type_parameters_render_as_arguments() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface Interface<T> {
+            unused<U extends string>(value: U): U;
+            dependent<U extends T>(value: T, other: U): U;
+            independent<U extends string>(value: T, other: U): U;
+            unusedDefault<U = string>(value: U): U;
+            independentDefault<U = string>(value: T, other: U): U;
+        }
+
+        declare const instance: Interface<number>;
+        instance.unused;
+        instance.dependent;
+        instance.independent;
+        instance.unusedDefault;
+        instance.independentDefault;
+        "#,
+        );
+
+        let method_types = get_static_member_expression_types(&ret, "unused")
+            .into_iter()
+            .chain(get_static_member_expression_types(&ret, "dependent"))
+            .chain(get_static_member_expression_types(&ret, "independent"))
+            .chain(get_static_member_expression_types(&ret, "unusedDefault"))
+            .chain(get_static_member_expression_types(
+                &ret,
+                "independentDefault",
+            ))
+            .map(|ty| ty.to_type_string(ret.arena))
+            .collect::<Vec<_>>();
+        assert_eq!(
+            method_types,
+            vec![
+                "<U extends string>(value: U) => U",
+                "<U>(value: number, other: U) => U",
+                "<U>(value: number, other: U) => U",
+                "<U = string>(value: U) => U",
+                "<U>(value: number, other: U) => U",
+            ]
+        );
+    }
+
+    #[test]
     fn interface_accessor_signature_locations_use_property_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

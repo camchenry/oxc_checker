@@ -140,21 +140,6 @@ impl<'a> TypeMapper<'a> {
         Self::from_pairs(arena, pairs)
     }
 
-    pub(crate) fn has_non_identity_mapping_outside_names(
-        &self,
-        arena: CheckerArena<'a>,
-        names: impl IntoIterator<Item = &'a str>,
-    ) -> bool {
-        let names = names.into_iter().collect::<Vec<_>>();
-        let mut pairs = Vec::new();
-        self.push_pairs(&mut pairs);
-        pairs.into_iter().any(|(source, target)| {
-            !matches!(arena.type_data(source), TypeData::This)
-                && !is_bare_type_reference_with_name(arena, source, &names)
-                && !arena.is_type_identical_to(source, target)
-        })
-    }
-
     pub(crate) fn is_empty(&self) -> bool {
         matches!(self, Self::Empty)
     }

@@ -277,6 +277,8 @@ pub struct TyProperty<'a> {
 #[derive(Debug, PartialEq, Eq)]
 pub struct TyFunction<'a> {
     pub(crate) type_parameters: ArenaVec<'a, TyTypeParameter<'a>>,
+    /// Whether to render type parameters as instantiated type arguments.
+    pub(crate) display_type_parameters_as_arguments: bool,
     pub(crate) parameters: ArenaVec<'a, TyParameter<'a>>,
     pub(crate) return_type: Ty<'a>,
     pub(crate) type_predicate: Option<&'a TyTypePredicate<'a>>,
@@ -839,7 +841,6 @@ impl<'a> TypeIdentity<'a> {
         right: &TyTypeParameter<'a>,
     ) -> bool {
         left.name == right.name
-            && left.display_default == right.display_default
             && self.optional_types_are_identical(left.constraint_type, right.constraint_type)
             && self.optional_types_are_identical(left.default_type, right.default_type)
     }
@@ -1254,8 +1255,27 @@ impl<'a> Ty<'a> {
         return_type: Ty<'a>,
         type_predicate: Option<TyTypePredicate<'a>>,
     ) -> Self {
+        Self::function_with_type_predicate_and_display(
+            arena,
+            type_parameters,
+            parameters,
+            return_type,
+            type_predicate,
+            false,
+        )
+    }
+
+    pub(crate) fn function_with_type_predicate_and_display(
+        arena: CheckerArena<'a>,
+        type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
+        parameters: impl IntoIterator<Item = TyParameter<'a>>,
+        return_type: Ty<'a>,
+        type_predicate: Option<TyTypePredicate<'a>>,
+        display_type_parameters_as_arguments: bool,
+    ) -> Self {
         arena.alloc_type(TypeData::Function(arena.alloc(TyFunction {
             type_parameters: arena.vec_from_iter(type_parameters),
+            display_type_parameters_as_arguments,
             parameters: arena.vec_from_iter(parameters),
             return_type,
             type_predicate: type_predicate.map(|predicate| arena.alloc(predicate)),
@@ -2409,13 +2429,17 @@ fn function_type_head_to_string<'a>(
             .type_parameters
             .iter()
             .map(|type_parameter| {
-                type_parameter_to_type_string(
-                    arena,
-                    type_parameter,
-                    replace_type_reference,
-                    flags,
-                    depth,
-                )
+                if function.display_type_parameters_as_arguments {
+                    type_parameter.name.to_string()
+                } else {
+                    type_parameter_to_type_string(
+                        arena,
+                        type_parameter,
+                        replace_type_reference,
+                        flags,
+                        depth,
+                    )
+                }
             })
             .collect::<Vec<_>>()
             .join(", ");
@@ -2701,6 +2725,24 @@ mod tests {
         assert_eq!(std::mem::size_of::<Ty<'_>>(), 4);
         assert_eq!(std::mem::size_of::<Option<Ty<'_>>>(), 4);
         assert_eq!(std::mem::size_of::<TypeId>(), 4);
+    }
+
+    #[test]
+    fn instantiated_function_renders_type_parameters_as_arguments() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let type_parameter = Ty::type_parameter("S", Some(Ty::number()), Some(Ty::string()));
+        let function = Ty::function_with_type_predicate_and_display(
+            arena,
+            [type_parameter],
+            [],
+            Ty::type_reference(arena, "S", std::iter::empty()),
+            None,
+            true,
+        );
+
+        assert_eq!(type_parameter.constraint_type, Some(Ty::number()));
+        assert_eq!(function.to_type_string(arena), "<S>() => S");
     }
 
     #[test]
