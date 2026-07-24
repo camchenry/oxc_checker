@@ -500,15 +500,13 @@ const callableDescription = callableWithProperty.description;
 >                                                ^^^^^^^^^^^: string   (TyString) (StaticMemberExpression)
 
 const callableApply = callableWithProperty.apply;
->     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-           expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
+>     ^^^^^^^^^^^^^: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }   (TyObject) (BindingIdentifier)
 
 const callableApply = callableWithProperty.apply;
 >                     ^^^^^^^^^^^^^^^^^^^^: CallableWithProperty   (TyTypeReference) (IdentifierReference)
 
 const callableApply = callableWithProperty.apply;
->                                          ^^^^^: any   (TyAny) (StaticMemberExpression)
-                                        expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
+>                                          ^^^^^: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }   (TyObject) (StaticMemberExpression)
 
 class Counter {
 >     ^^^^^^^: typeof Counter   (TyTypeQuery) (BindingIdentifier)

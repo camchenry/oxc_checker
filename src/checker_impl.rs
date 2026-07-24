@@ -3660,10 +3660,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             continue;
                         }
 
-                        let signature = self.signature_from_function_parts(
+                        let signature = self.signature_from_function_parts_with_this(
                             program_id,
                             SignatureKind::Call,
                             method.type_parameters.as_deref(),
+                            method.this_param.as_deref(),
                             method.params.as_ref(),
                             method.return_type.as_deref(),
                         );
@@ -4196,12 +4197,39 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Bigint | TypeData::BigIntLiteral(_) => {
                 self.get_global_bigint_type(program_id)
             }
-            TypeData::TypeReference(reference)
-                if self.is_global_regexp_type_reference(program_id, reference) =>
-            {
-                return self.get_property_type_of_global_object_augmented_interface_type(
+            TypeData::TypeReference(reference) => {
+                if self.is_global_regexp_type_reference(program_id, reference) {
+                    return self.get_property_type_of_global_object_augmented_interface_type(
+                        program_id,
+                        reference,
+                        property_name,
+                    );
+                }
+
+                let expanded = self.expand_type_at_use(program_id, object_type, 0);
+                if expanded != object_type {
+                    return self.get_property_type_of_global_interface_type(
+                        program_id,
+                        expanded,
+                        property_name,
+                    );
+                }
+
+                let has_call_signatures = !self
+                    .get_signatures_of_type_in_program(program_id, object_type, SignatureKind::Call)
+                    .is_empty();
+                let has_construct_signatures = !has_call_signatures
+                    && !self
+                        .get_signatures_of_type_in_program(
+                            program_id,
+                            object_type,
+                            SignatureKind::Construct,
+                        )
+                        .is_empty();
+                return self.get_property_type_of_global_function_augmented_type(
                     program_id,
-                    reference,
+                    has_call_signatures,
+                    has_construct_signatures,
                     property_name,
                 );
             }
@@ -4594,10 +4622,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TSSignature::TSCallSignatureDeclaration(signature)
                 if expected_kind == SignatureKind::Call =>
             {
-                self.signature_from_function_parts(
+                self.signature_from_function_parts_with_this(
                     program_id,
                     SignatureKind::Call,
                     signature.type_parameters.as_deref(),
+                    signature.this_param.as_deref(),
                     signature.params.as_ref(),
                     signature.return_type.as_deref(),
                 )
@@ -5237,10 +5266,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     (method.kind == TSMethodSignatureKind::Method
                         && property_key_name_str(&method.key) == Some(property_name))
                     .then(|| {
-                        let signature = self.signature_from_function_parts(
+                        let signature = self.signature_from_function_parts_with_this(
                             program_id,
                             SignatureKind::Call,
                             method.type_parameters.as_deref(),
+                            method.this_param.as_deref(),
                             method.params.as_ref(),
                             method.return_type.as_deref(),
                         );
@@ -5317,10 +5347,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         (method.kind == TSMethodSignatureKind::Method
                             && property_key_name_str(&method.key) == Some(property_name))
                         .then(|| {
-                            let signature = self.signature_from_function_parts(
+                            let signature = self.signature_from_function_parts_with_this(
                                 program_id,
                                 SignatureKind::Call,
                                 method.type_parameters.as_deref(),
+                                method.this_param.as_deref(),
                                 method.params.as_ref(),
                                 method.return_type.as_deref(),
                             );
@@ -5389,10 +5420,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let default_function = || {
-            let signature = self.signature_from_function_parts(
+            let signature = self.signature_from_function_parts_with_this(
                 program_id,
                 SignatureKind::Call,
                 method.type_parameters.as_deref(),
+                method.this_param.as_deref(),
                 method.params.as_ref(),
                 method.return_type.as_deref(),
             );
@@ -5440,10 +5472,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     (candidate.kind == TSMethodSignatureKind::Method
                         && property_key_name_str(&candidate.key) == Some(method_name))
                     .then(|| {
-                        let signature = self.signature_from_function_parts(
+                        let signature = self.signature_from_function_parts_with_this(
                             interface_program_id,
                             SignatureKind::Call,
                             candidate.type_parameters.as_deref(),
+                            candidate.this_param.as_deref(),
                             candidate.params.as_ref(),
                             candidate.return_type.as_deref(),
                         );
@@ -5455,10 +5488,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         match method_signatures.as_slice() {
             [] => {
-                let signature = self.signature_from_function_parts(
+                let signature = self.signature_from_function_parts_with_this(
                     program_id,
                     SignatureKind::Call,
                     method.type_parameters.as_deref(),
+                    method.this_param.as_deref(),
                     method.params.as_ref(),
                     method.return_type.as_deref(),
                 );

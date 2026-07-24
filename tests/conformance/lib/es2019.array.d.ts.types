@@ -101,8 +101,7 @@ interface ReadonlyArray<T> {
 >      ^: any   (TyAny) (TSTypeReference)
 
     flat<A, D extends number = 1>(
->   ^^^^: { <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; }   (TyObject) (TSMethodSignature)
-expected: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }
+>   ^^^^: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }   (TyObject) (TSMethodSignature)
 
     flat<A, D extends number = 1>(
 >        ^: any   (TyAny) (TSTypeParameter)
@@ -191,8 +190,7 @@ interface Array<T> {
 >      ^: any   (TyAny) (TSTypeReference)
 
     flat<A, D extends number = 1>(
->   ^^^^: { <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(depth?: D): FlatArray<A, D>[]; }   (TyObject) (TSMethodSignature)
-expected: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }
+>   ^^^^: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }   (TyObject) (TSMethodSignature)
 
     flat<A, D extends number = 1>(
 >        ^: any   (TyAny) (TSTypeParameter)

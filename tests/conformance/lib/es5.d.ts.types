@@ -458,8 +458,7 @@ interface Function {
           expected: FunctionConstructor
 
     apply(this: Function, thisArg: any, argArray?: any): any;
->   ^^^^^: { (thisArg: any, argArray?: any): any; (thisArg: any, argArray?: any): any; }   (TyObject) (TSMethodSignature)
- expected: { (this: Function, thisArg: any, argArray?: any): any; (this: Function, thisArg: any, argArray?: any): any; }
+>   ^^^^^: { (this: Function, thisArg: any, argArray?: any): any; (this: Function, thisArg: any, argArray?: any): any; }   (TyObject) (TSMethodSignature)
 
     apply(this: Function, thisArg: any, argArray?: any): any;
 >         ^^^^: Function   (TyTypeReference) (TSThisParameter)
@@ -477,8 +476,7 @@ interface Function {
 >                                       ^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     call(this: Function, thisArg: any, ...argArray: any[]): any;
->   ^^^^: { (thisArg: any, ...argArray: any[]): any; (thisArg: any, ...argArray: any[]): any; }   (TyObject) (TSMethodSignature)
-expected: { (this: Function, thisArg: any, ...argArray: any[]): any; (this: Function, thisArg: any, ...argArray: any[]): any; }
+>   ^^^^: { (this: Function, thisArg: any, ...argArray: any[]): any; (this: Function, thisArg: any, ...argArray: any[]): any; }   (TyObject) (TSMethodSignature)
 
     call(this: Function, thisArg: any, ...argArray: any[]): any;
 >        ^^^^: Function   (TyTypeReference) (TSThisParameter)
@@ -496,8 +494,7 @@ expected: { (this: Function, thisArg: any, ...argArray: any[]): any; (this: Func
 >                                         ^^^^^^^^: any[]   (TyArray) (BindingIdentifier)
 
     bind(this: Function, thisArg: any, ...argArray: any[]): any;
->   ^^^^: { (thisArg: any, ...argArray: any[]): any; (thisArg: any, ...argArray: any[]): any; }   (TyObject) (TSMethodSignature)
-expected: { (this: Function, thisArg: any, ...argArray: any[]): any; (this: Function, thisArg: any, ...argArray: any[]): any; }
+>   ^^^^: { (this: Function, thisArg: any, ...argArray: any[]): any; (this: Function, thisArg: any, ...argArray: any[]): any; }   (TyObject) (TSMethodSignature)
 
     bind(this: Function, thisArg: any, ...argArray: any[]): any;
 >        ^^^^: Function   (TyTypeReference) (TSThisParameter)
@@ -645,8 +642,7 @@ interface CallableFunction extends Function {
                                    expected: FunctionConstructor
 
     apply<T, R>(this: (this: T) => R, thisArg: T): R;
->   ^^^^^: { <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; }   (TyObject) (TSMethodSignature)
- expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
+>   ^^^^^: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }   (TyObject) (TSMethodSignature)
 
     apply<T, R>(this: (this: T) => R, thisArg: T): R;
 >         ^: any   (TyAny) (TSTypeParameter)
@@ -676,8 +672,7 @@ interface CallableFunction extends Function {
 >                                                  ^: any   (TyAny) (TSTypeReference)
 
     apply<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R;
->   ^^^^^: { <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; <T, R>(thisArg: T): R; <T, A extends any[], R>(thisArg: T, args: A): R; }   (TyObject) (TSMethodSignature)
- expected: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }
+>   ^^^^^: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }   (TyObject) (TSMethodSignature)
 
     apply<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R;
 >         ^: any   (TyAny) (TSTypeParameter)
@@ -722,8 +717,7 @@ interface CallableFunction extends Function {
 >                                                                                        ^: any   (TyAny) (TSTypeReference)
 
     call<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R;
->   ^^^^: { <T, A extends any[], R>(thisArg: T, ...args: A): R; <T, A extends any[], R>(thisArg: T, ...args: A): R; }   (TyObject) (TSMethodSignature)
-expected: { <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R; }
+>   ^^^^: { <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R; }   (TyObject) (TSMethodSignature)
 
     call<T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, ...args: A): R;
 >        ^: any   (TyAny) (TSTypeParameter)
@@ -768,8 +762,7 @@ expected: { <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T
 >                                                                                          ^: any   (TyAny) (TSTypeReference)
 
     bind<T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>;
->   ^^^^: { <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; }   (TyObject) (TSMethodSignature)
-expected: { <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; }
+>   ^^^^: { <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; }   (TyObject) (TSMethodSignature)
 
     bind<T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>;
 >        ^: any   (TyAny) (TSTypeParameter)
@@ -796,8 +789,7 @@ expected: { <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <
 >                                                                      ^: any   (TyAny) (TSTypeReference)
 
     bind<T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R;
->   ^^^^: { <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; <T>(thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(thisArg: T, ...args: A): (...args: B) => R; }   (TyObject) (TSMethodSignature)
-expected: { <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; }
+>   ^^^^: { <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; <T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>; <T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R; }   (TyObject) (TSMethodSignature)
 
     bind<T, A extends any[], B extends any[], R>(this: (this: T, ...args: [...A, ...B]) => R, thisArg: T, ...args: A): (...args: B) => R;
 >        ^: any   (TyAny) (TSTypeParameter)
@@ -865,7 +857,7 @@ interface NewableFunction extends Function {
                                   expected: FunctionConstructor
 
     apply<T>(this: new () => T, thisArg: T): void;
->   ^^^^^: { <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { <T>(this: none, thisArg: T): void; <T, A extends any[]>(this: none, thisArg: T, args: A): void; <T>(this: none, thisArg: T): void; <T, A extends any[]>(this: none, thisArg: T, args: A): void; }   (TyObject) (TSMethodSignature)
  expected: { <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; }
 
     apply<T>(this: new () => T, thisArg: T): void;
@@ -881,7 +873,7 @@ interface NewableFunction extends Function {
 >                                        ^: any   (TyAny) (TSTypeReference)
 
     apply<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void;
->   ^^^^^: { <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; <T>(thisArg: T): void; <T, A extends any[]>(thisArg: T, args: A): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { <T>(this: none, thisArg: T): void; <T, A extends any[]>(this: none, thisArg: T, args: A): void; <T>(this: none, thisArg: T): void; <T, A extends any[]>(this: none, thisArg: T, args: A): void; }   (TyObject) (TSMethodSignature)
  expected: { <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; }
 
     apply<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void;
@@ -912,7 +904,7 @@ interface NewableFunction extends Function {
 >                                                                            ^: any   (TyAny) (TSTypeReference)
 
     call<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void;
->   ^^^^: { <T, A extends any[]>(thisArg: T, ...args: A): void; <T, A extends any[]>(thisArg: T, ...args: A): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { <T, A extends any[]>(this: none, thisArg: T, ...args: A): void; <T, A extends any[]>(this: none, thisArg: T, ...args: A): void; }   (TyObject) (TSMethodSignature)
 expected: { <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void; }
 
     call<T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...args: A): void;
@@ -943,7 +935,7 @@ expected: { <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, ...arg
 >                                                                              ^: any   (TyAny) (TSTypeReference)
 
     bind<T>(this: T, thisArg: any): T;
->   ^^^^: { <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: none, thisArg: any, ...args: A): none; <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: none, thisArg: any, ...args: A): none; }   (TyObject) (TSMethodSignature)
 expected: { <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; }
 
     bind<T>(this: T, thisArg: any): T;
@@ -962,7 +954,7 @@ expected: { <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>
 >                                   ^: any   (TyAny) (TSTypeReference)
 
     bind<A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R;
->   ^^^^: { <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; <T>(thisArg: any): T; <A extends any[], B extends any[], R>(thisArg: any, ...args: A): none; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: none, thisArg: any, ...args: A): none; <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: none, thisArg: any, ...args: A): none; }   (TyObject) (TSMethodSignature)
 expected: { <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; <T>(this: T, thisArg: any): T; <A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R; }
 
     bind<A extends any[], B extends any[], R>(this: new (...args: [...A, ...B]) => R, thisArg: any, ...args: A): new (...args: B) => R;
