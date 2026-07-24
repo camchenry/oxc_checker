@@ -134,8 +134,7 @@ const userZip = user["address"].zip;
 >               ^^^^: User   (TyTypeReference) (IdentifierReference)
 
 const userZip = user["address"].zip;
->                               ^^^: any   (TyAny) (StaticMemberExpression)
-                           expected: number
+>                               ^^^: number   (TyNumber) (StaticMemberExpression)
 
 const userGreeting = user.greet("hello");
 >     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)

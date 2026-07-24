@@ -719,7 +719,7 @@ FAIL tests/conformance/external/valibot/schema-output.ts::tests/schema-output-us
       actual:   UserInput
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:22 `output` type mismatch
       expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
-      actual:   any
+      actual:   { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:22 `userSchema` type mismatch
       expected: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
       actual:   ObjectSchema<ObjectEntries>
@@ -731,13 +731,13 @@ FAIL tests/conformance/external/valibot/schema-output.ts::tests/schema-output-us
       actual:   UserOutput
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:23 `output` type mismatch
       expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
-      actual:   any
+      actual:   { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:24 `userAge` type mismatch
       expected: number
       actual:   any
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:24 `output` type mismatch
       expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
-      actual:   any
+      actual:   { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:24 `age` type mismatch
       expected: number
       actual:   any
@@ -746,7 +746,7 @@ FAIL tests/conformance/external/valibot/schema-output.ts::tests/schema-output-us
       actual:   any
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:25 `output` type mismatch
       expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
-      actual:   any
+      actual:   { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:25 `tags` type mismatch
       expected: string[]
       actual:   any

@@ -808,7 +808,7 @@ const input: UserInput = {
 > ^^^^: string[]   (TyArray) (ObjectProperty)
 
 const output = userSchema['~run'](input)
->     ^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (BindingIdentifier)
     expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const output = userSchema['~run'](input)
@@ -827,7 +827,7 @@ const explicitOutput: UserOutput = output
 >                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const explicitOutput: UserOutput = output
->                                  ^^^^^^: any   (TyAny) (IdentifierReference)
+>                                  ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (IdentifierReference)
                                  expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
@@ -835,7 +835,7 @@ const userAge = output.age
      expected: number
 
 const userAge = output.age
->               ^^^^^^: any   (TyAny) (IdentifierReference)
+>               ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (IdentifierReference)
               expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
@@ -847,7 +847,7 @@ const userTags = output.tags
       expected: string[]
 
 const userTags = output.tags
->                ^^^^^^: any   (TyAny) (IdentifierReference)
+>                ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (IdentifierReference)
                expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userTags = output.tags

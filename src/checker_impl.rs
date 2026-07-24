@@ -4000,8 +4000,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
-        let key_type =
-            self.get_type_of_expression_with_node(program_id, &member.expression, node_id, flags);
+        let key_type = self.get_type_of_expression_with_node(
+            program_id,
+            &member.expression,
+            node_id,
+            flags | GetTypeFlags::PRESERVE_LITERALS,
+        );
 
         // Try accessing like a structural / property type
         if let Some(property_name) = key_type.string_value(self.arena())
