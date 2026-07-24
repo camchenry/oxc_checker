@@ -177,23 +177,6 @@ fn is_promise_like_type_reference(name: &str) -> bool {
     matches!(name, "Promise" | "PromiseLike")
 }
 
-fn is_iterable_type_reference(name: &str) -> bool {
-    matches!(
-        name,
-        "AsyncIterable"
-            | "AsyncIterableIterator"
-            | "AsyncIterator"
-            | "AsyncIteratorObject"
-            | "Iterable"
-            | "IterableIterator"
-            | "Iterator"
-            | "IteratorObject"
-            | "ArrayIterator"
-            | "MapIterator"
-            | "SetIterator"
-    )
-}
-
 fn push_type_parameter_names<'a>(
     names: &mut Vec<&'a str>,
     type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
@@ -3577,6 +3560,232 @@ mod test {
             get_first_symbol_type(&ret, "chunk").to_type_string(ret.arena),
             "Awaited<TQueryFnData>"
         );
+    }
+
+    #[test]
+    fn for_await_extracts_builtin_async_generator_yield_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        async function* values() {
+            yield 1;
+            yield 2;
+        }
+
+        async function consume() {
+            for await (const value of values()) {
+                value;
+            }
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
+            "1 | 2"
+        );
+    }
+
+    #[test]
+    fn for_await_does_not_classify_shadowed_async_generator_as_global() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        export {};
+        interface AsyncGenerator<T> {
+            value: T;
+        }
+        declare const values: AsyncGenerator<string>;
+
+        async function consume() {
+            for await (const value of values) {
+                value;
+            }
+        }
+        "#,
+        );
+
+        assert_eq!(get_first_symbol_type(&ret, "value"), Ty::any());
+    }
+
+    #[test]
+    fn structural_sync_iterable_supplies_for_of_and_for_await_element_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface NumberIterator extends Iterator<1 | 2, void> {}
+        interface Numbers {
+            [Symbol.iterator](): NumberIterator;
+        }
+        declare const numbers: Numbers;
+
+        for (const syncValue of numbers) {
+            syncValue;
+        }
+        async function consume() {
+            for await (const asyncValue of numbers) {
+                asyncValue;
+            }
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "syncValue").to_type_string(ret.arena),
+            "1 | 2"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "asyncValue").to_type_string(ret.arena),
+            "1 | 2"
+        );
+    }
+
+    #[test]
+    fn cyclic_iterable_heritage_does_not_produce_an_element_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface First<T> extends Second<T> {}
+        interface Second<T> extends First<T> {}
+        declare const values: First<string>;
+
+        for (const value of values) {
+            value;
+        }
+        "#,
+        );
+
+        assert_eq!(get_first_symbol_type(&ret, "value"), Ty::any());
+    }
+
+    #[test]
+    fn iterable_protocol_does_not_use_a_shadowed_symbol_value() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        export {};
+        declare const Symbol: { readonly iterator: unique symbol };
+        interface Values {
+            [Symbol.iterator](): Iterator<string>;
+        }
+        declare const values: Values;
+
+        for (const value of values) {
+            value;
+        }
+        "#,
+        );
+
+        assert_eq!(get_first_symbol_type(&ret, "value"), Ty::any());
+    }
+
+    #[test]
+    fn structural_async_iterable_supplies_for_await_element_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface TextAsyncIterator {
+            next(): Promise<IteratorResult<"chunk", void>>;
+        }
+        interface TextStream {
+            [Symbol.asyncIterator](): TextAsyncIterator;
+        }
+        declare const stream: TextStream;
+
+        async function consume() {
+            for await (const chunk of stream) {
+                chunk;
+            }
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "chunk").to_type_string(ret.arena),
+            "\"chunk\""
+        );
+    }
+
+    #[test]
+    fn inherited_async_iterable_supplies_for_await_element_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface TextStream extends AsyncIterable<"chunk"> {}
+        declare const stream: TextStream;
+
+        async function consume() {
+            for await (const chunk of stream) {
+                chunk;
+            }
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "chunk").to_type_string(ret.arena),
+            "\"chunk\""
+        );
+    }
+
+    #[test]
+    fn async_only_iterable_does_not_supply_regular_for_of_element_type() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface TextAsyncIterator {
+            next(): Promise<IteratorResult<string, void>>;
+        }
+        interface TextStream {
+            [Symbol.asyncIterator](): TextAsyncIterator;
+        }
+        declare const stream: TextStream;
+
+        for (const chunk of stream) {
+            chunk;
+        }
+        "#,
+        );
+
+        assert_eq!(get_first_symbol_type(&ret, "chunk"), Ty::any());
+    }
+
+    #[test]
+    fn structural_type_literal_iterable_discriminates_yield_results() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const values: {
+            [Symbol.iterator](): {
+                next():
+                    | { done?: false; value: "item" }
+                    | { done: true; value: void };
+            };
+        };
+
+        for (const value of values) {
+            value;
+        }
+        for (const character of "text") {
+            character;
+        }
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
+            "\"item\""
+        );
+        assert_eq!(get_first_symbol_type(&ret, "character"), Ty::string());
     }
 
     #[test]
