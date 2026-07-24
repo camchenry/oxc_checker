@@ -939,9 +939,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_enclosing_base_class_instance_type(program_id, node_id)
                 })
                 .unwrap_or_else(Ty::any),
+            Expression::ClassExpression(class) => {
+                self.get_type_of_class_expression(program_id, class)
+            }
             // TODO(correctness): Handle all of these cases.
             Expression::MetaProperty(_) => Ty::any(),
-            Expression::ClassExpression(_) => Ty::any(),
             Expression::ImportExpression(_) => Ty::any(),
             Expression::SequenceExpression(_) => Ty::any(),
             Expression::TaggedTemplateExpression(_) => Ty::any(),
@@ -5926,6 +5928,56 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             _ => None,
         }
+    }
+
+    fn get_type_of_class_expression(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
+        let class_node_id = class.node_id.get();
+        let instance_type = Ty::object(
+            self.arena(),
+            class.body.body.iter().filter_map(|element| match element {
+                ClassElement::MethodDefinition(method)
+                    if !method.r#static && method.kind != MethodDefinitionKind::Constructor =>
+                {
+                    let name = property_key_name_str(&method.key)?;
+                    Some(Ty::property(
+                        name,
+                        self.get_type_of_method_definition(program_id, method, class_node_id),
+                    ))
+                }
+                ClassElement::PropertyDefinition(property) if !property.r#static => {
+                    let name = property_key_name_str(&property.key)?;
+                    Some(Ty::property(
+                        name,
+                        self.get_type_of_property_definition(
+                            program_id,
+                            property,
+                            Some(class_node_id),
+                        ),
+                    ))
+                }
+                _ => None,
+            }),
+        );
+        let constructor_parameters = class.body.body.iter().find_map(|element| {
+            let ClassElement::MethodDefinition(method) = element else {
+                return None;
+            };
+            (method.kind == MethodDefinitionKind::Constructor)
+                .then(|| self.function_type_parameters(program_id, None, &method.value.params))
+        });
+        let constructor_type = Ty::function_with_type_predicate(
+            self.arena(),
+            self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
+            constructor_parameters.unwrap_or_default(),
+            instance_type,
+            None,
+        );
+
+        Ty::object_with_signatures(
+            self.arena(),
+            [],
+            [Signature::new(SignatureKind::Construct, constructor_type)],
+        )
     }
 
     fn get_class_member_type(

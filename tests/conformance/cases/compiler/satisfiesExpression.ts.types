@@ -242,8 +242,7 @@ const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
 >                                                                        ^: any   (TyAny) (TSTypeReference)
 
 const constructorLike = class {
->     ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-             expected: { new (): { value: number; }; }
+>     ^^^^^^^^^^^^^^^: { new (): { value: number; }; }   (TyObject) (BindingIdentifier)
 
 	value = 1
 >^^^^^: number   (TyNumber) (PropertyDefinition)
