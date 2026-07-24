@@ -8117,7 +8117,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn get_expanded_type_alias_reference_type(
+    pub(crate) fn get_expanded_type_alias_reference_type(
         &self,
         program_id: ProgramId,
         ty: Ty<'a>,
@@ -8167,6 +8167,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             depth + 1,
         )
         .map(|ty| (declaration.program_id, ty))
+    }
+
+    pub(crate) fn expand_type_alias_for_relation(
+        &self,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        let metadata = self.type_alias_metadata(ty)?;
+        self.get_expanded_type_alias_reference_type(metadata.reference_program_id, ty, depth)
+            .map(|(_, expanded)| expanded)
     }
 
     fn get_expanded_type_alias_reference_preserving_arguments(

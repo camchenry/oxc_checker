@@ -52,21 +52,6 @@ impl<'a> TypeParameterSubstitutions<'a> {
                 .collect(),
         )
     }
-
-    pub(crate) fn to_inference_mapper(&self, arena: CheckerArena<'a>) -> TypeMapper<'a> {
-        TypeMapper::from_inference_pairs(
-            arena,
-            self.pairs
-                .iter()
-                .map(|(type_parameter, ty)| {
-                    (
-                        Ty::type_reference(arena, type_parameter.name, std::iter::empty()),
-                        *ty,
-                    )
-                })
-                .collect(),
-        )
-    }
 }
 
 pub(crate) enum TypeMapper<'a> {
@@ -78,11 +63,6 @@ pub(crate) enum TypeMapper<'a> {
     Array {
         sources: ArenaVec<'a, Ty<'a>>,
         targets: ArenaVec<'a, Ty<'a>>,
-    },
-    Inference {
-        sources: ArenaVec<'a, Ty<'a>>,
-        targets: ArenaVec<'a, Ty<'a>>,
-        fixed: RefCell<Vec<bool>>,
     },
     ContextualInference {
         arena: CheckerArena<'a>,
@@ -195,23 +175,6 @@ impl<'a> TypeMapper<'a> {
                     arena.is_type_identical_to(ty, *source).then_some(*target)
                 })
                 .unwrap_or(ty),
-            Self::Inference {
-                sources,
-                targets,
-                fixed,
-            } => sources
-                .iter()
-                .zip(targets.iter())
-                .enumerate()
-                .find_map(|(index, (source, target))| {
-                    if arena.is_type_identical_to(ty, *source) {
-                        fixed.borrow_mut()[index] = true;
-                        Some(*target)
-                    } else {
-                        None
-                    }
-                })
-                .unwrap_or(ty),
             Self::ContextualInference {
                 arena: contextual_arena,
                 sources,
@@ -255,30 +218,11 @@ impl<'a> TypeMapper<'a> {
         }
     }
 
-    fn from_inference_pairs(arena: CheckerArena<'a>, pairs: Vec<(Ty<'a>, Ty<'a>)>) -> Self {
-        match pairs.len() {
-            0 => Self::Empty,
-            _ => {
-                let len = pairs.len();
-                Self::Inference {
-                    sources: arena.vec_from_iter(pairs.iter().map(|(source, _)| *source)),
-                    targets: arena.vec_from_iter(pairs.into_iter().map(|(_, target)| target)),
-                    fixed: RefCell::new(vec![false; len]),
-                }
-            }
-        }
-    }
-
     fn push_pairs(&self, pairs: &mut Vec<(Ty<'a>, Ty<'a>)>) {
         match self {
             Self::Empty => {}
             Self::Simple { source, target } => pairs.push((*source, *target)),
             Self::Array { sources, targets } => {
-                pairs.extend(sources.iter().copied().zip(targets.iter().copied()));
-            }
-            Self::Inference {
-                sources, targets, ..
-            } => {
                 pairs.extend(sources.iter().copied().zip(targets.iter().copied()));
             }
             Self::ContextualInference {
@@ -318,17 +262,6 @@ impl<'a> TypeMapper<'a> {
                         .filter(|(source, _)| !arena.is_type_identical_to(*source, excluded)),
                 );
             }
-            Self::Inference {
-                sources, targets, ..
-            } => {
-                pairs.extend(
-                    sources
-                        .iter()
-                        .copied()
-                        .zip(targets.iter().copied())
-                        .filter(|(source, _)| !arena.is_type_identical_to(*source, excluded)),
-                );
-            }
             Self::ContextualInference {
                 sources,
                 fallback_targets,
@@ -359,25 +292,6 @@ mod tests {
     use oxc_allocator::Allocator;
 
     use super::*;
-
-    #[test]
-    fn inference_mapper_fixes_type_parameter_when_read() {
-        let allocator = Allocator::default();
-        let arena = CheckerArena::new(&allocator);
-        let type_parameter = Ty::type_parameter("T", None, None);
-        let source = Ty::type_reference(arena, "T", std::iter::empty());
-
-        let mut substitutions = TypeParameterSubstitutions::new();
-        substitutions.insert(type_parameter, Ty::string());
-
-        let mapper = substitutions.to_inference_mapper(arena);
-        assert_eq!(mapper.map(arena, source), Ty::string());
-
-        let TypeMapper::Inference { fixed, .. } = &mapper else {
-            panic!("expected inference mapper");
-        };
-        assert_eq!(fixed.borrow().as_slice(), &[true]);
-    }
 
     #[test]
     fn contextual_inference_mapper_resolves_type_parameter_when_read() {

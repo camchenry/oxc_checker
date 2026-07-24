@@ -20,6 +20,31 @@ pub(crate) fn is_assignable_to_without_checker<'a>(
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn is_assignable_to_at_depth(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
+        if source == target {
+            return true;
+        }
+        if depth >= ASSIGNABILITY_MAX_DEPTH {
+            return false;
+        }
+
+        let references_match = matches!(
+            (self.arena().type_data(source), self.arena().type_data(target)),
+            (TypeData::TypeReference(source), TypeData::TypeReference(target))
+                if source.name == target.name
+                    && source.type_arguments.len() == target.type_arguments.len()
+        );
+        if !references_match {
+            let expanded_source = self
+                .expand_type_alias_for_relation(source, depth + 1)
+                .unwrap_or(source);
+            let expanded_target = self
+                .expand_type_alias_for_relation(target, depth + 1)
+                .unwrap_or(target);
+            if expanded_source != source || expanded_target != target {
+                return self.is_assignable_to_at_depth(expanded_source, expanded_target, depth + 1);
+            }
+        }
+
         is_assignable_to_at_depth(
             self.arena(),
             source,

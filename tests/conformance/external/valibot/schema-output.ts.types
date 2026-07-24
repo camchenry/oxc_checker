@@ -681,8 +681,7 @@ import type { InferInput, InferIssue, InferOutput } from '../library/types'
 >                                     ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (BindingIdentifier)
 
 const userSchema = object({
->     ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference) (BindingIdentifier)
-        expected: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+>     ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (BindingIdentifier)
 
 const userSchema = object({
 >                  ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (TyFunction) (IdentifierReference)
@@ -694,8 +693,7 @@ const userSchema = object({
 >     ^^^^^^: () => StringSchema   (TyFunction) (IdentifierReference)
 
   age: optional(number(), 0),
-> ^^^: OptionalSchema<GenericSchema, number>   (TyTypeReference) (ObjectProperty)
-expected: OptionalSchema<NumberSchema, number>
+> ^^^: OptionalSchema<NumberSchema, number>   (TyTypeReference) (ObjectProperty)
 
   age: optional(number(), 0),
 >      ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (TyFunction) (IdentifierReference)
@@ -710,8 +708,7 @@ expected: OptionalSchema<NumberSchema, number>
 >         ^^^^^^^: () => BooleanSchema   (TyFunction) (IdentifierReference)
 
   tags: array(string()),
-> ^^^^: ArraySchema<GenericSchema>   (TyTypeReference) (ObjectProperty)
-expected: ArraySchema<StringSchema>
+> ^^^^: ArraySchema<StringSchema>   (TyTypeReference) (ObjectProperty)
 
   tags: array(string()),
 >       ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (TyFunction) (IdentifierReference)
@@ -720,7 +717,7 @@ expected: ArraySchema<StringSchema>
 >             ^^^^^^: () => StringSchema   (TyFunction) (IdentifierReference)
 
 type UserInput = InferInput<typeof userSchema>
->    ^^^^^^^^^: (({ readonly input: { [Key in keyof ObjectEntries]: InferInput<ObjectEntries[Key]>; }; readonly output: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }; readonly issue: { [Key in keyof ObjectEntries]: InferIssue<ObjectEntries[Key]>; }[keyof ObjectEntries]; } | undefined) & {})["input"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: (({ readonly input: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly output: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly issue: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]; } | undefined) & {})["input"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
       expected: { id: string; age: number | undefined; active: boolean; tags: string[]; }
 
 type UserInput = InferInput<typeof userSchema>
@@ -730,11 +727,10 @@ type UserInput = InferInput<typeof userSchema>
 >                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (IdentifierReference)
 
 type UserInput = InferInput<typeof userSchema>
->                                  ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference) (IdentifierReference)
-                                     expected: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+>                                  ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
 
 type UserOutput = InferOutput<typeof userSchema>
->    ^^^^^^^^^^: (({ readonly input: { [Key in keyof ObjectEntries]: InferInput<ObjectEntries[Key]>; }; readonly output: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }; readonly issue: { [Key in keyof ObjectEntries]: InferIssue<ObjectEntries[Key]>; }[keyof ObjectEntries]; } | undefined) & {})["output"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: (({ readonly input: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly output: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly issue: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]; } | undefined) & {})["output"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
        expected: { id: string; age: number; active: boolean; tags: string[]; }
 
 type UserOutput = InferOutput<typeof userSchema>
@@ -744,11 +740,10 @@ type UserOutput = InferOutput<typeof userSchema>
 >                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (IdentifierReference)
 
 type UserOutput = InferOutput<typeof userSchema>
->                                    ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference) (IdentifierReference)
-                                       expected: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+>                                    ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
 
 type UserIssue = InferIssue<typeof userSchema>
->    ^^^^^^^^^: (({ readonly input: { [Key in keyof ObjectEntries]: InferInput<ObjectEntries[Key]>; }; readonly output: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }; readonly issue: { [Key in keyof ObjectEntries]: InferIssue<ObjectEntries[Key]>; }[keyof ObjectEntries]; } | undefined) & {})["issue"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: (({ readonly input: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly output: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly issue: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]; } | undefined) & {})["issue"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
       expected: BaseIssue<"string"> | BaseIssue<"number"> | BaseIssue<"boolean">
 
 type UserIssue = InferIssue<typeof userSchema>
@@ -758,8 +753,7 @@ type UserIssue = InferIssue<typeof userSchema>
 >                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (IdentifierReference)
 
 type UserIssue = InferIssue<typeof userSchema>
->                                  ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference) (IdentifierReference)
-                                     expected: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+>                                  ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
 
 const input: UserInput = {
 >     ^^^^^: UserInput   (TyTypeReference) (BindingIdentifier)
@@ -784,12 +778,11 @@ const input: UserInput = {
 > ^^^^: string[]   (TyArray) (ObjectProperty)
 
 const output = userSchema['~run'](input)
->     ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (BindingIdentifier)
+>     ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (BindingIdentifier)
     expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const output = userSchema['~run'](input)
->              ^^^^^^^^^^: ObjectSchema<ObjectEntries>   (TyTypeReference) (IdentifierReference)
-                 expected: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
+>              ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
 
 const output = userSchema['~run'](input)
 >                                 ^^^^^: UserInput   (TyTypeReference) (IdentifierReference)
@@ -803,7 +796,7 @@ const explicitOutput: UserOutput = output
 >                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const explicitOutput: UserOutput = output
->                                  ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (IdentifierReference)
+>                                  ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (IdentifierReference)
                                  expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
@@ -811,7 +804,7 @@ const userAge = output.age
      expected: number
 
 const userAge = output.age
->               ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (IdentifierReference)
+>               ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (IdentifierReference)
               expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
@@ -823,7 +816,7 @@ const userTags = output.tags
       expected: string[]
 
 const userTags = output.tags
->                ^^^^^^: { [Key in keyof ObjectEntries]: InferOutput<ObjectEntries[Key]>; }   (TyMapped) (IdentifierReference)
+>                ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (IdentifierReference)
                expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userTags = output.tags

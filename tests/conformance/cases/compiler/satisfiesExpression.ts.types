@@ -314,8 +314,7 @@ declare function takesPoint<T extends Point>(value: T): T
 >                                                       ^: any   (TyAny) (TSTypeReference)
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
->     ^^^^^^^^^^^: Point   (TyTypeReference) (BindingIdentifier)
-         expected: { x: number; y: number; }
+>     ^^^^^^^^^^^: { x: number; y: number; }   (TyObject) (BindingIdentifier)
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
 >                   ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction) (IdentifierReference)
