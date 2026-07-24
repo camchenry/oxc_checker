@@ -479,7 +479,7 @@ impl<'a> InferenceContext<'a> {
             let TypeData::TypeReference(reference) = arena.type_data(ty) else {
                 return;
             };
-            if !reference.type_arguments.is_empty() {
+            if !reference.is_bare() {
                 return;
             }
             let Some(index) = self.inference_index_by_name(reference.name) else {
@@ -672,7 +672,7 @@ fn is_type_parameter_at_top_level<'a>(
 ) -> bool {
     match arena.type_data(ty) {
         TypeData::TypeReference(reference) => {
-            reference.type_arguments.is_empty() && reference.name == type_parameter.name
+            reference.is_bare() && reference.name == type_parameter.name
         }
         TypeData::Union(union) => union
             .types
@@ -1747,7 +1747,7 @@ fn infer_types_with_variance<'a>(
             priority.structural(),
             arena,
         ),
-        (TypeData::TypeReference(reference), _) if reference.type_arguments.is_empty() => {
+        (TypeData::TypeReference(reference), _) if reference.is_bare() => {
             let Some(type_parameter) = context
                 .inference_by_name_mut(reference.name)
                 .map(|inference| inference.type_parameter)
@@ -1870,7 +1870,7 @@ fn type_contains_inference_variable<'a>(
     let mut contains = false;
     visit_type(arena, ty, &mut |ty| {
         if let TypeData::TypeReference(reference) = arena.type_data(ty)
-            && reference.type_arguments.is_empty()
+            && reference.is_bare()
             && context.contains_type_parameter_name(reference.name)
         {
             contains = true;
@@ -2146,7 +2146,7 @@ fn infer_to_non_homomorphic_mapped_type<'a>(
                 );
             }
         }
-        TypeData::TypeReference(reference) if reference.type_arguments.is_empty() => {
+        TypeData::TypeReference(reference) if reference.is_bare() => {
             let key_type = Ty::keyof(arena, argument_type);
             infer_types_with_variance(
                 constraint_type,
@@ -2509,7 +2509,7 @@ fn select_naked_type_variable_constituents<'a>(
         .iter()
         .copied()
         .filter(|ty| {
-            matches!(arena.type_data(*ty), TypeData::TypeReference(reference) if reference.type_arguments.is_empty() && context.contains_type_parameter_name(reference.name))
+            matches!(arena.type_data(*ty), TypeData::TypeReference(reference) if reference.is_bare() && context.contains_type_parameter_name(reference.name))
         })
         .collect()
 }

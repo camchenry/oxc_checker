@@ -444,6 +444,13 @@ pub struct TyTypeReference<'a> {
     pub(crate) display_type_argument_count: usize,
 }
 
+impl TyTypeReference<'_> {
+    /// Returns `true` if the reference has no type arguments.
+    pub(crate) fn is_bare(&self) -> bool {
+        self.type_arguments.is_empty()
+    }
+}
+
 impl PartialEq for TyTypeReference<'_> {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name && self.type_arguments == other.type_arguments
@@ -2204,7 +2211,7 @@ fn simplify_type_equality_function_extends<'a>(
 fn contains_unresolved_type_variable<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> bool {
     let mut contains = false;
     visit_type(arena, ty, &mut |ty| match arena.type_data(ty) {
-        TypeData::TypeReference(reference) if reference.type_arguments.is_empty() => {
+        TypeData::TypeReference(reference) if reference.is_bare() => {
             contains = true;
         }
         TypeData::Function(function) if !function.type_parameters.is_empty() => contains = true,

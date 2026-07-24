@@ -401,7 +401,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference: &TyTypeReference<'a>,
     ) -> bool {
         reference.name == REGEXP_TYPE_NAME
-            && reference.type_arguments.is_empty()
+            && reference.is_bare()
             && self.is_default_lib_type(program_id, REGEXP_TYPE_NAME)
     }
 

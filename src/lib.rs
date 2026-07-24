@@ -47,9 +47,7 @@ fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
         types::TypeData::TemplateLiteral(template) if template.expressions.is_empty() => {
             Some(template.quasis[0].value)
         }
-        types::TypeData::TypeReference(reference) if reference.type_arguments.is_empty() => {
-            Some(reference.name)
-        }
+        types::TypeData::TypeReference(reference) if reference.is_bare() => Some(reference.name),
         types::TypeData::String => Some(arena.str("string")),
         types::TypeData::Number => Some(arena.str("number")),
         _ => None,

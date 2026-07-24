@@ -9489,7 +9489,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
             return false;
         };
-        if !reference.type_arguments.is_empty() {
+        if !reference.is_bare() {
             return false;
         }
         self.type_parameter_names_in_scope(program_id, node_id)

@@ -177,9 +177,7 @@ impl<'a> TypeMapper<'a> {
                     }
                     fixed.borrow_mut()[index] = true;
                     let resolved = match contextual_arena.type_data(*source) {
-                        TypeData::TypeReference(reference)
-                            if reference.type_arguments.is_empty() =>
-                        {
+                        TypeData::TypeReference(reference) if reference.is_bare() => {
                             resolver.borrow_mut()(reference.name)
                         }
                         _ => None,
@@ -270,7 +268,7 @@ fn is_bare_type_reference_with_name<'a>(
     ty: Ty<'a>,
     names: &[&'a str],
 ) -> bool {
-    matches!(arena.type_data(ty), TypeData::TypeReference(reference) if reference.type_arguments.is_empty() && names.contains(&reference.name))
+    matches!(arena.type_data(ty), TypeData::TypeReference(reference) if reference.is_bare() && names.contains(&reference.name))
 }
 
 #[cfg(test)]
