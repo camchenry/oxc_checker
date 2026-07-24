@@ -527,20 +527,16 @@ class Counter {
 >                    ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   increment() {
-> ^^^^^^^^^: () => any   (TyFunction) (MethodDefinition)
-   expected: () => number
+> ^^^^^^^^^: () => number   (TyFunction) (MethodDefinition)
 
     this.value += 1;
->   ^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
-            expected: number
+>   ^^^^^^^^^^^^^^^^: number   (TyNumber) (ExpressionStatement)
 
     this.value += 1;
->        ^^^^^: any   (TyAny) (StaticMemberExpression)
-      expected: number
+>        ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
     return this.value;
->               ^^^^^: any   (TyAny) (StaticMemberExpression)
-             expected: number
+>               ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
   readSecret() {
 > ^^^^^^^^^^: () => any   (TyFunction) (MethodDefinition)
@@ -553,37 +549,31 @@ const counter = new Counter(1);
 >                   ^^^^^^^: typeof Counter   (TyTypeQuery) (IdentifierReference)
 
 const counterValue = counter.value;
->     ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-          expected: number
+>     ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const counterValue = counter.value;
 >                    ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterValue = counter.value;
->                            ^^^^^: any   (TyAny) (StaticMemberExpression)
-                          expected: number
+>                            ^^^^^: number   (TyNumber) (StaticMemberExpression)
 
 const counterIncrement = counter.increment;
->     ^^^^^^^^^^^^^^^^: () => any   (TyFunction) (BindingIdentifier)
-              expected: () => number
+>     ^^^^^^^^^^^^^^^^: () => number   (TyFunction) (BindingIdentifier)
 
 const counterIncrement = counter.increment;
 >                        ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterIncrement = counter.increment;
->                                ^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
-                                  expected: () => number
+>                                ^^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const counterIncrementResult = counter.increment();
->     ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-                    expected: number
+>     ^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const counterIncrementResult = counter.increment();
 >                              ^^^^^^^: Counter   (TyTypeReference) (IdentifierReference)
 
 const counterIncrementResult = counter.increment();
->                                      ^^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
-                                        expected: () => number
+>                                      ^^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
 
 const counterSecret = counter.readSecret();
 >     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)

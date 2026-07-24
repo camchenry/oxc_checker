@@ -5787,24 +5787,56 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             resolving_class_members.push(resolution);
         }
 
-        let ty = class.body.body.iter().find_map(|element| match element {
-            ClassElement::MethodDefinition(method)
-                if property_key_name_str(&method.key) == Some(property_name) =>
-            {
-                Some(self.get_type_of_method_definition(program_id, method, class_node_id))
-            }
-            ClassElement::PropertyDefinition(property)
-                if property.r#static == is_static
-                    && property_key_name_str(&property.key) == Some(property_name) =>
-            {
-                Some(self.get_type_of_property_definition(
-                    program_id,
-                    property,
-                    Some(class_node_id),
-                ))
-            }
-            _ => None,
-        });
+        let ty = class
+            .body
+            .body
+            .iter()
+            .find_map(|element| match element {
+                ClassElement::MethodDefinition(method)
+                    if property_key_name_str(&method.key) == Some(property_name) =>
+                {
+                    Some(self.get_type_of_method_definition(program_id, method, class_node_id))
+                }
+                ClassElement::PropertyDefinition(property)
+                    if property.r#static == is_static
+                        && property_key_name_str(&property.key) == Some(property_name) =>
+                {
+                    Some(self.get_type_of_property_definition(
+                        program_id,
+                        property,
+                        Some(class_node_id),
+                    ))
+                }
+                _ => None,
+            })
+            .or_else(|| {
+                (!is_static).then_some(())?;
+                class.body.body.iter().find_map(|element| {
+                    let ClassElement::MethodDefinition(constructor) = element else {
+                        return None;
+                    };
+                    if constructor.kind != MethodDefinitionKind::Constructor {
+                        return None;
+                    }
+                    constructor.value.params.items.iter().find_map(|parameter| {
+                        if !parameter.has_modifier()
+                            || binding_pattern_to_parameter_name(self.arena(), &parameter.pattern)
+                                != property_name
+                        {
+                            return None;
+                        }
+                        let ty = self.get_type_from_ts_type_annotation(
+                            program_id,
+                            parameter.type_annotation.as_deref(),
+                        );
+                        Some(if parameter.optional {
+                            ty.or_undefined(self.arena())
+                        } else {
+                            ty
+                        })
+                    })
+                })
+            });
 
         self.resolving_class_members.borrow_mut().pop();
         ty
