@@ -5713,42 +5713,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 reference,
             );
             let mapper = substitutions.to_mapper(self.arena());
-            if let Some(property) = interface.body.body.iter().find_map(|signature| {
-                let TSSignature::TSPropertySignature(property) = signature else {
-                    return None;
-                };
-                (self.resolved_property_key_name(program_id, &property.key) == Some(property_name))
-                    .then_some(property)
-            }) {
-                let ty = property
-                    .type_annotation
-                    .as_deref()
-                    .map_or_else(Ty::any, |annotation| {
-                        self.get_type_from_ts_type(program_id, &annotation.type_annotation)
-                    });
+            if let Some(ty) = self.get_interface_property_or_accessor_type(
+                program_id,
+                &interface.body.body,
+                property_name,
+            ) {
                 return Some(self.instantiate_type(ty, &mapper));
-            }
-        }
-
-        for accessor_kind in [TSMethodSignatureKind::Get, TSMethodSignatureKind::Set] {
-            for &(program_id, interface) in declarations {
-                let mapper = self.interface_member_mapper(
-                    program_id,
-                    interface.type_parameters.as_deref(),
-                    reference,
-                );
-                if let Some(ty) = interface.body.body.iter().find_map(|signature| {
-                    let TSSignature::TSMethodSignature(method) = signature else {
-                        return None;
-                    };
-                    (method.kind == accessor_kind
-                        && self.resolved_property_key_name(program_id, &method.key)
-                            == Some(property_name))
-                    .then(|| self.get_type_of_ts_accessor_signature(program_id, method))
-                    .flatten()
-                }) {
-                    return Some(self.instantiate_type(ty, &mapper));
-                }
             }
         }
 
@@ -5761,20 +5731,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     interface.type_parameters.as_deref(),
                     reference,
                 );
-                interface.body.body.iter().filter_map(move |signature| {
-                    let TSSignature::TSMethodSignature(method) = signature else {
-                        return None;
-                    };
-                    (method.kind == TSMethodSignatureKind::Method
-                        && self.resolved_property_key_name(program_id, &method.key)
-                            == Some(property_name))
-                    .then(|| {
-                        self.instantiate_signature(
-                            self.signature_from_ts_method_signature(program_id, method),
-                            &mapper,
-                        )
-                    })
-                })
+                self.get_interface_method_signatures(
+                    program_id,
+                    &interface.body.body,
+                    property_name,
+                    &mapper,
+                )
             })
             .collect::<Vec<_>>();
         match method_signatures.as_slice() {
@@ -5786,6 +5748,73 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 method_signatures,
             )),
         }
+    }
+
+    fn get_interface_property_or_accessor_type(
+        &self,
+        program_id: ProgramId,
+        members: &'a [TSSignature<'a>],
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        if let Some(property) = members.iter().find_map(|signature| {
+            let TSSignature::TSPropertySignature(property) = signature else {
+                return None;
+            };
+            (self.resolved_property_key_name(program_id, &property.key) == Some(property_name))
+                .then_some(property)
+        }) {
+            return Some(
+                property
+                    .type_annotation
+                    .as_deref()
+                    .map_or_else(Ty::any, |annotation| {
+                        self.get_type_from_ts_type(program_id, &annotation.type_annotation)
+                    }),
+            );
+        }
+
+        for accessor_kind in [TSMethodSignatureKind::Get, TSMethodSignatureKind::Set] {
+            if let Some(ty) = members.iter().find_map(|signature| {
+                let TSSignature::TSMethodSignature(method) = signature else {
+                    return None;
+                };
+                (method.kind == accessor_kind
+                    && self.resolved_property_key_name(program_id, &method.key)
+                        == Some(property_name))
+                .then(|| self.get_type_of_ts_accessor_signature(program_id, method))
+                .flatten()
+            }) {
+                return Some(ty);
+            }
+        }
+
+        None
+    }
+
+    fn get_interface_method_signatures(
+        &self,
+        program_id: ProgramId,
+        members: &'a [TSSignature<'a>],
+        property_name: &str,
+        mapper: &TypeMapper<'a>,
+    ) -> Vec<Signature<'a>> {
+        members
+            .iter()
+            .filter_map(|signature| {
+                let TSSignature::TSMethodSignature(method) = signature else {
+                    return None;
+                };
+                (method.kind == TSMethodSignatureKind::Method
+                    && self.resolved_property_key_name(program_id, &method.key)
+                        == Some(property_name))
+                .then(|| {
+                    self.instantiate_signature(
+                        self.signature_from_ts_method_signature(program_id, method),
+                        mapper,
+                    )
+                })
+            })
+            .collect()
     }
 
     fn get_property_type_of_interface_declaration(
@@ -5802,55 +5831,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     interface.type_parameters.as_deref(),
                     reference,
                 );
-                if let Some(property) = interface.body.body.iter().find_map(|signature| {
-                    let TSSignature::TSPropertySignature(property) = signature else {
-                        return None;
-                    };
-                    (property_key_name_str(&property.key) == Some(property_name))
-                        .then_some(property)
-                }) {
-                    let ty =
-                        property
-                            .type_annotation
-                            .as_deref()
-                            .map_or_else(Ty::any, |annotation| {
-                                self.get_type_from_ts_type(program_id, &annotation.type_annotation)
-                            });
+                if let Some(ty) = self.get_interface_property_or_accessor_type(
+                    program_id,
+                    &interface.body.body,
+                    property_name,
+                ) {
                     return Some(self.instantiate_type(ty, &mapper));
                 }
 
-                for accessor_kind in [TSMethodSignatureKind::Get, TSMethodSignatureKind::Set] {
-                    if let Some(ty) = interface.body.body.iter().find_map(|signature| {
-                        let TSSignature::TSMethodSignature(method) = signature else {
-                            return None;
-                        };
-                        (method.kind == accessor_kind
-                            && property_key_name_str(&method.key) == Some(property_name))
-                        .then(|| self.get_type_of_ts_accessor_signature(program_id, method))
-                        .flatten()
-                    }) {
-                        return Some(self.instantiate_type(ty, &mapper));
-                    }
-                }
-
-                let method_signatures = interface
-                    .body
-                    .body
-                    .iter()
-                    .filter_map(|signature| {
-                        let TSSignature::TSMethodSignature(method) = signature else {
-                            return None;
-                        };
-                        (method.kind == TSMethodSignatureKind::Method
-                            && property_key_name_str(&method.key) == Some(property_name))
-                        .then(|| {
-                            self.instantiate_signature(
-                                self.signature_from_ts_method_signature(program_id, method),
-                                &mapper,
-                            )
-                        })
-                    })
-                    .collect::<Vec<_>>();
+                let method_signatures = self.get_interface_method_signatures(
+                    program_id,
+                    &interface.body.body,
+                    property_name,
+                    &mapper,
+                );
                 match method_signatures.as_slice() {
                     [] => None,
                     [signature] => Some(signature.ty),
