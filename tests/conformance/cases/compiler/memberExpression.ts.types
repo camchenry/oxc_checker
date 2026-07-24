@@ -671,8 +671,7 @@ const symbolObject: SymbolObject = {
 > ^^^^^^^: string   (TyString) (ObjectProperty)
 
 const symbolValue = symbolObject[uniqueKey];
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
-         expected: number
+>     ^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const symbolValue = symbolObject[uniqueKey];
 >                   ^^^^^^^^^^^^: SymbolObject   (TyTypeReference) (IdentifierReference)

@@ -1579,10 +1579,7 @@ impl<'a> Ty<'a> {
             TypeData::Boolean => "boolean".to_string(),
             TypeData::Bigint => "bigint".to_string(),
             TypeData::Symbol => "symbol".to_string(),
-            TypeData::UniqueSymbol(unique_symbol) => unique_symbol.name.map_or_else(
-                || "unique symbol".to_string(),
-                |name| format!("typeof {name}"),
-            ),
+            TypeData::UniqueSymbol(_) => "unique symbol".to_string(),
             TypeData::Undefined => "undefined".to_string(),
             TypeData::Null => "null".to_string(),
             TypeData::Any => "any".to_string(),

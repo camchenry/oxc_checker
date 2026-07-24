@@ -2470,6 +2470,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .collect::<Option<Vec<_>>>()?;
                 Some(Ty::union(self.arena(), property_types))
             }
+            TypeData::UniqueSymbol(symbol) => symbol.name.and_then(|property_name| {
+                self.get_property_type_for_indexed_access_with_computed(
+                    program_id,
+                    object_type,
+                    property_name,
+                    true,
+                )
+            }),
             _ => {
                 let property_name = index_type_to_property_name(self.arena(), index_type)?;
                 self.get_property_type_for_indexed_access(program_id, object_type, property_name)
@@ -2483,9 +2491,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object_type: Ty<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
+        self.get_property_type_for_indexed_access_with_computed(
+            program_id,
+            object_type,
+            property_name,
+            false,
+        )
+    }
+
+    fn get_property_type_for_indexed_access_with_computed(
+        &self,
+        program_id: ProgramId,
+        object_type: Ty<'a>,
+        property_name: &str,
+        computed: bool,
+    ) -> Option<Ty<'a>> {
         match self.arena().type_data(object_type) {
             TypeData::Object(object) => object.properties.iter().find_map(|property| {
-                if property.computed || property.name != property_name {
+                if property.computed != computed || property.name != property_name {
                     return None;
                 }
                 Some(if property.optional {
@@ -2499,31 +2522,50 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .types
                     .iter()
                     .map(|ty| {
-                        self.get_property_type_for_indexed_access(program_id, *ty, property_name)
+                        self.get_property_type_for_indexed_access_with_computed(
+                            program_id,
+                            *ty,
+                            property_name,
+                            computed,
+                        )
                     })
                     .collect::<Option<Vec<_>>>()?;
                 Some(Ty::union(self.arena(), property_types))
             }
             TypeData::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
-                self.get_property_type_for_indexed_access(program_id, *ty, property_name)
+                self.get_property_type_for_indexed_access_with_computed(
+                    program_id,
+                    *ty,
+                    property_name,
+                    computed,
+                )
             }),
-            TypeData::Tuple(tuple) => {
+            TypeData::Tuple(tuple) if !computed => {
                 self.get_property_type_of_tuple(object_type, tuple, property_name)
             }
-            TypeData::Mapped(mapped) => {
+            TypeData::Mapped(mapped) if !computed => {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
             }
             TypeData::TypeReference(reference) => self
                 .get_expanded_type_alias_reference_type(program_id, object_type, 0)
                 .and_then(|(expanded_program_id, expanded)| {
-                    self.get_property_type_for_indexed_access(
+                    self.get_property_type_for_indexed_access_with_computed(
                         expanded_program_id,
                         expanded,
                         property_name,
+                        computed,
                     )
                 })
                 .or_else(|| {
-                    self.get_property_type_of_interface_type(program_id, reference, property_name)
+                    if computed {
+                        None
+                    } else {
+                        self.get_property_type_of_interface_type(
+                            program_id,
+                            reference,
+                            property_name,
+                        )
+                    }
                 }),
             _ => None,
         }
@@ -7642,7 +7684,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         declarator: &'a VariableDeclarator<'a>,
     ) -> Ty<'a> {
         if declarator.type_annotation.is_some() {
-            self.get_type_from_ts_type_annotation(program_id, declarator.type_annotation.as_deref())
+            let ty = self.get_type_from_ts_type_annotation(
+                program_id,
+                declarator.type_annotation.as_deref(),
+            );
+            if matches!(self.arena().type_data(ty), TypeData::UniqueSymbol(symbol) if symbol.name.is_none())
+                && let BindingPattern::BindingIdentifier(identifier) = &declarator.id
+            {
+                Ty::unique_symbol(self.arena(), Some(identifier.name.as_str()))
+            } else {
+                ty
+            }
         } else {
             // TODO: Rework this to not use map_or_else and check if we are in for-loop context first
             declarator.init.as_ref().map_or_else(
