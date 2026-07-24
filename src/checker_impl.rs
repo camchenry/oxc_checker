@@ -4262,6 +4262,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
     }
 
+    fn is_in_const_context(&self, program_id: ProgramId, node_id: NodeId) -> bool {
+        for ancestor in self.nodes(program_id).ancestors(node_id) {
+            match ancestor.kind() {
+                AstKind::TSAsExpression(assertion) => {
+                    return is_const_type_reference(&assertion.type_annotation);
+                }
+                AstKind::ObjectProperty(_)
+                | AstKind::ObjectExpression(_)
+                | AstKind::ArrayExpression(_)
+                | AstKind::ParenthesizedExpression(_)
+                | AstKind::SpreadElement(_) => {}
+                _ => return false,
+            }
+        }
+        false
+    }
+
     fn get_type_of_call_expression(
         &self,
         program_id: ProgramId,
@@ -8497,13 +8514,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 )
             }
             AstKind::ObjectProperty(property) => {
+                let in_const_context = self.is_in_const_context(node.program_id, node.node_id);
                 let contextual_type = self.get_contextual_type_of_object_property_value(
                     node.program_id,
                     node.node_id,
                     property.value.span(),
                 );
-                let flags = if (matches!(property.value, Expression::BooleanLiteral(_))
-                    && self.is_in_contextually_typed_initializer(node.program_id, node.node_id))
+                let flags = if in_const_context
+                    || (matches!(property.value, Expression::BooleanLiteral(_))
+                        && self.is_in_contextually_typed_initializer(node.program_id, node.node_id))
                     || contextual_type
                         .is_some_and(|ty| type_contains_literal_type(self.arena(), ty, 0))
                 {
@@ -8514,6 +8533,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 let mut context = ExpressionCheckContext::new(flags);
                 if let Some(contextual_type) = contextual_type {
                     context = context.with_contextual_type(contextual_type, CheckMode::CONTEXTUAL);
+                }
+                if in_const_context {
+                    context =
+                        context.with_check_mode(CheckMode::CONST_CONTEXT | CheckMode::FORCE_TUPLE);
                 }
                 self.check_expression_with_context(
                     node.program_id,
