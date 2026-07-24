@@ -4008,6 +4008,37 @@ mod test {
     }
 
     #[test]
+    fn spreads_materialize_class_instance_fields() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare class Box {
+            value: number;
+            method(): string;
+        }
+        declare const instance: Box;
+        const instanceSpread = { ...instance };
+
+        declare class GenericBox<T> {
+            value: T;
+        }
+        declare const genericInstance: GenericBox<string>;
+        const genericInstanceSpread = { ...genericInstance };
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "instanceSpread").to_type_string(ret.arena),
+            "{ value: number; }"
+        );
+        assert_eq!(
+            get_first_symbol_type(&ret, "genericInstanceSpread").to_type_string(ret.arena),
+            "{ value: string; }"
+        );
+    }
+
+    #[test]
     fn await_structural_thenable_uses_fulfilled_callback_value_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

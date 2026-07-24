@@ -4368,7 +4368,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 properties
             }
             TypeData::TypeReference(reference) => {
-                self.get_object_spread_properties_of_interface(program_id, reference, depth + 1)
+                let mut properties = self.get_object_spread_properties_of_interface(
+                    program_id,
+                    reference,
+                    depth + 1,
+                );
+                for property in
+                    self.get_object_spread_properties_of_class(program_id, reference, depth + 1)
+                {
+                    if let Some(existing) = properties.iter_mut().find(|existing| {
+                        existing.name == property.name && existing.computed == property.computed
+                    }) {
+                        *existing = property;
+                    } else {
+                        properties.push(property);
+                    }
+                }
+                properties
             }
             _ => Vec::new(),
         }
@@ -4450,6 +4466,62 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }) {
                     properties.push(property);
                 }
+            }
+        }
+        properties
+    }
+
+    fn get_object_spread_properties_of_class(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+        depth: usize,
+    ) -> Vec<TyProperty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return Vec::new();
+        }
+        let Some(class_symbol) = self.get_class_symbol_for_type(program_id, reference.name) else {
+            return Vec::new();
+        };
+        let Some((class_node_id, class)) = self.get_class_for_symbol(class_symbol) else {
+            return Vec::new();
+        };
+        let substitutions = self.type_parameter_substitutions_for_reference(
+            class_symbol.program_id,
+            class.type_parameters.as_deref(),
+            reference,
+        );
+        let mapper = substitutions.to_mapper(self.arena());
+
+        let mut properties = Vec::new();
+        for computed in [false, true] {
+            for element in &class.body.body {
+                let ClassElement::PropertyDefinition(property) = element else {
+                    continue;
+                };
+                if property.r#static || property.computed != computed {
+                    continue;
+                }
+                let Some(name) =
+                    self.resolved_property_key_name(class_symbol.program_id, &property.key)
+                else {
+                    continue;
+                };
+                properties.push(TyProperty {
+                    name,
+                    ty: self.instantiate_type(
+                        self.get_type_of_property_definition(
+                            class_symbol.program_id,
+                            property,
+                            Some(class_node_id),
+                        ),
+                        &mapper,
+                    ),
+                    computed,
+                    optional: property.optional,
+                    method: false,
+                    readonly: property.readonly,
+                });
             }
         }
         properties

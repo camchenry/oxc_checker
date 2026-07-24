@@ -71,8 +71,7 @@ declare const instance: Box;
 >                       ^^^: typeof Box   (TyTypeQuery) (IdentifierReference)
 
 const instanceSpread = { ...instance };
->     ^^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-            expected: { value: number; }
+>     ^^^^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
 
 const instanceSpread = { ...instance };
 >                           ^^^^^^^^: Box   (TyTypeReference) (IdentifierReference)
