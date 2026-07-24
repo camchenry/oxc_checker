@@ -3,8 +3,7 @@ interface String {
         expected: StringConstructor
 
     replaceAll(searchValue: string | RegExp, replaceValue: string): string;
->   ^^^^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
-      expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
+>   ^^^^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
 
     replaceAll(searchValue: string | RegExp, replaceValue: string): string;
 >              ^^^^^^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)
@@ -19,8 +18,7 @@ interface String {
 >                                            ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
->   ^^^^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
-      expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
+>   ^^^^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
 
     replaceAll(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
 >              ^^^^^^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)

@@ -2,8 +2,7 @@ interface ObjectConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->   ^^^^^^: (o: object, v: PropertyKey) => boolean   (TyFunction) (TSMethodSignature)
-  expected: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }
+>   ^^^^^^: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }   (TyObject) (TSMethodSignature)
 
     hasOwn(o: object, v: PropertyKey): boolean;
 >          ^: object   (TyPrimitiveObject) (BindingIdentifier)

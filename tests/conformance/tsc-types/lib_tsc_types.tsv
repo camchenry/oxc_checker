@@ -43391,3 +43391,107 @@ es5.d.ts	99612	99616	fill	{ (value: number, start?: number, end?: number): this;
 es5.d.ts	99617	99622	value	number
 es5.d.ts	99632	99637	start	number | undefined
 es5.d.ts	99648	99651	end	number | undefined
+esnext.disposable.d.ts	1000	1026	SuppressedErrorConstructor	any
+esnext.disposable.d.ts	1039	1054	DisposableStack	DisposableStackConstructor
+esnext.disposable.d.ts	1158	1166	disposed	boolean
+esnext.disposable.d.ts	1283	1290	dispose	{ (): void; (): void; }
+esnext.disposable.d.ts	134	151	SymbolConstructor	any
+esnext.disposable.d.ts	1541	1544	use	{ <T extends Disposable | null | undefined>(value: T): T; <T extends Disposable | null | undefined>(value: T): T; }
+esnext.disposable.d.ts	1545	1546	T	any
+esnext.disposable.d.ts	1555	1565	Disposable	any
+esnext.disposable.d.ts	1586	1591	value	T
+esnext.disposable.d.ts	1593	1594	T	any
+esnext.disposable.d.ts	1597	1598	T	any
+esnext.disposable.d.ts	1917	1922	adopt	{ <T>(value: T, onDispose: (value: T) => void): T; <T>(value: T, onDispose: (value: T) => void): T; }
+esnext.disposable.d.ts	1923	1924	T	any
+esnext.disposable.d.ts	1926	1931	value	T
+esnext.disposable.d.ts	1933	1934	T	any
+esnext.disposable.d.ts	1936	1945	onDispose	(value: T) => void
+esnext.disposable.d.ts	1948	1953	value	T
+esnext.disposable.d.ts	1955	1956	T	any
+esnext.disposable.d.ts	1968	1969	T	any
+esnext.disposable.d.ts	2056	2061	defer	{ (onDispose: () => void): void; (onDispose: () => void): void; }
+esnext.disposable.d.ts	2062	2071	onDispose	() => void
+esnext.disposable.d.ts	302	309	dispose	unique symbol
+esnext.disposable.d.ts	3065	3069	move	{ (): DisposableStack; (): DisposableStack; }
+esnext.disposable.d.ts	3073	3088	DisposableStack	DisposableStackConstructor
+esnext.disposable.d.ts	3095	3101	Symbol	SymbolConstructor
+esnext.disposable.d.ts	3102	3109	dispose	unique symbol
+esnext.disposable.d.ts	3134	3140	Symbol	SymbolConstructor
+esnext.disposable.d.ts	3141	3152	toStringTag	unique symbol
+esnext.disposable.d.ts	3176	3202	DisposableStackConstructor	any
+esnext.disposable.d.ts	3217	3232	DisposableStack	DisposableStackConstructor
+esnext.disposable.d.ts	3247	3256	prototype	DisposableStack
+esnext.disposable.d.ts	3258	3273	DisposableStack	DisposableStackConstructor
+esnext.disposable.d.ts	3289	3304	DisposableStack	DisposableStackConstructor
+esnext.disposable.d.ts	3306	3332	DisposableStackConstructor	any
+esnext.disposable.d.ts	3345	3365	AsyncDisposableStack	AsyncDisposableStackConstructor
+esnext.disposable.d.ts	3469	3477	disposed	boolean
+esnext.disposable.d.ts	3594	3606	disposeAsync	{ (): Promise<void>; (): Promise<void>; }
+esnext.disposable.d.ts	3610	3617	Promise	PromiseConstructor
+esnext.disposable.d.ts	3866	3869	use	{ <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; }
+esnext.disposable.d.ts	3870	3871	T	any
+esnext.disposable.d.ts	3880	3895	AsyncDisposable	any
+esnext.disposable.d.ts	3898	3908	Disposable	any
+esnext.disposable.d.ts	3929	3934	value	T
+esnext.disposable.d.ts	3936	3937	T	any
+esnext.disposable.d.ts	3940	3941	T	any
+esnext.disposable.d.ts	4270	4275	adopt	{ <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; }
+esnext.disposable.d.ts	4276	4277	T	any
+esnext.disposable.d.ts	4279	4284	value	T
+esnext.disposable.d.ts	4286	4287	T	any
+esnext.disposable.d.ts	4289	4303	onDisposeAsync	(value: T) => PromiseLike<void> | void
+esnext.disposable.d.ts	4306	4311	value	T
+esnext.disposable.d.ts	4313	4314	T	any
+esnext.disposable.d.ts	4319	4330	PromiseLike	any
+esnext.disposable.d.ts	4346	4347	T	any
+esnext.disposable.d.ts	4434	4439	defer	{ (onDisposeAsync: () => PromiseLike<void> | void): void; (onDisposeAsync: () => PromiseLike<void> | void): void; }
+esnext.disposable.d.ts	4440	4454	onDisposeAsync	() => PromiseLike<void> | void
+esnext.disposable.d.ts	4462	4473	PromiseLike	any
+esnext.disposable.d.ts	496	508	asyncDispose	unique symbol
+esnext.disposable.d.ts	538	548	Disposable	any
+esnext.disposable.d.ts	5468	5472	move	{ (): AsyncDisposableStack; (): AsyncDisposableStack; }
+esnext.disposable.d.ts	5476	5496	AsyncDisposableStack	AsyncDisposableStackConstructor
+esnext.disposable.d.ts	5503	5509	Symbol	SymbolConstructor
+esnext.disposable.d.ts	5510	5522	asyncDispose	unique symbol
+esnext.disposable.d.ts	5527	5534	Promise	PromiseConstructor
+esnext.disposable.d.ts	5556	5562	Symbol	SymbolConstructor
+esnext.disposable.d.ts	556	562	Symbol	SymbolConstructor
+esnext.disposable.d.ts	5563	5574	toStringTag	unique symbol
+esnext.disposable.d.ts	5598	5629	AsyncDisposableStackConstructor	any
+esnext.disposable.d.ts	563	570	dispose	unique symbol
+esnext.disposable.d.ts	5644	5664	AsyncDisposableStack	AsyncDisposableStackConstructor
+esnext.disposable.d.ts	5679	5688	prototype	AsyncDisposableStack
+esnext.disposable.d.ts	5690	5710	AsyncDisposableStack	AsyncDisposableStackConstructor
+esnext.disposable.d.ts	5726	5746	AsyncDisposableStack	AsyncDisposableStackConstructor
+esnext.disposable.d.ts	5748	5779	AsyncDisposableStackConstructor	any
+esnext.disposable.d.ts	5792	5806	IteratorObject	any
+esnext.disposable.d.ts	5807	5808	T	any
+esnext.disposable.d.ts	5810	5817	TReturn	any
+esnext.disposable.d.ts	5819	5824	TNext	any
+esnext.disposable.d.ts	5834	5844	Disposable	any
+esnext.disposable.d.ts	5860	5879	AsyncIteratorObject	any
+esnext.disposable.d.ts	5880	5881	T	any
+esnext.disposable.d.ts	5883	5890	TReturn	any
+esnext.disposable.d.ts	5892	5897	TNext	any
+esnext.disposable.d.ts	5907	5922	AsyncDisposable	any
+esnext.disposable.d.ts	594	609	AsyncDisposable	any
+esnext.disposable.d.ts	617	623	Symbol	SymbolConstructor
+esnext.disposable.d.ts	624	636	asyncDispose	unique symbol
+esnext.disposable.d.ts	641	652	PromiseLike	any
+esnext.disposable.d.ts	673	688	SuppressedError	SuppressedErrorConstructor
+esnext.disposable.d.ts	697	702	Error	ErrorConstructor
+esnext.disposable.d.ts	709	714	error	any
+esnext.disposable.d.ts	725	735	suppressed	any
+esnext.disposable.d.ts	755	781	SuppressedErrorConstructor	any
+esnext.disposable.d.ts	793	798	error	any
+esnext.disposable.d.ts	805	815	suppressed	any
+esnext.disposable.d.ts	822	829	message	string | undefined
+esnext.disposable.d.ts	841	856	SuppressedError	SuppressedErrorConstructor
+esnext.disposable.d.ts	863	868	error	any
+esnext.disposable.d.ts	875	885	suppressed	any
+esnext.disposable.d.ts	892	899	message	string | undefined
+esnext.disposable.d.ts	911	926	SuppressedError	SuppressedErrorConstructor
+esnext.disposable.d.ts	941	950	prototype	SuppressedError
+esnext.disposable.d.ts	952	967	SuppressedError	SuppressedErrorConstructor
+esnext.disposable.d.ts	983	998	SuppressedError	SuppressedErrorConstructor

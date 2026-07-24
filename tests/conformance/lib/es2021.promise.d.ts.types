@@ -69,8 +69,7 @@ interface PromiseConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
-expected: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }
+>   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >       ^: any   (TyAny) (TSTypeParameter)
@@ -94,8 +93,7 @@ expected: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[nu
 >                                                                      ^: any   (TyAny) (TSTypeReference)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
-expected: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }
+>   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >       ^: any   (TyAny) (TSTypeParameter)

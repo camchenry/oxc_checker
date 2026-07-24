@@ -6,8 +6,7 @@ interface Array<T> {
 >               ^: any   (TyAny) (TSTypeParameter)
 
     at(index: number): T | undefined;
->   ^^: (index: number) => T | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): T | undefined; (index: number): T | undefined; }
+>   ^^: { (index: number): T | undefined; (index: number): T | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): T | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -22,8 +21,7 @@ interface ReadonlyArray<T> {
 >                       ^: any   (TyAny) (TSTypeParameter)
 
     at(index: number): T | undefined;
->   ^^: (index: number) => T | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): T | undefined; (index: number): T | undefined; }
+>   ^^: { (index: number): T | undefined; (index: number): T | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): T | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -42,8 +40,7 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -59,8 +56,7 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -76,8 +72,7 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -93,8 +88,7 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -110,8 +104,7 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -127,8 +120,7 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -144,8 +136,7 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -161,8 +152,7 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -178,8 +168,7 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): number | undefined;
->   ^^: (index: number) => number | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): number | undefined; (index: number): number | undefined; }
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): number | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -195,8 +184,7 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): bigint | undefined;
->   ^^: (index: number) => bigint | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): bigint | undefined; (index: number): bigint | undefined; }
+>   ^^: { (index: number): bigint | undefined; (index: number): bigint | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): bigint | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -212,8 +200,7 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     at(index: number): bigint | undefined;
->   ^^: (index: number) => bigint | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): bigint | undefined; (index: number): bigint | undefined; }
+>   ^^: { (index: number): bigint | undefined; (index: number): bigint | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): bigint | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)

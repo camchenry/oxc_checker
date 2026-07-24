@@ -1519,6 +1519,10 @@ fn parse_fixture_program<'a>(
         builder = builder
             .with_default_lib_target_name(target)
             .map_err(|err| err.to_string())?;
+    } else {
+        builder = builder
+            .with_default_lib_target_name("esnext")
+            .map_err(|err| err.to_string())?;
     }
     for source_file in &compiler_case.files {
         if !is_compilable_fixture_file(Path::new(&source_file.name)) {

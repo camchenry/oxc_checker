@@ -3,8 +3,7 @@ interface String {
         expected: StringConstructor
 
     at(index: number): string | undefined;
->   ^^: (index: number) => string | undefined   (TyFunction) (TSMethodSignature)
-expected: { (index: number): string | undefined; (index: number): string | undefined; }
+>   ^^: { (index: number): string | undefined; (index: number): string | undefined; }   (TyObject) (TSMethodSignature)
 
     at(index: number): string | undefined;
 >      ^^^^^: number   (TyNumber) (BindingIdentifier)

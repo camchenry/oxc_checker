@@ -221,8 +221,7 @@ function makeSyncDisposable(): Disposable {
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     [Symbol.dispose](): void {
->           ^^^^^^^: any   (TyAny) (StaticMemberExpression)
-           expected: unique symbol
+>           ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
 async function shouldNotAwait() {
 >              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
@@ -243,8 +242,7 @@ function makeSyncDisposable(): Disposable {
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     [Symbol.dispose](): void {
->           ^^^^^^^: any   (TyAny) (StaticMemberExpression)
-           expected: unique symbol
+>           ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
 async function shouldNotAwait() {
 >              ^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
@@ -265,8 +263,7 @@ function makeAsyncDisposable(): AsyncDisposable {
 >          ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
     async [Symbol.asyncDispose](): Promise<void> {
->                 ^^^^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
-                      expected: unique symbol
+>                 ^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
     async [Symbol.asyncDispose](): Promise<void> {
 >                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)

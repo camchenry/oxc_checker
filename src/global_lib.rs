@@ -20,6 +20,7 @@ pub(crate) enum LibTarget {
     Es2020,
     Es2021,
     Es2022,
+    EsNext,
 }
 
 impl LibTarget {
@@ -40,9 +41,10 @@ impl LibTarget {
             "es2020" => Some(Self::Es2020),
             "es2021" => Some(Self::Es2021),
             "es2022" => Some(Self::Es2022),
-            // TODO(correctness): embed ES2023+ and ESNext libs instead of capping
-            // newer targets at the highest bundled target.
-            "es2023" | "es2024" | "es2025" | "esnext" => Some(Self::Es2022),
+            // TODO(correctness): embed ES2023+ libs instead of capping newer
+            // yearly targets at the highest bundled yearly target.
+            "es2023" | "es2024" | "es2025" => Some(Self::Es2022),
+            "esnext" | "latest" => Some(Self::EsNext),
             _ => None,
         }
     }
@@ -157,9 +159,10 @@ fn aggregate_lib_target(name: &str) -> Option<LibTarget> {
         "es2020" => Some(LibTarget::Es2020),
         "es2021" => Some(LibTarget::Es2021),
         "es2022" => Some(LibTarget::Es2022),
-        // TODO(correctness): embed ES2023+ and ESNext libs instead of capping
-        // newer aggregate libs at the highest bundled target.
-        "es2023" | "es2024" | "es2025" | "esnext" => Some(LibTarget::Es2022),
+        // TODO(correctness): embed ES2023+ libs instead of capping newer
+        // yearly aggregate libs at the highest bundled yearly target.
+        "es2023" | "es2024" | "es2025" => Some(LibTarget::Es2022),
+        "esnext" => Some(LibTarget::EsNext),
         _ => None,
     }
 }
@@ -215,6 +218,7 @@ fn lib_name_to_virtual_path(name: &str) -> Option<&'static str> {
         "es2022.object" => "lib.es2022.object.d.ts",
         "es2022.regexp" => "lib.es2022.regexp.d.ts",
         "es2022.string" => "lib.es2022.string.d.ts",
+        "esnext.disposable" => "lib.esnext.disposable.d.ts",
         _ => return None,
     })
 }
@@ -502,6 +506,11 @@ const LIB_CATALOG: &[LibCatalogEntry] = &[
         "lib.es2022.regexp.d.ts",
         include_str!("lib/es2022.regexp.d.ts"),
     ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.disposable.d.ts",
+        include_str!("lib/esnext.disposable.d.ts"),
+    ),
     host_file("lib.dom.d.ts", include_str!("lib/dom.generated.d.ts")),
     host_file(
         "lib.dom.iterable.d.ts",
@@ -542,6 +551,16 @@ mod tests {
         assert!(paths.contains(&"lib.es2020.promise.d.ts"));
         assert!(paths.contains(&"lib.es2021.weakref.d.ts"));
         assert!(paths.contains(&"lib.es2022.array.d.ts"));
+        assert!(!paths.contains(&"lib.esnext.disposable.d.ts"));
+    }
+
+    #[test]
+    fn esnext_target_includes_disposable() {
+        let files = resolve_lib_files(&LibSelection::DefaultTarget(LibTarget::EsNext)).unwrap();
+        let paths = paths(&files);
+
+        assert!(paths.contains(&"lib.es2022.array.d.ts"));
+        assert!(paths.contains(&"lib.esnext.disposable.d.ts"));
     }
 
     #[test]

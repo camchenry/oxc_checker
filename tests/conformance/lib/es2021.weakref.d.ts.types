@@ -19,8 +19,7 @@ interface WeakRef<T extends WeakKey> {
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
     deref(): T | undefined;
->   ^^^^^: () => T | undefined   (TyFunction) (TSMethodSignature)
- expected: { (): T | undefined; (): T | undefined; }
+>   ^^^^^: { (): T | undefined; (): T | undefined; }   (TyObject) (TSMethodSignature)
 
     deref(): T | undefined;
 >            ^: any   (TyAny) (TSTypeReference)
@@ -82,8 +81,7 @@ interface FinalizationRegistry<T> {
 >                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->   ^^^^^^^^: (target: WeakKey, heldValue: T, unregisterToken?: WeakKey) => void   (TyFunction) (TSMethodSignature)
-    expected: { (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; }
+>   ^^^^^^^^: { (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; }   (TyObject) (TSMethodSignature)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
 >            ^^^^^^: WeakKey   (TyTypeReference) (BindingIdentifier)
@@ -104,8 +102,7 @@ interface FinalizationRegistry<T> {
 >                                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     unregister(unregisterToken: WeakKey): boolean;
->   ^^^^^^^^^^: (unregisterToken: WeakKey) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (unregisterToken: WeakKey): boolean; (unregisterToken: WeakKey): boolean; }
+>   ^^^^^^^^^^: { (unregisterToken: WeakKey): boolean; (unregisterToken: WeakKey): boolean; }   (TyObject) (TSMethodSignature)
 
     unregister(unregisterToken: WeakKey): boolean;
 >              ^^^^^^^^^^^^^^^: WeakKey   (TyTypeReference) (BindingIdentifier)

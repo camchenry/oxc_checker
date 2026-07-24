@@ -257,8 +257,10 @@ interface AggregateErrorConstructor {
 >                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     ): AggregateError;
->      ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
-             expected: AggregateErrorConstructor
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
+
+    ): AggregateError;
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (IdentifierReference)
 
         errors: Iterable<any>,
 >       ^^^^^^: Iterable<any>   (TyTypeReference) (BindingIdentifier)
@@ -276,5 +278,7 @@ interface AggregateErrorConstructor {
 >                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     ): AggregateError;
->      ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
-             expected: AggregateErrorConstructor
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
+
+    ): AggregateError;
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (IdentifierReference)
