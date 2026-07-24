@@ -8,8 +8,7 @@ declare const promise: Promise<number>;
 >                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 const spreadPromise = { ...promise };
->     ^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-           expected: { then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; finally(onfinally?: (() => void) | null | undefined): Promise<number>; [Symbol.toStringTag]: string; }
+>     ^^^^^^^^^^^^^: { then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; finally(onfinally?: (() => void) | null | undefined): Promise<number>; [Symbol.toStringTag]: string; }   (TyObject) (BindingIdentifier)
 
 const spreadPromise = { ...promise };
 >                          ^^^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
@@ -36,8 +35,7 @@ declare const map: Map<string, number>;
 >                  ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
 
 const mapSpread = { ...map };
->     ^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-       expected: { clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; [Symbol.iterator](): MapIterator<[string, number]>; [Symbol.toStringTag]: string; }
+>     ^^^^^^^^^: { clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; [Symbol.iterator](): MapIterator<[string, number]>; [Symbol.toStringTag]: string; }   (TyObject) (BindingIdentifier)
 
 const mapSpread = { ...map };
 >                      ^^^: Map<string, number>   (TyTypeReference) (IdentifierReference)
@@ -46,8 +44,7 @@ declare const userName: string;
 >             ^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const characters = [...userName];
->     ^^^^^^^^^^: any[]   (TyArray) (BindingIdentifier)
-        expected: string[]
+>     ^^^^^^^^^^: string[]   (TyArray) (BindingIdentifier)
 
 const characters = [...userName];
 >                      ^^^^^^^^: string   (TyString) (IdentifierReference)
@@ -141,5 +138,4 @@ const characters = userName.split('');
 >                  ^^^^^^^^: string   (TyString) (IdentifierReference)
 
 const characters = userName.split('');
->                           ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; }   (TyObject) (StaticMemberExpression)
-                         expected: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }
+>                           ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }   (TyObject) (StaticMemberExpression)

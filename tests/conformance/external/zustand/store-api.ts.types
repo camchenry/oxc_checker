@@ -513,12 +513,10 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 >     ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (IdentifierReference)
 
       listeners.add(listener)
->     ^^^^^^^^^^^^^^^^^^^^^^^: this   (TyThis) (ExpressionStatement)
-                     expected: Set<(state: any, prevState: any) => void>
+>     ^^^^^^^^^^^^^^^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (ExpressionStatement)
 
       listeners.add(listener)
->               ^^^: (value: (state: any, prevState: any) => void) => this   (TyFunction) (StaticMemberExpression)
-           expected: (value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>
+>               ^^^: (value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>   (TyFunction) (StaticMemberExpression)
 
       listeners.add(listener)
 >                   ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (IdentifierReference)

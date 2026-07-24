@@ -3789,6 +3789,60 @@ mod test {
     }
 
     #[test]
+    fn spreads_materialize_interface_members_and_iterable_elements() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const promise: Promise<number>;
+        const spreadPromise = { ...promise };
+        declare const map: Map<string, number>;
+        const spreadMap = { ...map };
+        const characters = [..."text"];
+        "#,
+        );
+
+        let spread_promise = get_first_symbol_type(&ret, "spreadPromise").to_type_string(ret.arena);
+        assert!(spread_promise.contains("then<TResult1, TResult2>"));
+        assert!(spread_promise.contains("[Symbol.toStringTag]: string"));
+        let spread_map = get_first_symbol_type(&ret, "spreadMap").to_type_string(ret.arena);
+        assert!(spread_map.contains("set(key: string, value: number): Map<string, number>"));
+        assert!(spread_map.contains("[Symbol.iterator](): MapIterator<[string, number]>"));
+        assert_eq!(
+            get_first_symbol_type(&ret, "characters").to_type_string(ret.arena),
+            "string[]"
+        );
+
+        let shadowed_ret = parse_and_check_source(
+            &allocator,
+            r#"
+        export {};
+        interface Promise<T> { own: T }
+        declare const promise: Promise<number>;
+        const spreadPromise = { ...promise };
+        "#,
+        );
+        assert_eq!(
+            get_first_symbol_type(&shadowed_ret, "spreadPromise")
+                .to_type_string(shadowed_ret.arena),
+            "{ own: number; }"
+        );
+
+        let augmented_ret = parse_and_check_source(
+            &allocator,
+            r#"
+        interface Map<K, V> { own: K }
+        declare const map: Map<string, number>;
+        const spreadMap = { ...map };
+        "#,
+        );
+        let spread_map =
+            get_first_symbol_type(&augmented_ret, "spreadMap").to_type_string(augmented_ret.arena);
+        assert!(spread_map.contains("own: string"));
+        assert!(spread_map.contains("clear(): void"));
+    }
+
+    #[test]
     fn await_structural_thenable_uses_fulfilled_callback_value_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

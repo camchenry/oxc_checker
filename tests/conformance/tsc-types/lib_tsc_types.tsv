@@ -43391,6 +43391,41 @@ es5.d.ts	99612	99616	fill	{ (value: number, start?: number, end?: number): this;
 es5.d.ts	99617	99622	value	number
 es5.d.ts	99632	99637	start	number | undefined
 es5.d.ts	99648	99651	end	number | undefined
+esnext.collection.d.ts	1292	1303	getOrInsert	{ (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }
+esnext.collection.d.ts	1304	1307	key	K
+esnext.collection.d.ts	1309	1310	K	any
+esnext.collection.d.ts	1312	1324	defaultValue	V
+esnext.collection.d.ts	1326	1327	V	any
+esnext.collection.d.ts	1330	1331	V	any
+esnext.collection.d.ts	1721	1740	getOrInsertComputed	{ (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }
+esnext.collection.d.ts	1741	1744	key	K
+esnext.collection.d.ts	1746	1747	K	any
+esnext.collection.d.ts	1749	1757	callback	(key: K) => V
+esnext.collection.d.ts	1760	1763	key	K
+esnext.collection.d.ts	1765	1766	K	any
+esnext.collection.d.ts	1771	1772	V	any
+esnext.collection.d.ts	1775	1776	V	any
+esnext.collection.d.ts	413	424	getOrInsert	{ (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }
+esnext.collection.d.ts	425	428	key	K
+esnext.collection.d.ts	430	431	K	any
+esnext.collection.d.ts	433	445	defaultValue	V
+esnext.collection.d.ts	447	448	V	any
+esnext.collection.d.ts	451	452	V	any
+esnext.collection.d.ts	53	56	Map	MapConstructor
+esnext.collection.d.ts	57	58	K	any
+esnext.collection.d.ts	60	61	V	any
+esnext.collection.d.ts	834	853	getOrInsertComputed	{ (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }
+esnext.collection.d.ts	854	857	key	K
+esnext.collection.d.ts	859	860	K	any
+esnext.collection.d.ts	862	870	callback	(key: K) => V
+esnext.collection.d.ts	873	876	key	K
+esnext.collection.d.ts	878	879	K	any
+esnext.collection.d.ts	884	885	V	any
+esnext.collection.d.ts	888	889	V	any
+esnext.collection.d.ts	904	911	WeakMap	WeakMapConstructor
+esnext.collection.d.ts	912	913	K	any
+esnext.collection.d.ts	922	929	WeakKey	any
+esnext.collection.d.ts	931	932	V	any
 esnext.disposable.d.ts	1000	1026	SuppressedErrorConstructor	any
 esnext.disposable.d.ts	1039	1054	DisposableStack	DisposableStackConstructor
 esnext.disposable.d.ts	1158	1166	disposed	boolean

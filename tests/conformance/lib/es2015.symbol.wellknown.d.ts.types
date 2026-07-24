@@ -336,12 +336,10 @@ interface String {
         expected: StringConstructor
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: {}): RegExpMatchArray | null; (matcher: {}): RegExpMatchArray | null; }   (TyObject) (TSMethodSignature)
- expected: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; }
+>   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; }   (TyObject) (TSMethodSignature)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->         ^^^^^^^: {}   (TyObject) (BindingIdentifier)
-         expected: { [Symbol.match](string: string): RegExpMatchArray | null; }
+>         ^^^^^^^: { [Symbol.match](string: string): RegExpMatchArray | null; }   (TyObject) (BindingIdentifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
 >                     ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -359,12 +357,10 @@ interface String {
 >                                                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
-   expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->           ^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-               expected: { [Symbol.replace](string: string, replaceValue: string): string; }
+>           ^^^^^^^^^^^: { [Symbol.replace](string: string, replaceValue: string): string; }   (TyObject) (BindingIdentifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
 >                           ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -382,12 +378,10 @@ interface String {
 >                                                                                             ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
-   expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->           ^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-               expected: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }
+>           ^^^^^^^^^^^: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (BindingIdentifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
 >                           ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -417,12 +411,10 @@ interface String {
 >                                                                                                                                                                 ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->   ^^^^^^: { (regexp: string | RegExp): number; (searcher: {}): number; (searcher: {}): number; }   (TyObject) (TSMethodSignature)
-  expected: { (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; (searcher: { [Symbol.search](string: string): number; }): number; }
+>   ^^^^^^: { (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; (searcher: { [Symbol.search](string: string): number; }): number; }   (TyObject) (TSMethodSignature)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->          ^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-           expected: { [Symbol.search](string: string): number; }
+>          ^^^^^^^^: { [Symbol.search](string: string): number; }   (TyObject) (BindingIdentifier)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
 >                       ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -434,12 +426,10 @@ interface String {
 >                                      ^^^^^^: string   (TyString) (BindingIdentifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; (splitter: {}, limit?: number): string[]; }   (TyObject) (TSMethodSignature)
- expected: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }
+>   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }   (TyObject) (TSMethodSignature)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->         ^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-          expected: { [Symbol.split](string: string, limit?: number): string[]; }
+>         ^^^^^^^^: { [Symbol.split](string: string, limit?: number): string[]; }   (TyObject) (BindingIdentifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
 >                      ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)

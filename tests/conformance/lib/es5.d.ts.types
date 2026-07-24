@@ -1068,8 +1068,7 @@ interface String {
 >                 ^^^^: string   (TyString) (BindingIdentifier)
 
     match(regexp: string | RegExp): RegExpMatchArray | null;
->   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: {}): RegExpMatchArray | null; (regexp: string | RegExp): RegExpMatchArray | null; }   (TyObject) (TSMethodSignature)
- expected: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; (regexp: string | RegExp): RegExpMatchArray | null; }
+>   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; (regexp: string | RegExp): RegExpMatchArray | null; }   (TyObject) (TSMethodSignature)
 
     match(regexp: string | RegExp): RegExpMatchArray | null;
 >         ^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)
@@ -1084,8 +1083,7 @@ interface String {
 >                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     replace(searchValue: string | RegExp, replaceValue: string): string;
->   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
-   expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
 
     replace(searchValue: string | RegExp, replaceValue: string): string;
 >           ^^^^^^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)
@@ -1100,8 +1098,7 @@ interface String {
 >                                         ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     replace(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
->   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: {}, replaceValue: string): string; (searchValue: {}, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
-   expected: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
 
     replace(searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string;
 >           ^^^^^^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)
@@ -1122,8 +1119,7 @@ interface String {
 >                                                                          ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     search(regexp: string | RegExp): number;
->   ^^^^^^: { (regexp: string | RegExp): number; (searcher: {}): number; (regexp: string | RegExp): number; }   (TyObject) (TSMethodSignature)
-  expected: { (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; (regexp: string | RegExp): number; }
+>   ^^^^^^: { (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; (regexp: string | RegExp): number; }   (TyObject) (TSMethodSignature)
 
     search(regexp: string | RegExp): number;
 >          ^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)
@@ -1144,8 +1140,7 @@ interface String {
 >                         ^^^: number | undefined   (TyUnion) (BindingIdentifier)
 
     split(separator: string | RegExp, limit?: number): string[];
->   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: {}, limit?: number): string[]; (separator: string | RegExp, limit?: number): string[]; }   (TyObject) (TSMethodSignature)
- expected: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; (separator: string | RegExp, limit?: number): string[]; }
+>   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; (separator: string | RegExp, limit?: number): string[]; }   (TyObject) (TSMethodSignature)
 
     split(separator: string | RegExp, limit?: number): string[];
 >         ^^^^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)

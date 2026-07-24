@@ -721,6 +721,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     mapped.readonly,
                 )
             }
+            TypeData::This => mapper.map(self.arena(), ty),
             _ => ty,
         }
     }
@@ -737,6 +738,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 TypeData::Function(function) if !function.type_parameters.is_empty() => {
                     contains = true
                 }
+                TypeData::This => contains = true,
                 TypeData::Infer(_) => contains = true,
                 _ => {}
             },
@@ -3816,12 +3818,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let mut signatures = Vec::new();
 
         for &(program_id, interface) in declarations {
-            let substitutions = self.type_parameter_substitutions_for_reference(
+            let mapper = self.interface_member_mapper(
                 program_id,
                 interface.type_parameters.as_deref(),
                 reference,
             );
-            let mapper = substitutions.to_mapper(self.arena());
 
             for signature in &interface.body.body {
                 match signature {
@@ -4121,16 +4122,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         node_id,
                         property_flags,
                     );
-                    let spread_type = self.expand_type_at_use(program_id, spread_type, 0);
-                    let TypeData::Object(spread_object) = self.arena().type_data(spread_type)
-                    else {
-                        continue;
-                    };
-                    for spread_property in &spread_object.properties {
+                    for spread_property in
+                        self.get_object_spread_properties(program_id, spread_type, 0)
+                    {
                         let property = TyProperty {
-                            method: false,
                             readonly: context.check_mode.const_context(),
-                            ..*spread_property
+                            ..spread_property
                         };
                         explicit_properties.retain(|existing| existing.name != property.name);
                         if let Some(existing) = spread_properties
@@ -4150,6 +4147,160 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena(),
             explicit_properties.into_iter().chain(spread_properties),
         )
+    }
+
+    fn get_object_spread_properties(
+        &self,
+        program_id: ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Vec<TyProperty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return Vec::new();
+        }
+
+        let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+        match self.arena().type_data(ty) {
+            TypeData::Object(object) => object
+                .properties
+                .iter()
+                .map(|property| TyProperty {
+                    method: false,
+                    ..*property
+                })
+                .collect(),
+            TypeData::Intersection(intersection) => {
+                let mut properties: Vec<TyProperty<'a>> = Vec::new();
+                for ty in &intersection.types {
+                    for property in self.get_object_spread_properties(program_id, *ty, depth + 1) {
+                        if let Some(existing) = properties.iter_mut().find(|existing| {
+                            existing.name == property.name && existing.computed == property.computed
+                        }) {
+                            *existing = property;
+                        } else {
+                            properties.push(property);
+                        }
+                    }
+                }
+                properties
+            }
+            TypeData::TypeReference(reference) => {
+                self.get_object_spread_properties_of_interface(program_id, reference, depth + 1)
+            }
+            _ => Vec::new(),
+        }
+    }
+
+    fn get_object_spread_properties_of_interface(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+        depth: usize,
+    ) -> Vec<TyProperty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return Vec::new();
+        }
+        let declarations = self.interface_declarations_for_reference(program_id, reference);
+        if declarations.is_empty() {
+            return Vec::new();
+        }
+
+        let mut properties = Vec::new();
+        for computed in [false, true] {
+            for &(declaration_program_id, interface) in &declarations {
+                for signature in &interface.body.body {
+                    let (key, is_computed, optional, method, readonly) = match signature {
+                        TSSignature::TSPropertySignature(property) => (
+                            &property.key,
+                            property.computed,
+                            property.optional,
+                            false,
+                            property.readonly,
+                        ),
+                        TSSignature::TSMethodSignature(method) => (
+                            &method.key,
+                            method.computed,
+                            method.optional,
+                            method.kind == TSMethodSignatureKind::Method,
+                            false,
+                        ),
+                        _ => continue,
+                    };
+                    let Some(name) = self.resolved_property_key_name(declaration_program_id, key)
+                    else {
+                        continue;
+                    };
+                    if is_computed != computed
+                        || properties.iter().any(|property: &TyProperty<'_>| {
+                            property.name == name && property.computed == computed
+                        })
+                    {
+                        continue;
+                    }
+                    let Some(ty) = self.get_property_type_of_interface_declarations(
+                        reference,
+                        name,
+                        &declarations,
+                    ) else {
+                        continue;
+                    };
+                    properties.push(TyProperty {
+                        name,
+                        ty,
+                        computed,
+                        optional,
+                        method,
+                        readonly,
+                    });
+                }
+            }
+        }
+
+        for (heritage_program_id, heritage_type) in
+            self.get_interface_heritage_types(program_id, reference)
+        {
+            for property in
+                self.get_object_spread_properties(heritage_program_id, heritage_type, depth + 1)
+            {
+                if !properties.iter().any(|existing| {
+                    existing.name == property.name && existing.computed == property.computed
+                }) {
+                    properties.push(property);
+                }
+            }
+        }
+        properties
+    }
+
+    fn interface_declarations_for_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> Vec<(ProgramId, &'a TSInterfaceDeclaration<'a>)> {
+        let Some((symbol, _)) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+        else {
+            return Vec::new();
+        };
+        let Some(symbol_program) = self.store.entry(symbol.program_id) else {
+            return Vec::new();
+        };
+        if !symbol_program.is_lib() && symbol_program.module_record().has_module_syntax {
+            self.interface_declarations_for_symbol(symbol)
+                .into_iter()
+                .map(|interface| (symbol.program_id, interface))
+                .collect()
+        } else {
+            self.interface_declarations_for_name(reference.name)
+                .iter()
+                .copied()
+                .filter(|(program_id, _)| {
+                    self.store.entry(*program_id).is_some_and(|entry| {
+                        entry.is_lib() || !entry.module_record().has_module_syntax
+                    })
+                })
+                .collect()
+        }
     }
 
     fn get_type_of_static_member_expression(
@@ -5518,6 +5669,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty<'a>> {
         let declarations = self.interface_declarations_for_name(reference.name);
+        self.get_property_type_of_interface_declarations(reference, property_name, declarations)
+    }
+
+    fn get_property_type_of_interface_declarations(
+        &self,
+        reference: &TyTypeReference<'a>,
+        property_name: &str,
+        declarations: &[(ProgramId, &'a TSInterfaceDeclaration<'a>)],
+    ) -> Option<Ty<'a>> {
         if declarations.is_empty() {
             return None;
         }
@@ -5533,7 +5693,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let TSSignature::TSPropertySignature(property) = signature else {
                     return None;
                 };
-                (property_key_name_str(&property.key) == Some(property_name)).then_some(property)
+                (self.resolved_property_key_name(program_id, &property.key) == Some(property_name))
+                    .then_some(property)
             }) {
                 let ty = property
                     .type_annotation
@@ -5547,18 +5708,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         for accessor_kind in [TSMethodSignatureKind::Get, TSMethodSignatureKind::Set] {
             for &(program_id, interface) in declarations {
-                let substitutions = self.type_parameter_substitutions_for_reference(
+                let mapper = self.interface_member_mapper(
                     program_id,
                     interface.type_parameters.as_deref(),
                     reference,
                 );
-                let mapper = substitutions.to_mapper(self.arena());
                 if let Some(ty) = interface.body.body.iter().find_map(|signature| {
                     let TSSignature::TSMethodSignature(method) = signature else {
                         return None;
                     };
                     (method.kind == accessor_kind
-                        && property_key_name_str(&method.key) == Some(property_name))
+                        && self.resolved_property_key_name(program_id, &method.key)
+                            == Some(property_name))
                     .then(|| self.get_type_of_ts_accessor_signature(program_id, method))
                     .flatten()
                 }) {
@@ -5571,18 +5732,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .iter()
             .copied()
             .flat_map(|(program_id, interface)| {
-                let substitutions = self.type_parameter_substitutions_for_reference(
+                let mapper = self.interface_member_mapper(
                     program_id,
                     interface.type_parameters.as_deref(),
                     reference,
                 );
-                let mapper = substitutions.to_mapper(self.arena());
                 interface.body.body.iter().filter_map(move |signature| {
                     let TSSignature::TSMethodSignature(method) = signature else {
                         return None;
                     };
                     (method.kind == TSMethodSignatureKind::Method
-                        && property_key_name_str(&method.key) == Some(property_name))
+                        && self.resolved_property_key_name(program_id, &method.key)
+                            == Some(property_name))
                     .then(|| {
                         let signature = self.signature_from_function_parts_with_this(
                             program_id,
@@ -5617,12 +5778,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         match self.nodes(program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(interface) => {
-                let substitutions = self.type_parameter_substitutions_for_reference(
+                let mapper = self.interface_member_mapper(
                     program_id,
                     interface.type_parameters.as_deref(),
                     reference,
                 );
-                let mapper = substitutions.to_mapper(self.arena());
                 if let Some(property) = interface.body.body.iter().find_map(|signature| {
                     let TSSignature::TSPropertySignature(property) = signature else {
                         return None;
@@ -5832,6 +5992,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             type_parameters,
             reference.type_arguments.as_slice(),
         )
+    }
+
+    fn interface_member_mapper(
+        &self,
+        program_id: ProgramId,
+        type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
+        reference: &TyTypeReference<'a>,
+    ) -> TypeMapper<'a> {
+        let receiver = Ty::type_reference(
+            self.arena(),
+            reference.name,
+            reference.type_arguments.iter().copied(),
+        );
+        self.type_parameter_substitutions_for_reference(program_id, type_parameters, reference)
+            .to_mapper(self.arena())
+            .with_prepend_mapping(self.arena(), Ty::this(), receiver)
     }
 
     fn type_parameter_substitutions_for_type_arguments(
@@ -7537,9 +7713,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     node_id,
                     context,
                 );
-                argument_type
-                    .array_element_type(self.arena())
-                    .unwrap_or_else(Ty::any)
+                let mut resolution_context = IterationResolutionContext::default();
+                self.get_iteration_types_of_iterable(
+                    program_id,
+                    argument_type,
+                    IterationResolverKind::Sync,
+                    0,
+                    &mut resolution_context,
+                )
+                .yield_type
+                .or_else(|| argument_type.array_element_type(self.arena()))
+                .unwrap_or_else(Ty::any)
             }
             ArrayExpressionElement::Elision(_) => Ty::any(),
             _ => self.check_expression_with_context(
@@ -8535,16 +8719,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         key: &'a PropertyKey<'a>,
     ) -> Option<&'a str> {
         property_key_name_str(key).or_else(|| {
-            self.well_known_symbol_property_name(program_id, key)
-                .map(|name| self.arena().str(name))
+            self.global_symbol_property_name(program_id, key)
+                .map(|name| self.arena().str(&format!("Symbol.{name}")))
         })
     }
 
-    fn well_known_symbol_property_name(
+    fn global_symbol_property_name(
         &self,
         program_id: ProgramId,
-        key: &PropertyKey<'a>,
-    ) -> Option<&'static str> {
+        key: &'a PropertyKey<'a>,
+    ) -> Option<&'a str> {
         let PropertyKey::StaticMemberExpression(member) = key else {
             return None;
         };
@@ -8563,7 +8747,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         {
             return None;
         }
-        match member.property.name.as_str() {
+        Some(member.property.name.as_str())
+    }
+
+    fn well_known_symbol_property_name(
+        &self,
+        program_id: ProgramId,
+        key: &'a PropertyKey<'a>,
+    ) -> Option<&'static str> {
+        match self.global_symbol_property_name(program_id, key)? {
             "iterator" => Some(SYMBOL_ITERATOR_PROPERTY_NAME),
             "asyncIterator" => Some(SYMBOL_ASYNC_ITERATOR_PROPERTY_NAME),
             _ => None,

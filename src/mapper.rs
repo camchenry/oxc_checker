@@ -149,7 +149,8 @@ impl<'a> TypeMapper<'a> {
         let mut pairs = Vec::new();
         self.push_pairs(&mut pairs);
         pairs.into_iter().any(|(source, target)| {
-            !is_bare_type_reference_with_name(arena, source, &names)
+            !matches!(arena.type_data(source), TypeData::This)
+                && !is_bare_type_reference_with_name(arena, source, &names)
                 && !arena.is_type_identical_to(source, target)
         })
     }

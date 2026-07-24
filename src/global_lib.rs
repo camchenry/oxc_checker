@@ -218,6 +218,7 @@ fn lib_name_to_virtual_path(name: &str) -> Option<&'static str> {
         "es2022.object" => "lib.es2022.object.d.ts",
         "es2022.regexp" => "lib.es2022.regexp.d.ts",
         "es2022.string" => "lib.es2022.string.d.ts",
+        "esnext.collection" => "lib.esnext.collection.d.ts",
         "esnext.disposable" => "lib.esnext.disposable.d.ts",
         _ => return None,
     })
@@ -508,6 +509,11 @@ const LIB_CATALOG: &[LibCatalogEntry] = &[
     ),
     es_file(
         LibTarget::EsNext,
+        "lib.esnext.collection.d.ts",
+        include_str!("lib/esnext.collection.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
         "lib.esnext.disposable.d.ts",
         include_str!("lib/esnext.disposable.d.ts"),
     ),
@@ -555,11 +561,12 @@ mod tests {
     }
 
     #[test]
-    fn esnext_target_includes_disposable() {
+    fn esnext_target_includes_latest_libs() {
         let files = resolve_lib_files(&LibSelection::DefaultTarget(LibTarget::EsNext)).unwrap();
         let paths = paths(&files);
 
         assert!(paths.contains(&"lib.es2022.array.d.ts"));
+        assert!(paths.contains(&"lib.esnext.collection.d.ts"));
         assert!(paths.contains(&"lib.esnext.disposable.d.ts"));
     }
 
