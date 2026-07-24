@@ -10211,10 +10211,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             parameter.type_annotation.as_deref(),
                         )
                     }),
-                AstKind::CatchParameter(parameter) => self.get_type_from_ts_type_annotation(
-                    sym.program_id,
-                    parameter.type_annotation.as_deref(),
-                ),
+                AstKind::CatchParameter(parameter) => parameter
+                    .type_annotation
+                    .as_deref()
+                    .map_or_else(Ty::unknown, |annotation| {
+                        self.get_type_from_ts_type_annotation(sym.program_id, Some(annotation))
+                    }),
                 AstKind::PropertyDefinition(property) => self.get_type_of_property_definition(
                     sym.program_id,
                     property,

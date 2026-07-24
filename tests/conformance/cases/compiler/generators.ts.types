@@ -99,8 +99,7 @@ async function* g6() {
 >   ^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   } catch (e) {
->          ^: any   (TyAny) (BindingIdentifier)
-    expected: unknown
+>          ^: unknown   (TyUnknown) (BindingIdentifier)
 
     console.error(e)
 >   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
@@ -112,8 +111,7 @@ async function* g6() {
 >           ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
     console.error(e)
->                 ^: any   (TyAny) (IdentifierReference)
-           expected: unknown
+>                 ^: unknown   (TyUnknown) (IdentifierReference)
 
   yield 3
 > ^^^^^^^: any   (TyAny) (ExpressionStatement)

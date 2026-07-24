@@ -245,15 +245,13 @@ document.addEventListener('click', () => {
 >   ^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   } catch (err) {
->          ^^^: any   (TyAny) (BindingIdentifier)
-      expected: unknown
+>          ^^^: unknown   (TyUnknown) (BindingIdentifier)
 
     handleSpecificError(err);
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     handleSpecificError(err);
->                       ^^^: any   (TyAny) (IdentifierReference)
-                   expected: unknown
+>                       ^^^: unknown   (TyUnknown) (IdentifierReference)
 
   handler().catch(handleError);
 > ^^^^^^^: () => Promise<void>   (TyFunction) (IdentifierReference)
