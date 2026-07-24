@@ -4369,7 +4369,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             })
             .unwrap_or_else(Ty::any);
-        let ty = if matches!(self.arena().type_data(ty), TypeData::Function(_)) {
+        let ty = if ty.is_function(self.arena()) {
             ty
         } else {
             self.get_apparent_type_at_use(program_id, ty, 0)
@@ -8020,7 +8020,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Some(assignment.node_id.get()),
                 GetTypeFlags::NONE,
             );
-            let method = matches!(self.arena().type_data(ty), TypeData::Function(_));
+            let method = ty.is_function(self.arena());
             if let Some(existing) = properties.iter_mut().find(|property| property.name == name) {
                 existing.ty = ty;
                 existing.method = method;

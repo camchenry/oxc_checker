@@ -1513,6 +1513,11 @@ impl<'a> Ty<'a> {
         )
     }
 
+    /// Returns `true` if the type is directly represented by a `TyFunction`.
+    pub fn is_function(&self, arena: CheckerArena<'a>) -> bool {
+        matches!(arena.type_data(*self), TypeData::Function(_))
+    }
+
     pub fn enum_variant_name(self, arena: CheckerArena<'a>) -> &'static str {
         match arena.type_data(self) {
             TypeData::None => "TyNone",
@@ -2732,6 +2737,23 @@ mod tests {
         assert_eq!(std::mem::size_of::<Ty<'_>>(), 4);
         assert_eq!(std::mem::size_of::<Option<Ty<'_>>>(), 4);
         assert_eq!(std::mem::size_of::<TypeId>(), 4);
+    }
+
+    #[test]
+    fn function_predicate_excludes_callable_objects() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let function = Ty::function(
+            arena,
+            std::iter::empty::<TyTypeParameter>(),
+            std::iter::empty::<TyParameter>(),
+            Ty::void(),
+        );
+        let callable_object =
+            Ty::object_with_signatures(arena, [], [Signature::new(SignatureKind::Call, function)]);
+
+        assert!(function.is_function(arena));
+        assert!(!callable_object.is_function(arena));
     }
 
     #[test]

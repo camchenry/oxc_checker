@@ -2474,10 +2474,10 @@ fn select_matching_union_constituents<'a>(
     argument_type: Ty<'a>,
 ) -> Vec<Ty<'a>> {
     match arena.type_data(argument_type) {
-        TypeData::Function(_) => parameter_types
+        _ if argument_type.is_function(arena) => parameter_types
             .iter()
             .copied()
-            .filter(|ty| matches!(arena.type_data(*ty), TypeData::Function(_)))
+            .filter(|ty| ty.is_function(arena))
             .collect(),
         TypeData::TypeReference(argument_reference) => parameter_types
             .iter()
