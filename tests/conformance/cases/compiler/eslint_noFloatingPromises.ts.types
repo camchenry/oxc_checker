@@ -164,8 +164,7 @@ interface MyThenable {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
-> ^^^^: { (onFulfilled: () => void, onRejected: () => void): MyThenable; (onFulfilled: () => void, onRejected: () => void): MyThenable; }   (TyObject) (TSMethodSignature)
-expected: (onFulfilled: () => void, onRejected: () => void) => MyThenable
+> ^^^^: (onFulfilled: () => void, onRejected: () => void) => MyThenable   (TyFunction) (TSMethodSignature)
 
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 >      ^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
@@ -204,8 +203,7 @@ interface MyThenable {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
-> ^^^^: { (onFulfilled: () => void, onRejected: () => void): MyThenable; (onFulfilled: () => void, onRejected: () => void): MyThenable; }   (TyObject) (TSMethodSignature)
-expected: (onFulfilled: () => void, onRejected: () => void) => MyThenable
+> ^^^^: (onFulfilled: () => void, onRejected: () => void) => MyThenable   (TyFunction) (TSMethodSignature)
 
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 >      ^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)

@@ -2863,6 +2863,33 @@ mod tests {
     }
 
     #[test]
+    fn explicit_virtual_module_files_do_not_merge_same_named_interfaces() {
+        let source_text = "// @filename: a.ts\ninterface MyThenable { then(onFulfilled: () => void): MyThenable; }\n// @filename: b.ts\ninterface MyThenable { then(onFulfilled: () => void): MyThenable; }";
+
+        let records = collect_oxc_records_from_source(
+            Path::new("tests/conformance/cases"),
+            Path::new("tests/conformance/cases/compiler/virtualModules.ts"),
+            source_text,
+        );
+
+        for path in [
+            "compiler/virtualModules.ts::a.ts",
+            "compiler/virtualModules.ts::b.ts",
+        ] {
+            assert!(records.iter().any(|record| {
+                record.path == path
+                    && record.text == "then"
+                    && record.ty_repr == "(onFulfilled: () => void) => MyThenable"
+            }));
+        }
+        assert!(!records.iter().any(|record| {
+            record.text == "then"
+                && record.ty_repr
+                    == "{ (onFulfilled: () => void): MyThenable; (onFulfilled: () => void): MyThenable; }"
+        }));
+    }
+
+    #[test]
     fn type_alias_name_emits_one_type_meaning_record_for_merged_symbol() {
         let source_text = "type NodeFilter = ((value: string) => number) | { accept(value: string): number };\ndeclare var NodeFilter: { readonly VALUE: 1 };";
         let alias_start = u32::try_from(source_text.find("NodeFilter").unwrap()).unwrap();

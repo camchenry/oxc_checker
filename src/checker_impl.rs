@@ -3756,7 +3756,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .entry(symbol.program_id)
             .is_some_and(program::ProgramEntry::is_lib);
         if (symbol_has_interface_declaration || symbol_is_from_lib)
-            && let Some(apparent) = self.apparent_interface_type_for_conditional_match(reference)
+            && let Some(apparent) =
+                self.apparent_interface_type_for_conditional_match(program_id, reference)
         {
             return Some(apparent);
         }
@@ -3777,7 +3778,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         match self.nodes(program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(_) => {
-                self.apparent_interface_type_for_conditional_match(reference)
+                self.apparent_interface_type_for_conditional_match(program_id, reference)
             }
             AstKind::TSTypeAliasDeclaration(alias) => {
                 let substitutions = self.type_parameter_substitutions_for_reference(
@@ -3807,9 +3808,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn apparent_interface_type_for_conditional_match(
         &self,
+        program_id: ProgramId,
         reference: &TyTypeReference<'a>,
     ) -> Option<Ty<'a>> {
-        let declarations = self.interface_declarations_for_name(reference.name);
+        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
         if declarations.is_empty() {
             return None;
         }
@@ -3817,7 +3819,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let mut properties = Vec::new();
         let mut signatures = Vec::new();
 
-        for &(program_id, interface) in declarations {
+        for &(program_id, interface) in &declarations {
             let mapper = self.interface_member_mapper(
                 program_id,
                 interface.type_parameters.as_deref(),
@@ -3857,9 +3859,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             {
                                 continue;
                             }
-                            let Some(ty) =
-                                self.get_property_type_of_merged_interface_type(reference, name)
-                            else {
+                            let Some(ty) = self.get_property_type_of_interface_declarations(
+                                reference,
+                                name,
+                                &declarations,
+                            ) else {
                                 continue;
                             };
                             let has_setter = declarations.iter().any(|(_, declaration)| {
@@ -4200,7 +4204,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return Vec::new();
         }
-        let declarations = self.interface_declarations_for_reference(program_id, reference);
+        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
         if declarations.is_empty() {
             return Vec::new();
         }
@@ -4272,13 +4276,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         properties
     }
 
-    fn interface_declarations_for_reference(
+    fn interface_declarations_for_type_name(
         &self,
         program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
+        type_name: &str,
     ) -> Vec<(ProgramId, &'a TSInterfaceDeclaration<'a>)> {
         let Some((symbol, _)) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+            self.get_type_symbol_and_declaration_for_name(program_id, type_name)
         else {
             return Vec::new();
         };
@@ -4291,7 +4295,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .map(|interface| (symbol.program_id, interface))
                 .collect()
         } else {
-            self.interface_declarations_for_name(reference.name)
+            self.interface_declarations_for_name(type_name)
                 .iter()
                 .copied()
                 .filter(|(program_id, _)| {
@@ -5005,9 +5009,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         kind: SignatureKind,
     ) -> Vec<Signature<'a>> {
         let interface_signatures = self
-            .interface_declarations_for_name(reference.name)
-            .iter()
-            .copied()
+            .interface_declarations_for_type_name(program_id, reference.name)
+            .into_iter()
             .flat_map(|(program_id, interface)| {
                 self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
             })
@@ -5641,7 +5644,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let result = self
-            .get_property_type_of_merged_interface_type(reference, property_name)
+            .get_property_type_of_merged_interface_type(program_id, reference, property_name)
             .or_else(|| {
                 let (symbol, declaration) =
                     self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
@@ -5665,11 +5668,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_property_type_of_merged_interface_type(
         &self,
+        program_id: ProgramId,
         reference: &TyTypeReference<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        let declarations = self.interface_declarations_for_name(reference.name);
-        self.get_property_type_of_interface_declarations(reference, property_name, declarations)
+        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
+        self.get_property_type_of_interface_declarations(reference, property_name, &declarations)
     }
 
     fn get_property_type_of_interface_declarations(
@@ -5933,9 +5937,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .collect::<Vec<_>>();
 
         let method_signatures = self
-            .interface_declarations_for_name(current_interface.id.name.as_str())
-            .iter()
-            .copied()
+            .interface_declarations_for_type_name(program_id, current_interface.id.name.as_str())
+            .into_iter()
             .flat_map(|(interface_program_id, interface)| {
                 let substitutions = self.type_parameter_substitutions_for_type_arguments(
                     interface_program_id,
