@@ -2321,6 +2321,27 @@ mod test {
     }
 
     #[test]
+    fn conditional_infer_return_type_from_callable_interface() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        type ReturnTypeOf<T> = T extends (...args: any) => infer R ? R : any;
+        interface Callable {
+            (value: number): { value: number };
+            readonly label: string;
+        }
+        type Value = ReturnTypeOf<Callable>;
+        "#,
+        );
+
+        assert_eq!(
+            get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
+            "{ value: number; }"
+        );
+    }
+
+    #[test]
     fn conditional_tuple_index_reduces_redux_at_least_ts35_pattern() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -3766,7 +3787,6 @@ mod test {
         );
     }
 
-    #[ignore = "TODO(correctness): implement functionality needed for Awaited type"]
     #[test]
     fn awaited_primitive_types() {
         let allocator = Allocator::default();
@@ -3836,7 +3856,6 @@ mod test {
     }
 
     #[test]
-    #[ignore = "TODO(correctness): recursively instantiate conditional alias true branches"]
     fn awaited_conditional_alias_recursively_unwraps_simple_thenable_value() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -3860,7 +3879,6 @@ mod test {
     }
 
     #[test]
-    #[ignore = "TODO(correctness): resolve false branches when extends type contains infer"]
     fn awaited_conditional_alias_shape_resolves_non_thenable_false_branch() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -3889,7 +3907,6 @@ mod test {
     }
 
     #[test]
-    #[ignore = "TODO(correctness): infer through intersection constraints in conditional types"]
     fn awaited_conditional_alias_shape_matches_lib_thenables() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -3930,7 +3947,6 @@ mod test {
     }
 
     #[test]
-    #[ignore = "TODO(correctness): resolve false branches when inferred callback is not callable"]
     fn awaited_conditional_alias_shape_rejects_non_callable_then_argument() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

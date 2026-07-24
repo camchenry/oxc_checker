@@ -56,8 +56,7 @@ async function syncIterableOfPromises() {
 >              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   const arrayOfPromises = [
->       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (BindingIdentifier)
-               expected: Promise<number>[]
+>       ^^^^^^^^^^^^^^^: Promise<number>[]   (TyArray) (BindingIdentifier)
 
     Promise.resolve(1),
 >   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
@@ -81,8 +80,7 @@ async function syncIterableOfPromises() {
 >                  ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
   for await (const promisedValue of arrayOfPromises) {
->                                   ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (IdentifierReference)
-                                           expected: Promise<number>[]
+>                                   ^^^^^^^^^^^^^^^: Promise<number>[]   (TyArray) (IdentifierReference)
 
     console.log(promisedValue);
 >   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
@@ -124,8 +122,7 @@ async function syncIterableOfPromises() {
 >              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
 
   const arrayOfPromises = [
->       ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (BindingIdentifier)
-               expected: Promise<number>[]
+>       ^^^^^^^^^^^^^^^: Promise<number>[]   (TyArray) (BindingIdentifier)
 
     Promise.resolve(1),
 >   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
@@ -155,8 +152,7 @@ async function syncIterableOfPromises() {
 >                                           ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }   (TyObject) (StaticMemberExpression)
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
->                                               ^^^^^^^^^^^^^^^: Promise<Awaited<number>>[]   (TyArray) (IdentifierReference)
-                                                       expected: Promise<number>[]
+>                                               ^^^^^^^^^^^^^^^: Promise<number>[]   (TyArray) (IdentifierReference)
 
     console.log(promisedValue);
 >   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)

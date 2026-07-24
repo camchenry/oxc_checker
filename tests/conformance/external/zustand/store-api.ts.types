@@ -919,7 +919,7 @@ const useCounter = create(counterInitializer)
 >                         ^^^^^^^^^^^^^^^^^^: StateCreator<CounterState>   (TyTypeReference) (IdentifierReference)
 
 type CounterFromHook = ExtractState<typeof useCounter>
->    ^^^^^^^^^^^^^^^: ({ (): ExtractState<Mutate<StoreApi<CounterState>, []>>; <U>(selector: (state: ExtractState<Mutate<StoreApi<CounterState>, []>>) => U): U; } & StoreApi<CounterState>) extends { getState: () => infer T; } ? T : never   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: ({ (): ExtractState<Mutate<StoreApi<CounterState>, []>>; <U>(selector: (state: ExtractState<Mutate<StoreApi<CounterState>, []>>) => U): U; } & { setState: SetStateInternal<CounterState>; getState: () => CounterState; getInitialState: () => CounterState; subscribe: (listener: (state: CounterState, prevState: CounterState) => void) => () => void; }) extends { getState: () => infer T; } ? T : never   (TyConditional) (TSTypeAliasDeclaration)
             expected: { count: number; label?: string; increment: (by?: number) => void; }
 
 type CounterFromHook = ExtractState<typeof useCounter>

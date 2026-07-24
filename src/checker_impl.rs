@@ -30,7 +30,7 @@ use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
     checker::{
         Checker, CheckerReturn, ClassMemberResolution, NodeRef, SymbolRef, TypeAliasMetadata,
-        TypeParameterResolution,
+        TypeAliasResolution, TypeParameterResolution,
     },
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
@@ -445,14 +445,40 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if mapped != ty {
                     mapped
                 } else {
-                    self.rebuild_type_reference_with_display_type_argument_count(
-                        ty,
-                        reference
-                            .type_arguments
-                            .iter()
-                            .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
-                        reference.display_type_argument_count,
-                    )
+                    let type_arguments = reference
+                        .type_arguments
+                        .iter()
+                        .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1))
+                        .collect::<Vec<_>>();
+                    if type_arguments == reference.type_arguments.as_slice() {
+                        return ty;
+                    }
+                    let has_concrete_type_arguments = type_arguments
+                        .iter()
+                        .all(|ty| !self.could_contain_type_variables(*ty));
+                    let instantiated = self
+                        .rebuild_type_reference_with_display_type_argument_count(
+                            ty,
+                            type_arguments,
+                            reference.display_type_argument_count,
+                        );
+                    // Conditional aliases are deferred until their arguments become concrete.
+                    // Reduce them at mapper application so this works in any enclosing type.
+                    if let Some(metadata) = self.type_alias_metadata(instantiated)
+                        && has_concrete_type_arguments
+                        && self.is_conditional_type_alias_declaration(
+                            metadata.declaration.program_id,
+                            metadata.declaration.node_id,
+                        )
+                    {
+                        self.expand_type_at_use(
+                            metadata.reference_program_id,
+                            instantiated,
+                            depth + 1,
+                        )
+                    } else {
+                        instantiated
+                    }
                 }
             }
             TypeData::TypeQuery(query) => Ty::type_query(
@@ -2734,8 +2760,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.expand_type_at_use(program_id, conditional.check_type, depth + 1);
                 let extends_type =
                     self.expand_type_at_use(program_id, conditional.extends_type, depth + 1);
+                let match_check_type = if self.infer_type_parameter_names(extends_type).is_empty() {
+                    check_type
+                } else {
+                    self.apparent_type_for_conditional_match(program_id, check_type, depth + 1)
+                };
                 let ty = self.conditional_type(
-                    check_type,
+                    match_check_type,
                     extends_type,
                     conditional.true_type,
                     conditional.false_type,
@@ -3204,7 +3235,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if !matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
             {
                 {
-                    let key = (program_id, declaration);
+                    let key = TypeAliasResolution {
+                        program_id,
+                        declaration,
+                        type_arguments: type_arguments.iter().map(|ty| ty.id()).collect(),
+                    };
                     let mut resolving_type_aliases = self.resolving_type_aliases.borrow_mut();
                     if resolving_type_aliases.contains(&key) {
                         return None;
@@ -3620,6 +3655,28 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         let (symbol, declaration) =
             self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+        let symbol_has_interface_declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declarations(symbol.symbol_id)
+            .any(|declaration| {
+                matches!(
+                    self.nodes(symbol.program_id).kind(declaration),
+                    AstKind::TSInterfaceDeclaration(_)
+                ) || matches!(
+                    self.nodes(symbol.program_id).parent_kind(declaration),
+                    AstKind::TSInterfaceDeclaration(_)
+                )
+            });
+        let symbol_is_from_lib = self
+            .store
+            .entry(symbol.program_id)
+            .is_some_and(program::ProgramEntry::is_lib);
+        if (symbol_has_interface_declaration || symbol_is_from_lib)
+            && let Some(apparent) = self.apparent_interface_type_for_conditional_match(reference)
+        {
+            return Some(apparent);
+        }
         self.apparent_type_declaration_for_conditional_match(
             symbol.program_id,
             declaration,

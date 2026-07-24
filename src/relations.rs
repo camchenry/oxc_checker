@@ -113,6 +113,14 @@ fn is_assignable_to_at_depth<'a>(
             next_depth,
             is_assignable_to_at_depth,
         ),
+        (
+            TypeData::Array(_)
+            | TypeData::Tuple(_)
+            | TypeData::Function(_)
+            | TypeData::Mapped(_)
+            | TypeData::ModuleNamespace(_),
+            TypeData::PrimitiveObject,
+        ) => true,
         (TypeData::ModuleNamespace(source), TypeData::Object(target)) => properties_assignable_to(
             &source.properties,
             &target.properties,

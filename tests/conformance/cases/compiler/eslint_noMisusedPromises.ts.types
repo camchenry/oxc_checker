@@ -1,6 +1,5 @@
 const promise = Promise.resolve('value');
->     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (BindingIdentifier)
-     expected: Promise<string>
+>     ^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
 
 const promise = Promise.resolve('value');
 >               ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
@@ -9,15 +8,13 @@ const promise = Promise.resolve('value');
 >                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
 if (promise) {
->   ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-   expected: Promise<string>
+>   ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 const val = promise ? 123 : 456;
 >     ^^^: 123 | 456   (TyUnion) (BindingIdentifier)
 
 const val = promise ? 123 : 456;
->           ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-           expected: Promise<string>
+>           ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 [1, 2, 3].filter(() => promise);
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray) (ExpressionStatement)
@@ -27,16 +24,13 @@ const val = promise ? 123 : 456;
         expected: { <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }
 
 [1, 2, 3].filter(() => promise);
->                      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-                      expected: Promise<string>
+>                      ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 while (promise) {
->      ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-      expected: Promise<string>
+>      ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 const promise = Promise.resolve('value');
->     ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (BindingIdentifier)
-     expected: Promise<string>
+>     ^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
 
 const promise = Promise.resolve('value');
 >               ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
@@ -45,22 +39,19 @@ const promise = Promise.resolve('value');
 >                       ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
 
 if (await promise) {
->         ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-         expected: Promise<string>
+>         ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 const val = (await promise) ? 123 : 456;
 >     ^^^: 123 | 456   (TyUnion) (BindingIdentifier)
 
 const val = (await promise) ? 123 : 456;
->                  ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-                  expected: Promise<string>
+>                  ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 const returnVal = await promise;
 >     ^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const returnVal = await promise;
->                       ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-                       expected: Promise<string>
+>                       ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 [1, 2, 3].filter(() => returnVal);
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray) (ExpressionStatement)
@@ -73,8 +64,7 @@ const returnVal = await promise;
 >                      ^^^^^^^^^: string   (TyString) (IdentifierReference)
 
 while (await promise) {
->            ^^^^^^^: Promise<Awaited<string>>   (TyTypeReference) (IdentifierReference)
-            expected: Promise<string>
+>            ^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
 
 [1, 2, 3].forEach(async value => {
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)

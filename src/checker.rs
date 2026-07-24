@@ -29,6 +29,13 @@ pub(crate) struct TypeAliasMetadata {
     pub(crate) declaration: NodeRef,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct TypeAliasResolution {
+    pub(crate) program_id: ProgramId,
+    pub(crate) declaration: NodeId,
+    pub(crate) type_arguments: Vec<TypeId>,
+}
+
 pub struct CheckerReturn<'a, 'store> {
     pub store: &'store ProgramStore<'a>,
     pub arena: CheckerArena<'a>,
@@ -40,7 +47,7 @@ pub struct CheckerReturn<'a, 'store> {
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
-    pub resolving_type_aliases: RefCell<Vec<(ProgramId, NodeId)>>,
+    pub(crate) resolving_type_aliases: RefCell<Vec<TypeAliasResolution>>,
     pub resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
     pub resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
     pub(crate) interface_property_resolution_stack: RefCell<Vec<(usize, String, String)>>,

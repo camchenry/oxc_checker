@@ -16,8 +16,9 @@ use crate::{
     program::ProgramId,
     relations::is_assignable_to_without_checker,
     types::{
-        CheckerArena, MappedModifier, TupleElement, Ty, TyFunction, TyInfer, TyMapped, TyProperty,
-        TyTypeParameter, TypeData, function_parameter_type_at_call_index, visit_type,
+        CheckerArena, MappedModifier, SignatureKind, TupleElement, Ty, TyFunction, TyInfer,
+        TyMapped, TyProperty, TyTypeParameter, TypeData, function_parameter_type_at_call_index,
+        visit_type,
     },
 };
 
@@ -869,12 +870,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             || !self.infer_type_parameter_names(extends_type).is_empty()
         {
             let mut inferences = self.conditional_inference_context(check_type, extends_type);
-            return match self.infer_conditional_from_types(
-                check_type,
-                extends_type,
-                &mut inferences,
-                0,
-            ) {
+            let inference_result =
+                self.infer_conditional_from_types(check_type, extends_type, &mut inferences, 0);
+            return match inference_result {
                 ConditionalInferMatchResult::Matched => {
                     let resolution = inferences.resolve_with_contextual_mapper_and_comparer(
                         self.arena(),
@@ -999,6 +997,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     inferences,
                     depth + 1,
                 ),
+            (TypeData::Object(source), TypeData::Function(target)) => source
+                .signatures
+                .iter()
+                .rev()
+                .find(|signature| signature.kind == SignatureKind::Call)
+                .map(|signature| {
+                    self.infer_conditional_from_function_types(
+                        signature.function(self.arena()),
+                        target,
+                        inferences,
+                        depth + 1,
+                    )
+                })
+                .unwrap_or(ConditionalInferMatchResult::NoMatch),
             (TypeData::Array(source), TypeData::Array(target)) => self
                 .infer_conditional_from_types(
                     source.element_type,
@@ -1091,11 +1103,36 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     ConditionalInferMatchResult::NoMatch
                 }
             }
+            (_, TypeData::Intersection(target_intersection)) => {
+                // An intersection constraint is conjunctive. Match every constituent so a
+                // definite failure can select the false branch and successful constituents
+                // can contribute `infer` candidates to the true branch.
+                self.infer_conditional_from_type_pairs(
+                    target_intersection
+                        .types
+                        .iter()
+                        .map(|target| (source, *target)),
+                    inferences,
+                    depth + 1,
+                )
+            }
             _ => {
                 if self.is_assignable_to(source, target) {
                     ConditionalInferMatchResult::Matched
                 } else if self.could_contain_type_variables(source)
-                    || self.could_contain_type_variables(target)
+                    || matches!(
+                        self.arena().type_data(source),
+                        TypeData::TypeReference(_) | TypeData::TypeQuery(_)
+                    )
+                    || (self.could_contain_type_variables(target)
+                        && !matches!(
+                            self.arena().type_data(target),
+                            TypeData::Object(_)
+                                | TypeData::Function(_)
+                                | TypeData::Array(_)
+                                | TypeData::Tuple(_)
+                                | TypeData::PrimitiveObject
+                        ))
                 {
                     ConditionalInferMatchResult::Deferred
                 } else {

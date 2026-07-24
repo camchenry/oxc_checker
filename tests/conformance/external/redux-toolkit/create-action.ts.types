@@ -1344,8 +1344,7 @@ if (increment.match(unknownAction)) {
           expected: "counter/increment"
 
 export type IncrementAction = ReturnType<typeof increment>
->           ^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends (...args: any) => infer R ? R : any   (TyConditional) (TSTypeAliasDeclaration)
-                   expected: { payload: number; type: "counter/increment"; }
+>           ^^^^^^^^^^^^^^^: { payload: number; type: "counter/increment"; }   (TyObject) (TSTypeAliasDeclaration)
 
 export type IncrementAction = ReturnType<typeof increment>
 >                             ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -1355,7 +1354,7 @@ export type IncrementAction = ReturnType<typeof increment>
                                                  expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export type TodoAction = ReturnType<typeof addTodo>
->           ^^^^^^^^^^: ActionCreatorWithoutPayload<"todos/add"> extends (...args: any) => infer R ? R : any   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^: { payload: undefined; type: "todos/add"; }   (TyObject) (TSTypeAliasDeclaration)
               expected: { payload: { title: string; priority: any; }; type: "todos/add"; } & { meta: { createdAt: number; }; } & { error: boolean; }
 
 export type TodoAction = ReturnType<typeof addTodo>
@@ -1366,7 +1365,7 @@ export type TodoAction = ReturnType<typeof addTodo>
                                           expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
->           ^^^^^^^^^^^^^^^^^^^^: ActionCreatorWithPayload<number, "counter/increment"> extends HasMatchFunction<infer T> | TypeGuard<infer T> ? T : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^^: { (payload: number): PayloadAction<number, "counter/increment">; } extends HasMatchFunction<infer T> | TypeGuard<infer T> ? T : never   (TyConditional) (TSTypeAliasDeclaration)
                         expected: { payload: number; type: "counter/increment"; }
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
