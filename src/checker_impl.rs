@@ -4151,6 +4151,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_global_readonly_array_type(program_id, array.element_type)
             }
             TypeData::Array(array) => self.get_global_array_type(program_id, array.element_type),
+            TypeData::Tuple(tuple) => {
+                let element_type = Ty::union(
+                    self.arena(),
+                    tuple.elements.iter().map(|element| match element {
+                        TupleElement::Regular(ty) | TupleElement::Optional(ty) => *ty,
+                        TupleElement::Rest(ty) => {
+                            ty.array_element_type(self.arena()).unwrap_or(*ty)
+                        }
+                    }),
+                );
+                if tuple.readonly {
+                    self.get_global_readonly_array_type(program_id, element_type)
+                } else {
+                    self.get_global_array_type(program_id, element_type)
+                }
+            }
             TypeData::Object(object) => {
                 return self.get_property_type_of_global_function_augmented_object_type(
                     program_id,
