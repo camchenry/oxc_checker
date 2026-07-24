@@ -2518,7 +2518,20 @@ fn relative_path(root: &Path, path: &Path) -> String {
 }
 
 fn sanitize(value: &str) -> String {
-    value.replace(['\t', '\r', '\n'], " ").trim().to_string()
+    let mut sanitized = String::with_capacity(value.len());
+    let mut previous_was_control_whitespace = false;
+    for character in value.chars() {
+        if matches!(character, '\t' | '\r' | '\n') {
+            if !previous_was_control_whitespace {
+                sanitized.push(' ');
+            }
+            previous_was_control_whitespace = true;
+        } else {
+            sanitized.push(character);
+            previous_was_control_whitespace = false;
+        }
+    }
+    sanitized.trim().to_string()
 }
 
 fn percentage(numerator: usize, denominator: usize) -> f64 {
@@ -3054,5 +3067,13 @@ mod tests {
                 && record.text == "x();"
                 && record.ty_repr == "number"
         }));
+    }
+
+    #[test]
+    fn sanitize_collapses_consecutive_control_whitespace() {
+        assert_eq!(
+            sanitize("first\n\nsecond\r\nthird\t\tfourth"),
+            "first second third fourth"
+        );
     }
 }
