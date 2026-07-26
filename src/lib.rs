@@ -2674,6 +2674,31 @@ mod test {
     }
 
     #[test]
+    fn recursive_conditional_inference_defers_unresolved_active_aliases() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        type ParseSuccess<R extends string> = { rest: R };
+        type ParseManyWhitespace<S extends string> =
+            S extends ` ${infer R0}`
+                ? ParseManyWhitespace<R0> extends ParseSuccess<infer R1>
+                    ? ParseSuccess<R1>
+                    : null
+                : ParseSuccess<S>;
+        type Generic<S extends string> = ParseManyWhitespace<S>;
+        ",
+        );
+
+        let ty = get_type_alias_type(&ret, "Generic");
+        assert_ne!(ty, Ty::any());
+        assert!(
+            ty.to_type_string(ret.arena)
+                .contains("ParseManyWhitespace<R0>")
+        );
+    }
+
+    #[test]
     fn type_alias_declarations_expand_top_level_alias_references() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

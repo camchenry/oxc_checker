@@ -15,6 +15,7 @@ use oxc_str::Str;
 use oxc_syntax::identifier::is_identifier_name;
 use std::{
     cell::{Cell, RefCell},
+    collections::HashSet,
     marker::PhantomData,
     num::NonZeroU32,
 };
@@ -1078,18 +1079,18 @@ impl<'a> TypeIdentity<'a> {
     }
 }
 
-// TODO: Allow early return so we don't visit unnecessary nodes
 pub(crate) fn visit_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>, f: &mut impl FnMut(Ty<'a>)) {
-    visit_type_at_depth(arena, ty, f, 0);
+    visit_type_at_depth(arena, ty, f, &mut HashSet::new(), 0);
 }
 
 fn visit_type_at_depth<'a>(
     arena: CheckerArena<'a>,
     ty: Ty<'a>,
     f: &mut impl FnMut(Ty<'a>),
+    visited: &mut HashSet<TypeId>,
     depth: usize,
 ) {
-    if depth >= TYPE_VISIT_MAX_DEPTH {
+    if depth >= TYPE_VISIT_MAX_DEPTH || !visited.insert(ty.id()) {
         return;
     }
 
@@ -1098,100 +1099,100 @@ fn visit_type_at_depth<'a>(
     match arena.type_data(ty) {
         TypeData::Object(object) => {
             for property in &object.properties {
-                visit_type_at_depth(arena, property.ty, f, next_depth);
+                visit_type_at_depth(arena, property.ty, f, visited, next_depth);
             }
             for signature in &object.signatures {
-                visit_type_at_depth(arena, signature.ty, f, next_depth);
+                visit_type_at_depth(arena, signature.ty, f, visited, next_depth);
             }
             for info in &object.index_infos {
-                visit_type_at_depth(arena, info.key_type, f, next_depth);
-                visit_type_at_depth(arena, info.value_type, f, next_depth);
+                visit_type_at_depth(arena, info.key_type, f, visited, next_depth);
+                visit_type_at_depth(arena, info.value_type, f, visited, next_depth);
             }
         }
         TypeData::ModuleNamespace(namespace) => {
             for property in &namespace.properties {
-                visit_type_at_depth(arena, property.ty, f, next_depth);
+                visit_type_at_depth(arena, property.ty, f, visited, next_depth);
             }
         }
         TypeData::Function(function) => {
             for type_parameter in &function.type_parameters {
                 if let Some(constraint_type) = type_parameter.constraint_type {
-                    visit_type_at_depth(arena, constraint_type, f, next_depth);
+                    visit_type_at_depth(arena, constraint_type, f, visited, next_depth);
                 }
                 if let Some(default_type) = type_parameter.default_type {
-                    visit_type_at_depth(arena, default_type, f, next_depth);
+                    visit_type_at_depth(arena, default_type, f, visited, next_depth);
                 }
             }
             for parameter in &function.parameters {
-                visit_type_at_depth(arena, parameter.ty, f, next_depth);
+                visit_type_at_depth(arena, parameter.ty, f, visited, next_depth);
             }
-            visit_type_at_depth(arena, function.return_type, f, next_depth);
+            visit_type_at_depth(arena, function.return_type, f, visited, next_depth);
             if let Some(target_type) = function
                 .type_predicate
                 .and_then(|predicate| predicate.target_type)
             {
-                visit_type_at_depth(arena, target_type, f, next_depth);
+                visit_type_at_depth(arena, target_type, f, visited, next_depth);
             }
         }
         TypeData::TypeReference(reference) => {
             for ty in &reference.type_arguments {
-                visit_type_at_depth(arena, *ty, f, next_depth);
+                visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
         TypeData::TypeQuery(query) => {
-            visit_type_at_depth(arena, query.resolved, f, next_depth);
+            visit_type_at_depth(arena, query.resolved, f, visited, next_depth);
             for ty in &query.type_arguments {
-                visit_type_at_depth(arena, *ty, f, next_depth);
+                visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
         TypeData::TemplateLiteral(template_literal) => {
             for ty in &template_literal.expressions {
-                visit_type_at_depth(arena, *ty, f, next_depth);
+                visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
         TypeData::Array(array) => {
-            visit_type_at_depth(arena, array.element_type, f, next_depth);
+            visit_type_at_depth(arena, array.element_type, f, visited, next_depth);
         }
         TypeData::Tuple(tuple) => {
             for element in &tuple.elements {
-                visit_type_at_depth(arena, element.ty(), f, next_depth);
+                visit_type_at_depth(arena, element.ty(), f, visited, next_depth);
             }
         }
         TypeData::Union(union) => {
             for ty in &union.types {
-                visit_type_at_depth(arena, *ty, f, next_depth);
+                visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
         TypeData::Intersection(intersection) => {
             for ty in &intersection.types {
-                visit_type_at_depth(arena, *ty, f, next_depth);
+                visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
-        TypeData::Keyof(keyof) => visit_type_at_depth(arena, keyof.target, f, next_depth),
+        TypeData::Keyof(keyof) => visit_type_at_depth(arena, keyof.target, f, visited, next_depth),
         TypeData::IndexedAccess(indexed_access) => {
-            visit_type_at_depth(arena, indexed_access.object_type, f, next_depth);
-            visit_type_at_depth(arena, indexed_access.index_type, f, next_depth);
+            visit_type_at_depth(arena, indexed_access.object_type, f, visited, next_depth);
+            visit_type_at_depth(arena, indexed_access.index_type, f, visited, next_depth);
         }
         TypeData::Conditional(conditional) => {
-            visit_type_at_depth(arena, conditional.check_type, f, next_depth);
-            visit_type_at_depth(arena, conditional.extends_type, f, next_depth);
-            visit_type_at_depth(arena, conditional.true_type, f, next_depth);
-            visit_type_at_depth(arena, conditional.false_type, f, next_depth);
+            visit_type_at_depth(arena, conditional.check_type, f, visited, next_depth);
+            visit_type_at_depth(arena, conditional.extends_type, f, visited, next_depth);
+            visit_type_at_depth(arena, conditional.true_type, f, visited, next_depth);
+            visit_type_at_depth(arena, conditional.false_type, f, visited, next_depth);
         }
         TypeData::Infer(infer) => {
             if let Some(constraint_type) = infer.type_parameter.constraint_type {
-                visit_type_at_depth(arena, constraint_type, f, next_depth);
+                visit_type_at_depth(arena, constraint_type, f, visited, next_depth);
             }
             if let Some(default_type) = infer.type_parameter.default_type {
-                visit_type_at_depth(arena, default_type, f, next_depth);
+                visit_type_at_depth(arena, default_type, f, visited, next_depth);
             }
         }
         TypeData::Mapped(mapped) => {
-            visit_type_at_depth(arena, mapped.constraint, f, next_depth);
+            visit_type_at_depth(arena, mapped.constraint, f, visited, next_depth);
             if let Some(name_type) = mapped.name_type {
-                visit_type_at_depth(arena, name_type, f, next_depth);
+                visit_type_at_depth(arena, name_type, f, visited, next_depth);
             }
-            visit_type_at_depth(arena, mapped.template, f, next_depth);
+            visit_type_at_depth(arena, mapped.template, f, visited, next_depth);
         }
         _ => {}
     }
@@ -3099,6 +3100,30 @@ mod tests {
         assert_eq!(std::mem::size_of::<Ty<'_>>(), 4);
         assert_eq!(std::mem::size_of::<Option<Ty<'_>>>(), 4);
         assert_eq!(std::mem::size_of::<TypeId>(), 4);
+    }
+
+    #[test]
+    fn visit_type_visits_shared_types_once() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let mut ty = Ty::type_reference(arena, "T", []);
+        let mut unique_type_count = 1;
+        for _ in 0..32 {
+            ty = Ty::tuple(
+                arena,
+                vec![TupleElement::Regular(ty), TupleElement::Regular(ty)],
+            );
+            unique_type_count += 1;
+        }
+
+        let mut visited = Vec::new();
+        visit_type(arena, ty, &mut |ty| visited.push(ty.id()));
+
+        assert_eq!(visited.len(), unique_type_count);
+        assert_eq!(
+            visited.iter().copied().collect::<HashSet<_>>().len(),
+            visited.len()
+        );
     }
 
     #[test]

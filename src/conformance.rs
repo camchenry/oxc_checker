@@ -7,7 +7,7 @@ use std::{
     fmt, io,
     path::{Component, Path, PathBuf},
     sync::{
-        Arc,
+        Arc, Mutex,
         atomic::{AtomicU64, AtomicUsize, Ordering},
         mpsc,
     },
@@ -24,6 +24,7 @@ use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
+use terminal_size::{Width, terminal_size};
 
 use crate::checker::{Checker, CheckerBuilder, NodeRef};
 
@@ -242,6 +243,51 @@ struct ParsedFixture<'a> {
 struct ReadyConformanceFile {
     path: PathBuf,
     source_text: String,
+}
+
+#[derive(Default)]
+struct ConformanceCollectionProgressState {
+    completed_paths: usize,
+    active_paths: BTreeSet<PathBuf>,
+}
+
+struct ConformanceCollectionProgress {
+    total_paths: usize,
+    line_width: usize,
+    state: Mutex<ConformanceCollectionProgressState>,
+}
+
+impl ConformanceCollectionProgress {
+    fn new(total_paths: usize) -> Self {
+        Self {
+            total_paths,
+            line_width: terminal_size()
+                .map_or(80, |(Width(width), _)| usize::from(width))
+                .saturating_sub(1),
+            state: Mutex::new(ConformanceCollectionProgressState::default()),
+        }
+    }
+
+    fn start(&self, path: &Path) {
+        let mut state = self
+            .state
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        state.active_paths.insert(path.to_path_buf());
+        report_collection_progress(&state, self.total_paths, self.line_width);
+    }
+
+    fn finish(&self, path: Option<&Path>) {
+        let mut state = self
+            .state
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        if let Some(path) = path {
+            state.active_paths.remove(path);
+        }
+        state.completed_paths += 1;
+        report_collection_progress(&state, self.total_paths, self.line_width);
+    }
 }
 
 struct ConformanceCollectionTiming {
@@ -1099,11 +1145,11 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
         return Vec::new();
     }
 
-    let completed_paths = Arc::new(AtomicUsize::new(0));
+    let progress = Arc::new(ConformanceCollectionProgress::new(total_paths));
     let timing = Arc::new(ConformanceCollectionTiming::new());
     let (ready_sender, ready_receiver) =
         mpsc::sync_channel(conformance_read_ahead_capacity(worker_count));
-    let reader_completed_paths = Arc::clone(&completed_paths);
+    let reader_progress = Arc::clone(&progress);
     let reader_timing = Arc::clone(&timing);
     let reader = std::thread::Builder::new()
         .name("conformance-reader".to_string())
@@ -1114,10 +1160,7 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
                 let source_text = match read_to_string_simd_utf8(&path) {
                     Ok(source_text) => source_text,
                     Err(_) => {
-                        report_collection_progress(
-                            reader_completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
-                            total_paths,
-                        );
+                        reader_progress.finish(None);
                         continue;
                     }
                 };
@@ -1151,10 +1194,12 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
 
     let mut records = pool.install(|| {
         let timing = Arc::clone(&timing);
+        let progress = Arc::clone(&progress);
         ready_receiver
             .into_iter()
             .par_bridge()
             .map(|ready_file| {
+                progress.start(&ready_file.path);
                 let check_started_at = timing.is_enabled().then(Instant::now);
                 let file_records = collect_oxc_records_from_source(
                     cases_root,
@@ -1164,10 +1209,7 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
                 if let Some(check_started_at) = check_started_at {
                     timing.record_check(check_started_at.elapsed());
                 }
-                report_collection_progress(
-                    completed_paths.fetch_add(1, Ordering::Relaxed) + 1,
-                    total_paths,
-                );
+                progress.finish(Some(&ready_file.path));
                 file_records
             })
             .collect::<Vec<_>>()
@@ -1210,12 +1252,75 @@ fn conformance_worker_count(total_paths: usize) -> usize {
         .min(total_paths)
 }
 
-fn report_collection_progress(current: usize, total: usize) {
+fn report_collection_progress(
+    state: &ConformanceCollectionProgressState,
+    total: usize,
+    line_width: usize,
+) {
     use std::io::Write as _;
 
     let mut stderr = io::stderr().lock();
-    let _ = write!(stderr, "\rcollecting {current}/{total}");
+    let line = format_collection_progress(state, total, line_width);
+    let _ = write!(stderr, "\r\x1b[2K{line}");
     let _ = stderr.flush();
+}
+
+fn format_collection_progress(
+    state: &ConformanceCollectionProgressState,
+    total: usize,
+    line_width: usize,
+) -> String {
+    let mut line = format!("collecting {}/{total}", state.completed_paths);
+    if state.active_paths.is_empty() || line.len() >= line_width {
+        return truncate_progress_text(&line, line_width);
+    }
+
+    line.push_str(" [");
+    let active_paths = state.active_paths.iter().collect::<Vec<_>>();
+    let mut shown = 0;
+    for path in &active_paths {
+        let name = path
+            .file_name()
+            .unwrap_or(path.as_os_str())
+            .to_string_lossy();
+        let delimiter = if shown == 0 { "" } else { ", " };
+        let hidden_after = active_paths.len() - shown - 1;
+        let suffix = if hidden_after == 0 {
+            "]".to_string()
+        } else {
+            format!(", +{hidden_after}]")
+        };
+
+        if line.len() + delimiter.len() + name.len() + suffix.len() <= line_width {
+            line.push_str(delimiter);
+            line.push_str(&name);
+            shown += 1;
+            if shown == active_paths.len() {
+                line.push(']');
+            }
+            continue;
+        }
+
+        if shown == 0 {
+            let available = line_width.saturating_sub(line.len() + suffix.len());
+            line.push_str(&truncate_progress_text(&name, available));
+            line.push_str(&suffix);
+        } else {
+            line.push_str(&format!(", +{}]", active_paths.len() - shown));
+        }
+        break;
+    }
+    truncate_progress_text(&line, line_width)
+}
+
+fn truncate_progress_text(text: &str, width: usize) -> String {
+    if text.len() <= width {
+        return text.to_string();
+    }
+    if width <= 3 {
+        return ".".repeat(width);
+    }
+    format!("{}...", &text[..width - 3])
 }
 
 fn collect_oxc_records_for_case(
@@ -2777,6 +2882,43 @@ mod tests {
             error.into_message(),
             "unknown conformance target argument: typecript"
         );
+    }
+
+    #[test]
+    fn collection_progress_fits_active_files_on_one_line() {
+        let state = ConformanceCollectionProgressState {
+            completed_paths: 4,
+            active_paths: [
+                PathBuf::from("alpha.ts"),
+                PathBuf::from("beta.ts"),
+                PathBuf::from("gamma.ts"),
+                PathBuf::from("delta.ts"),
+            ]
+            .into_iter()
+            .collect(),
+        };
+
+        let line = format_collection_progress(&state, 53, 40);
+
+        assert!(line.len() <= 40, "{line:?}");
+        assert_eq!(line, "collecting 4/53 [alpha.ts, beta.ts, +2]");
+    }
+
+    #[test]
+    fn collection_progress_truncates_a_long_active_file() {
+        let state = ConformanceCollectionProgressState {
+            completed_paths: 0,
+            active_paths: [PathBuf::from(
+                "conditionalTypeDiscriminatingLargeUnionRegularTypeFetchingSpeedReasonable.ts",
+            )]
+            .into_iter()
+            .collect(),
+        };
+
+        let line = format_collection_progress(&state, 1, 40);
+
+        assert!(line.len() <= 40, "{line:?}");
+        assert_eq!(line, "collecting 0/1 [conditionalTypeDiscr...]");
     }
 
     #[test]

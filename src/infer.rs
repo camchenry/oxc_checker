@@ -837,7 +837,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let current = depth.get();
         if current >= CONDITIONAL_TYPE_MAX_DEPTH {
             if !self.resolving_type_aliases.borrow().is_empty() {
-                self.type_instantiation_overflowed.set(true);
+                self.mark_type_instantiation_overflow();
                 return Ty::any();
             }
             return Ty::conditional(
@@ -1139,7 +1139,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             }
             _ => {
-                if self.is_assignable_to(source, target) {
+                let source_is_active_unresolved_alias =
+                    self.type_alias_metadata(source).is_some_and(|metadata| {
+                        self.could_contain_type_variables(source)
+                            && self
+                                .resolving_type_aliases
+                                .borrow()
+                                .iter()
+                                .any(|resolution| {
+                                    resolution.program_id == metadata.declaration.program_id
+                                        && resolution.declaration == metadata.declaration.node_id
+                                })
+                    });
+                if source_is_active_unresolved_alias {
+                    ConditionalInferMatchResult::Deferred
+                } else if self.is_assignable_to(source, target) {
                     ConditionalInferMatchResult::Matched
                 } else if self.could_contain_type_variables(source)
                     || matches!(

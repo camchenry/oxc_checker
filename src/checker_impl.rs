@@ -375,7 +375,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let depth = &self.type_instantiation_depth;
         let current = depth.get();
         if current >= TYPE_INSTANTIATION_MAX_DEPTH {
-            self.type_instantiation_overflowed.set(true);
+            self.mark_type_instantiation_overflow();
             return Ty::any();
         }
 
@@ -848,6 +848,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             },
         );
         contains
+    }
+
+    pub(crate) fn mark_type_instantiation_overflow(&self) {
+        let should_propagate =
+            self.resolving_type_aliases
+                .borrow()
+                .first()
+                .is_some_and(|resolution| {
+                    resolution.type_arguments.iter().all(|type_id| {
+                        self.arena()
+                            .type_from_id(*type_id)
+                            .is_some_and(|ty| !self.could_contain_type_variables(ty))
+                    })
+                });
+        if should_propagate {
+            self.type_instantiation_overflowed.set(true);
+        }
     }
 
     /// Resolve an expression type with a semantic context node when ancestor context is needed.
@@ -3659,19 +3676,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 {
                     let mut resolving_type_aliases = self.resolving_type_aliases.borrow_mut();
                     if resolving_type_aliases.len() >= TYPE_INSTANTIATION_MAX_DEPTH {
-                        self.type_instantiation_overflowed.set(true);
-                        let active_resolutions = resolving_type_aliases.clone();
-                        drop(resolving_type_aliases);
-                        if let Some(root_resolution) = active_resolutions.first() {
-                            self.overflowed_type_alias_resolutions
+                        let should_propagate =
+                            resolving_type_aliases.first().is_some_and(|resolution| {
+                                resolution.type_arguments.iter().all(|type_id| {
+                                    self.arena()
+                                        .type_from_id(*type_id)
+                                        .is_some_and(|ty| !self.could_contain_type_variables(ty))
+                                })
+                            });
+                        if should_propagate {
+                            self.type_instantiation_overflowed.set(true);
+                            let active_resolutions = resolving_type_aliases.clone();
+                            drop(resolving_type_aliases);
+                            if let Some(root_resolution) = active_resolutions.first() {
+                                self.overflowed_type_alias_resolutions
+                                    .borrow_mut()
+                                    .push(root_resolution.clone());
+                            }
+                            let mut cache = self.type_alias_resolution_cache.borrow_mut();
+                            for active_resolution in active_resolutions {
+                                cache.insert(active_resolution, Ty::any());
+                            }
+                            cache.insert(key, Ty::any());
+                        } else {
+                            drop(resolving_type_aliases);
+                            self.type_alias_resolution_cache
                                 .borrow_mut()
-                                .push(root_resolution.clone());
+                                .insert(key, Ty::any());
                         }
-                        let mut cache = self.type_alias_resolution_cache.borrow_mut();
-                        for active_resolution in active_resolutions {
-                            cache.insert(active_resolution, Ty::any());
-                        }
-                        cache.insert(key, Ty::any());
                         return Some(Ty::any());
                     }
                     if resolving_type_aliases.contains(&key) {
@@ -3703,7 +3735,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 };
 
                 self.resolving_type_aliases.borrow_mut().pop();
-                if is_root_resolution && self.type_instantiation_overflowed.get() {
+                if self.type_instantiation_overflowed.get() && ty == Ty::any() {
                     self.overflowed_type_alias_resolutions
                         .borrow_mut()
                         .push(key.clone());
