@@ -1627,6 +1627,47 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_enum_member_symbol_for_name(
+        &self,
+        program_id: ProgramId,
+        name: &str,
+    ) -> Option<SymbolRef> {
+        let (enum_name, member_name) = name.rsplit_once('.')?;
+        let (enum_symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, enum_name)?;
+        self.get_enum_member_symbol_from_declaration(
+            enum_symbol.program_id,
+            declaration,
+            member_name,
+        )
+    }
+
+    fn get_enum_member_symbol_from_declaration(
+        &self,
+        program_id: ProgramId,
+        declaration: NodeId,
+        member_name: &str,
+    ) -> Option<SymbolRef> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSEnumDeclaration(declaration) => declaration
+                .body
+                .scope_id
+                .get()
+                .and_then(|scope_id| {
+                    self.semantic(program_id)
+                        .scoping()
+                        .get_binding(scope_id, Ident::from(member_name))
+                })
+                .map(|symbol_id| SymbolRef::new(program_id, symbol_id)),
+            AstKind::BindingIdentifier(_) => self.get_enum_member_symbol_from_declaration(
+                program_id,
+                self.nodes(program_id).parent_id(declaration),
+                member_name,
+            ),
+            _ => None,
+        }
+    }
+
     fn get_enum_literal_union_from_declaration(
         &self,
         program_id: ProgramId,
@@ -1667,6 +1708,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_type_of_enum_declaration(
         &self,
+        program_id: ProgramId,
         declaration: &'a oxc_ast::ast::TSEnumDeclaration<'a>,
     ) -> Ty<'a> {
         let enum_name = declaration.id.name.as_str();
@@ -1674,14 +1716,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .body
             .members
             .iter()
-            .map(|member| {
-                let member_name = member.id.static_name();
-                Ty::type_reference(
-                    self.arena(),
-                    self.arena().str(&format!("{enum_name}.{member_name}")),
-                    [],
-                )
-            })
+            .map(|member| self.get_type_of_enum_member_reference(program_id, declaration, member))
             .collect::<Vec<_>>();
         let object_type =
             Ty::object(
@@ -1737,25 +1772,42 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Ty::type_query(self.arena(), enum_name, object_type, [])
     }
 
+    fn get_type_of_enum_member_reference(
+        &self,
+        program_id: ProgramId,
+        declaration: &'a oxc_ast::ast::TSEnumDeclaration<'a>,
+        member: &'a oxc_ast::ast::TSEnumMember<'a>,
+    ) -> Ty<'a> {
+        let member_name = member.id.static_name();
+        let name = self
+            .arena()
+            .str(&format!("{}.{}", declaration.id.name.as_str(), member_name));
+        let target = declaration.body.scope_id.get().and_then(|scope_id| {
+            self.semantic(program_id)
+                .scoping()
+                .get_binding(scope_id, Ident::from(member_name.as_str()))
+                .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+        });
+        target.map_or_else(
+            || Ty::type_reference(self.arena(), name, []),
+            |target| Ty::type_reference_for_symbol(self.arena(), name, target, [], 0),
+        )
+    }
+
     fn get_type_of_enum_member(
         &self,
         program_id: ProgramId,
         member: &'a oxc_ast::ast::TSEnumMember<'a>,
     ) -> Ty<'a> {
-        let enum_name = self
+        let declaration = self
             .nodes(program_id)
             .ancestor_kinds(member.node_id())
             .find_map(|kind| match kind {
-                AstKind::TSEnumDeclaration(declaration) => Some(declaration.id.name.as_str()),
+                AstKind::TSEnumDeclaration(declaration) => Some(declaration),
                 _ => None,
             });
-        enum_name.map_or_else(Ty::none, |enum_name| {
-            let member_name = member.id.static_name();
-            Ty::type_reference(
-                self.arena(),
-                self.arena().str(&format!("{enum_name}.{member_name}")),
-                [],
-            )
+        declaration.map_or_else(Ty::none, |declaration| {
+            self.get_type_of_enum_member_reference(program_id, declaration, member)
         })
     }
 
@@ -3808,7 +3860,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let target = self
             .get_type_symbol_and_declaration_for_name(program_id, name)
-            .map(|(symbol, _)| symbol);
+            .map(|(symbol, _)| symbol)
+            .or_else(|| self.get_enum_member_symbol_for_name(program_id, name));
         let ty = if let Some(target) = target {
             Ty::type_reference_for_symbol(
                 self.arena(),
@@ -4787,6 +4840,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }),
             TypeData::Tuple(tuple) => self.get_property_type_of_tuple(ty, tuple, property_name),
             TypeData::Object(object) => {
+                if let Some(property) = object
+                    .properties
+                    .iter()
+                    .find(|property| property.name == property_name && !property.computed)
+                {
+                    return Some(if property.optional {
+                        Ty::union(self.arena(), [property.ty, Ty::Undefined])
+                    } else {
+                        property.ty
+                    });
+                }
+
                 // Try to get an index signature from the resolved type
                 for index_info in &object.index_infos {
                     // TODO(correctness): Don't hard-code the key type here
@@ -4794,17 +4859,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         return Some(index_info.value_type);
                     }
                 }
-
-                object.properties.iter().find_map(|property| {
-                    // TODO(correctness): handle all readonly/optional cases
-                    (property.name == property_name && !property.computed).then_some(
-                        if property.optional {
-                            Ty::union(self.arena(), [property.ty, Ty::Undefined])
-                        } else {
-                            property.ty
-                        },
-                    )
-                })
+                None
             }
             TypeData::ModuleNamespace(namespace) => {
                 namespace.properties.iter().find_map(|property| {
@@ -10302,7 +10357,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 if ty.is_none() { Ty::any() } else { ty }
             }
             AstKind::TSEnumDeclaration(declaration) => {
-                self.get_type_of_enum_declaration(declaration)
+                self.get_type_of_enum_declaration(node.program_id, declaration)
             }
             AstKind::TSEnumMember(member) => self.get_type_of_enum_member(node.program_id, member),
             AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
@@ -10459,7 +10514,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 }
                 AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
                 AstKind::TSEnumDeclaration(declaration) => {
-                    self.get_type_of_enum_declaration(declaration)
+                    self.get_type_of_enum_declaration(sym.program_id, declaration)
                 }
                 AstKind::BindingIdentifier(identifier) => {
                     if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
@@ -10506,7 +10561,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         }
                         AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
                         AstKind::TSEnumDeclaration(declaration) => {
-                            self.get_type_of_enum_declaration(declaration)
+                            self.get_type_of_enum_declaration(sym.program_id, declaration)
                         }
                         _ => Ty::none(),
                     }

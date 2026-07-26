@@ -50,6 +50,12 @@ fn add_type_to_union<'a>(
         for ty in &union.types {
             add_type_to_union(arena, type_set, seen_ids, *ty);
         }
+    } else if let TypeData::TypeReference(reference) = arena.type_data(ty)
+        && reference.is_bare()
+        && reference.target.is_some()
+    {
+        // Symbol-backed references are interned, so handle identity is sufficient here.
+        type_set.push(ty);
     } else if (matches!(arena.type_data(ty), TypeData::Object(_))
         && !arena.is_fresh_object_literal(ty))
         || !type_set

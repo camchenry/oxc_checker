@@ -1352,6 +1352,77 @@ mod test {
     }
 
     #[test]
+    fn enum_member_types_are_canonical_across_locations() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            enum E { A, B }
+            const value = E.A;
+            type Members = E.A | E.A | E.B;
+            ",
+        );
+        let checker = checker(&ret);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+
+        let declaration_type = semantic
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| match node.kind() {
+                AstKind::TSEnumMember(member) if member.id.static_name().as_str() == "A" => {
+                    Some(checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)))
+                }
+                _ => None,
+            })
+            .unwrap();
+        let value_type = get_global_symbol_type(&ret, "value");
+        let members_type = get_type_alias_type(&ret, "Members");
+
+        assert_eq!(declaration_type, value_type);
+        assert!(matches!(
+            ret.arena.type_data(declaration_type),
+            types::TypeData::TypeReference(reference) if reference.target.is_some()
+        ));
+        let types::TypeData::Union(union) = ret.arena.type_data(members_type) else {
+            panic!("expected enum member union");
+        };
+        assert_eq!(union.types.len(), 2);
+        assert_eq!(union.types[0], declaration_type);
+        assert_eq!(
+            union
+                .types
+                .iter()
+                .map(|ty| ty.to_type_string(ret.arena))
+                .collect::<Vec<_>>(),
+            ["E.A", "E.B"]
+        );
+    }
+
+    #[test]
+    fn same_named_enum_members_in_different_scopes_are_distinct() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            function first() {
+                enum E { A }
+                return E.A;
+            }
+            function second() {
+                enum E { A }
+                return E.A;
+            }
+            ",
+        );
+
+        let member_types = get_static_member_expression_types(&ret, "A");
+        assert_eq!(member_types.len(), 2);
+        assert_ne!(member_types[0], member_types[1]);
+        assert_eq!(member_types[0].to_type_string(ret.arena), "E.A");
+        assert_eq!(member_types[1].to_type_string(ret.arena), "E.A");
+    }
+
+    #[test]
     fn default_lib_entries_are_marked_as_lib() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(&allocator, "const x = 1;");
