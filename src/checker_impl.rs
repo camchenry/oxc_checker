@@ -1986,7 +1986,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> TupleElement<'a> {
         match element {
             TSTupleElement::TSRestType(rest) => {
-                TupleElement::Rest(self.get_type_from_ts_type(program_id, &rest.type_annotation))
+                TupleElement::Rest(self.get_type_from_ts_type_expanding_top_level_aliases(
+                    program_id,
+                    &rest.type_annotation,
+                ))
             }
             TSTupleElement::TSOptionalType(optional) => TupleElement::Optional(
                 self.get_type_from_ts_type(program_id, &optional.type_annotation)
@@ -7851,12 +7854,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         .contextual_type_for_array_literal_element(context.contextual_type, index);
                     let element_context =
                         self.array_literal_element_context(context, contextual_element_type);
-                    TupleElement::Regular(self.get_type_of_array_expression_element(
-                        program_id,
-                        element,
-                        node_id,
-                        element_context,
-                    ))
+                    match element {
+                        ArrayExpressionElement::SpreadElement(spread) => {
+                            TupleElement::Rest(self.check_expression_with_context(
+                                program_id,
+                                &spread.argument,
+                                node_id,
+                                element_context,
+                            ))
+                        }
+                        _ => TupleElement::Regular(self.get_type_of_array_expression_element(
+                            program_id,
+                            element,
+                            node_id,
+                            element_context,
+                        )),
+                    }
                 })
                 .collect();
             return if self.array_literal_context_produces_readonly_tuple(context) {

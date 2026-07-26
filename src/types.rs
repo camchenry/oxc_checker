@@ -1,5 +1,5 @@
 use crate::{
-    limits::{TYPE_STRING_MAX_DEPTH, TYPE_VISIT_MAX_DEPTH},
+    limits::{TUPLE_SPREAD_MAX_LENGTH, TYPE_STRING_MAX_DEPTH, TYPE_VISIT_MAX_DEPTH},
     type_set::{reduce_intersection_type, reduce_union_type},
 };
 use bitflags::bitflags;
@@ -1371,16 +1371,35 @@ impl<'a> Ty<'a> {
     }
 
     pub fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
-        arena.alloc_type(TypeData::Tuple(arena.alloc(TyTuple {
-            elements: arena.vec_from_iter(elements),
-            readonly: false,
-        })))
+        Self::normalized_tuple(arena, elements, false)
     }
 
     pub fn readonly_tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
+        Self::normalized_tuple(arena, elements, true)
+    }
+
+    fn normalized_tuple(
+        arena: CheckerArena<'a>,
+        elements: Vec<TupleElement<'a>>,
+        readonly: bool,
+    ) -> Self {
+        let mut normalized = Vec::with_capacity(elements.len());
+        for element in elements {
+            if let TupleElement::Rest(ty) = element
+                && let TypeData::Tuple(tuple) = arena.type_data(ty)
+            {
+                if normalized.len() + tuple.elements.len() >= TUPLE_SPREAD_MAX_LENGTH {
+                    return Ty::any();
+                }
+                normalized.extend(tuple.elements.iter().copied());
+            } else {
+                normalized.push(element);
+            }
+        }
+
         arena.alloc_type(TypeData::Tuple(arena.alloc(TyTuple {
-            elements: arena.vec_from_iter(elements),
-            readonly: true,
+            elements: arena.vec_from_iter(normalized),
+            readonly,
         })))
     }
 

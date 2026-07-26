@@ -29,3 +29,7 @@ pub(crate) const TYPE_STRING_MAX_DEPTH: usize = 64;
 /// Maximum recursion depth for generic type traversal helpers before stopping
 /// traversal of the current branch.
 pub(crate) const TYPE_VISIT_MAX_DEPTH: usize = 256;
+
+/// Maximum tuple length produced by spreading tuple types before falling back
+/// to `any`, matching TypeScript's tuple normalization limit.
+pub(crate) const TUPLE_SPREAD_MAX_LENGTH: usize = 10_000;
