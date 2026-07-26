@@ -30760,7 +30760,7 @@ interface EventTarget {
 >         ^^^^^^^^^^^: { new (): EventTarget; prototype: EventTarget; }   (TyObject) (BindingIdentifier)
 
     addEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: AddEventListenerOptions | boolean): void;
->   ^^^^^^^^^^^^^^^^: { (type: string, callback: EventListenerOrEventListenerObject | null, options?: AddEventListenerOptions | boolean): void; (type: string, callback: EventListenerOrEventListenerObject | null, options?: AddEventListenerOptions | boolean): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^: { (type: string, callback: EventListenerOrEventListenerObject | null, options?: boolean | AddEventListenerOptions): void; (type: string, callback: EventListenerOrEventListenerObject | null, options?: boolean | AddEventListenerOptions): void; }   (TyObject) (TSMethodSignature)
 
     addEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: AddEventListenerOptions | boolean): void;
 >                    ^^^^: string   (TyString) (BindingIdentifier)
@@ -30772,7 +30772,7 @@ interface EventTarget {
 >                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     addEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: AddEventListenerOptions | boolean): void;
->                                                                                       ^^^^^^^: AddEventListenerOptions | boolean | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                       ^^^^^^^: boolean | AddEventListenerOptions | undefined   (TyUnion) (BindingIdentifier)
 
     addEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: AddEventListenerOptions | boolean): void;
 >                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -30790,7 +30790,7 @@ interface EventTarget {
 >                        ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (TyObject) (IdentifierReference)
 
     removeEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void;
->   ^^^^^^^^^^^^^^^^^^^: { (type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void; (type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^^^: { (type: string, callback: EventListenerOrEventListenerObject | null, options?: boolean | EventListenerOptions): void; (type: string, callback: EventListenerOrEventListenerObject | null, options?: boolean | EventListenerOptions): void; }   (TyObject) (TSMethodSignature)
 
     removeEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void;
 >                       ^^^^: string   (TyString) (BindingIdentifier)
@@ -30802,7 +30802,7 @@ interface EventTarget {
 >                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     removeEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void;
->                                                                                          ^^^^^^^: EventListenerOptions | boolean | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                          ^^^^^^^: boolean | EventListenerOptions | undefined   (TyUnion) (BindingIdentifier)
 
     removeEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: EventListenerOptions | boolean): void;
 >                                                                                                    ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -44003,7 +44003,7 @@ interface HTMLImageElement extends HTMLElement {
 >   ^^^^^^^^: "async" | "sync" | "auto"   (TyUnion) (TSPropertySignature)
 
     fetchPriority: "high" | "low" | "auto";
->   ^^^^^^^^^^^^^: "high" | "low" | "auto"   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^^^^^^^: "auto" | "high" | "low"   (TyUnion) (TSPropertySignature)
 
     height: number;
 >   ^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -45158,7 +45158,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >   ^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
     fetchPriority: "high" | "low" | "auto";
->   ^^^^^^^^^^^^^: "high" | "low" | "auto"   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^^^^^^^: "auto" | "high" | "low"   (TyUnion) (TSPropertySignature)
 
     href: string;
 >   ^^^^: string   (TyString) (TSPropertySignature)
@@ -48918,7 +48918,7 @@ interface HTMLScriptElement extends HTMLElement {
 >   ^^^^^: string   (TyString) (TSPropertySignature)
 
     fetchPriority: "high" | "low" | "auto";
->   ^^^^^^^^^^^^^: "high" | "low" | "auto"   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^^^^^^^: "auto" | "high" | "low"   (TyUnion) (TSPropertySignature)
 
     htmlFor: string;
 >   ^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -125106,7 +125106,7 @@ type SelectionDirection = "forward" | "backward" | "none";
 >    ^^^^^^^^^^^^^^^^^^: "forward" | "backward" | "none"   (TyUnion) (TSTypeAliasDeclaration)
 
 type TexImageSource = ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame;
->    ^^^^^^^^^^^^^^: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^: ImageBitmap | ImageData | HTMLImageElement | HTMLVideoElement | VideoFrame | HTMLCanvasElement | OffscreenCanvas   (TyUnion) (TSTypeAliasDeclaration)
 
 type TexImageSource = ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame;
 >                     ^^^^^^^^^^^: { new (): ImageBitmap; prototype: ImageBitmap; }   (TyObject) (TSTypeReference)

@@ -1,23 +1,21 @@
 use std::collections::HashSet;
 
-use crate::{
-    TyIntersection,
-    types::{CheckerArena, Ty, TyTemplateLiteral, TyUnion, TypeData},
-};
+use crate::types::{CheckerArena, Ty, TyTemplateLiteral, TypeData, TypeId};
 
 pub fn reduce_union_type<'a>(
     arena: CheckerArena<'a>,
     types: impl IntoIterator<Item = Ty<'a>>,
 ) -> Ty<'a> {
     let mut type_set = Vec::new();
+    let mut seen_ids = HashSet::new();
     for ty in types {
-        add_type_to_union(arena, &mut type_set, ty);
+        add_type_to_union(arena, &mut type_set, &mut seen_ids, ty);
     }
 
-    if type_set.iter().any(|ty| *ty == Ty::Any) {
+    if type_set.contains(&Ty::Any) {
         return Ty::any();
     }
-    if type_set.iter().any(|ty| *ty == Ty::Unknown) {
+    if type_set.contains(&Ty::Unknown) {
         return Ty::unknown();
     }
 
@@ -36,21 +34,48 @@ pub fn reduce_union_type<'a>(
         return type_set[0];
     }
 
-    arena.alloc_type(TypeData::Union(arena.alloc(TyUnion {
-        types: arena.vec_from_iter(type_set),
-    })))
+    arena.intern_union(type_set)
 }
 
-fn add_type_to_union<'a>(arena: CheckerArena<'a>, type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
+fn add_type_to_union<'a>(
+    arena: CheckerArena<'a>,
+    type_set: &mut Vec<Ty<'a>>,
+    seen_ids: &mut HashSet<TypeId>,
+    ty: Ty<'a>,
+) {
+    if !seen_ids.insert(ty.id()) {
+        return;
+    }
     if let TypeData::Union(union) = arena.type_data(ty) {
         for ty in &union.types {
-            add_type_to_union(arena, type_set, *ty);
+            add_type_to_union(arena, type_set, seen_ids, *ty);
         }
-    } else if !type_set
-        .iter()
-        .any(|existing| arena.is_type_identical_to(*existing, ty))
+    } else if (matches!(arena.type_data(ty), TypeData::Object(_))
+        && !arena.is_fresh_object_literal(ty))
+        || !type_set
+            .iter()
+            .any(|existing| union_constituents_are_identical(arena, *existing, ty))
     {
         type_set.push(ty);
+    }
+}
+
+fn union_constituents_are_identical<'a>(
+    arena: CheckerArena<'a>,
+    left: Ty<'a>,
+    right: Ty<'a>,
+) -> bool {
+    if left == right {
+        return true;
+    }
+    match (arena.type_data(left), arena.type_data(right)) {
+        (TypeData::Object(_), TypeData::Object(_)) => {
+            arena.is_fresh_object_literal(left)
+                && arena.is_fresh_object_literal(right)
+                && arena.is_type_identical_to(left, right)
+        }
+        (TypeData::Object(_), _) | (_, TypeData::Object(_)) => false,
+        _ => arena.is_type_identical_to(left, right),
     }
 }
 
@@ -59,8 +84,9 @@ pub(crate) fn reduce_intersection_type<'a>(
     types: impl IntoIterator<Item = Ty<'a>>,
 ) -> Ty<'a> {
     let mut type_set = Vec::new();
+    let mut seen_ids = HashSet::new();
     for ty in types {
-        add_type_to_intersection(arena, &mut type_set, ty);
+        add_type_to_intersection(arena, &mut type_set, &mut seen_ids, ty);
     }
 
     if type_set.contains(&Ty::Any) {
@@ -85,16 +111,22 @@ pub(crate) fn reduce_intersection_type<'a>(
     match type_set.as_slice() {
         [] => Ty::object(arena, []),
         [ty] => *ty,
-        _ => arena.alloc_type(TypeData::Intersection(arena.alloc(TyIntersection {
-            types: arena.vec_from_iter(type_set),
-        }))),
+        _ => arena.intern_intersection(type_set),
     }
 }
 
-fn add_type_to_intersection<'a>(arena: CheckerArena<'a>, type_set: &mut Vec<Ty<'a>>, ty: Ty<'a>) {
+fn add_type_to_intersection<'a>(
+    arena: CheckerArena<'a>,
+    type_set: &mut Vec<Ty<'a>>,
+    seen_ids: &mut HashSet<TypeId>,
+    ty: Ty<'a>,
+) {
+    if !seen_ids.insert(ty.id()) {
+        return;
+    }
     if let TypeData::Intersection(intersection) = arena.type_data(ty) {
         for ty in &intersection.types {
-            add_type_to_intersection(arena, type_set, *ty);
+            add_type_to_intersection(arena, type_set, seen_ids, *ty);
         }
     } else {
         type_set.push(ty);
@@ -151,10 +183,10 @@ fn normalize_null_undefined_order(type_set: &mut [Ty<'_>]) {
 }
 
 fn remove_redundant_literal_types<'a>(arena: CheckerArena<'a>, type_set: &mut Vec<Ty<'a>>) {
-    let has_string = type_set.iter().any(|ty| *ty == Ty::String);
-    let has_number = type_set.iter().any(|ty| *ty == Ty::Number);
-    let has_boolean = type_set.iter().any(|ty| *ty == Ty::Boolean);
-    let has_bigint = type_set.iter().any(|ty| *ty == Ty::Bigint);
+    let has_string = type_set.contains(&Ty::String);
+    let has_number = type_set.contains(&Ty::Number);
+    let has_boolean = type_set.contains(&Ty::Boolean);
+    let has_bigint = type_set.contains(&Ty::Bigint);
     let template_literals = (!has_string).then(|| {
         type_set
             .iter()
@@ -199,7 +231,7 @@ fn reduce_boolean_literal_union<'a>(arena: CheckerArena<'a>, type_set: &mut Vec<
         .any(|ty| matches!(arena.type_data(*ty), TypeData::BooleanLiteral(false)));
     if has_true && has_false {
         type_set.retain(|ty| !matches!(arena.type_data(*ty), TypeData::BooleanLiteral(_)));
-        if !type_set.iter().any(|ty| *ty == Ty::Boolean) {
+        if !type_set.contains(&Ty::Boolean) {
             type_set.push(Ty::Boolean);
         }
     }

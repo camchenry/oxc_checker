@@ -1973,7 +1973,7 @@ interface RegExpConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     new (pattern: RegExp | string): RegExp;
->        ^^^^^^^: RegExp | string   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)
 
     new (pattern: RegExp | string): RegExp;
 >                 ^^^^^^: RegExpConstructor   (TyTypeReference) (TSTypeReference)
@@ -2000,7 +2000,7 @@ interface RegExpConstructor {
 >                                          ^^^^^^: RegExpConstructor   (TyTypeReference) (IdentifierReference)
 
     (pattern: RegExp | string): RegExp;
->    ^^^^^^^: RegExp | string   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | RegExp   (TyUnion) (BindingIdentifier)
 
     (pattern: RegExp | string): RegExp;
 >             ^^^^^^: RegExpConstructor   (TyTypeReference) (TSTypeReference)
@@ -2448,7 +2448,7 @@ interface JSON {
 >                                                          ^^^^^: any   (TyAny) (BindingIdentifier)
 
     stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
->   ^^^^^^^^^: { (value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string; (value: any, replacer?: (number | string)[] | null, space?: string | number): string; (value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string; (value: any, replacer?: (number | string)[] | null, space?: string | number): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { (value: any, replacer?: (this: any, key: string, value: any) => any, space?: number | string): string; (value: any, replacer?: (number | string)[] | null, space?: number | string): string; (value: any, replacer?: (this: any, key: string, value: any) => any, space?: number | string): string; (value: any, replacer?: (number | string)[] | null, space?: number | string): string; }   (TyObject) (TSMethodSignature)
 
     stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
 >             ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -2466,10 +2466,10 @@ interface JSON {
 >                                                             ^^^^^: any   (TyAny) (BindingIdentifier)
 
     stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
->                                                                                 ^^^^^: string | number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                 ^^^^^: number | string | undefined   (TyUnion) (BindingIdentifier)
 
     stringify(value: any, replacer?: (number | string)[] | null, space?: string | number): string;
->   ^^^^^^^^^: { (value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string; (value: any, replacer?: (number | string)[] | null, space?: string | number): string; (value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string; (value: any, replacer?: (number | string)[] | null, space?: string | number): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { (value: any, replacer?: (this: any, key: string, value: any) => any, space?: number | string): string; (value: any, replacer?: (number | string)[] | null, space?: number | string): string; (value: any, replacer?: (this: any, key: string, value: any) => any, space?: number | string): string; (value: any, replacer?: (number | string)[] | null, space?: number | string): string; }   (TyObject) (TSMethodSignature)
 
     stringify(value: any, replacer?: (number | string)[] | null, space?: string | number): string;
 >             ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -2478,7 +2478,7 @@ interface JSON {
 >                         ^^^^^^^^: (number | string)[] | null | undefined   (TyUnion) (BindingIdentifier)
 
     stringify(value: any, replacer?: (number | string)[] | null, space?: string | number): string;
->                                                                ^^^^^: string | number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                ^^^^^: number | string | undefined   (TyUnion) (BindingIdentifier)
 
 declare var JSON: JSON;
 >           ^^^^: JSON   (TyTypeReference) (BindingIdentifier)
@@ -11217,7 +11217,7 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
         localeMatcher?: "best fit" | "lookup" | undefined;
->       ^^^^^^^^^^^^^: "best fit" | "lookup" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion) (TSPropertySignature)
 
         weekday?: "long" | "short" | "narrow" | undefined;
 >       ^^^^^^^: "long" | "short" | "narrow" | undefined   (TyUnion) (TSPropertySignature)

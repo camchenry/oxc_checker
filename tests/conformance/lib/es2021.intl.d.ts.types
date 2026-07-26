@@ -113,7 +113,7 @@ declare namespace Intl {
 >        ^^^^^^^^^^^^^^: "conjunction" | "disjunction" | "unit"   (TyUnion) (TSTypeAliasDeclaration)
 
     type ListFormatStyle = "long" | "short" | "narrow";
->        ^^^^^^^^^^^^^^^: "long" | "short" | "narrow"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^: "narrow" | "short" | "long"   (TyUnion) (TSTypeAliasDeclaration)
 
     interface ListFormatOptions {
 >             ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

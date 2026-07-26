@@ -2,9 +2,21 @@ use std::{cell::RefCell, rc::Rc};
 
 use oxc_allocator::Vec as ArenaVec;
 
-use crate::types::{CheckerArena, Ty, TyTypeParameter, TypeData};
+use crate::types::{CheckerArena, Ty, TyTypeParameter, TypeData, TypeId};
 
 type TypeParameterResolver<'a> = Rc<RefCell<dyn FnMut(&str) -> Option<Ty<'a>> + 'a>>;
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+pub(crate) enum MapperCacheSource<'a> {
+    TypeParameter(&'a str),
+    Type(TypeId),
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+pub(crate) struct MapperCacheEntry<'a> {
+    source: MapperCacheSource<'a>,
+    target: TypeId,
+}
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct TypeParameterSubstitutions<'a> {
@@ -142,6 +154,38 @@ impl<'a> TypeMapper<'a> {
 
     pub(crate) fn is_empty(&self) -> bool {
         matches!(self, Self::Empty)
+    }
+
+    pub(crate) fn cache_entries(
+        &self,
+        arena: CheckerArena<'a>,
+    ) -> Option<Vec<MapperCacheEntry<'a>>> {
+        let source_key = |source: Ty<'a>| match arena.type_data(source) {
+            TypeData::TypeReference(reference)
+                if reference.is_bare() && reference.target.is_none() =>
+            {
+                MapperCacheSource::TypeParameter(reference.name)
+            }
+            _ => MapperCacheSource::Type(source.id()),
+        };
+        match self {
+            Self::Empty => Some(Vec::new()),
+            Self::Simple { source, target } => Some(vec![MapperCacheEntry {
+                source: source_key(*source),
+                target: target.id(),
+            }]),
+            Self::Array { sources, targets } => Some(
+                sources
+                    .iter()
+                    .zip(targets.iter())
+                    .map(|(source, target)| MapperCacheEntry {
+                        source: source_key(*source),
+                        target: target.id(),
+                    })
+                    .collect(),
+            ),
+            Self::ContextualInference { .. } => None,
+        }
     }
 
     pub(crate) fn map(&self, arena: CheckerArena<'a>, ty: Ty<'a>) -> Ty<'a> {

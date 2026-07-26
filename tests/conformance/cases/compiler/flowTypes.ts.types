@@ -71,7 +71,7 @@ if (typeof y === "string") {
 >             ^: number | boolean   (TyUnion) (IdentifierReference)
 
 const andResult = x && x;
->     ^^^^^^^^^: undefined | string   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const andResult = x && x;
 >                 ^: string | undefined   (TyUnion) (IdentifierReference)

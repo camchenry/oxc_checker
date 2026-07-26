@@ -10,6 +10,7 @@ use oxc_span::Span;
 
 use crate::{
     global_types::GlobalSymbolTable,
+    mapper::MapperCacheEntry,
     program::{ProgramId, ProgramStore},
     types::{CheckerArena, IndexInfo, Signature, SignatureKind, Ty, TypeId},
 };
@@ -29,11 +30,17 @@ pub(crate) struct TypeAliasMetadata {
     pub(crate) declaration: NodeRef,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct TypeAliasResolution {
     pub(crate) program_id: ProgramId,
     pub(crate) declaration: NodeId,
     pub(crate) type_arguments: Vec<TypeId>,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+pub(crate) struct InstantiationCacheKey<'a> {
+    pub(crate) target: TypeId,
+    pub(crate) mapper: Vec<MapperCacheEntry<'a>>,
 }
 
 pub struct CheckerReturn<'a, 'store> {
@@ -44,6 +51,8 @@ pub struct CheckerReturn<'a, 'store> {
     pub declared_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
     pub value_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
     pub(crate) type_alias_metadata_by_type: RefCell<IndexVec<TypeId, Option<TypeAliasMetadata>>>,
+    pub(crate) instantiation_cache: RefCell<HashMap<InstantiationCacheKey<'a>, Ty<'a>>>,
+    pub(crate) type_alias_resolution_cache: RefCell<HashMap<TypeAliasResolution, Ty<'a>>>,
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
@@ -205,6 +214,8 @@ impl CheckerBuilder {
                 None;
                 arena.type_count()
             ])),
+            instantiation_cache: RefCell::new(HashMap::new()),
+            type_alias_resolution_cache: RefCell::new(HashMap::new()),
             interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_type_aliases: RefCell::new(Vec::new()),

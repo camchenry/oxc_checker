@@ -29,8 +29,8 @@ use std::collections::{HashMap, HashSet};
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
     checker::{
-        Checker, CheckerReturn, ClassMemberResolution, NodeRef, SymbolRef, TypeAliasMetadata,
-        TypeAliasResolution, TypeParameterResolution,
+        Checker, CheckerReturn, ClassMemberResolution, InstantiationCacheKey, NodeRef, SymbolRef,
+        TypeAliasMetadata, TypeAliasResolution, TypeParameterResolution,
     },
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
@@ -368,7 +368,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     #[inline]
     pub(crate) fn instantiate_type(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>) -> Ty<'a> {
-        self.instantiate_type_at_depth(ty, mapper, 0)
+        if mapper.is_empty() || !self.could_contain_type_variables(ty) {
+            return ty;
+        }
+        let Some(mapper_key) = mapper.cache_entries(self.arena()) else {
+            return self.instantiate_type_at_depth(ty, mapper, 0);
+        };
+        let key = InstantiationCacheKey {
+            target: ty.id(),
+            mapper: mapper_key,
+        };
+        if let Some(instantiated) = self.instantiation_cache.borrow().get(&key) {
+            return *instantiated;
+        }
+        let instantiated = self.instantiate_type_at_depth(ty, mapper, 0);
+        self.instantiation_cache
+            .borrow_mut()
+            .insert(key, instantiated);
+        instantiated
     }
 
     fn instantiate_type_at_depth(
@@ -1236,10 +1253,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     pub(crate) fn get_string_literal_value(&self, literal: &StringLiteral<'a>) -> &'a str {
-        literal.raw.as_ref().map_or_else(
-            || self.arena().str(&format!("{:?}", literal.value.as_str())),
-            |raw| raw.as_str(),
-        )
+        literal.value.as_str()
     }
 
     // TODO(cleanup): just allow bigint literals to store all the info instead of just str
@@ -1904,12 +1918,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let TypeData::TypeReference(reference) = self.arena().type_data(source) else {
             return source;
         };
-        let rebuilt = Ty::type_reference_with_display_type_argument_count(
-            self.arena(),
-            reference.name,
-            type_arguments,
-            display_type_argument_count,
-        );
+        let rebuilt = if let Some(target) = reference.target {
+            Ty::type_reference_for_symbol(
+                self.arena(),
+                reference.name,
+                target,
+                type_arguments,
+                display_type_argument_count,
+            )
+        } else {
+            Ty::type_reference_with_display_type_argument_count(
+                self.arena(),
+                reference.name,
+                type_arguments,
+                display_type_argument_count,
+            )
+        };
         self.copy_type_alias_metadata(source, rebuilt);
         rebuilt
     }
@@ -3506,17 +3530,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::TSTypeAliasDeclaration(alias)
                 if !matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
             {
+                let key = TypeAliasResolution {
+                    program_id,
+                    declaration,
+                    type_arguments: type_arguments.iter().map(|ty| ty.id()).collect(),
+                };
+                if let Some(ty) = self.type_alias_resolution_cache.borrow().get(&key) {
+                    return Some(*ty);
+                }
                 {
-                    let key = TypeAliasResolution {
-                        program_id,
-                        declaration,
-                        type_arguments: type_arguments.iter().map(|ty| ty.id()).collect(),
-                    };
                     let mut resolving_type_aliases = self.resolving_type_aliases.borrow_mut();
                     if resolving_type_aliases.contains(&key) {
                         return None;
                     }
-                    resolving_type_aliases.push(key);
+                    resolving_type_aliases.push(key.clone());
                 }
 
                 let substitutions = self.type_parameter_substitutions_for_type_arguments(
@@ -3533,6 +3560,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let ty = self.expand_type_at_use(program_id, ty, depth + 1);
 
                 self.resolving_type_aliases.borrow_mut().pop();
+                self.type_alias_resolution_cache
+                    .borrow_mut()
+                    .insert(key, ty);
                 Some(ty)
             }
             AstKind::BindingIdentifier(_) => {
@@ -3776,12 +3806,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
         display_type_argument_count: usize,
     ) -> Ty<'a> {
-        let ty = Ty::type_reference_with_display_type_argument_count(
-            self.arena(),
-            name,
-            type_arguments,
-            display_type_argument_count,
-        );
+        let target = self
+            .get_type_symbol_and_declaration_for_name(program_id, name)
+            .map(|(symbol, _)| symbol);
+        let ty = if let Some(target) = target {
+            Ty::type_reference_for_symbol(
+                self.arena(),
+                name,
+                target,
+                type_arguments,
+                display_type_argument_count,
+            )
+        } else {
+            Ty::type_reference_with_display_type_argument_count(
+                self.arena(),
+                name,
+                type_arguments,
+                display_type_argument_count,
+            )
+        };
         self.register_type_alias_metadata(program_id, ty);
         ty
     }
@@ -4329,7 +4372,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
 
-        Ty::object(
+        Ty::object_literal(
             self.arena(),
             explicit_properties.into_iter().chain(spread_properties),
         )
@@ -4835,13 +4878,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
+        let object_type = self.remove_null_or_undefined(object_type);
         let key_type = self.get_type_of_expression_with_node(
             program_id,
             &member.expression,
             node_id,
             flags | GetTypeFlags::PRESERVE_LITERALS,
         );
-
         if let Some(indexed_type) =
             self.resolve_indexed_access_type(program_id, object_type, key_type)
         {

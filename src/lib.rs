@@ -2560,6 +2560,25 @@ mod test {
     }
 
     #[test]
+    fn generic_instantiations_are_cached_by_target_and_mapper() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "const x = 1;");
+        let checker = checker(&ret);
+        let arena = arena(&ret);
+        let target = Ty::object(
+            arena,
+            [Ty::property("value", Ty::type_reference(arena, "T", []))],
+        );
+        let first_mapper = TypeMapper::single(Ty::type_reference(arena, "T", []), Ty::string());
+        let second_mapper = TypeMapper::single(Ty::type_reference(arena, "T", []), Ty::string());
+
+        assert_eq!(
+            checker.instantiate_type(target, &first_mapper),
+            checker.instantiate_type(target, &second_mapper)
+        );
+    }
+
+    #[test]
     fn type_alias_declarations_expand_top_level_alias_references() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

@@ -313,7 +313,7 @@ declare namespace Intl {
 >       ^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
 
         dayPeriod?: "narrow" | "short" | "long" | undefined;
->       ^^^^^^^^^: "narrow" | "short" | "long" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: "short" | "long" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
 
         numberingSystem?: string | undefined;
 >       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
