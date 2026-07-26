@@ -9917,6 +9917,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         else {
             return None;
         };
+        if !is_default_lib_alias && matches!(&alias.type_annotation, TSType::TSUnionType(_)) {
+            return None;
+        }
         let substitutions = self.type_parameter_substitutions_for_reference(
             metadata.declaration.program_id,
             alias.type_parameters.as_deref(),

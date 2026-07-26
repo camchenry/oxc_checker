@@ -44003,7 +44003,7 @@ interface HTMLImageElement extends HTMLElement {
 >   ^^^^^^^^: "async" | "sync" | "auto"   (TyUnion) (TSPropertySignature)
 
     fetchPriority: "high" | "low" | "auto";
->   ^^^^^^^^^^^^^: "auto" | "high" | "low"   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^^^^^^^: "high" | "low" | "auto"   (TyUnion) (TSPropertySignature)
 
     height: number;
 >   ^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -45158,7 +45158,7 @@ interface HTMLLinkElement extends HTMLElement, LinkStyle {
 >   ^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
     fetchPriority: "high" | "low" | "auto";
->   ^^^^^^^^^^^^^: "auto" | "high" | "low"   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^^^^^^^: "high" | "low" | "auto"   (TyUnion) (TSPropertySignature)
 
     href: string;
 >   ^^^^: string   (TyString) (TSPropertySignature)
@@ -48918,7 +48918,7 @@ interface HTMLScriptElement extends HTMLElement {
 >   ^^^^^: string   (TyString) (TSPropertySignature)
 
     fetchPriority: "high" | "low" | "auto";
->   ^^^^^^^^^^^^^: "auto" | "high" | "low"   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^^^^^^^: "high" | "low" | "auto"   (TyUnion) (TSPropertySignature)
 
     htmlFor: string;
 >   ^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -125882,7 +125882,7 @@ type RequestMode = "cors" | "navigate" | "no-cors" | "same-origin";
 >    ^^^^^^^^^^^: "cors" | "navigate" | "no-cors" | "same-origin"   (TyUnion) (TSTypeAliasDeclaration)
 
 type RequestPriority = "auto" | "high" | "low";
->    ^^^^^^^^^^^^^^^: "auto" | "high" | "low"   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: "high" | "low" | "auto"   (TyUnion) (TSTypeAliasDeclaration)
 
 type RequestRedirect = "error" | "follow" | "manual";
 >    ^^^^^^^^^^^^^^^: "error" | "follow" | "manual"   (TyUnion) (TSTypeAliasDeclaration)
