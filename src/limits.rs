@@ -2,9 +2,9 @@
 /// and apparent types at use sites before preserving the current unresolved type.
 pub(crate) const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
 
-/// Maximum recursion depth for substituting type parameters through nested type
-/// structures before returning the partially instantiated type unchanged.
-pub(crate) const TYPE_INSTANTIATION_MAX_DEPTH: usize = 64;
+/// Maximum active type instantiation depth before returning `any` for a
+/// pathological or infinite generic type, matching TypeScript's limit.
+pub(crate) const TYPE_INSTANTIATION_MAX_DEPTH: usize = 100;
 
 /// Maximum recursion depth for resolving TypeScript AST type nodes into checker
 /// types before falling back to `any` for pathological recursive annotations.
@@ -16,7 +16,7 @@ pub(crate) const CONDITIONAL_INFER_MATCH_MAX_DEPTH: usize = 64;
 
 /// Maximum recursion depth for resolving conditional types before preserving the
 /// conditional type as deferred instead of selecting a branch.
-pub(crate) const CONDITIONAL_TYPE_MAX_DEPTH: usize = 64;
+pub(crate) const CONDITIONAL_TYPE_MAX_DEPTH: usize = 100;
 
 /// Maximum recursion depth for structural assignability checks before treating
 /// the relation as not assignable.

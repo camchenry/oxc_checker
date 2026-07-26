@@ -2650,6 +2650,30 @@ mod test {
     }
 
     #[test]
+    fn recursive_type_instantiation_depth_bails_out_to_any() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        type TupleOf<T, N extends number> = N extends N ? number extends N ? T[] : BuildTuple<T, N, []> : never;
+        type BuildTuple<T, N extends number, R extends unknown[]> = R['length'] extends N ? R : BuildTuple<T, N, [T, ...R]>;
+        type Small = TupleOf<number, 4>;
+        type Value = TupleOf<number, 1000>;
+        ",
+        );
+
+        let small_type = get_type_alias_type(&ret, "Small");
+        let TypeData::Tuple(small) = ret.arena.type_data(small_type) else {
+            panic!(
+                "expected a tuple, got {}",
+                small_type.to_type_string(ret.arena)
+            );
+        };
+        assert_eq!(small.elements.len(), 4);
+        assert_eq!(get_type_alias_type(&ret, "Value"), Ty::any());
+    }
+
+    #[test]
     fn type_alias_declarations_expand_top_level_alias_references() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

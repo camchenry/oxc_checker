@@ -371,6 +371,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if mapper.is_empty() || !self.could_contain_type_variables(ty) {
             return ty;
         }
+
+        let depth = &self.type_instantiation_depth;
+        let current = depth.get();
+        if current >= TYPE_INSTANTIATION_MAX_DEPTH {
+            self.type_instantiation_overflowed.set(true);
+            return Ty::any();
+        }
+
+        depth.set(current + 1);
+        let instantiated = self.instantiate_type_cached(ty, mapper);
+        depth.set(current);
+        instantiated
+    }
+
+    fn instantiate_type_cached(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>) -> Ty<'a> {
         let Some(mapper_key) = mapper.cache_entries(self.arena()) else {
             return self.instantiate_type_at_depth(ty, mapper, 0);
         };
@@ -395,7 +410,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         depth: usize,
     ) -> Ty<'a> {
         if depth >= TYPE_INSTANTIATION_MAX_DEPTH {
-            return ty;
+            return Ty::any();
         }
         if mapper.is_empty() || !self.could_contain_type_variables(ty) {
             return ty;
@@ -681,11 +696,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.arena(),
                 self.instantiate_type_at_depth(keyof.target, mapper, depth + 1),
             ),
-            TypeData::IndexedAccess(indexed_access) => Ty::indexed_access(
-                self.arena(),
-                self.instantiate_type_at_depth(indexed_access.object_type, mapper, depth + 1),
-                self.instantiate_type_at_depth(indexed_access.index_type, mapper, depth + 1),
-            ),
+            TypeData::IndexedAccess(indexed_access) => {
+                let object_type =
+                    self.instantiate_type_at_depth(indexed_access.object_type, mapper, depth + 1);
+                let index_type =
+                    self.instantiate_type_at_depth(indexed_access.index_type, mapper, depth + 1);
+                if let (TypeData::Tuple(tuple), TypeData::StringLiteral(property)) = (
+                    self.arena().type_data(object_type),
+                    self.arena().type_data(index_type),
+                ) && property.value == "length"
+                {
+                    self.get_property_type_of_tuple(object_type, tuple, property.value)
+                        .unwrap_or_else(|| {
+                            Ty::indexed_access(self.arena(), object_type, index_type)
+                        })
+                } else {
+                    Ty::indexed_access(self.arena(), object_type, index_type)
+                }
+            }
             TypeData::Conditional(conditional) => {
                 let infer_type_parameters =
                     self.infer_type_parameter_names(conditional.extends_type);
@@ -734,13 +762,28 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     );
                 }
 
+                let check_type =
+                    self.instantiate_type_at_depth(conditional.check_type, mapper, depth + 1);
+                let extends_type = self.instantiate_type_at_depth(
+                    conditional.extends_type,
+                    &infer_mapper,
+                    depth + 1,
+                );
+                if infer_type_parameters.is_empty()
+                    && !self.could_contain_type_variables(check_type)
+                    && !self.could_contain_type_variables(extends_type)
+                {
+                    let selected = if self.is_assignable_to(check_type, extends_type) {
+                        conditional.true_type
+                    } else {
+                        conditional.false_type
+                    };
+                    return self.instantiate_type_at_depth(selected, mapper, depth + 1);
+                }
+
                 self.conditional_type(
-                    self.instantiate_type_at_depth(conditional.check_type, mapper, depth + 1),
-                    self.instantiate_type_at_depth(
-                        conditional.extends_type,
-                        &infer_mapper,
-                        depth + 1,
-                    ),
+                    check_type,
+                    extends_type,
                     self.instantiate_type_at_depth(conditional.true_type, &infer_mapper, depth + 1),
                     self.instantiate_type_at_depth(conditional.false_type, mapper, depth + 1),
                     conditional.is_distributive,
@@ -3582,6 +3625,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::TSTypeAliasDeclaration(alias)
                 if !matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
             {
+                let is_root_resolution = self.resolving_type_aliases.borrow().is_empty();
+                if is_root_resolution {
+                    self.type_instantiation_overflowed.set(false);
+                    let previously_overflowed = self
+                        .overflowed_type_alias_resolutions
+                        .borrow()
+                        .iter()
+                        .any(|resolution| {
+                            resolution.program_id == program_id
+                                && resolution.declaration == declaration
+                                && resolution.type_arguments.len() == type_arguments.len()
+                                && resolution.type_arguments.iter().zip(type_arguments).all(
+                                    |(cached, current)| {
+                                        self.arena().type_from_id(*cached).is_some_and(|cached| {
+                                            self.arena().is_type_identical_to(cached, *current)
+                                        })
+                                    },
+                                )
+                        });
+                    if previously_overflowed {
+                        return Some(Ty::any());
+                    }
+                }
                 let key = TypeAliasResolution {
                     program_id,
                     declaration,
@@ -3592,6 +3658,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 {
                     let mut resolving_type_aliases = self.resolving_type_aliases.borrow_mut();
+                    if resolving_type_aliases.len() >= TYPE_INSTANTIATION_MAX_DEPTH {
+                        self.type_instantiation_overflowed.set(true);
+                        let active_resolutions = resolving_type_aliases.clone();
+                        drop(resolving_type_aliases);
+                        if let Some(root_resolution) = active_resolutions.first() {
+                            self.overflowed_type_alias_resolutions
+                                .borrow_mut()
+                                .push(root_resolution.clone());
+                        }
+                        let mut cache = self.type_alias_resolution_cache.borrow_mut();
+                        for active_resolution in active_resolutions {
+                            cache.insert(active_resolution, Ty::any());
+                        }
+                        cache.insert(key, Ty::any());
+                        return Some(Ty::any());
+                    }
                     if resolving_type_aliases.contains(&key) {
                         return None;
                     }
@@ -3609,12 +3691,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     depth + 1,
                 );
                 let ty = self.instantiate_type(ty, &substitutions.to_mapper(self.arena()));
-                let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+                let ty = if self.type_instantiation_overflowed.get() {
+                    Ty::any()
+                } else {
+                    self.expand_type_at_use(program_id, ty, depth + 1)
+                };
+                let ty = if self.type_instantiation_overflowed.get() {
+                    Ty::any()
+                } else {
+                    ty
+                };
 
                 self.resolving_type_aliases.borrow_mut().pop();
+                if is_root_resolution && self.type_instantiation_overflowed.get() {
+                    self.overflowed_type_alias_resolutions
+                        .borrow_mut()
+                        .push(key.clone());
+                }
                 self.type_alias_resolution_cache
                     .borrow_mut()
                     .insert(key, ty);
+                if is_root_resolution {
+                    self.type_instantiation_overflowed.set(false);
+                }
                 Some(ty)
             }
             AstKind::BindingIdentifier(_) => {

@@ -836,6 +836,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let depth = &self.conditional_type_depth;
         let current = depth.get();
         if current >= CONDITIONAL_TYPE_MAX_DEPTH {
+            if !self.resolving_type_aliases.borrow().is_empty() {
+                self.type_instantiation_overflowed.set(true);
+                return Ty::any();
+            }
             return Ty::conditional(
                 self.arena(),
                 check_type,

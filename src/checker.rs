@@ -53,6 +53,7 @@ pub struct CheckerReturn<'a, 'store> {
     pub(crate) type_alias_metadata_by_type: RefCell<IndexVec<TypeId, Option<TypeAliasMetadata>>>,
     pub(crate) instantiation_cache: RefCell<HashMap<InstantiationCacheKey<'a>, Ty<'a>>>,
     pub(crate) type_alias_resolution_cache: RefCell<HashMap<TypeAliasResolution, Ty<'a>>>,
+    pub(crate) overflowed_type_alias_resolutions: RefCell<Vec<TypeAliasResolution>>,
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
@@ -61,6 +62,8 @@ pub struct CheckerReturn<'a, 'store> {
     pub resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
     pub(crate) interface_property_resolution_stack: RefCell<Vec<(usize, String, String)>>,
     pub(crate) ts_type_resolution_depth: Cell<usize>,
+    pub(crate) type_instantiation_depth: Cell<usize>,
+    pub(crate) type_instantiation_overflowed: Cell<bool>,
     pub(crate) conditional_type_depth: Cell<usize>,
     pub(crate) type_string_depth: Cell<usize>,
 }
@@ -216,6 +219,7 @@ impl CheckerBuilder {
             ])),
             instantiation_cache: RefCell::new(HashMap::new()),
             type_alias_resolution_cache: RefCell::new(HashMap::new()),
+            overflowed_type_alias_resolutions: RefCell::new(Vec::new()),
             interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_type_aliases: RefCell::new(Vec::new()),
@@ -223,6 +227,8 @@ impl CheckerBuilder {
             resolving_class_members: RefCell::new(Vec::new()),
             interface_property_resolution_stack: RefCell::new(Vec::new()),
             ts_type_resolution_depth: Cell::new(0),
+            type_instantiation_depth: Cell::new(0),
+            type_instantiation_overflowed: Cell::new(false),
             conditional_type_depth: Cell::new(0),
             type_string_depth: Cell::new(0),
         }
