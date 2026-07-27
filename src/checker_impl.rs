@@ -2437,7 +2437,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     });
                     self.get_template_literal_type(program_id, quasis, expressions)
                 }
-                TSLiteral::UnaryExpression(_) => Ty::none(),
+                TSLiteral::UnaryExpression(unary_expression) => {
+                    let Expression::NumericLiteral(numeric_literal) = &unary_expression.argument
+                    else {
+                        return Ty::none();
+                    };
+                    match unary_expression.operator {
+                        UnaryOperator::UnaryNegation => Ty::number_literal_from_ast(
+                            self.arena(),
+                            numeric_literal,
+                            true,
+                        ),
+                        UnaryOperator::UnaryPlus => Ty::number_literal_from_ast(
+                            self.arena(),
+                            numeric_literal,
+                            false,
+                        ),
+                        _ => Ty::none(),
+                    }
+                }
             },
             TSType::TSTupleType(tuple_type) => Ty::tuple(
                 self.arena(),
