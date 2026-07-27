@@ -488,8 +488,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >     ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TyTypeReference) (IdentifierReference)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
-                                                                   expected: Shape[keyof Shape]
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Shape[keyof Shape]   (TyIndexedAccess) (ExpressionStatement)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
 >         ^^^: Extract<keyof Mask, string>   (TyTypeReference) (IdentifierReference)

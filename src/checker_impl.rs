@@ -236,6 +236,13 @@ impl<'a> ResolvedSignatureCandidate<'a> {
 }
 
 #[derive(Debug, Clone, Copy)]
+enum IndexedAccessResolution<'a> {
+    Resolved(Ty<'a>),
+    Deferred,
+    Missing,
+}
+
+#[derive(Debug, Clone, Copy)]
 pub(crate) enum BindingPatternKind<'a> {
     FormalParameter(&'a FormalParameter<'a>),
     VariableDeclarator(&'a VariableDeclarator<'a>),
@@ -856,6 +863,41 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             },
         );
         contains
+    }
+
+    fn contains_unresolved_type_parameter(&self, ty: Ty<'a>) -> bool {
+        let mut contains = false;
+        visit_type(
+            self.arena(),
+            ty,
+            &mut |candidate| match self.arena().type_data(candidate) {
+                TypeData::TypeReference(reference)
+                    if reference.is_bare() && reference.target.is_none() =>
+                {
+                    contains = true;
+                }
+                TypeData::Infer(_) | TypeData::This => contains = true,
+                _ => {}
+            },
+        );
+        contains
+    }
+
+    fn is_generic_indexed_access(&self, object_type: Ty<'a>, index_type: Ty<'a>) -> bool {
+        self.contains_unresolved_type_parameter(object_type)
+            || self.contains_unresolved_type_parameter(index_type)
+    }
+
+    fn concrete_index_type_constraint(
+        &self,
+        program_id: ProgramId,
+        node_id: Option<NodeId>,
+        index_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        let node_id = node_id?;
+        let constraint = self.get_type_parameter_constraint(program_id, node_id, index_type)?;
+        let constraint = self.expand_type_for_index_lookup(program_id, constraint, 0);
+        (!self.contains_unresolved_type_parameter(constraint)).then_some(constraint)
     }
 
     pub(crate) fn is_active_unresolved_type_alias(&self, ty: Ty<'a>) -> bool {
@@ -2499,8 +2541,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     program_id,
                     &indexed_access.index_type,
                 );
-                self.resolve_indexed_access_type(program_id, object_type, lookup_index_type)
-                    .unwrap_or_else(|| Ty::indexed_access(self.arena(), object_type, index_type))
+                match self.resolve_indexed_access_type(
+                    program_id,
+                    None,
+                    object_type,
+                    lookup_index_type,
+                ) {
+                    IndexedAccessResolution::Resolved(ty) => ty,
+                    IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
+                        Ty::indexed_access(self.arena(), object_type, index_type)
+                    }
+                }
             }
             TSType::TSConditionalType(conditional) => {
                 let source_check_type =
@@ -2804,45 +2855,257 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn resolve_indexed_access_type(
         &self,
         program_id: ProgramId,
+        node_id: Option<NodeId>,
         object_type: Ty<'a>,
         index_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
+    ) -> IndexedAccessResolution<'a> {
+        if let Some(constraint) =
+            self.concrete_index_type_constraint(program_id, node_id, index_type)
+        {
+            let constrained =
+                self.resolve_indexed_access_type(program_id, None, object_type, constraint);
+            if !matches!(constrained, IndexedAccessResolution::Missing) {
+                return constrained;
+            }
+        }
+
+        if matches!(
+            self.arena().type_data(index_type),
+            TypeData::TypeReference(reference) if reference.is_bare()
+        ) {
+            return IndexedAccessResolution::Deferred;
+        }
+
+        if let TypeData::Union(union) = self.arena().type_data(object_type) {
+            let mut property_types = Vec::with_capacity(union.types.len());
+            let mut has_deferred = false;
+            for object_type in &union.types {
+                match self.resolve_indexed_access_type(
+                    program_id,
+                    node_id,
+                    *object_type,
+                    index_type,
+                ) {
+                    IndexedAccessResolution::Resolved(ty) => property_types.push(ty),
+                    IndexedAccessResolution::Deferred => {
+                        has_deferred = true;
+                        property_types.push(Ty::indexed_access(
+                            self.arena(),
+                            *object_type,
+                            index_type,
+                        ));
+                    }
+                    IndexedAccessResolution::Missing => {
+                        return if self.is_generic_indexed_access(*object_type, index_type) {
+                            IndexedAccessResolution::Deferred
+                        } else {
+                            IndexedAccessResolution::Missing
+                        };
+                    }
+                }
+            }
+            return if has_deferred || !property_types.is_empty() {
+                IndexedAccessResolution::Resolved(Ty::union(self.arena(), property_types))
+            } else {
+                IndexedAccessResolution::Missing
+            };
+        }
+
         if let TypeData::Array(array) = self.arena().type_data(object_type)
             && index_type.is_number_index_type(self.arena())
         {
-            return Some(array.element_type);
+            return IndexedAccessResolution::Resolved(array.element_type);
         }
 
         if let TypeData::Tuple(_) = self.arena().type_data(object_type)
             && let Some(index) = tuple_index_from_index_type(self.arena(), index_type)
         {
-            return tuple_element_type_at_index(self.arena(), object_type, index);
+            return tuple_element_type_at_index(self.arena(), object_type, index).map_or(
+                IndexedAccessResolution::Missing,
+                IndexedAccessResolution::Resolved,
+            );
         }
 
         match self.arena().type_data(index_type) {
             TypeData::Union(union) => {
-                let property_types = union
-                    .types
-                    .iter()
-                    .map(|index_type| {
-                        self.resolve_indexed_access_type(program_id, object_type, *index_type)
-                    })
-                    .collect::<Option<Vec<_>>>()?;
-                Some(Ty::union(self.arena(), property_types))
+                let mut property_types = Vec::with_capacity(union.types.len());
+                let mut has_deferred = false;
+                for index_type in &union.types {
+                    match self.resolve_indexed_access_type(
+                        program_id,
+                        node_id,
+                        object_type,
+                        *index_type,
+                    ) {
+                        IndexedAccessResolution::Resolved(ty) => property_types.push(ty),
+                        IndexedAccessResolution::Deferred => has_deferred = true,
+                        IndexedAccessResolution::Missing => {
+                            return IndexedAccessResolution::Missing;
+                        }
+                    }
+                }
+                if has_deferred {
+                    IndexedAccessResolution::Deferred
+                } else {
+                    IndexedAccessResolution::Resolved(Ty::union(self.arena(), property_types))
+                }
             }
-            TypeData::UniqueSymbol(symbol) => symbol.name.and_then(|property_name| {
-                self.get_property_type_for_indexed_access_with_computed(
+            TypeData::UniqueSymbol(symbol) => {
+                let property_type = symbol.name.and_then(|property_name| {
+                    self.get_property_type_for_indexed_access_with_computed(
+                        program_id,
+                        object_type,
+                        property_name,
+                        true,
+                    )
+                });
+                property_type.map_or_else(
+                    || {
+                        if self.is_generic_indexed_access(object_type, index_type) {
+                            IndexedAccessResolution::Deferred
+                        } else {
+                            IndexedAccessResolution::Missing
+                        }
+                    },
+                    IndexedAccessResolution::Resolved,
+                )
+            }
+            _ => {
+                if !matches!(
+                    self.arena().type_data(index_type),
+                    TypeData::String | TypeData::Number
+                ) && let Some(property_name) =
+                    index_type_to_property_name(self.arena(), index_type)
+                    && let Some(property_type) = self.get_property_type_for_indexed_access(
+                        program_id,
+                        object_type,
+                        property_name,
+                    )
+                {
+                    return IndexedAccessResolution::Resolved(property_type);
+                }
+                if let Some(value_type) = self.get_index_signature_type_for_indexed_access(
                     program_id,
                     object_type,
-                    property_name,
-                    true,
-                )
-            }),
-            _ => {
-                let property_name = index_type_to_property_name(self.arena(), index_type)?;
-                self.get_property_type_for_indexed_access(program_id, object_type, property_name)
+                    index_type,
+                    0,
+                ) {
+                    return IndexedAccessResolution::Resolved(value_type);
+                }
+                if self.is_generic_indexed_access(object_type, index_type) {
+                    IndexedAccessResolution::Deferred
+                } else {
+                    IndexedAccessResolution::Missing
+                }
             }
         }
+    }
+
+    fn get_index_signature_type_for_indexed_access(
+        &self,
+        program_id: ProgramId,
+        object_type: Ty<'a>,
+        index_type: Ty<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        match self.arena().type_data(object_type) {
+            TypeData::Object(object) => object
+                .index_infos
+                .iter()
+                .find(|index_info| self.is_assignable_to(index_type, index_info.key_type))
+                .map(|index_info| index_info.value_type),
+            TypeData::TypeReference(reference)
+                if reference.is_bare() && reference.target.is_none() =>
+            {
+                None
+            }
+            TypeData::TypeReference(reference) => self
+                .get_index_signature_type_from_alias_reference(
+                    program_id,
+                    reference,
+                    index_type,
+                    depth + 1,
+                )
+                .or_else(|| {
+                    self.get_expanded_type_alias_reference_type(program_id, object_type, depth + 1)
+                        .and_then(|(expanded_program_id, expanded)| {
+                            self.get_index_signature_type_for_indexed_access(
+                                expanded_program_id,
+                                expanded,
+                                index_type,
+                                depth + 1,
+                            )
+                        })
+                }),
+            TypeData::Union(union) => union
+                .types
+                .iter()
+                .map(|ty| {
+                    self.get_index_signature_type_for_indexed_access(
+                        program_id,
+                        *ty,
+                        index_type,
+                        depth + 1,
+                    )
+                })
+                .collect::<Option<Vec<_>>>()
+                .map(|types| Ty::union(self.arena(), types)),
+            TypeData::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
+                self.get_index_signature_type_for_indexed_access(
+                    program_id,
+                    *ty,
+                    index_type,
+                    depth + 1,
+                )
+            }),
+            TypeData::Mapped(mapped) => {
+                let key_type = index_signature_key_types(self.arena(), mapped.constraint)?
+                    .into_iter()
+                    .find(|key_type| self.is_assignable_to(index_type, *key_type))?;
+                let mapper = TypeMapper::single(
+                    Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                    key_type,
+                );
+                Some(self.instantiate_type(mapped.template, &mapper))
+            }
+            _ => None,
+        }
+    }
+
+    fn get_index_signature_type_from_alias_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+        index_type: Ty<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+        let AstKind::TSTypeAliasDeclaration(alias) =
+            self.nodes(symbol.program_id).kind(declaration)
+        else {
+            return None;
+        };
+        let alias_type = self.get_type_from_ts_type(symbol.program_id, &alias.type_annotation);
+        let substitutions = self.type_parameter_substitutions_for_type_arguments(
+            symbol.program_id,
+            alias.type_parameters.as_deref(),
+            reference.type_arguments.as_slice(),
+        );
+        let alias_type = self.instantiate_type(alias_type, &substitutions.to_mapper(self.arena()));
+        self.get_index_signature_type_for_indexed_access(
+            symbol.program_id,
+            alias_type,
+            index_type,
+            depth + 1,
+        )
     }
 
     fn get_property_type_for_indexed_access(
@@ -3075,9 +3338,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let index_type = indexed_access.index_type;
                 let lookup_index_type =
                     self.expand_type_for_index_lookup(program_id, index_type, depth + 1);
-                self.resolve_indexed_access_type(program_id, object_type, lookup_index_type)
-                    .map(|resolved| self.expand_type_at_use(program_id, resolved, depth + 1))
-                    .unwrap_or_else(|| Ty::indexed_access(self.arena(), object_type, index_type))
+                match self.resolve_indexed_access_type(
+                    program_id,
+                    None,
+                    object_type,
+                    lookup_index_type,
+                ) {
+                    IndexedAccessResolution::Resolved(resolved) => {
+                        self.expand_type_at_use(program_id, resolved, depth + 1)
+                    }
+                    IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
+                        Ty::indexed_access(self.arena(), object_type, index_type)
+                    }
+                }
             }
             TypeData::Mapped(mapped) => self
                 .expand_mapped_type(program_id, mapped, depth + 1)
@@ -3215,11 +3488,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.normalize_index_access_index_type_for_display(indexed_access.index_type);
                 let lookup_index_type =
                     self.expand_type_for_index_lookup(program_id, index_type, depth + 1);
-                self.resolve_indexed_access_type(program_id, object_type, lookup_index_type)
-                    .map(|resolved| {
+                match self.resolve_indexed_access_type(
+                    program_id,
+                    None,
+                    object_type,
+                    lookup_index_type,
+                ) {
+                    IndexedAccessResolution::Resolved(resolved) => {
                         self.expand_type_for_index_lookup(program_id, resolved, depth + 1)
-                    })
-                    .unwrap_or_else(|| Ty::indexed_access(self.arena(), object_type, index_type))
+                    }
+                    IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
+                        Ty::indexed_access(self.arena(), object_type, index_type)
+                    }
+                }
             }
             TypeData::Conditional(conditional) => {
                 let check_type = self.expand_type_for_index_lookup(
@@ -5190,9 +5471,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             node_id,
             flags | GetTypeFlags::PRESERVE_LITERALS,
         );
-        if let Some(indexed_type) =
-            self.resolve_indexed_access_type(program_id, object_type, key_type)
-        {
+        let lookup_key_type = self.expand_type_for_index_lookup(program_id, key_type, 0);
+        let indexed_access_resolution =
+            self.resolve_indexed_access_type(program_id, node_id, object_type, lookup_key_type);
+        if let IndexedAccessResolution::Resolved(indexed_type) = indexed_access_resolution {
             return indexed_type;
         }
 
@@ -5224,9 +5506,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && let Some(index_info) = object
                 .index_infos
                 .iter()
-                .find(|index_info| self.is_assignable_to(key_type, index_info.key_type))
+                .find(|index_info| self.is_assignable_to(lookup_key_type, index_info.key_type))
         {
             return index_info.value_type;
+        }
+
+        if matches!(indexed_access_resolution, IndexedAccessResolution::Deferred) {
+            return Ty::indexed_access(self.arena(), object_type, key_type);
         }
 
         Ty::any()
@@ -10179,6 +10465,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
+        let current_type_parameters = match self.nodes(program_id).kind(node_id) {
+            AstKind::Function(function) => function.type_parameters.as_deref(),
+            AstKind::ArrowFunctionExpression(function) => function.type_parameters.as_deref(),
+            AstKind::Class(class) => class.type_parameters.as_deref(),
+            AstKind::TSInterfaceDeclaration(interface) => interface.type_parameters.as_deref(),
+            AstKind::TSTypeAliasDeclaration(alias) => alias.type_parameters.as_deref(),
+            _ => None,
+        };
+        if let Some(parameter) = current_type_parameters.and_then(|parameters| {
+            parameters
+                .params
+                .iter()
+                .find(|parameter| parameter.name.name == reference.name)
+        }) {
+            return parameter
+                .constraint
+                .as_ref()
+                .map(|constraint| self.get_type_from_ts_type(program_id, constraint));
+        }
+
         for ancestor in self.nodes(program_id).ancestors(node_id) {
             let type_parameters = match ancestor.kind() {
                 AstKind::Function(function) => function.type_parameters.as_deref(),
@@ -10227,6 +10533,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: NodeId,
     ) -> Vec<&'a str> {
         let mut names = Vec::new();
+        match self.nodes(program_id).kind(node_id) {
+            AstKind::Function(function) => {
+                push_type_parameter_names(&mut names, function.type_parameters.as_deref());
+            }
+            AstKind::ArrowFunctionExpression(function) => {
+                push_type_parameter_names(&mut names, function.type_parameters.as_deref());
+            }
+            AstKind::Class(class) => {
+                push_type_parameter_names(&mut names, class.type_parameters.as_deref());
+            }
+            AstKind::TSInterfaceDeclaration(interface) => {
+                push_type_parameter_names(&mut names, interface.type_parameters.as_deref());
+            }
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                push_type_parameter_names(&mut names, alias.type_parameters.as_deref());
+            }
+            _ => {}
+        }
         for ancestor in self.nodes(program_id).ancestors(node_id) {
             match ancestor.kind() {
                 AstKind::Function(function) => {

@@ -564,7 +564,7 @@ export function pick<T extends object, Keys extends keyof T>(
 >   ^^^: Pick<T, Keys>   (TyTypeReference) (IdentifierReference)
 
     out[key] = data[key]
->   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>   ^^^^^^^^^^^^^^^^^^^^: T[any]   (TyIndexedAccess) (ExpressionStatement)
                 expected: T[Keys]
 
     out[key] = data[key]

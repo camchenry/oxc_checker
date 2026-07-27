@@ -173,8 +173,7 @@ function identity<T>(arg: T): T {
 >        ^^^: T   (TyTypeReference) (IdentifierReference)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->        ^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => any   (TyFunction) (BindingIdentifier)
-            expected: <T, K extends keyof T>(obj: T, key: K) => T[K]
+>        ^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction) (BindingIdentifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
 >                    ^: any   (TyAny) (TSTypeParameter)
