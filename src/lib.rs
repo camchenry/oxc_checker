@@ -4272,6 +4272,24 @@ mod test {
     }
 
     #[test]
+    fn invalid_object_spreads_produce_any() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const promise: Promise<number>;
+        async function main() {
+            const spreadPromise = { ...(await promise) };
+        }
+        const numberSpread = { ...42 };
+        "#,
+        );
+
+        assert_eq!(get_first_symbol_type(&ret, "spreadPromise"), Ty::any());
+        assert_eq!(get_first_symbol_type(&ret, "numberSpread"), Ty::any());
+    }
+
+    #[test]
     fn await_structural_thenable_uses_fulfilled_callback_value_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

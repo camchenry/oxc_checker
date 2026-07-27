@@ -4553,6 +4553,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         node_id,
                         property_flags,
                     );
+                    let spread_type = self.expand_type_at_use(program_id, spread_type, 0);
+                    if spread_type.is_any()
+                        || self.is_invalid_object_spread_type(program_id, spread_type, 0)
+                    {
+                        return Ty::any();
+                    }
                     for spread_property in
                         self.get_object_spread_properties(program_id, spread_type, 0)
                     {
@@ -4578,6 +4584,42 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena(),
             explicit_properties.into_iter().chain(spread_properties),
         )
+    }
+
+    fn is_invalid_object_spread_type(
+        &self,
+        program_id: ProgramId,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> bool {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return false;
+        }
+
+        let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+        match self.arena().type_data(ty) {
+            TypeData::Null
+            | TypeData::Undefined
+            | TypeData::Void
+            | TypeData::Never
+            | TypeData::Unknown
+            | TypeData::Number
+            | TypeData::String
+            | TypeData::Boolean
+            | TypeData::Bigint
+            | TypeData::Symbol
+            | TypeData::UniqueSymbol(_)
+            | TypeData::StringLiteral(_)
+            | TypeData::NumberLiteral(_)
+            | TypeData::BooleanLiteral(_)
+            | TypeData::BigIntLiteral(_)
+            | TypeData::TemplateLiteral(_) => true,
+            TypeData::Union(union) => union
+                .types
+                .iter()
+                .any(|ty| self.is_invalid_object_spread_type(program_id, *ty, depth + 1)),
+            _ => false,
+        }
     }
 
     fn get_object_spread_properties(

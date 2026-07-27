@@ -449,8 +449,7 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 >     ^^^^^: any   (TyAny) (IdentifierReference)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: {}   (TyObject) (ExpressionStatement)
-                                                                                                expected: any
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
 >                    ^^^^^^^: any   (TyAny) (IdentifierReference)

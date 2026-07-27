@@ -86,8 +86,7 @@ declare const promise: Promise<number>;
 >                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 const spreadPromise = { ...(await promise) };
->     ^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-           expected: any
+>     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 const spreadPromise = { ...(await promise) };
 >                                 ^^^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
