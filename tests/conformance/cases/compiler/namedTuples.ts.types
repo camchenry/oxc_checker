@@ -1,0 +1,117 @@
+type Point = [x: number, y: number];
+>    ^^^^^: [number, number]   (TyTuple) (TSTypeAliasDeclaration)
+  expected: [x: number, y: number]
+
+const point: Point = [10, 20];
+>     ^^^^^: Point   (TyTypeReference) (BindingIdentifier)
+
+const point: Point = [10, 20];
+>            ^^^^^: any   (TyAny) (TSTypeReference)
+
+type OptionalPoint = [x: number, y?: number];
+>    ^^^^^^^^^^^^^: [number, (number | undefined)?]   (TyTuple) (TSTypeAliasDeclaration)
+          expected: [x: number, y?: number | undefined]
+
+const pointWithX: OptionalPoint = [10];
+>     ^^^^^^^^^^: OptionalPoint   (TyTypeReference) (BindingIdentifier)
+
+const pointWithX: OptionalPoint = [10];
+>                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+const pointWithY: OptionalPoint = [10, 20];
+>     ^^^^^^^^^^: OptionalPoint   (TyTypeReference) (BindingIdentifier)
+
+const pointWithY: OptionalPoint = [10, 20];
+>                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type Command = [name: string, ...args: string[]];
+>    ^^^^^^^: [string, ...none]   (TyTuple) (TSTypeAliasDeclaration)
+    expected: [name: string, ...args: string[]]
+
+const command: Command = ["build", "--watch", "--verbose"];
+>     ^^^^^^^: Command   (TyTypeReference) (BindingIdentifier)
+
+const command: Command = ["build", "--watch", "--verbose"];
+>              ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type ReadonlyPoint = readonly [x: number, y: number];
+>    ^^^^^^^^^^^^^: readonly [number, number]   (TyTuple) (TSTypeAliasDeclaration)
+          expected: readonly [x: number, y: number]
+
+const readonlyPoint: ReadonlyPoint = [10, 20];
+>     ^^^^^^^^^^^^^: ReadonlyPoint   (TyTypeReference) (BindingIdentifier)
+
+const readonlyPoint: ReadonlyPoint = [10, 20];
+>                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type MessageTuple = [kind: "message", payload: string];
+>    ^^^^^^^^^^^^: ["message", string]   (TyTuple) (TSTypeAliasDeclaration)
+         expected: [kind: "message", payload: string]
+
+type ErrorTuple = [kind: "error", message: string];
+>    ^^^^^^^^^^: ["error", string]   (TyTuple) (TSTypeAliasDeclaration)
+       expected: [kind: "error", message: string]
+
+type TupleEvent = MessageTuple | ErrorTuple;
+>    ^^^^^^^^^^: MessageTuple | ErrorTuple   (TyUnion) (TSTypeAliasDeclaration)
+
+type TupleEvent = MessageTuple | ErrorTuple;
+>                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type TupleEvent = MessageTuple | ErrorTuple;
+>                                ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const messageEvent: TupleEvent;
+>             ^^^^^^^^^^^^: TupleEvent   (TyTypeReference) (BindingIdentifier)
+
+declare const messageEvent: TupleEvent;
+>                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const errorEvent: TupleEvent;
+>             ^^^^^^^^^^: TupleEvent   (TyTypeReference) (BindingIdentifier)
+
+declare const errorEvent: TupleEvent;
+>                         ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type NestedPoint = [name: string, position: Point];
+>    ^^^^^^^^^^^: [string, Point]   (TyTuple) (TSTypeAliasDeclaration)
+        expected: [name: string, position: Point]
+
+type NestedPoint = [name: string, position: Point];
+>                                           ^^^^^: any   (TyAny) (TSTypeReference)
+
+const nestedPoint: NestedPoint = ["origin", point];
+>     ^^^^^^^^^^^: NestedPoint   (TyTypeReference) (BindingIdentifier)
+
+const nestedPoint: NestedPoint = ["origin", point];
+>                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+const nestedPoint: NestedPoint = ["origin", point];
+>                                           ^^^^^: Point   (TyTypeReference) (IdentifierReference)
+
+declare function emit(...event: TupleEvent): void;
+>                ^^^^: (...event: TupleEvent) => void   (TyFunction) (BindingIdentifier)
+
+declare function emit(...event: TupleEvent): void;
+>                        ^^^^^: TupleEvent   (TyTypeReference) (BindingIdentifier)
+
+declare function emit(...event: TupleEvent): void;
+>                               ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+emit(...messageEvent);
+>^^^^: (...event: TupleEvent) => void   (TyFunction) (IdentifierReference)
+
+emit(...messageEvent);
+>^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+
+emit(...messageEvent);
+>       ^^^^^^^^^^^^: TupleEvent   (TyTypeReference) (IdentifierReference)
+
+emit(...errorEvent);
+>^^^^: (...event: TupleEvent) => void   (TyFunction) (IdentifierReference)
+
+emit(...errorEvent);
+>^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+
+emit(...errorEvent);
+>       ^^^^^^^^^^: TupleEvent   (TyTypeReference) (IdentifierReference)

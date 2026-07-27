@@ -2196,6 +2196,43 @@ compiler/memberExpression.ts	900	908	unionKey	"name" | "id"
 compiler/memberExpression.ts	926	930	Math	Math
 compiler/memberExpression.ts	931	937	random	() => number
 compiler/memberExpression.ts	969	985	dynamicStringKey	string
+compiler/namedTuples.ts	122	132	pointWithX	OptionalPoint
+compiler/namedTuples.ts	134	147	OptionalPoint	any
+compiler/namedTuples.ts	162	172	pointWithY	OptionalPoint
+compiler/namedTuples.ts	174	187	OptionalPoint	any
+compiler/namedTuples.ts	206	213	Command	[name: string, ...args: string[]]
+compiler/namedTuples.ts	257	264	command	Command
+compiler/namedTuples.ts	266	273	Command	any
+compiler/namedTuples.ts	317	330	ReadonlyPoint	readonly [x: number, y: number]
+compiler/namedTuples.ts	372	385	readonlyPoint	ReadonlyPoint
+compiler/namedTuples.ts	387	400	ReadonlyPoint	any
+compiler/namedTuples.ts	419	431	MessageTuple	[kind: "message", payload: string]
+compiler/namedTuples.ts	44	49	point	Point
+compiler/namedTuples.ts	475	485	ErrorTuple	[kind: "error", message: string]
+compiler/namedTuples.ts	51	56	Point	any
+compiler/namedTuples.ts	527	537	TupleEvent	MessageTuple | ErrorTuple
+compiler/namedTuples.ts	540	552	MessageTuple	any
+compiler/namedTuples.ts	555	565	ErrorTuple	any
+compiler/namedTuples.ts	581	593	messageEvent	TupleEvent
+compiler/namedTuples.ts	595	605	TupleEvent	any
+compiler/namedTuples.ts	6	11	Point	[x: number, y: number]
+compiler/namedTuples.ts	621	631	errorEvent	TupleEvent
+compiler/namedTuples.ts	633	643	TupleEvent	any
+compiler/namedTuples.ts	651	662	NestedPoint	[name: string, position: Point]
+compiler/namedTuples.ts	690	695	Point	any
+compiler/namedTuples.ts	704	715	nestedPoint	NestedPoint
+compiler/namedTuples.ts	717	728	NestedPoint	any
+compiler/namedTuples.ts	742	747	point	Point
+compiler/namedTuples.ts	75	88	OptionalPoint	[x: number, y?: number | undefined]
+compiler/namedTuples.ts	768	772	emit	(...event: TupleEvent) => void
+compiler/namedTuples.ts	776	781	event	TupleEvent
+compiler/namedTuples.ts	783	793	TupleEvent	any
+compiler/namedTuples.ts	802	806	emit	(...event: TupleEvent) => void
+compiler/namedTuples.ts	802	824	emit(...messageEvent);	void
+compiler/namedTuples.ts	810	822	messageEvent	TupleEvent
+compiler/namedTuples.ts	825	829	emit	(...event: TupleEvent) => void
+compiler/namedTuples.ts	825	845	emit(...errorEvent);	void
+compiler/namedTuples.ts	833	843	errorEvent	TupleEvent
 compiler/newable.ts	110	113	x13	{ (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }
 compiler/newable.ts	12	13	T	any
 compiler/newable.ts	135	136	n	number
