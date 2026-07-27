@@ -2904,7 +2904,7 @@ fn function_return_type_to_string<'a>(
             function.return_type.to_type_string_with_flags(
                 arena,
                 replace_type_reference,
-                flags,
+                flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
                 depth,
             )
         },
@@ -3695,6 +3695,10 @@ mod tests {
         assert_eq!(
             Ty::object(arena, [values, maybe_values]).to_type_string(arena),
             "{ values?: Array<string>; maybeValues: Array<string> | undefined; }"
+        );
+        assert_eq!(
+            Ty::function(arena, [], [], array).to_type_string(arena),
+            "() => Array<string>"
         );
     }
 }

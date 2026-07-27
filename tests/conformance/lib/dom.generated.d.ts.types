@@ -19886,8 +19886,7 @@ interface Cache {
 >                                                                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
     keys(request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Request>>;
->   ^^^^: { (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<readonly Request[]>; (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<readonly Request[]>; }   (TyObject) (TSMethodSignature)
-expected: { (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Request>>; (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Request>>; }
+>   ^^^^: { (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Request>>; (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Request>>; }   (TyObject) (TSMethodSignature)
 
     keys(request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Request>>;
 >        ^^^^^^^: RequestInfo | URL | undefined   (TyUnion) (BindingIdentifier)
@@ -19956,8 +19955,7 @@ expected: { (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<
 >                                                                           ^^^^^^^^: { new (body?: BodyInit | null, init?: ResponseInit): Response; prototype: Response; error(): Response; json(data: any, init?: ResponseInit): Response; redirect(url: string | URL, status?: number): Response; }   (TyObject) (IdentifierReference)
 
     matchAll(request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Response>>;
->   ^^^^^^^^: { (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<readonly Response[]>; (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<readonly Response[]>; }   (TyObject) (TSMethodSignature)
-    expected: { (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Response>>; (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Response>>; }
+>   ^^^^^^^^: { (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Response>>; (request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Response>>; }   (TyObject) (TSMethodSignature)
 
     matchAll(request?: RequestInfo | URL, options?: CacheQueryOptions): Promise<ReadonlyArray<Response>>;
 >            ^^^^^^^: RequestInfo | URL | undefined   (TyUnion) (BindingIdentifier)
@@ -91055,8 +91053,7 @@ interface ServiceWorkerContainer extends EventTarget {
 >                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): ServiceWorkerRegistration; prototype: ServiceWorkerRegistration; }   (TyObject) (IdentifierReference)
 
     getRegistrations(): Promise<ReadonlyArray<ServiceWorkerRegistration>>;
->   ^^^^^^^^^^^^^^^^: { (): Promise<readonly ServiceWorkerRegistration[]>; (): Promise<readonly ServiceWorkerRegistration[]>; }   (TyObject) (TSMethodSignature)
-            expected: { (): Promise<ReadonlyArray<ServiceWorkerRegistration>>; (): Promise<ReadonlyArray<ServiceWorkerRegistration>>; }
+>   ^^^^^^^^^^^^^^^^: { (): Promise<ReadonlyArray<ServiceWorkerRegistration>>; (): Promise<ReadonlyArray<ServiceWorkerRegistration>>; }   (TyObject) (TSMethodSignature)
 
     getRegistrations(): Promise<ReadonlyArray<ServiceWorkerRegistration>>;
 >                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)

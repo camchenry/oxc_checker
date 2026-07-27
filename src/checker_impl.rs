@@ -665,7 +665,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Array(array) => {
                 let element_type =
                     self.instantiate_type_at_depth(array.element_type, mapper, depth + 1);
-                if array.readonly {
+                if array.display_as_generic {
+                    Ty::generic_array(self.arena(), element_type, array.readonly)
+                } else if array.readonly {
                     Ty::readonly_array(self.arena(), element_type)
                 } else {
                     Ty::array(self.arena(), element_type)
