@@ -22935,8 +22935,7 @@ interface CountQueuingStrategy extends QueuingStrategy {
 >            ^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     readonly size: QueuingStrategySize;
->            ^^^^: QueuingStrategySize   (TyTypeReference) (TSPropertySignature)
-         expected: QueuingStrategySize<any>
+>            ^^^^: QueuingStrategySize<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly size: QueuingStrategySize;
 >                  ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -23338,8 +23337,7 @@ declare var CustomEvent: {
 >           ^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: CustomEventInit<T>): CustomEvent<T>; prototype: CustomEvent; }   (TyObject) (BindingIdentifier)
 
     prototype: CustomEvent;
->   ^^^^^^^^^: CustomEvent   (TyTypeReference) (TSPropertySignature)
-     expected: CustomEvent<any>
+>   ^^^^^^^^^: CustomEvent<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: CustomEvent;
 >              ^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: CustomEventInit<T>): CustomEvent<T>; prototype: CustomEvent; }   (TyObject) (TSTypeReference)
@@ -35815,8 +35813,7 @@ interface GenericTransformStream {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     readonly readable: ReadableStream;
->            ^^^^^^^^: ReadableStream   (TyTypeReference) (TSPropertySignature)
-             expected: ReadableStream<any>
+>            ^^^^^^^^: ReadableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly readable: ReadableStream;
 >                      ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (TSTypeReference)
@@ -35825,8 +35822,7 @@ interface GenericTransformStream {
 >                      ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (IdentifierReference)
 
     readonly writable: WritableStream;
->            ^^^^^^^^: WritableStream   (TyTypeReference) (TSPropertySignature)
-             expected: WritableStream<any>
+>            ^^^^^^^^: WritableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly writable: WritableStream;
 >                      ^^^^^^^^^^^^^^: { new <W = any>(underlyingSink?: UnderlyingSink<W>, strategy?: QueuingStrategy<W>): WritableStream<W>; prototype: WritableStream; }   (TyObject) (TSTypeReference)
@@ -53497,8 +53493,7 @@ interface IDBCursor {
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly request: IDBRequest;
->            ^^^^^^^: IDBRequest   (TyTypeReference) (TSPropertySignature)
-            expected: IDBRequest<any>
+>            ^^^^^^^: IDBRequest<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly request: IDBRequest;
 >                     ^^^^^^^^^^: { new (): IDBRequest; prototype: IDBRequest; }   (TyObject) (TSTypeReference)
@@ -55178,8 +55173,7 @@ declare var IDBRequest: {
 >           ^^^^^^^^^^: { new (): IDBRequest; prototype: IDBRequest; }   (TyObject) (BindingIdentifier)
 
     prototype: IDBRequest;
->   ^^^^^^^^^: IDBRequest   (TyTypeReference) (TSPropertySignature)
-     expected: IDBRequest<any>
+>   ^^^^^^^^^: IDBRequest<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: IDBRequest;
 >              ^^^^^^^^^^: { new (): IDBRequest; prototype: IDBRequest; }   (TyObject) (TSTypeReference)
@@ -61251,8 +61245,7 @@ declare var MessageEvent: {
 >           ^^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }   (TyObject) (BindingIdentifier)
 
     prototype: MessageEvent;
->   ^^^^^^^^^: MessageEvent   (TyTypeReference) (TSPropertySignature)
-     expected: MessageEvent<any>
+>   ^^^^^^^^^: MessageEvent<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: MessageEvent;
 >              ^^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }   (TyObject) (TSTypeReference)
@@ -69258,8 +69251,7 @@ declare var ProgressEvent: {
 >           ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (BindingIdentifier)
 
     prototype: ProgressEvent;
->   ^^^^^^^^^: ProgressEvent   (TyTypeReference) (TSPropertySignature)
-     expected: ProgressEvent<EventTarget>
+>   ^^^^^^^^^: ProgressEvent<EventTarget>   (TyTypeReference) (TSPropertySignature)
 
     prototype: ProgressEvent;
 >              ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -73477,8 +73469,7 @@ declare var ReadableStream: {
 >           ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (BindingIdentifier)
 
     prototype: ReadableStream;
->   ^^^^^^^^^: ReadableStream   (TyTypeReference) (TSPropertySignature)
-     expected: ReadableStream<any>
+>   ^^^^^^^^^: ReadableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: ReadableStream;
 >              ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (TSTypeReference)
@@ -73760,8 +73751,7 @@ declare var ReadableStreamDefaultController: {
 >           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): ReadableStreamDefaultController; prototype: ReadableStreamDefaultController; }   (TyObject) (BindingIdentifier)
 
     prototype: ReadableStreamDefaultController;
->   ^^^^^^^^^: ReadableStreamDefaultController   (TyTypeReference) (TSPropertySignature)
-     expected: ReadableStreamDefaultController<any>
+>   ^^^^^^^^^: ReadableStreamDefaultController<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: ReadableStreamDefaultController;
 >              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): ReadableStreamDefaultController; prototype: ReadableStreamDefaultController; }   (TyObject) (TSTypeReference)
@@ -73809,8 +73799,7 @@ declare var ReadableStreamDefaultReader: {
 >           ^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new <R = any>(stream: ReadableStream<R>): ReadableStreamDefaultReader<R>; prototype: ReadableStreamDefaultReader; }   (TyObject) (BindingIdentifier)
 
     prototype: ReadableStreamDefaultReader;
->   ^^^^^^^^^: ReadableStreamDefaultReader   (TyTypeReference) (TSPropertySignature)
-     expected: ReadableStreamDefaultReader<any>
+>   ^^^^^^^^^: ReadableStreamDefaultReader<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: ReadableStreamDefaultReader;
 >              ^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new <R = any>(stream: ReadableStream<R>): ReadableStreamDefaultReader<R>; prototype: ReadableStreamDefaultReader; }   (TyObject) (TSTypeReference)
@@ -96964,8 +96953,7 @@ declare var TransformStream: {
 >           ^^^^^^^^^^^^^^^: { new <I = any, O = any>(transformer?: Transformer<I, O>, writableStrategy?: QueuingStrategy<I>, readableStrategy?: QueuingStrategy<O>): TransformStream<I, O>; prototype: TransformStream; }   (TyObject) (BindingIdentifier)
 
     prototype: TransformStream;
->   ^^^^^^^^^: TransformStream   (TyTypeReference) (TSPropertySignature)
-     expected: TransformStream<any, any>
+>   ^^^^^^^^^: TransformStream<any, any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: TransformStream;
 >              ^^^^^^^^^^^^^^^: { new <I = any, O = any>(transformer?: Transformer<I, O>, writableStrategy?: QueuingStrategy<I>, readableStrategy?: QueuingStrategy<O>): TransformStream<I, O>; prototype: TransformStream; }   (TyObject) (TSTypeReference)
@@ -97055,8 +97043,7 @@ declare var TransformStreamDefaultController: {
 >           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): TransformStreamDefaultController; prototype: TransformStreamDefaultController; }   (TyObject) (BindingIdentifier)
 
     prototype: TransformStreamDefaultController;
->   ^^^^^^^^^: TransformStreamDefaultController   (TyTypeReference) (TSPropertySignature)
-     expected: TransformStreamDefaultController<any>
+>   ^^^^^^^^^: TransformStreamDefaultController<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: TransformStreamDefaultController;
 >              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): TransformStreamDefaultController; prototype: TransformStreamDefaultController; }   (TyObject) (TSTypeReference)
@@ -112316,8 +112303,7 @@ interface WebTransport {
 >                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): WebTransportDatagramDuplexStream; prototype: WebTransportDatagramDuplexStream; }   (TyObject) (IdentifierReference)
 
     readonly incomingBidirectionalStreams: ReadableStream;
->            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ReadableStream   (TyTypeReference) (TSPropertySignature)
-                                 expected: ReadableStream<any>
+>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ReadableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly incomingBidirectionalStreams: ReadableStream;
 >                                          ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (TSTypeReference)
@@ -112326,8 +112312,7 @@ interface WebTransport {
 >                                          ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (IdentifierReference)
 
     readonly incomingUnidirectionalStreams: ReadableStream;
->            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ReadableStream   (TyTypeReference) (TSPropertySignature)
-                                  expected: ReadableStream<any>
+>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ReadableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly incomingUnidirectionalStreams: ReadableStream;
 >                                           ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (TSTypeReference)
@@ -112435,8 +112420,7 @@ interface WebTransportBidirectionalStream {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): WebTransportBidirectionalStream; prototype: WebTransportBidirectionalStream; }   (TyObject) (BindingIdentifier)
 
     readonly readable: ReadableStream;
->            ^^^^^^^^: ReadableStream   (TyTypeReference) (TSPropertySignature)
-             expected: ReadableStream<any>
+>            ^^^^^^^^: ReadableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly readable: ReadableStream;
 >                      ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (TSTypeReference)
@@ -112445,8 +112429,7 @@ interface WebTransportBidirectionalStream {
 >                      ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (IdentifierReference)
 
     readonly writable: WritableStream;
->            ^^^^^^^^: WritableStream   (TyTypeReference) (TSPropertySignature)
-             expected: WritableStream<any>
+>            ^^^^^^^^: WritableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly writable: WritableStream;
 >                      ^^^^^^^^^^^^^^: { new <W = any>(underlyingSink?: UnderlyingSink<W>, strategy?: QueuingStrategy<W>): WritableStream<W>; prototype: WritableStream; }   (TyObject) (TSTypeReference)
@@ -112494,8 +112477,7 @@ interface WebTransportDatagramDuplexStream {
 >   ^^^^^^^^^^^^^^: number | null   (TyUnion) (TSPropertySignature)
 
     readonly readable: ReadableStream;
->            ^^^^^^^^: ReadableStream   (TyTypeReference) (TSPropertySignature)
-             expected: ReadableStream<any>
+>            ^^^^^^^^: ReadableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly readable: ReadableStream;
 >                      ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (TSTypeReference)
@@ -112504,8 +112486,7 @@ interface WebTransportDatagramDuplexStream {
 >                      ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (IdentifierReference)
 
     readonly writable: WritableStream;
->            ^^^^^^^^: WritableStream   (TyTypeReference) (TSPropertySignature)
-             expected: WritableStream<any>
+>            ^^^^^^^^: WritableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     readonly writable: WritableStream;
 >                      ^^^^^^^^^^^^^^: { new <W = any>(underlyingSink?: UnderlyingSink<W>, strategy?: QueuingStrategy<W>): WritableStream<W>; prototype: WritableStream; }   (TyObject) (TSTypeReference)
@@ -114676,8 +114657,7 @@ declare var WritableStream: {
 >           ^^^^^^^^^^^^^^: { new <W = any>(underlyingSink?: UnderlyingSink<W>, strategy?: QueuingStrategy<W>): WritableStream<W>; prototype: WritableStream; }   (TyObject) (BindingIdentifier)
 
     prototype: WritableStream;
->   ^^^^^^^^^: WritableStream   (TyTypeReference) (TSPropertySignature)
-     expected: WritableStream<any>
+>   ^^^^^^^^^: WritableStream<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: WritableStream;
 >              ^^^^^^^^^^^^^^: { new <W = any>(underlyingSink?: UnderlyingSink<W>, strategy?: QueuingStrategy<W>): WritableStream<W>; prototype: WritableStream; }   (TyObject) (TSTypeReference)
@@ -114827,8 +114807,7 @@ declare var WritableStreamDefaultWriter: {
 >           ^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new <W = any>(stream: WritableStream<W>): WritableStreamDefaultWriter<W>; prototype: WritableStreamDefaultWriter; }   (TyObject) (BindingIdentifier)
 
     prototype: WritableStreamDefaultWriter;
->   ^^^^^^^^^: WritableStreamDefaultWriter   (TyTypeReference) (TSPropertySignature)
-     expected: WritableStreamDefaultWriter<any>
+>   ^^^^^^^^^: WritableStreamDefaultWriter<any>   (TyTypeReference) (TSPropertySignature)
 
     prototype: WritableStreamDefaultWriter;
 >              ^^^^^^^^^^^^^^^^^^^^^^^^^^^: { new <W = any>(stream: WritableStream<W>): WritableStreamDefaultWriter<W>; prototype: WritableStreamDefaultWriter; }   (TyObject) (TSTypeReference)

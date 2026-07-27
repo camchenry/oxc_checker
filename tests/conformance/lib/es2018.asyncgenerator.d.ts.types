@@ -138,8 +138,7 @@ interface AsyncGeneratorFunction {
 >            ^^^^: string   (TyString) (TSPropertySignature)
 
     readonly prototype: AsyncGenerator;
->            ^^^^^^^^^: AsyncGenerator   (TyTypeReference) (TSPropertySignature)
-              expected: AsyncGenerator<unknown, any, any>
+>            ^^^^^^^^^: AsyncGenerator<unknown, any, any>   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: AsyncGenerator;
 >                       ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

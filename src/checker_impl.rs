@@ -2083,6 +2083,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
+        let ty = self.with_implicit_type_arguments_visible(ty);
         self.get_apparent_property_signature_type(program_id, ty, 0)
     }
 

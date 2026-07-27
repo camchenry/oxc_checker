@@ -114,8 +114,7 @@ interface GeneratorFunction {
 >            ^^^^: string   (TyString) (TSPropertySignature)
 
     readonly prototype: Generator;
->            ^^^^^^^^^: Generator   (TyTypeReference) (TSPropertySignature)
-              expected: Generator<unknown, any, any>
+>            ^^^^^^^^^: Generator<unknown, any, any>   (TyTypeReference) (TSPropertySignature)
 
     readonly prototype: Generator;
 >                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
