@@ -16,7 +16,7 @@ use std::{
 
 use oxc_allocator::Allocator;
 use oxc_ast::{
-    AstKind,
+    AstKind, AstType,
     ast::{MethodDefinitionKind, PropertyKey, Statement},
 };
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
@@ -107,12 +107,12 @@ fn full_conformance_suites() -> [&'static ConformanceSuite; 4] {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct TypeRecord {
-    path: String,
+    path: Arc<str>,
     start: u32,
     end: u32,
     text: String,
     ty_variant: Option<&'static str>,
-    ast_kind: Option<String>,
+    ast_kind: Option<&'static str>,
     ty_repr: String,
 }
 
@@ -127,7 +127,7 @@ impl TypeRecord {
 
     fn from_tsv(line: &str) -> Result<Self, String> {
         let mut fields = line.splitn(5, '\t');
-        let path = fields.next().ok_or("missing path")?.to_string();
+        let path = Arc::from(fields.next().ok_or("missing path")?);
         let start = fields
             .next()
             .ok_or("missing start")?
@@ -163,7 +163,7 @@ struct TypeRecordKey {
 type TypeRecordMap = BTreeMap<TypeRecordKey, String>;
 
 struct FileResult {
-    path: String,
+    path: Arc<str>,
     matched_types: usize,
     errors: Vec<ComparisonError>,
 }
@@ -1467,7 +1467,7 @@ fn read_tsc_records_for_case(
     Ok(read_records(&tsc_records_path)?
         .into_iter()
         .filter(|record| {
-            record.path == relative_path
+            record.path.as_ref() == relative_path
                 || record
                     .path
                     .strip_prefix(relative_path.as_str())
@@ -1816,6 +1816,7 @@ fn actual_identifier_records<'a>(
     source_text: &str,
 ) -> Vec<TypeRecord> {
     let entry = checker.store.entry(program_id).unwrap();
+    let path = Arc::<str>::from(path);
     let mut records = entry
         .semantic()
         .nodes()
@@ -1825,7 +1826,7 @@ fn actual_identifier_records<'a>(
                 checker,
                 checker.arena,
                 entry,
-                path,
+                &path,
                 source_text,
                 node_id,
                 node.kind(),
@@ -1837,7 +1838,7 @@ fn actual_identifier_records<'a>(
         checker.arena,
         &records,
         entry,
-        path,
+        &path,
     ));
     records
 }
@@ -1847,7 +1848,7 @@ fn actual_export_specifier_records<'a>(
     arena: CheckerArena<'a>,
     existing_records: &[TypeRecord],
     entry: &program::ProgramEntry<'a>,
-    path: &str,
+    path: &Arc<str>,
 ) -> Vec<TypeRecord> {
     let program_id = entry.id();
     let existing_keys = existing_records
@@ -1865,7 +1866,7 @@ fn actual_export_specifier_records<'a>(
             let key = TypeRecordKey {
                 start: local_name.span.start,
                 end: local_name.span.end,
-                text: sanitize(local_name.name.as_str()),
+                text: sanitize_cow(Cow::Borrowed(local_name.name.as_str())),
             };
             if existing_keys.contains(&key) {
                 return None;
@@ -1878,13 +1879,13 @@ fn actual_export_specifier_records<'a>(
             let ty_variant = ty.enum_variant_name(arena);
             let ty_repr = checker.type_to_string(ty, node_ref);
             Some(TypeRecord {
-                path: path.to_string(),
+                path: Arc::clone(path),
                 start: key.start,
                 end: key.end,
                 text: key.text,
                 ty_variant: Some(ty_variant),
-                ast_kind: Some("ExportSpecifier".to_string()),
-                ty_repr: sanitize(&ty_repr),
+                ast_kind: Some("ExportSpecifier"),
+                ty_repr: sanitize_owned(ty_repr),
             })
         })
         .collect()
@@ -1916,7 +1917,7 @@ fn actual_identifier_record<'a>(
     checker: &impl Checker<'a>,
     arena: CheckerArena<'a>,
     entry: &program::ProgramEntry<'a>,
-    path: &str,
+    path: &Arc<str>,
     source_text: &str,
     node_id: NodeId,
     kind: AstKind<'a>,
@@ -2111,18 +2112,49 @@ fn actual_identifier_record<'a>(
     }
 
     let ty_variant = ty.enum_variant_name(arena);
-    let ast_kind = format!("{:?}", kind.ty());
+    let ast_kind = conformance_ast_type_name(kind.ty());
     let ty_repr = checker.type_to_string(ty, node_ref);
 
     Some(TypeRecord {
-        path: path.to_string(),
+        path: Arc::clone(path),
         start: span.start,
         end: span.end,
-        text: sanitize(text.as_ref()),
+        text: sanitize_cow(text),
         ty_variant: Some(ty_variant),
         ast_kind: Some(ast_kind),
-        ty_repr: sanitize(&ty_repr),
+        ty_repr: sanitize_owned(ty_repr),
     })
+}
+
+fn conformance_ast_type_name(ast_type: AstType) -> &'static str {
+    match ast_type {
+        AstType::BindingIdentifier => "BindingIdentifier",
+        AstType::IdentifierReference => "IdentifierReference",
+        AstType::IdentifierName => "IdentifierName",
+        AstType::TSPropertySignature => "TSPropertySignature",
+        AstType::ObjectProperty => "ObjectProperty",
+        AstType::StaticMemberExpression => "StaticMemberExpression",
+        AstType::MethodDefinition => "MethodDefinition",
+        AstType::TSMethodSignature => "TSMethodSignature",
+        AstType::ExportSpecifier => "ExportSpecifier",
+        AstType::TSThisParameter => "TSThisParameter",
+        AstType::PropertyDefinition => "PropertyDefinition",
+        AstType::TSTypeAliasDeclaration => "TSTypeAliasDeclaration",
+        AstType::TSImportEqualsDeclaration => "TSImportEqualsDeclaration",
+        AstType::TSInterfaceDeclaration => "TSInterfaceDeclaration",
+        AstType::TSEnumDeclaration => "TSEnumDeclaration",
+        AstType::TSEnumMember => "TSEnumMember",
+        AstType::TSModuleDeclaration => "TSModuleDeclaration",
+        AstType::TSTypeParameter => "TSTypeParameter",
+        AstType::TSMappedType => "TSMappedType",
+        AstType::TSClassImplements => "TSClassImplements",
+        AstType::TSInterfaceHeritage => "TSInterfaceHeritage",
+        AstType::TSTypeReference => "TSTypeReference",
+        AstType::Directive => "Directive",
+        AstType::ExpressionStatement => "ExpressionStatement",
+        AstType::TSIndexSignatureName => "TSIndexSignatureName",
+        _ => unreachable!("unsupported conformance AST type: {ast_type:?}"),
+    }
 }
 
 fn identifier_property_key_span_and_text<'a>(key: &'a PropertyKey<'a>) -> Option<(Span, &'a str)> {
@@ -2535,7 +2567,7 @@ fn close_type_delimiter(character: char) -> char {
     }
 }
 
-fn records_by_file(records: &[TypeRecord]) -> BTreeMap<String, TypeRecordMap> {
+fn records_by_file(records: &[TypeRecord]) -> BTreeMap<Arc<str>, TypeRecordMap> {
     let mut by_file = BTreeMap::new();
     for record in records {
         by_file
@@ -2581,7 +2613,7 @@ fn write_type_outputs(
     let mut records_by_path = BTreeMap::new();
     for record in records {
         records_by_path
-            .entry(record.path.as_str())
+            .entry(record.path.as_ref())
             .or_insert_with(Vec::new)
             .push(record);
     }
@@ -2633,7 +2665,7 @@ fn write_type_outputs(
 fn type_output_mismatches(
     expected_records: &[TypeRecord],
     records: &[TypeRecord],
-) -> BTreeMap<String, TypeRecordMap> {
+) -> BTreeMap<Arc<str>, TypeRecordMap> {
     let expected_by_file = records_by_file(expected_records);
     let records_by_file = records_by_file(records);
     let mut mismatches = BTreeMap::new();
@@ -2772,6 +2804,27 @@ fn sanitize(value: &str) -> String {
         }
     }
     sanitized.trim().to_string()
+}
+
+fn sanitize_cow(value: Cow<'_, str>) -> String {
+    if !needs_sanitization(&value) {
+        return value.into_owned();
+    }
+    sanitize(&value)
+}
+
+fn sanitize_owned(value: String) -> String {
+    if !needs_sanitization(&value) {
+        return value;
+    }
+    sanitize(&value)
+}
+
+fn needs_sanitization(value: &str) -> bool {
+    value.trim().len() != value.len()
+        || value
+            .bytes()
+            .any(|byte| matches!(byte, b'\t' | b'\r' | b'\n'))
 }
 
 fn percentage(numerator: usize, denominator: usize) -> f64 {
@@ -3172,12 +3225,12 @@ mod tests {
         );
 
         assert!(records.iter().any(|record| {
-            record.path == "compiler/virtualModules.ts::a.ts"
+            record.path.as_ref() == "compiler/virtualModules.ts::a.ts"
                 && record.text == "value"
                 && record.ty_repr == "() => number"
         }));
         assert!(records.iter().any(|record| {
-            record.path == "compiler/virtualModules.ts::b.ts"
+            record.path.as_ref() == "compiler/virtualModules.ts::b.ts"
                 && record.text == "value"
                 && record.ty_repr == "() => number"
         }));
@@ -3201,7 +3254,7 @@ mod tests {
             "compiler/virtualModules.ts::b.ts",
         ] {
             assert!(records.iter().any(|record| {
-                record.path == path
+                record.path.as_ref() == path
                     && record.text == "then"
                     && record.ty_repr == "(onFulfilled: () => void) => MyThenable"
             }));
@@ -3234,22 +3287,19 @@ mod tests {
             alias_records[0].ty_repr,
             "((value: string) => number) | { accept(value: string): number; }"
         );
-        assert_eq!(
-            alias_records[0].ast_kind.as_deref(),
-            Some("TSTypeAliasDeclaration")
-        );
+        assert_eq!(alias_records[0].ast_kind, Some("TSTypeAliasDeclaration"));
     }
 
     #[test]
     fn type_output_renders_line_span_and_type() {
         let source_text = "let count: number = 1;\nlet label: string = \"ready\";";
         let record = TypeRecord {
-            path: "compiler/basicPrimitives.ts".to_string(),
+            path: Arc::from("compiler/basicPrimitives.ts"),
             start: 27,
             end: 32,
             text: "label".to_string(),
             ty_variant: Some("TyString"),
-            ast_kind: Some("IdentifierReference".to_string()),
+            ast_kind: Some("IdentifierReference"),
             ty_repr: "string".to_string(),
         };
         let mut output = String::new();
@@ -3266,12 +3316,12 @@ mod tests {
     fn type_output_renders_mismatch_expected_type_on_separate_line() {
         let source_text = "let count: number = 1;";
         let record = TypeRecord {
-            path: "compiler/basicPrimitives.ts".to_string(),
+            path: Arc::from("compiler/basicPrimitives.ts"),
             start: 4,
             end: 9,
             text: "count".to_string(),
             ty_variant: Some("TyString"),
-            ast_kind: Some("IdentifierReference".to_string()),
+            ast_kind: Some("IdentifierReference"),
             ty_repr: "string".to_string(),
         };
         let mut mismatches = TypeRecordMap::new();
@@ -3323,7 +3373,7 @@ mod tests {
     #[test]
     fn compare_records_counts_union_order_only_differences_as_matches() {
         let expected = TypeRecord {
-            path: "compiler/unionOrder.ts".to_string(),
+            path: Arc::from("compiler/unionOrder.ts"),
             start: 0,
             end: 5,
             text: "value".to_string(),
@@ -3353,12 +3403,12 @@ mod tests {
         );
 
         assert!(records.iter().any(|record| {
-            record.path == "compiler/ambientStatement1.ts"
+            record.path.as_ref() == "compiler/ambientStatement1.ts"
                 && record.text == "M1"
                 && record.ty_repr == "typeof M1"
         }));
         assert!(records.iter().any(|record| {
-            record.path == "compiler/ambientStatement1.ts"
+            record.path.as_ref() == "compiler/ambientStatement1.ts"
                 && record.text == "v1"
                 && record.ty_repr == "() => boolean"
         }));
@@ -3374,7 +3424,7 @@ mod tests {
         );
 
         assert!(records.iter().any(|record| {
-            record.path == "compiler/expressionStatement.ts"
+            record.path.as_ref() == "compiler/expressionStatement.ts"
                 && record.text == "x();"
                 && record.ty_repr == "number"
         }));
@@ -3386,5 +3436,11 @@ mod tests {
             sanitize("first\n\nsecond\r\nthird\t\tfourth"),
             "first second third fourth"
         );
+
+        let clean = String::from("already clean");
+        let allocation = clean.as_ptr();
+        let sanitized = sanitize_owned(clean);
+        assert_eq!(sanitized, "already clean");
+        assert_eq!(sanitized.as_ptr(), allocation);
     }
 }

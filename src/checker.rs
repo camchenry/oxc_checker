@@ -43,6 +43,13 @@ pub(crate) struct InstantiationCacheKey<'a> {
     pub(crate) mapper: Vec<MapperCacheEntry<'a>>,
 }
 
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub(crate) struct TypeStringCacheKey<'a> {
+    pub(crate) ty: Ty<'a>,
+    pub(crate) expand_transparent_aliases: bool,
+    pub(crate) expand_named_alias_chains: bool,
+}
+
 pub type SymbolTypeCache<'a> = Vec<Option<IndexVec<SymbolId, Option<Ty<'a>>>>>;
 
 pub struct CheckerReturn<'a, 'store> {
@@ -56,6 +63,9 @@ pub struct CheckerReturn<'a, 'store> {
     pub(crate) instantiation_cache: RefCell<HashMap<InstantiationCacheKey<'a>, Ty<'a>>>,
     pub(crate) type_alias_resolution_cache: RefCell<HashMap<TypeAliasResolution, Ty<'a>>>,
     pub(crate) overflowed_type_alias_resolutions: RefCell<Vec<TypeAliasResolution>>,
+    pub(crate) type_string_cache: RefCell<HashMap<TypeStringCacheKey<'a>, String>>,
+    pub(crate) expando_assignments_by_container:
+        RefCell<HashMap<ProgramId, HashMap<NodeId, Vec<NodeId>>>>,
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
@@ -96,6 +106,7 @@ impl<'a> CheckerReturn<'a, '_> {
         let mut metadata_by_type = self.type_alias_metadata_by_type.borrow_mut();
         metadata_by_type.resize(self.arena.type_count(), None);
         metadata_by_type[ty.id()] = Some(metadata);
+        self.type_string_cache.borrow_mut().clear();
     }
 
     pub(crate) fn type_alias_metadata(&self, ty: Ty<'a>) -> Option<TypeAliasMetadata> {
@@ -207,6 +218,8 @@ impl CheckerBuilder {
             instantiation_cache: RefCell::new(HashMap::new()),
             type_alias_resolution_cache: RefCell::new(HashMap::new()),
             overflowed_type_alias_resolutions: RefCell::new(Vec::new()),
+            type_string_cache: RefCell::new(HashMap::new()),
+            expando_assignments_by_container: RefCell::new(HashMap::new()),
             interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_type_aliases: RefCell::new(Vec::new()),

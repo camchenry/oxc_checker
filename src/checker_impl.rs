@@ -31,7 +31,7 @@ use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
     checker::{
         Checker, CheckerReturn, ClassMemberResolution, InstantiationCacheKey, NodeRef, SymbolRef,
-        TypeAliasMetadata, TypeAliasResolution, TypeParameterResolution,
+        TypeAliasMetadata, TypeAliasResolution, TypeParameterResolution, TypeStringCacheKey,
     },
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
@@ -8634,16 +8634,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         let mut properties: Vec<TyProperty<'a>> = Vec::new();
-        for (node_id, node) in self.nodes(program_id).iter_enumerated() {
-            let AstKind::AssignmentExpression(assignment) = node.kind() else {
-                continue;
+        for node_id in self.expando_assignments_in_container(program_id, host_container_id) {
+            let AstKind::AssignmentExpression(assignment) = self.nodes(program_id).kind(node_id)
+            else {
+                unreachable!("expando assignment index contains only assignment expressions")
             };
-            if assignment.operator != AssignmentOperator::Assign {
-                continue;
-            }
-            if self.enclosing_expando_container_id(program_id, node_id) != Some(host_container_id) {
-                continue;
-            }
             let Some((name, right)) =
                 self.static_property_assignment_for_symbol(program_id, assignment, host_symbol)
             else {
@@ -8671,6 +8666,46 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
         properties
+    }
+
+    fn expando_assignments_in_container(
+        &self,
+        program_id: ProgramId,
+        host_container_id: NodeId,
+    ) -> Vec<NodeId> {
+        if !self
+            .expando_assignments_by_container
+            .borrow()
+            .contains_key(&program_id)
+        {
+            let mut assignments_by_container: HashMap<NodeId, Vec<NodeId>> = HashMap::new();
+            for (node_id, node) in self.nodes(program_id).iter_enumerated() {
+                let AstKind::AssignmentExpression(assignment) = node.kind() else {
+                    continue;
+                };
+                if assignment.operator != AssignmentOperator::Assign {
+                    continue;
+                }
+                let Some(container_id) = self.enclosing_expando_container_id(program_id, node_id)
+                else {
+                    continue;
+                };
+                assignments_by_container
+                    .entry(container_id)
+                    .or_default()
+                    .push(node_id);
+            }
+            self.expando_assignments_by_container
+                .borrow_mut()
+                .insert(program_id, assignments_by_container);
+        }
+
+        self.expando_assignments_by_container
+            .borrow()
+            .get(&program_id)
+            .and_then(|assignments| assignments.get(&host_container_id))
+            .cloned()
+            .unwrap_or_default()
     }
 
     fn static_property_assignment_for_symbol(
@@ -11052,9 +11087,17 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String {
+        let cache_key = TypeStringCacheKey {
+            ty: t,
+            expand_transparent_aliases: self.location_expands_transparent_type_aliases(location),
+            expand_named_alias_chains: self.location_expands_named_type_alias_chains(location),
+        };
+        if let Some(cached) = self.type_string_cache.borrow().get(&cache_key) {
+            return cached.clone();
+        }
         let alias_chain_replacements =
             self.type_alias_chain_display_replacements_at_location(t, location);
-        t.to_type_string_with_depth(
+        let type_string = t.to_type_string_with_depth(
             self.arena(),
             &|ty| {
                 alias_chain_replacements
@@ -11063,7 +11106,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     .or_else(|| self.transparent_type_alias_target_at_location(ty, location))
             },
             &self.type_string_depth,
-        )
+        );
+        self.type_string_cache
+            .borrow_mut()
+            .insert(cache_key, type_string.clone());
+        type_string
     }
 
     fn symbol_to_string(&self, s: SymbolRef, _location: NodeRef) -> String {
