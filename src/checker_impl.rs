@@ -9456,6 +9456,34 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         iteration_types.yield_type
     }
 
+    pub(crate) fn get_inference_argument_type(
+        &self,
+        program_id: ProgramId,
+        parameter_type: Ty<'a>,
+        argument_type: Ty<'a>,
+    ) -> Ty<'a> {
+        let TypeData::TypeReference(reference) = self.arena().type_data(parameter_type) else {
+            return argument_type;
+        };
+        if !self.is_global_iterable_type_reference(program_id, reference) {
+            return argument_type;
+        }
+
+        let mut context = IterationResolutionContext::default();
+        let iteration_types = self.get_iteration_types_of_iterable(
+            program_id,
+            argument_type,
+            IterationResolverKind::Sync,
+            0,
+            &mut context,
+        );
+        let Some(element_type) = iteration_types.yield_type else {
+            return argument_type;
+        };
+
+        Ty::type_reference(self.arena(), reference.name, [element_type])
+    }
+
     fn get_iteration_types_of_iterable(
         &self,
         program_id: ProgramId,
@@ -9943,7 +9971,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
         let property_type = self.get_well_known_symbol_property_type_of_interface_worker(
-            program_id, reference, symbol, resolver, depth, context,
+            program_id, reference, resolver, depth, context,
         );
         context.active_interfaces.remove(&active_interface);
         property_type
@@ -9953,18 +9981,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: ProgramId,
         reference: &TyTypeReference<'a>,
-        symbol: SymbolRef,
         resolver: IterationResolverKind,
         depth: usize,
         context: &mut IterationResolutionContext,
     ) -> Option<Ty<'a>> {
-        let declarations = self.interface_declarations_for_symbol(symbol);
+        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
 
         let mut method_signatures = Vec::new();
-        for interface in &declarations {
+        for &(interface_program_id, interface) in &declarations {
             let mapper = self
                 .type_parameter_substitutions_for_reference(
-                    symbol.program_id,
+                    interface_program_id,
                     interface.type_parameters.as_deref(),
                     reference,
                 )
@@ -9974,12 +10001,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     TSSignature::TSPropertySignature(property)
                         if !property.optional
                             && self.well_known_symbol_property_name(
-                                symbol.program_id,
+                                interface_program_id,
                                 &property.key,
                             ) == Some(resolver.property_name()) =>
                     {
                         let ty = self.get_type_from_ts_type_annotation(
-                            symbol.program_id,
+                            interface_program_id,
                             property.type_annotation.as_deref(),
                         );
                         return Some(self.instantiate_type(ty, &mapper));
@@ -9988,12 +10015,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         if !method.optional
                             && method.kind == TSMethodSignatureKind::Method
                             && self.well_known_symbol_property_name(
-                                symbol.program_id,
+                                interface_program_id,
                                 &method.key,
                             ) == Some(resolver.property_name()) =>
                     {
                         let signature =
-                            self.signature_from_ts_method_signature(symbol.program_id, method);
+                            self.signature_from_ts_method_signature(interface_program_id, method);
                         method_signatures.push(self.instantiate_signature(signature, &mapper));
                     }
                     _ => {}
