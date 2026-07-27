@@ -2003,7 +2003,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
             TypeData::Array(array) => {
                 let element_type = self.with_implicit_type_arguments_visible(array.element_type);
-                if array.readonly {
+                if array.display_as_generic {
+                    Ty::generic_array(self.arena(), element_type, array.readonly)
+                } else if array.readonly {
                     Ty::readonly_array(self.arena(), element_type)
                 } else {
                     Ty::array(self.arena(), element_type)

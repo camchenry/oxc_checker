@@ -204,8 +204,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 >            ^^^: K   (TyTypeReference) (IdentifierReference)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
->                ^^^^^^: <T>(array: readonly T[]) => number   (TyFunction) (BindingIdentifier)
-               expected: <T>(array: ReadonlyArray<T>) => number
+>                ^^^^^^: <T>(array: ReadonlyArray<T>) => number   (TyFunction) (BindingIdentifier)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
 >                       ^: any   (TyAny) (TSTypeParameter)
@@ -220,8 +219,7 @@ declare function length<T>(array: ReadonlyArray<T>): number;
 >                                               ^: any   (TyAny) (TSTypeReference)
 
 declare function length2(array: ReadonlyArray<unknown>): number;
->                ^^^^^^^: (array: readonly unknown[]) => number   (TyFunction) (BindingIdentifier)
-                expected: (array: ReadonlyArray<unknown>) => number
+>                ^^^^^^^: (array: ReadonlyArray<unknown>) => number   (TyFunction) (BindingIdentifier)
 
 declare function length2(array: ReadonlyArray<unknown>): number;
 >                        ^^^^^: readonly unknown[]   (TyArray) (BindingIdentifier)

@@ -2921,7 +2921,7 @@ fn function_type_head_to_string<'a>(
                 arena,
                 parameter,
                 replace_type_reference,
-                flags,
+                flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
                 depth,
             )
         })
