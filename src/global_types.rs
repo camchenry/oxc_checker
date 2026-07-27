@@ -55,12 +55,13 @@ impl GlobalSymbolTable {
                 let flags = scoping.symbol_flags(symbol_id);
                 let name = scoping.symbol_name(symbol_id);
                 let symbol = SymbolRef::new(entry.id(), symbol_id);
+                let is_value = flags.intersects(SymbolFlags::Value | SymbolFlags::Namespace);
 
-                if flags.intersects(SymbolFlags::Value | SymbolFlags::Import) {
+                if is_value || flags.intersects(SymbolFlags::Import) {
                     table.insert_value(name, symbol);
                 }
                 if (entry.is_lib() || !entry.module_record().has_module_syntax)
-                    && flags.intersects(SymbolFlags::Value)
+                    && is_value
                     && !flags.intersects(SymbolFlags::BlockScoped)
                 {
                     table.insert_global_this_value(name, symbol);
@@ -226,9 +227,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .symbol_declaration(symbol.symbol_id);
         match self.nodes(symbol.program_id).kind(declaration) {
             AstKind::VariableDeclarator(_) | AstKind::Function(_) | AstKind::Class(_) => true,
+            AstKind::TSModuleDeclaration(_) => true,
             AstKind::BindingIdentifier(_) => matches!(
                 self.nodes(symbol.program_id).parent_kind(declaration),
-                AstKind::VariableDeclarator(_) | AstKind::Function(_) | AstKind::Class(_)
+                AstKind::VariableDeclarator(_)
+                    | AstKind::Function(_)
+                    | AstKind::Class(_)
+                    | AstKind::TSModuleDeclaration(_)
             ),
             AstKind::ImportSpecifier(_)
             | AstKind::ImportDefaultSpecifier(_)

@@ -68,6 +68,9 @@ interface BigInt {
                   expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
+>                            ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
 >                                 ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
                                          expected: any
 
@@ -660,6 +663,9 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >                                               ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >                                                              ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
@@ -1529,6 +1535,9 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >                                               ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >                                                              ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
                                                                           expected: any
 
@@ -1913,6 +1922,9 @@ interface DataView<TArrayBuffer extends ArrayBufferLike> {
 
 declare namespace Intl {
 >                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
+
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
 
     interface NumberFormat {
 >             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

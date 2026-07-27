@@ -10,11 +10,17 @@ interface Number {
                   expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
+>                            ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
 >                                 ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
                                          expected: any
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
 >                                                  ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+
+    toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
+>                                                            ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
 >                                                                 ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)

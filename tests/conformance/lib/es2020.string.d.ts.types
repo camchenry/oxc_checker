@@ -28,6 +28,9 @@ interface String {
                      expected: Intl.LocalesArgument
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
+>                               ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
 >                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
                                             expected: any
 
@@ -37,6 +40,9 @@ interface String {
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
 >                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
                      expected: Intl.LocalesArgument
+
+    toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
+>                               ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
 >                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
@@ -53,11 +59,17 @@ interface String {
                                expected: Intl.LocalesArgument
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
 >                                              ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
                                                       expected: any
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
 >                                                               ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
+
+    localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
+>                                                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
 >                                                                              ^^^^^^^^^^^^^^^: Intl.CollatorOptions   (TyTypeReference) (TSTypeReference)

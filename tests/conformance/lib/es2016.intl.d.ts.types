@@ -1,6 +1,9 @@
 declare namespace Intl {
 >                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+
     function getCanonicalLocales(locale?: string | readonly string[]): string[];
 >            ^^^^^^^^^^^^^^^^^^^: (locale?: string | readonly string[]) => string[]   (TyFunction) (BindingIdentifier)
                         expected: { (locale?: string | readonly string[]): string[]; (locale?: string | readonly string[]): string[]; }

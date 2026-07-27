@@ -10859,6 +10859,9 @@ declare var Float64Array: Float64ArrayConstructor;
 declare namespace Intl {
 >                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+
     interface CollatorOptions {
 >             ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
@@ -11416,6 +11419,9 @@ interface String {
 >                                                            ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
 
     localeCompare(that: string, locales?: string | string[], options?: Intl.CollatorOptions): number;
+>                                                                      ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    localeCompare(that: string, locales?: string | string[], options?: Intl.CollatorOptions): number;
 >                                                                           ^^^^^^^^^^^^^^^: Intl.CollatorOptions   (TyTypeReference) (TSTypeReference)
                                                                                    expected: any
 
@@ -11435,6 +11441,9 @@ interface Number {
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >                                               ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >                                                              ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
@@ -11458,6 +11467,9 @@ interface Date {
 >                                               ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
+>                                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    toLocaleString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >                                                              ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
                                                                             expected: any
 
@@ -11471,6 +11483,9 @@ interface Date {
 >                                                   ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
     toLocaleDateString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
+>                                                             ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    toLocaleDateString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >                                                                  ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
                                                                                 expected: any
 
@@ -11482,6 +11497,9 @@ interface Date {
 
     toLocaleTimeString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >                                                   ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+
+    toLocaleTimeString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
+>                                                             ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
 
     toLocaleTimeString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >                                                                  ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)

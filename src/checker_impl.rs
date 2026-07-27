@@ -10866,6 +10866,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 AstKind::TSEnumDeclaration(declaration) => {
                     self.get_type_of_enum_declaration(sym.program_id, declaration)
                 }
+                AstKind::TSModuleDeclaration(module) => match &module.id {
+                    TSModuleDeclarationName::Identifier(identifier) => Ty::type_query(
+                        self.arena(),
+                        identifier.name.as_str(),
+                        Ty::any(),
+                        std::iter::empty(),
+                    ),
+                    TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
+                },
                 AstKind::BindingIdentifier(identifier) => {
                     if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
                         sym.program_id,
@@ -10913,6 +10922,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         AstKind::TSEnumDeclaration(declaration) => {
                             self.get_type_of_enum_declaration(sym.program_id, declaration)
                         }
+                        AstKind::TSModuleDeclaration(module) => match &module.id {
+                            TSModuleDeclarationName::Identifier(module_name) => Ty::type_query(
+                                self.arena(),
+                                module_name.name.as_str(),
+                                Ty::any(),
+                                std::iter::empty(),
+                            ),
+                            TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
+                        },
                         _ => Ty::none(),
                     }
                 }

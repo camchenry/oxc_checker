@@ -1,6 +1,9 @@
 declare namespace Intl {
 >                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+
     interface SegmenterOptions {
 >             ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 

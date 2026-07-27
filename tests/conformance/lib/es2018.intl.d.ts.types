@@ -1,6 +1,9 @@
 declare namespace Intl {
 >                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+
     type LDMLPluralRule = "zero" | "one" | "two" | "few" | "many" | "other";
 >        ^^^^^^^^^^^^^^: "zero" | "one" | "two" | "few" | "many" | "other"   (TyUnion) (TSTypeAliasDeclaration)
 

@@ -116340,6 +116340,9 @@ declare var XSLTProcessor: {
 declare namespace CSS {
 >                 ^^^: typeof CSS   (TyTypeQuery) (TSModuleDeclaration)
 
+declare namespace CSS {
+>                 ^^^: typeof CSS   (TyTypeQuery) (BindingIdentifier)
+
     var highlights: HighlightRegistry;
 >       ^^^^^^^^^^: HighlightRegistry   (TyTypeReference) (BindingIdentifier)
 
@@ -117191,6 +117194,9 @@ declare namespace CSS {
 
 declare namespace WebAssembly {
 >                 ^^^^^^^^^^^: typeof WebAssembly   (TyTypeQuery) (TSModuleDeclaration)
+
+declare namespace WebAssembly {
+>                 ^^^^^^^^^^^: typeof WebAssembly   (TyTypeQuery) (BindingIdentifier)
 
     interface CompileError extends Error {
 >             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

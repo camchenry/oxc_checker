@@ -1,6 +1,9 @@
 declare namespace Reflect {
 >                 ^^^^^^^: typeof Reflect   (TyTypeQuery) (TSModuleDeclaration)
 
+declare namespace Reflect {
+>                 ^^^^^^^: typeof Reflect   (TyTypeQuery) (BindingIdentifier)
+
     function apply<T, A extends readonly any[], R>(
 >            ^^^^^: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }   (TyObject) (BindingIdentifier)
           expected: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }

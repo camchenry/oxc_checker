@@ -1,6 +1,9 @@
 declare namespace Intl {
 >                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
 
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+
     type UnicodeBCP47LocaleIdentifier = string;
 >        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
 
