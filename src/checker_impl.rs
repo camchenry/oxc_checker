@@ -10683,6 +10683,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         match self.node_kind(location) {
             AstKind::TSPropertySignature(_)
             | AstKind::PropertyDefinition(_)
+            | AstKind::TSTypeAliasDeclaration(_)
             | AstKind::FormalParameter(_)
             | AstKind::FormalParameterRest(_)
             | AstKind::TSThisParameter(_) => true,
