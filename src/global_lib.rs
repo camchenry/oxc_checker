@@ -99,6 +99,10 @@ pub(crate) fn resolve_lib_files(selection: &LibSelection) -> Result<Vec<Embedded
     Ok(files)
 }
 
+pub(crate) fn all_lib_files() -> impl Iterator<Item = EmbeddedLibFile> {
+    LIB_CATALOG.iter().map(|entry| entry.file)
+}
+
 fn append_target_files(files: &mut Vec<EmbeddedLibFile>, target: LibTarget) {
     for entry in LIB_CATALOG {
         if entry

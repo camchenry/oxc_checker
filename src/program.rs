@@ -27,11 +27,7 @@ impl ProgramId {
 pub struct ProgramEntry<'a> {
     id: ProgramId,
     path: PathBuf,
-    source_text: &'a str,
-    source_type: SourceType,
-    program: &'a Program<'a>,
-    module_record: ModuleRecord<'a>,
-    semantic: Semantic<'a>,
+    data: ProgramEntryData<'a>,
     /// Whether this entry is a default standard library file injected by the
     /// checker rather than user source. Consumers (e.g. conformance record
     /// extraction) skip lib entries.
@@ -51,32 +47,97 @@ impl<'a> ProgramEntry<'a> {
 
     #[inline]
     pub const fn source_text(&self) -> &'a str {
-        self.source_text
+        self.data.program().source_text
     }
 
     #[inline]
     pub const fn source_type(&self) -> SourceType {
-        self.source_type
+        self.data.program().source_type
     }
 
     #[inline]
     pub const fn program(&self) -> &'a Program<'a> {
-        self.program
+        self.data.program().program
     }
 
     #[inline]
     pub const fn module_record(&self) -> &ModuleRecord<'a> {
-        &self.module_record
+        &self.data.program().module_record
     }
 
     #[inline]
     pub const fn semantic(&self) -> &Semantic<'a> {
-        &self.semantic
+        &self.data.program().semantic
     }
 
     #[inline]
     pub const fn is_lib(&self) -> bool {
         self.is_lib
+    }
+}
+
+enum ProgramEntryData<'a> {
+    Owned(Box<PreparedProgram<'a>>),
+    Prepared(&'a PreparedProgram<'a>),
+}
+
+impl<'a> ProgramEntryData<'a> {
+    const fn program(&self) -> &PreparedProgram<'a> {
+        match self {
+            Self::Owned(program) => program,
+            Self::Prepared(program) => program,
+        }
+    }
+}
+
+/// Immutable parser and semantic output that can be reused by multiple program stores.
+struct PreparedProgram<'a> {
+    source_text: &'a str,
+    source_type: SourceType,
+    program: &'a Program<'a>,
+    module_record: ModuleRecord<'a>,
+    semantic: Semantic<'a>,
+}
+
+/// A path-indexed collection of immutable programs parsed in one allocator.
+pub struct PreparedProgramSet<'a> {
+    allocator: &'a Allocator,
+    programs: HashMap<PathBuf, PreparedProgram<'a>>,
+}
+
+impl<'a> PreparedProgramSet<'a> {
+    #[must_use]
+    pub fn new(allocator: &'a Allocator) -> Self {
+        Self {
+            allocator,
+            programs: HashMap::new(),
+        }
+    }
+
+    pub fn add_source(
+        &mut self,
+        path: impl Into<PathBuf>,
+        source_text: &str,
+        source_type: SourceType,
+    ) -> ProgramStoreResult<()> {
+        let path = path.into();
+        let source_text = self.allocator.alloc_str(source_text);
+        let program = parse_program(self.allocator, &path, source_text, source_type)?;
+        self.programs.insert(path, program);
+        Ok(())
+    }
+
+    /// Parse every embedded standard-library program so stores can cheaply select any target.
+    pub fn embedded_libraries(allocator: &'a Allocator) -> ProgramStoreResult<Self> {
+        let mut programs = Self::new(allocator);
+        for file in crate::global_lib::all_lib_files() {
+            programs.add_source(file.virtual_path, file.contents, SourceType::d_ts())?;
+        }
+        Ok(programs)
+    }
+
+    fn get(&self, path: &Path) -> Option<&PreparedProgram<'a>> {
+        self.programs.get(path)
     }
 }
 
@@ -200,6 +261,7 @@ pub struct ProgramStoreBuilder<'a, H> {
     root_files: Vec<PathBuf>,
     load_default_lib: bool,
     lib_selection: crate::global_lib::LibSelection,
+    prepared_programs: Option<&'a PreparedProgramSet<'a>>,
 }
 
 impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
@@ -210,7 +272,14 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             root_files: Vec::new(),
             load_default_lib: true,
             lib_selection: crate::global_lib::LibSelection::default(),
+            prepared_programs: None,
         }
+    }
+
+    /// Reuse immutable parser and semantic output for matching canonical paths.
+    pub fn with_prepared_programs(mut self, programs: &'a PreparedProgramSet<'a>) -> Self {
+        self.prepared_programs = Some(programs);
+        self
     }
 
     pub fn add_root_file(mut self, path: impl Into<PathBuf>) -> Self {
@@ -271,6 +340,13 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             .map_err(|message| ProgramStoreError::LibSelection { message })?;
         for lib_file in lib_files {
             let path = PathBuf::from(lib_file.virtual_path);
+            if let Some(program) = self
+                .prepared_programs
+                .and_then(|programs| programs.get(&path))
+            {
+                self.build_entry_from_prepared(store, path, program, true)?;
+                continue;
+            }
             let source_text = self.allocator.alloc_str(lib_file.contents);
             self.build_entry_from_source(store, path, source_text, SourceType::d_ts(), true)?;
         }
@@ -285,6 +361,13 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         let path = self.host.canonicalize_path(path);
         if let Some(id) = store.id_for_path(&path) {
             return Ok(id);
+        }
+
+        if let Some(program) = self
+            .prepared_programs
+            .and_then(|programs| programs.get(&path))
+        {
+            return self.build_entry_from_prepared(store, path, program, false);
         }
 
         let source_text = self.host.read_source(&path)?;
@@ -304,31 +387,36 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         source_type: SourceType,
         is_lib: bool,
     ) -> ProgramStoreResult<ProgramId> {
-        let parser_return = Parser::new(self.allocator, source_text, source_type).parse();
-        if parser_return.panicked {
-            return Err(ProgramStoreError::Parse {
-                path,
-                messages: parser_return
-                    .errors
-                    .iter()
-                    .map(ToString::to_string)
-                    .collect(),
-            });
-        }
+        let program = parse_program(self.allocator, &path, source_text, source_type)?;
+        self.build_entry(
+            store,
+            path,
+            ProgramEntryData::Owned(Box::new(program)),
+            is_lib,
+        )
+    }
 
-        let program = self.allocator.alloc(parser_return.program);
-        let semantic_return = SemanticBuilder::new().with_cfg(true).build(program);
-        // Keep building even when semantic analysis reports recoverable errors so downstream
-        // consumers (like conformance extraction) can still inspect partial symbol/type data.
+    fn build_entry_from_prepared(
+        &self,
+        store: &mut ProgramStore<'a>,
+        path: PathBuf,
+        program: &'a PreparedProgram<'a>,
+        is_lib: bool,
+    ) -> ProgramStoreResult<ProgramId> {
+        self.build_entry(store, path, ProgramEntryData::Prepared(program), is_lib)
+    }
 
+    fn build_entry(
+        &self,
+        store: &mut ProgramStore<'a>,
+        path: PathBuf,
+        data: ProgramEntryData<'a>,
+        is_lib: bool,
+    ) -> ProgramStoreResult<ProgramId> {
         let id = store.push_entry(ProgramEntry {
             id: ProgramId(store.entries.len()),
             path: path.clone(),
-            source_text,
-            source_type,
-            program,
-            module_record: parser_return.module_record,
-            semantic: semantic_return.semantic,
+            data,
             is_lib,
         });
 
@@ -359,6 +447,37 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
 
         Ok(id)
     }
+}
+
+fn parse_program<'a>(
+    allocator: &'a Allocator,
+    path: &Path,
+    source_text: &'a str,
+    source_type: SourceType,
+) -> ProgramStoreResult<PreparedProgram<'a>> {
+    let parser_return = Parser::new(allocator, source_text, source_type).parse();
+    if parser_return.panicked {
+        return Err(ProgramStoreError::Parse {
+            path: path.to_path_buf(),
+            messages: parser_return
+                .errors
+                .iter()
+                .map(ToString::to_string)
+                .collect(),
+        });
+    }
+
+    let program = allocator.alloc(parser_return.program);
+    let semantic_return = SemanticBuilder::new().with_cfg(true).build(program);
+    // Keep building even when semantic analysis reports recoverable errors so downstream
+    // consumers can still inspect partial symbol and type data.
+    Ok(PreparedProgram {
+        source_text,
+        source_type,
+        program,
+        module_record: parser_return.module_record,
+        semantic: semantic_return.semantic,
+    })
 }
 
 pub struct ProgramStore<'a> {
@@ -444,7 +563,7 @@ impl<'a> ProgramStore<'a> {
         let Some(entry) = self.entry(id) else {
             return requests;
         };
-        for (specifier, occurrences) in &entry.module_record.requested_modules {
+        for (specifier, occurrences) in &entry.module_record().requested_modules {
             for occurrence in occurrences {
                 requests.push(PendingModuleRequest {
                     specifier: specifier.as_str().to_string(),
@@ -675,6 +794,98 @@ mod tests {
         assert_eq!(store.entries().len(), 1);
         assert!(store.edges().is_empty());
         assert_eq!(store.entries()[0].path(), Path::new("/project/a.ts"));
+    }
+
+    #[test]
+    fn prepared_programs_are_reused_with_store_local_ids() {
+        let allocator = Allocator::default();
+        let mut prepared = PreparedProgramSet::new(&allocator);
+        prepared
+            .add_source(
+                "/shared/types.d.ts",
+                "interface Shared { value: string }",
+                SourceType::d_ts(),
+            )
+            .unwrap();
+
+        let first = ProgramStoreBuilder::new(
+            &allocator,
+            InMemoryProgramHost::new("/first")
+                .add_file("/first/main.ts", "declare const value: Shared;"),
+        )
+        .with_prepared_programs(&prepared)
+        .add_root_file("/shared/types.d.ts")
+        .add_root_file("/first/main.ts")
+        .without_default_lib()
+        .build()
+        .unwrap();
+        let second = ProgramStoreBuilder::new(
+            &allocator,
+            InMemoryProgramHost::new("/second")
+                .add_file("/second/main.ts", "declare const value: Shared;"),
+        )
+        .with_prepared_programs(&prepared)
+        .add_root_file("/shared/types.d.ts")
+        .add_root_file("/second/main.ts")
+        .without_default_lib()
+        .build()
+        .unwrap();
+
+        let first_id = first.id_for_path(Path::new("/shared/types.d.ts")).unwrap();
+        let second_id = second.id_for_path(Path::new("/shared/types.d.ts")).unwrap();
+        let first_entry = first.entry(first_id).unwrap();
+        let second_entry = second.entry(second_id).unwrap();
+
+        assert_eq!(first_id, ProgramId(0));
+        assert_eq!(second_id, ProgramId(0));
+        assert!(std::ptr::eq(first_entry.program(), second_entry.program()));
+        assert!(std::ptr::eq(
+            first_entry.semantic(),
+            second_entry.semantic()
+        ));
+    }
+
+    #[test]
+    fn prepared_embedded_libraries_respect_each_store_selection() {
+        let allocator = Allocator::default();
+        let prepared = PreparedProgramSet::embedded_libraries(&allocator).unwrap();
+        let first = ProgramStoreBuilder::new(
+            &allocator,
+            InMemoryProgramHost::new("/first")
+                .add_file("/first/main.ts", "const value: Promise<string> = null!;"),
+        )
+        .with_prepared_programs(&prepared)
+        .with_default_lib_target_name("es5")
+        .unwrap()
+        .add_root_file("/first/main.ts")
+        .build()
+        .unwrap();
+        let second = ProgramStoreBuilder::new(
+            &allocator,
+            InMemoryProgramHost::new("/second")
+                .add_file("/second/main.ts", "const value: Promise<string> = null!;"),
+        )
+        .with_prepared_programs(&prepared)
+        .with_default_lib_target_name("es2015")
+        .unwrap()
+        .add_root_file("/second/main.ts")
+        .build()
+        .unwrap();
+
+        let first_es5 = first.entry_for_path(Path::new("lib.es5.d.ts")).unwrap();
+        let second_es5 = second.entry_for_path(Path::new("lib.es5.d.ts")).unwrap();
+
+        assert!(std::ptr::eq(first_es5.program(), second_es5.program()));
+        assert!(
+            first
+                .entry_for_path(Path::new("lib.es2015.promise.d.ts"))
+                .is_none()
+        );
+        assert!(
+            second
+                .entry_for_path(Path::new("lib.es2015.promise.d.ts"))
+                .is_some()
+        );
     }
 
     #[test]

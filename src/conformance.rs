@@ -41,6 +41,7 @@ struct ConformanceSuite {
 }
 
 const CONFORMANCE_THREAD_STACK_SIZE: usize = 256 * 1024 * 1024;
+const MIN_FILES_PER_PREPARED_BATCH: usize = 4;
 const VIRTUAL_MODULE_MARKER: &str = "\nexport {};";
 
 const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
@@ -243,6 +244,10 @@ struct ParsedFixture<'a> {
 struct ReadyConformanceFile {
     path: PathBuf,
     source_text: String,
+}
+
+struct ReadyConformanceBatch {
+    files: Vec<ReadyConformanceFile>,
 }
 
 struct SharedConformanceCollection {
@@ -1218,6 +1223,7 @@ fn collect_oxc_records(
         .name("conformance-reader".to_string())
         .spawn(move || {
             let reader_started_at = reader_timing.is_enabled().then(Instant::now);
+            let mut ready_files = Vec::new();
             for path in paths {
                 let read_started_at = reader_timing.is_enabled().then(Instant::now);
                 let source_text = match read_to_string_simd_utf8(&path) {
@@ -1231,11 +1237,13 @@ fn collect_oxc_records(
                     reader_timing.record_read(read_started_at.elapsed(), source_text.len());
                 }
 
+                ready_files.push(ReadyConformanceFile { path, source_text });
+            }
+
+            let batch_count = conformance_batch_count(ready_files.len(), worker_count);
+            for batch in balance_conformance_batches(ready_files, batch_count) {
                 let send_started_at = reader_timing.is_enabled().then(Instant::now);
-                if ready_sender
-                    .send(ReadyConformanceFile { path, source_text })
-                    .is_err()
-                {
+                if ready_sender.send(batch).is_err() {
                     break;
                 }
                 if let Some(send_started_at) = send_started_at {
@@ -1254,19 +1262,27 @@ fn collect_oxc_records(
         ready_receiver
             .into_iter()
             .par_bridge()
-            .map(|ready_file| {
-                progress.start(&ready_file.path);
-                let check_started_at = timing.is_enabled().then(Instant::now);
-                let file_records = collect_oxc_records_from_source(
-                    cases_root,
-                    &ready_file.path,
-                    &ready_file.source_text,
-                );
-                if let Some(check_started_at) = check_started_at {
-                    timing.record_check(check_started_at.elapsed());
+            .map(|ready_batch| {
+                let allocator = Allocator::default();
+                let prepared_programs = program::PreparedProgramSet::embedded_libraries(&allocator)
+                    .unwrap_or_else(|err| panic!("failed to prepare embedded libraries: {err}"));
+                let mut batch_records = Vec::new();
+                for ready_file in ready_batch.files {
+                    progress.start(&ready_file.path);
+                    let check_started_at = timing.is_enabled().then(Instant::now);
+                    batch_records.extend(collect_oxc_records_from_source_with_programs(
+                        cases_root,
+                        &ready_file.path,
+                        &ready_file.source_text,
+                        &allocator,
+                        Some(&prepared_programs),
+                    ));
+                    if let Some(check_started_at) = check_started_at {
+                        timing.record_check(check_started_at.elapsed());
+                    }
+                    progress.finish(Some(&ready_file.path));
                 }
-                progress.finish(Some(&ready_file.path));
-                file_records
+                batch_records
             })
             .collect::<Vec<_>>()
             .into_iter()
@@ -1300,6 +1316,34 @@ fn collect_oxc_records(
             .then_with(|| left.ty_repr.cmp(&right.ty_repr))
     });
     records
+}
+
+fn balance_conformance_batches(
+    mut files: Vec<ReadyConformanceFile>,
+    batch_count: usize,
+) -> Vec<ReadyConformanceBatch> {
+    files.sort_unstable_by_key(|file| std::cmp::Reverse(file.source_text.len()));
+    let mut batches = (0..batch_count.min(files.len()))
+        .map(|_| (0_usize, Vec::new()))
+        .collect::<Vec<_>>();
+    for file in files {
+        let (size, batch) = batches
+            .iter_mut()
+            .min_by_key(|(size, _)| *size)
+            .expect("at least one conformance batch");
+        *size += file.source_text.len();
+        batch.push(file);
+    }
+    batches
+        .into_iter()
+        .map(|(_, files)| ReadyConformanceBatch { files })
+        .collect()
+}
+
+fn conformance_batch_count(file_count: usize, worker_count: usize) -> usize {
+    file_count
+        .div_ceil(MIN_FILES_PER_PREPARED_BATCH)
+        .min(worker_count)
 }
 
 fn conformance_read_ahead_capacity(worker_count: usize) -> usize {
@@ -1437,12 +1481,22 @@ fn collect_oxc_records_from_source(
     path: &Path,
     source_text: &str,
 ) -> Vec<TypeRecord> {
+    let allocator = Allocator::default();
+    collect_oxc_records_from_source_with_programs(cases_root, path, source_text, &allocator, None)
+}
+
+fn collect_oxc_records_from_source_with_programs<'a>(
+    cases_root: &Path,
+    path: &Path,
+    source_text: &str,
+    allocator: &'a Allocator,
+    prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
+) -> Vec<TypeRecord> {
     let relative_path = relative_path(cases_root, path);
     let compiler_case = parse_compiler_test_case(source_text, &relative_path);
     let _settings = &compiler_case.settings;
-    let allocator = Allocator::default();
     let mut records = Vec::new();
-    if let Ok(parsed) = parse_fixture_program(&allocator, &compiler_case) {
+    if let Ok(parsed) = parse_fixture_program(allocator, &compiler_case, prepared_programs) {
         let checker = CheckerBuilder::new().build(&parsed.store);
         for source_file in &compiler_case.files {
             let _file_settings = &source_file.settings;
@@ -1469,9 +1523,12 @@ fn collect_oxc_records_from_source(
     // Some conformance fixtures are intentionally broken or use unsupported syntax/features.
     // Fall back to per-file extraction so we still emit records for parsable files.
     for source_file in &compiler_case.files {
-        let Some(parsed) =
-            parse_single_fixture_program(&allocator, source_file, compiler_case.has_explicit_files)
-        else {
+        let Some(parsed) = parse_single_fixture_program(
+            allocator,
+            source_file,
+            compiler_case.has_explicit_files,
+            prepared_programs,
+        ) else {
             continue;
         };
         let Some(program_id) = parsed
@@ -1678,9 +1735,13 @@ fn record_path(
 fn parse_fixture_program<'a>(
     allocator: &'a Allocator,
     compiler_case: &CompilerTestCase,
+    prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
 ) -> Result<ParsedFixture<'a>, String> {
     let host = FixtureProgramHost::new(&compiler_case.files, compiler_case.has_explicit_files);
     let mut builder = program::ProgramStoreBuilder::new(allocator, host);
+    if let Some(prepared_programs) = prepared_programs {
+        builder = builder.with_prepared_programs(prepared_programs);
+    }
     if compiler_case
         .settings
         .get("nolib")
@@ -1726,6 +1787,7 @@ fn parse_single_fixture_program<'a>(
     allocator: &'a Allocator,
     source_file: &CompilerTestFile,
     module_file: bool,
+    prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
 ) -> Option<ParsedFixture<'a>> {
     let compiler_case = CompilerTestCase {
         settings: HashMap::new(),
@@ -1736,7 +1798,7 @@ fn parse_single_fixture_program<'a>(
         }],
         has_explicit_files: module_file,
     };
-    parse_fixture_program(allocator, &compiler_case).ok()
+    parse_fixture_program(allocator, &compiler_case, prepared_programs).ok()
 }
 
 fn virtual_module_source_text(source_text: &str) -> String {
@@ -2906,6 +2968,40 @@ fn write_snapshot_error(
 mod tests {
     use super::*;
 
+    #[test]
+    fn prepared_batch_count_amortizes_catalogs_and_caps_at_workers() {
+        assert_eq!(conformance_batch_count(0, 8), 0);
+        assert_eq!(conformance_batch_count(1, 8), 1);
+        assert_eq!(conformance_batch_count(9, 8), 3);
+        assert_eq!(conformance_batch_count(55, 8), 8);
+    }
+
+    #[test]
+    fn conformance_batches_are_balanced_by_source_size() {
+        let files = [10, 9, 8, 7]
+            .into_iter()
+            .enumerate()
+            .map(|(index, size)| ReadyConformanceFile {
+                path: PathBuf::from(format!("{index}.ts")),
+                source_text: "x".repeat(size),
+            })
+            .collect();
+
+        let batches = balance_conformance_batches(files, 2);
+        let sizes = batches
+            .iter()
+            .map(|batch| {
+                batch
+                    .files
+                    .iter()
+                    .map(|file| file.source_text.len())
+                    .sum::<usize>()
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(sizes, vec![17, 17]);
+    }
+
     fn target_from_args(args: &[&str]) -> ConformanceResult<ConformanceTarget> {
         conformance_target_from_arguments(
             Path::new(env!("CARGO_MANIFEST_DIR")),
@@ -3050,7 +3146,7 @@ mod tests {
             "compiler/eslint_awaitThenable.ts",
         );
         let allocator = Allocator::default();
-        let fixture = parse_fixture_program(&allocator, &parsed).unwrap();
+        let fixture = parse_fixture_program(&allocator, &parsed, None).unwrap();
         let b_path = normalize_fixture_path(Path::new("b.ts"));
         let b_entry = fixture
             .store
