@@ -850,6 +850,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         contains
     }
 
+    pub(crate) fn is_active_unresolved_type_alias(&self, ty: Ty<'a>) -> bool {
+        self.could_contain_type_variables(ty)
+            && self.type_alias_metadata(ty).is_some_and(|metadata| {
+                self.resolving_type_aliases
+                    .borrow()
+                    .iter()
+                    .any(|resolution| {
+                        resolution.program_id == metadata.declaration.program_id
+                            && resolution.declaration == metadata.declaration.node_id
+                    })
+            })
+    }
+
     pub(crate) fn mark_type_instantiation_overflow(&self) {
         let should_propagate =
             self.resolving_type_aliases
@@ -2122,10 +2135,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> TupleElement<'a> {
         match element {
             TSTupleElement::TSRestType(rest) => {
-                TupleElement::Rest(self.get_type_from_ts_type_expanding_top_level_aliases(
-                    program_id,
-                    &rest.type_annotation,
-                ))
+                let ty = self.get_type_from_ts_type(program_id, &rest.type_annotation);
+                if self.is_active_unresolved_type_alias(ty) {
+                    TupleElement::Rest(ty)
+                } else {
+                    TupleElement::Rest(
+                        self.get_expanded_type_alias_reference_type(program_id, ty, 0)
+                            .map_or(ty, |(_, expanded)| expanded),
+                    )
+                }
             }
             TSTupleElement::TSOptionalType(optional) => TupleElement::Optional(
                 self.get_type_from_ts_type(program_id, &optional.type_annotation)

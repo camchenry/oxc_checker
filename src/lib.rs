@@ -2699,6 +2699,29 @@ mod test {
     }
 
     #[test]
+    fn recursive_tuple_rest_aliases_are_preserved_while_active() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+        type PromisedTuple<L extends any[], U = (...args: L) => void> =
+            U extends (h: infer H, ...args: infer R) =>
+                [Promise<H>, ...PromisedTuple<R>] ? [] : [];
+        type Promised = PromisedTuple<[1, 2, 3]>;
+        ",
+        );
+
+        let promised = get_type_alias_type(&ret, "Promised");
+        let TypeData::Tuple(tuple) = ret.arena.type_data(promised) else {
+            panic!(
+                "expected an empty tuple, got {}",
+                promised.to_type_string(ret.arena)
+            );
+        };
+        assert!(tuple.elements.is_empty());
+    }
+
+    #[test]
     fn type_alias_declarations_expand_top_level_alias_references() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

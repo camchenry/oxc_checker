@@ -1139,19 +1139,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             }
             _ => {
-                let source_is_active_unresolved_alias =
-                    self.type_alias_metadata(source).is_some_and(|metadata| {
-                        self.could_contain_type_variables(source)
-                            && self
-                                .resolving_type_aliases
-                                .borrow()
-                                .iter()
-                                .any(|resolution| {
-                                    resolution.program_id == metadata.declaration.program_id
-                                        && resolution.declaration == metadata.declaration.node_id
-                                })
-                    });
-                if source_is_active_unresolved_alias {
+                if self.is_active_unresolved_type_alias(source) {
                     ConditionalInferMatchResult::Deferred
                 } else if self.is_assignable_to(source, target) {
                     ConditionalInferMatchResult::Matched
