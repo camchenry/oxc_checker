@@ -26,7 +26,7 @@ use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
 use terminal_size::{Width, terminal_size};
 
-use crate::checker::{Checker, CheckerBuilder, NodeRef};
+use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef};
 
 use super::*;
 
@@ -1376,6 +1376,7 @@ fn collect_oxc_records_from_source(
     let allocator = Allocator::default();
     let mut records = Vec::new();
     if let Ok(parsed) = parse_fixture_program(&allocator, &compiler_case) {
+        let checker = CheckerBuilder::new().build(&parsed.store);
         for source_file in &compiler_case.files {
             let _file_settings = &source_file.settings;
             let Some(program_id) = parsed
@@ -1385,7 +1386,7 @@ fn collect_oxc_records_from_source(
                 continue;
             };
             records.extend(actual_identifier_records(
-                &parsed.store,
+                &checker,
                 program_id,
                 &record_path(
                     &relative_path,
@@ -1412,8 +1413,9 @@ fn collect_oxc_records_from_source(
         else {
             continue;
         };
+        let checker = CheckerBuilder::new().build(&parsed.store);
         records.extend(actual_identifier_records(
-            &parsed.store,
+            &checker,
             program_id,
             &record_path(
                 &relative_path,
@@ -1679,20 +1681,19 @@ fn virtual_module_source_text(source_text: &str) -> String {
 }
 
 fn actual_identifier_records<'a>(
-    store: &program::ProgramStore<'a>,
+    checker: &CheckerReturn<'a, '_>,
     program_id: program::ProgramId,
     path: &str,
     source_text: &str,
 ) -> Vec<TypeRecord> {
-    let checker = CheckerBuilder::new().build(store);
-    let entry = store.entry(program_id).unwrap();
+    let entry = checker.store.entry(program_id).unwrap();
     let mut records = entry
         .semantic()
         .nodes()
         .iter_enumerated()
         .filter_map(|(node_id, node)| {
             actual_identifier_record(
-                &checker,
+                checker,
                 checker.arena,
                 entry,
                 path,
@@ -1703,7 +1704,7 @@ fn actual_identifier_records<'a>(
         })
         .collect::<Vec<_>>();
     records.extend(actual_export_specifier_records(
-        &checker,
+        checker,
         checker.arena,
         &records,
         entry,
