@@ -117199,11 +117199,9 @@ declare namespace WebAssembly {
 
     interface CompileError extends Error {
 >             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                  expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
 
     interface CompileError extends Error {
->             ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (BindingIdentifier)
-                  expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>             ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (BindingIdentifier)
 
     interface CompileError extends Error {
 >                                  ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
@@ -117214,41 +117212,34 @@ declare namespace WebAssembly {
                                 expected: ErrorConstructor
 
     var CompileError: {
->       ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (BindingIdentifier)
-            expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>       ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (BindingIdentifier)
 
         prototype: CompileError;
 >       ^^^^^^^^^: CompileError   (TyTypeReference) (TSPropertySignature)
 
         prototype: CompileError;
->                  ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (TSTypeReference)
-                       expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>                  ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (TSTypeReference)
 
         prototype: CompileError;
->                  ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (IdentifierReference)
-                       expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>                  ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (IdentifierReference)
 
         new(message?: string): CompileError;
 >           ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
         new(message?: string): CompileError;
->                              ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (TSTypeReference)
-                                   expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>                              ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (TSTypeReference)
 
         new(message?: string): CompileError;
->                              ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (IdentifierReference)
-                                   expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>                              ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (IdentifierReference)
 
         (message?: string): CompileError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
         (message?: string): CompileError;
->                           ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (TSTypeReference)
-                                expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>                           ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (TSTypeReference)
 
         (message?: string): CompileError;
->                           ^^^^^^^^^^^^: { new (message?: string): CompileError; (message?: string): CompileError; prototype: CompileError; }   (TyObject) (IdentifierReference)
-                                expected: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }
+>                           ^^^^^^^^^^^^: { (message?: string): CompileError; new (message?: string): CompileError; prototype: CompileError; }   (TyObject) (IdentifierReference)
 
     interface Exception {
 >             ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -117461,11 +117452,9 @@ declare namespace WebAssembly {
 
     interface LinkError extends Error {
 >             ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-               expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
 
     interface LinkError extends Error {
->             ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (BindingIdentifier)
-               expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>             ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (BindingIdentifier)
 
     interface LinkError extends Error {
 >                               ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
@@ -117476,41 +117465,34 @@ declare namespace WebAssembly {
                              expected: ErrorConstructor
 
     var LinkError: {
->       ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (BindingIdentifier)
-         expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>       ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (BindingIdentifier)
 
         prototype: LinkError;
 >       ^^^^^^^^^: LinkError   (TyTypeReference) (TSPropertySignature)
 
         prototype: LinkError;
->                  ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (TSTypeReference)
-                    expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>                  ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (TSTypeReference)
 
         prototype: LinkError;
->                  ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (IdentifierReference)
-                    expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>                  ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (IdentifierReference)
 
         new(message?: string): LinkError;
 >           ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
         new(message?: string): LinkError;
->                              ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (TSTypeReference)
-                                expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>                              ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (TSTypeReference)
 
         new(message?: string): LinkError;
->                              ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (IdentifierReference)
-                                expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>                              ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (IdentifierReference)
 
         (message?: string): LinkError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
         (message?: string): LinkError;
->                           ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (TSTypeReference)
-                             expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>                           ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (TSTypeReference)
 
         (message?: string): LinkError;
->                           ^^^^^^^^^: { new (message?: string): LinkError; (message?: string): LinkError; prototype: LinkError; }   (TyObject) (IdentifierReference)
-                             expected: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }
+>                           ^^^^^^^^^: { (message?: string): LinkError; new (message?: string): LinkError; prototype: LinkError; }   (TyObject) (IdentifierReference)
 
     interface Memory {
 >             ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -117674,11 +117656,9 @@ declare namespace WebAssembly {
 
     interface RuntimeError extends Error {
 >             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                  expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
 
     interface RuntimeError extends Error {
->             ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (BindingIdentifier)
-                  expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>             ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (BindingIdentifier)
 
     interface RuntimeError extends Error {
 >                                  ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
@@ -117689,41 +117669,34 @@ declare namespace WebAssembly {
                                 expected: ErrorConstructor
 
     var RuntimeError: {
->       ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (BindingIdentifier)
-            expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>       ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (BindingIdentifier)
 
         prototype: RuntimeError;
 >       ^^^^^^^^^: RuntimeError   (TyTypeReference) (TSPropertySignature)
 
         prototype: RuntimeError;
->                  ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (TSTypeReference)
-                       expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>                  ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (TSTypeReference)
 
         prototype: RuntimeError;
->                  ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (IdentifierReference)
-                       expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>                  ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (IdentifierReference)
 
         new(message?: string): RuntimeError;
 >           ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
         new(message?: string): RuntimeError;
->                              ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (TSTypeReference)
-                                   expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>                              ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (TSTypeReference)
 
         new(message?: string): RuntimeError;
->                              ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (IdentifierReference)
-                                   expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>                              ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (IdentifierReference)
 
         (message?: string): RuntimeError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
         (message?: string): RuntimeError;
->                           ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (TSTypeReference)
-                                expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>                           ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (TSTypeReference)
 
         (message?: string): RuntimeError;
->                           ^^^^^^^^^^^^: { new (message?: string): RuntimeError; (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (IdentifierReference)
-                                expected: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }
+>                           ^^^^^^^^^^^^: { (message?: string): RuntimeError; new (message?: string): RuntimeError; prototype: RuntimeError; }   (TyObject) (IdentifierReference)
 
     interface Table {
 >             ^^^^^: any   (TyAny) (TSInterfaceDeclaration)

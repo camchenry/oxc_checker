@@ -20,8 +20,7 @@ function f6<T extends string | (new () => {})>(a: T) {
 >       ^: new () => {}   (TyObject) (IdentifierReference)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
->   ^^^: { new (): number; new (n: number): number; (): {}; x: string; w: { y: number; }; }   (TyObject) (BindingIdentifier)
-expected: { (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }
+>   ^^^: { (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }   (TyObject) (BindingIdentifier)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
 >                            ^: number   (TyNumber) (BindingIdentifier)

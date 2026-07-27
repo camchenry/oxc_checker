@@ -2015,9 +2015,17 @@ impl<'a> Ty<'a> {
                     return "{}".to_string();
                 }
 
-                let members = object
+                let signatures = object
                     .signatures
                     .iter()
+                    .filter(|signature| signature.kind == SignatureKind::Call)
+                    .chain(
+                        object
+                            .signatures
+                            .iter()
+                            .filter(|signature| signature.kind == SignatureKind::Construct),
+                    );
+                let members = signatures
                     .map(|signature| {
                         signature.to_type_string_with_flags(arena, &|_| None, flags, depth)
                     })
@@ -3197,6 +3205,31 @@ mod tests {
 
         assert!(function.is_function(arena));
         assert!(!callable_object.is_function(arena));
+    }
+
+    #[test]
+    fn object_signatures_render_calls_before_constructs() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let construct_string = Ty::function(arena, [], [], Ty::string());
+        let call_number = Ty::function(arena, [], [], Ty::number());
+        let construct_boolean = Ty::function(arena, [], [], Ty::boolean());
+        let call_bigint = Ty::function(arena, [], [], Ty::bigint());
+        let object = Ty::object_with_signatures(
+            arena,
+            [],
+            [
+                Signature::new(SignatureKind::Construct, construct_string),
+                Signature::new(SignatureKind::Call, call_number),
+                Signature::new(SignatureKind::Construct, construct_boolean),
+                Signature::new(SignatureKind::Call, call_bigint),
+            ],
+        );
+
+        assert_eq!(
+            object.to_type_string(arena),
+            "{ (): number; (): bigint; new (): string; new (): boolean; }"
+        );
     }
 
     #[test]
