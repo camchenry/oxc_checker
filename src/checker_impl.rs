@@ -6086,7 +6086,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && let TypeData::TypeQuery(query) = self.arena().type_data(constructor_type)
             && query.type_arguments.is_empty()
         {
-            return Ty::type_reference(self.arena(), query.name, std::iter::empty());
+            let mut type_arguments = new_expression
+                .type_arguments
+                .as_deref()
+                .into_iter()
+                .flat_map(|type_arguments| {
+                    type_arguments.params.iter().map(|type_argument| {
+                        self.get_type_argument_from_ts_type(program_id, type_argument)
+                    })
+                })
+                .collect::<Vec<_>>();
+            let explicit_type_argument_count = type_arguments.len();
+            let implicit_display_type_argument_count =
+                self.fill_default_type_arguments(program_id, query.name, &mut type_arguments);
+            return self.type_reference_with_display_type_argument_count(
+                program_id,
+                query.name,
+                type_arguments,
+                explicit_type_argument_count + implicit_display_type_argument_count,
+            );
         }
 
         if let Some(constructor_type) = constructor_type

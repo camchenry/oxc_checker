@@ -32,8 +32,7 @@ class C<T = number> {}
 >       ^: any   (TyAny) (TSTypeParameter)
 
 new C<number>();
->^^^^^^^^^^^^^^^^: C   (TyTypeReference) (ExpressionStatement)
-         expected: C<number>
+>^^^^^^^^^^^^^^^^: C<number>   (TyTypeReference) (ExpressionStatement)
 
 new C<number>();
 >   ^: typeof C   (TyTypeQuery) (IdentifierReference)
@@ -102,15 +101,13 @@ class C<T = number> {}
 >       ^: any   (TyAny) (TSTypeParameter)
 
 new C();
->^^^^^^^^: C   (TyTypeReference) (ExpressionStatement)
- expected: C<number>
+>^^^^^^^^: C<number>   (TyTypeReference) (ExpressionStatement)
 
 new C();
 >   ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 new C<string>();
->^^^^^^^^^^^^^^^^: C   (TyTypeReference) (ExpressionStatement)
-         expected: C<string>
+>^^^^^^^^^^^^^^^^: C<string>   (TyTypeReference) (ExpressionStatement)
 
 new C<string>();
 >   ^: typeof C   (TyTypeQuery) (IdentifierReference)
