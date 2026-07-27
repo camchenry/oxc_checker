@@ -10511,6 +10511,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 
     fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         match self.node_kind(node) {
+            AstKind::Directive(directive) => Ty::string_literal(
+                self.arena(),
+                self.get_string_literal_value(&directive.expression),
+            ),
             AstKind::BindingIdentifier(identifier) => {
                 if let AstKind::TSTypeAliasDeclaration(alias) =
                     self.nodes(node.program_id).parent_kind(node.node_id)

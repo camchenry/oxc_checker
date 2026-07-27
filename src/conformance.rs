@@ -1941,6 +1941,11 @@ fn actual_identifier_record<'a>(
             let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
             (span, text, checker.get_type_at_location(node_ref))
         }
+        AstKind::Directive(directive) => (
+            directive.span,
+            Cow::Borrowed(directive.span.source_text(source_text)),
+            checker.get_type_at_location(node_ref),
+        ),
         AstKind::ExpressionStatement(statement) => {
             let expression_text = statement.span.source_text(source_text);
             if matches!(

@@ -1,3 +1,7 @@
+compiler/abstractIdentifierNameStrict.ts	31	34	foo	() => void
+compiler/abstractIdentifierNameStrict.ts	4	12	abstract	boolean
+compiler/abstractIdentifierNameStrict.ts	43	56	"use strict";	"use strict"
+compiler/abstractIdentifierNameStrict.ts	65	73	abstract	boolean
 compiler/arrayTypes.ts	101	110	undefined	undefined
 compiler/arrayTypes.ts	119	121	a6	string[]
 compiler/arrayTypes.ts	136	138	a7	string[]

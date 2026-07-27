@@ -1,0 +1,11 @@
+var abstract = true;
+>   ^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+function foo() {
+>        ^^^: () => void   (TyFunction) (BindingIdentifier)
+
+    "use strict";
+>   ^^^^^^^^^^^^^: "use strict"   (TyStringLiteral) (Directive)
+
+    var abstract = true;
+>       ^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
