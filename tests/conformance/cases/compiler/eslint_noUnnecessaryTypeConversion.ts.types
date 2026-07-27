@@ -74,12 +74,10 @@ function foo(bar: string | number) {
 > ^^^: string | number   (TyUnion) (IdentifierReference)
 
   bar.toString();
-> ^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
-         expected: string
+> ^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
 
   bar.toString();
->     ^^^^^^^^: any   (TyAny) (StaticMemberExpression)
-      expected: (() => string) | ((radix?: number) => string)
+>     ^^^^^^^^: (() => string) | ((radix?: number) => string)   (TyUnion) (StaticMemberExpression)
 
   '' + bar;
 > ^^^^^^^^^: string   (TyString) (ExpressionStatement)

@@ -5525,6 +5525,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty<'a>> {
         let interface_type = match self.arena().type_data(object_type) {
+            TypeData::Union(union) => {
+                let property_types = union
+                    .types
+                    .iter()
+                    .filter_map(|ty| {
+                        let ty = self.remove_null_or_undefined(*ty);
+                        (!ty.is_never()).then_some(ty)
+                    })
+                    .map(|ty| {
+                        self.get_property_type_of_global_interface_type(
+                            program_id,
+                            ty,
+                            property_name,
+                        )
+                    })
+                    .collect::<Option<Vec<_>>>();
+                return property_types.and_then(|property_types| {
+                    (!property_types.is_empty()).then(|| Ty::union(self.arena(), property_types))
+                });
+            }
             TypeData::Intersection(intersection) => {
                 let property_types = intersection
                     .types
