@@ -4431,8 +4431,7 @@ interface ArrayBufferConstructor {
 >                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
     isView(arg: any): arg is ArrayBufferView;
->   ^^^^^^: { (arg: any): arg is ArrayBufferView<ArrayBufferLike>; (arg: any): arg is ArrayBufferView; }   (TyObject) (TSMethodSignature)
-  expected: { (arg: any): arg is ArrayBufferView; (arg: any): arg is ArrayBufferView; }
+>   ^^^^^^: { (arg: any): arg is ArrayBufferView; (arg: any): arg is ArrayBufferView; }   (TyObject) (TSMethodSignature)
 
     isView(arg: any): arg is ArrayBufferView;
 >          ^^^: any   (TyAny) (BindingIdentifier)

@@ -1972,7 +1972,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         type_annotation.map_or_else(Ty::any, |type_annotation| {
             let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
-            self.with_implicit_type_arguments_visible(ty)
+            if self.hide_implicit_type_argument_display.get() {
+                ty
+            } else {
+                self.with_implicit_type_arguments_visible(ty)
+            }
         })
     }
 
@@ -4088,7 +4092,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
         let explicit_type_argument_count = type_arguments.len();
-        let should_display_implicit_defaults = self.is_lib_type_name(program_id, name);
+        let should_display_implicit_defaults = !self.hide_implicit_type_argument_display.get()
+            && self.is_lib_type_name(program_id, name);
 
         let implicit_display_type_argument_count =
             self.fill_default_type_arguments(program_id, name, &mut type_arguments);
@@ -5835,12 +5840,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         parameters: &'a FormalParameters<'a>,
         return_type: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Signature<'a> {
+        let previous_hide_implicit_type_argument_display =
+            self.hide_implicit_type_argument_display.replace(true);
         let parameters = self.function_type_parameters(program_id, this_param, parameters);
         let (return_type, type_predicate) = self.return_type_and_type_predicate_from_annotation(
             program_id,
             &parameters,
             return_type,
         );
+        self.hide_implicit_type_argument_display
+            .set(previous_hide_implicit_type_argument_display);
         let ty = Ty::function_with_type_predicate(
             self.arena(),
             self.type_parameters_from_declaration(program_id, type_parameters),
