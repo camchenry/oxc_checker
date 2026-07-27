@@ -14483,8 +14483,7 @@ interface BroadcastChannel extends EventTarget {
 >            ^^^^: string   (TyString) (TSPropertySignature)
 
     onmessage: ((this: BroadcastChannel, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^: ((this: BroadcastChannel, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: BroadcastChannel, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^: ((this: BroadcastChannel, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessage: ((this: BroadcastChannel, ev: MessageEvent) => any) | null;
 >                ^^^^: BroadcastChannel   (TyTypeReference) (TSThisParameter)
@@ -14505,8 +14504,7 @@ interface BroadcastChannel extends EventTarget {
 >                                            ^^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }   (TyObject) (IdentifierReference)
 
     onmessageerror: ((this: BroadcastChannel, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^^^^^^: ((this: BroadcastChannel, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-          expected: ((this: BroadcastChannel, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^^^^^^: ((this: BroadcastChannel, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessageerror: ((this: BroadcastChannel, ev: MessageEvent) => any) | null;
 >                     ^^^^: BroadcastChannel   (TyTypeReference) (TSThisParameter)
@@ -30377,8 +30375,7 @@ interface EventSource extends EventTarget {
 >                                     ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (TyObject) (IdentifierReference)
 
     onmessage: ((this: EventSource, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^: ((this: EventSource, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: EventSource, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^: ((this: EventSource, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessage: ((this: EventSource, ev: MessageEvent) => any) | null;
 >                ^^^^: EventSource   (TyTypeReference) (TSThisParameter)
@@ -30489,8 +30486,7 @@ interface EventSource extends EventTarget {
 >                    ^^^^: string   (TyString) (BindingIdentifier)
 
     addEventListener(type: string, listener: (this: EventSource, event: MessageEvent) => any, options?: boolean | AddEventListenerOptions): void;
->                                  ^^^^^^^^: (this: EventSource, event: MessageEvent<any>) => any   (TyFunction) (BindingIdentifier)
-                                   expected: (this: EventSource, event: MessageEvent) => any
+>                                  ^^^^^^^^: (this: EventSource, event: MessageEvent) => any   (TyFunction) (BindingIdentifier)
 
     addEventListener(type: string, listener: (this: EventSource, event: MessageEvent) => any, options?: boolean | AddEventListenerOptions): void;
 >                                             ^^^^: EventSource   (TyTypeReference) (TSThisParameter)
@@ -30583,8 +30579,7 @@ interface EventSource extends EventTarget {
 >                       ^^^^: string   (TyString) (BindingIdentifier)
 
     removeEventListener(type: string, listener: (this: EventSource, event: MessageEvent) => any, options?: boolean | EventListenerOptions): void;
->                                     ^^^^^^^^: (this: EventSource, event: MessageEvent<any>) => any   (TyFunction) (BindingIdentifier)
-                                      expected: (this: EventSource, event: MessageEvent) => any
+>                                     ^^^^^^^^: (this: EventSource, event: MessageEvent) => any   (TyFunction) (BindingIdentifier)
 
     removeEventListener(type: string, listener: (this: EventSource, event: MessageEvent) => any, options?: boolean | EventListenerOptions): void;
 >                                                ^^^^: EventSource   (TyTypeReference) (TSThisParameter)
@@ -37814,8 +37809,7 @@ interface GlobalEventHandlers {
 >                                                 ^^^^^^^^^^^^: { new (type: string, eventInitDict?: PointerEventInit): PointerEvent; prototype: PointerEvent; }   (TyObject) (IdentifierReference)
 
     onprogress: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null;
->   ^^^^^^^^^^: ((this: GlobalEventHandlers, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-      expected: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null
+>   ^^^^^^^^^^: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onprogress: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null;
 >                 ^^^^: GlobalEventHandlers   (TyTypeReference) (TSThisParameter)
@@ -61218,8 +61212,7 @@ interface MessageEventTarget<T> {
 >                            ^: any   (TyAny) (TSTypeParameter)
 
     onmessage: ((this: T, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^: ((this: T, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: T, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^: ((this: T, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessage: ((this: T, ev: MessageEvent) => any) | null;
 >                ^^^^: T   (TyTypeReference) (TSThisParameter)
@@ -61237,8 +61230,7 @@ interface MessageEventTarget<T> {
 >                             ^^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }   (TyObject) (IdentifierReference)
 
     onmessageerror: ((this: T, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^^^^^^: ((this: T, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-          expected: ((this: T, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^^^^^^: ((this: T, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessageerror: ((this: T, ev: MessageEvent) => any) | null;
 >                     ^^^^: T   (TyTypeReference) (TSThisParameter)
@@ -70052,8 +70044,7 @@ interface RTCDataChannel extends EventTarget {
 >                                        ^^^^^^^^^^^^^: { new (type: string, eventInitDict: RTCErrorEventInit): RTCErrorEvent; prototype: RTCErrorEvent; }   (TyObject) (IdentifierReference)
 
     onmessage: ((this: RTCDataChannel, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^: ((this: RTCDataChannel, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: RTCDataChannel, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^: ((this: RTCDataChannel, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessage: ((this: RTCDataChannel, ev: MessageEvent) => any) | null;
 >                ^^^^: RTCDataChannel   (TyTypeReference) (TSThisParameter)
@@ -90983,8 +90974,7 @@ interface ServiceWorkerContainer extends EventTarget {
 >                                                           ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (TyObject) (IdentifierReference)
 
     onmessage: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^: ((this: ServiceWorkerContainer, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessage: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null;
 >                ^^^^: ServiceWorkerContainer   (TyTypeReference) (TSThisParameter)
@@ -91005,8 +90995,7 @@ interface ServiceWorkerContainer extends EventTarget {
 >                                                  ^^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }   (TyObject) (IdentifierReference)
 
     onmessageerror: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^^^^^^: ((this: ServiceWorkerContainer, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-          expected: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^^^^^^: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessageerror: ((this: ServiceWorkerContainer, ev: MessageEvent) => any) | null;
 >                     ^^^^: ServiceWorkerContainer   (TyTypeReference) (TSThisParameter)
@@ -111945,8 +111934,7 @@ interface WebSocket extends EventTarget {
 >                                   ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (TyObject) (IdentifierReference)
 
     onmessage: ((this: WebSocket, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^: ((this: WebSocket, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: WebSocket, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^: ((this: WebSocket, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessage: ((this: WebSocket, ev: MessageEvent) => any) | null;
 >                ^^^^: WebSocket   (TyTypeReference) (TSThisParameter)
@@ -113647,8 +113635,7 @@ interface WindowEventHandlers {
 >                                                      ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (TyObject) (IdentifierReference)
 
     onmessage: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^: ((this: WindowEventHandlers, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessage: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null;
 >                ^^^^: WindowEventHandlers   (TyTypeReference) (TSThisParameter)
@@ -113666,8 +113653,7 @@ interface WindowEventHandlers {
 >                                               ^^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }   (TyObject) (IdentifierReference)
 
     onmessageerror: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null;
->   ^^^^^^^^^^^^^^: ((this: WindowEventHandlers, ev: MessageEvent<any>) => any) | null   (TyUnion) (TSPropertySignature)
-          expected: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null
+>   ^^^^^^^^^^^^^^: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onmessageerror: ((this: WindowEventHandlers, ev: MessageEvent) => any) | null;
 >                     ^^^^: WindowEventHandlers   (TyTypeReference) (TSThisParameter)
@@ -115350,8 +115336,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                           ^^^^^^^^^^^: { new (): EventTarget; prototype: EventTarget; }   (TyObject) (IdentifierReference)
 
     onabort: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->   ^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-   expected: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null
+>   ^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onabort: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >              ^^^^: XMLHttpRequest   (TyTypeReference) (TSThisParameter)
@@ -115372,8 +115357,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                        ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (IdentifierReference)
 
     onerror: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->   ^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-   expected: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null
+>   ^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onerror: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >              ^^^^: XMLHttpRequest   (TyTypeReference) (TSThisParameter)
@@ -115394,8 +115378,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                        ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (IdentifierReference)
 
     onload: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->   ^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-  expected: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null
+>   ^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onload: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >             ^^^^: XMLHttpRequest   (TyTypeReference) (TSThisParameter)
@@ -115416,8 +115399,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                       ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (IdentifierReference)
 
     onloadend: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->   ^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null
+>   ^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onloadend: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                ^^^^: XMLHttpRequest   (TyTypeReference) (TSThisParameter)
@@ -115438,8 +115420,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                          ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (IdentifierReference)
 
     onloadstart: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->   ^^^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-       expected: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null
+>   ^^^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onloadstart: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                  ^^^^: XMLHttpRequest   (TyTypeReference) (TSThisParameter)
@@ -115460,8 +115441,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                            ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (IdentifierReference)
 
     onprogress: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->   ^^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-      expected: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null
+>   ^^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     onprogress: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                 ^^^^: XMLHttpRequest   (TyTypeReference) (TSThisParameter)
@@ -115482,8 +115462,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                           ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (IdentifierReference)
 
     ontimeout: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->   ^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (TSPropertySignature)
-     expected: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null
+>   ^^^^^^^^^: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null   (TyUnion) (TSPropertySignature)
 
     ontimeout: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                ^^^^: XMLHttpRequest   (TyTypeReference) (TSThisParameter)
@@ -122530,8 +122509,7 @@ declare var onpointerup: ((this: Window, ev: PointerEvent) => any) | null;
 >                                            ^^^^^^^^^^^^: { new (type: string, eventInitDict?: PointerEventInit): PointerEvent; prototype: PointerEvent; }   (TyObject) (IdentifierReference)
 
 declare var onprogress: ((this: Window, ev: ProgressEvent) => any) | null;
->           ^^^^^^^^^^: ((this: Window, ev: ProgressEvent<EventTarget>) => any) | null   (TyUnion) (BindingIdentifier)
-              expected: ((this: Window, ev: ProgressEvent) => any) | null
+>           ^^^^^^^^^^: ((this: Window, ev: ProgressEvent) => any) | null   (TyUnion) (BindingIdentifier)
 
 declare var onprogress: ((this: Window, ev: ProgressEvent) => any) | null;
 >                         ^^^^: Window   (TyTypeReference) (TSThisParameter)
@@ -123371,8 +123349,7 @@ declare var onlanguagechange: ((this: Window, ev: Event) => any) | null;
 >                                                 ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (TyObject) (IdentifierReference)
 
 declare var onmessage: ((this: Window, ev: MessageEvent) => any) | null;
->           ^^^^^^^^^: ((this: Window, ev: MessageEvent<any>) => any) | null   (TyUnion) (BindingIdentifier)
-             expected: ((this: Window, ev: MessageEvent) => any) | null
+>           ^^^^^^^^^: ((this: Window, ev: MessageEvent) => any) | null   (TyUnion) (BindingIdentifier)
 
 declare var onmessage: ((this: Window, ev: MessageEvent) => any) | null;
 >                        ^^^^: Window   (TyTypeReference) (TSThisParameter)
@@ -123393,8 +123370,7 @@ declare var onmessage: ((this: Window, ev: MessageEvent) => any) | null;
 >                                          ^^^^^^^^^^^^: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }   (TyObject) (IdentifierReference)
 
 declare var onmessageerror: ((this: Window, ev: MessageEvent) => any) | null;
->           ^^^^^^^^^^^^^^: ((this: Window, ev: MessageEvent<any>) => any) | null   (TyUnion) (BindingIdentifier)
-                  expected: ((this: Window, ev: MessageEvent) => any) | null
+>           ^^^^^^^^^^^^^^: ((this: Window, ev: MessageEvent) => any) | null   (TyUnion) (BindingIdentifier)
 
 declare var onmessageerror: ((this: Window, ev: MessageEvent) => any) | null;
 >                             ^^^^: Window   (TyTypeReference) (TSThisParameter)

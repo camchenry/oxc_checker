@@ -2390,6 +2390,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .map(|ty| self.get_type_from_ts_type(program_id, ty)),
             ),
             TSType::TSFunctionType(function) => {
+                let previous_hide_implicit_type_argument_display =
+                    self.hide_implicit_type_argument_display.replace(true);
                 let parameters = self.function_type_parameters(
                     program_id,
                     function.this_param.as_deref(),
@@ -2401,6 +2403,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         &parameters,
                         Some(&function.return_type),
                     );
+                 self.hide_implicit_type_argument_display
+                    .set(previous_hide_implicit_type_argument_display);
                 Ty::function_with_type_predicate(
                     self.arena(),
                     self.type_parameters_from_declaration(
