@@ -10,8 +10,8 @@ use oxc_ast::{
         MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase, ObjectExpression,
         ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition, PropertyKey,
         StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType,
-        TSMethodSignature, TSMethodSignatureKind, TSModuleDeclarationName, TSSignature,
-        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSMethodSignature, TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember,
+        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
         TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
@@ -687,11 +687,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         ),
                     })
                     .collect::<Vec<_>>();
-                if tuple.readonly {
-                    Ty::readonly_tuple(self.arena(), elements)
-                } else {
-                    Ty::tuple(self.arena(), elements)
-                }
+                Ty::tuple_with_labels(
+                    self.arena(),
+                    elements,
+                    tuple.labels.iter().copied().collect(),
+                    tuple.readonly,
+                )
             }
             TypeData::Union(union) => Ty::r#union(
                 self.arena(),
@@ -2069,11 +2070,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         }
                     })
                     .collect::<Vec<_>>();
-                if tuple.readonly {
-                    Ty::readonly_tuple(self.arena(), elements)
-                } else {
-                    Ty::tuple(self.arena(), elements)
-                }
+                Ty::tuple_with_labels(
+                    self.arena(),
+                    elements,
+                    tuple.labels.iter().copied().collect(),
+                    tuple.readonly,
+                )
             }
             _ => ty,
         }
@@ -2181,7 +2183,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> TupleElement<'a> {
         match element {
             TSTupleElement::TSRestType(rest) => {
-                let ty = self.get_type_from_ts_type(program_id, &rest.type_annotation);
+                let ty = match &rest.type_annotation {
+                    TSType::TSNamedTupleMember(named) => {
+                        self.get_type_from_ts_named_tuple_member(program_id, named)
+                    }
+                    type_annotation => self.get_type_from_ts_type(program_id, type_annotation),
+                };
                 if self.is_active_unresolved_type_alias(ty) {
                     TupleElement::Rest(ty)
                 } else {
@@ -2212,6 +2219,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Some(ts_type) => self.get_type_from_ts_type(program_id, ts_type),
                 None => Ty::none(),
             }),
+        }
+    }
+
+    fn get_type_from_ts_named_tuple_member(
+        &self,
+        program_id: ProgramId,
+        named: &'a TSNamedTupleMember<'a>,
+    ) -> Ty<'a> {
+        let element = self.get_type_from_ts_tuple_element(program_id, &named.element_type);
+        if named.optional {
+            match element {
+                TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
+                    ty.or_undefined(self.arena())
+                }
+                TupleElement::Rest(ty) => ty,
+            }
+        } else {
+            element.ty()
+        }
+    }
+
+    fn get_ts_tuple_element_label(element: &TSTupleElement<'a>) -> Option<&'a str> {
+        match element {
+            TSTupleElement::TSNamedTupleMember(named) => Some(named.label.name.as_str()),
+            TSTupleElement::TSRestType(rest) => match &rest.type_annotation {
+                TSType::TSNamedTupleMember(named) => Some(named.label.name.as_str()),
+                _ => None,
+            },
+            _ => None,
         }
     }
 
@@ -2500,13 +2536,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     }
                 }
             },
-            TSType::TSTupleType(tuple_type) => Ty::tuple(
+            TSType::TSTupleType(tuple_type) => Ty::tuple_with_labels(
                 self.arena(),
                 tuple_type
                     .element_types
                     .iter()
-                    .map(|ty| self.get_type_from_ts_tuple_element(program_id, ty))
+                    .map(|element| self.get_type_from_ts_tuple_element(program_id, element))
                     .collect(),
+                tuple_type
+                    .element_types
+                    .iter()
+                    .map(Self::get_ts_tuple_element_label)
+                    .collect(),
+                false,
             ),
             TSType::TSTypeOperatorType(operator) => match operator.operator {
                 TSTypeOperatorOperator::Keyof => Ty::keyof(
@@ -2524,9 +2566,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         TypeData::Array(array) => {
                             Ty::readonly_array(self.arena(), array.element_type)
                         }
-                        TypeData::Tuple(tuple) => Ty::readonly_tuple(
+                        TypeData::Tuple(tuple) => Ty::tuple_with_labels(
                             self.arena(),
                             tuple.elements.iter().copied().collect(),
+                            tuple.labels.iter().copied().collect(),
+                            true,
                         ),
                         _ => inner,
                     }
@@ -2645,9 +2689,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 // TODO(correctness): handle types like `import('foo').T`
                 Ty::none()
             }
-            TSType::TSNamedTupleMember(_) => {
-                // TODO(correctness): handle named tuple members
-                Ty::none()
+            TSType::TSNamedTupleMember(named) => {
+                self.get_type_from_ts_named_tuple_member(program_id, named)
             }
             TSType::JSDocNullableType(_)
             | TSType::JSDocNonNullableType(_)
@@ -3673,11 +3716,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         )
                     })
                     .collect::<Vec<_>>();
-                Some(if self.mapped_readonly(mapped.readonly, tuple.readonly) {
-                    Ty::readonly_tuple(self.arena(), elements)
-                } else {
-                    Ty::tuple(self.arena(), elements)
-                })
+                Some(Ty::tuple_with_labels(
+                    self.arena(),
+                    elements,
+                    tuple.labels.iter().copied().collect(),
+                    self.mapped_readonly(mapped.readonly, tuple.readonly),
+                ))
             }
             _ => None,
         }
@@ -4471,11 +4515,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         ),
                     })
                     .collect::<Vec<_>>();
-                if tuple.readonly {
-                    Ty::readonly_tuple(self.arena(), elements)
-                } else {
-                    Ty::tuple(self.arena(), elements)
-                }
+                Ty::tuple_with_labels(
+                    self.arena(),
+                    elements,
+                    tuple.labels.iter().copied().collect(),
+                    tuple.readonly,
+                )
             }
             TypeData::Union(union) => Ty::r#union(
                 self.arena(),

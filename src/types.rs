@@ -69,6 +69,7 @@ struct ArrayTypeKey {
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 struct TupleTypeKey<'a> {
     elements: &'a [TupleElement<'a>],
+    labels: &'a [Option<&'a str>],
     readonly: bool,
 }
 
@@ -733,6 +734,7 @@ pub struct TyArray<'a> {
 #[derive(Debug, PartialEq, Eq)]
 pub struct TyTuple<'a> {
     pub(crate) elements: ArenaVec<'a, TupleElement<'a>>,
+    pub(crate) labels: ArenaVec<'a, Option<&'a str>>,
     /// `true` when produced from a `readonly` tuple literal.
     pub(crate) readonly: bool,
 }
@@ -1698,20 +1700,34 @@ impl<'a> Ty<'a> {
     }
 
     pub fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
-        Self::normalized_tuple(arena, elements, false)
+        let labels = vec![None; elements.len()];
+        Self::tuple_with_labels(arena, elements, labels, false)
     }
 
     pub fn readonly_tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
-        Self::normalized_tuple(arena, elements, true)
+        let labels = vec![None; elements.len()];
+        Self::tuple_with_labels(arena, elements, labels, true)
+    }
+
+    pub fn tuple_with_labels(
+        arena: CheckerArena<'a>,
+        elements: Vec<TupleElement<'a>>,
+        labels: Vec<Option<&'a str>>,
+        readonly: bool,
+    ) -> Self {
+        Self::normalized_tuple(arena, elements, labels, readonly)
     }
 
     fn normalized_tuple(
         arena: CheckerArena<'a>,
         elements: Vec<TupleElement<'a>>,
+        labels: Vec<Option<&'a str>>,
         readonly: bool,
     ) -> Self {
+        debug_assert_eq!(elements.len(), labels.len());
         let mut normalized = Vec::with_capacity(elements.len());
-        for element in elements {
+        let mut normalized_labels = Vec::with_capacity(labels.len());
+        for (element, label) in elements.into_iter().zip(labels) {
             if let TupleElement::Rest(ty) = element
                 && let TypeData::Tuple(tuple) = arena.type_data(ty)
             {
@@ -1719,26 +1735,35 @@ impl<'a> Ty<'a> {
                     return Ty::any();
                 }
                 normalized.extend(tuple.elements.iter().copied());
+                normalized_labels.extend(tuple.labels.iter().copied());
             } else {
                 normalized.push(element);
+                normalized_labels.push(label);
             }
         }
 
         let key = TupleTypeKey {
             elements: &normalized,
+            labels: &normalized_labels,
             readonly,
         };
         if let Some(ty) = arena.interned_types.tuples.borrow().get(&key) {
             return *ty;
         }
         let elements = arena.vec_from_iter(normalized);
-        let ty = arena.alloc_type(TypeData::Tuple(arena.alloc(TyTuple { elements, readonly })));
+        let labels = arena.vec_from_iter(normalized_labels);
+        let ty = arena.alloc_type(TypeData::Tuple(arena.alloc(TyTuple {
+            elements,
+            labels,
+            readonly,
+        })));
         let TypeData::Tuple(tuple) = arena.type_data(ty) else {
             unreachable!()
         };
         arena.interned_types.tuples.borrow_mut().insert(
             TupleTypeKey {
                 elements: &tuple.elements,
+                labels: &tuple.labels,
                 readonly,
             },
             ty,
@@ -2257,33 +2282,64 @@ impl<'a> Ty<'a> {
                 let elements = tuple
                     .elements
                     .iter()
-                    .map(|element| match element {
-                        TupleElement::Regular(ty) => ty.to_type_string_with_flags(
-                            arena,
-                            replace_type_reference,
-                            flags,
-                            depth,
-                        ),
-                        TupleElement::Rest(ty) => format!(
-                            "...{}",
-                            ty.to_type_string_with_flags(
+                    .enumerate()
+                    .map(|(index, element)| {
+                        let label = tuple.labels.get(index).copied().flatten();
+                        match (label, element) {
+                            (Some(label), TupleElement::Regular(ty)) => format!(
+                                "{label}: {}",
+                                ty.to_type_string_with_flags(
+                                    arena,
+                                    replace_type_reference,
+                                    flags,
+                                    depth,
+                                )
+                            ),
+                            (Some(label), TupleElement::Rest(ty)) => format!(
+                                "...{label}: {}",
+                                ty.to_type_string_with_flags(
+                                    arena,
+                                    replace_type_reference,
+                                    flags,
+                                    depth,
+                                )
+                            ),
+                            (Some(label), TupleElement::Optional(ty)) => format!(
+                                "{label}?: {}",
+                                ty.to_type_string_with_flags(
+                                    arena,
+                                    replace_type_reference,
+                                    flags,
+                                    depth,
+                                )
+                            ),
+                            (None, TupleElement::Regular(ty)) => ty.to_type_string_with_flags(
                                 arena,
                                 replace_type_reference,
                                 flags,
                                 depth,
-                            )
-                        ),
-                        TupleElement::Optional(ty) => {
-                            let ty = ty.to_type_string_with_flags(
-                                arena,
-                                replace_type_reference,
-                                flags,
-                                depth,
-                            );
-                            if element_type_needs_parentheses(arena, element) {
-                                format!("({ty})?")
-                            } else {
-                                format!("{ty}?")
+                            ),
+                            (None, TupleElement::Rest(ty)) => format!(
+                                "...{}",
+                                ty.to_type_string_with_flags(
+                                    arena,
+                                    replace_type_reference,
+                                    flags,
+                                    depth,
+                                )
+                            ),
+                            (None, TupleElement::Optional(ty)) => {
+                                let ty = ty.to_type_string_with_flags(
+                                    arena,
+                                    replace_type_reference,
+                                    flags,
+                                    depth,
+                                );
+                                if element_type_needs_parentheses(arena, element) {
+                                    format!("({ty})?")
+                                } else {
+                                    format!("{ty}?")
+                                }
                             }
                         }
                     })

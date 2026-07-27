@@ -2159,11 +2159,12 @@ fn infer_to_mapped_type_with_constraint<'a>(
                 .iter()
                 .map(|element| reverse_mapped_tuple_element(*element, parameter_mapped, arena))
                 .collect::<Vec<_>>();
-            let reverse_candidate = if argument_tuple.readonly {
-                Ty::readonly_tuple(arena, elements)
-            } else {
-                Ty::tuple(arena, elements)
-            };
+            let reverse_candidate = Ty::tuple_with_labels(
+                arena,
+                elements,
+                argument_tuple.labels.iter().copied().collect(),
+                argument_tuple.readonly,
+            );
             let properties = argument_tuple
                 .elements
                 .iter()
@@ -2375,7 +2376,7 @@ fn substitute_type<'a>(
         TypeData::Array(array) => {
             Ty::array(arena, substitute_type(array.element_type, mapper, arena))
         }
-        TypeData::Tuple(tuple) => Ty::tuple(
+        TypeData::Tuple(tuple) => Ty::tuple_with_labels(
             arena,
             tuple
                 .elements
@@ -2392,6 +2393,8 @@ fn substitute_type<'a>(
                     }
                 })
                 .collect(),
+            tuple.labels.iter().copied().collect(),
+            tuple.readonly,
         ),
         TypeData::Union(union) => Ty::union(
             arena,
