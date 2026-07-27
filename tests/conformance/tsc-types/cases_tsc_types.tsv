@@ -2192,6 +2192,18 @@ compiler/memberExpression.ts	900	908	unionKey	"name" | "id"
 compiler/memberExpression.ts	926	930	Math	Math
 compiler/memberExpression.ts	931	937	random	() => number
 compiler/memberExpression.ts	969	985	dynamicStringKey	string
+compiler/newable.ts	110	113	x13	{ (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }
+compiler/newable.ts	12	13	T	any
+compiler/newable.ts	135	136	n	number
+compiler/newable.ts	153	154	x	string
+compiler/newable.ts	164	165	w	{ y: number; }
+compiler/newable.ts	168	169	y	number
+compiler/newable.ts	47	48	a	T
+compiler/newable.ts	50	51	T	any
+compiler/newable.ts	68	69	a	T
+compiler/newable.ts	9	11	f6	<T extends string | (new () => {})>(a: T) => void
+compiler/newable.ts	90	98	new a();	{}
+compiler/newable.ts	94	95	a	new () => {}
 compiler/overloadRanking.ts	1015	1037	optionalTupleRestThree	"three"
 compiler/overloadRanking.ts	1040	1065	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
 compiler/overloadRanking.ts	129	144	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
