@@ -6321,8 +6321,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Some(Ty::any());
         }
 
+        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
         let result = self
-            .get_property_type_of_merged_interface_type(program_id, reference, property_name)
+            .get_property_type_of_interface_declarations(reference, property_name, &declarations)
             .or_else(|| {
                 let (symbol, declaration) =
                     self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
@@ -6342,16 +6343,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         result
-    }
-
-    fn get_property_type_of_merged_interface_type(
-        &self,
-        program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
-        property_name: &str,
-    ) -> Option<Ty<'a>> {
-        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
-        self.get_property_type_of_interface_declarations(reference, property_name, &declarations)
     }
 
     fn get_property_type_of_interface_declarations(
@@ -6482,53 +6473,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         reference: &TyTypeReference<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        match self.nodes(program_id).kind(declaration) {
-            AstKind::TSInterfaceDeclaration(interface) => {
-                let mapper = self.interface_member_mapper(
-                    program_id,
-                    interface.type_parameters.as_deref(),
-                    reference,
-                );
-                if let Some(ty) = self.get_interface_property_or_accessor_type(
-                    program_id,
-                    &interface.body.body,
-                    property_name,
-                ) {
-                    return Some(self.instantiate_type(ty, &mapper));
-                }
-
-                let method_signatures = self.get_interface_method_signatures(
-                    program_id,
-                    &interface.body.body,
-                    property_name,
-                    &mapper,
-                );
-                match method_signatures.as_slice() {
-                    [] => None,
-                    [signature] => Some(signature.ty),
-                    _ => {
-                        // TODO(overloads): model overloaded methods as structured callable members
-                        // with TypeScript Go's full signature-list metadata, not an empty object
-                        // carrying call signatures only.
-                        Some(Ty::object_with_signatures(
-                            self.arena(),
-                            [],
-                            method_signatures,
-                        ))
-                    }
-                }
-            }
+        let interface = match self.nodes(program_id).kind(declaration) {
+            AstKind::TSInterfaceDeclaration(interface) => interface,
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
-                self.get_property_type_of_interface_declaration(
-                    program_id,
-                    parent_id,
-                    reference,
-                    property_name,
-                )
+                let AstKind::TSInterfaceDeclaration(interface) =
+                    self.nodes(program_id).kind(parent_id)
+                else {
+                    return None;
+                };
+                interface
             }
-            _ => None,
-        }
+            _ => return None,
+        };
+        let declarations = [(program_id, interface)];
+        self.get_property_type_of_interface_declarations(reference, property_name, &declarations)
     }
 
     fn get_type_of_ts_accessor_signature(
