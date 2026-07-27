@@ -98,8 +98,7 @@ declare function getObject(): Record<string, string>;
 >                             ^^^^^^: any   (TyAny) (TSTypeReference)
 
 const getObjectSpread = { ...getObject() };
->     ^^^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
-             expected: { [x: string]: string; }
+>     ^^^^^^^^^^^^^^^: { [x: string]: string; }   (TyObject) (BindingIdentifier)
 
 const getObjectSpread = { ...getObject() };
 >                            ^^^^^^^^^: () => Record<string, string>   (TyFunction) (IdentifierReference)

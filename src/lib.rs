@@ -4196,6 +4196,8 @@ mod test {
         const spreadPromise = { ...promise };
         declare const map: Map<string, number>;
         const spreadMap = { ...map };
+        declare function getObject(): Record<string, string>;
+        const getObjectSpread = { ...getObject() };
         const characters = [..."text"];
         "#,
         );
@@ -4206,6 +4208,10 @@ mod test {
         let spread_map = get_first_symbol_type(&ret, "spreadMap").to_type_string(ret.arena);
         assert!(spread_map.contains("set(key: string, value: number): Map<string, number>"));
         assert!(spread_map.contains("[Symbol.iterator](): MapIterator<[string, number]>"));
+        assert_eq!(
+            get_first_symbol_type(&ret, "getObjectSpread").to_type_string(ret.arena),
+            "{ [x: string]: string; }"
+        );
         assert_eq!(
             get_first_symbol_type(&ret, "characters").to_type_string(ret.arena),
             "string[]"

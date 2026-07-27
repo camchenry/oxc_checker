@@ -4546,6 +4546,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let mut explicit_properties: Vec<TyProperty<'a>> = Vec::new();
         let mut spread_properties: Vec<TyProperty<'a>> = Vec::new();
+        let mut spread_index_infos: Vec<IndexInfo<'a>> = Vec::new();
         for property in &object.properties {
             match property {
                 ObjectPropertyKind::ObjectProperty(property) => {
@@ -4589,6 +4590,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     {
                         return Ty::any();
                     }
+                    spread_index_infos.extend(
+                        spread_type
+                            .index_infos(self.arena())
+                            .into_iter()
+                            .flatten()
+                            .copied(),
+                    );
                     for spread_property in
                         self.get_object_spread_properties(program_id, spread_type, 0)
                     {
@@ -4610,9 +4618,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
 
-        Ty::object_literal(
+        Ty::object_literal_with_index_infos(
             self.arena(),
             explicit_properties.into_iter().chain(spread_properties),
+            spread_index_infos,
         )
     }
 

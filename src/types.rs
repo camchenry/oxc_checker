@@ -1449,6 +1449,24 @@ impl<'a> Ty<'a> {
         ty
     }
 
+    pub(crate) fn object_literal_with_index_infos(
+        arena: CheckerArena<'a>,
+        properties: impl IntoIterator<Item = TyProperty<'a>>,
+        index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
+    ) -> Self {
+        let index_infos = index_infos.into_iter().collect::<Vec<_>>();
+        if index_infos.is_empty() {
+            return Self::object_literal(arena, properties);
+        }
+        let ty = Self::object_with_index_infos(arena, properties, index_infos);
+        arena
+            .interned_types
+            .fresh_object_literals
+            .borrow_mut()
+            .insert(ty.id());
+        ty
+    }
+
     pub fn object_with_signatures(
         arena: CheckerArena<'a>,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
