@@ -1,9 +1,13 @@
-use oxc_ast::ast::{
-    ArrowFunctionExpression, CallExpression, Expression, FormalParameters, Function, FunctionBody,
-    NewExpression, ReturnStatement, TSSignature, TSTupleElement, TSType,
-    TSTypeParameterInstantiation, YieldExpression,
+use oxc_ast::{
+    AstKind,
+    ast::{
+        ArrowFunctionExpression, CallExpression, Expression, FormalParameters, Function,
+        FunctionBody, NewExpression, ReturnStatement, TSSignature, TSTupleElement, TSType,
+        TSTypeParameterInstantiation, YieldExpression,
+    },
 };
 use oxc_ast_visit::Visit;
+use oxc_cfg::InstructionKind;
 use oxc_semantic::{NodeId, ScopeFlags};
 use std::cell::RefCell;
 
@@ -1414,20 +1418,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 return Ty::any();
             };
             let expressions = ReturnExpressionVisitor::expressions_in_body(body);
+            let has_implicit_return = matches!(function, FunctionKind::Function(function) if function.generator)
+                && node_id.is_some_and(|node_id| {
+                    self.function_has_implicit_return(program_id, function, node_id)
+                });
 
             let return_type = if expressions.return_expressions.is_empty() {
                 Ty::void()
             } else {
-                let flags = if expressions.return_expressions.len() > 1 {
+                let flags = if expressions.return_expressions.len() > 1 || has_implicit_return {
                     GetTypeFlags::PRESERVE_LITERALS
                 } else {
                     GetTypeFlags::NONE
                 };
                 Ty::union(
                     self.arena(),
-                    expressions.return_expressions.into_iter().map(|argument| {
-                        self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
-                    }),
+                    expressions
+                        .return_expressions
+                        .into_iter()
+                        .map(|argument| {
+                            self.get_type_of_expression_with_node(
+                                program_id, argument, node_id, flags,
+                            )
+                        })
+                        .chain(has_implicit_return.then_some(Ty::undefined())),
                 )
             };
 
@@ -1477,6 +1491,44 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         } else {
             return_type
         }
+    }
+
+    fn function_has_implicit_return(
+        &self,
+        program_id: ProgramId,
+        function: FunctionKind<'a>,
+        node_id: NodeId,
+    ) -> bool {
+        let nodes = self.nodes(program_id);
+        let Some(function_node_id) = std::iter::once(node_id)
+            .chain(nodes.ancestor_ids(node_id))
+            .find(|candidate_id| match (function, nodes.kind(*candidate_id)) {
+                (FunctionKind::Function(function), AstKind::Function(candidate)) => {
+                    std::ptr::eq(function, candidate)
+                }
+                (
+                    FunctionKind::ArrowFunction(function),
+                    AstKind::ArrowFunctionExpression(candidate),
+                ) => std::ptr::eq(function, candidate),
+                _ => false,
+            })
+        else {
+            return false;
+        };
+
+        let function_block = nodes.cfg_id(function_node_id);
+        let Some(cfg) = self.semantic(program_id).cfg() else {
+            return false;
+        };
+
+        cfg.graph.node_indices().any(|block_id| {
+            cfg.is_reachable(function_block, block_id)
+                && cfg
+                    .basic_block(block_id)
+                    .instructions()
+                    .iter()
+                    .any(|instruction| matches!(instruction.kind, InstructionKind::ImplicitReturn))
+        })
     }
 
     pub(crate) fn infer_construct_type_parameter_resolution(

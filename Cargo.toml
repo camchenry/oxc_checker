@@ -14,6 +14,7 @@ conformance-tsc = []
 oxc_ast = "0.132.0"
 oxc_ast_visit = "0.132.0"
 oxc_allocator =  "0.132.0"
+oxc_cfg = "0.132.0"
 oxc_parser =  "0.132.0"
 oxc_resolver = "11.19.1"
 oxc_semantic = { version = "0.132.0", features = ["cfg"] }

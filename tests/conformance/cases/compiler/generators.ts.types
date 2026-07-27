@@ -17,8 +17,7 @@ function* g3() {
 > ^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
 async function* g4() {
->               ^^: () => AsyncGenerator<string, string, unknown>   (TyFunction) (BindingIdentifier)
-          expected: () => AsyncGenerator<string, "bar" | undefined, unknown>
+>               ^^: () => AsyncGenerator<string, "bar" | undefined, unknown>   (TyFunction) (BindingIdentifier)
 
   if (Math.random() > 0.5) {
 >     ^^^^: Math   (TyTypeReference) (IdentifierReference)
