@@ -7192,6 +7192,38 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn get_type_of_class_expression(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
+        self.get_type_of_class_constructor(
+            program_id,
+            class,
+            self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
+            false,
+        )
+    }
+
+    fn get_type_of_duplicate_class_declaration(
+        &self,
+        program_id: ProgramId,
+        class: &'a Class<'a>,
+    ) -> Ty<'a> {
+        let type_parameters = self
+            .class_base_type_arguments(program_id, class)
+            .into_iter()
+            .map(|type_argument| {
+                let name = self
+                    .arena()
+                    .str(&type_argument.to_type_string(self.arena()));
+                Ty::type_parameter_with_display_default(name, None, None, true)
+            });
+        self.get_type_of_class_constructor(program_id, class, type_parameters, true)
+    }
+
+    fn get_type_of_class_constructor(
+        &self,
+        program_id: ProgramId,
+        class: &'a Class<'a>,
+        type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
+        display_type_parameters_as_arguments: bool,
+    ) -> Ty<'a> {
         let class_node_id = class.node_id.get();
         let instance_type = Ty::object(
             self.arena(),
@@ -7200,10 +7232,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     if !method.r#static && method.kind != MethodDefinitionKind::Constructor =>
                 {
                     let name = property_key_name_str(&method.key)?;
-                    Some(Ty::property(
+                    Some(TyProperty {
                         name,
-                        self.get_type_of_method_definition(program_id, method, class_node_id),
-                    ))
+                        computed: false,
+                        optional: false,
+                        method: true,
+                        readonly: false,
+                        ty: self.get_type_of_method_definition(program_id, method, class_node_id),
+                    })
                 }
                 ClassElement::PropertyDefinition(property) if !property.r#static => {
                     let name = property_key_name_str(&property.key)?;
@@ -7226,12 +7262,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             (method.kind == MethodDefinitionKind::Constructor)
                 .then(|| self.function_type_parameters(program_id, None, &method.value.params))
         });
-        let constructor_type = Ty::function_with_type_predicate(
+        let constructor_type = Ty::function_with_type_predicate_and_display(
             self.arena(),
-            self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
+            type_parameters,
             constructor_parameters.unwrap_or_default(),
             instance_type,
             None,
+            display_type_parameters_as_arguments,
         );
 
         Ty::object_with_signatures(
@@ -7239,6 +7276,43 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             [],
             [Signature::new(SignatureKind::Construct, constructor_type)],
         )
+    }
+
+    fn class_base_type_arguments(
+        &self,
+        program_id: ProgramId,
+        class: &'a Class<'a>,
+    ) -> Vec<Ty<'a>> {
+        let Some(Expression::Identifier(identifier)) = class.super_class.as_ref() else {
+            return Vec::new();
+        };
+        let mut type_arguments = class
+            .super_type_arguments
+            .as_ref()
+            .into_iter()
+            .flat_map(|arguments| arguments.params.iter())
+            .map(|argument| self.get_type_argument_from_ts_type(program_id, argument))
+            .collect::<Vec<_>>();
+        self.fill_default_type_arguments(program_id, identifier.name.as_str(), &mut type_arguments);
+        type_arguments
+    }
+
+    fn is_later_duplicate_class_declaration(
+        &self,
+        program_id: ProgramId,
+        class: &'a Class<'a>,
+    ) -> bool {
+        let Some(identifier) = class.id.as_ref() else {
+            return false;
+        };
+        let Some(symbol_id) = identifier.symbol_id.get() else {
+            return false;
+        };
+        if self.is_in_exported_declaration(program_id, class.node_id.get()) {
+            return false;
+        }
+        self.get_class_for_symbol(SymbolRef::new(program_id, symbol_id))
+            .is_some_and(|(first_class_node_id, _)| first_class_node_id != class.node_id.get())
     }
 
     fn get_class_member_type(
@@ -10869,6 +10943,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     self.nodes(node.program_id).parent_kind(node.node_id)
                 {
                     self.get_type_of_type_alias_declaration(node.program_id, alias)
+                } else if let AstKind::Class(class) =
+                    self.nodes(node.program_id).parent_kind(node.node_id)
+                    && self.is_later_duplicate_class_declaration(node.program_id, class)
+                {
+                    self.get_type_of_duplicate_class_declaration(node.program_id, class)
                 } else {
                     identifier.symbol_id.get().map_or_else(
                         || {

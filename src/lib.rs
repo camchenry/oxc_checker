@@ -818,6 +818,43 @@ mod test {
     }
 
     #[test]
+    fn duplicate_class_declaration_value_types_are_location_specific() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "
+            class C<T = number> {}
+            class D extends C {}
+            class D extends C<string> {}
+            export {};
+            ",
+        );
+        let checker = checker(&ret);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let types = semantic
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| {
+                let AstKind::BindingIdentifier(identifier) = node.kind() else {
+                    return None;
+                };
+                if identifier.name != Ident::from("D")
+                    || !matches!(semantic.nodes().parent_kind(node_id), AstKind::Class(_))
+                {
+                    return None;
+                }
+                Some(
+                    checker
+                        .get_type_at_location(NodeRef::new(ret.program_id, node_id))
+                        .to_type_string(ret.arena),
+                )
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(types, vec!["typeof D", "{ new <string>(): {}; }"]);
+    }
+
+    #[test]
     fn checker_renders_transparent_default_lib_type_aliases() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

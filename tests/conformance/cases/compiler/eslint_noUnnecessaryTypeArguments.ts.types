@@ -119,8 +119,7 @@ class D extends C {}
 >               ^: typeof C   (TyTypeQuery) (IdentifierReference)
 
 class D extends C<string> {}
->     ^: typeof D   (TyTypeQuery) (BindingIdentifier)
-expected: { new <string>(): {}; }
+>     ^: { new <string>(): {}; }   (TyObject) (BindingIdentifier)
 
 class D extends C<string> {}
 >               ^: typeof C   (TyTypeQuery) (IdentifierReference)
