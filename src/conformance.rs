@@ -245,6 +245,11 @@ struct ReadyConformanceFile {
     source_text: String,
 }
 
+struct SharedConformanceCollection {
+    worker_count: usize,
+    progress: Arc<ConformanceCollectionProgress>,
+}
+
 #[derive(Default)]
 struct ConformanceCollectionProgressState {
     completed_paths: usize,
@@ -655,6 +660,7 @@ fn full_conformance() -> ConformanceResult {
     }
 
     let mut failures = Vec::new();
+    let mut suites = Vec::new();
 
     for suite in target.suites {
         if target.refresh_tsc
@@ -668,7 +674,11 @@ fn full_conformance() -> ConformanceResult {
             continue;
         }
 
-        if let Err(err) = run_type_record_conformance_on_thread("full_conformance", suite) {
+        suites.push(suite);
+    }
+
+    for (suite, result) in run_type_record_conformance_suites(&suites) {
+        if let Err(err) = result {
             failures.push(format!(
                 "{} type-record comparison failed:\n{}",
                 suite.name,
@@ -686,6 +696,46 @@ fn full_conformance() -> ConformanceResult {
             failures.join("\n\n")
         )))
     }
+}
+
+fn run_type_record_conformance_suites(
+    suites: &[&'static ConformanceSuite],
+) -> Vec<(&'static ConformanceSuite, ConformanceResult)> {
+    if suites.len() <= 1 {
+        return suites
+            .iter()
+            .map(|&suite| {
+                (
+                    suite,
+                    run_type_record_conformance_on_thread("full_conformance", suite),
+                )
+            })
+            .collect();
+    }
+
+    let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let total_paths = suites
+        .iter()
+        .map(|suite| discover_compiler_cases(suite, &repo_root.join(suite.cases_root)).len())
+        .sum();
+    let worker_count = conformance_worker_count(total_paths);
+    let shared = SharedConformanceCollection {
+        worker_count,
+        progress: Arc::new(ConformanceCollectionProgress::new(total_paths)),
+    };
+    let pool = rayon::ThreadPoolBuilder::new()
+        .num_threads(worker_count)
+        .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
+        .thread_name(|worker_index| format!("conformance-worker-{worker_index}"))
+        .build()
+        .unwrap_or_else(|err| panic!("failed to build conformance worker pool: {err}"));
+
+    pool.install(|| {
+        suites
+            .par_iter()
+            .map(|&suite| (suite, run_type_record_conformance(suite, Some(&shared))))
+            .collect()
+    })
 }
 
 struct ConformanceTarget {
@@ -817,7 +867,7 @@ fn run_type_record_conformance_on_thread(
     std::thread::Builder::new()
         .name(test_name.to_string())
         .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
-        .spawn(move || run_type_record_conformance(suite))
+        .spawn(move || run_type_record_conformance(suite, None))
         .map_err(|err| {
             ConformanceError::new(format!("failed to spawn conformance test thread: {err}"))
         })?
@@ -963,7 +1013,10 @@ fn suite_for_case_path(
     )))
 }
 
-fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
+fn run_type_record_conformance(
+    suite: &ConformanceSuite,
+    shared: Option<&SharedConformanceCollection>,
+) -> ConformanceResult {
     let repo_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let cases_root = repo_root.join(suite.cases_root);
     let tsc_types_path = repo_root.join(suite.tsc_types_path);
@@ -971,7 +1024,7 @@ fn run_type_record_conformance(suite: &ConformanceSuite) -> ConformanceResult {
 
     ensure_cases_root(suite, &cases_root)?;
 
-    let oxc_records = collect_oxc_records(suite, &cases_root);
+    let oxc_records = collect_oxc_records(suite, &cases_root, shared);
     let tsc_records = read_records(&tsc_types_path)?;
     write_type_outputs(suite, &cases_root, &oxc_records, &tsc_records);
     let results = compare_records(&tsc_records, &oxc_records);
@@ -1136,16 +1189,26 @@ fn discover_case_files(root: &Path, paths: &mut Vec<PathBuf>) {
     }
 }
 
-fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeRecord> {
+fn collect_oxc_records(
+    suite: &ConformanceSuite,
+    cases_root: &Path,
+    shared: Option<&SharedConformanceCollection>,
+) -> Vec<TypeRecord> {
     let paths = discover_compiler_cases(suite, cases_root);
     let total_paths = paths.len();
-    let worker_count = conformance_worker_count(total_paths);
+    let worker_count = shared.map_or_else(
+        || conformance_worker_count(total_paths),
+        |shared| shared.worker_count,
+    );
 
     if total_paths == 0 {
         return Vec::new();
     }
 
-    let progress = Arc::new(ConformanceCollectionProgress::new(total_paths));
+    let progress = shared.map_or_else(
+        || Arc::new(ConformanceCollectionProgress::new(total_paths)),
+        |shared| Arc::clone(&shared.progress),
+    );
     let timing = Arc::new(ConformanceCollectionTiming::new());
     let (ready_sender, ready_receiver) =
         mpsc::sync_channel(conformance_read_ahead_capacity(worker_count));
@@ -1185,14 +1248,7 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
         })
         .unwrap_or_else(|err| panic!("failed to spawn conformance reader thread: {err}"));
 
-    let pool = rayon::ThreadPoolBuilder::new()
-        .num_threads(worker_count)
-        .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
-        .thread_name(|worker_index| format!("conformance-worker-{worker_index}"))
-        .build()
-        .unwrap_or_else(|err| panic!("failed to build conformance worker pool: {err}"));
-
-    let mut records = pool.install(|| {
+    let collect_records = || {
         let timing = Arc::clone(&timing);
         let progress = Arc::clone(&progress);
         ready_receiver
@@ -1216,7 +1272,18 @@ fn collect_oxc_records(suite: &ConformanceSuite, cases_root: &Path) -> Vec<TypeR
             .into_iter()
             .flatten()
             .collect::<Vec<_>>()
-    });
+    };
+    let mut records = if shared.is_some() {
+        collect_records()
+    } else {
+        let pool = rayon::ThreadPoolBuilder::new()
+            .num_threads(worker_count)
+            .stack_size(CONFORMANCE_THREAD_STACK_SIZE)
+            .thread_name(|worker_index| format!("conformance-worker-{worker_index}"))
+            .build()
+            .unwrap_or_else(|err| panic!("failed to build conformance worker pool: {err}"));
+        pool.install(collect_records)
+    };
 
     reader
         .join()
