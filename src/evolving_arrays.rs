@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use oxc_ast::{
     AstKind,
     ast::{Argument, ArrayExpression, Expression},
@@ -60,53 +62,95 @@ pub(crate) fn get_flow_type_of_reference<'a>(
         return None;
     }
 
-    let mut events = checker
+    if let Some(flow_type) = checker
+        .evolving_array_flow_cache
+        .borrow()
+        .get(&symbol)
+        .and_then(|flow_types| flow_types.get(&node.node_id))
+        .copied()
+    {
+        return Some(flow_type);
+    }
+
+    let flow_types = build_flow_type_cache(checker, symbol, declaration_span, base_type);
+    let flow_type = flow_types.get(&node.node_id).copied();
+    checker
+        .evolving_array_flow_cache
+        .borrow_mut()
+        .insert(symbol, flow_types);
+    flow_type
+}
+
+fn build_flow_type_cache<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    symbol: SymbolRef,
+    declaration_span: oxc_span::Span,
+    base_type: Ty<'a>,
+) -> HashMap<NodeId, Ty<'a>> {
+    let mut references = checker
         .semantic(symbol.program_id)
         .symbol_references(symbol.symbol_id)
         .filter_map(|reference| {
             let reference_id = reference.node_id();
             let reference_span = checker.nodes(symbol.program_id).kind(reference_id).span();
-            if reference_span.start <= declaration_span.start
-                || reference_span.start >= query_span.start
-            {
+            if reference_span.start <= declaration_span.start {
                 return None;
             }
-            evolving_array_event_for_reference(checker, symbol.program_id, reference_id)
-                .map(|event| (reference_span.start, event))
+            Some((
+                reference_span.start,
+                reference_id,
+                evolving_array_event_for_reference(checker, symbol.program_id, reference_id),
+            ))
         })
         .collect::<Vec<_>>();
-    events.sort_by_key(|(start, _)| *start);
+    references.sort_by_key(|(start, _, _)| *start);
 
+    let mut flow_types = HashMap::with_capacity(references.len());
     let mut element_types = Vec::new();
-    for (_, event) in events {
+    let empty_element_type = finalized_empty_element_type(checker, base_type);
+    let mut flow_type = Ty::array(checker.arena(), empty_element_type);
+
+    for (_, reference_id, event) in references {
+        flow_types.insert(reference_id, flow_type);
+
         match event {
-            EvolvingArrayEvent::Add(ty) => {
+            Some(EvolvingArrayEvent::Add(ty)) => {
                 if !element_types
                     .iter()
                     .any(|existing| checker.arena().is_type_identical_to(*existing, ty))
                 {
                     element_types.push(ty);
+                    flow_type =
+                        array_type_from_elements(checker, &element_types, empty_element_type);
                 }
             }
-            EvolvingArrayEvent::Reset(ty) => {
+            Some(EvolvingArrayEvent::Reset(ty)) => {
                 element_types.clear();
                 if !matches!(ty, Ty::Never) {
                     element_types.push(ty);
                 }
+                flow_type = array_type_from_elements(checker, &element_types, empty_element_type);
             }
+            None => {}
         }
     }
 
-    Some(Ty::array(
+    flow_types
+}
+
+fn array_type_from_elements<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    element_types: &[Ty<'a>],
+    empty_element_type: Ty<'a>,
+) -> Ty<'a> {
+    Ty::array(
         checker.arena(),
-        if element_types.is_empty() {
-            finalized_empty_element_type(checker, base_type)
-        } else if element_types.len() == 1 {
-            element_types[0]
-        } else {
-            Ty::union(checker.arena(), element_types)
+        match element_types {
+            [] => empty_element_type,
+            [ty] => *ty,
+            types => Ty::union(checker.arena(), types.iter().copied()),
         },
-    ))
+    )
 }
 
 fn is_direct_empty_array_variable_initializer<'a>(
