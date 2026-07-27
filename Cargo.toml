@@ -35,6 +35,10 @@ name = "check_es5_lib"
 harness = false
 
 [[bench]]
+name = "check_fixture"
+harness = false
+
+[[bench]]
 name = "type_set"
 harness = false
 

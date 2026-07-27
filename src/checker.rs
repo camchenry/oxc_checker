@@ -43,13 +43,15 @@ pub(crate) struct InstantiationCacheKey<'a> {
     pub(crate) mapper: Vec<MapperCacheEntry<'a>>,
 }
 
+pub type SymbolTypeCache<'a> = Vec<Option<IndexVec<SymbolId, Option<Ty<'a>>>>>;
+
 pub struct CheckerReturn<'a, 'store> {
     pub store: &'store ProgramStore<'a>,
     pub arena: CheckerArena<'a>,
-    pub global_symbols: GlobalSymbolTable,
+    pub global_symbols: &'store GlobalSymbolTable,
     // TODO(perf): these should use the Arena Vec/HashMap?
-    pub declared_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
-    pub value_type_cache: RefCell<Vec<IndexVec<SymbolId, Option<Ty<'a>>>>>,
+    pub declared_type_cache: RefCell<SymbolTypeCache<'a>>,
+    pub value_type_cache: RefCell<SymbolTypeCache<'a>>,
     pub(crate) type_alias_metadata_by_type: RefCell<IndexVec<TypeId, Option<TypeAliasMetadata>>>,
     pub(crate) instantiation_cache: RefCell<HashMap<InstantiationCacheKey<'a>, Ty<'a>>>,
     pub(crate) type_alias_resolution_cache: RefCell<HashMap<TypeAliasResolution, Ty<'a>>>,
@@ -195,25 +197,9 @@ impl CheckerBuilder {
         CheckerReturn {
             store,
             arena,
-            global_symbols: GlobalSymbolTable::new(store),
-            declared_type_cache: RefCell::new(
-                store
-                    .entries()
-                    .iter()
-                    .map(|entry| {
-                        IndexVec::from_vec(vec![None; entry.semantic().scoping().symbols_len()])
-                    })
-                    .collect(),
-            ),
-            value_type_cache: RefCell::new(
-                store
-                    .entries()
-                    .iter()
-                    .map(|entry| {
-                        IndexVec::from_vec(vec![None; entry.semantic().scoping().symbols_len()])
-                    })
-                    .collect(),
-            ),
+            global_symbols: store.global_symbols(),
+            declared_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),
+            value_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),
             type_alias_metadata_by_type: RefCell::new(IndexVec::from_vec(vec![
                 None;
                 arena.type_count()

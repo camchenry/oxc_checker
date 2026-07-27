@@ -12,6 +12,8 @@ use oxc_semantic::{Semantic, SemanticBuilder};
 use oxc_span::{SourceType, Span};
 use oxc_syntax::module_record::ModuleRecord;
 
+use crate::global_types::GlobalSymbolTable;
+
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct ProgramId(usize);
 
@@ -255,6 +257,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             let root_file = self.host.canonicalize_path(root_file);
             self.ensure_program(&mut store, &root_file)?;
         }
+        store.global_symbols = GlobalSymbolTable::new(&store);
         Ok(store)
     }
 
@@ -363,6 +366,7 @@ pub struct ProgramStore<'a> {
     entries: Vec<ProgramEntry<'a>>,
     paths: HashMap<PathBuf, ProgramId>,
     edges: Vec<ModuleEdge>,
+    global_symbols: GlobalSymbolTable,
 }
 
 impl<'a> ProgramStore<'a> {
@@ -373,6 +377,7 @@ impl<'a> ProgramStore<'a> {
             entries: Vec::new(),
             paths: HashMap::new(),
             edges: Vec::new(),
+            global_symbols: GlobalSymbolTable::default(),
         }
     }
 
@@ -403,6 +408,11 @@ impl<'a> ProgramStore<'a> {
 
     pub fn entry_for_path(&self, path: &Path) -> Option<&ProgramEntry<'a>> {
         self.id_for_path(path).and_then(|id| self.entry(id))
+    }
+
+    #[inline]
+    pub(crate) const fn global_symbols(&self) -> &GlobalSymbolTable {
+        &self.global_symbols
     }
 
     pub fn module_edges(&self, id: ProgramId) -> impl Iterator<Item = &ModuleEdge> {

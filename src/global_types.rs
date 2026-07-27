@@ -38,7 +38,7 @@ struct GlobalSymbolEntry {
     type_symbol: Option<SymbolRef>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct GlobalSymbolTable {
     symbols: HashMap<String, GlobalSymbolEntry>,
 }

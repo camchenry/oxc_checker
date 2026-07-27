@@ -17,6 +17,7 @@ use oxc_ast::{
         TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
+use oxc_index::IndexVec;
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
@@ -10708,6 +10709,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             .declared_type_cache
             .borrow()
             .get(sym.program_id.index())
+            .and_then(Option::as_ref)
             .and_then(|cache| cache.get(sym.symbol_id))
             .copied()
             .flatten()
@@ -10902,13 +10904,20 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
         };
 
-        if let Some(slot) = self
+        if let Some(program_cache) = self
             .declared_type_cache
             .borrow_mut()
             .get_mut(sym.program_id.index())
-            .and_then(|cache| cache.get_mut(sym.symbol_id))
         {
-            *slot = Some(ty);
+            let cache = program_cache.get_or_insert_with(|| {
+                IndexVec::from_vec(vec![
+                    None;
+                    self.semantic(sym.program_id).scoping().symbols_len()
+                ])
+            });
+            if let Some(slot) = cache.get_mut(sym.symbol_id) {
+                *slot = Some(ty);
+            }
         }
         ty
     }
@@ -10918,6 +10927,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             .value_type_cache
             .borrow()
             .get(sym.program_id.index())
+            .and_then(Option::as_ref)
             .and_then(|cache| cache.get(sym.symbol_id))
             .copied()
             .flatten()
@@ -10965,13 +10975,20 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         };
 
         self.resolving_symbols.borrow_mut().pop();
-        if let Some(slot) = self
+        if let Some(program_cache) = self
             .value_type_cache
             .borrow_mut()
             .get_mut(sym.program_id.index())
-            .and_then(|cache| cache.get_mut(sym.symbol_id))
         {
-            *slot = Some(ty);
+            let cache = program_cache.get_or_insert_with(|| {
+                IndexVec::from_vec(vec![
+                    None;
+                    self.semantic(sym.program_id).scoping().symbols_len()
+                ])
+            });
+            if let Some(slot) = cache.get_mut(sym.symbol_id) {
+                *slot = Some(ty);
+            }
         }
         ty
     }
