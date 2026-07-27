@@ -2281,7 +2281,11 @@ fn normalize_nested_type_contexts(type_repr: &str) -> String {
 
     while index < type_repr.len() {
         let (character, next_index) = char_at(type_repr, index);
-        if matches!(character, '\'' | '"' | '`') {
+        if character == '`' {
+            let (template, next_index) = normalize_template_literal_type_part(type_repr, index);
+            normalized.push_str(&template);
+            index = next_index;
+        } else if matches!(character, '\'' | '"') {
             let quoted_end = quoted_type_part_end(type_repr, index);
             normalized.push_str(&type_repr[index..quoted_end]);
             index = quoted_end;
@@ -2305,6 +2309,45 @@ fn normalize_nested_type_contexts(type_repr: &str) -> String {
     }
 
     normalized
+}
+
+fn normalize_template_literal_type_part(type_repr: &str, start: usize) -> (String, usize) {
+    let mut normalized = String::from("`");
+    let mut index = char_at(type_repr, start).1;
+
+    while index < type_repr.len() {
+        let (character, next_index) = char_at(type_repr, index);
+        if character == '\\' {
+            normalized.push_str(&type_repr[index..next_index]);
+            index = next_index;
+            if index < type_repr.len() {
+                let escaped_end = char_at(type_repr, index).1;
+                normalized.push_str(&type_repr[index..escaped_end]);
+                index = escaped_end;
+            }
+        } else if character == '`' {
+            normalized.push('`');
+            return (normalized, next_index);
+        } else if character == '$' && type_repr[next_index..].starts_with('{') {
+            let open_brace = next_index;
+            let expression_start = char_at(type_repr, open_brace).1;
+            normalized.push_str("${");
+            let Some(close_brace) = matching_type_delimiter_index(type_repr, open_brace) else {
+                normalized.push_str(&type_repr[expression_start..]);
+                return (normalized, type_repr.len());
+            };
+            normalized.push_str(&normalize_union_order_for_comparison(
+                &type_repr[expression_start..close_brace],
+            ));
+            normalized.push('}');
+            index = char_at(type_repr, close_brace).1;
+        } else {
+            normalized.push_str(&type_repr[index..next_index]);
+            index = next_index;
+        }
+    }
+
+    (normalized, type_repr.len())
 }
 
 fn normalize_top_level_union_chains(type_repr: &str) -> String {
@@ -3366,6 +3409,10 @@ mod tests {
         assert!(type_reprs_are_equivalent(
             "Box<() => A | B>",
             "Box<() => B | A>",
+        ));
+        assert!(type_reprs_are_equivalent(
+            r"`${K}.${PathInternal<V, V | TraversedTypes>}`",
+            r"`${K}.${PathInternal<V, TraversedTypes | V>}`",
         ));
         assert!(!type_reprs_are_equivalent("A | B", "A | C"));
     }

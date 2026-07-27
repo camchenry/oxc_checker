@@ -117,7 +117,6 @@ export type AnyIsEqual<T1, T2> = T1 extends T2
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
 >    ^^^^^^^^: V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`   (TyConditional) (TSTypeAliasDeclaration)
-     expected: V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, V | TraversedTypes>}`
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
 >             ^: any   (TyAny) (TSTypeParameter)
@@ -446,7 +445,6 @@ type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 >    ^^^^^^^^^^^^^: V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`   (TyConditional) (TSTypeAliasDeclaration)
-          expected: V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, V | TraversedTypes>}`
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 >                  ^: any   (TyAny) (TSTypeParameter)
