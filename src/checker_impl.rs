@@ -1283,31 +1283,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     /// Removes `null` and `undefined` from the type, like when using `!` or `NonNullable<T>`.
     pub(crate) fn remove_null_or_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
-        match self.arena().type_data(ty) {
-            TypeData::Null => Ty::never(),
-            TypeData::Undefined => Ty::never(),
-            TypeData::Union(union) => Ty::union(
-                self.arena(),
-                union.types.iter().filter_map(|t| {
-                    let t = self.remove_null_or_undefined(*t);
-                    if t.is_never() { None } else { Some(t) }
-                }),
-            ),
-            _ => ty,
+        match ty {
+            Ty::Null | Ty::Undefined => Ty::never(),
+            _ => ty.map_union(self.arena(), |ty| match ty {
+                Ty::Null | Ty::Undefined => None,
+                _ => Some(ty),
+            }),
         }
     }
 
     fn remove_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
-        match self.arena().type_data(ty) {
-            TypeData::Undefined => Ty::never(),
-            TypeData::Union(union) => Ty::union(
-                self.arena(),
-                union.types.iter().filter_map(|ty| {
-                    let ty = self.remove_undefined(*ty);
-                    if ty.is_never() { None } else { Some(ty) }
-                }),
-            ),
-            _ => ty,
+        if ty == Ty::Undefined {
+            Ty::never()
+        } else {
+            ty.map_union(self.arena(), |ty| (ty != Ty::Undefined).then_some(ty))
         }
     }
 
@@ -9048,20 +9037,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn get_non_undefined_type(&self, ty: Ty<'a>) -> Ty<'a> {
-        let TypeData::Union(union) = self.arena().type_data(ty) else {
-            return ty;
-        };
-        let types = union
-            .types
-            .iter()
-            .copied()
-            .filter(|ty| *ty != Ty::Undefined)
-            .collect::<Vec<_>>();
-        if types.is_empty() {
-            Ty::never()
-        } else {
-            Ty::union(self.arena(), types)
-        }
+        ty.map_union(self.arena(), |ty| (ty != Ty::Undefined).then_some(ty))
     }
 
     fn get_destructured_property_type(

@@ -2275,20 +2275,7 @@ fn reverse_mapped_tuple_element<'a>(
 }
 
 fn remove_undefined_from_type<'a>(ty: Ty<'a>, arena: crate::types::CheckerArena<'a>) -> Ty<'a> {
-    let TypeData::Union(union) = arena.type_data(ty) else {
-        return ty;
-    };
-    let types = union
-        .types
-        .iter()
-        .copied()
-        .filter(|ty| *ty != Ty::Undefined)
-        .collect::<Vec<_>>();
-    if types.is_empty() {
-        Ty::never()
-    } else {
-        Ty::union(arena, types)
-    }
+    ty.map_union(arena, |ty| (ty != Ty::Undefined).then_some(ty))
 }
 
 fn inferable_property_types<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<Vec<Ty<'a>>> {

@@ -1750,6 +1750,17 @@ impl<'a> Ty<'a> {
         reduce_union_type(arena, types)
     }
 
+    pub(crate) fn map_union(
+        self,
+        arena: CheckerArena<'a>,
+        map: impl FnMut(Ty<'a>) -> Option<Ty<'a>>,
+    ) -> Self {
+        let TypeData::Union(union) = arena.type_data(self) else {
+            return self;
+        };
+        Ty::union(arena, union.types.iter().copied().filter_map(map))
+    }
+
     /// Returns the constant union type of all possible `typeof` values.
     /// `"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"`
     pub fn typeof_string_values(arena: CheckerArena<'a>) -> Self {

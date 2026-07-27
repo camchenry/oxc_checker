@@ -569,21 +569,12 @@ fn remove_undefined_from_type<'a>(
     node: NodeRef,
     ty: Ty<'a>,
 ) -> Ty<'a> {
-    match checker.arena().type_data(ty) {
-        TypeData::Union(union) => {
-            let types = union
-                .types
-                .iter()
-                .filter_map(|ty| non_undefined_constituent(checker, node, *ty))
-                .collect::<Vec<_>>();
-            if types.is_empty() {
-                Ty::never()
-            } else {
-                Ty::union(checker.arena(), types)
-            }
-        }
-        _ => non_undefined_constituent(checker, node, ty).unwrap_or_else(Ty::never),
+    if !matches!(checker.arena().type_data(ty), TypeData::Union(_)) {
+        return non_undefined_constituent(checker, node, ty).unwrap_or_else(Ty::never);
     }
+    ty.map_union(checker.arena(), |ty| {
+        non_undefined_constituent(checker, node, ty)
+    })
 }
 
 fn non_undefined_constituent<'a>(
@@ -610,21 +601,12 @@ fn non_undefined_constituent<'a>(
 }
 
 fn remove_null_from_type<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
-    match checker.arena().type_data(ty) {
-        TypeData::Union(union) => {
-            let types = union
-                .types
-                .iter()
-                .filter_map(|ty| non_null_constituent(checker, node, *ty))
-                .collect::<Vec<_>>();
-            if types.is_empty() {
-                Ty::never()
-            } else {
-                Ty::union(checker.arena(), types)
-            }
-        }
-        _ => non_null_constituent(checker, node, ty).unwrap_or_else(Ty::never),
+    if !matches!(checker.arena().type_data(ty), TypeData::Union(_)) {
+        return non_null_constituent(checker, node, ty).unwrap_or_else(Ty::never);
     }
+    ty.map_union(checker.arena(), |ty| {
+        non_null_constituent(checker, node, ty)
+    })
 }
 
 fn non_null_constituent<'a>(
@@ -793,23 +775,10 @@ fn filter_type<'a>(
     ty: Ty<'a>,
     keep: impl Fn(Ty<'a>) -> bool + Copy,
 ) -> Ty<'a> {
-    match checker.arena().type_data(ty) {
-        TypeData::Union(union) => {
-            let types = union
-                .types
-                .iter()
-                .copied()
-                .filter(|ty| keep(*ty))
-                .collect::<Vec<_>>();
-            if types.is_empty() {
-                Ty::never()
-            } else {
-                Ty::union(checker.arena(), types)
-            }
-        }
-        _ if keep(ty) => ty,
-        _ => Ty::never(),
+    if !matches!(checker.arena().type_data(ty), TypeData::Union(_)) {
+        return if keep(ty) { ty } else { Ty::never() };
     }
+    ty.map_union(checker.arena(), |ty| keep(ty).then_some(ty))
 }
 
 /// Return whether a type is definitely in the runtime domain named by a `typeof` witness.
