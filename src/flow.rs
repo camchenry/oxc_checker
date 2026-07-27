@@ -326,10 +326,13 @@ fn narrow_by_condition<'a>(
         return current_type;
     }
 
+    let type_to_narrow = checker
+        .get_type_parameter_constraint(node.program_id, node.node_id, current_type)
+        .unwrap_or(current_type);
     narrow_by_typeof(
         checker,
         node.program_id,
-        current_type,
+        type_to_narrow,
         witness,
         effective_true,
     )

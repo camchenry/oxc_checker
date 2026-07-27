@@ -992,7 +992,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_non_null_assertion_type(program_id, ty)
             }
             Expression::NewExpression(new_expression) => {
-                self.get_type_of_new_expression(program_id, new_expression)
+                self.get_type_of_new_expression(program_id, new_expression, flags)
             }
             Expression::CallExpression(call_expression) => {
                 self.get_type_of_call_expression(program_id, call_expression, node_id)
@@ -6050,6 +6050,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: ProgramId,
         new_expression: &'a NewExpression<'a>,
+        flags: GetTypeFlags,
     ) -> Ty<'a> {
         let Expression::Identifier(identifier) = &new_expression.callee else {
             return Ty::any();
@@ -6058,7 +6059,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let constructor_type = self
             .symbol_for_identifier_reference(program_id, identifier)
             .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))
-            .map(|symbol| self.get_type_of_symbol(symbol));
+            .map(|symbol| {
+                let base_type = self.get_type_of_symbol(symbol);
+                if flags.context_free() {
+                    base_type
+                } else {
+                    flow::get_flow_type_of_reference(
+                        self,
+                        self.identifier_node_ref(program_id, identifier),
+                        symbol,
+                        base_type,
+                    )
+                }
+            });
 
         if let Some(constructor_type) = constructor_type
             && let TypeData::TypeQuery(query) = self.arena().type_data(constructor_type)
@@ -10092,6 +10105,45 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return self.get_global_awaited_type(program_id, element_type);
         }
         element_type
+    }
+
+    pub(crate) fn get_type_parameter_constraint(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+        ty: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
+            return None;
+        };
+        if !reference.is_bare() {
+            return None;
+        }
+
+        for ancestor in self.nodes(program_id).ancestors(node_id) {
+            let type_parameters = match ancestor.kind() {
+                AstKind::Function(function) => function.type_parameters.as_deref(),
+                AstKind::ArrowFunctionExpression(function) => function.type_parameters.as_deref(),
+                AstKind::Class(class) => class.type_parameters.as_deref(),
+                AstKind::TSInterfaceDeclaration(interface) => interface.type_parameters.as_deref(),
+                AstKind::TSTypeAliasDeclaration(alias) => alias.type_parameters.as_deref(),
+                _ => continue,
+            };
+            let Some(parameter) = type_parameters.and_then(|parameters| {
+                parameters
+                    .params
+                    .iter()
+                    .find(|parameter| parameter.name.name == reference.name)
+            }) else {
+                continue;
+            };
+            return parameter
+                .constraint
+                .as_ref()
+                .map(|constraint| self.get_type_from_ts_type(program_id, constraint));
+        }
+
+        None
     }
 
     pub(crate) fn is_scoped_type_parameter_reference(

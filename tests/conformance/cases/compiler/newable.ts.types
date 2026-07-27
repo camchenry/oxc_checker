@@ -14,12 +14,10 @@ function f6<T extends string | (new () => {})>(a: T) {
 >            ^: T   (TyTypeReference) (IdentifierReference)
 
     new a();
->   ^^^^^^^^: a   (TyTypeReference) (ExpressionStatement)
-    expected: {}
+>   ^^^^^^^^: {}   (TyObject) (ExpressionStatement)
 
     new a();
->       ^: T   (TyTypeReference) (IdentifierReference)
- expected: new () => {}
+>       ^: new () => {}   (TyObject) (IdentifierReference)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
 >   ^^^: { new (): number; new (n: number): number; (): {}; x: string; w: { y: number; }; }   (TyObject) (BindingIdentifier)
