@@ -468,34 +468,41 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn instantiate_type_worker(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>, depth: usize) -> Ty<'a> {
         match self.arena().type_data(ty) {
-            TypeData::Object(object) => Ty::object(
-                self.arena(),
-                object.properties.iter().map(|property| TyProperty {
-                    name: property.name,
-                    computed: property.computed,
-                    optional: property.optional,
-                    method: property.method,
-                    readonly: property.readonly,
-                    ty: self.instantiate_type_at_depth(property.ty, mapper, depth + 1),
-                }),
-            )
-            .with_index_infos(
-                self.arena(),
-                object.index_infos.iter().map(|info| {
-                    IndexInfo::new(
-                        info.name,
-                        self.instantiate_type_at_depth(info.key_type, mapper, depth + 1),
-                        self.instantiate_type_at_depth(info.value_type, mapper, depth + 1),
-                        info.readonly,
-                    )
-                }),
-            )
-            .with_signatures(
-                self.arena(),
-                object.signatures.iter().map(|signature| {
-                    self.instantiate_signature_at_depth(*signature, mapper, depth + 1)
-                }),
-            ),
+            TypeData::Object(object) => {
+                let instantiated = Ty::object(
+                    self.arena(),
+                    object.properties.iter().map(|property| TyProperty {
+                        name: property.name,
+                        computed: property.computed,
+                        optional: property.optional,
+                        method: property.method,
+                        readonly: property.readonly,
+                        ty: self.instantiate_type_at_depth(property.ty, mapper, depth + 1),
+                    }),
+                )
+                .with_index_infos(
+                    self.arena(),
+                    object.index_infos.iter().map(|info| {
+                        IndexInfo::new(
+                            info.name,
+                            self.instantiate_type_at_depth(info.key_type, mapper, depth + 1),
+                            self.instantiate_type_at_depth(info.value_type, mapper, depth + 1),
+                            info.readonly,
+                        )
+                    }),
+                )
+                .with_signatures(
+                    self.arena(),
+                    object.signatures.iter().map(|signature| {
+                        self.instantiate_signature_at_depth(*signature, mapper, depth + 1)
+                    }),
+                );
+                if object.is_constructor_type {
+                    instantiated.with_constructor_type(self.arena())
+                } else {
+                    instantiated
+                }
+            }
             TypeData::ModuleNamespace(namespace) => Ty::module_namespace(
                 self.arena(),
                 namespace.name,
@@ -2537,9 +2544,32 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 // TODO(correctness): handle intrinsic keywords
                 Ty::none()
             }
-            TSType::TSConstructorType(_) => {
-                // TODO(correctness): handle constructor types
-                Ty::none()
+            TSType::TSConstructorType(constructor) => {
+                let parameters = self.function_type_parameters(
+                    program_id,
+                    None,
+                    constructor.params.as_ref(),
+                );
+                let (return_type, type_predicate) =
+                    self.return_type_and_type_predicate_from_annotation(
+                        program_id,
+                        &parameters,
+                        Some(&constructor.return_type),
+                    );
+                let signature = Signature::new(
+                    SignatureKind::Construct,
+                    Ty::function_with_type_predicate(
+                        self.arena(),
+                        self.type_parameters_from_declaration(
+                            program_id,
+                            constructor.type_parameters.as_deref(),
+                        ),
+                        parameters,
+                        return_type,
+                        type_predicate,
+                    ),
+                );
+                Ty::constructor_type(self.arena(), signature)
             }
             TSType::TSImportType(_) => {
                 // TODO(correctness): handle types like `import('foo').T`
@@ -8563,6 +8593,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     index_infos: self
                         .arena()
                         .vec_from_iter(object.index_infos.iter().copied()),
+                    is_constructor_type: object.is_constructor_type,
                 }),
             )),
             _ => ty,

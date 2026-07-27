@@ -1,6 +1,5 @@
 function f6<T extends string | (new () => {})>(a: T) {
->        ^^: <T extends string | none>(a: T) => void   (TyFunction) (BindingIdentifier)
-   expected: <T extends string | (new () => {})>(a: T) => void
+>        ^^: <T extends string | (new () => {})>(a: T) => void   (TyFunction) (BindingIdentifier)
 
 function f6<T extends string | (new () => {})>(a: T) {
 >           ^: any   (TyAny) (TSTypeParameter)

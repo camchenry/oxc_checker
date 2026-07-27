@@ -416,6 +416,7 @@ pub struct TyObject<'a> {
     pub(crate) properties: ArenaVec<'a, TyProperty<'a>>,
     pub(crate) signatures: ArenaVec<'a, Signature<'a>>,
     pub(crate) index_infos: ArenaVec<'a, IndexInfo<'a>>,
+    pub(crate) is_constructor_type: bool,
 }
 
 impl<'a> TyObject<'a> {
@@ -1461,6 +1462,15 @@ impl<'a> Ty<'a> {
         )
     }
 
+    pub(crate) fn constructor_type(arena: CheckerArena<'a>, signature: Signature<'a>) -> Self {
+        arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter(std::iter::empty()),
+            signatures: arena.vec_from_iter([signature]),
+            index_infos: arena.vec_from_iter(std::iter::empty()),
+            is_constructor_type: true,
+        })))
+    }
+
     pub fn object_with_index_infos(
         arena: CheckerArena<'a>,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
@@ -1484,6 +1494,7 @@ impl<'a> Ty<'a> {
             properties: arena.vec_from_iter(properties),
             signatures: arena.vec_from_iter(signatures),
             index_infos: arena.vec_from_iter(index_infos),
+            is_constructor_type: false,
         })))
     }
 
@@ -1983,6 +1994,19 @@ impl<'a> Ty<'a> {
             TypeData::Never => "never".to_string(),
             TypeData::PrimitiveObject => "object".to_string(),
             TypeData::This => "this".to_string(),
+            TypeData::Object(object) if object.is_constructor_type => {
+                let signature = object
+                    .signatures
+                    .first()
+                    .expect("constructor types have a construct signature");
+                constructor_type_to_string(
+                    arena,
+                    signature.function(arena),
+                    &|_| None,
+                    flags,
+                    depth,
+                )
+            }
             TypeData::Object(object) => {
                 if object.properties.is_empty()
                     && object.signatures.is_empty()
@@ -2403,7 +2427,7 @@ impl<'a> Ty<'a> {
                 | TypeData::Intersection(_)
                 | TypeData::Conditional(_)
                 | TypeData::Infer(_)
-        )
+        ) || matches!(arena.type_data(*self), TypeData::Object(object) if object.is_constructor_type)
     }
 
     pub(crate) fn with_signatures(
@@ -2418,6 +2442,7 @@ impl<'a> Ty<'a> {
             properties: arena.vec_from_iter(object.properties.iter().copied()),
             signatures: arena.vec_from_iter(signatures),
             index_infos: arena.vec_from_iter(object.index_infos.iter().copied()),
+            is_constructor_type: object.is_constructor_type,
         })))
     }
 
@@ -2433,6 +2458,22 @@ impl<'a> Ty<'a> {
             properties: arena.vec_from_iter(object.properties.iter().copied()),
             signatures: arena.vec_from_iter(object.signatures.iter().copied()),
             index_infos: arena.vec_from_iter(index_infos),
+            is_constructor_type: object.is_constructor_type,
+        })))
+    }
+
+    pub(crate) fn with_constructor_type(self, arena: CheckerArena<'a>) -> Self {
+        let TypeData::Object(object) = arena.type_data(self) else {
+            return self;
+        };
+        if object.is_constructor_type {
+            return self;
+        }
+        arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter(object.properties.iter().copied()),
+            signatures: arena.vec_from_iter(object.signatures.iter().copied()),
+            index_infos: arena.vec_from_iter(object.index_infos.iter().copied()),
+            is_constructor_type: true,
         })))
     }
 
@@ -2724,6 +2765,21 @@ fn function_type_to_string<'a>(
         function_type_head_to_string(arena, function, replace_type_reference, flags, depth);
     format!(
         "{type_parameters}({parameters}) => {}",
+        function_return_type_to_string(arena, function, replace_type_reference, flags, depth)
+    )
+}
+
+fn constructor_type_to_string<'a>(
+    arena: CheckerArena<'a>,
+    function: &TyFunction<'a>,
+    replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
+    flags: TypeFormatFlags,
+    depth: &Cell<usize>,
+) -> String {
+    let (type_parameters, parameters) =
+        function_type_head_to_string(arena, function, replace_type_reference, flags, depth);
+    format!(
+        "new {type_parameters}({parameters}) => {}",
         function_return_type_to_string(arena, function, replace_type_reference, flags, depth)
     )
 }

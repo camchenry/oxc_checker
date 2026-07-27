@@ -73,7 +73,7 @@ declare namespace Reflect {
 >                                                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function construct<A extends readonly any[], R>(
->            ^^^^^^^^^: { <A extends readonly any[], R>(target: none, argumentsList: Readonly<A>, newTarget?: none): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject) (BindingIdentifier)
               expected: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }
 
     function construct<A extends readonly any[], R>(
@@ -81,6 +81,9 @@ declare namespace Reflect {
 
     function construct<A extends readonly any[], R>(
 >                                                ^: any   (TyAny) (TSTypeParameter)
+
+        target: new (...args: A) => R,
+>       ^^^^^^: new (...args: A) => R   (TyObject) (BindingIdentifier)
 
         target: new (...args: A) => R,
 >                       ^^^^: A   (TyTypeReference) (BindingIdentifier)
@@ -101,8 +104,7 @@ declare namespace Reflect {
 >                               ^: any   (TyAny) (TSTypeReference)
 
         newTarget?: new (...args: any) => any,
->       ^^^^^^^^^: none | undefined   (TyUnion) (BindingIdentifier)
-         expected: (new (...args: any) => any) | undefined
+>       ^^^^^^^^^: (new (...args: any) => any) | undefined   (TyUnion) (BindingIdentifier)
 
         newTarget?: new (...args: any) => any,
 >                           ^^^^: any   (TyAny) (BindingIdentifier)
@@ -111,7 +113,7 @@ declare namespace Reflect {
 >      ^: any   (TyAny) (TSTypeReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->            ^^^^^^^^^: { <A extends readonly any[], R>(target: none, argumentsList: Readonly<A>, newTarget?: none): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject) (BindingIdentifier)
               expected: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
