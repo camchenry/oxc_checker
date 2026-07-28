@@ -1149,6 +1149,38 @@ mod test {
     }
 
     #[test]
+    fn checker_renders_transparent_aliases_in_type_alias_context() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "type ArrayKey = number; type Path = `${ArrayKey}`;",
+        );
+        let checker = checker(&ret);
+        let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+        let path_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier)
+                        if identifier.name == Ident::from("Path")
+                            && matches!(
+                                nodes.parent_kind(node_id),
+                                AstKind::TSTypeAliasDeclaration(_)
+                            )
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+        let path_node = NodeRef::new(ret.program_id, path_node_id);
+
+        assert_eq!(
+            checker.type_to_string(checker.get_type_at_location(path_node), path_node),
+            "`${number}`"
+        );
+    }
+
+    #[test]
     fn checker_renders_alias_chains_to_named_unions() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

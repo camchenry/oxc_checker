@@ -32,6 +32,7 @@ use crate::{
     checker::{
         Checker, CheckerReturn, ClassMemberResolution, InstantiationCacheKey, NodeRef, SymbolRef,
         TypeAliasMetadata, TypeAliasResolution, TypeParameterResolution, TypeStringCacheKey,
+        TypeStringContext,
     },
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
@@ -10891,6 +10892,87 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn resolve_imported_type_alias_symbol(&self, symbol: SymbolRef) -> Option<SymbolRef> {
+        let mut current = self.get_imported_symbol(symbol)?;
+        let mut seen = HashSet::new();
+        loop {
+            if !seen.insert(current) {
+                return None;
+            }
+            let declaration = self
+                .semantic(current.program_id)
+                .scoping()
+                .symbol_declaration(current.symbol_id);
+            if self
+                .type_alias_declaration_node(current.program_id, declaration)
+                .is_some()
+            {
+                return Some(current);
+            }
+            current = self.get_imported_symbol(current)?;
+        }
+    }
+
+    fn is_type_alias_display_location(&self, location: NodeRef) -> bool {
+        if matches!(
+            self.node_kind(location),
+            AstKind::BindingIdentifier(_)
+                if matches!(
+                    self.nodes(location.program_id)
+                        .parent_kind(location.node_id),
+                    AstKind::TSTypeAliasDeclaration(_)
+                )
+        ) {
+            return true;
+        }
+
+        let symbol = match self.node_kind(location) {
+            AstKind::BindingIdentifier(_) | AstKind::IdentifierReference(_) => {
+                self.get_symbol_at_location(location)
+            }
+            AstKind::ExportSpecifier(specifier) => specifier
+                .local
+                .identifier_name()
+                .and_then(|name| self.get_root_symbol(location.program_id, name.as_str())),
+            _ => None,
+        };
+        let Some(symbol) = symbol else {
+            return false;
+        };
+        self.resolve_imported_type_alias_symbol(symbol).is_some()
+    }
+
+    fn type_string_context_at_location(&self, location: NodeRef) -> TypeStringContext {
+        let in_type_alias = self.is_type_alias_display_location(location);
+        TypeStringContext {
+            in_type_alias,
+            expand_transparent_aliases: self.location_expands_transparent_type_aliases(location),
+            expand_named_alias_chains: self.location_expands_named_type_alias_chains(location),
+        }
+    }
+
+    fn type_to_string_with_context(&self, t: Ty<'a>, context: TypeStringContext) -> String {
+        let cache_key = TypeStringCacheKey { ty: t, context };
+        if let Some(cached) = self.type_string_cache.borrow().get(&cache_key) {
+            return cached.clone();
+        }
+        let alias_chain_replacements = self.type_alias_chain_display_replacements(t, context);
+        let type_string = t.to_type_string_with_depth(
+            self.arena(),
+            &|ty| {
+                alias_chain_replacements
+                    .get(&ty)
+                    .copied()
+                    .or_else(|| self.transparent_type_alias_target(ty, context))
+            },
+            &self.type_string_depth,
+        );
+        self.type_string_cache
+            .borrow_mut()
+            .insert(cache_key, type_string.clone());
+        type_string
+    }
+
     fn location_expands_transparent_type_aliases(&self, location: NodeRef) -> bool {
         match self.node_kind(location) {
             AstKind::TSPropertySignature(_)
@@ -10914,17 +10996,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn type_alias_target_for_display_at_location(
+    fn type_alias_target_for_display(
         &self,
         ty: Ty<'a>,
-        location: NodeRef,
+        context: TypeStringContext,
     ) -> Option<Ty<'a>> {
         let metadata = self.type_alias_metadata(ty)?;
         let is_default_lib_alias = self
             .store
             .entry(metadata.declaration.program_id)
             .is_some_and(program::ProgramEntry::is_lib);
-        if !is_default_lib_alias && !self.location_expands_transparent_type_aliases(location) {
+        if !is_default_lib_alias && !context.expands_transparent_aliases() {
             return None;
         }
         let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
@@ -10949,12 +11031,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Some(self.instantiate_type(target, &substitutions.to_mapper(self.arena())))
     }
 
-    fn transparent_type_alias_target_at_location(
+    fn transparent_type_alias_target(
         &self,
         ty: Ty<'a>,
-        location: NodeRef,
+        context: TypeStringContext,
     ) -> Option<Ty<'a>> {
-        let target = self.type_alias_target_for_display_at_location(ty, location)?;
+        let target = self.type_alias_target_for_display(ty, context)?;
         if target.is_transparent_type_alias_union_constituent(self.arena()) {
             return Some(target);
         }
@@ -10971,7 +11053,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             )
         });
         (is_non_generic_alias
-            && self.location_expands_transparent_type_aliases(location)
+            && context.expands_transparent_aliases()
             && matches!(
                 self.arena().type_data(target),
                 TypeData::TypeReference(reference) if reference.type_arguments.is_empty()
@@ -10986,27 +11068,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         )
     }
 
-    fn type_alias_chain_display_replacements_at_location(
+    fn type_alias_chain_display_replacements(
         &self,
         ty: Ty<'a>,
-        location: NodeRef,
+        context: TypeStringContext,
     ) -> HashMap<Ty<'a>, Ty<'a>> {
         let mut replacements = HashMap::new();
-        if !self.location_expands_named_type_alias_chains(location) {
+        if !context.expand_named_alias_chains {
             return replacements;
         }
-        self.collect_type_alias_chain_display_replacements(ty, location, &mut replacements);
+        self.collect_type_alias_chain_display_replacements(ty, context, &mut replacements);
         replacements
     }
 
     fn collect_type_alias_chain_display_replacements(
         &self,
         ty: Ty<'a>,
-        location: NodeRef,
+        context: TypeStringContext,
         replacements: &mut HashMap<Ty<'a>, Ty<'a>>,
     ) {
         if matches!(self.arena().type_data(ty), TypeData::TypeReference(_)) {
-            self.insert_type_alias_chain_display_replacements(ty, location, replacements);
+            self.insert_type_alias_chain_display_replacements(ty, context, replacements);
         }
 
         // TypeScript forwards alias wrappers through these exposed structural positions, but not
@@ -11021,21 +11103,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             _ => Vec::new(),
         };
         for child in children {
-            self.collect_type_alias_chain_display_replacements(child, location, replacements);
+            self.collect_type_alias_chain_display_replacements(child, context, replacements);
         }
     }
 
     fn insert_type_alias_chain_display_replacements(
         &self,
         ty: Ty<'a>,
-        location: NodeRef,
+        context: TypeStringContext,
         replacements: &mut HashMap<Ty<'a>, Ty<'a>>,
     ) {
         let mut current = ty;
         let mut seen = HashSet::new();
         while seen.insert(current) {
-            let Some(target) = self.type_alias_target_for_display_at_location(current, location)
-            else {
+            let Some(target) = self.type_alias_target_for_display(current, context) else {
                 return;
             };
             if !matches!(self.arena().type_data(target), TypeData::TypeReference(_))
@@ -11780,30 +11861,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String {
-        let cache_key = TypeStringCacheKey {
-            ty: t,
-            expand_transparent_aliases: self.location_expands_transparent_type_aliases(location),
-            expand_named_alias_chains: self.location_expands_named_type_alias_chains(location),
-        };
-        if let Some(cached) = self.type_string_cache.borrow().get(&cache_key) {
-            return cached.clone();
-        }
-        let alias_chain_replacements =
-            self.type_alias_chain_display_replacements_at_location(t, location);
-        let type_string = t.to_type_string_with_depth(
-            self.arena(),
-            &|ty| {
-                alias_chain_replacements
-                    .get(&ty)
-                    .copied()
-                    .or_else(|| self.transparent_type_alias_target_at_location(ty, location))
-            },
-            &self.type_string_depth,
-        );
-        self.type_string_cache
-            .borrow_mut()
-            .insert(cache_key, type_string.clone());
-        type_string
+        self.type_to_string_with_context(t, self.type_string_context_at_location(location))
     }
 
     fn symbol_to_string(&self, s: SymbolRef, _location: NodeRef) -> String {
