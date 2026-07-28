@@ -6,15 +6,15 @@ use oxc_ast::{
         AssignmentTarget, AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern,
         CallExpression, ChainElement, Class, ClassElement, ComputedMemberExpression,
         ConditionalExpression, ExportSpecifier, Expression, FormalParameter, FormalParameterRest,
-        FormalParameters, Function, IdentifierReference, LogicalExpression, MetaProperty,
-        MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase,
-        ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
-        PropertyKey, StaticMemberExpression, StringLiteral, TSInterfaceDeclaration, TSLiteral,
-        TSMappedType, TSMethodSignature, TSMethodSignatureKind, TSModuleDeclarationName,
-        TSNamedTupleMember, TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
-        TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
-        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        FormalParameters, Function, IdentifierReference, ImportExpression, LogicalExpression,
+        MetaProperty, MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression,
+        NumberBase, ObjectExpression, ObjectPropertyKind, PrivateFieldExpression,
+        PropertyDefinition, PropertyKey, StaticMemberExpression, StringLiteral,
+        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature, TSMethodSignatureKind,
+        TSModuleDeclarationName, TSNamedTupleMember, TSSignature, TSThisParameter, TSTupleElement,
+        TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
+        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
+        TSTypeReference, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_index::IndexVec;
@@ -1245,8 +1245,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::MetaProperty(meta_property) => {
                 self.get_type_of_meta_property(program_id, meta_property, node_id)
             }
+            Expression::ImportExpression(import_expression) => {
+                self.get_type_of_import_expression(program_id, import_expression)
+            }
             // TODO(correctness): Handle all of these cases.
-            Expression::ImportExpression(_) => Ty::any(),
             Expression::SequenceExpression(_) => Ty::any(),
             Expression::TaggedTemplateExpression(_) => Ty::any(),
             Expression::UpdateExpression(_) => Ty::any(),
@@ -1280,6 +1282,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .unwrap_or_else(Ty::any),
             _ => Ty::any(),
         }
+    }
+
+    fn get_type_of_import_expression(
+        &self,
+        program_id: ProgramId,
+        import_expression: &'a ImportExpression<'a>,
+    ) -> Ty<'a> {
+        let imported_type = match &import_expression.source {
+            Expression::StringLiteral(source) => self
+                .store
+                .resolved_module(program_id, source.value.as_str())
+                .map_or_else(Ty::any, |imported_program_id| {
+                    let module_type =
+                        self.get_module_namespace_type(imported_program_id, source.value.as_str());
+                    let name = self
+                        .arena()
+                        .str(&format!("import(\"{}\")", source.value.as_str()));
+                    Ty::type_query(self.arena(), name, module_type, std::iter::empty())
+                }),
+            _ => Ty::any(),
+        };
+
+        let Some(promise_type) = self.get_global_promise_type(program_id) else {
+            return Ty::any();
+        };
+        let TypeData::TypeReference(reference) = self.arena().type_data(promise_type) else {
+            return Ty::any();
+        };
+        Ty::type_reference(self.arena(), reference.name, [imported_type])
     }
 
     fn get_type_of_new_target(&self, program_id: ProgramId, node_id: NodeId) -> Option<Ty<'a>> {
@@ -8814,6 +8845,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let local_name = match &entry.local_name {
                     ExportLocalName::Name(name) | ExportLocalName::Default(name) => {
                         name.name.as_str()
+                    }
+                    ExportLocalName::Null if property_name == "default" => {
+                        let declaration = self.nodes(program_id).iter().find_map(|node| {
+                            let AstKind::ExportDefaultDeclaration(declaration) = node.kind() else {
+                                return None;
+                            };
+                            (declaration.declaration.span() == entry.span).then_some(declaration)
+                        })?;
+                        let expression = declaration.declaration.as_expression()?;
+                        let ty = self.get_type_of_expression_with_node(
+                            program_id,
+                            expression,
+                            Some(declaration.node_id()),
+                            GetTypeFlags::PRESERVE_LITERALS,
+                        );
+                        return Some(Ty::property(property_name, ty));
                     }
                     ExportLocalName::Null => return None,
                 };

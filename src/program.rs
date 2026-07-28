@@ -5,7 +5,10 @@ use std::{
 };
 
 use oxc_allocator::Allocator;
-use oxc_ast::ast::Program;
+use oxc_ast::{
+    AstKind,
+    ast::{Expression, Program},
+};
 use oxc_parser::Parser;
 use oxc_resolver::{ResolveError, ResolveOptions, Resolver};
 use oxc_semantic::{Semantic, SemanticBuilder};
@@ -572,6 +575,20 @@ impl<'a> ProgramStore<'a> {
                     is_import: occurrence.is_import,
                 });
             }
+        }
+        for node in entry.semantic().nodes().iter() {
+            let AstKind::ImportExpression(import_expression) = node.kind() else {
+                continue;
+            };
+            let Expression::StringLiteral(source) = &import_expression.source else {
+                continue;
+            };
+            requests.push(PendingModuleRequest {
+                specifier: source.value.as_str().to_string(),
+                span: import_expression.span,
+                is_type: false,
+                is_import: true,
+            });
         }
         requests
     }

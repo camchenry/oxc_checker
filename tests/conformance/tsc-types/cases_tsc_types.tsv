@@ -1832,6 +1832,16 @@ compiler/genericInference1.ts	16	19	map	<U>(callbackfn: (value: string, index: n
 compiler/genericInference1.ts	20	21	x	string
 compiler/genericInference1.ts	25	26	x	string
 compiler/genericInference1.ts	27	33	length	number
+compiler/importExpression.ts::main.ts	113	128	moduleNamespace	typeof import("./module.ts")
+compiler/importExpression.ts::main.ts	129	135	answer	42
+compiler/importExpression.ts::main.ts	143	158	importedDefault	"default"
+compiler/importExpression.ts::main.ts	161	176	moduleNamespace	typeof import("./module.ts")
+compiler/importExpression.ts::main.ts	177	184	default	"default"
+compiler/importExpression.ts::main.ts	51	66	moduleNamespace	typeof import("./module.ts")
+compiler/importExpression.ts::main.ts	6	19	modulePromise	Promise<typeof import("./module.ts")>
+compiler/importExpression.ts::main.ts	75	88	modulePromise	Promise<typeof import("./module.ts")>
+compiler/importExpression.ts::main.ts	96	110	importedAnswer	42
+compiler/importExpression.ts::module.ts	13	19	answer	42
 compiler/importTypes.ts::a.ts	105	112	process	<T>(x: T) => T | 1
 compiler/importTypes.ts::a.ts	131	134	mod	{ process: <T>(x: T) => T | 1; }
 compiler/importTypes.ts::a.ts	17	18	T	any

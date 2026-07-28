@@ -1,0 +1,29 @@
+export const answer: 42 = 42;
+>            ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+
+const modulePromise = import("./module.ts");
+>     ^^^^^^^^^^^^^: Promise<typeof import("./module.ts")>   (TyTypeReference) (BindingIdentifier)
+
+const moduleNamespace = await modulePromise;
+>     ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TyTypeQuery) (BindingIdentifier)
+
+const moduleNamespace = await modulePromise;
+>                             ^^^^^^^^^^^^^: Promise<typeof import("./module.ts")>   (TyTypeReference) (IdentifierReference)
+
+const importedAnswer = moduleNamespace.answer;
+>     ^^^^^^^^^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+
+const importedAnswer = moduleNamespace.answer;
+>                      ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TyTypeQuery) (IdentifierReference)
+
+const importedAnswer = moduleNamespace.answer;
+>                                      ^^^^^^: 42   (TyNumberLiteral) (StaticMemberExpression)
+
+const importedDefault = moduleNamespace.default;
+>     ^^^^^^^^^^^^^^^: "default"   (TyStringLiteral) (BindingIdentifier)
+
+const importedDefault = moduleNamespace.default;
+>                       ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TyTypeQuery) (IdentifierReference)
+
+const importedDefault = moduleNamespace.default;
+>                                       ^^^^^^^: "default"   (TyStringLiteral) (StaticMemberExpression)
