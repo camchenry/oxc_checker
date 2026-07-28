@@ -1248,8 +1248,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::ImportExpression(import_expression) => {
                 self.get_type_of_import_expression(program_id, import_expression)
             }
+            Expression::SequenceExpression(sequence) => sequence
+                .expressions
+                .iter()
+                .map(|expression| {
+                    self.get_type_of_expression_with_node(program_id, expression, node_id, flags)
+                })
+                .last()
+                .unwrap_or_else(Ty::any),
             // TODO(correctness): Handle all of these cases.
-            Expression::SequenceExpression(_) => Ty::any(),
             Expression::TaggedTemplateExpression(_) => Ty::any(),
             Expression::UpdateExpression(_) => Ty::any(),
             Expression::YieldExpression(_) => Ty::any(),

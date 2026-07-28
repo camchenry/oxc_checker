@@ -2439,6 +2439,13 @@ compiler/satisfiesExpression.ts	958	959	x	number
 compiler/satisfiesExpression.ts	964	965	y	number
 compiler/satisfiesExpression.ts	981	986	Named	any
 compiler/satisfiesExpression.ts	989	994	Point	any
+compiler/sequenceExpressions.ts	110	125	referenceResult	"result"
+compiler/sequenceExpressions.ts	129	141	numberResult	42
+compiler/sequenceExpressions.ts	143	155	stringResult	"result"
+compiler/sequenceExpressions.ts	164	176	nestedResult	"nested"
+compiler/sequenceExpressions.ts	37	49	stringResult	"result"
+compiler/sequenceExpressions.ts	7	19	numberResult	42
+compiler/sequenceExpressions.ts	73	86	booleanResult	true
 compiler/tsIndexSignatures.ts	125	130	Multi	{}
 compiler/tsIndexSignatures.ts	13	16	key	string
 compiler/tsIndexSignatures.ts	138	141	key	string

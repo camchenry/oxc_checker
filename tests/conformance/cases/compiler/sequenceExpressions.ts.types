@@ -1,0 +1,20 @@
+const numberResult = (0, 42);
+>     ^^^^^^^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+
+const stringResult = (0, "result");
+>     ^^^^^^^^^^^^: "result"   (TyStringLiteral) (BindingIdentifier)
+
+const booleanResult = (false, true);
+>     ^^^^^^^^^^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+
+const referenceResult = (numberResult, stringResult);
+>     ^^^^^^^^^^^^^^^: "result"   (TyStringLiteral) (BindingIdentifier)
+
+const referenceResult = (numberResult, stringResult);
+>                        ^^^^^^^^^^^^: 42   (TyNumberLiteral) (IdentifierReference)
+
+const referenceResult = (numberResult, stringResult);
+>                                      ^^^^^^^^^^^^: "result"   (TyStringLiteral) (IdentifierReference)
+
+const nestedResult = (0, (1, "nested"));
+>     ^^^^^^^^^^^^: "nested"   (TyStringLiteral) (BindingIdentifier)
