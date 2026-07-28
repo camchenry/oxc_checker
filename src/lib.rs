@@ -1010,6 +1010,26 @@ mod test {
     }
 
     #[test]
+    fn checker_resolves_interface_heritage_value_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "interface DOMException extends Error {}");
+        let checker = checker(&ret);
+        let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+        let heritage_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::TSInterfaceHeritage(_)).then_some(node_id)
+            })
+            .unwrap();
+        let heritage_node = NodeRef::new(ret.program_id, heritage_node_id);
+
+        assert_eq!(
+            checker.type_to_string(checker.get_type_at_location(heritage_node), heritage_node,),
+            "ErrorConstructor"
+        );
+    }
+
+    #[test]
     fn checker_renders_transparent_local_type_aliases_by_display_context() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

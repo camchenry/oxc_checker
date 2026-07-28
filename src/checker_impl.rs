@@ -11209,7 +11209,19 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::TSTypeParameter(_) => Ty::any(),
             AstKind::TSMappedType(_) => Ty::any(),
             AstKind::TSClassImplements(_) => Ty::any(),
-            AstKind::TSInterfaceHeritage(_) => Ty::any(),
+            AstKind::TSInterfaceHeritage(heritage) => {
+                let Expression::Identifier(identifier) = &heritage.expression else {
+                    return Ty::any();
+                };
+                self.symbol_for_identifier_reference(node.program_id, identifier)
+                    .or_else(|| {
+                        self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
+                    })
+                    .map_or_else(Ty::any, |symbol| {
+                        let ty = self.get_type_of_symbol(symbol);
+                        if ty.is_none() { Ty::any() } else { ty }
+                    })
+            }
             AstKind::TSTypeReference(reference)
                 if matches!(reference.type_name, TSTypeName::QualifiedName(_)) =>
             {

@@ -20,12 +20,10 @@ interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->                                    ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
-                                  expected: ArrayConstructor
+>                                    ^^^^^: ArrayConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->                                    ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                                  expected: ArrayConstructor
+>                                    ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     groups?: {
 >   ^^^^^^: { [key: string]: [number, number]; } | undefined   (TyUnion) (TSPropertySignature)

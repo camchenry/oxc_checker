@@ -37,12 +37,10 @@ interface SuppressedError extends Error {
                  expected: SuppressedErrorConstructor
 
 interface SuppressedError extends Error {
->                                 ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                               expected: ErrorConstructor
+>                                 ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface SuppressedError extends Error {
->                                 ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                               expected: ErrorConstructor
+>                                 ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
     error: any;
 >   ^^^^^: any   (TyAny) (TSPropertySignature)

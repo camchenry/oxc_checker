@@ -634,12 +634,10 @@ interface CallableFunction extends Function {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface CallableFunction extends Function {
->                                  ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
-                                   expected: FunctionConstructor
+>                                  ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface CallableFunction extends Function {
->                                  ^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                                   expected: FunctionConstructor
+>                                  ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
     apply<T, R>(this: (this: T) => R, thisArg: T): R;
 >   ^^^^^: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }   (TyObject) (TSMethodSignature)
@@ -849,12 +847,10 @@ interface NewableFunction extends Function {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface NewableFunction extends Function {
->                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
-                                  expected: FunctionConstructor
+>                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface NewableFunction extends Function {
->                                 ^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                                  expected: FunctionConstructor
+>                                 ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
     apply<T>(this: new () => T, thisArg: T): void;
 >   ^^^^^: { <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; <T>(this: new () => T, thisArg: T): void; <T, A extends any[]>(this: new (...args: A) => T, thisArg: T, args: A): void; }   (TyObject) (TSMethodSignature)
@@ -1899,12 +1895,10 @@ interface RegExpMatchArray extends Array<string> {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface RegExpMatchArray extends Array<string> {
->                                  ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
-                                expected: ArrayConstructor
+>                                  ^^^^^: ArrayConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface RegExpMatchArray extends Array<string> {
->                                  ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                                expected: ArrayConstructor
+>                                  ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     index?: number;
 >   ^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
@@ -1916,12 +1910,10 @@ interface RegExpExecArray extends Array<string> {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface RegExpExecArray extends Array<string> {
->                                 ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
-                               expected: ArrayConstructor
+>                                 ^^^^^: ArrayConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface RegExpExecArray extends Array<string> {
->                                 ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                               expected: ArrayConstructor
+>                                 ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
     index: number;
 >   ^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -2107,12 +2099,10 @@ interface EvalError extends Error {
            expected: EvalErrorConstructor
 
 interface EvalError extends Error {
->                           ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                         expected: ErrorConstructor
+>                           ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface EvalError extends Error {
->                           ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                         expected: ErrorConstructor
+>                           ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
 interface EvalErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -2162,12 +2152,10 @@ interface RangeError extends Error {
             expected: RangeErrorConstructor
 
 interface RangeError extends Error {
->                            ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                          expected: ErrorConstructor
+>                            ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface RangeError extends Error {
->                            ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                          expected: ErrorConstructor
+>                            ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
 interface RangeErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -2217,12 +2205,10 @@ interface ReferenceError extends Error {
                 expected: ReferenceErrorConstructor
 
 interface ReferenceError extends Error {
->                                ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                              expected: ErrorConstructor
+>                                ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface ReferenceError extends Error {
->                                ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                              expected: ErrorConstructor
+>                                ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
 interface ReferenceErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -2272,12 +2258,10 @@ interface SyntaxError extends Error {
              expected: SyntaxErrorConstructor
 
 interface SyntaxError extends Error {
->                             ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                           expected: ErrorConstructor
+>                             ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface SyntaxError extends Error {
->                             ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                           expected: ErrorConstructor
+>                             ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
 interface SyntaxErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -2327,12 +2311,10 @@ interface TypeError extends Error {
            expected: TypeErrorConstructor
 
 interface TypeError extends Error {
->                           ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                         expected: ErrorConstructor
+>                           ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface TypeError extends Error {
->                           ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                         expected: ErrorConstructor
+>                           ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
 interface TypeErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -2382,12 +2364,10 @@ interface URIError extends Error {
           expected: URIErrorConstructor
 
 interface URIError extends Error {
->                          ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                        expected: ErrorConstructor
+>                          ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface URIError extends Error {
->                          ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                        expected: ErrorConstructor
+>                          ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
 interface URIErrorConstructor extends ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

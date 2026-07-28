@@ -7,12 +7,10 @@ interface AggregateError extends Error {
                 expected: AggregateErrorConstructor
 
 interface AggregateError extends Error {
->                                ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
-                              expected: ErrorConstructor
+>                                ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
 
 interface AggregateError extends Error {
->                                ^^^^^: any   (TyAny) (TSInterfaceHeritage)
-                              expected: ErrorConstructor
+>                                ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
 
     errors: any[];
 >   ^^^^^^: any[]   (TyArray) (TSPropertySignature)
