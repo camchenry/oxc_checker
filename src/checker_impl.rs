@@ -16,6 +16,7 @@ use oxc_ast::{
         TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        YieldExpression,
     },
 };
 use oxc_index::IndexVec;
@@ -1273,8 +1274,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     _ => Ty::number(),
                 }
             }
+            Expression::YieldExpression(yield_expression) => {
+                self.get_type_of_yield_expression(program_id, yield_expression)
+            }
             // TODO(correctness): Handle all of these cases.
-            Expression::YieldExpression(_) => Ty::any(),
             Expression::PrivateInExpression(_) => Ty::any(),
             Expression::JSXElement(_) => Ty::any(),
             Expression::JSXFragment(_) => Ty::any(),
@@ -10253,6 +10256,60 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             GetTypeFlags::PRESERVE_LITERALS,
         );
         self.get_awaited_type(program_id, ty)
+    }
+
+    fn get_type_of_yield_expression(
+        &self,
+        program_id: ProgramId,
+        yield_expression: &'a YieldExpression<'a>,
+    ) -> Ty<'a> {
+        let Some(function) = self
+            .nodes(program_id)
+            .ancestors(yield_expression.node_id.get())
+            .find_map(|node| match node.kind() {
+                AstKind::Function(function) if function.generator => Some(function),
+                _ => None,
+            })
+        else {
+            return Ty::any();
+        };
+        let resolver = if function.r#async {
+            IterationResolverKind::Async
+        } else {
+            IterationResolverKind::Sync
+        };
+
+        if yield_expression.delegate {
+            let Some(argument) = yield_expression.argument.as_ref() else {
+                return Ty::any();
+            };
+            let argument_type = self.get_type_of_expression_with_node(
+                program_id,
+                argument,
+                None,
+                GetTypeFlags::NONE,
+            );
+            let mut context = IterationResolutionContext::default();
+            return self
+                .get_iteration_types_of_iterable(
+                    program_id,
+                    argument_type,
+                    resolver,
+                    0,
+                    &mut context,
+                )
+                .return_type
+                .unwrap_or_else(Ty::undefined);
+        }
+
+        let Some(annotation) = function.return_type.as_deref() else {
+            return Ty::any();
+        };
+        let return_type = self.get_type_from_ts_type_annotation(program_id, Some(annotation));
+        let mut context = IterationResolutionContext::default();
+        self.get_iteration_types_of_iterator(program_id, return_type, resolver, 0, &mut context)
+            .next_type
+            .unwrap_or_else(Ty::any)
     }
 
     fn get_awaited_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {

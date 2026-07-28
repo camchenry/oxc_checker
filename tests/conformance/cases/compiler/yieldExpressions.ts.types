@@ -1,0 +1,50 @@
+function* _innerGenerator(): Generator<number, "inner", boolean> {
+>         ^^^^^^^^^^^^^^^: () => Generator<number, "inner", boolean>   (TyFunction) (BindingIdentifier)
+
+function* _innerGenerator(): Generator<number, "inner", boolean> {
+>                            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  const _input = yield 0;
+>       ^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+function* _typedGenerator(): Generator<number, string, boolean> {
+>         ^^^^^^^^^^^^^^^: () => Generator<number, string, boolean>   (TyFunction) (BindingIdentifier)
+
+function* _typedGenerator(): Generator<number, string, boolean> {
+>                            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  const _input = yield 1;
+>       ^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+  const _bareInput = yield;
+>       ^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+  const _delegatedReturn = yield* _innerGenerator();
+>       ^^^^^^^^^^^^^^^^: "inner"   (TyStringLiteral) (BindingIdentifier)
+
+  const _delegatedReturn = yield* _innerGenerator();
+>                                 ^^^^^^^^^^^^^^^: () => Generator<number, "inner", boolean>   (TyFunction) (IdentifierReference)
+
+  const _arrayReturn = yield* [1, 2];
+>       ^^^^^^^^^^^^: undefined   (TyUndefined) (BindingIdentifier)
+
+async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
+>               ^^^^^^^^^^^^^^^: () => AsyncGenerator<string, void, Date>   (TyFunction) (BindingIdentifier)
+
+async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
+>                                  ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
+>                                                               ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+
+async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
+>                                                               ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+
+  const _input = yield "value";
+>       ^^^^^^: Date   (TyTypeReference) (BindingIdentifier)
+
+function* _untypedGenerator() {
+>         ^^^^^^^^^^^^^^^^^: () => Generator<number, void, unknown>   (TyFunction) (BindingIdentifier)
+
+  const _input = yield 1;
+>       ^^^^^^: any   (TyAny) (BindingIdentifier)

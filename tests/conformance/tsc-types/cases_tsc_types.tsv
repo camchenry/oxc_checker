@@ -2729,3 +2729,19 @@ compiler/updateExpressions.ts	5	16	numberValue	number
 compiler/updateExpressions.ts	56	64	anyValue	any
 compiler/updateExpressions.ts	81	93	numberObject	{ value: number; }
 compiler/updateExpressions.ts	98	103	value	number
+compiler/yieldExpressions.ts	11	26	_innerGenerator	() => Generator<number, "inner", boolean>
+compiler/yieldExpressions.ts	125	140	_typedGenerator	() => Generator<number, string, boolean>
+compiler/yieldExpressions.ts	144	153	Generator	any
+compiler/yieldExpressions.ts	189	195	_input	boolean
+compiler/yieldExpressions.ts	215	225	_bareInput	boolean
+compiler/yieldExpressions.ts	243	259	_delegatedReturn	"inner"
+compiler/yieldExpressions.ts	269	284	_innerGenerator	() => Generator<number, "inner", boolean>
+compiler/yieldExpressions.ts	296	308	_arrayReturn	undefined
+compiler/yieldExpressions.ts	30	39	Generator	any
+compiler/yieldExpressions.ts	362	377	_asyncGenerator	() => AsyncGenerator<string, void, Date>
+compiler/yieldExpressions.ts	381	395	AsyncGenerator	any
+compiler/yieldExpressions.ts	410	414	Date	DateConstructor
+compiler/yieldExpressions.ts	426	432	_input	Date
+compiler/yieldExpressions.ts	473	490	_untypedGenerator	() => Generator<number, void, unknown>
+compiler/yieldExpressions.ts	503	509	_input	any
+compiler/yieldExpressions.ts	76	82	_input	boolean
