@@ -1,0 +1,50 @@
+export const moduleMeta = import.meta;
+>            ^^^^^^^^^^: ImportMeta   (TyTypeReference) (BindingIdentifier)
+
+export const moduleMeta = import.meta;
+>                                ^^^^: ImportMeta   (TyTypeReference) (IdentifierName)
+
+export const moduleMetaUrl = import.meta.url;
+>            ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+export const moduleMetaUrl = import.meta.url;
+>                                   ^^^^: ImportMeta   (TyTypeReference) (IdentifierName)
+
+export const moduleMetaUrl = import.meta.url;
+>                                        ^^^: string   (TyString) (StaticMemberExpression)
+
+class Base {
+>     ^^^^: typeof Base   (TyTypeQuery) (BindingIdentifier)
+
+    const baseTarget = new.target;
+>         ^^^^^^^^^^: typeof Base   (TyTypeQuery) (BindingIdentifier)
+
+    const baseTarget = new.target;
+>                          ^^^^^^: typeof Base   (TyTypeQuery) (IdentifierName)
+
+    const baseArrowTarget = () => new.target;
+>         ^^^^^^^^^^^^^^^: () => typeof Base   (TyFunction) (BindingIdentifier)
+
+    const baseArrowTarget = () => new.target;
+>                                     ^^^^^^: typeof Base   (TyTypeQuery) (IdentifierName)
+
+  method() {
+> ^^^^^^: () => void   (TyFunction) (MethodDefinition)
+
+    const methodTarget = new.target;
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+function functionTarget() {
+>        ^^^^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+
+  const target = new.target;
+>       ^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+
+  const target = new.target;
+>                    ^^^^^^: () => void   (TyFunction) (IdentifierName)
+
+  const arrowTarget = () => new.target;
+>       ^^^^^^^^^^^: () => () => void   (TyFunction) (BindingIdentifier)
+
+  const arrowTarget = () => new.target;
+>                               ^^^^^^: () => void   (TyFunction) (IdentifierName)

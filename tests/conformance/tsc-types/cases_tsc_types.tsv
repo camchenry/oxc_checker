@@ -2196,6 +2196,23 @@ compiler/memberExpression.ts	900	908	unionKey	"name" | "id"
 compiler/memberExpression.ts	926	930	Math	Math
 compiler/memberExpression.ts	931	937	random	() => number
 compiler/memberExpression.ts	969	985	dynamicStringKey	string
+compiler/metaProperty.ts	128	138	baseTarget	typeof Base
+compiler/metaProperty.ts	14	24	moduleMeta	ImportMeta
+compiler/metaProperty.ts	145	151	target	typeof Base
+compiler/metaProperty.ts	163	178	baseArrowTarget	() => typeof Base
+compiler/metaProperty.ts	191	197	target	typeof Base
+compiler/metaProperty.ts	206	212	method	() => void
+compiler/metaProperty.ts	227	239	methodTarget	any
+compiler/metaProperty.ts	271	285	functionTarget	() => void
+compiler/metaProperty.ts	298	304	target	() => void
+compiler/metaProperty.ts	311	317	target	() => void
+compiler/metaProperty.ts	327	338	arrowTarget	() => () => void
+compiler/metaProperty.ts	34	38	meta	ImportMeta
+compiler/metaProperty.ts	351	357	target	() => void
+compiler/metaProperty.ts	53	66	moduleMetaUrl	string
+compiler/metaProperty.ts	76	80	meta	ImportMeta
+compiler/metaProperty.ts	81	84	url	string
+compiler/metaProperty.ts	93	97	Base	typeof Base
 compiler/namedTuples.ts	122	132	pointWithX	OptionalPoint
 compiler/namedTuples.ts	134	147	OptionalPoint	any
 compiler/namedTuples.ts	162	172	pointWithY	OptionalPoint
