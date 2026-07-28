@@ -1084,6 +1084,34 @@ mod test {
     }
 
     #[test]
+    fn checker_expands_global_exclude_in_method_parameters() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "interface Shape { method(format: Exclude<KeyFormat, \"jwk\">): void; }",
+        );
+        let checker = checker(&ret);
+        let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+        let format_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier)
+                        if identifier.name == Ident::from("format")
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+        let format_node = NodeRef::new(ret.program_id, format_node_id);
+
+        assert_eq!(
+            checker.type_to_string(checker.get_type_at_location(format_node), format_node),
+            "\"pkcs8\" | \"raw\" | \"spki\""
+        );
+    }
+
+    #[test]
     fn checker_renders_transparent_local_type_aliases_by_display_context() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

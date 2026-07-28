@@ -7540,10 +7540,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn get_apparent_contextual_parameter_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
+        self.get_apparent_conditional_type_at_use(program_id, ty, false)
+    }
+
+    fn get_apparent_declared_parameter_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
+        self.get_apparent_conditional_type_at_use(program_id, ty, true)
+    }
+
+    fn get_apparent_conditional_type_at_use(
+        &self,
+        program_id: ProgramId,
+        ty: Ty<'a>,
+        expand_concrete_arguments: bool,
+    ) -> Ty<'a> {
         if let TypeData::TypeReference(reference) = self.arena().type_data(ty)
             && self.is_conditional_type_alias_reference(program_id, reference)
-            && let Some((expanded_program_id, expanded)) =
+            && let Some((expanded_program_id, expanded)) = if expand_concrete_arguments {
+                self.get_concrete_conditional_type_alias_reference_type(program_id, reference)
+            } else {
                 self.get_conditional_type_alias_reference_type(program_id, reference)
+            }
         {
             if matches!(self.arena().type_data(expanded), TypeData::Conditional(_)) {
                 let apparent =
@@ -7567,24 +7583,66 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<(ProgramId, Ty<'a>)> {
         let (symbol, declaration) =
             self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
-        self.get_conditional_type_alias_declaration_type(symbol.program_id, declaration, reference)
-            .map(|ty| (symbol.program_id, ty))
+        self.get_conditional_type_alias_reference_type_with_arguments(
+            &reference.type_arguments,
+            symbol,
+            declaration,
+        )
+    }
+
+    fn get_concrete_conditional_type_alias_reference_type(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> Option<(ProgramId, Ty<'a>)> {
+        let expanded_type_arguments = reference
+            .type_arguments
+            .iter()
+            .map(|ty| self.expand_type_at_use(program_id, *ty, 0))
+            .collect::<Vec<_>>();
+        if expanded_type_arguments
+            .iter()
+            .any(|ty| self.could_contain_type_variables(*ty))
+        {
+            return None;
+        }
+        let (symbol, declaration) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+        self.get_conditional_type_alias_reference_type_with_arguments(
+            &expanded_type_arguments,
+            symbol,
+            declaration,
+        )
+    }
+
+    fn get_conditional_type_alias_reference_type_with_arguments(
+        &self,
+        type_arguments: &[Ty<'a>],
+        symbol: SymbolRef,
+        declaration: NodeId,
+    ) -> Option<(ProgramId, Ty<'a>)> {
+        self.get_conditional_type_alias_declaration_type(
+            symbol.program_id,
+            declaration,
+            type_arguments,
+        )
+        .map(|ty| (symbol.program_id, ty))
     }
 
     fn get_conditional_type_alias_declaration_type(
         &self,
         program_id: ProgramId,
         declaration: NodeId,
-        reference: &TyTypeReference<'a>,
+        type_arguments: &[Ty<'a>],
     ) -> Option<Ty<'a>> {
         match self.nodes(program_id).kind(declaration) {
             AstKind::TSTypeAliasDeclaration(alias)
                 if matches!(alias.type_annotation, TSType::TSConditionalType(_)) =>
             {
-                let substitutions = self.type_parameter_substitutions_for_reference(
+                let substitutions = self.type_parameter_substitutions_for_type_arguments(
                     program_id,
                     alias.type_parameters.as_deref(),
-                    reference,
+                    type_arguments,
                 );
                 let mapper = substitutions.to_mapper(self.arena());
                 Some(self.instantiate_type(
@@ -7594,7 +7652,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
-                self.get_conditional_type_alias_declaration_type(program_id, parent_id, reference)
+                self.get_conditional_type_alias_declaration_type(
+                    program_id,
+                    parent_id,
+                    type_arguments,
+                )
             }
             _ => None,
         }
@@ -9730,6 +9792,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let annotated_type =
             self.get_parameter_type_from_ts_type_annotation(program_id, Some(annotation));
+        let annotated_type = self.get_apparent_declared_parameter_type(program_id, annotated_type);
         let annotated_type = if let TypeData::Infer(infer) = self.arena().type_data(annotated_type)
         {
             Ty::type_reference(self.arena(), infer.type_parameter.name, [])
