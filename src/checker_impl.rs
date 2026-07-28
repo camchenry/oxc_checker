@@ -11851,9 +11851,21 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
     }
 
-    // TODO(completeness): Implement this method
-    fn get_index_infos_of_type(&self, _t: Ty<'a>) -> Vec<IndexInfo<'a>> {
-        Vec::new()
+    fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo<'a>> {
+        match self.arena().type_data(t) {
+            TypeData::Object(object) => object.index_infos.iter().copied().collect(),
+            TypeData::Intersection(intersection) => intersection
+                .types
+                .iter()
+                .flat_map(|ty| self.get_index_infos_of_type(*ty))
+                .collect(),
+            TypeData::Union(union) => union
+                .types
+                .iter()
+                .flat_map(|ty| self.get_index_infos_of_type(*ty))
+                .collect(),
+            _ => Vec::new(),
+        }
     }
 
     fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {

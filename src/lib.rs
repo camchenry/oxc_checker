@@ -3085,6 +3085,62 @@ mod test {
     }
 
     #[test]
+    fn checker_returns_index_infos_of_structured_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const direct: {
+            [key: string]: number;
+            readonly [index: number]: number;
+        };
+        declare const intersection: {
+            [left: string]: number;
+        } & {
+            [right: number]: boolean;
+        };
+        declare const union: {
+            [left: string]: number;
+        } | {
+            [right: number]: boolean;
+        };
+        declare const empty: {};
+        "#,
+        );
+        let checker = checker(&ret);
+        let index_info_shapes = |name: &str| {
+            checker
+                .get_index_infos_of_type(get_global_symbol_type(&ret, name))
+                .into_iter()
+                .map(|info| (info.name, info.key_type, info.value_type, info.readonly))
+                .collect::<Vec<_>>()
+        };
+
+        assert_eq!(
+            index_info_shapes("direct"),
+            vec![
+                ("key", Ty::string(), Ty::number(), false),
+                ("index", Ty::number(), Ty::number(), true),
+            ]
+        );
+        assert_eq!(
+            index_info_shapes("intersection"),
+            vec![
+                ("left", Ty::string(), Ty::number(), false),
+                ("right", Ty::number(), Ty::boolean(), false),
+            ]
+        );
+        assert_eq!(
+            index_info_shapes("union"),
+            vec![
+                ("left", Ty::string(), Ty::number(), false),
+                ("right", Ty::number(), Ty::boolean(), false),
+            ]
+        );
+        assert!(index_info_shapes("empty").is_empty());
+    }
+
+    #[test]
     fn optional_mapped_type_aliases_include_undefined_and_drop_empty_intersection() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
