@@ -918,6 +918,98 @@ mod test {
     }
 
     #[test]
+    fn checker_renders_default_lib_named_aliases_in_structural_positions() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "interface Shape { property: WindowProxy; method(value: WindowProxy): void; }",
+        );
+        let checker = checker(&ret);
+        let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+        let property_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::TSPropertySignature(_)).then_some(node_id)
+            })
+            .unwrap();
+        let method_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::TSMethodSignature(_)).then_some(node_id)
+            })
+            .unwrap();
+        let parameter_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(node.kind(), AstKind::FormalParameter(_)).then_some(node_id)
+            })
+            .unwrap();
+        let parameter_binding_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier)
+                        if identifier.name == Ident::from("value")
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+
+        assert_eq!(
+            checker.type_to_string(
+                checker.get_type_at_location(NodeRef::new(ret.program_id, property_node_id)),
+                NodeRef::new(ret.program_id, property_node_id),
+            ),
+            "Window"
+        );
+        assert_eq!(
+            checker.type_to_string(
+                checker.get_type_at_location(NodeRef::new(ret.program_id, parameter_node_id)),
+                NodeRef::new(ret.program_id, parameter_node_id),
+            ),
+            "Window"
+        );
+        assert_eq!(
+            checker.type_to_string(
+                checker
+                    .get_type_at_location(NodeRef::new(ret.program_id, parameter_binding_node_id,)),
+                NodeRef::new(ret.program_id, parameter_binding_node_id),
+            ),
+            "Window"
+        );
+        assert_eq!(
+            checker.type_to_string(
+                checker.get_type_at_location(NodeRef::new(ret.program_id, method_node_id)),
+                NodeRef::new(ret.program_id, method_node_id),
+            ),
+            "(value: WindowProxy) => void"
+        );
+
+        let dom_program_id = ret.store.id_for_path(Path::new("lib.dom.d.ts")).unwrap();
+        let dom_nodes = ret.store.entry(dom_program_id).unwrap().semantic().nodes();
+        let dom_parameter_node_id = dom_nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier)
+                        if identifier.name == Ident::from("viewArg")
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+        let dom_parameter_node = NodeRef::new(dom_program_id, dom_parameter_node_id);
+        assert_eq!(
+            checker.type_to_string(
+                checker.get_type_at_location(dom_parameter_node),
+                dom_parameter_node,
+            ),
+            "Window | null | undefined"
+        );
+    }
+
+    #[test]
     fn checker_renders_transparent_local_type_aliases_by_display_context() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

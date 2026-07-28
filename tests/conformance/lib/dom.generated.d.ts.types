@@ -22115,8 +22115,7 @@ interface CompositionEvent extends UIEvent {
 >                                                               ^^^^^^^^^^^^^: boolean | undefined   (TyUnion) (BindingIdentifier)
 
     initCompositionEvent(typeArg: string, bubblesArg?: boolean, cancelableArg?: boolean, viewArg?: WindowProxy | null, dataArg?: string): void;
->                                                                                        ^^^^^^^: WindowProxy | null | undefined   (TyUnion) (BindingIdentifier)
-                                                                                        expected: Window | null | undefined
+>                                                                                        ^^^^^^^: Window | null | undefined   (TyUnion) (BindingIdentifier)
 
     initCompositionEvent(typeArg: string, bubblesArg?: boolean, cancelableArg?: boolean, viewArg?: WindowProxy | null, dataArg?: string): void;
 >                                                                                                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -25902,8 +25901,7 @@ interface Document extends Node, DocumentOrShadowRoot, FontFaceSource, GlobalEve
 >                           ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly defaultView: (WindowProxy & typeof globalThis) | null;
->            ^^^^^^^^^^^: (WindowProxy & typeof globalThis) | null   (TyUnion) (TSPropertySignature)
-                expected: (Window & typeof globalThis) | null
+>            ^^^^^^^^^^^: (Window & typeof globalThis) | null   (TyUnion) (TSPropertySignature)
 
     readonly defaultView: (WindowProxy & typeof globalThis) | null;
 >                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -42640,8 +42638,7 @@ interface HTMLFrameElement extends HTMLElement {
 >                             ^^^^^^^^: { new (): Document; prototype: Document; parseHTMLUnsafe(html: string): Document; }   (TyObject) (IdentifierReference)
 
     readonly contentWindow: WindowProxy | null;
->            ^^^^^^^^^^^^^: WindowProxy | null   (TyUnion) (TSPropertySignature)
-                  expected: Window | null
+>            ^^^^^^^^^^^^^: Window | null   (TyUnion) (TSPropertySignature)
 
     readonly contentWindow: WindowProxy | null;
 >                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -43667,8 +43664,7 @@ interface HTMLIFrameElement extends HTMLElement {
 >                             ^^^^^^^^: { new (): Document; prototype: Document; parseHTMLUnsafe(html: string): Document; }   (TyObject) (IdentifierReference)
 
     readonly contentWindow: WindowProxy | null;
->            ^^^^^^^^^^^^^: WindowProxy | null   (TyUnion) (TSPropertySignature)
-                  expected: Window | null
+>            ^^^^^^^^^^^^^: Window | null   (TyUnion) (TSPropertySignature)
 
     readonly contentWindow: WindowProxy | null;
 >                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -46953,8 +46949,7 @@ interface HTMLObjectElement extends HTMLElement {
 >                             ^^^^^^^^: { new (): Document; prototype: Document; parseHTMLUnsafe(html: string): Document; }   (TyObject) (IdentifierReference)
 
     readonly contentWindow: WindowProxy | null;
->            ^^^^^^^^^^^^^: WindowProxy | null   (TyUnion) (TSPropertySignature)
-                  expected: Window | null
+>            ^^^^^^^^^^^^^: Window | null   (TyUnion) (TSPropertySignature)
 
     readonly contentWindow: WindowProxy | null;
 >                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -72118,8 +72113,7 @@ interface RTCRtpReceiver {
 >                   ^^^^^^^^^^^^^^^^: { new (): MediaStreamTrack; prototype: MediaStreamTrack; }   (TyObject) (IdentifierReference)
 
     transform: RTCRtpReceiverTransform | null;
->   ^^^^^^^^^: RTCRtpReceiverTransform | null   (TyUnion) (TSPropertySignature)
-     expected: RTCRtpScriptTransform | null
+>   ^^^^^^^^^: RTCRtpScriptTransform | null   (TyUnion) (TSPropertySignature)
 
     transform: RTCRtpReceiverTransform | null;
 >              ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -72257,8 +72251,7 @@ interface RTCRtpSender {
 >                   ^^^^^^^^^^^^^^^^: { new (): MediaStreamTrack; prototype: MediaStreamTrack; }   (TyObject) (IdentifierReference)
 
     transform: RTCRtpSenderTransform | null;
->   ^^^^^^^^^: RTCRtpSenderTransform | null   (TyUnion) (TSPropertySignature)
-     expected: RTCRtpScriptTransform | null
+>   ^^^^^^^^^: RTCRtpScriptTransform | null   (TyUnion) (TSPropertySignature)
 
     transform: RTCRtpSenderTransform | null;
 >              ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -112677,8 +112670,7 @@ interface Window extends EventTarget, AnimationFrameProvider, GlobalEventHandler
 >                          ^^^^^^^: { new (): Element; prototype: Element; }   (TyObject) (IdentifierReference)
 
     readonly frames: WindowProxy;
->            ^^^^^^: WindowProxy   (TyTypeReference) (TSPropertySignature)
-           expected: Window
+>            ^^^^^^: Window   (TyTypeReference) (TSPropertySignature)
 
     readonly frames: WindowProxy;
 >                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -112861,8 +112853,7 @@ interface Window extends EventTarget, AnimationFrameProvider, GlobalEventHandler
 >            ^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
     readonly parent: WindowProxy;
->            ^^^^^^: WindowProxy   (TyTypeReference) (TSPropertySignature)
-           expected: Window
+>            ^^^^^^: Window   (TyTypeReference) (TSPropertySignature)
 
     readonly parent: WindowProxy;
 >                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -112955,8 +112946,7 @@ interface Window extends EventTarget, AnimationFrameProvider, GlobalEventHandler
 >                     ^^^^^^^: { new (): BarProp; prototype: BarProp; }   (TyObject) (IdentifierReference)
 
     readonly top: WindowProxy | null;
->            ^^^: WindowProxy | null   (TyUnion) (TSPropertySignature)
-        expected: Window | null
+>            ^^^: Window | null   (TyUnion) (TSPropertySignature)
 
     readonly top: WindowProxy | null;
 >                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -124685,8 +124675,7 @@ type MediaProvider = MediaStream | MediaSource | Blob;
 >                                                ^^^^: { new (blobParts?: BlobPart[], options?: BlobPropertyBag): Blob; prototype: Blob; }   (TyObject) (IdentifierReference)
 
 type MessageEventSource = WindowProxy | MessagePort | ServiceWorker;
->    ^^^^^^^^^^^^^^^^^^: WindowProxy | MessagePort | ServiceWorker   (TyUnion) (TSTypeAliasDeclaration)
-               expected: MessagePort | Window | ServiceWorker
+>    ^^^^^^^^^^^^^^^^^^: Window | MessagePort | ServiceWorker   (TyUnion) (TSTypeAliasDeclaration)
 
 type MessageEventSource = WindowProxy | MessagePort | ServiceWorker;
 >                         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

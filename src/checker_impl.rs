@@ -10790,9 +10790,28 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         location: NodeRef,
     ) -> Option<Ty<'a>> {
         let target = self.type_alias_target_for_display_at_location(ty, location)?;
-        target
-            .is_transparent_type_alias_union_constituent(self.arena())
-            .then_some(target)
+        if target.is_transparent_type_alias_union_constituent(self.arena()) {
+            return Some(target);
+        }
+
+        let is_non_generic_alias = self.type_alias_metadata(ty).is_some_and(|metadata| {
+            matches!(
+                self.nodes(metadata.declaration.program_id)
+                    .kind(metadata.declaration.node_id),
+                AstKind::TSTypeAliasDeclaration(alias)
+                    if alias
+                        .type_parameters
+                        .as_ref()
+                        .is_none_or(|type_parameters| type_parameters.params.is_empty())
+            )
+        });
+        (is_non_generic_alias
+            && self.location_expands_transparent_type_aliases(location)
+            && matches!(
+                self.arena().type_data(target),
+                TypeData::TypeReference(reference) if reference.type_arguments.is_empty()
+            ))
+        .then_some(target)
     }
 
     fn location_expands_named_type_alias_chains(&self, location: NodeRef) -> bool {
