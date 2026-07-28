@@ -75,6 +75,20 @@ fn span_contains(outer: Span, inner: Span) -> bool {
     outer.start <= inner.start && inner.end <= outer.end
 }
 
+fn capitalize_first_character(value: &str, uppercase: bool) -> String {
+    let Some(first) = value.chars().next() else {
+        return String::new();
+    };
+    let first_len = first.len_utf8();
+    let mut mapped = if uppercase {
+        first.to_uppercase().collect::<String>()
+    } else {
+        first.to_lowercase().collect::<String>()
+    };
+    mapped.push_str(&value[first_len..]);
+    mapped
+}
+
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 
 const GLOBAL_THIS_IDENT: Ident = static_ident!("globalThis");
@@ -2863,10 +2877,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
             TSType::TSMappedType(mapped) => self.get_type_from_ts_mapped_type(program_id, mapped),
             TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
-            TSType::TSIntrinsicKeyword(_) => {
-                // TODO(correctness): handle intrinsic keywords
-                Ty::none()
-            }
+            TSType::TSIntrinsicKeyword(_) => Ty::type_reference(
+                self.arena(),
+                "intrinsic",
+                std::iter::empty(),
+            ),
             TSType::TSConstructorType(constructor) => {
                 let parameters = self.function_type_parameters(
                     program_id,
@@ -4318,11 +4333,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     alias.type_parameters.as_deref(),
                     type_arguments,
                 );
-                let ty = self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(
-                    program_id,
-                    &alias.type_annotation,
-                    depth + 1,
-                );
+                let ty = if matches!(alias.type_annotation, TSType::TSIntrinsicKeyword(_)) {
+                    self.get_type_from_intrinsic_alias(
+                        program_id,
+                        alias.id.name.as_str(),
+                        type_arguments,
+                        depth + 1,
+                    )
+                } else {
+                    self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                        program_id,
+                        &alias.type_annotation,
+                        depth + 1,
+                    )
+                };
                 let ty = self.instantiate_type(ty, &substitutions.to_mapper(self.arena()));
                 let ty = if self.type_instantiation_overflowed.get() {
                     Ty::any()
@@ -4360,6 +4384,140 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             _ => None,
         }
+    }
+
+    fn get_type_from_intrinsic_alias(
+        &self,
+        program_id: ProgramId,
+        name: &'a str,
+        type_arguments: &[Ty<'a>],
+        depth: usize,
+    ) -> Ty<'a> {
+        let Some(type_argument) = type_arguments.first().copied() else {
+            return Ty::type_reference(self.arena(), "intrinsic", std::iter::empty());
+        };
+
+        match name {
+            "Uppercase" | "Lowercase" | "Capitalize" | "Uncapitalize" => {
+                self.apply_intrinsic_string_mapping(program_id, name, type_argument, depth + 1)
+            }
+            "NoInfer" => type_argument,
+            "BuiltinIteratorReturn" => Ty::any(),
+            _ => Ty::type_reference(self.arena(), "intrinsic", std::iter::empty()),
+        }
+    }
+
+    fn apply_intrinsic_string_mapping(
+        &self,
+        program_id: ProgramId,
+        name: &'a str,
+        ty: Ty<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return ty;
+        }
+
+        match self.arena().type_data(ty) {
+            TypeData::Union(union) => Ty::union(
+                self.arena(),
+                union.types.iter().map(|ty| {
+                    self.apply_intrinsic_string_mapping(program_id, name, *ty, depth + 1)
+                }),
+            ),
+            TypeData::StringLiteral(literal) => Ty::string_literal(
+                self.arena(),
+                self.apply_intrinsic_string_mapping_to_string(
+                    name,
+                    literal.value,
+                    matches!(name, "Capitalize" | "Uncapitalize"),
+                ),
+            ),
+            TypeData::TemplateLiteral(template) => {
+                let mut quasis = template
+                    .quasis
+                    .iter()
+                    .map(|quasi| TemplateLiteralElement { value: quasi.value })
+                    .collect::<Vec<_>>();
+                let mut expressions = template.expressions.iter().copied().collect::<Vec<_>>();
+
+                match name {
+                    "Uppercase" | "Lowercase" => {
+                        for quasi in &mut quasis {
+                            quasi.value = self.apply_intrinsic_string_mapping_to_string(
+                                name,
+                                quasi.value,
+                                false,
+                            );
+                        }
+                        for expression in &mut expressions {
+                            *expression = self.apply_intrinsic_string_mapping(
+                                program_id,
+                                name,
+                                *expression,
+                                depth + 1,
+                            );
+                        }
+                    }
+                    "Capitalize" | "Uncapitalize" => {
+                        if quasis.first().is_some_and(|quasi| quasi.value.is_empty()) {
+                            if let Some(expression) = expressions.first_mut() {
+                                *expression = self.apply_intrinsic_string_mapping(
+                                    program_id,
+                                    name,
+                                    *expression,
+                                    depth + 1,
+                                );
+                            }
+                        } else if let Some(quasi) = quasis.first_mut() {
+                            quasi.value = self.apply_intrinsic_string_mapping_to_string(
+                                name,
+                                quasi.value,
+                                true,
+                            );
+                        }
+                    }
+                    _ => {}
+                }
+
+                self.get_template_literal_type(program_id, quasis, expressions)
+            }
+            TypeData::TypeReference(reference) if reference.name == name => ty,
+            TypeData::TypeReference(_) => {
+                let expanded = self.expand_type_at_use(program_id, ty, depth + 1);
+                if expanded != ty {
+                    self.apply_intrinsic_string_mapping(program_id, name, expanded, depth + 1)
+                } else {
+                    Ty::type_reference(self.arena(), name, [ty])
+                }
+            }
+            TypeData::String | TypeData::Any | TypeData::Unknown => {
+                Ty::type_reference(self.arena(), name, [ty])
+            }
+            _ => ty,
+        }
+    }
+
+    fn apply_intrinsic_string_mapping_to_string(
+        &self,
+        name: &str,
+        value: &str,
+        first_character_only: bool,
+    ) -> &'a str {
+        let mapped = match name {
+            "Uppercase" => {
+                if first_character_only {
+                    capitalize_first_character(value, true)
+                } else {
+                    value.to_uppercase()
+                }
+            }
+            "Lowercase" => value.to_lowercase(),
+            "Capitalize" => capitalize_first_character(value, true),
+            "Uncapitalize" => capitalize_first_character(value, false),
+            _ => value.to_string(),
+        };
+        self.arena().str(&mapped)
     }
 
     /// Instantiate the pieces of a type-query result that accept explicit type arguments.

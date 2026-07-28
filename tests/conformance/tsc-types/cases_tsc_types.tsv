@@ -1897,6 +1897,28 @@ compiler/indexedAccessInference.ts	74	79	value	number
 compiler/indexedAccessInference.ts	82	85	get	<T, K extends keyof T>(obj: T, key: K) => T[K]
 compiler/indexedAccessInference.ts	88	93	value	number
 compiler/indexedAccessInference.ts	98	102	name	string
+compiler/intrinsicTypes.ts	125	134	Uncapital	"hello world"
+compiler/intrinsicTypes.ts	13	22	Uppercase	any
+compiler/intrinsicTypes.ts	137	149	Uncapitalize	any
+compiler/intrinsicTypes.ts	172	182	UpperUnion	"HELLO" | "WORLD"
+compiler/intrinsicTypes.ts	185	194	Uppercase	any
+compiler/intrinsicTypes.ts	220	233	LowerTemplate	"http/get" | "http/post"
+compiler/intrinsicTypes.ts	236	245	Lowercase	any
+compiler/intrinsicTypes.ts	278	293	CapitalTemplate	`Hello-${string}`
+compiler/intrinsicTypes.ts	296	306	Capitalize	any
+compiler/intrinsicTypes.ts	332	349	UncapitalTemplate	`hello-${string}`
+compiler/intrinsicTypes.ts	352	364	Uncapitalize	any
+compiler/intrinsicTypes.ts	391	404	DeferredUpper	Uppercase<T>
+compiler/intrinsicTypes.ts	405	406	T	any
+compiler/intrinsicTypes.ts	425	434	Uppercase	any
+compiler/intrinsicTypes.ts	435	436	T	any
+compiler/intrinsicTypes.ts	44	49	Lower	"hello world"
+compiler/intrinsicTypes.ts	444	456	NoInferValue	"value"
+compiler/intrinsicTypes.ts	459	466	NoInfer	any
+compiler/intrinsicTypes.ts	5	10	Upper	"HELLO WORLD"
+compiler/intrinsicTypes.ts	52	61	Lowercase	any
+compiler/intrinsicTypes.ts	83	90	Capital	"Hello world"
+compiler/intrinsicTypes.ts	93	103	Capitalize	any
 compiler/mappedTypeInference.ts	100	105	value	{ readonly [P in keyof T]: T[P]; }
 compiler/mappedTypeInference.ts	119	120	P	any
 compiler/mappedTypeInference.ts	130	131	T	any

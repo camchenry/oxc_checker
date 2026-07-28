@@ -4285,36 +4285,31 @@ type InstanceType<T extends abstract new (...args: any) => any> = T extends abst
 >                                                                                                                    ^: any   (TyAny) (TSTypeReference)
 
 type Uppercase<S extends string> = intrinsic;
->    ^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
-      expected: intrinsic
+>    ^^^^^^^^^: intrinsic   (TyTypeReference) (TSTypeAliasDeclaration)
 
 type Uppercase<S extends string> = intrinsic;
 >              ^: any   (TyAny) (TSTypeParameter)
 
 type Lowercase<S extends string> = intrinsic;
->    ^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
-      expected: intrinsic
+>    ^^^^^^^^^: intrinsic   (TyTypeReference) (TSTypeAliasDeclaration)
 
 type Lowercase<S extends string> = intrinsic;
 >              ^: any   (TyAny) (TSTypeParameter)
 
 type Capitalize<S extends string> = intrinsic;
->    ^^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
-       expected: intrinsic
+>    ^^^^^^^^^^: intrinsic   (TyTypeReference) (TSTypeAliasDeclaration)
 
 type Capitalize<S extends string> = intrinsic;
 >               ^: any   (TyAny) (TSTypeParameter)
 
 type Uncapitalize<S extends string> = intrinsic;
->    ^^^^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
-         expected: intrinsic
+>    ^^^^^^^^^^^^: intrinsic   (TyTypeReference) (TSTypeAliasDeclaration)
 
 type Uncapitalize<S extends string> = intrinsic;
 >                 ^: any   (TyAny) (TSTypeParameter)
 
 type NoInfer<T> = intrinsic;
->    ^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
-    expected: intrinsic
+>    ^^^^^^^: intrinsic   (TyTypeReference) (TSTypeAliasDeclaration)
 
 type NoInfer<T> = intrinsic;
 >            ^: any   (TyAny) (TSTypeParameter)

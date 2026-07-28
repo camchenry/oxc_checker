@@ -240,8 +240,7 @@ interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator
 >                                                   ^^^^^: any   (TyAny) (TSTypeReference)
 
 type BuiltinIteratorReturn = intrinsic;
->    ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
-                  expected: intrinsic
+>    ^^^^^^^^^^^^^^^^^^^^^: intrinsic   (TyTypeReference) (TSTypeAliasDeclaration)
 
 interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

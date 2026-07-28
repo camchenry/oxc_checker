@@ -1,0 +1,65 @@
+type Upper = Uppercase<"hello world">;
+>    ^^^^^: "HELLO WORLD"   (TyStringLiteral) (TSTypeAliasDeclaration)
+
+type Upper = Uppercase<"hello world">;
+>            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type Lower = Lowercase<"HELLO WORLD">;
+>    ^^^^^: "hello world"   (TyStringLiteral) (TSTypeAliasDeclaration)
+
+type Lower = Lowercase<"HELLO WORLD">;
+>            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type Capital = Capitalize<"hello world">;
+>    ^^^^^^^: "Hello world"   (TyStringLiteral) (TSTypeAliasDeclaration)
+
+type Capital = Capitalize<"hello world">;
+>              ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type Uncapital = Uncapitalize<"Hello world">;
+>    ^^^^^^^^^: "hello world"   (TyStringLiteral) (TSTypeAliasDeclaration)
+
+type Uncapital = Uncapitalize<"Hello world">;
+>                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type UpperUnion = Uppercase<"hello" | "World">;
+>    ^^^^^^^^^^: "HELLO" | "WORLD"   (TyUnion) (TSTypeAliasDeclaration)
+
+type UpperUnion = Uppercase<"hello" | "World">;
+>                 ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type LowerTemplate = Lowercase<`HTTP/${"GET" | "POST"}`>;
+>    ^^^^^^^^^^^^^: "http/get" | "http/post"   (TyUnion) (TSTypeAliasDeclaration)
+
+type LowerTemplate = Lowercase<`HTTP/${"GET" | "POST"}`>;
+>                    ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type CapitalTemplate = Capitalize<`hello-${string}`>;
+>    ^^^^^^^^^^^^^^^: `Hello-${string}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+
+type CapitalTemplate = Capitalize<`hello-${string}`>;
+>                      ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type UncapitalTemplate = Uncapitalize<`Hello-${string}`>;
+>    ^^^^^^^^^^^^^^^^^: `hello-${string}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+
+type UncapitalTemplate = Uncapitalize<`Hello-${string}`>;
+>                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type DeferredUpper<T extends string> = Uppercase<T>;
+>    ^^^^^^^^^^^^^: Uppercase<T>   (TyTypeReference) (TSTypeAliasDeclaration)
+
+type DeferredUpper<T extends string> = Uppercase<T>;
+>                  ^: any   (TyAny) (TSTypeParameter)
+
+type DeferredUpper<T extends string> = Uppercase<T>;
+>                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type DeferredUpper<T extends string> = Uppercase<T>;
+>                                                ^: any   (TyAny) (TSTypeReference)
+
+type NoInferValue = NoInfer<"value">;
+>    ^^^^^^^^^^^^: "value"   (TyStringLiteral) (TSTypeAliasDeclaration)
+
+type NoInferValue = NoInfer<"value">;
+>                   ^^^^^^^: any   (TyAny) (TSTypeReference)
