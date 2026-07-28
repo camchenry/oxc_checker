@@ -284,8 +284,7 @@ type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
 >           ^: any   (TyAny) (TSTypeReference)
 
 export type Path<T> = T extends any ? PathInternal<T> : never
->           ^^^^: T extends any ? PathInternal<T> : never   (TyConditional) (TSTypeAliasDeclaration)
-        expected: T extends any ? PathInternal<T, T> : never
+>           ^^^^: T extends any ? PathInternal<T, T> : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type Path<T> = T extends any ? PathInternal<T> : never
 >                ^: any   (TyAny) (TSTypeParameter)
@@ -300,8 +299,7 @@ export type Path<T> = T extends any ? PathInternal<T> : never
 >                                                  ^: any   (TyAny) (TSTypeReference)
 
 export type FieldPath<TFieldValues> = Path<TFieldValues>
->           ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional) (TSTypeAliasDeclaration)
-             expected: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
+>           ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type FieldPath<TFieldValues> = Path<TFieldValues>
 >                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -664,8 +662,7 @@ type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
 >           ^: any   (TyAny) (TSTypeReference)
 
 export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
->           ^^^^^^^^^: T extends any ? ArrayPathInternal<T> : never   (TyConditional) (TSTypeAliasDeclaration)
-             expected: T extends any ? ArrayPathInternal<T, T> : never
+>           ^^^^^^^^^: T extends any ? ArrayPathInternal<T, T> : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
 >                     ^: any   (TyAny) (TSTypeParameter)
@@ -680,8 +677,7 @@ export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
 >                                                            ^: any   (TyAny) (TSTypeReference)
 
 export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
->           ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional) (TSTypeAliasDeclaration)
-                  expected: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
+>           ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
 >                          ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -741,16 +737,14 @@ export type FieldArrayPathValue<
 >                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   FieldArrayPath,
-> ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional) (BindingIdentifier)
-        expected: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
+> ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (BindingIdentifier)
 
   FieldArrayPathValue,
 > ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (BindingIdentifier)
              expected: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
 
   FieldPath,
-> ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional) (BindingIdentifier)
-   expected: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
+> ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (BindingIdentifier)
 
   FieldPathValue,
 > ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (BindingIdentifier)
@@ -809,12 +803,10 @@ type ContactField = FieldPath<ContactForm>
          expected: "user" | "tags" | "friends" | "user.name" | "user.address" | "user.address.city" | "user.address.zip" | `tags.${number}` | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.1` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value`
 
 type ContactField = FieldPath<ContactForm>
->                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional) (TSTypeReference)
-                     expected: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
+>                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeReference)
 
 type ContactField = FieldPath<ContactForm>
->                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues> : never   (TyConditional) (IdentifierReference)
-                     expected: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
+>                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (IdentifierReference)
 
 type ContactField = FieldPath<ContactForm>
 >                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -824,12 +816,10 @@ type ContactArrayField = FieldArrayPath<ContactForm>
               expected: "friends" | `friends.${number}.socials`
 
 type ContactArrayField = FieldArrayPath<ContactForm>
->                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional) (TSTypeReference)
-                               expected: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
+>                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeReference)
 
 type ContactArrayField = FieldArrayPath<ContactForm>
->                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues> : never   (TyConditional) (IdentifierReference)
-                               expected: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
+>                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (IdentifierReference)
 
 type ContactArrayField = FieldArrayPath<ContactForm>
 >                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

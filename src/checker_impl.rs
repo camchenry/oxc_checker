@@ -4415,11 +4415,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
         let explicit_type_argument_count = type_arguments.len();
-        let should_display_implicit_defaults = !self.hide_implicit_type_argument_display.get()
-            && self.is_lib_type_name(program_id, name);
+        let target = self
+            .get_type_symbol_and_declaration_for_name(program_id, name)
+            .map(|(symbol, _)| symbol);
 
         let implicit_display_type_argument_count =
             self.fill_default_type_arguments(program_id, name, &mut type_arguments);
+        let should_display_implicit_defaults = !self.hide_implicit_type_argument_display.get()
+            && (target
+                .and_then(|symbol| self.store.entry(symbol.program_id))
+                .is_some_and(program::ProgramEntry::is_lib)
+                || (explicit_type_argument_count > 0
+                    && implicit_display_type_argument_count > 0
+                    && target.is_some_and(|symbol| symbol.program_id == program_id)));
 
         if let Some(array_type) =
             self.get_global_array_type_reference_type(program_id, name, type_arguments.as_slice())
@@ -4811,7 +4819,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .rposition(|ty| should_display_implicit_default_type_argument(*ty))
                 .map_or(0, |index| index + 1)
         } else {
-            0
+            default_type_arguments
+                .iter()
+                .rposition(|ty| {
+                    matches!(
+                        self.arena().type_data(*ty),
+                        TypeData::TypeReference(reference)
+                            if reference.is_bare() && reference.target.is_none()
+                    )
+                })
+                .map_or(0, |index| index + 1)
         };
         type_arguments.extend(default_type_arguments);
         display_count

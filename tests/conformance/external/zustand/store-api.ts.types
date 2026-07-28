@@ -323,8 +323,7 @@ export type CreateStore = {
 >                  ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     initializer: StateCreator<T, [], Mos>,
->   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference) (BindingIdentifier)
-       expected: StateCreator<T, [], Mos, T>
+>   ^^^^^^^^^^^: StateCreator<T, [], Mos, T>   (TyTypeReference) (BindingIdentifier)
 
     initializer: StateCreator<T, [], Mos>,
 >                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -357,8 +356,7 @@ export type CreateStore = {
 >                      ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     initializer: StateCreator<T, [], Mos>,
->   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference) (BindingIdentifier)
-       expected: StateCreator<T, [], Mos, T>
+>   ^^^^^^^^^^^: StateCreator<T, [], Mos, T>   (TyTypeReference) (BindingIdentifier)
 
     initializer: StateCreator<T, [], Mos>,
 >                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
