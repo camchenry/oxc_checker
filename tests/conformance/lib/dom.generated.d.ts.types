@@ -116203,8 +116203,7 @@ declare namespace CSS {
 >                   ^^^^^^^^^^^^^^^^^: { new (): HighlightRegistry; prototype: HighlightRegistry; }   (TyObject) (IdentifierReference)
 
     function Hz(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function Hz(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116216,8 +116215,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function Q(value: number): CSSUnitValue;
->            ^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-      expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function Q(value: number): CSSUnitValue;
 >              ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116229,8 +116227,7 @@ declare namespace CSS {
 >                              ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cap(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cap(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116242,8 +116239,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function ch(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function ch(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116255,8 +116251,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cm(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cm(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116268,8 +116263,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cqb(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cqb(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116281,8 +116275,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cqh(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cqh(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116294,8 +116287,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cqi(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cqi(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116307,8 +116299,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cqmax(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cqmax(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116320,8 +116311,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cqmin(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cqmin(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116333,8 +116323,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function cqw(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function cqw(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116346,8 +116335,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function deg(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function deg(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116359,8 +116347,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dpcm(value: number): CSSUnitValue;
->            ^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-         expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dpcm(value: number): CSSUnitValue;
 >                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116372,8 +116359,7 @@ declare namespace CSS {
 >                                 ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dpi(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dpi(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116385,8 +116371,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dppx(value: number): CSSUnitValue;
->            ^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-         expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dppx(value: number): CSSUnitValue;
 >                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116398,8 +116383,7 @@ declare namespace CSS {
 >                                 ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dvb(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dvb(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116411,8 +116395,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dvh(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dvh(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116424,8 +116407,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dvi(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dvi(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116437,8 +116419,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dvmax(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dvmax(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116450,8 +116431,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dvmin(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dvmin(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116463,8 +116443,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function dvw(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function dvw(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116476,8 +116455,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function em(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function em(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116489,15 +116467,13 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function escape(ident: string): string;
->            ^^^^^^: (ident: string) => string   (TyFunction) (BindingIdentifier)
-           expected: { (ident: string): string; (ident: string): string; }
+>            ^^^^^^: { (ident: string): string; (ident: string): string; }   (TyObject) (BindingIdentifier)
 
     function escape(ident: string): string;
 >                   ^^^^^: string   (TyString) (BindingIdentifier)
 
     function ex(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function ex(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116509,8 +116485,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function fr(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function fr(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116522,8 +116497,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function grad(value: number): CSSUnitValue;
->            ^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-         expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function grad(value: number): CSSUnitValue;
 >                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116535,8 +116509,7 @@ declare namespace CSS {
 >                                 ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function ic(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function ic(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116548,8 +116521,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function kHz(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function kHz(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116561,8 +116533,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function lh(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function lh(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116574,8 +116545,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function lvb(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function lvb(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116587,8 +116557,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function lvh(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function lvh(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116600,8 +116569,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function lvi(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function lvi(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116613,8 +116581,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function lvmax(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function lvmax(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116626,8 +116593,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function lvmin(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function lvmin(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116639,8 +116605,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function lvw(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function lvw(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116652,8 +116617,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function mm(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function mm(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116665,8 +116629,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function ms(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function ms(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116678,8 +116641,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function number(value: number): CSSUnitValue;
->            ^^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-           expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function number(value: number): CSSUnitValue;
 >                   ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116691,8 +116653,7 @@ declare namespace CSS {
 >                                   ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function pc(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function pc(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116704,8 +116665,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function percent(value: number): CSSUnitValue;
->            ^^^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-            expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function percent(value: number): CSSUnitValue;
 >                    ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116717,8 +116677,7 @@ declare namespace CSS {
 >                                    ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function pt(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function pt(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116730,8 +116689,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function px(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function px(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116743,8 +116701,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function rad(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function rad(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116756,8 +116713,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function rcap(value: number): CSSUnitValue;
->            ^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-         expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function rcap(value: number): CSSUnitValue;
 >                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116769,8 +116725,7 @@ declare namespace CSS {
 >                                 ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function rch(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function rch(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116782,8 +116737,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function registerProperty(definition: PropertyDefinition): void;
->            ^^^^^^^^^^^^^^^^: (definition: PropertyDefinition) => void   (TyFunction) (BindingIdentifier)
-                     expected: { (definition: PropertyDefinition): void; (definition: PropertyDefinition): void; }
+>            ^^^^^^^^^^^^^^^^: { (definition: PropertyDefinition): void; (definition: PropertyDefinition): void; }   (TyObject) (BindingIdentifier)
 
     function registerProperty(definition: PropertyDefinition): void;
 >                             ^^^^^^^^^^: PropertyDefinition   (TyTypeReference) (BindingIdentifier)
@@ -116792,8 +116746,7 @@ declare namespace CSS {
 >                                         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function rem(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function rem(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116805,8 +116758,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function rex(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function rex(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116818,8 +116770,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function ric(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function ric(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116831,8 +116782,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function rlh(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function rlh(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116844,8 +116794,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function s(value: number): CSSUnitValue;
->            ^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-      expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function s(value: number): CSSUnitValue;
 >              ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116857,8 +116806,7 @@ declare namespace CSS {
 >                              ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function supports(property: string, value: string): boolean;
->            ^^^^^^^^: { (property: string, value: string): boolean; (conditionText: string): boolean; }   (TyObject) (BindingIdentifier)
-             expected: { (property: string, value: string): boolean; (conditionText: string): boolean; (property: string, value: string): boolean; (conditionText: string): boolean; }
+>            ^^^^^^^^: { (property: string, value: string): boolean; (conditionText: string): boolean; (property: string, value: string): boolean; (conditionText: string): boolean; }   (TyObject) (BindingIdentifier)
 
     function supports(property: string, value: string): boolean;
 >                     ^^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -116867,15 +116815,13 @@ declare namespace CSS {
 >                                       ^^^^^: string   (TyString) (BindingIdentifier)
 
     function supports(conditionText: string): boolean;
->            ^^^^^^^^: { (property: string, value: string): boolean; (conditionText: string): boolean; }   (TyObject) (BindingIdentifier)
-             expected: { (property: string, value: string): boolean; (conditionText: string): boolean; (property: string, value: string): boolean; (conditionText: string): boolean; }
+>            ^^^^^^^^: { (property: string, value: string): boolean; (conditionText: string): boolean; (property: string, value: string): boolean; (conditionText: string): boolean; }   (TyObject) (BindingIdentifier)
 
     function supports(conditionText: string): boolean;
 >                     ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     function svb(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function svb(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116887,8 +116833,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function svh(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function svh(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116900,8 +116845,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function svi(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function svi(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116913,8 +116857,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function svmax(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function svmax(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116926,8 +116869,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function svmin(value: number): CSSUnitValue;
->            ^^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-          expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function svmin(value: number): CSSUnitValue;
 >                  ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116939,8 +116881,7 @@ declare namespace CSS {
 >                                  ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function svw(value: number): CSSUnitValue;
->            ^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-        expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function svw(value: number): CSSUnitValue;
 >                ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116952,8 +116893,7 @@ declare namespace CSS {
 >                                ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function turn(value: number): CSSUnitValue;
->            ^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-         expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function turn(value: number): CSSUnitValue;
 >                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116965,8 +116905,7 @@ declare namespace CSS {
 >                                 ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function vb(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function vb(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116978,8 +116917,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function vh(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function vh(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -116991,8 +116929,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function vi(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function vi(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -117004,8 +116941,7 @@ declare namespace CSS {
 >                               ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function vmax(value: number): CSSUnitValue;
->            ^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-         expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function vmax(value: number): CSSUnitValue;
 >                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -117017,8 +116953,7 @@ declare namespace CSS {
 >                                 ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function vmin(value: number): CSSUnitValue;
->            ^^^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-         expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function vmin(value: number): CSSUnitValue;
 >                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -117030,8 +116965,7 @@ declare namespace CSS {
 >                                 ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
 
     function vw(value: number): CSSUnitValue;
->            ^^: (value: number) => CSSUnitValue   (TyFunction) (BindingIdentifier)
-       expected: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }
+>            ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
 
     function vw(value: number): CSSUnitValue;
 >               ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -117925,8 +117859,7 @@ declare namespace WebAssembly {
 >              ^^^: { new (type: TagType): Tag; prototype: Tag; }   (TyObject) (IdentifierReference)
 
     function compile(bytes: BufferSource, options?: WebAssemblyCompileOptions): Promise<Module>;
->            ^^^^^^^: (bytes: BufferSource, options?: WebAssemblyCompileOptions) => Promise<Module>   (TyFunction) (BindingIdentifier)
-            expected: { (bytes: BufferSource, options?: WebAssemblyCompileOptions): Promise<Module>; (bytes: BufferSource, options?: WebAssemblyCompileOptions): Promise<Module>; }
+>            ^^^^^^^: { (bytes: BufferSource, options?: WebAssemblyCompileOptions): Promise<Module>; (bytes: BufferSource, options?: WebAssemblyCompileOptions): Promise<Module>; }   (TyObject) (BindingIdentifier)
 
     function compile(bytes: BufferSource, options?: WebAssemblyCompileOptions): Promise<Module>;
 >                    ^^^^^: BufferSource   (TyTypeReference) (BindingIdentifier)
@@ -117953,8 +117886,7 @@ declare namespace WebAssembly {
 >                                                                                       ^^^^^^: { new (bytes: BufferSource, options?: WebAssemblyCompileOptions): Module; prototype: Module; customSections(moduleObject: Module, sectionName: string): ArrayBuffer[]; exports(moduleObject: Module): ModuleExportDescriptor[]; imports(moduleObject: Module): ModuleImportDescriptor[]; }   (TyObject) (IdentifierReference)
 
     function compileStreaming(source: Response | PromiseLike<Response>, options?: WebAssemblyCompileOptions): Promise<Module>;
->            ^^^^^^^^^^^^^^^^: (source: Response | PromiseLike<Response>, options?: WebAssemblyCompileOptions) => Promise<Module>   (TyFunction) (BindingIdentifier)
-                     expected: { (source: Response | PromiseLike<Response>, options?: WebAssemblyCompileOptions): Promise<Module>; (source: Response | PromiseLike<Response>, options?: WebAssemblyCompileOptions): Promise<Module>; }
+>            ^^^^^^^^^^^^^^^^: { (source: Response | PromiseLike<Response>, options?: WebAssemblyCompileOptions): Promise<Module>; (source: Response | PromiseLike<Response>, options?: WebAssemblyCompileOptions): Promise<Module>; }   (TyObject) (BindingIdentifier)
 
     function compileStreaming(source: Response | PromiseLike<Response>, options?: WebAssemblyCompileOptions): Promise<Module>;
 >                             ^^^^^^: Response | PromiseLike<Response>   (TyUnion) (BindingIdentifier)
@@ -117993,8 +117925,7 @@ declare namespace WebAssembly {
 >                                                                                                                     ^^^^^^: { new (bytes: BufferSource, options?: WebAssemblyCompileOptions): Module; prototype: Module; customSections(moduleObject: Module, sectionName: string): ArrayBuffer[]; exports(moduleObject: Module): ModuleExportDescriptor[]; imports(moduleObject: Module): ModuleImportDescriptor[]; }   (TyObject) (IdentifierReference)
 
     function instantiate(bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>;
->            ^^^^^^^^^^^: { (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; }   (TyObject) (BindingIdentifier)
-                expected: { (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; }
+>            ^^^^^^^^^^^: { (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; }   (TyObject) (BindingIdentifier)
 
     function instantiate(bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>;
 >                        ^^^^^: BufferSource   (TyTypeReference) (BindingIdentifier)
@@ -118024,8 +117955,7 @@ declare namespace WebAssembly {
 >                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function instantiate(moduleObject: Module, importObject?: Imports): Promise<Instance>;
->            ^^^^^^^^^^^: { (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; }   (TyObject) (BindingIdentifier)
-                expected: { (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; }
+>            ^^^^^^^^^^^: { (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; (bytes: BufferSource, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (moduleObject: Module, importObject?: Imports): Promise<Instance>; }   (TyObject) (BindingIdentifier)
 
     function instantiate(moduleObject: Module, importObject?: Imports): Promise<Instance>;
 >                        ^^^^^^^^^^^^: Module   (TyTypeReference) (BindingIdentifier)
@@ -118055,8 +117985,7 @@ declare namespace WebAssembly {
 >                                                                               ^^^^^^^^: { new (module: Module, importObject?: Imports): Instance; prototype: Instance; }   (TyObject) (IdentifierReference)
 
     function instantiateStreaming(source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>;
->            ^^^^^^^^^^^^^^^^^^^^: (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions) => Promise<WebAssemblyInstantiatedSource>   (TyFunction) (BindingIdentifier)
-                         expected: { (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; }
+>            ^^^^^^^^^^^^^^^^^^^^: { (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; }   (TyObject) (BindingIdentifier)
 
     function instantiateStreaming(source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>;
 >                                 ^^^^^^: Response | PromiseLike<Response>   (TyUnion) (BindingIdentifier)
@@ -118098,8 +118027,7 @@ declare namespace WebAssembly {
 >                                                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function validate(bytes: BufferSource, options?: WebAssemblyCompileOptions): boolean;
->            ^^^^^^^^: (bytes: BufferSource, options?: WebAssemblyCompileOptions) => boolean   (TyFunction) (BindingIdentifier)
-             expected: { (bytes: BufferSource, options?: WebAssemblyCompileOptions): boolean; (bytes: BufferSource, options?: WebAssemblyCompileOptions): boolean; }
+>            ^^^^^^^^: { (bytes: BufferSource, options?: WebAssemblyCompileOptions): boolean; (bytes: BufferSource, options?: WebAssemblyCompileOptions): boolean; }   (TyObject) (BindingIdentifier)
 
     function validate(bytes: BufferSource, options?: WebAssemblyCompileOptions): boolean;
 >                     ^^^^^: BufferSource   (TyTypeReference) (BindingIdentifier)

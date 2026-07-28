@@ -163,8 +163,7 @@ declare namespace Intl {
 >                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
->            ^^^^^^^^^^^^^^^^^: (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit") => string[]   (TyFunction) (BindingIdentifier)
-                      expected: { (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }
+>            ^^^^^^^^^^^^^^^^^: { (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }   (TyObject) (BindingIdentifier)
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
 >                              ^^^: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"   (TyUnion) (BindingIdentifier)

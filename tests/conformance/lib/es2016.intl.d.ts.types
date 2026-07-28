@@ -5,8 +5,7 @@ declare namespace Intl {
 >                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
 
     function getCanonicalLocales(locale?: string | readonly string[]): string[];
->            ^^^^^^^^^^^^^^^^^^^: (locale?: string | readonly string[]) => string[]   (TyFunction) (BindingIdentifier)
-                        expected: { (locale?: string | readonly string[]): string[]; (locale?: string | readonly string[]): string[]; }
+>            ^^^^^^^^^^^^^^^^^^^: { (locale?: string | readonly string[]): string[]; (locale?: string | readonly string[]): string[]; }   (TyObject) (BindingIdentifier)
 
     function getCanonicalLocales(locale?: string | readonly string[]): string[];
 >                                ^^^^^^: string | readonly string[] | undefined   (TyUnion) (BindingIdentifier)

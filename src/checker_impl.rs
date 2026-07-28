@@ -8824,8 +8824,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         };
 
-        let function_declarations =
-            self.function_declarations_for_value_symbol(program_id, symbol_id, function_name);
+        let function_declarations = self.function_declarations_for_value_symbol(
+            program_id,
+            symbol_id,
+            function_name,
+            node_id,
+        );
 
         let overload_declarations = function_declarations
             .iter()
@@ -8898,13 +8902,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: ProgramId,
         symbol_id: SymbolId,
         function_name: &'a str,
+        declaration_id: NodeId,
     ) -> Vec<(ProgramId, NodeId, &'a Function<'a>)> {
         let scoping = self.semantic(program_id).scoping();
         let is_root_function =
             scoping.get_root_binding(Ident::from(function_name)) == Some(symbol_id);
 
-        if !is_root_function
-            || !self.is_global_script_entry(program_id)
+        if !self.is_global_script_entry(program_id)
             || self
                 .store
                 .entry(program_id)
@@ -8913,23 +8917,104 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return self.function_declarations_for_symbol(program_id, symbol_id);
         }
 
+        let Some(namespace_path) = self.namespace_path_for_node(program_id, declaration_id) else {
+            return self.function_declarations_for_symbol(program_id, symbol_id);
+        };
         let mut seen = HashSet::new();
-        self.store
-            .entries()
-            .iter()
-            .filter(|entry| !entry.is_lib() && self.is_global_script_entry(entry.id()))
-            .filter_map(|entry| {
-                entry
-                    .semantic()
-                    .scoping()
-                    .get_root_binding(Ident::from(function_name))
-                    .map(|symbol_id| (entry.id(), symbol_id))
-            })
-            .flat_map(|(program_id, symbol_id)| {
-                self.function_declarations_for_symbol(program_id, symbol_id)
-            })
+        let declarations = if is_root_function && namespace_path.is_empty() {
+            self.store
+                .entries()
+                .iter()
+                .filter(|entry| !entry.is_lib() && self.is_global_script_entry(entry.id()))
+                .filter_map(|entry| {
+                    entry
+                        .semantic()
+                        .scoping()
+                        .get_root_binding(Ident::from(function_name))
+                        .map(|symbol_id| (entry.id(), symbol_id))
+                })
+                .flat_map(|(program_id, symbol_id)| {
+                    self.function_declarations_for_symbol(program_id, symbol_id)
+                })
+                .collect::<Vec<_>>()
+        } else {
+            self.store
+                .entries()
+                .iter()
+                .filter(|entry| self.is_global_script_entry(entry.id()))
+                .flat_map(|entry| {
+                    self.function_declarations_for_namespace(
+                        entry.id(),
+                        &namespace_path,
+                        function_name,
+                    )
+                })
+                .collect::<Vec<_>>()
+        };
+
+        declarations
+            .into_iter()
             .filter(|(program_id, declaration_id, _)| seen.insert((*program_id, *declaration_id)))
             .collect()
+    }
+
+    fn function_declarations_for_namespace(
+        &self,
+        program_id: ProgramId,
+        namespace_path: &[&str],
+        function_name: &str,
+    ) -> Vec<(ProgramId, NodeId, &'a Function<'a>)> {
+        let scoping = self.semantic(program_id).scoping();
+        self.nodes(program_id)
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| {
+                let AstKind::TSModuleDeclaration(module) = node.kind() else {
+                    return None;
+                };
+                let module_path = self.namespace_path_for_module(program_id, node_id)?;
+                if module_path.as_slice() != namespace_path {
+                    return None;
+                }
+                let scope_id = module.scope_id.get()?;
+                let symbol_id = scoping.get_binding(scope_id, Ident::from(function_name))?;
+                Some(self.function_declarations_for_symbol(program_id, symbol_id))
+            })
+            .flatten()
+            .collect()
+    }
+
+    fn namespace_path_for_node(&self, program_id: ProgramId, node_id: NodeId) -> Option<Vec<&str>> {
+        let mut path = Vec::new();
+        for kind in self.nodes(program_id).ancestor_kinds(node_id) {
+            match kind {
+                AstKind::Program(_) => return Some(path),
+                AstKind::TSModuleDeclaration(module) => {
+                    let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
+                        return None;
+                    };
+                    path.push(identifier.name.as_str());
+                }
+                AstKind::TSModuleBlock(_) => {}
+                _ => return None,
+            }
+        }
+        None
+    }
+
+    fn namespace_path_for_module(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+    ) -> Option<Vec<&str>> {
+        let AstKind::TSModuleDeclaration(module) = self.nodes(program_id).kind(node_id) else {
+            return None;
+        };
+        let mut path = match &module.id {
+            TSModuleDeclarationName::Identifier(identifier) => vec![identifier.name.as_str()],
+            _ => return None,
+        };
+        path.extend(self.namespace_path_for_node(program_id, node_id)?);
+        Some(path)
     }
 
     fn function_declarations_for_symbol(

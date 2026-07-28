@@ -1057,6 +1057,33 @@ mod test {
     }
 
     #[test]
+    fn checker_merges_standard_library_namespace_function_declarations() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "declare namespace CSS { function Hz(value: number): CSSUnitValue; }",
+        );
+        let checker = checker(&ret);
+        let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+        let hz_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier) if identifier.name == Ident::from("Hz")
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+        let hz_node = NodeRef::new(ret.program_id, hz_node_id);
+
+        assert_eq!(
+            checker.type_to_string(checker.get_type_at_location(hz_node), hz_node),
+            "{ (value: number): CSSUnitValue; (value: number): CSSUnitValue; }"
+        );
+    }
+
+    #[test]
     fn checker_renders_transparent_local_type_aliases_by_display_context() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
