@@ -1,0 +1,71 @@
+let numberValue = 1;
+>   ^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+let bigintValue: bigint = 1n;
+>   ^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+let anyValue: any = 1;
+>   ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+const numberObject = { value: 1 };
+>     ^^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+
+const numberObject = { value: 1 };
+>                      ^^^^^: number   (TyNumber) (ObjectProperty)
+
+const _prefixIncrement = ++numberValue;
+>     ^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _prefixIncrement = ++numberValue;
+>                          ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+
+const _postfixIncrement = numberValue++;
+>     ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _postfixIncrement = numberValue++;
+>                         ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+
+const _prefixDecrement = --numberValue;
+>     ^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _prefixDecrement = --numberValue;
+>                          ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+
+const _postfixDecrement = numberValue--;
+>     ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _postfixDecrement = numberValue--;
+>                         ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+
+const _prefixBigInt = ++bigintValue;
+>     ^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+const _prefixBigInt = ++bigintValue;
+>                       ^^^^^^^^^^^: bigint   (TyBigint) (IdentifierReference)
+
+const _postfixBigInt = bigintValue--;
+>     ^^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+const _postfixBigInt = bigintValue--;
+>                      ^^^^^^^^^^^: bigint   (TyBigint) (IdentifierReference)
+
+const _prefixAny = ++anyValue;
+>     ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _prefixAny = ++anyValue;
+>                    ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+const _memberIncrement = ++numberObject.value;
+>     ^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _memberIncrement = ++numberObject.value;
+>                          ^^^^^^^^^^^^: { value: number; }   (TyObject) (IdentifierReference)
+
+const _memberIncrement = ++numberObject.value;
+>                                       ^^^^^: number   (TyNumber) (StaticMemberExpression)
+
+const _computedMemberDecrement = numberObject["value"]--;
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const _computedMemberDecrement = numberObject["value"]--;
+>                                ^^^^^^^^^^^^: { value: number; }   (TyObject) (IdentifierReference)

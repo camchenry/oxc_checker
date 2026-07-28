@@ -2705,3 +2705,27 @@ compiler/uniqueSymbolTypes.ts	341	354	dataTagSymbol	unique symbol
 compiler/uniqueSymbolTypes.ts	364	382	dataTagErrorSymbol	unique symbol
 compiler/uniqueSymbolTypes.ts	63	76	dataTagSymbol	unique symbol
 compiler/uniqueSymbolTypes.ts	86	99	dataTagSymbol	unique symbol
+compiler/updateExpressions.ts	117	133	_prefixIncrement	number
+compiler/updateExpressions.ts	138	149	numberValue	number
+compiler/updateExpressions.ts	157	174	_postfixIncrement	number
+compiler/updateExpressions.ts	177	188	numberValue	number
+compiler/updateExpressions.ts	198	214	_prefixDecrement	number
+compiler/updateExpressions.ts	219	230	numberValue	number
+compiler/updateExpressions.ts	238	255	_postfixDecrement	number
+compiler/updateExpressions.ts	258	269	numberValue	number
+compiler/updateExpressions.ts	26	37	bigintValue	bigint
+compiler/updateExpressions.ts	279	292	_prefixBigInt	bigint
+compiler/updateExpressions.ts	297	308	bigintValue	bigint
+compiler/updateExpressions.ts	316	330	_postfixBigInt	bigint
+compiler/updateExpressions.ts	333	344	bigintValue	bigint
+compiler/updateExpressions.ts	354	364	_prefixAny	number
+compiler/updateExpressions.ts	369	377	anyValue	any
+compiler/updateExpressions.ts	385	401	_memberIncrement	number
+compiler/updateExpressions.ts	406	418	numberObject	{ value: number; }
+compiler/updateExpressions.ts	419	424	value	number
+compiler/updateExpressions.ts	432	456	_computedMemberDecrement	number
+compiler/updateExpressions.ts	459	471	numberObject	{ value: number; }
+compiler/updateExpressions.ts	5	16	numberValue	number
+compiler/updateExpressions.ts	56	64	anyValue	any
+compiler/updateExpressions.ts	81	93	numberObject	{ value: number; }
+compiler/updateExpressions.ts	98	103	value	number

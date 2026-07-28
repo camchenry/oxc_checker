@@ -9,13 +9,13 @@ use oxc_ast::{
         FormalParameters, Function, IdentifierReference, ImportExpression, LogicalExpression,
         MetaProperty, MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression,
         NumberBase, ObjectExpression, ObjectPropertyKind, PrivateFieldExpression,
-        PropertyDefinition, PropertyKey, StaticMemberExpression, StringLiteral,
-        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature, TSMethodSignatureKind,
-        TSModuleDeclarationName, TSNamedTupleMember, TSSignature, TSThisParameter, TSTupleElement,
-        TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
-        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
-        VariableDeclarator,
+        PropertyDefinition, PropertyKey, SimpleAssignmentTarget, StaticMemberExpression,
+        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature,
+        TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember, TSSignature,
+        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_index::IndexVec;
@@ -1260,8 +1260,20 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::TaggedTemplateExpression(tagged_template) => {
                 self.get_type_of_tagged_template_expression(program_id, tagged_template, node_id)
             }
+            Expression::UpdateExpression(update) => {
+                let target_type = self.get_type_of_simple_assignment_target(
+                    program_id,
+                    &update.argument,
+                    node_id,
+                    flags | GetTypeFlags::CONTEXT_FREE,
+                );
+                let target_type = self.expand_type_at_use(program_id, target_type, 0);
+                match self.arena().type_data(target_type) {
+                    TypeData::Bigint | TypeData::BigIntLiteral(_) => Ty::bigint(),
+                    _ => Ty::number(),
+                }
+            }
             // TODO(correctness): Handle all of these cases.
-            Expression::UpdateExpression(_) => Ty::any(),
             Expression::YieldExpression(_) => Ty::any(),
             Expression::PrivateInExpression(_) => Ty::any(),
             Expression::JSXElement(_) => Ty::any(),
@@ -1694,8 +1706,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
         flags: GetTypeFlags,
     ) -> Ty<'a> {
+        if let Some(target) = target.as_simple_assignment_target() {
+            return self.get_type_of_simple_assignment_target(program_id, target, node_id, flags);
+        }
+        Ty::any()
+    }
+
+    fn get_type_of_simple_assignment_target(
+        &self,
+        program_id: ProgramId,
+        target: &'a SimpleAssignmentTarget<'a>,
+        node_id: Option<NodeId>,
+        flags: GetTypeFlags,
+    ) -> Ty<'a> {
         match target {
-            AssignmentTarget::AssignmentTargetIdentifier(identifier) => {
+            SimpleAssignmentTarget::AssignmentTargetIdentifier(identifier) => {
                 let symbol = self
                     .symbol_for_identifier_reference(program_id, identifier)
                     .or_else(|| {
@@ -1709,26 +1734,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 Ty::any()
             }
-            AssignmentTarget::ComputedMemberExpression(member) => {
+            SimpleAssignmentTarget::ComputedMemberExpression(member) => {
                 self.get_type_of_computed_member_expression(program_id, member, node_id, flags)
             }
-            AssignmentTarget::StaticMemberExpression(member) => {
+            SimpleAssignmentTarget::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id, flags)
             }
-            AssignmentTarget::TSAsExpression(assertion) => self.get_type_of_expression_with_node(
-                program_id,
-                &assertion.expression,
-                node_id,
-                flags,
-            ),
-            AssignmentTarget::TSSatisfiesExpression(satisfies) => self
+            SimpleAssignmentTarget::TSAsExpression(assertion) => self
+                .get_type_of_expression_with_node(
+                    program_id,
+                    &assertion.expression,
+                    node_id,
+                    flags,
+                ),
+            SimpleAssignmentTarget::TSSatisfiesExpression(satisfies) => self
                 .get_type_of_expression_with_node(
                     program_id,
                     &satisfies.expression,
                     node_id,
                     flags,
                 ),
-            AssignmentTarget::TSNonNullExpression(non_null) => {
+            SimpleAssignmentTarget::TSNonNullExpression(non_null) => {
                 let ty = self.get_type_of_expression_with_node(
                     program_id,
                     &non_null.expression,
@@ -1737,15 +1763,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 );
                 self.get_non_null_assertion_type(program_id, ty)
             }
-            AssignmentTarget::TSTypeAssertion(assertion) => self.get_type_of_expression_with_node(
-                program_id,
-                &assertion.expression,
-                node_id,
-                flags,
-            ),
-            AssignmentTarget::PrivateFieldExpression(_)
-            | AssignmentTarget::ArrayAssignmentTarget(_)
-            | AssignmentTarget::ObjectAssignmentTarget(_) => Ty::any(),
+            SimpleAssignmentTarget::TSTypeAssertion(assertion) => self
+                .get_type_of_expression_with_node(
+                    program_id,
+                    &assertion.expression,
+                    node_id,
+                    flags,
+                ),
+            SimpleAssignmentTarget::PrivateFieldExpression(_) => Ty::any(),
         }
     }
 
