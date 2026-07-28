@@ -1,0 +1,68 @@
+declare function stringTag(template: any, ...values: any[]): string;
+>                ^^^^^^^^^: (template: any, ...values: any[]) => string   (TyFunction) (BindingIdentifier)
+
+declare function stringTag(template: any, ...values: any[]): string;
+>                          ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+declare function stringTag(template: any, ...values: any[]): string;
+>                                            ^^^^^^: any[]   (TyArray) (BindingIdentifier)
+
+declare function literalTag(template: any, ...values: any[]): "literal";
+>                ^^^^^^^^^^: (template: any, ...values: any[]) => "literal"   (TyFunction) (BindingIdentifier)
+
+declare function literalTag(template: any, ...values: any[]): "literal";
+>                           ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+declare function literalTag(template: any, ...values: any[]): "literal";
+>                                             ^^^^^^: any[]   (TyArray) (BindingIdentifier)
+
+declare function genericTag<T>(template: any, value: T): T;
+>                ^^^^^^^^^^: <T>(template: any, value: T) => T   (TyFunction) (BindingIdentifier)
+
+declare function genericTag<T>(template: any, value: T): T;
+>                           ^: any   (TyAny) (TSTypeParameter)
+
+declare function genericTag<T>(template: any, value: T): T;
+>                              ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+declare function genericTag<T>(template: any, value: T): T;
+>                                             ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+declare function genericTag<T>(template: any, value: T): T;
+>                                                    ^: any   (TyAny) (TSTypeReference)
+
+declare function genericTag<T>(template: any, value: T): T;
+>                                                        ^: any   (TyAny) (TSTypeReference)
+
+declare function curriedTag(template: any): (value: string) => number;
+>                ^^^^^^^^^^: (template: any) => (value: string) => number   (TyFunction) (BindingIdentifier)
+
+declare function curriedTag(template: any): (value: string) => number;
+>                           ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+declare function curriedTag(template: any): (value: string) => number;
+>                                            ^^^^^: string   (TyString) (BindingIdentifier)
+
+const stringResult = stringTag`hello`;
+>     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+const stringResult = stringTag`hello`;
+>                    ^^^^^^^^^: (template: any, ...values: any[]) => string   (TyFunction) (IdentifierReference)
+
+const literalResult = literalTag`literal`;
+>     ^^^^^^^^^^^^^: "literal"   (TyStringLiteral) (BindingIdentifier)
+
+const literalResult = literalTag`literal`;
+>                     ^^^^^^^^^^: (template: any, ...values: any[]) => "literal"   (TyFunction) (IdentifierReference)
+
+const genericResult = genericTag`value: ${42}`;
+>     ^^^^^^^^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+
+const genericResult = genericTag`value: ${42}`;
+>                     ^^^^^^^^^^: <T>(template: any, value: T) => T   (TyFunction) (IdentifierReference)
+
+const curriedResult = curriedTag`value`("input");
+>     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const curriedResult = curriedTag`value`("input");
+>                     ^^^^^^^^^^: (template: any) => (value: string) => number   (TyFunction) (IdentifierReference)

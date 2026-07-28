@@ -14,7 +14,8 @@ use oxc_ast::{
         TSModuleDeclarationName, TSNamedTupleMember, TSSignature, TSThisParameter, TSTupleElement,
         TSType, TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
         TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
+        VariableDeclarator,
     },
 };
 use oxc_index::IndexVec;
@@ -1256,8 +1257,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 })
                 .last()
                 .unwrap_or_else(Ty::any),
+            Expression::TaggedTemplateExpression(tagged_template) => {
+                self.get_type_of_tagged_template_expression(program_id, tagged_template, node_id)
+            }
             // TODO(correctness): Handle all of these cases.
-            Expression::TaggedTemplateExpression(_) => Ty::any(),
             Expression::UpdateExpression(_) => Ty::any(),
             Expression::YieldExpression(_) => Ty::any(),
             Expression::PrivateInExpression(_) => Ty::any(),
@@ -6070,6 +6073,155 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .map(ResolvedSignatureCandidate::into_return_type)
             .unwrap_or_else(Ty::any)
+    }
+
+    fn get_type_of_tagged_template_expression(
+        &self,
+        program_id: ProgramId,
+        tagged_template: &'a TaggedTemplateExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let tag_type = self.get_type_of_expression_with_node(
+            program_id,
+            &tagged_template.tag,
+            node_id,
+            GetTypeFlags::NONE,
+        );
+        let candidates =
+            self.get_signatures_of_type_in_program(program_id, tag_type, SignatureKind::Call);
+        if candidates.is_empty() {
+            return Ty::any();
+        }
+
+        let applicable = candidates
+            .iter()
+            .filter_map(|signature| {
+                self.resolve_tagged_template_signature_candidate(
+                    program_id,
+                    *signature,
+                    tagged_template,
+                    node_id,
+                    true,
+                )
+            })
+            .collect::<Vec<_>>();
+
+        self.choose_best_signature_candidate(applicable)
+            .or_else(|| {
+                candidates.first().and_then(|signature| {
+                    self.resolve_tagged_template_signature_candidate(
+                        program_id,
+                        *signature,
+                        tagged_template,
+                        node_id,
+                        false,
+                    )
+                })
+            })
+            .map(ResolvedSignatureCandidate::into_return_type)
+            .unwrap_or_else(Ty::any)
+    }
+
+    fn resolve_tagged_template_signature_candidate(
+        &self,
+        program_id: ProgramId,
+        signature: Signature<'a>,
+        tagged_template: &'a TaggedTemplateExpression<'a>,
+        node_id: Option<NodeId>,
+        require_applicable: bool,
+    ) -> Option<ResolvedSignatureCandidate<'a>> {
+        let function = signature.function(self.arena());
+        let argument_types =
+            self.get_tagged_template_argument_types(program_id, function, tagged_template, node_id);
+        let inference = self.infer_call_type_parameter_resolution_from_argument_types(
+            program_id,
+            function,
+            tagged_template.type_arguments.as_deref(),
+            argument_types.iter().copied(),
+        );
+
+        if require_applicable
+            && !self.is_tagged_template_signature_applicable(
+                program_id,
+                function,
+                tagged_template,
+                node_id,
+                inference.substitutions(),
+            )
+        {
+            return None;
+        }
+
+        let return_type = self.instantiate_signature_return_type(
+            program_id,
+            function.return_type,
+            inference.mapper(),
+        );
+        Some(ResolvedSignatureCandidate {
+            signature,
+            inference,
+            return_type,
+        })
+    }
+
+    fn get_tagged_template_argument_types(
+        &self,
+        program_id: ProgramId,
+        function: &TyFunction<'a>,
+        tagged_template: &'a TaggedTemplateExpression<'a>,
+        node_id: Option<NodeId>,
+    ) -> Vec<(usize, Ty<'a>)> {
+        let mut argument_types = vec![(0, Ty::any())];
+        argument_types.extend(tagged_template.quasi.expressions.iter().enumerate().map(
+            |(index, expression)| {
+                let argument_index = index + 1;
+                let parameter_type = self.get_call_parameter_type_at(function, argument_index);
+                let flags =
+                    if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
+                        GetTypeFlags::PRESERVE_LITERALS
+                    } else {
+                        GetTypeFlags::NONE
+                    };
+                let argument_type =
+                    self.get_type_of_expression_with_node(program_id, expression, node_id, flags);
+                (argument_index, argument_type)
+            },
+        ));
+        argument_types
+    }
+
+    fn is_tagged_template_signature_applicable(
+        &self,
+        program_id: ProgramId,
+        function: &TyFunction<'a>,
+        tagged_template: &'a TaggedTemplateExpression<'a>,
+        node_id: Option<NodeId>,
+        substitutions: &TypeParameterSubstitutions<'a>,
+    ) -> bool {
+        let type_argument_count = tagged_template
+            .type_arguments
+            .as_ref()
+            .map_or(0, |type_arguments| type_arguments.params.len());
+        if type_argument_count > function.type_parameters.len() {
+            return false;
+        }
+
+        let argument_count = tagged_template.quasi.expressions.len() + 1;
+        let minimum_argument_count = function_minimum_argument_count(self.arena(), function);
+        let maximum_argument_count = function_maximum_argument_count(self.arena(), function);
+        if argument_count < minimum_argument_count
+            || maximum_argument_count.is_some_and(|maximum| argument_count > maximum)
+        {
+            return false;
+        }
+
+        self.arguments_are_assignable_to_parameters(
+            program_id,
+            function,
+            std::iter::once(None).chain(tagged_template.quasi.expressions.iter().map(Some)),
+            node_id,
+            substitutions,
+        )
     }
 
     fn choose_best_signature_candidate(

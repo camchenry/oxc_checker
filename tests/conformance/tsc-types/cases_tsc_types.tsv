@@ -2446,6 +2446,29 @@ compiler/sequenceExpressions.ts	164	176	nestedResult	"nested"
 compiler/sequenceExpressions.ts	37	49	stringResult	"result"
 compiler/sequenceExpressions.ts	7	19	numberResult	42
 compiler/sequenceExpressions.ts	73	86	booleanResult	true
+compiler/taggedTemplateExpressions.ts	116	122	values	any[]
+compiler/taggedTemplateExpressions.ts	160	170	genericTag	<T>(template: any, value: T) => T
+compiler/taggedTemplateExpressions.ts	171	172	T	any
+compiler/taggedTemplateExpressions.ts	174	182	template	any
+compiler/taggedTemplateExpressions.ts	18	27	stringTag	(template: any, ...values: any[]) => string
+compiler/taggedTemplateExpressions.ts	189	194	value	T
+compiler/taggedTemplateExpressions.ts	196	197	T	any
+compiler/taggedTemplateExpressions.ts	200	201	T	any
+compiler/taggedTemplateExpressions.ts	220	230	curriedTag	(template: any) => (value: string) => number
+compiler/taggedTemplateExpressions.ts	231	239	template	any
+compiler/taggedTemplateExpressions.ts	248	253	value	string
+compiler/taggedTemplateExpressions.ts	28	36	template	any
+compiler/taggedTemplateExpressions.ts	281	293	stringResult	string
+compiler/taggedTemplateExpressions.ts	296	305	stringTag	(template: any, ...values: any[]) => string
+compiler/taggedTemplateExpressions.ts	320	333	literalResult	"literal"
+compiler/taggedTemplateExpressions.ts	336	346	literalTag	(template: any, ...values: any[]) => "literal"
+compiler/taggedTemplateExpressions.ts	363	376	genericResult	42
+compiler/taggedTemplateExpressions.ts	379	389	genericTag	<T>(template: any, value: T) => T
+compiler/taggedTemplateExpressions.ts	411	424	curriedResult	number
+compiler/taggedTemplateExpressions.ts	427	437	curriedTag	(template: any) => (value: string) => number
+compiler/taggedTemplateExpressions.ts	46	52	values	any[]
+compiler/taggedTemplateExpressions.ts	87	97	literalTag	(template: any, ...values: any[]) => "literal"
+compiler/taggedTemplateExpressions.ts	98	106	template	any
 compiler/tsIndexSignatures.ts	125	130	Multi	{}
 compiler/tsIndexSignatures.ts	13	16	key	string
 compiler/tsIndexSignatures.ts	138	141	key	string
