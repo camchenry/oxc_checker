@@ -1085,8 +1085,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     ChainElement::PrivateFieldExpression(member) => self
                         .get_type_of_private_field_expression(program_id, member, node_id, flags)
                         .or_undefined(self.arena()),
-                    // TODO(completeness): Complete these expressions
-                    ChainElement::TSNonNullExpression(_) => Ty::any(),
+                    ChainElement::TSNonNullExpression(non_null_expr) => {
+                        let ty = self.get_type_of_expression_with_node(
+                            program_id,
+                            &non_null_expr.expression,
+                            node_id,
+                            flags,
+                        );
+                        self.get_non_null_assertion_type(program_id, ty)
+                            .or_undefined(self.arena())
+                    }
                 }
             }
 
