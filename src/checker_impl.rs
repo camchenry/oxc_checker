@@ -1277,8 +1277,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::YieldExpression(yield_expression) => {
                 self.get_type_of_yield_expression(program_id, yield_expression)
             }
+            Expression::PrivateInExpression(_) => Ty::boolean(),
             // TODO(correctness): Handle all of these cases.
-            Expression::PrivateInExpression(_) => Ty::any(),
             Expression::JSXElement(_) => Ty::any(),
             Expression::JSXFragment(_) => Ty::any(),
             Expression::TSInstantiationExpression(_) => Ty::any(),

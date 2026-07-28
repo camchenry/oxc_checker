@@ -2312,6 +2312,24 @@ compiler/overloadRanking.ts	882	902	optionalTupleRestOne	"optional"
 compiler/overloadRanking.ts	905	930	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
 compiler/overloadRanking.ts	947	967	optionalTupleRestTwo	"optional"
 compiler/overloadRanking.ts	970	995	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
+compiler/privateInExpressions.ts	109	115	result	boolean
+compiler/privateInExpressions.ts	128	133	value	object
+compiler/privateInExpressions.ts	146	152	result	boolean
+compiler/privateInExpressions.ts	160	172	BrandedValue	typeof BrandedValue
+compiler/privateInExpressions.ts	190	199	hasSecret	(value: object) => boolean
+compiler/privateInExpressions.ts	200	205	value	object
+compiler/privateInExpressions.ts	236	242	result	boolean
+compiler/privateInExpressions.ts	256	261	value	object
+compiler/privateInExpressions.ts	274	280	result	boolean
+compiler/privateInExpressions.ts	315	328	_staticResult	boolean
+compiler/privateInExpressions.ts	331	343	BrandedValue	typeof BrandedValue
+compiler/privateInExpressions.ts	344	352	hasBrand	(value: object) => boolean
+compiler/privateInExpressions.ts	364	379	_instanceResult	boolean
+compiler/privateInExpressions.ts	386	398	BrandedValue	typeof BrandedValue
+compiler/privateInExpressions.ts	401	410	hasSecret	(value: object) => boolean
+compiler/privateInExpressions.ts	64	72	hasBrand	(value: object) => boolean
+compiler/privateInExpressions.ts	7	19	BrandedValue	typeof BrandedValue
+compiler/privateInExpressions.ts	73	78	value	object
 compiler/satisfiesExpression.ts	1001	1014	optionalShape	{ x: number; }
 compiler/satisfiesExpression.ts	1019	1020	x	number
 compiler/satisfiesExpression.ts	1038	1039	x	number

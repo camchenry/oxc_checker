@@ -1,0 +1,53 @@
+class BrandedValue {
+>     ^^^^^^^^^^^^: typeof BrandedValue   (TyTypeQuery) (BindingIdentifier)
+
+  static hasBrand(value: object): boolean {
+>        ^^^^^^^^: (value: object) => boolean   (TyFunction) (MethodDefinition)
+
+  static hasBrand(value: object): boolean {
+>                 ^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+
+    const result = #brand in value;
+>         ^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+    const result = #brand in value;
+>                            ^^^^^: object   (TyPrimitiveObject) (IdentifierReference)
+
+    return result && new BrandedValue().#brand;
+>          ^^^^^^: boolean   (TyBoolean) (IdentifierReference)
+
+    return result && new BrandedValue().#brand;
+>                        ^^^^^^^^^^^^: typeof BrandedValue   (TyTypeQuery) (IdentifierReference)
+
+  hasSecret(value: object): boolean {
+> ^^^^^^^^^: (value: object) => boolean   (TyFunction) (MethodDefinition)
+
+  hasSecret(value: object): boolean {
+>           ^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+
+    const result = #secret in value;
+>         ^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+    const result = #secret in value;
+>                             ^^^^^: object   (TyPrimitiveObject) (IdentifierReference)
+
+    return result && this.#secret > 0;
+>          ^^^^^^: boolean   (TyBoolean) (IdentifierReference)
+
+const _staticResult = BrandedValue.hasBrand({});
+>     ^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+const _staticResult = BrandedValue.hasBrand({});
+>                     ^^^^^^^^^^^^: typeof BrandedValue   (TyTypeQuery) (IdentifierReference)
+
+const _staticResult = BrandedValue.hasBrand({});
+>                                  ^^^^^^^^: (value: object) => boolean   (TyFunction) (StaticMemberExpression)
+
+const _instanceResult = new BrandedValue().hasSecret({});
+>     ^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+const _instanceResult = new BrandedValue().hasSecret({});
+>                           ^^^^^^^^^^^^: typeof BrandedValue   (TyTypeQuery) (IdentifierReference)
+
+const _instanceResult = new BrandedValue().hasSecret({});
+>                                          ^^^^^^^^^: (value: object) => boolean   (TyFunction) (StaticMemberExpression)
