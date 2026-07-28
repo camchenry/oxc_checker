@@ -24056,8 +24056,7 @@ type SVGMatrix = DOMMatrix;
 >                ^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (IdentifierReference)
 
 declare var SVGMatrix: typeof DOMMatrix;
->           ^^^^^^^^^: typeof DOMMatrix   (TyTypeQuery) (BindingIdentifier)
-             expected: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }
+>           ^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (BindingIdentifier)
 
 declare var SVGMatrix: typeof DOMMatrix;
 >                             ^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (IdentifierReference)
@@ -24072,8 +24071,7 @@ type WebKitCSSMatrix = DOMMatrix;
 >                      ^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (IdentifierReference)
 
 declare var WebKitCSSMatrix: typeof DOMMatrix;
->           ^^^^^^^^^^^^^^^: typeof DOMMatrix   (TyTypeQuery) (BindingIdentifier)
-                   expected: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }
+>           ^^^^^^^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (BindingIdentifier)
 
 declare var WebKitCSSMatrix: typeof DOMMatrix;
 >                                   ^^^^^^^^^: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }   (TyObject) (IdentifierReference)
@@ -24613,8 +24611,7 @@ type SVGPoint = DOMPoint;
 >               ^^^^^^^^: { new (x?: number, y?: number, z?: number, w?: number): DOMPoint; prototype: DOMPoint; fromPoint(other?: DOMPointInit): DOMPoint; }   (TyObject) (IdentifierReference)
 
 declare var SVGPoint: typeof DOMPoint;
->           ^^^^^^^^: typeof DOMPoint   (TyTypeQuery) (BindingIdentifier)
-            expected: { new (x?: number, y?: number, z?: number, w?: number): DOMPoint; prototype: DOMPoint; fromPoint(other?: DOMPointInit): DOMPoint; }
+>           ^^^^^^^^: { new (x?: number, y?: number, z?: number, w?: number): DOMPoint; prototype: DOMPoint; fromPoint(other?: DOMPointInit): DOMPoint; }   (TyObject) (BindingIdentifier)
 
 declare var SVGPoint: typeof DOMPoint;
 >                            ^^^^^^^^: { new (x?: number, y?: number, z?: number, w?: number): DOMPoint; prototype: DOMPoint; fromPoint(other?: DOMPointInit): DOMPoint; }   (TyObject) (IdentifierReference)
@@ -24905,8 +24902,7 @@ type SVGRect = DOMRect;
 >              ^^^^^^^: { new (x?: number, y?: number, width?: number, height?: number): DOMRect; prototype: DOMRect; fromRect(other?: DOMRectInit): DOMRect; }   (TyObject) (IdentifierReference)
 
 declare var SVGRect: typeof DOMRect;
->           ^^^^^^^: typeof DOMRect   (TyTypeQuery) (BindingIdentifier)
-           expected: { new (x?: number, y?: number, width?: number, height?: number): DOMRect; prototype: DOMRect; fromRect(other?: DOMRectInit): DOMRect; }
+>           ^^^^^^^: { new (x?: number, y?: number, width?: number, height?: number): DOMRect; prototype: DOMRect; fromRect(other?: DOMRectInit): DOMRect; }   (TyObject) (BindingIdentifier)
 
 declare var SVGRect: typeof DOMRect;
 >                           ^^^^^^^: { new (x?: number, y?: number, width?: number, height?: number): DOMRect; prototype: DOMRect; fromRect(other?: DOMRectInit): DOMRect; }   (TyObject) (IdentifierReference)
@@ -97361,8 +97357,7 @@ type webkitURL = URL;
 >                ^^^: { new (url: string | URL, base?: string | URL): URL; prototype: URL; canParse(url: string | URL, base?: string | URL): boolean; createObjectURL(obj: Blob | MediaSource): string; parse(url: string | URL, base?: string | URL): URL | null; revokeObjectURL(url: string): void; }   (TyObject) (IdentifierReference)
 
 declare var webkitURL: typeof URL;
->           ^^^^^^^^^: typeof URL   (TyTypeQuery) (BindingIdentifier)
-             expected: { new (url: string | URL, base?: string | URL): URL; prototype: URL; canParse(url: string | URL, base?: string | URL): boolean; createObjectURL(obj: Blob | MediaSource): string; parse(url: string | URL, base?: string | URL): URL | null; revokeObjectURL(url: string): void; }
+>           ^^^^^^^^^: { new (url: string | URL, base?: string | URL): URL; prototype: URL; canParse(url: string | URL, base?: string | URL): boolean; createObjectURL(obj: Blob | MediaSource): string; parse(url: string | URL, base?: string | URL): URL | null; revokeObjectURL(url: string): void; }   (TyObject) (BindingIdentifier)
 
 declare var webkitURL: typeof URL;
 >                             ^^^: { new (url: string | URL, base?: string | URL): URL; prototype: URL; canParse(url: string | URL, base?: string | URL): boolean; createObjectURL(obj: Blob | MediaSource): string; parse(url: string | URL, base?: string | URL): URL | null; revokeObjectURL(url: string): void; }   (TyObject) (IdentifierReference)

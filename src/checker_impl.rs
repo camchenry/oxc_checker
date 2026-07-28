@@ -11024,7 +11024,31 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             )
                         },
                         |symbol_id| {
-                            self.get_type_of_symbol(SymbolRef::new(node.program_id, symbol_id))
+                            let ty =
+                                self.get_type_of_symbol(SymbolRef::new(node.program_id, symbol_id));
+                            let has_type_query_annotation = matches!(
+                                self.nodes(node.program_id).parent_kind(node.node_id),
+                                AstKind::VariableDeclarator(declarator)
+                                    if declarator.type_annotation.as_deref().is_some_and(
+                                        |annotation| {
+                                            matches!(
+                                                annotation.type_annotation,
+                                                TSType::TSTypeQuery(_)
+                                            )
+                                        }
+                                    )
+                            );
+                            if has_type_query_annotation
+                                && let TypeData::TypeQuery(query) = self.arena().type_data(ty)
+                                && matches!(
+                                    self.arena().type_data(query.resolved),
+                                    TypeData::Object(_)
+                                )
+                            {
+                                query.resolved
+                            } else {
+                                ty
+                            }
                         },
                     )
                 }

@@ -1030,6 +1030,33 @@ mod test {
     }
 
     #[test]
+    fn checker_expands_object_type_queries_at_variable_bindings() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "declare const Target: { new (): Target; prototype: Target; }; declare const Alias: typeof Target;",
+        );
+        let checker = checker(&ret);
+        let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+        let alias_node_id = nodes
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                matches!(
+                    node.kind(),
+                    AstKind::BindingIdentifier(identifier) if identifier.name == Ident::from("Alias")
+                )
+                .then_some(node_id)
+            })
+            .unwrap();
+        let alias_node = NodeRef::new(ret.program_id, alias_node_id);
+
+        assert_eq!(
+            checker.type_to_string(checker.get_type_at_location(alias_node), alias_node),
+            "{ new (): Target; prototype: Target; }"
+        );
+    }
+
+    #[test]
     fn checker_renders_transparent_local_type_aliases_by_display_context() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
