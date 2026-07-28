@@ -9356,46 +9356,46 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 ty
             }
         } else {
-            // TODO: Rework this to not use map_or_else and check if we are in for-loop context first
-            declarator.init.as_ref().map_or_else(
-                || {
-                    self.get_type_of_for_statement_declarator(program_id, declaration, declarator)
-                        .unwrap_or_else(Ty::any)
-                },
-                |expression| {
-                    let flags = if declarator.kind == VariableDeclarationKind::Const
-                        && !self.is_in_exported_declaration(program_id, declaration)
-                    {
-                        GetTypeFlags::PRESERVE_LITERALS
-                    } else {
-                        GetTypeFlags::NONE
-                    };
-                    let ty = self.get_type_of_expression_with_node(
-                        program_id,
-                        expression,
-                        Some(declaration),
-                        flags,
-                    );
-                    if declarator.kind != VariableDeclarationKind::Const
-                        && matches!(ty, Ty::Null | Ty::Undefined)
-                        && self.is_null_or_undefined_initializer(expression)
-                    {
-                        Ty::any()
-                    } else if expression.is_function() {
-                        self.simple_binding_symbol(program_id, &declarator.id)
-                            .map_or(ty, |symbol| {
-                                self.add_expando_properties_to_callable_type(
-                                    program_id,
-                                    declaration,
-                                    symbol,
-                                    ty,
-                                )
-                            })
-                    } else {
-                        ty
-                    }
-                },
-            )
+            if let Some(ty) =
+                self.get_type_of_for_statement_declarator(program_id, declaration, declarator)
+            {
+                return ty;
+            }
+
+            let Some(expression) = declarator.init.as_ref() else {
+                return Ty::any();
+            };
+            let flags = if declarator.kind == VariableDeclarationKind::Const
+                && !self.is_in_exported_declaration(program_id, declaration)
+            {
+                GetTypeFlags::PRESERVE_LITERALS
+            } else {
+                GetTypeFlags::NONE
+            };
+            let ty = self.get_type_of_expression_with_node(
+                program_id,
+                expression,
+                Some(declaration),
+                flags,
+            );
+            if declarator.kind != VariableDeclarationKind::Const
+                && matches!(ty, Ty::Null | Ty::Undefined)
+                && self.is_null_or_undefined_initializer(expression)
+            {
+                Ty::any()
+            } else if expression.is_function() {
+                self.simple_binding_symbol(program_id, &declarator.id)
+                    .map_or(ty, |symbol| {
+                        self.add_expando_properties_to_callable_type(
+                            program_id,
+                            declaration,
+                            symbol,
+                            ty,
+                        )
+                    })
+            } else {
+                ty
+            }
         }
     }
 
