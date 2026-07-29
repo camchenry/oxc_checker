@@ -168,6 +168,12 @@ struct FileResult {
     errors: Vec<ComparisonError>,
 }
 
+#[derive(Default)]
+struct OxcRecordCollection {
+    records: Vec<TypeRecord>,
+    panicked_paths: BTreeSet<String>,
+}
+
 impl FileResult {
     fn passed(&self) -> bool {
         self.errors.is_empty()
@@ -189,6 +195,7 @@ impl FileResult {
 struct ComparisonStats {
     passed_files: usize,
     failed_files: usize,
+    panicked_files: usize,
     total_files: usize,
     matched_types: usize,
     mismatched_types: usize,
@@ -196,10 +203,10 @@ struct ComparisonStats {
 }
 
 impl ComparisonStats {
-    fn from_results(results: &[FileResult]) -> Self {
-        let total_files = results.len();
+    fn from_results(results: &[FileResult], panicked_files: usize) -> Self {
+        let total_files = results.len() + panicked_files;
         let failed_files = results.iter().filter(|result| !result.passed()).count();
-        let passed_files = total_files - failed_files;
+        let passed_files = results.len() - failed_files;
         let matched_types = results.iter().map(|result| result.matched_types).sum();
         let mismatched_types = results.iter().map(FileResult::mismatched_types).sum();
         let total_types = matched_types + mismatched_types;
@@ -207,6 +214,7 @@ impl ComparisonStats {
         Self {
             passed_files,
             failed_files,
+            panicked_files,
             total_files,
             matched_types,
             mismatched_types,
@@ -224,9 +232,10 @@ impl ComparisonStats {
 
     fn summary(&self) -> String {
         format!(
-            "files: {} passed, {} failed, {} total ({:.2}%)\ntypes: {} matched, {} mismatched, {} total ({:.2}%)",
+            "files: {} passed, {} failed, {} panicked, {} total ({:.2}%)\ntypes: {} matched, {} mismatched, {} total ({:.2}%)",
             self.passed_files,
             self.failed_files,
+            self.panicked_files,
             self.total_files,
             self.file_pass_percentage(),
             self.matched_types,
@@ -962,9 +971,11 @@ fn run_single_file_conformance(case_path: &Path, refresh_tsc: bool) -> Conforman
     } else {
         read_tsc_records_for_case(&repo_root, suite, &cases_root, case_path)?
     };
-    let oxc_records = collect_oxc_records_for_case(&cases_root, case_path)?;
+    let collected = collect_oxc_records_for_case(&cases_root, case_path)?;
+    let tsc_records = filter_panicked_records(tsc_records, &collected.panicked_paths);
+    let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     let results = compare_records(&tsc_records, &oxc_records);
-    let stats = ComparisonStats::from_results(&results);
+    let stats = ComparisonStats::from_results(&results, collected.panicked_paths.len());
     print!("{}", format_type_record_report(suite, &stats, &results));
 
     let summary = stats.summary();
@@ -1029,11 +1040,13 @@ fn run_type_record_conformance(
 
     ensure_cases_root(suite, &cases_root)?;
 
-    let oxc_records = collect_oxc_records(suite, &cases_root, shared);
-    let tsc_records = read_records(&tsc_types_path)?;
+    let collected = collect_oxc_records(suite, &cases_root, shared);
+    let tsc_records =
+        filter_panicked_records(read_records(&tsc_types_path)?, &collected.panicked_paths);
+    let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     write_type_outputs(suite, &cases_root, &oxc_records, &tsc_records);
     let results = compare_records(&tsc_records, &oxc_records);
-    let stats = ComparisonStats::from_results(&results);
+    let stats = ComparisonStats::from_results(&results, collected.panicked_paths.len());
     write_snapshot(&snapshot_path, suite, &stats, &results);
 
     let summary = stats.summary();
@@ -1198,7 +1211,7 @@ fn collect_oxc_records(
     suite: &ConformanceSuite,
     cases_root: &Path,
     shared: Option<&SharedConformanceCollection>,
-) -> Vec<TypeRecord> {
+) -> OxcRecordCollection {
     let paths = discover_compiler_cases(suite, cases_root);
     let total_paths = paths.len();
     let worker_count = shared.map_or_else(
@@ -1207,7 +1220,7 @@ fn collect_oxc_records(
     );
 
     if total_paths == 0 {
-        return Vec::new();
+        return OxcRecordCollection::default();
     }
 
     let progress = shared.map_or_else(
@@ -1266,30 +1279,37 @@ fn collect_oxc_records(
                 let allocator = Allocator::default();
                 let prepared_programs = program::PreparedProgramSet::embedded_libraries(&allocator)
                     .unwrap_or_else(|err| panic!("failed to prepare embedded libraries: {err}"));
-                let mut batch_records = Vec::new();
+                let mut batch_collection = OxcRecordCollection::default();
                 for ready_file in ready_batch.files {
                     progress.start(&ready_file.path);
                     let check_started_at = timing.is_enabled().then(Instant::now);
-                    batch_records.extend(collect_oxc_records_from_source_with_programs(
+                    let collection = collect_oxc_records_from_source_with_programs(
                         cases_root,
                         &ready_file.path,
                         &ready_file.source_text,
                         &allocator,
                         Some(&prepared_programs),
-                    ));
+                    );
+                    batch_collection.records.extend(collection.records);
+                    batch_collection
+                        .panicked_paths
+                        .extend(collection.panicked_paths);
                     if let Some(check_started_at) = check_started_at {
                         timing.record_check(check_started_at.elapsed());
                     }
                     progress.finish(Some(&ready_file.path));
                 }
-                batch_records
+                batch_collection
             })
             .collect::<Vec<_>>()
             .into_iter()
-            .flatten()
-            .collect::<Vec<_>>()
+            .fold(OxcRecordCollection::default(), |mut collection, batch| {
+                collection.records.extend(batch.records);
+                collection.panicked_paths.extend(batch.panicked_paths);
+                collection
+            })
     };
-    let mut records = if shared.is_some() {
+    let mut collection = if shared.is_some() {
         collect_records()
     } else {
         let pool = rayon::ThreadPoolBuilder::new()
@@ -1307,7 +1327,7 @@ fn collect_oxc_records(
 
     eprintln!();
     timing.report(suite, total_paths, worker_count);
-    records.sort_by(|left, right| {
+    collection.records.sort_by(|left, right| {
         left.path
             .cmp(&right.path)
             .then_with(|| left.start.cmp(&right.start))
@@ -1315,7 +1335,7 @@ fn collect_oxc_records(
             .then_with(|| left.text.cmp(&right.text))
             .then_with(|| left.ty_repr.cmp(&right.ty_repr))
     });
-    records
+    collection
 }
 
 fn balance_conformance_batches(
@@ -1437,15 +1457,22 @@ fn truncate_progress_text(text: &str, width: usize) -> String {
 fn collect_oxc_records_for_case(
     cases_root: &Path,
     case_path: &Path,
-) -> ConformanceResult<Vec<TypeRecord>> {
+) -> ConformanceResult<OxcRecordCollection> {
     let source_text = read_to_string_simd_utf8(case_path).map_err(|err| {
         ConformanceError::new(format!(
             "failed to read conformance case {}: {err}",
             case_path.display()
         ))
     })?;
-    let mut records = collect_oxc_records_from_source(cases_root, case_path, &source_text);
-    records.sort_by(|left, right| {
+    let allocator = Allocator::default();
+    let mut collection = collect_oxc_records_from_source_with_programs(
+        cases_root,
+        case_path,
+        &source_text,
+        &allocator,
+        None,
+    );
+    collection.records.sort_by(|left, right| {
         left.path
             .cmp(&right.path)
             .then_with(|| left.start.cmp(&right.start))
@@ -1453,7 +1480,7 @@ fn collect_oxc_records_for_case(
             .then_with(|| left.text.cmp(&right.text))
             .then_with(|| left.ty_repr.cmp(&right.ty_repr))
     });
-    Ok(records)
+    Ok(collection)
 }
 
 fn read_tsc_records_for_case(
@@ -1483,6 +1510,23 @@ fn collect_oxc_records_from_source(
 ) -> Vec<TypeRecord> {
     let allocator = Allocator::default();
     collect_oxc_records_from_source_with_programs(cases_root, path, source_text, &allocator, None)
+        .records
+}
+
+fn panicked_record_path(
+    error: &program::ProgramStoreError,
+    relative_path: &str,
+    compiler_case: &CompilerTestCase,
+) -> Option<String> {
+    let program::ProgramStoreError::Parse { path, .. } = error else {
+        return None;
+    };
+
+    compiler_case.files.iter().find_map(|source_file| {
+        let source_path = normalize_fixture_path(Path::new(&source_file.name));
+        (source_path == *path)
+            .then(|| record_path(relative_path, source_file, compiler_case.has_explicit_files))
+    })
 }
 
 fn collect_oxc_records_from_source_with_programs<'a>(
@@ -1491,12 +1535,21 @@ fn collect_oxc_records_from_source_with_programs<'a>(
     source_text: &str,
     allocator: &'a Allocator,
     prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
-) -> Vec<TypeRecord> {
+) -> OxcRecordCollection {
     let relative_path = relative_path(cases_root, path);
     let compiler_case = parse_compiler_test_case(source_text, &relative_path);
     let _settings = &compiler_case.settings;
-    let mut records = Vec::new();
-    if let Ok(parsed) = parse_fixture_program(allocator, &compiler_case, prepared_programs) {
+    let mut collection = OxcRecordCollection::default();
+    let parsed = match parse_fixture_program(allocator, &compiler_case, prepared_programs) {
+        Ok(parsed) => Some(parsed),
+        Err(error) => {
+            if let Some(path) = panicked_record_path(&error, &relative_path, &compiler_case) {
+                collection.panicked_paths.insert(path);
+            }
+            None
+        }
+    };
+    if let Some(parsed) = parsed {
         let checker = CheckerBuilder::new().build(&parsed.store);
         for source_file in &compiler_case.files {
             let _file_settings = &source_file.settings;
@@ -1506,7 +1559,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
             else {
                 continue;
             };
-            records.extend(actual_identifier_records(
+            collection.records.extend(actual_identifier_records(
                 &checker,
                 program_id,
                 &record_path(
@@ -1517,19 +1570,25 @@ fn collect_oxc_records_from_source_with_programs<'a>(
                 &source_file.source_text,
             ));
         }
-        return records;
+        return collection;
     }
 
     // Some conformance fixtures are intentionally broken or use unsupported syntax/features.
     // Fall back to per-file extraction so we still emit records for parsable files.
     for source_file in &compiler_case.files {
-        let Some(parsed) = parse_single_fixture_program(
+        let parsed = match parse_single_fixture_program(
             allocator,
             source_file,
             compiler_case.has_explicit_files,
             prepared_programs,
-        ) else {
-            continue;
+        ) {
+            Ok(parsed) => parsed,
+            Err(error) => {
+                if let Some(path) = panicked_record_path(&error, &relative_path, &compiler_case) {
+                    collection.panicked_paths.insert(path);
+                }
+                continue;
+            }
         };
         let Some(program_id) = parsed
             .store
@@ -1538,7 +1597,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
             continue;
         };
         let checker = CheckerBuilder::new().build(&parsed.store);
-        records.extend(actual_identifier_records(
+        collection.records.extend(actual_identifier_records(
             &checker,
             program_id,
             &record_path(
@@ -1550,7 +1609,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
         ));
     }
 
-    records
+    collection
 }
 
 fn parse_compiler_test_case(source_text: &str, fixture_path: &str) -> CompilerTestCase {
@@ -1736,7 +1795,7 @@ fn parse_fixture_program<'a>(
     allocator: &'a Allocator,
     compiler_case: &CompilerTestCase,
     prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
-) -> Result<ParsedFixture<'a>, String> {
+) -> program::ProgramStoreResult<ParsedFixture<'a>> {
     let host = FixtureProgramHost::new(&compiler_case.files, compiler_case.has_explicit_files);
     let mut builder = program::ProgramStoreBuilder::new(allocator, host);
     if let Some(prepared_programs) = prepared_programs {
@@ -1751,13 +1810,9 @@ fn parse_fixture_program<'a>(
     } else if let Some(lib) = compiler_case.settings.get("lib") {
         builder = builder.with_lib_names(parse_compiler_lib_names(lib));
     } else if let Some(target) = compiler_case.settings.get("target") {
-        builder = builder
-            .with_default_lib_target_name(target)
-            .map_err(|err| err.to_string())?;
+        builder = builder.with_default_lib_target_name(target)?;
     } else {
-        builder = builder
-            .with_default_lib_target_name("esnext")
-            .map_err(|err| err.to_string())?;
+        builder = builder.with_default_lib_target_name("esnext")?;
     }
     for source_file in &compiler_case.files {
         if !is_compilable_fixture_file(Path::new(&source_file.name)) {
@@ -1765,7 +1820,7 @@ fn parse_fixture_program<'a>(
         }
         builder = builder.add_root_file(normalize_fixture_path(Path::new(&source_file.name)));
     }
-    let store = builder.build().map_err(|err| err.to_string())?;
+    let store = builder.build()?;
 
     Ok(ParsedFixture { store })
 }
@@ -1788,7 +1843,7 @@ fn parse_single_fixture_program<'a>(
     source_file: &CompilerTestFile,
     module_file: bool,
     prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
-) -> Option<ParsedFixture<'a>> {
+) -> program::ProgramStoreResult<ParsedFixture<'a>> {
     let compiler_case = CompilerTestCase {
         settings: HashMap::new(),
         files: vec![CompilerTestFile {
@@ -1798,7 +1853,7 @@ fn parse_single_fixture_program<'a>(
         }],
         has_explicit_files: module_file,
     };
-    parse_fixture_program(allocator, &compiler_case, prepared_programs).ok()
+    parse_fixture_program(allocator, &compiler_case, prepared_programs)
 }
 
 fn virtual_module_source_text(source_text: &str) -> String {
@@ -2915,9 +2970,10 @@ fn format_type_record_report(
     snapshot.push_str("# Generated by `cargo conformance`.\n");
     snapshot.push_str(&format!("# Cases root: {}\n", suite.cases_root));
     snapshot.push_str(&format!(
-        "files: passed={} failed={} total={} pass_percentage={:.2}%\n",
+        "files: passed={} failed={} panicked={} total={} pass_percentage={:.2}%\n",
         stats.passed_files,
         stats.failed_files,
+        stats.panicked_files,
         stats.total_files,
         stats.file_pass_percentage()
     ));
@@ -2946,6 +3002,16 @@ fn format_type_record_report(
     }
 
     snapshot
+}
+
+fn filter_panicked_records(
+    records: Vec<TypeRecord>,
+    panicked_paths: &BTreeSet<String>,
+) -> Vec<TypeRecord> {
+    records
+        .into_iter()
+        .filter(|record| !panicked_paths.contains(record.path.as_ref()))
+        .collect()
 }
 
 fn case_snapshot_path(suite: &ConformanceSuite, path: &str) -> String {
@@ -3475,6 +3541,30 @@ mod tests {
                 && record.text == "x();"
                 && record.ty_repr == "number"
         }));
+    }
+
+    #[test]
+    fn panicked_fixture_is_excluded_from_record_comparison() {
+        let source_text = "// @target: es2015\n// @strict: false\nclass C {\n    public const var export foo = 10;\n\n    var constructor() { }\n}";
+        let allocator = Allocator::default();
+        let collection = collect_oxc_records_from_source_with_programs(
+            Path::new("vendor/TypeScript/tests/cases"),
+            Path::new("vendor/TypeScript/tests/cases/compiler/ClassDeclaration26.ts"),
+            source_text,
+            &allocator,
+            None,
+        );
+
+        assert!(collection.records.is_empty());
+        assert_eq!(
+            collection.panicked_paths,
+            BTreeSet::from(["compiler/ClassDeclaration26.ts".to_string()])
+        );
+
+        let stats = ComparisonStats::from_results(&[], collection.panicked_paths.len());
+        assert_eq!(stats.mismatched_types, 0);
+        assert_eq!(stats.total_types, 0);
+        assert_eq!(stats.panicked_files, 1);
     }
 
     #[test]
