@@ -184,6 +184,9 @@ const literalKey = "name" as const;
 const literalKey = "name" as const;
 >                            ^^^^^: any   (TyAny) (TSTypeReference)
 
+const literalKey = "name" as const;
+>                            ^^^^^: any   (TyAny) (IdentifierReference)
+
 const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
 >     ^^^^^^^^: "name" | "id"   (TyUnion) (BindingIdentifier)
 
@@ -325,6 +328,9 @@ const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >                                                                 ^^^^^: any   (TyAny) (TSTypeReference)
 
+const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
+>                                                                 ^^^^^: any   (TyAny) (IdentifierReference)
+
 const firstUser = users[0];
 >     ^^^^^^^^^: User   (TyTypeReference) (BindingIdentifier)
 
@@ -366,6 +372,9 @@ const tuple = ["ready", 200, { ok: true }] as const;
 
 const tuple = ["ready", 200, { ok: true }] as const;
 >                                             ^^^^^: any   (TyAny) (TSTypeReference)
+
+const tuple = ["ready", 200, { ok: true }] as const;
+>                                             ^^^^^: any   (TyAny) (IdentifierReference)
 
 const tupleStatus = tuple[0];
 >     ^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
@@ -444,6 +453,9 @@ const matrix = [[1, 2], [3, 4]] as const;
 
 const matrix = [[1, 2], [3, 4]] as const;
 >                                  ^^^^^: any   (TyAny) (TSTypeReference)
+
+const matrix = [[1, 2], [3, 4]] as const;
+>                                  ^^^^^: any   (TyAny) (IdentifierReference)
 
 const matrixFirstRow = matrix[0];
 >     ^^^^^^^^^^^^^^: readonly [1, 2]   (TyTuple) (BindingIdentifier)

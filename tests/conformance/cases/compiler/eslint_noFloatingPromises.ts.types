@@ -154,6 +154,9 @@ declare function createPromiseLike(): PromiseLike<string>;
 declare function createPromiseLike(): PromiseLike<string>;
 >                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare function createPromiseLike(): PromiseLike<string>;
+>                                     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 createPromiseLike();
 >^^^^^^^^^^^^^^^^^: () => PromiseLike<string>   (TyFunction) (IdentifierReference)
 
@@ -192,6 +195,9 @@ declare function createPromiseLike(): PromiseLike<string>;
 
 declare function createPromiseLike(): PromiseLike<string>;
 >                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare function createPromiseLike(): PromiseLike<string>;
+>                                     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 await createPromiseLike();
 >^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
@@ -250,8 +256,14 @@ await (async function () {
   await res(1);
 > ^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
+  await res(1);
+>       ^^^: any   (TyAny) (IdentifierReference)
+
 (async function () {
 >^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference) (ExpressionStatement)
 
   await res(1);
 > ^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+
+  await res(1);
+>       ^^^: any   (TyAny) (IdentifierReference)

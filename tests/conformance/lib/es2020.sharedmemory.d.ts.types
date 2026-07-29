@@ -18,6 +18,9 @@ interface Atomics {
 >                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
@@ -25,6 +28,9 @@ interface Atomics {
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -48,6 +54,9 @@ interface Atomics {
 >                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
@@ -55,6 +64,9 @@ interface Atomics {
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -78,6 +90,9 @@ interface Atomics {
 >                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
+>                                             ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
 >                                                                ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
@@ -85,6 +100,9 @@ interface Atomics {
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
 >                                                                               ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
+>                                                                               ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
 >                                                                                                 ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -111,6 +129,9 @@ interface Atomics {
 >                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                      ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
@@ -118,6 +139,9 @@ interface Atomics {
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                                          ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -141,6 +165,9 @@ interface Atomics {
 >                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
+>                                  ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
 >                                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
@@ -148,6 +175,9 @@ interface Atomics {
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
 >                                                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
+>                                                                    ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
 >                                                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -168,6 +198,9 @@ interface Atomics {
 >                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                   ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
@@ -175,6 +208,9 @@ interface Atomics {
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                                    ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -198,6 +234,9 @@ interface Atomics {
 >                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
@@ -205,6 +244,9 @@ interface Atomics {
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -228,6 +270,9 @@ interface Atomics {
 >                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
@@ -235,6 +280,9 @@ interface Atomics {
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -256,6 +304,9 @@ interface Atomics {
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
 >                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
+>                                  ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
 >                                                    ^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -282,6 +333,9 @@ interface Atomics {
 >                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
+>                                    ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
 >                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
@@ -303,6 +357,9 @@ interface Atomics {
 >                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
@@ -310,6 +367,9 @@ interface Atomics {
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
+>                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
 >                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)

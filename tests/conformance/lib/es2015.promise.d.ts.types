@@ -29,6 +29,9 @@ interface PromiseConstructor {
 >                                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
+>                                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
 >                                                       ^: any   (TyAny) (TSTypeReference)
 
     new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
@@ -74,6 +77,9 @@ interface PromiseConstructor {
 >                                                                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
+>                                                                                          ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
 >                                                                                                  ^: any   (TyAny) (TSTypeReference)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
@@ -99,6 +105,9 @@ interface PromiseConstructor {
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >                                                               ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+>                                                               ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >                                                                       ^: any   (TyAny) (TSTypeReference)
@@ -152,6 +161,9 @@ interface PromiseConstructor {
 >                                 ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
+>                                 ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    resolve<T>(value: T): Promise<Awaited<T>>;
 >                                         ^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
@@ -170,6 +182,9 @@ interface PromiseConstructor {
 >                         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
+>                         ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
 >                                     ^: any   (TyAny) (TSTypeReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
@@ -180,6 +195,9 @@ interface PromiseConstructor {
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
 >                                                  ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
+>                                                  ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
 >                                                          ^: any   (TyAny) (TSTypeReference)

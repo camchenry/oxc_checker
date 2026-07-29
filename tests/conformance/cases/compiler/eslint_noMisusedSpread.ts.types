@@ -19,6 +19,9 @@ declare function getObject(): Record<string, string>;
 declare function getObject(): Record<string, string>;
 >                             ^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare function getObject(): Record<string, string>;
+>                             ^^^^^^: any   (TyAny) (IdentifierReference)
+
 const getObjectSpread = { ...getObject };
 >     ^^^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
 
@@ -96,6 +99,9 @@ declare function getObject(): Record<string, string>;
 
 declare function getObject(): Record<string, string>;
 >                             ^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare function getObject(): Record<string, string>;
+>                             ^^^^^^: any   (TyAny) (IdentifierReference)
 
 const getObjectSpread = { ...getObject() };
 >     ^^^^^^^^^^^^^^^: { [x: string]: string; }   (TyObject) (BindingIdentifier)

@@ -14,6 +14,9 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                                                                    ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>                                                                    ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
 >                                                                                   ^: any   (TyAny) (TSTypeReference)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
@@ -36,6 +39,9 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                                   ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
+>                                   ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
 >                                                  ^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): IteratorResult<T, TReturn>;
@@ -54,6 +60,9 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
+>                           ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    return(value: TReturn): IteratorResult<T, TReturn>;
 >                                          ^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
@@ -67,6 +76,9 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 
     throw(e: any): IteratorResult<T, TReturn>;
 >                  ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    throw(e: any): IteratorResult<T, TReturn>;
+>                  ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     throw(e: any): IteratorResult<T, TReturn>;
 >                                 ^: any   (TyAny) (TSTypeReference)

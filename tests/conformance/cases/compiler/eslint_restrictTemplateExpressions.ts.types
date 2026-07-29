@@ -106,6 +106,9 @@ const msg2 = `arg = ${user.name || 'the user with no name'}`;
 const arg = condition ? 'ok' : null;
 >     ^^^: "ok" | null   (TyUnion) (BindingIdentifier)
 
+const arg = condition ? 'ok' : null;
+>           ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 const msg1 = `arg = ${arg}`;
 >     ^^^^: string   (TyString) (BindingIdentifier)
 

@@ -247,6 +247,9 @@ interface AggregateErrorConstructor {
         errors: Iterable<any>,
 >               ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        errors: Iterable<any>,
+>               ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
         message?: string,
 >       ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
@@ -267,6 +270,9 @@ interface AggregateErrorConstructor {
 
         errors: Iterable<any>,
 >               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        errors: Iterable<any>,
+>               ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         message?: string,
 >       ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)

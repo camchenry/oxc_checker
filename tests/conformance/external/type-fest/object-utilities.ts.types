@@ -11,6 +11,9 @@ export type ApplyDefaultOptions<
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   Defaults extends Required<Options>,
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  Defaults extends Required<Options>,
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   SpecifiedOptions extends Options,
@@ -33,6 +36,9 @@ export type ApplyDefaultOptions<
 
     ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
 >     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
+>     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
 >                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -227,6 +233,9 @@ type _Except<
 >                 ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   Options extends Required<ExceptOptions>,
+>                 ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  Options extends Required<ExceptOptions>,
 >                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
@@ -257,7 +266,13 @@ type _Except<
 >   ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ? Partial<Record<KeysType, never>>
+>   ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  ? Partial<Record<KeysType, never>>
 >           ^^^^^^: any   (TyAny) (TSTypeReference)
+
+  ? Partial<Record<KeysType, never>>
+>           ^^^^^^: any   (TyAny) (IdentifierReference)
 
   ? Partial<Record<KeysType, never>>
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -303,6 +318,9 @@ export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
 >                          ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
+>                          ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
 >                                   ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped) (TSTypeReference)
@@ -363,6 +381,9 @@ export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
 
   ObjectType extends unknown ? Record<keyof ObjectType, never> : never
 >                              ^^^^^^: any   (TyAny) (TSTypeReference)
+
+  ObjectType extends unknown ? Record<keyof ObjectType, never> : never
+>                              ^^^^^^: any   (TyAny) (IdentifierReference)
 
   ObjectType extends unknown ? Record<keyof ObjectType, never> : never
 >                                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)

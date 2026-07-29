@@ -53,10 +53,16 @@ declare namespace Intl {
 >                                        ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                        ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                                       ^: any   (TyAny) (TSTypeReference)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         [Symbol.iterator](): SegmentIterator<T>;
 >        ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -130,6 +136,9 @@ declare namespace Intl {
 >                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
 >                                       ^^^^^^^: SegmenterOptions | undefined   (TyUnion) (BindingIdentifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
@@ -151,16 +160,25 @@ declare namespace Intl {
 >                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                    ^^^^^^^: Pick<SegmenterOptions, "localeMatcher"> | undefined   (TyUnion) (BindingIdentifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                              ^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                              ^^^^: any   (TyAny) (IdentifierReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
 >            ^^^^^^^^^^^^^^^^^: { (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }   (TyObject) (BindingIdentifier)

@@ -28,6 +28,9 @@ interface AsyncDisposable {
     [Symbol.asyncDispose](): PromiseLike<void>;
 >                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.asyncDispose](): PromiseLike<void>;
+>                            ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface SuppressedError extends Error {
 >         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (BindingIdentifier)
                  expected: SuppressedErrorConstructor
@@ -269,6 +272,9 @@ interface AsyncDisposableStack {
 >                                                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
+>                                                    ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
 >                                                                               ^: any   (TyAny) (TSTypeReference)
 
     defer(onDisposeAsync: () => PromiseLike<void> | void): void;
@@ -279,6 +285,9 @@ interface AsyncDisposableStack {
 
     defer(onDisposeAsync: () => PromiseLike<void> | void): void;
 >                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    defer(onDisposeAsync: () => PromiseLike<void> | void): void;
+>                               ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     move(): AsyncDisposableStack;
 >   ^^^^: { (): AsyncDisposableStack; (): AsyncDisposableStack; }   (TyObject) (TSMethodSignature)

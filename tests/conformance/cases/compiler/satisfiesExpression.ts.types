@@ -85,6 +85,9 @@ const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
 const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
 >                                  ^^^^^: any   (TyAny) (TSTypeReference)
 
+const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
+>                                  ^^^^^: any   (TyAny) (IdentifierReference)
+
 const array = ["red", "green", "blue"] satisfies string[]
 >     ^^^^^: string[]   (TyArray) (BindingIdentifier)
 

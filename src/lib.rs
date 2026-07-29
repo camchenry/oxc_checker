@@ -3316,6 +3316,71 @@ mod test {
     }
 
     #[test]
+    fn get_type_at_location_checks_direct_expressions() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare function make(): number;
+        const numeric = 42;
+        const bigint = 1n;
+        const string = "hello";
+        const boolean = true;
+        const call = make();
+        const array = [true];
+        const object = { value: null };
+        const functionExpression = function () {};
+        const classExpression = class {};
+        "#,
+        );
+        let checker = checker(&ret);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let expression_types = semantic
+            .nodes()
+            .iter_enumerated()
+            .filter_map(|(node_id, node)| {
+                if !matches!(
+                    semantic.nodes().parent_kind(node_id),
+                    AstKind::VariableDeclarator(_)
+                ) {
+                    return None;
+                }
+                let name = match node.kind() {
+                    AstKind::NumericLiteral(_) => "numeric",
+                    AstKind::BigIntLiteral(_) => "bigint",
+                    AstKind::StringLiteral(_) => "string",
+                    AstKind::BooleanLiteral(_) => "boolean",
+                    AstKind::CallExpression(_) => "call",
+                    AstKind::ArrayExpression(_) => "array",
+                    AstKind::ObjectExpression(_) => "object",
+                    AstKind::Function(function) if function.is_expression() => "function",
+                    AstKind::Class(class) if class.is_expression() => "class",
+                    _ => return None,
+                };
+                Some((
+                    name,
+                    checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)),
+                ))
+            })
+            .collect::<HashMap<_, _>>();
+
+        assert_eq!(expression_types.len(), 9);
+        assert_type_eq(
+            ret.arena,
+            expression_types["numeric"],
+            Ty::number_literal(arena(&ret), 42.0, "42", NumberBase::Decimal),
+        );
+        assert_eq!(expression_types["bigint"].to_type_string(ret.arena), "1n");
+        assert_eq!(
+            expression_types["string"],
+            Ty::string_literal(arena(&ret), "\"hello\"")
+        );
+        assert_eq!(expression_types["boolean"], Ty::boolean_true());
+        assert_eq!(expression_types["call"], Ty::number());
+        assert!(expression_types.values().all(|ty| !ty.is_none()));
+    }
+
+    #[test]
     fn type_strings_render_string_literals_with_double_quotes() {
         let allocator = Allocator::default();
         let arena = CheckerArena::new(&allocator);

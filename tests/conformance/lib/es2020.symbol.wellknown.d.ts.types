@@ -14,10 +14,16 @@ interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorRetur
 >                                         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                         ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                                        ^: any   (TyAny) (TSTypeReference)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                                           ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                                           ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     [Symbol.iterator](): RegExpStringIterator<T>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -49,3 +55,6 @@ interface RegExp {
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
 >                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
+>                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

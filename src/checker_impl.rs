@@ -961,7 +961,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         self.check_expression_with_context(
             program_id,
-            expression,
+            AstKind::from_expression(expression),
             node_id,
             ExpressionCheckContext::new(flags),
         )
@@ -970,13 +970,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     fn check_expression_with_context(
         &self,
         program_id: ProgramId,
-        expression: &'a Expression<'a>,
+        expression: AstKind<'a>,
         node_id: Option<NodeId>,
         context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
         let flags = context.flags;
         match expression {
-            Expression::Identifier(identifier) => {
+            AstKind::IdentifierReference(identifier) => {
                 let symbol = self
                     .symbol_for_identifier_reference(program_id, identifier)
                     .or_else(|| {
@@ -1002,23 +1002,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 Ty::any()
             }
-            Expression::ObjectExpression(object) => {
+            AstKind::ObjectExpression(object) => {
                 self.get_type_of_object_expression(program_id, object, node_id, context)
             }
-            Expression::BinaryExpression(binary_expression) => {
+            AstKind::BinaryExpression(binary_expression) => {
                 self.get_type_of_binary_expression(program_id, binary_expression, node_id, flags)
             }
-            Expression::AssignmentExpression(assignment_expression) => self
+            AstKind::AssignmentExpression(assignment_expression) => self
                 .get_type_of_assignment_expression(
                     program_id,
                     assignment_expression,
                     node_id,
                     flags,
                 ),
-            Expression::ConditionalExpression(conditional) => {
+            AstKind::ConditionalExpression(conditional) => {
                 self.get_type_of_conditional_expression(program_id, conditional, node_id)
             }
-            Expression::UnaryExpression(unary_expression) => match unary_expression.operator {
+            AstKind::UnaryExpression(unary_expression) => match unary_expression.operator {
                 UnaryOperator::UnaryNegation | UnaryOperator::UnaryPlus => {
                     match &unary_expression.argument {
                         Expression::NumericLiteral(literal) if flags.preserve_literals() => {
@@ -1045,7 +1045,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 UnaryOperator::Void => Ty::undefined(),
                 UnaryOperator::Delete => Ty::boolean(),
             },
-            Expression::TSNonNullExpression(non_null_expr) => {
+            AstKind::TSNonNullExpression(non_null_expr) => {
                 let ty = self.get_type_of_expression_with_node(
                     program_id,
                     &non_null_expr.expression,
@@ -1054,22 +1054,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 );
                 self.get_non_null_assertion_type(program_id, ty)
             }
-            Expression::NewExpression(new_expression) => {
+            AstKind::NewExpression(new_expression) => {
                 self.get_type_of_new_expression(program_id, new_expression, flags)
             }
-            Expression::CallExpression(call_expression) => {
+            AstKind::CallExpression(call_expression) => {
                 self.get_type_of_call_expression(program_id, call_expression, node_id)
             }
-            Expression::ArrayExpression(array_expression) => {
+            AstKind::ArrayExpression(array_expression) => {
                 self.get_type_of_array_expression(program_id, array_expression, node_id, context)
             }
-            Expression::ComputedMemberExpression(member) => {
+            AstKind::ComputedMemberExpression(member) => {
                 self.get_type_of_computed_member_expression(program_id, member, node_id, flags)
             }
-            Expression::StaticMemberExpression(member) => {
+            AstKind::StaticMemberExpression(member) => {
                 self.get_type_of_static_member_expression(program_id, member, node_id, flags)
             }
-            Expression::ChainExpression(chain_expr) => {
+            AstKind::ChainExpression(chain_expr) => {
                 // Chain expressions have the same type as the property they are accessing, however they are
                 // unioned with undefined, since the source object may be undefined.
                 match &chain_expr.expression {
@@ -1114,17 +1114,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             }
 
-            Expression::ParenthesizedExpression(parenthesized) => self
-                .check_expression_with_context(
-                    program_id,
-                    &parenthesized.expression,
-                    node_id,
-                    context,
-                ),
-            Expression::TSTypeAssertion(assertion) => {
+            AstKind::ParenthesizedExpression(parenthesized) => self.check_expression_with_context(
+                program_id,
+                AstKind::from_expression(&parenthesized.expression),
+                node_id,
+                context,
+            ),
+            AstKind::TSTypeAssertion(assertion) => {
                 self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
             }
-            Expression::TSAsExpression(assertion)
+            AstKind::TSAsExpression(assertion)
                 if is_const_type_reference(&assertion.type_annotation) =>
             {
                 let const_context = context
@@ -1134,15 +1133,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .with_check_mode(CheckMode::CONST_CONTEXT | CheckMode::FORCE_TUPLE);
                 self.check_expression_with_context(
                     program_id,
-                    &assertion.expression,
+                    AstKind::from_expression(&assertion.expression),
                     node_id,
                     const_context,
                 )
             }
-            Expression::TSAsExpression(assertion) => {
+            AstKind::TSAsExpression(assertion) => {
                 self.get_type_from_type_assertion(program_id, &assertion.type_annotation)
             }
-            Expression::ThisExpression(_) => node_id
+            AstKind::ThisExpression(_) => node_id
                 .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
                 .or_else(|| {
                     node_id.and_then(|node_id| {
@@ -1150,25 +1149,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     })
                 })
                 .unwrap_or_else(Ty::any),
-            Expression::FunctionExpression(function) => self
+            AstKind::Function(function) if function.is_expression() => self
                 .get_type_of_function_signature_with_node(
                     program_id,
                     FunctionKind::Function(function),
                     node_id,
                 ),
-            Expression::ArrowFunctionExpression(arrow_function) => self
+            AstKind::ArrowFunctionExpression(arrow_function) => self
                 .get_type_of_function_signature_with_node(
                     program_id,
                     FunctionKind::ArrowFunction(arrow_function),
                     node_id,
                 ),
-            Expression::LogicalExpression(logical) => {
+            AstKind::LogicalExpression(logical) => {
                 self.get_type_of_logical_expression(program_id, logical, node_id, flags)
             }
-            Expression::AwaitExpression(await_expr) => {
+            AstKind::AwaitExpression(await_expr) => {
                 self.get_type_of_await_expression(program_id, await_expr, node_id)
             }
-            Expression::TSSatisfiesExpression(satisfies_expr) => {
+            AstKind::TSSatisfiesExpression(satisfies_expr) => {
                 // `satisfies` mostly does not change the type, it just adds an additional assertion
                 // on the apparent type for the type checker to verify against without changing the declared type.
                 // However, it can change the type if the `satisfies` type is more specific than the apparent type.
@@ -1182,44 +1181,44 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .with_contextual_type(target_type, CheckMode::CONTEXTUAL);
                 self.check_expression_with_context(
                     program_id,
-                    &satisfies_expr.expression,
+                    AstKind::from_expression(&satisfies_expr.expression),
                     node_id,
                     satisfies_context,
                 )
             }
-            Expression::PrivateFieldExpression(member) => {
+            AstKind::PrivateFieldExpression(member) => {
                 self.get_type_of_private_field_expression(program_id, member, node_id, flags)
             }
-            Expression::NullLiteral(_) => Ty::null(),
-            Expression::NumericLiteral(literal) => {
+            AstKind::NullLiteral(_) => Ty::null(),
+            AstKind::NumericLiteral(literal) => {
                 if flags.preserve_literals() {
                     Ty::number_literal_from_ast(self.arena(), literal, false)
                 } else {
                     Ty::number()
                 }
             }
-            Expression::StringLiteral(literal) => {
+            AstKind::StringLiteral(literal) => {
                 if flags.preserve_literals() {
                     Ty::string_literal(self.arena(), self.get_string_literal_value(literal))
                 } else {
                     Ty::string()
                 }
             }
-            Expression::BooleanLiteral(literal) => {
+            AstKind::BooleanLiteral(literal) => {
                 if flags.preserve_literals() {
                     Ty::boolean_literal(literal.value)
                 } else {
                     Ty::boolean()
                 }
             }
-            Expression::BigIntLiteral(literal) => {
+            AstKind::BigIntLiteral(literal) => {
                 if flags.preserve_literals() {
                     Ty::bigint_literal(self.arena(), self.get_bigint_literal_value(literal))
                 } else {
                     Ty::bigint()
                 }
             }
-            Expression::TemplateLiteral(literal) => {
+            AstKind::TemplateLiteral(literal) => {
                 if flags.preserve_literals() {
                     if let Some(value) =
                         self.get_template_literal_static_value(program_id, literal, node_id)
@@ -1247,24 +1246,24 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::string()
                 }
             }
-            Expression::RegExpLiteral(_) => {
+            AstKind::RegExpLiteral(_) => {
                 self.get_global_regexp_type(program_id).unwrap_or(Ty::any())
             }
-            Expression::Super(_) => node_id
+            AstKind::Super(_) => node_id
                 .and_then(|node_id| {
                     self.get_enclosing_base_class_instance_type(program_id, node_id)
                 })
                 .unwrap_or_else(Ty::any),
-            Expression::ClassExpression(class) => {
+            AstKind::Class(class) if class.is_expression() => {
                 self.get_type_of_class_expression(program_id, class)
             }
-            Expression::MetaProperty(meta_property) => {
+            AstKind::MetaProperty(meta_property) => {
                 self.get_type_of_meta_property(program_id, meta_property, node_id)
             }
-            Expression::ImportExpression(import_expression) => {
+            AstKind::ImportExpression(import_expression) => {
                 self.get_type_of_import_expression(program_id, import_expression)
             }
-            Expression::SequenceExpression(sequence) => sequence
+            AstKind::SequenceExpression(sequence) => sequence
                 .expressions
                 .iter()
                 .map(|expression| {
@@ -1272,10 +1271,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 })
                 .last()
                 .unwrap_or_else(Ty::any),
-            Expression::TaggedTemplateExpression(tagged_template) => {
+            AstKind::TaggedTemplateExpression(tagged_template) => {
                 self.get_type_of_tagged_template_expression(program_id, tagged_template, node_id)
             }
-            Expression::UpdateExpression(update) => {
+            AstKind::UpdateExpression(update) => {
                 let target_type = self.get_type_of_simple_assignment_target(
                     program_id,
                     &update.argument,
@@ -1288,15 +1287,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     _ => Ty::number(),
                 }
             }
-            Expression::YieldExpression(yield_expression) => {
+            AstKind::YieldExpression(yield_expression) => {
                 self.get_type_of_yield_expression(program_id, yield_expression)
             }
-            Expression::PrivateInExpression(_) => Ty::boolean(),
+            AstKind::PrivateInExpression(_) => Ty::boolean(),
             // TODO(correctness): Handle all of these cases.
-            Expression::JSXElement(_) => Ty::any(),
-            Expression::JSXFragment(_) => Ty::any(),
-            Expression::TSInstantiationExpression(_) => Ty::any(),
-            Expression::V8IntrinsicExpression(_) => Ty::any(),
+            AstKind::JSXElement(_) => Ty::any(),
+            AstKind::JSXFragment(_) => Ty::any(),
+            AstKind::TSInstantiationExpression(_) => Ty::any(),
+            AstKind::V8IntrinsicExpression(_) => Ty::any(),
+            _ => unreachable!("expected expression AST kind"),
         }
     }
 
@@ -9463,7 +9463,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         ArrayExpressionElement::SpreadElement(spread) => {
                             TupleElement::Rest(self.check_expression_with_context(
                                 program_id,
-                                &spread.argument,
+                                AstKind::from_expression(&spread.argument),
                                 node_id,
                                 element_context,
                             ))
@@ -9612,7 +9612,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ArrayExpressionElement::SpreadElement(spread) => {
                 let argument_type = self.check_expression_with_context(
                     program_id,
-                    &spread.argument,
+                    AstKind::from_expression(&spread.argument),
                     node_id,
                     context,
                 );
@@ -9631,7 +9631,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ArrayExpressionElement::Elision(_) => Ty::any(),
             _ => self.check_expression_with_context(
                 program_id,
-                element.to_expression(),
+                AstKind::from_expression(element.to_expression()),
                 node_id,
                 context.with_flags(flags),
             ),
@@ -12057,6 +12057,66 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 
     fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         match self.node_kind(node) {
+            expression_kind @ (AstKind::IdentifierReference(_)
+            | AstKind::ThisExpression(_)
+            | AstKind::ArrayExpression(_)
+            | AstKind::ObjectExpression(_)
+            | AstKind::TemplateLiteral(_)
+            | AstKind::TaggedTemplateExpression(_)
+            | AstKind::PrivateFieldExpression(_)
+            | AstKind::CallExpression(_)
+            | AstKind::NewExpression(_)
+            | AstKind::MetaProperty(_)
+            | AstKind::UpdateExpression(_)
+            | AstKind::UnaryExpression(_)
+            | AstKind::BinaryExpression(_)
+            | AstKind::PrivateInExpression(_)
+            | AstKind::LogicalExpression(_)
+            | AstKind::ConditionalExpression(_)
+            | AstKind::AssignmentExpression(_)
+            | AstKind::SequenceExpression(_)
+            | AstKind::Super(_)
+            | AstKind::AwaitExpression(_)
+            | AstKind::ChainExpression(_)
+            | AstKind::ParenthesizedExpression(_)
+            | AstKind::ArrowFunctionExpression(_)
+            | AstKind::YieldExpression(_)
+            | AstKind::ImportExpression(_)
+            | AstKind::V8IntrinsicExpression(_)
+            | AstKind::BooleanLiteral(_)
+            | AstKind::NullLiteral(_)
+            | AstKind::NumericLiteral(_)
+            | AstKind::StringLiteral(_)
+            | AstKind::BigIntLiteral(_)
+            | AstKind::RegExpLiteral(_)
+            | AstKind::JSXElement(_)
+            | AstKind::JSXFragment(_)
+            | AstKind::TSAsExpression(_)
+            | AstKind::TSSatisfiesExpression(_)
+            | AstKind::TSTypeAssertion(_)
+            | AstKind::TSNonNullExpression(_)
+            | AstKind::TSInstantiationExpression(_)
+            | AstKind::StaticMemberExpression(_)
+            | AstKind::ComputedMemberExpression(_)) => self.check_expression_with_context(
+                node.program_id,
+                expression_kind,
+                Some(node.node_id),
+                ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
+            ),
+            expression_kind @ AstKind::Function(function) if function.is_expression() => self
+                .check_expression_with_context(
+                    node.program_id,
+                    expression_kind,
+                    Some(node.node_id),
+                    ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
+                ),
+            expression_kind @ AstKind::Class(class) if class.is_expression() => self
+                .check_expression_with_context(
+                    node.program_id,
+                    expression_kind,
+                    Some(node.node_id),
+                    ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
+                ),
             AstKind::Directive(directive) => Ty::string_literal(
                 self.arena(),
                 self.get_string_literal_value(&directive.expression),
@@ -12108,27 +12168,6 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         },
                     )
                 }
-            }
-            AstKind::IdentifierReference(identifier) => {
-                self.get_symbol_at_location(node).map_or_else(
-                    || {
-                        if identifier.name == UNDEFINED_IDENT {
-                            Ty::undefined()
-                        } else if identifier.name == GLOBAL_THIS_IDENT {
-                            Ty::global_this()
-                        } else {
-                            self.get_value_symbol_for_name(
-                                node.program_id,
-                                identifier.name.as_str(),
-                            )
-                            .map_or_else(Ty::none, |symbol| self.get_type_of_symbol(symbol))
-                        }
-                    },
-                    |symbol| {
-                        let base_type = self.get_type_of_symbol(symbol);
-                        flow::get_flow_type_of_reference(self, node, symbol, base_type)
-                    },
-                )
             }
             AstKind::TSPropertySignature(property) => {
                 let ty = property
@@ -12274,24 +12313,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 }
                 self.check_expression_with_context(
                     node.program_id,
-                    &property.value,
+                    AstKind::from_expression(&property.value),
                     Some(node.node_id),
                     context,
                 )
             }
-            AstKind::StaticMemberExpression(member) => self.get_type_of_static_member_expression(
-                node.program_id,
-                member,
-                Some(node.node_id),
-                GetTypeFlags::NONE,
-            ),
-            AstKind::ComputedMemberExpression(member) => self
-                .get_type_of_computed_member_expression(
-                    node.program_id,
-                    member,
-                    Some(node.node_id),
-                    GetTypeFlags::NONE,
-                ),
             AstKind::ExpressionStatement(expr) => self.get_type_of_expression_with_node(
                 node.program_id,
                 &expr.expression,

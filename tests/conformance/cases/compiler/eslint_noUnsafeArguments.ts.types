@@ -52,6 +52,9 @@ const tuple1 = ['a', anyTyped, 'b'] as const;
 const tuple1 = ['a', anyTyped, 'b'] as const;
 >                                      ^^^^^: any   (TyAny) (TSTypeReference)
 
+const tuple1 = ['a', anyTyped, 'b'] as const;
+>                                      ^^^^^: any   (TyAny) (IdentifierReference)
+
 foo(...tuple1);
 >^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
 
@@ -66,6 +69,9 @@ const tuple2 = [1] as const;
 
 const tuple2 = [1] as const;
 >                     ^^^^^: any   (TyAny) (TSTypeReference)
+
+const tuple2 = [1] as const;
+>                     ^^^^^: any   (TyAny) (IdentifierReference)
 
 foo('a', ...tuple2, anyTyped);
 >^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)
@@ -162,6 +168,9 @@ const tuple1 = ['a', 1, 'b'] as const;
 
 const tuple1 = ['a', 1, 'b'] as const;
 >                               ^^^^^: any   (TyAny) (TSTypeReference)
+
+const tuple1 = ['a', 1, 'b'] as const;
+>                               ^^^^^: any   (TyAny) (IdentifierReference)
 
 foo(...tuple1);
 >^^^: (arg1: string, arg2: number, arg3: string) => void   (TyFunction) (IdentifierReference)

@@ -4,6 +4,9 @@ function* _innerGenerator(): Generator<number, "inner", boolean> {
 function* _innerGenerator(): Generator<number, "inner", boolean> {
 >                            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+function* _innerGenerator(): Generator<number, "inner", boolean> {
+>                            ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
   const _input = yield 0;
 >       ^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
@@ -12,6 +15,9 @@ function* _typedGenerator(): Generator<number, string, boolean> {
 
 function* _typedGenerator(): Generator<number, string, boolean> {
 >                            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+function* _typedGenerator(): Generator<number, string, boolean> {
+>                            ^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   const _input = yield 1;
 >       ^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
@@ -33,6 +39,9 @@ async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
 
 async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
 >                                  ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
+>                                  ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
 >                                                               ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)

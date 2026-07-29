@@ -12,6 +12,9 @@ interface WeakRef<T extends WeakKey> {
 interface WeakRef<T extends WeakKey> {
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface WeakRef<T extends WeakKey> {
+>                           ^^^^^^^: any   (TyAny) (IdentifierReference)
+
     readonly [Symbol.toStringTag]: "WeakRef";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -41,6 +44,9 @@ interface WeakRefConstructor {
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
 >                  ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new <T extends WeakKey>(target: T): WeakRef<T>;
+>                  ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
 >                           ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -90,6 +96,9 @@ interface FinalizationRegistry<T> {
 >                    ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>                    ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
 >                             ^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
@@ -101,6 +110,9 @@ interface FinalizationRegistry<T> {
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
 >                                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
+>                                                             ^^^^^^^: any   (TyAny) (IdentifierReference)
+
     unregister(unregisterToken: WeakKey): boolean;
 >   ^^^^^^^^^^: { (unregisterToken: WeakKey): boolean; (unregisterToken: WeakKey): boolean; }   (TyObject) (TSMethodSignature)
 
@@ -109,6 +121,9 @@ interface FinalizationRegistry<T> {
 
     unregister(unregisterToken: WeakKey): boolean;
 >                               ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    unregister(unregisterToken: WeakKey): boolean;
+>                               ^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface FinalizationRegistryConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

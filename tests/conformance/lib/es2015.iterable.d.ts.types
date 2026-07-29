@@ -334,6 +334,9 @@ interface ArrayConstructor {
 >                                   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>                                   ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
 >                                             ^: any   (TyAny) (TSTypeReference)
 
     from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
@@ -359,6 +362,9 @@ interface ArrayConstructor {
 
     from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                                      ^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                                                ^: any   (TyAny) (TSTypeReference)
@@ -620,6 +626,9 @@ interface WeakMap<K extends WeakKey, V> {}
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface WeakMap<K extends WeakKey, V> {}
+>                           ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+interface WeakMap<K extends WeakKey, V> {}
 >                                    ^: any   (TyAny) (TSTypeParameter)
 
 interface WeakMapConstructor {
@@ -632,7 +641,13 @@ interface WeakMapConstructor {
 >                  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                  ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
 >                            ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                            ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
 >                                     ^: any   (TyAny) (TSTypeParameter)
@@ -815,6 +830,9 @@ interface WeakSet<T extends WeakKey> {}
 interface WeakSet<T extends WeakKey> {}
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface WeakSet<T extends WeakKey> {}
+>                           ^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface WeakSetConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
@@ -825,7 +843,13 @@ interface WeakSetConstructor {
 >                  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                  ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
 >                            ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                            ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
 >                                     ^^^^^^^^: Iterable<T>   (TyTypeReference) (BindingIdentifier)
@@ -872,6 +896,9 @@ interface PromiseConstructor {
 >                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                               ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
 >                                           ^: any   (TyAny) (TSTypeReference)
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
@@ -880,6 +907,9 @@ interface PromiseConstructor {
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
 >                                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                                                         ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
 >                                                                 ^: any   (TyAny) (TSTypeReference)
@@ -903,6 +933,9 @@ interface PromiseConstructor {
 >                                ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                                            ^: any   (TyAny) (TSTypeReference)
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
@@ -911,6 +944,9 @@ interface PromiseConstructor {
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                          ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                                                                  ^: any   (TyAny) (TSTypeReference)
@@ -964,6 +1000,9 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1080,6 +1119,9 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -1194,6 +1236,9 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1310,6 +1355,9 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -1424,6 +1472,9 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1540,6 +1591,9 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -1654,6 +1708,9 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1770,6 +1827,9 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -1884,6 +1944,9 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     [Symbol.iterator](): ArrayIterator<number>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)

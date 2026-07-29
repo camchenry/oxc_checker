@@ -61,6 +61,9 @@ interface ProxyHandler<T extends object> {
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
 >                                                                     ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
+>                                                                     ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     deleteProperty?(target: T, p: string | symbol): boolean;
 >   ^^^^^^^^^^^^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; }   (TyObject) (TSMethodSignature)
           expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined
@@ -105,6 +108,9 @@ expected: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: 
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
 >                                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
+>                                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     getPrototypeOf?(target: T): object | null;
 >   ^^^^^^^^^^^^^^: { (target: T): object | null; (target: T): object | null; }   (TyObject) (TSMethodSignature)
@@ -151,6 +157,9 @@ expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | sy
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
 >                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    ownKeys?(target: T): ArrayLike<string | symbol>;
+>                        ^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     preventExtensions?(target: T): boolean;
 >   ^^^^^^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; }   (TyObject) (TSMethodSignature)

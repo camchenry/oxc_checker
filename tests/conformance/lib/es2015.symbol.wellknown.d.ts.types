@@ -148,6 +148,9 @@ interface WeakMap<K extends WeakKey, V> {
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface WeakMap<K extends WeakKey, V> {
+>                           ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+interface WeakMap<K extends WeakKey, V> {
 >                                    ^: any   (TyAny) (TSTypeParameter)
 
     readonly [Symbol.toStringTag]: string;
@@ -178,6 +181,9 @@ interface WeakSet<T extends WeakKey> {
 
 interface WeakSet<T extends WeakKey> {
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface WeakSet<T extends WeakKey> {
+>                           ^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: string;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -268,6 +274,9 @@ interface RegExp {
     [Symbol.match](string: string): RegExpMatchArray | null;
 >                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.match](string: string): RegExpMatchArray | null;
+>                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     [Symbol.replace](string: string, replaceValue: string): string;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -354,7 +363,13 @@ interface String {
 >                                                    ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>                                                    ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
 >                                                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
+>                                                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
 >   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
@@ -466,6 +481,9 @@ interface DataView<TArrayBuffer extends ArrayBufferLike> {
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                                       ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     readonly [Symbol.toStringTag]: string;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -481,6 +499,9 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "Int8Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -498,6 +519,9 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     readonly [Symbol.toStringTag]: "Uint8Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -513,6 +537,9 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "Uint8ClampedArray";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -530,6 +557,9 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     readonly [Symbol.toStringTag]: "Int16Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -545,6 +575,9 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "Uint16Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -562,6 +595,9 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     readonly [Symbol.toStringTag]: "Int32Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -577,6 +613,9 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "Uint32Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -594,6 +633,9 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     readonly [Symbol.toStringTag]: "Float32Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -609,6 +651,9 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "Float64Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)

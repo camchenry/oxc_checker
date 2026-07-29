@@ -18,7 +18,13 @@ interface String {
 >                             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>                             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
 >                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
+>                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
 >   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject) (TSMethodSignature)

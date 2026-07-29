@@ -45,6 +45,9 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
 
@@ -63,6 +66,9 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
@@ -83,6 +89,9 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
 
@@ -101,6 +110,9 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
@@ -121,6 +133,9 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
 
@@ -139,6 +154,9 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
@@ -159,6 +177,9 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
 
@@ -178,6 +199,9 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
 
@@ -196,6 +220,9 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     includes(searchElement: number, fromIndex?: number): boolean;
 >   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)

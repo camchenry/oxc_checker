@@ -78,6 +78,9 @@ export type InferInput<TSchema extends GenericSchema> = NonNullable<
 export type InferInput<TSchema extends GenericSchema> = NonNullable<
 >                                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+export type InferInput<TSchema extends GenericSchema> = NonNullable<
+>                                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
   TSchema['~types']
 > ^^^^^^^: any   (TyAny) (TSTypeReference)
 
@@ -93,6 +96,9 @@ export type InferOutput<TSchema extends GenericSchema> = NonNullable<
 export type InferOutput<TSchema extends GenericSchema> = NonNullable<
 >                                                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+export type InferOutput<TSchema extends GenericSchema> = NonNullable<
+>                                                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
   TSchema['~types']
 > ^^^^^^^: any   (TyAny) (TSTypeReference)
 
@@ -107,6 +113,9 @@ export type InferIssue<TSchema extends GenericSchema> = NonNullable<
 
 export type InferIssue<TSchema extends GenericSchema> = NonNullable<
 >                                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+export type InferIssue<TSchema extends GenericSchema> = NonNullable<
+>                                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   TSchema['~types']
 > ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -297,6 +306,9 @@ export type ObjectEntries = Record<string, GenericSchema>
 
 export type ObjectEntries = Record<string, GenericSchema>
 >                           ^^^^^^: any   (TyAny) (TSTypeReference)
+
+export type ObjectEntries = Record<string, GenericSchema>
+>                           ^^^^^^: any   (TyAny) (IdentifierReference)
 
 export type ObjectEntries = Record<string, GenericSchema>
 >                                          ^^^^^^^^^^^^^: { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }   (TyObject) (TSTypeReference)
@@ -613,6 +625,9 @@ export function object<TEntries extends ObjectEntries>(
       const out: Record<string, unknown> = {}
 >                ^^^^^^: any   (TyAny) (TSTypeReference)
 
+      const out: Record<string, unknown> = {}
+>                ^^^^^^: any   (TyAny) (IdentifierReference)
+
       for (const key in entries) {
 >                ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (BindingIdentifier)
 
@@ -640,6 +655,9 @@ export function object<TEntries extends ObjectEntries>(
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >                                                 ^^^^^^: any   (TyAny) (TSTypeReference)
+
+        out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
+>                                                 ^^^^^^: any   (TyAny) (IdentifierReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >                                                                          ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)

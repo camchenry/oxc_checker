@@ -281,6 +281,9 @@ export type ZodRawShape = Record<string, ZodTypeAny>
 >                         ^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type ZodRawShape = Record<string, ZodTypeAny>
+>                         ^^^^^^: any   (TyAny) (IdentifierReference)
+
+export type ZodRawShape = Record<string, ZodTypeAny>
 >                                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type objectOutputType<Shape extends ZodRawShape> = {
@@ -383,6 +386,9 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
     const out: Record<string, unknown> = {}
 >              ^^^^^^: any   (TyAny) (TSTypeReference)
 
+    const out: Record<string, unknown> = {}
+>              ^^^^^^: any   (TyAny) (IdentifierReference)
+
     for (const key in this.shape) {
 >              ^^^: Extract<keyof Shape, string>   (TyTypeReference) (BindingIdentifier)
 
@@ -413,6 +419,9 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
 >                                               ^^^^^^: any   (TyAny) (TSTypeReference)
+
+      out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
+>                                               ^^^^^^: any   (TyAny) (IdentifierReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
 >                                                                        ^^^: Extract<keyof Shape, string>   (TyTypeReference) (IdentifierReference)
@@ -455,6 +464,9 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >              ^^^^: any   (TyAny) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
+>              ^^^^: any   (TyAny) (IdentifierReference)
+
+  ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
 >                   ^^^^^: any   (TyAny) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
@@ -468,6 +480,9 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
 >                     ^^^^: any   (TyAny) (TSTypeReference)
+
+    const out = {} as Pick<Shape, keyof Mask & keyof Shape>
+>                     ^^^^: any   (TyAny) (IdentifierReference)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
 >                          ^^^^^: any   (TyAny) (TSTypeReference)

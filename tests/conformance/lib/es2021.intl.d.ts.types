@@ -34,6 +34,9 @@ declare namespace Intl {
     interface DateTimeRangeFormatPart extends DateTimeFormatPart {
 >                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
+    interface DateTimeRangeFormatPart extends DateTimeFormatPart {
+>                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
         source: "startRange" | "endRange" | "shared";
 >       ^^^^^^: "startRange" | "endRange" | "shared"   (TyUnion) (TSPropertySignature)
 
@@ -172,6 +175,9 @@ declare namespace Intl {
         format(list: Iterable<string>): string;
 >                    ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        format(list: Iterable<string>): string;
+>                    ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
         formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
 >       ^^^^^^^^^^^^^: (list: Iterable<string>) => { type: "element" | "literal"; value: string; }[]   (TyFunction) (TSMethodSignature)
 
@@ -180,6 +186,9 @@ declare namespace Intl {
 
         formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
 >                           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
+>                           ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         formatToParts(list: Iterable<string>): { type: "element" | "literal"; value: string; }[];
 >                                                ^^^^: "element" | "literal"   (TyUnion) (TSPropertySignature)
@@ -213,6 +222,9 @@ declare namespace Intl {
 >                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>                      ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
 >                                       ^^^^^^^: ListFormatOptions | undefined   (TyUnion) (BindingIdentifier)
 
         new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
@@ -234,13 +246,22 @@ declare namespace Intl {
 >                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                    ^^^^^^^: Pick<ListFormatOptions, "localeMatcher"> | undefined   (TyUnion) (BindingIdentifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                              ^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                              ^^^^: any   (TyAny) (IdentifierReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

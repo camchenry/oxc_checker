@@ -377,6 +377,9 @@ export function groupBy<T, Key extends PropertyKey>(
 export function groupBy<T, Key extends PropertyKey>(
 >                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+export function groupBy<T, Key extends PropertyKey>(
+>                                      ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
   data: readonly T[],
 > ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
 
@@ -408,7 +411,13 @@ export function groupBy<T, Key extends PropertyKey>(
 >  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 ): Partial<Record<Key, T[]>> {
+>  ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+): Partial<Record<Key, T[]>> {
 >          ^^^^^^: any   (TyAny) (TSTypeReference)
+
+): Partial<Record<Key, T[]>> {
+>          ^^^^^^: any   (TyAny) (IdentifierReference)
 
 ): Partial<Record<Key, T[]>> {
 >                 ^^^: any   (TyAny) (TSTypeReference)
@@ -423,7 +432,13 @@ export function groupBy<T, Key extends PropertyKey>(
 >            ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   const out: Partial<Record<Key, T[]>> = {}
+>            ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  const out: Partial<Record<Key, T[]>> = {}
 >                    ^^^^^^: any   (TyAny) (TSTypeReference)
+
+  const out: Partial<Record<Key, T[]>> = {}
+>                    ^^^^^^: any   (TyAny) (IdentifierReference)
 
   const out: Partial<Record<Key, T[]>> = {}
 >                           ^^^: any   (TyAny) (TSTypeReference)
@@ -536,6 +551,9 @@ export function pick<T extends object, Keys extends keyof T>(
 >        ^^^^: any   (TyAny) (TSTypeReference)
 
 ): Merge<Pick<T, Keys>> {
+>        ^^^^: any   (TyAny) (IdentifierReference)
+
+): Merge<Pick<T, Keys>> {
 >             ^: any   (TyAny) (TSTypeReference)
 
 ): Merge<Pick<T, Keys>> {
@@ -546,6 +564,9 @@ export function pick<T extends object, Keys extends keyof T>(
 
   const out = {} as Pick<T, Keys>
 >                   ^^^^: any   (TyAny) (TSTypeReference)
+
+  const out = {} as Pick<T, Keys>
+>                   ^^^^: any   (TyAny) (IdentifierReference)
 
   const out = {} as Pick<T, Keys>
 >                        ^: any   (TyAny) (TSTypeReference)

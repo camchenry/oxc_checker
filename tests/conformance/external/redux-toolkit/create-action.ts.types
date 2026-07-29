@@ -197,6 +197,9 @@ export type AtLeastTS35<True, False> = [True, False][IsUnknown<
 > ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ReturnType<<T>() => T>,
+> ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  ReturnType<<T>() => T>,
 >             ^: any   (TyAny) (TSTypeParameter)
 
   ReturnType<<T>() => T>,
@@ -503,6 +506,9 @@ export type _ActionCreatorWithPreparedPayload<
 >     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       Parameters<PA>,
+>     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+      Parameters<PA>,
 >                ^^: any   (TyAny) (TSTypeReference)
 
       P,
@@ -513,6 +519,9 @@ export type _ActionCreatorWithPreparedPayload<
 
       ReturnType<PA> extends { error: infer E } ? E : never,
 >     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+      ReturnType<PA> extends { error: infer E } ? E : never,
+>     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
 >                ^^: any   (TyAny) (TSTypeReference)
@@ -528,6 +537,9 @@ export type _ActionCreatorWithPreparedPayload<
 
       ReturnType<PA> extends { meta: infer M } ? M : never
 >     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+      ReturnType<PA> extends { meta: infer M } ? M : never
+>     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
 >                ^^: any   (TyAny) (TSTypeReference)
@@ -915,6 +927,9 @@ export function createAction<
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
 >                                                   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
+>                                                   ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
 >                                                              ^^: any   (TyAny) (TSTypeReference)
@@ -1350,6 +1365,9 @@ export type IncrementAction = ReturnType<typeof increment>
 >                             ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IncrementAction = ReturnType<typeof increment>
+>                             ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+export type IncrementAction = ReturnType<typeof increment>
 >                                               ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (IdentifierReference)
                                                  expected: ActionCreatorWithPayload<number, "counter/increment">
 
@@ -1359,6 +1377,9 @@ export type TodoAction = ReturnType<typeof addTodo>
 
 export type TodoAction = ReturnType<typeof addTodo>
 >                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+export type TodoAction = ReturnType<typeof addTodo>
+>                        ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
 >                                          ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference) (IdentifierReference)

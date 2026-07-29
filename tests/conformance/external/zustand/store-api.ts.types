@@ -19,6 +19,9 @@ expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?:
 >                ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
+>                ^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 >                        ^: any   (TyAny) (TSTypeReference)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
@@ -32,6 +35,9 @@ expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?:
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 >                                                ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
+>                                                ^^^^^^^: any   (TyAny) (IdentifierReference)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 >                                                        ^: any   (TyAny) (TSTypeReference)
@@ -585,6 +591,9 @@ export type ReadonlyStoreApi<T> = Pick<
 
 export type ReadonlyStoreApi<T> = Pick<
 >                                 ^^^^: any   (TyAny) (TSTypeReference)
+
+export type ReadonlyStoreApi<T> = Pick<
+>                                 ^^^^: any   (TyAny) (IdentifierReference)
 
   StoreApi<T>,
 > ^^^^^^^^: any   (TyAny) (TSTypeReference)

@@ -166,11 +166,17 @@ class MyClass implements MySyncInterface {
     this.thing = await fetchThing();
 >        ^^^^^: any   (TyAny) (StaticMemberExpression)
 
+    this.thing = await fetchThing();
+>                      ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 for (const value of [1, 2, 3]) {
 >          ^^^^^: number   (TyNumber) (BindingIdentifier)
 
   await doSomething(value);
 > ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+
+  await doSomething(value);
+>       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   await doSomething(value);
 >                   ^^^^^: number   (TyNumber) (IdentifierReference)
@@ -194,10 +200,16 @@ Promise.all(
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
     await doSomething(value);
+>         ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    await doSomething(value);
 >                     ^^^^^: number   (TyNumber) (IdentifierReference)
 
 ).catch(handleError);
 > ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void[] | TResult>   (TyFunction) (StaticMemberExpression)
+
+).catch(handleError);
+>       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 new Promise((resolve, reject) => {
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<unknown>   (TyTypeReference) (ExpressionStatement)
@@ -216,6 +228,9 @@ new Promise((resolve, reject) => {
 
     await doSomething();
 >   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+
+    await doSomething();
+>         ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     resolve();
 >   ^^^^^^^: (value: unknown) => void   (TyFunction) (IdentifierReference)
@@ -238,14 +253,26 @@ document.addEventListener('click', () => {
     await doSomething();
 >   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
+    await doSomething();
+>         ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    otherSynchronousCall();
+>   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     otherSynchronousCall();
 >   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+
+    synchronousCall();
+>   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     synchronousCall();
 >   ^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
 
   } catch (err) {
 >          ^^^: unknown   (TyUnknown) (BindingIdentifier)
+
+    handleSpecificError(err);
+>   ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     handleSpecificError(err);
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
@@ -261,6 +288,9 @@ document.addEventListener('click', () => {
 
   handler().catch(handleError);
 >           ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void | TResult>   (TyFunction) (StaticMemberExpression)
+
+  handler().catch(handleError);
+>                 ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface MyAsyncInterface {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -294,6 +324,9 @@ class MyClass implements MyAsyncInterface {
 
     this.thing = await fetchThing();
 >        ^^^^^: any   (TyAny) (StaticMemberExpression)
+
+    this.thing = await fetchThing();
+>                      ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 const getData = () => fetch('/');
 >     ^^^^^^^: () => Promise<Response>   (TyFunction) (BindingIdentifier)
