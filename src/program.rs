@@ -577,18 +577,28 @@ impl<'a> ProgramStore<'a> {
             }
         }
         for node in entry.semantic().nodes().iter() {
-            let AstKind::ImportExpression(import_expression) = node.kind() else {
-                continue;
-            };
-            let Expression::StringLiteral(source) = &import_expression.source else {
-                continue;
-            };
-            requests.push(PendingModuleRequest {
-                specifier: source.value.as_str().to_string(),
-                span: import_expression.span,
-                is_type: false,
-                is_import: true,
-            });
+            match node.kind() {
+                AstKind::ImportExpression(import_expression) => {
+                    let Expression::StringLiteral(source) = &import_expression.source else {
+                        continue;
+                    };
+                    requests.push(PendingModuleRequest {
+                        specifier: source.value.as_str().to_string(),
+                        span: import_expression.span,
+                        is_type: false,
+                        is_import: true,
+                    });
+                }
+                AstKind::TSImportType(import_type) => {
+                    requests.push(PendingModuleRequest {
+                        specifier: import_type.source.value.as_str().to_string(),
+                        span: import_type.span,
+                        is_type: true,
+                        is_import: true,
+                    });
+                }
+                _ => {}
+            }
         }
         requests
     }

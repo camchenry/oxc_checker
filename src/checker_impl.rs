@@ -10,10 +10,10 @@ use oxc_ast::{
         MetaProperty, MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression,
         NumberBase, ObjectExpression, ObjectPropertyKind, PrivateFieldExpression,
         PropertyDefinition, PropertyKey, SimpleAssignmentTarget, StaticMemberExpression,
-        StringLiteral, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature,
-        TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember, TSSignature,
-        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        StringLiteral, TSImportType, TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral,
+        TSMappedType, TSMethodSignature, TSMethodSignatureKind, TSModuleDeclarationName,
+        TSNamedTupleMember, TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
+        TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
         YieldExpression,
@@ -2909,9 +2909,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 );
                 Ty::constructor_type(self.arena(), signature)
             }
-            TSType::TSImportType(_) => {
-                // TODO(correctness): handle types like `import('foo').T`
-                Ty::none()
+            TSType::TSImportType(import_type) => {
+                self.get_type_from_ts_import_type(program_id, import_type)
             }
             TSType::TSNamedTupleMember(named) => {
                 self.get_type_from_ts_named_tuple_member(program_id, named)
@@ -2922,6 +2921,234 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 // TODO(completeness): We are not currently handling JSDoc.
                 Ty::any()
             }
+        }
+    }
+
+    fn get_type_from_ts_import_type(
+        &self,
+        program_id: ProgramId,
+        import_type: &'a TSImportType<'a>,
+    ) -> Ty<'a> {
+        let source = import_type.source.value.as_str();
+        let Some(imported_program_id) = self.store.resolved_module(program_id, source) else {
+            return Ty::any();
+        };
+
+        let module_type = self.get_module_namespace_type(imported_program_id, source);
+        let type_arguments = import_type
+            .type_arguments
+            .as_ref()
+            .into_iter()
+            .flat_map(|type_arguments| type_arguments.params.iter())
+            .map(|ty| self.get_type_argument_from_ts_type(program_id, ty))
+            .collect::<Vec<_>>();
+
+        let Some(qualifier) = import_type.qualifier.as_ref() else {
+            let name = self.arena().str(&format!("import(\"{source}\")"));
+            return Ty::type_query(self.arena(), name, module_type, type_arguments);
+        };
+
+        let ty = self.get_type_from_ts_import_type_qualifier(
+            imported_program_id,
+            module_type,
+            qualifier,
+            &type_arguments,
+        );
+        if type_arguments.is_empty() {
+            ty
+        } else {
+            self.instantiate_type_query_type(program_id, ty, &type_arguments)
+        }
+    }
+
+    fn get_type_of_ts_import_type_qualifier_identifier(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+        name: &str,
+    ) -> Ty<'a> {
+        let Some(import_type) = self
+            .nodes(program_id)
+            .ancestor_kinds(node_id)
+            .find_map(|kind| match kind {
+                AstKind::TSImportType(import_type) => Some(import_type),
+                _ => None,
+            })
+        else {
+            return Ty::any();
+        };
+        let Some(imported_program_id) = self
+            .store
+            .resolved_module(program_id, import_type.source.value.as_str())
+        else {
+            return Ty::any();
+        };
+        let Some(symbol) = self.get_root_symbol(imported_program_id, name) else {
+            return Ty::any();
+        };
+        self.get_type_of_ts_import_type_symbol(symbol, &[])
+            .unwrap_or_else(Ty::any)
+    }
+
+    fn get_type_from_ts_import_type_qualifier(
+        &self,
+        program_id: ProgramId,
+        object_type: Ty<'a>,
+        qualifier: &TSImportTypeQualifier<'a>,
+        type_arguments: &[Ty<'a>],
+    ) -> Ty<'a> {
+        match qualifier {
+            TSImportTypeQualifier::Identifier(identifier) => self
+                .get_type_of_ts_import_type_member(
+                    program_id,
+                    object_type,
+                    identifier.name.as_str(),
+                    type_arguments,
+                )
+                .unwrap_or_else(Ty::any),
+            TSImportTypeQualifier::QualifiedName(qualified) => {
+                let object_type = self.get_type_from_ts_import_type_qualifier(
+                    program_id,
+                    object_type,
+                    &qualified.left,
+                    &[],
+                );
+                self.get_type_of_ts_import_type_member(
+                    program_id,
+                    object_type,
+                    qualified.right.name.as_str(),
+                    type_arguments,
+                )
+                .unwrap_or_else(Ty::any)
+            }
+        }
+    }
+
+    fn get_type_of_ts_import_type_member(
+        &self,
+        program_id: ProgramId,
+        object_type: Ty<'a>,
+        member_name: &str,
+        type_arguments: &[Ty<'a>],
+    ) -> Option<Ty<'a>> {
+        if let TypeData::TypeQuery(query) = self.arena().type_data(object_type)
+            && let Some(namespace_symbol) = self.get_root_symbol(program_id, query.name)
+            && let Some(member_symbol) =
+                self.get_ts_import_type_namespace_member(namespace_symbol, member_name)
+        {
+            return self.get_type_of_ts_import_type_symbol(member_symbol, type_arguments);
+        }
+
+        if let Some(symbol) = self.get_root_symbol(program_id, member_name)
+            && let Some(ty) = self.get_type_of_ts_import_type_symbol(symbol, type_arguments)
+        {
+            return Some(ty);
+        }
+
+        self.get_property_type_of_structural_type(program_id, object_type, member_name)
+    }
+
+    fn get_ts_import_type_namespace_member(
+        &self,
+        namespace_symbol: SymbolRef,
+        member_name: &str,
+    ) -> Option<SymbolRef> {
+        let mut declaration = self
+            .semantic(namespace_symbol.program_id)
+            .scoping()
+            .symbol_declaration(namespace_symbol.symbol_id);
+        let module = loop {
+            match self.nodes(namespace_symbol.program_id).kind(declaration) {
+                AstKind::TSModuleDeclaration(module) => break module,
+                AstKind::ExportNamedDeclaration(export) => {
+                    declaration = export.declaration.as_ref()?.node_id();
+                }
+                AstKind::BindingIdentifier(_) => {
+                    declaration = self
+                        .nodes(namespace_symbol.program_id)
+                        .parent_id(declaration);
+                }
+                _ => return None,
+            }
+        };
+        let scope_id = module.scope_id.get()?;
+        let member_symbol = self
+            .semantic(namespace_symbol.program_id)
+            .scoping()
+            .get_binding(scope_id, Ident::from(member_name))?;
+        Some(SymbolRef::new(namespace_symbol.program_id, member_symbol))
+    }
+
+    fn get_type_of_ts_import_type_symbol(
+        &self,
+        symbol: SymbolRef,
+        type_arguments: &[Ty<'a>],
+    ) -> Option<Ty<'a>> {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.get_type_of_ts_import_type_declaration(symbol, declaration, type_arguments)
+    }
+
+    fn get_type_of_ts_import_type_declaration(
+        &self,
+        symbol: SymbolRef,
+        declaration: NodeId,
+        type_arguments: &[Ty<'a>],
+    ) -> Option<Ty<'a>> {
+        match self.nodes(symbol.program_id).kind(declaration) {
+            AstKind::ExportNamedDeclaration(export) => self.get_type_of_ts_import_type_declaration(
+                symbol,
+                export.declaration.as_ref()?.node_id(),
+                type_arguments,
+            ),
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                self.get_expanded_type_alias_declaration(
+                    symbol.program_id,
+                    declaration,
+                    type_arguments,
+                    0,
+                )
+                .or_else(|| Some(self.get_type_of_type_alias_declaration(symbol.program_id, alias)))
+            }
+            AstKind::BindingIdentifier(_) => self.get_type_of_ts_import_type_declaration(
+                symbol,
+                self.nodes(symbol.program_id).parent_id(declaration),
+                type_arguments,
+            ),
+            AstKind::TSInterfaceDeclaration(_)
+            | AstKind::Class(_)
+            | AstKind::TSEnumDeclaration(_) => {
+                let name = self
+                    .semantic(symbol.program_id)
+                    .scoping()
+                    .symbol_name(symbol.symbol_id)
+                    .to_string();
+                let name = self.arena().str(&name);
+                let mut type_arguments = type_arguments.to_vec();
+                self.fill_default_type_arguments(symbol.program_id, name, &mut type_arguments);
+                let display_type_argument_count = type_arguments.len();
+                Some(Ty::type_reference_for_symbol(
+                    self.arena(),
+                    name,
+                    symbol,
+                    type_arguments,
+                    display_type_argument_count,
+                ))
+            }
+            AstKind::TSModuleDeclaration(module) => {
+                let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
+                    return None;
+                };
+                Some(Ty::type_query(
+                    self.arena(),
+                    identifier.name.as_str(),
+                    Ty::any(),
+                    std::iter::empty(),
+                ))
+            }
+            _ => None,
         }
     }
 
@@ -11955,6 +12182,35 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 node.program_id,
                 parameter.type_annotation.as_deref(),
             ),
+            AstKind::IdentifierName(_)
+                if matches!(
+                    self.nodes(node.program_id).parent_kind(node.node_id),
+                    AstKind::TSImportType(_)
+                ) =>
+            {
+                Ty::any()
+            }
+            AstKind::IdentifierName(identifier)
+                if matches!(
+                    self.nodes(node.program_id).parent_kind(node.node_id),
+                    AstKind::TSImportTypeQualifiedName(qualified)
+                        if qualified.right.span != identifier.span
+                ) =>
+            {
+                self.get_type_of_ts_import_type_qualifier_identifier(
+                    node.program_id,
+                    node.node_id,
+                    identifier.name.as_str(),
+                )
+            }
+            AstKind::IdentifierName(_)
+                if matches!(
+                    self.nodes(node.program_id).parent_kind(node.node_id),
+                    AstKind::TSImportTypeQualifiedName(_)
+                ) =>
+            {
+                Ty::any()
+            }
             AstKind::IdentifierName(identifier)
                 if matches!(
                     self.nodes(node.program_id).parent_kind(node.node_id),

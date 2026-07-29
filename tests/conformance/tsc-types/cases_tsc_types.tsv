@@ -1842,6 +1842,22 @@ compiler/importExpression.ts::main.ts	6	19	modulePromise	Promise<typeof import("
 compiler/importExpression.ts::main.ts	75	88	modulePromise	Promise<typeof import("./module.ts")>
 compiler/importExpression.ts::main.ts	96	110	importedAnswer	42
 compiler/importExpression.ts::module.ts	13	19	answer	42
+compiler/importType.ts::main.ts	109	128	ImportedNestedValue	42
+compiler/importType.ts::main.ts	153	159	Nested	typeof Nested
+compiler/importType.ts::main.ts	160	165	Value	any
+compiler/importType.ts::main.ts	43	48	Value	any
+compiler/importType.ts::main.ts	5	18	ImportedValue	{ value: string; }
+compiler/importType.ts::main.ts	55	66	ImportedBox	{ value: number; }
+compiler/importType.ts::main.ts	91	94	Box	any
+compiler/importType.ts::module.ts	114	121	runtime	number
+compiler/importType.ts::module.ts	12	17	Value	{ value: string; }
+compiler/importType.ts::module.ts	141	146	Value	42
+compiler/importType.ts::module.ts	22	27	value	string
+compiler/importType.ts::module.ts	51	54	Box	{ value: T; }
+compiler/importType.ts::module.ts	55	56	T	any
+compiler/importType.ts::module.ts	62	67	value	T
+compiler/importType.ts::module.ts	69	70	T	any
+compiler/importType.ts::module.ts	92	98	Nested	typeof Nested
 compiler/importTypes.ts::a.ts	105	112	process	<T>(x: T) => T | 1
 compiler/importTypes.ts::a.ts	131	134	mod	{ process: <T>(x: T) => T | 1; }
 compiler/importTypes.ts::a.ts	17	18	T	any
