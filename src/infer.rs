@@ -1998,7 +1998,7 @@ fn resolve_indexed_access_for_inference<'a>(
     arena: crate::types::CheckerArena<'a>,
 ) -> Option<Ty<'a>> {
     if let TypeData::Array(array) = arena.type_data(object_type)
-        && index_type.is_number_index_type(arena)
+        && index_type.is_number_like(arena)
     {
         return Some(array.element_type);
     }

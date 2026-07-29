@@ -3406,7 +3406,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         if let TypeData::Array(array) = self.arena().type_data(object_type)
-            && index_type.is_number_index_type(self.arena())
+            && index_type.is_number_like(self.arena())
         {
             return IndexedAccessResolution::Resolved(array.element_type);
         }
@@ -6135,7 +6135,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         // Try accessing like tuple with specific numeric key
-        if key_type.is_number_index_type(self.arena())
+        if key_type.is_number_like(self.arena())
             && let Some(index) = tuple_index_from_expression(&member.expression)
             && let Some(element_type) =
                 tuple_element_type_at_index(self.arena(), object_type, index)
@@ -6144,7 +6144,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         // Try accessing as array with a generic numeric key
-        if key_type.is_number_index_type(self.arena())
+        if key_type.is_number_like(self.arena())
             && let Some(element_type) = self
                 .remove_null_or_undefined(object_type)
                 .array_element_type(self.arena())
