@@ -114,7 +114,7 @@ impl<'a> InternedTypeCache<'a> {
 
 impl<'a> CheckerArena<'a> {
     pub fn new(allocator: &'a Allocator) -> Self {
-        let types = allocator.alloc(RefCell::new(ArenaVec::new_in(allocator)));
+        let types = allocator.alloc(RefCell::new(ArenaVec::new_in(&allocator)));
         let interned_types = allocator.alloc(InternedTypeCache::new(allocator));
         let arena = Self {
             allocator,
@@ -161,7 +161,7 @@ impl<'a> CheckerArena<'a> {
     }
 
     pub(crate) fn vec_from_iter<T>(&self, iter: impl IntoIterator<Item = T>) -> ArenaVec<'a, T> {
-        ArenaVec::from_iter_in(iter, self.allocator)
+        ArenaVec::from_iter_in(iter, &self.allocator)
     }
 
     pub(crate) fn alloc_type(&self, data: TypeData<'a>) -> Ty<'a> {

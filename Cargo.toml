@@ -11,17 +11,18 @@ conformance = []
 conformance-tsc = []
 
 [dependencies]
-oxc_ast = "0.132.0"
-oxc_ast_visit = "0.132.0"
-oxc_allocator =  "0.132.0"
-oxc_cfg = "0.132.0"
-oxc_parser =  "0.132.0"
+oxc_ast = "0.142.0"
+oxc_ast_visit = "0.142.0"
+oxc_allocator =  "0.142.0"
+oxc_cfg = "0.142.0"
+oxc_data_structures = { version = "0.142.0", features = ["stack"] }
+oxc_parser =  "0.142.0"
 oxc_resolver = "11.19.1"
-oxc_semantic = { version = "0.132.0", features = ["cfg"] }
-oxc_span =  "0.132.0"
-oxc_syntax = "0.132.0"
-oxc_index = "4.1.0"
-oxc_str = "0.132.0"
+oxc_semantic = { version = "0.142.0", features = ["cfg"] }
+oxc_span =  "0.142.0"
+oxc_syntax = "0.142.0"
+oxc_index = "5.0.0"
+oxc_str = "0.142.0"
 bitflags = "2.12.1"
 simdutf8 = "0.1.5"
 num-traits = "0.2.19"

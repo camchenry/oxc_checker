@@ -21,7 +21,7 @@ pub mod program;
 mod relations;
 mod type_facts;
 pub mod type_set;
-mod types;
+pub mod types;
 
 pub use types::*;
 
@@ -458,17 +458,6 @@ mod test {
             .build()
             .unwrap();
         let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
-        assert_eq!(
-            store
-                .entry(program_id)
-                .unwrap()
-                .semantic()
-                .nodes()
-                .program()
-                .source_text,
-            source_text
-        );
-
         let arena = CheckerArena::new(store.allocator());
         ParseAndCheck {
             store,
@@ -507,6 +496,55 @@ mod test {
             })
             .unwrap_or_else(|| panic!("expected type alias `{name}`"));
         checker.get_type_of_type_alias_declaration(ret.program_id, alias)
+    }
+
+    #[test]
+    fn constrained_type_at_location() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "function negate<T extends number>(value: T) { return -value; }",
+        );
+        let type_checker = checker(&ret);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let value_node = semantic
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| match node.kind() {
+                AstKind::IdentifierReference(identifier) if identifier.name == "value" => {
+                    Some(NodeRef::new(ret.program_id, node_id))
+                }
+                _ => None,
+            })
+            .unwrap();
+
+        assert_eq!(
+            type_checker.get_constrained_type_at_location(value_node),
+            Ty::number()
+        );
+
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            "function negate<T>(value: T) { return -value; }",
+        );
+        let type_checker = checker(&ret);
+        let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+        let value_node = semantic
+            .nodes()
+            .iter_enumerated()
+            .find_map(|(node_id, node)| match node.kind() {
+                AstKind::IdentifierReference(identifier) if identifier.name == "value" => {
+                    Some(NodeRef::new(ret.program_id, node_id))
+                }
+                _ => None,
+            })
+            .unwrap();
+
+        assert_ne!(
+            type_checker.get_constrained_type_at_location(value_node),
+            Ty::number()
+        );
     }
 
     fn get_symbol_type_in_function<'a>(

@@ -189,6 +189,7 @@ type Checker interface {
 pub trait Checker<'a> {
     fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef>;
     fn get_type_at_location(&self, node: NodeRef) -> Ty<'a>;
+    fn get_constrained_type_at_location(&self, node: NodeRef) -> Ty<'a>;
     // fn get_type_from_type_node(&self, type_node: NodeRef) -> Ty<'a>;
     fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a>;
     fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a>;

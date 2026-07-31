@@ -463,7 +463,7 @@ fn parse_program<'a>(
         return Err(ProgramStoreError::Parse {
             path: path.to_path_buf(),
             messages: parser_return
-                .errors
+                .diagnostics
                 .iter()
                 .map(ToString::to_string)
                 .collect(),
@@ -471,7 +471,10 @@ fn parse_program<'a>(
     }
 
     let program = allocator.alloc(parser_return.program);
-    let semantic_return = SemanticBuilder::new().with_cfg(true).build(program);
+    let semantic_return = SemanticBuilder::new()
+        .with_build_nodes(true)
+        .with_cfg(true)
+        .build(program);
     // Keep building even when semantic analysis reports recoverable errors so downstream
     // consumers can still inspect partial symbol and type data.
     Ok(PreparedProgram {

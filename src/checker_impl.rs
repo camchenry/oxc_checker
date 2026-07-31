@@ -7,13 +7,13 @@ use oxc_ast::{
         CallExpression, ChainElement, Class, ClassElement, ComputedMemberExpression,
         ConditionalExpression, ExportSpecifier, Expression, FormalParameter, FormalParameterRest,
         FormalParameters, Function, IdentifierReference, ImportExpression, LogicalExpression,
-        MetaProperty, MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression,
-        NumberBase, ObjectExpression, ObjectPropertyKind, PrivateFieldExpression,
-        PropertyDefinition, PropertyKey, SimpleAssignmentTarget, StaticMemberExpression,
-        StringLiteral, TSImportType, TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral,
-        TSMappedType, TSMethodSignature, TSMethodSignatureKind, TSModuleDeclarationName,
-        TSNamedTupleMember, TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
-        TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase,
+        ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
+        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, StringLiteral, TSImportType,
+        TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature,
+        TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember, TSSignature,
+        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
         YieldExpression,
@@ -1257,9 +1257,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::Class(class) if class.is_expression() => {
                 self.get_type_of_class_expression(program_id, class)
             }
-            AstKind::MetaProperty(meta_property) => {
-                self.get_type_of_meta_property(program_id, meta_property, node_id)
-            }
+            AstKind::ImportMeta(_) => self.type_reference_with_display_type_argument_count(
+                program_id,
+                "ImportMeta",
+                std::iter::empty(),
+                0,
+            ),
+            AstKind::NewTarget(_) => node_id
+                .and_then(|node_id| self.get_type_of_new_target(program_id, node_id))
+                .unwrap_or_else(Ty::any),
             AstKind::ImportExpression(import_expression) => {
                 self.get_type_of_import_expression(program_id, import_expression)
             }
@@ -1297,29 +1303,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::TSInstantiationExpression(_) => Ty::any(),
             AstKind::V8IntrinsicExpression(_) => Ty::any(),
             _ => unreachable!("expected expression AST kind"),
-        }
-    }
-
-    fn get_type_of_meta_property(
-        &self,
-        program_id: ProgramId,
-        meta_property: &'a MetaProperty<'a>,
-        node_id: Option<NodeId>,
-    ) -> Ty<'a> {
-        match (
-            meta_property.meta.name.as_str(),
-            meta_property.property.name.as_str(),
-        ) {
-            ("import", "meta") => self.type_reference_with_display_type_argument_count(
-                program_id,
-                "ImportMeta",
-                std::iter::empty(),
-                0,
-            ),
-            ("new", "target") => node_id
-                .and_then(|node_id| self.get_type_of_new_target(program_id, node_id))
-                .unwrap_or_else(Ty::any),
-            _ => Ty::any(),
         }
     }
 
@@ -1437,23 +1420,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
         None
-    }
-
-    fn is_new_target_in_class_method(&self, program_id: ProgramId, node_id: NodeId) -> bool {
-        for ancestor in self.nodes(program_id).ancestors(node_id) {
-            match ancestor.kind() {
-                AstKind::ArrowFunctionExpression(_) => {}
-                AstKind::Function(function) => {
-                    return matches!(
-                        self.nodes(program_id).parent_kind(function.node_id()),
-                        AstKind::MethodDefinition(method)
-                            if method.kind != MethodDefinitionKind::Constructor
-                    );
-                }
-                _ => {}
-            }
-        }
-        false
     }
 
     fn identifier_node_ref(
@@ -12066,7 +12032,8 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             | AstKind::PrivateFieldExpression(_)
             | AstKind::CallExpression(_)
             | AstKind::NewExpression(_)
-            | AstKind::MetaProperty(_)
+            | AstKind::ImportMeta(_)
+            | AstKind::NewTarget(_)
             | AstKind::UpdateExpression(_)
             | AstKind::UnaryExpression(_)
             | AstKind::BinaryExpression(_)
@@ -12253,30 +12220,6 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::IdentifierName(identifier)
                 if matches!(
                     self.nodes(node.program_id).parent_kind(node.node_id),
-                    AstKind::MetaProperty(meta_property)
-                        if meta_property.property.span == identifier.span
-                ) =>
-            {
-                let AstKind::MetaProperty(meta_property) =
-                    self.nodes(node.program_id).parent_kind(node.node_id)
-                else {
-                    unreachable!("identifier name parent changed during MetaProperty lookup")
-                };
-                if meta_property.meta.name == "new"
-                    && self.is_new_target_in_class_method(node.program_id, meta_property.node_id())
-                {
-                    Ty::none()
-                } else {
-                    self.get_type_of_meta_property(
-                        node.program_id,
-                        meta_property,
-                        Some(meta_property.node_id()),
-                    )
-                }
-            }
-            AstKind::IdentifierName(identifier)
-                if matches!(
-                    self.nodes(node.program_id).parent_kind(node.node_id),
                     AstKind::TSTypePredicate(_)
                 ) =>
             {
@@ -12400,6 +12343,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 .get_symbol_at_location(node)
                 .map_or_else(Ty::none, |sym| self.get_type_of_symbol(sym)),
         }
+    }
+
+    fn get_constrained_type_at_location(&self, node: NodeRef) -> Ty<'a> {
+        let ty = self.get_type_at_location(node);
+        self.get_type_parameter_constraint(node.program_id, node.node_id, ty)
+            .unwrap_or(ty)
     }
 
     fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
