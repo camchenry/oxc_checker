@@ -2037,7 +2037,7 @@ fn export_specifier_node_ref<'a>(
             return None;
         }
         declaration.specifiers.iter().find_map(|specifier| {
-            let (span, _) = module_export_name_span_and_text(&specifier.local)?;
+            let (span, _) = module_export_name_span_and_text(&specifier.local);
             (span == local_name.span).then(|| NodeRef::new(program_id, specifier.node_id()))
         })
     })
@@ -2121,7 +2121,7 @@ fn actual_identifier_record<'a>(
             )
         }
         AstKind::ExportSpecifier(specifier) => {
-            let (span, text) = module_export_name_span_and_text(&specifier.local)?;
+            let (span, text) = module_export_name_span_and_text(&specifier.local);
             (
                 span,
                 Cow::Borrowed(text),
@@ -2167,7 +2167,7 @@ fn actual_identifier_record<'a>(
             checker.get_type_at_location(node_ref),
         ),
         AstKind::TSModuleDeclaration(module) => {
-            let (span, text) = ts_module_declaration_name_span_and_text(&module.id)?;
+            let (span, text) = ts_module_declaration_name_span_and_text(&module.id);
             (
                 span,
                 Cow::Borrowed(text),
@@ -2299,30 +2299,28 @@ fn identifier_property_key_span_and_text<'a>(key: &'a PropertyKey<'a>) -> Option
 
 fn ts_module_declaration_name_span_and_text<'a>(
     name: &'a oxc_ast::ast::TSModuleDeclarationName<'a>,
-) -> Option<(Span, &'a str)> {
+) -> (Span, &'a str) {
     match name {
         oxc_ast::ast::TSModuleDeclarationName::Identifier(identifier) => {
-            Some((identifier.span, &identifier.name))
+            (identifier.span, &identifier.name)
         }
         oxc_ast::ast::TSModuleDeclarationName::StringLiteral(literal) => {
-            Some((literal.span, &literal.value))
+            (literal.span, &literal.value)
         }
     }
 }
 
 fn module_export_name_span_and_text<'a>(
     name: &'a oxc_ast::ast::ModuleExportName<'a>,
-) -> Option<(Span, &'a str)> {
+) -> (Span, &'a str) {
     match name {
         oxc_ast::ast::ModuleExportName::IdentifierName(identifier) => {
-            Some((identifier.span, &identifier.name))
+            (identifier.span, &identifier.name)
         }
         oxc_ast::ast::ModuleExportName::IdentifierReference(identifier) => {
-            Some((identifier.span, &identifier.name))
+            (identifier.span, &identifier.name)
         }
-        oxc_ast::ast::ModuleExportName::StringLiteral(literal) => {
-            Some((literal.span, &literal.value))
-        }
+        oxc_ast::ast::ModuleExportName::StringLiteral(literal) => (literal.span, &literal.value),
     }
 }
 
