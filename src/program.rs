@@ -293,11 +293,13 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     }
 
     /// Reuse immutable parser and semantic output for matching canonical paths.
+    #[must_use]
     pub fn with_prepared_programs(mut self, programs: &'a PreparedProgramSet<'a>) -> Self {
         self.prepared_programs = Some(programs);
         self
     }
 
+    #[must_use]
     pub fn add_root_file(mut self, path: impl Into<PathBuf>) -> Self {
         self.root_files.push(path.into());
         self
@@ -313,6 +315,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         Ok(self)
     }
 
+    #[must_use]
     pub fn with_lib_names<I, S>(mut self, lib_names: I) -> Self
     where
         I: IntoIterator<Item = S>,
@@ -325,6 +328,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     }
 
     /// Disable injecting embedded default standard library files.
+    #[must_use]
     pub fn without_default_lib(mut self) -> Self {
         self.load_default_lib = false;
         self

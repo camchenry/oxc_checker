@@ -2691,6 +2691,7 @@ impl<'a> Ty<'a> {
     }
 
     /// Returns the type, unioned with `undefined`.
+    #[must_use]
     pub fn or_undefined(&self, arena: CheckerArena<'a>) -> Self {
         if *self == Ty::Undefined {
             *self

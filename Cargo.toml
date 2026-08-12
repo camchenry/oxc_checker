@@ -55,7 +55,7 @@ expect_used = "deny"
 # must_use_candidate = "deny"
 # needless_pass_by_value = "deny"
 # redundant_closure_for_method_calls = "deny"
-# return_self_not_must_use = "deny"
+return_self_not_must_use = "deny"
 single_match_else = "deny"
 unnecessary_wraps = "deny"
 
