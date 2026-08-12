@@ -724,7 +724,17 @@ fn narrow_by_typeof<'a>(
 
     if matches!(ty, Ty::Unknown) {
         return if assume_true {
-            type_from_typeof_witness(checker, program_id, witness)
+            match witness {
+                TypeofWitness::String => Ty::string(),
+                TypeofWitness::Number => Ty::number(),
+                TypeofWitness::Boolean => Ty::boolean(),
+                TypeofWitness::Bigint => Ty::bigint(),
+                TypeofWitness::Undefined => Ty::undefined(),
+                TypeofWitness::Object => {
+                    Ty::union(checker.arena(), [Ty::primitive_object(), Ty::null()])
+                }
+                TypeofWitness::Function => checker.get_global_function_type(program_id),
+            }
         } else {
             ty
         };
@@ -733,23 +743,6 @@ fn narrow_by_typeof<'a>(
     filter_type(checker, ty, |ty| {
         type_matches_typeof(checker, ty, witness) == assume_true
     })
-}
-
-// TODO(cleanup): inline this
-fn type_from_typeof_witness<'a>(
-    checker: &CheckerReturn<'a, '_>,
-    program_id: ProgramId,
-    witness: TypeofWitness,
-) -> Ty<'a> {
-    match witness {
-        TypeofWitness::String => Ty::string(),
-        TypeofWitness::Number => Ty::number(),
-        TypeofWitness::Boolean => Ty::boolean(),
-        TypeofWitness::Bigint => Ty::bigint(),
-        TypeofWitness::Undefined => Ty::undefined(),
-        TypeofWitness::Object => Ty::union(checker.arena(), [Ty::primitive_object(), Ty::null()]),
-        TypeofWitness::Function => checker.get_global_function_type(program_id),
-    }
 }
 
 /// Filter a type, distributing over union constituents and reducing the result.
