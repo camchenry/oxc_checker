@@ -75,10 +75,6 @@ fn array_expression_element_span(element: &ArrayExpressionElement<'_>) -> Option
     }
 }
 
-fn span_contains(outer: Span, inner: Span) -> bool {
-    outer.start <= inner.start && inner.end <= outer.end
-}
-
 fn capitalize_first_character(value: &str, uppercase: bool) -> String {
     let Some(first) = value.chars().next() else {
         return String::new();
@@ -8856,7 +8852,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .position(|element| {
                         array_expression_element_span(element)
-                            .is_some_and(|element_span| span_contains(element_span, value_span))
+                            .is_some_and(|element_span| element_span.contains_inclusive(value_span))
                     })
                     .map(|index| (array, index))
             })?;
