@@ -1,0 +1,97 @@
+type T0 = string | null | undefined;
+>    ^^: string | null | undefined   (TyUnion) (TSTypeAliasDeclaration)
+
+type T1 = NonNullable<T0>;
+>    ^^: (string | null | undefined) & {}   (TyIntersection) (TSTypeAliasDeclaration)
+expected: string
+
+type T1 = NonNullable<T0>;
+>         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T1 = NonNullable<T0>;
+>         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T1 = NonNullable<T0>;
+>                     ^^: any   (TyAny) (TSTypeReference)
+
+type T2 = NonNullable<T0 | number | boolean | {}>;
+>    ^^: (string | null | undefined | number | boolean | {}) & {}   (TyIntersection) (TSTypeAliasDeclaration)
+expected: string | number | boolean | {}
+
+type T2 = NonNullable<T0 | number | boolean | {}>;
+>         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T2 = NonNullable<T0 | number | boolean | {}>;
+>         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T2 = NonNullable<T0 | number | boolean | {}>;
+>                     ^^: any   (TyAny) (TSTypeReference)
+
+type T3 = NonNullable<any>;
+>    ^^: any   (TyAny) (TSTypeAliasDeclaration)
+
+type T3 = NonNullable<any>;
+>         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T3 = NonNullable<any>;
+>         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T4 = NonNullable<unknown>;
+>    ^^: {}   (TyObject) (TSTypeAliasDeclaration)
+
+type T4 = NonNullable<unknown>;
+>         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T4 = NonNullable<unknown>;
+>         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T5 = NonNullable<never>;
+>    ^^: never & {}   (TyIntersection) (TSTypeAliasDeclaration)
+expected: never
+
+type T5 = NonNullable<never>;
+>         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T5 = NonNullable<never>;
+>         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T6 = NonNullable<Array<number>>;
+>    ^^: number[] & {}   (TyIntersection) (TSTypeAliasDeclaration)
+expected: number[]
+
+type T6 = NonNullable<Array<number>>;
+>         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T6 = NonNullable<Array<number>>;
+>         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T6 = NonNullable<Array<number>>;
+>                     ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+type T6 = NonNullable<Array<number>>;
+>                     ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>    ^^: (string | null | undefined) & {} & {} & {}   (TyIntersection) (TSTypeAliasDeclaration)
+expected: string
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>                     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>                                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>                                 ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
+>                                             ^^: any   (TyAny) (TSTypeReference)

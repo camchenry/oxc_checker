@@ -2310,6 +2310,27 @@ compiler/newable.ts	68	69	a	T
 compiler/newable.ts	9	11	f6	<T extends string | (new () => {})>(a: T) => void
 compiler/newable.ts	90	98	new a();	{}
 compiler/newable.ts	94	95	a	new () => {}
+compiler/nonNullable.ts	120	122	T3	any
+compiler/nonNullable.ts	125	136	NonNullable	any
+compiler/nonNullable.ts	148	150	T4	{}
+compiler/nonNullable.ts	153	164	NonNullable	any
+compiler/nonNullable.ts	180	182	T5	never
+compiler/nonNullable.ts	185	196	NonNullable	any
+compiler/nonNullable.ts	210	212	T6	number[]
+compiler/nonNullable.ts	215	226	NonNullable	any
+compiler/nonNullable.ts	227	232	Array	ArrayConstructor
+compiler/nonNullable.ts	248	250	T7	string
+compiler/nonNullable.ts	253	264	NonNullable	any
+compiler/nonNullable.ts	265	276	NonNullable	any
+compiler/nonNullable.ts	277	288	NonNullable	any
+compiler/nonNullable.ts	289	291	T0	any
+compiler/nonNullable.ts	42	44	T1	string
+compiler/nonNullable.ts	47	58	NonNullable	any
+compiler/nonNullable.ts	5	7	T0	string | null | undefined
+compiler/nonNullable.ts	59	61	T0	any
+compiler/nonNullable.ts	69	71	T2	string | number | boolean | {}
+compiler/nonNullable.ts	74	85	NonNullable	any
+compiler/nonNullable.ts	86	88	T0	any
 compiler/overloadRanking.ts	1015	1037	optionalTupleRestThree	"three"
 compiler/overloadRanking.ts	1040	1065	optionalTupleRestOverload	{ (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }
 compiler/overloadRanking.ts	129	144	genericOverload	{ <T>(x: T): T[]; (x: string): string; }
