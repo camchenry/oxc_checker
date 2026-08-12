@@ -1336,9 +1336,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             _ => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
         };
 
-        let Some(promise_type) = self.get_global_promise_type(program_id) else {
-            return Ty::error(self.arena(), TypeErrorKind::MissingGlobalType);
-        };
+        let promise_type = self.get_global_promise_type(program_id);
         let TypeData::TypeReference(reference) = self.arena().type_data(promise_type) else {
             return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
         };
@@ -9322,16 +9320,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: ProgramId,
         return_type: Ty<'a>,
     ) -> Ty<'a> {
-        match self.get_global_promise_type(program_id) {
-            Some(promise_type) => match self.arena().type_data(promise_type) {
-                TypeData::TypeReference(reference) => {
-                    // TODO(correctness): TypeScript wraps async returns with Promise<Awaited<T>>.
-                    Ty::type_reference(self.arena(), reference.name, [return_type])
-                }
-                TypeData::Any | TypeData::Error(_) => promise_type,
-                _ => Ty::error(self.arena(), TypeErrorKind::MissingGlobalType),
-            },
-            None => Ty::error(self.arena(), TypeErrorKind::MissingGlobalType),
+        let promise_type = self.get_global_promise_type(program_id);
+        match self.arena().type_data(promise_type) {
+            TypeData::TypeReference(reference) => {
+                // TODO(correctness): TypeScript wraps async returns with Promise<Awaited<T>>.
+                Ty::type_reference(self.arena(), reference.name, [return_type])
+            }
+            TypeData::Any | TypeData::Error(_) => promise_type,
+            _ => Ty::error(self.arena(), TypeErrorKind::MissingGlobalType),
         }
     }
 

@@ -5882,11 +5882,7 @@ declare function acceptsPredicate<T, S extends T>(
         assert_type_eq(
             ret.arena,
             checker.get_global_promise_type(ret.program_id),
-            Some(Ty::type_reference(
-                arena(&ret),
-                "Promise",
-                std::iter::empty(),
-            )),
+            Ty::type_reference(arena(&ret), "Promise", std::iter::empty()),
         );
     }
 }

@@ -332,8 +332,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.get_global_type_reference(program_id, REGEXP_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
+    pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Ty<'a> {
         self.get_global_type_reference(program_id, "Promise", std::iter::empty())
+            .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType))
     }
 
     pub(crate) fn get_global_awaited_type(
