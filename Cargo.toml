@@ -3,6 +3,32 @@ name = "oxc_checker"
 version = "0.1.0"
 edition = "2024"
 
+[lints.rust]
+warnings = "deny"
+unsafe_op_in_unsafe_fn = "deny"
+# TODO(lints): Enable after documenting the existing public API.
+# missing_docs = "deny"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+dbg_macro = "deny"
+lossy_float_literal = "deny"
+mem_forget = "deny"
+multiple_unsafe_ops_per_block = "deny"
+rest_pat_in_fully_bound_structs = "deny"
+todo = "deny"
+undocumented_unsafe_blocks = "deny"
+unimplemented = "deny"
+# TODO(lints): Enable incrementally after addressing existing violations. Panic-related
+# lints may need targeted test-only allowances where panics express test invariants.
+# pedantic = { level = "deny", priority = -1 }
+# nursery = { level = "deny", priority = -1 }
+# cargo = { level = "deny", priority = -1 }
+# expect_used = "deny"
+# indexing_slicing = "deny"
+# panic = "deny"
+# unwrap_used = "deny"
+
 [features]
 default = []
 bench = []

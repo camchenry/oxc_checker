@@ -1,3 +1,4 @@
 [alias]
 conformance = "test --features conformance conformance::full_conformance -- --exact --nocapture"
 conformance-refresh = "test --features conformance,conformance-tsc conformance::full_conformance -- --exact --nocapture refresh-tsc"
+lint = "clippy --all-targets --all-features"
