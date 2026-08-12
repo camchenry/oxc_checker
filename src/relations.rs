@@ -379,7 +379,7 @@ fn property_name_from_key_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
         TypeData::StringLiteral(literal) => {
             Some(string_literal_type_to_property_name(literal.value))
         }
-        TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(|s| s.as_str()),
+        TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
         TypeData::BooleanLiteral(true) => Some("true"),
         TypeData::BooleanLiteral(false) => Some("false"),
         _ => None,

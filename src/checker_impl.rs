@@ -10980,7 +10980,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Tuple(tuple) if resolver == IterationResolverKind::Sync => IterationTypes {
                 yield_type: Some(Ty::union(
                     self.arena(),
-                    tuple.elements.iter().map(|element| element.ty()),
+                    tuple.elements.iter().map(super::types::TupleElement::ty),
                 )),
                 ..IterationTypes::default()
             },

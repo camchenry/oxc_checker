@@ -292,10 +292,11 @@ impl ConformanceCollectionProgress {
     }
 
     fn start(&self, path: &Path) {
-        let mut state = self
-            .state
-            .lock()
-            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        let mut state = self.state.lock().unwrap_or_else(
+            |poisoned: std::sync::PoisonError<
+                std::sync::MutexGuard<'_, ConformanceCollectionProgressState>,
+            >| poisoned.into_inner(),
+        );
         state.active_paths.insert(path.to_path_buf());
         report_collection_progress(&state, self.total_paths, self.line_width);
     }
@@ -304,7 +305,7 @@ impl ConformanceCollectionProgress {
         let mut state = self
             .state
             .lock()
-            .unwrap_or_else(|poisoned| poisoned.into_inner());
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         if let Some(path) = path {
             state.active_paths.remove(path);
         }

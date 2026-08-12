@@ -31,7 +31,7 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
     match key {
         PropertyKey::StaticIdentifier(identifier) => Some(identifier.name.as_str()),
         PropertyKey::Identifier(identifier) => Some(identifier.name.as_str()),
-        PropertyKey::NumericLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
+        PropertyKey::NumericLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
         PropertyKey::StringLiteral(literal) => Some(literal.value.as_str()),
         _ => None,
     }
@@ -42,7 +42,7 @@ fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
         types::TypeData::StringLiteral(literal) => {
             Some(string_literal_type_to_property_name(arena, literal.value))
         }
-        types::TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(|raw| raw.as_str()),
+        types::TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
         types::TypeData::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
         types::TypeData::TemplateLiteral(template) if template.expressions.is_empty() => {
             Some(template.quasis[0].value)
