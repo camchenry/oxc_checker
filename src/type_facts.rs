@@ -39,6 +39,7 @@ fn get_type_facts_worker<'a>(
         | TypeData::Boolean
         | TypeData::Bigint
         | TypeData::Any
+        | TypeData::Error(_)
         | TypeData::Unknown => TypeFacts::TRUTHY | TypeFacts::FALSY,
         TypeData::StringLiteral(literal) => {
             if string_literal_value_is_empty(literal.value) {

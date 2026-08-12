@@ -8,7 +8,7 @@ use crate::{
     checker::{CheckerReturn, SymbolRef},
     checker_impl::UNDEFINED_IDENT,
     program,
-    types::{Ty, TyTypeReference},
+    types::{Ty, TyTypeReference, TypeErrorKind},
 };
 
 const ARRAY_TYPE_NAME: &str = "Array";
@@ -342,7 +342,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         awaited_type: Ty<'a>,
     ) -> Ty<'a> {
         if !self.is_default_lib_type(program_id, AWAITED_TYPE_NAME) {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::MissingGlobalType);
         }
         Ty::type_reference(self.arena(), AWAITED_TYPE_NAME, [awaited_type])
     }

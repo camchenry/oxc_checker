@@ -19,6 +19,7 @@ use oxc_ast::{
     AstKind, AstType,
     ast::{MethodDefinitionKind, PropertyKey, Statement},
 };
+use oxc_ast_visit::Visit;
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
@@ -1888,6 +1889,13 @@ fn actual_identifier_records<'a>(
             )
         })
         .collect::<Vec<_>>();
+    records.extend(actual_meta_property_records(
+        checker,
+        checker.arena,
+        &records,
+        entry,
+        &path,
+    ));
     records.extend(actual_export_specifier_records(
         checker,
         checker.arena,
@@ -1896,6 +1904,69 @@ fn actual_identifier_records<'a>(
         &path,
     ));
     records
+}
+
+#[derive(Default)]
+struct MetaPropertyCollector {
+    properties: Vec<(Span, NodeId, &'static str)>,
+}
+
+impl<'a> Visit<'a> for MetaPropertyCollector {
+    fn visit_import_meta(&mut self, meta: &oxc_ast::ast::ImportMeta) {
+        self.properties
+            .push((meta.span, meta.node_id.get(), "meta"));
+    }
+
+    fn visit_new_target(&mut self, target: &oxc_ast::ast::NewTarget) {
+        self.properties
+            .push((target.span, target.node_id.get(), "target"));
+    }
+}
+
+fn actual_meta_property_records<'a>(
+    checker: &impl Checker<'a>,
+    arena: CheckerArena<'a>,
+    existing_records: &[TypeRecord],
+    entry: &program::ProgramEntry<'a>,
+    path: &Arc<str>,
+) -> Vec<TypeRecord> {
+    let existing_keys = existing_records
+        .iter()
+        .map(TypeRecord::key)
+        .collect::<BTreeSet<_>>();
+    let mut collector = MetaPropertyCollector::default();
+    collector.visit_program(entry.program());
+    collector
+        .properties
+        .into_iter()
+        .filter_map(|(parent_span, node_id, name)| {
+            let span = Span::new(parent_span.end - name.len() as u32, parent_span.end);
+            let key = TypeRecordKey {
+                start: span.start,
+                end: span.end,
+                text: name.to_string(),
+            };
+            if existing_keys.contains(&key) {
+                return None;
+            }
+            let node_ref = NodeRef::new(entry.id(), node_id);
+            let ty = checker.get_type_at_location(node_ref);
+            if ty.is_none() || ty.is_any_like(arena) {
+                return None;
+            }
+            let ty_variant = ty.enum_variant_name(arena);
+            let ty_repr = checker.type_to_string(ty, node_ref);
+            Some(TypeRecord {
+                path: Arc::clone(path),
+                start: span.start,
+                end: span.end,
+                text: name.to_string(),
+                ty_variant: Some(ty_variant),
+                ast_kind: Some("IdentifierName"),
+                ty_repr: sanitize_owned(ty_repr),
+            })
+        })
+        .collect()
 }
 
 fn actual_export_specifier_records<'a>(

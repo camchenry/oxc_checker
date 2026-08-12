@@ -64,10 +64,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         if let TypeData::Keyof(keyof) = self.arena().type_data(target)
             && matches!(self.arena().type_data(keyof.target), TypeData::GlobalThis)
-            && !matches!(
-                self.arena().type_data(source),
-                TypeData::Any | TypeData::Never
-            )
+            && !source.is_any_like(self.arena())
+            && !source.is_never()
         {
             return match self.arena().type_data(source) {
                 TypeData::Union(union) => union
@@ -142,7 +140,7 @@ fn is_assignable_to_at_depth<'a>(
         // Nothing is assignable to `never`
         (_, TypeData::Never) => false,
         // `any` is assignable to any type and any type is assignable to `any`
-        (_, TypeData::Any) | (TypeData::Any, _) => true,
+        (_, TypeData::Any | TypeData::Error(_)) | (TypeData::Any | TypeData::Error(_), _) => true,
         // Any type is assignable to `unknown`
         (_, TypeData::Unknown) => true,
         // Unlike `any`, `unknown` is not assignable to any type (except for `any`)

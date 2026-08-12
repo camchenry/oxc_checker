@@ -12,6 +12,9 @@ pub fn reduce_union_type<'a>(
         add_type_to_union(arena, &mut type_set, &mut seen_ids, ty);
     }
 
+    if let Some(error) = type_set.iter().find(|ty| ty.is_error(arena)) {
+        return *error;
+    }
     if type_set.contains(&Ty::Any) {
         return Ty::any();
     }
@@ -95,6 +98,9 @@ pub(crate) fn reduce_intersection_type<'a>(
         add_type_to_intersection(arena, &mut type_set, &mut seen_ids, ty);
     }
 
+    if let Some(error) = type_set.iter().find(|ty| ty.is_error(arena)) {
+        return *error;
+    }
     if type_set.contains(&Ty::Any) {
         return Ty::any();
     }

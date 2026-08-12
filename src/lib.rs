@@ -1523,7 +1523,12 @@ mod test {
             get_global_symbol_type(&ret, "computed"),
             Ty::number(),
         );
-        assert_type_eq(arena, get_global_symbol_type(&ret, "excluded"), Ty::any());
+        let excluded = get_global_symbol_type(&ret, "excluded");
+        assert_eq!(
+            excluded.error_kind(arena),
+            Some(TypeErrorKind::UnresolvedMember)
+        );
+        assert_eq!(excluded.to_type_string(arena), "any");
         assert_eq!(
             get_global_symbol_type(&ret, "selfReference").to_type_string(arena),
             "typeof globalThis",
@@ -1582,11 +1587,12 @@ mod test {
             ",
         );
 
-        assert_type_eq(
-            arena(&ret),
-            get_global_symbol_type(&ret, "leaked"),
-            Ty::any(),
+        let leaked = get_global_symbol_type(&ret, "leaked");
+        assert_eq!(
+            leaked.error_kind(ret.arena),
+            Some(TypeErrorKind::UnresolvedMember)
         );
+        assert_eq!(leaked.to_type_string(ret.arena), "any");
     }
 
     #[test]
@@ -2031,6 +2037,41 @@ mod test {
     #[test]
     fn type_handle_is_four_bytes() {
         assert_eq!(std::mem::size_of::<Ty>(), 4);
+    }
+
+    #[test]
+    fn error_types_are_distinct_but_any_like() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "");
+        let arena = arena(&ret);
+        let checker = checker(&ret);
+        let error = Ty::error(arena, TypeErrorKind::UnresolvedType);
+
+        assert!(error.is_error(arena));
+        assert_eq!(error.error_kind(arena), Some(TypeErrorKind::UnresolvedType));
+        assert_ne!(error, Ty::any());
+        assert_eq!(error.to_type_string(arena), "any");
+        assert_eq!(error.enum_variant_name(arena), "TyError");
+        assert!(checker.is_assignable_to(error, Ty::number()));
+        assert!(checker.is_assignable_to(Ty::number(), error));
+        assert!(checker.is_assignable_to(error, Ty::unknown()));
+        assert!(!checker.is_assignable_to(error, Ty::never()));
+        assert_eq!(Ty::union(arena, [error, Ty::string()]), error);
+        assert_eq!(Ty::intersection(arena, [error, Ty::string()]), error);
+    }
+
+    #[test]
+    fn unresolved_symbols_produce_error_types() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(&allocator, "const value = missingSymbol;");
+        let arena = arena(&ret);
+        let value_type = get_global_symbol_type(&ret, "value");
+
+        assert_eq!(
+            value_type.error_kind(arena),
+            Some(TypeErrorKind::UnresolvedSymbol)
+        );
+        assert_eq!(value_type.to_type_string(arena), "any");
     }
 
     #[test]
@@ -2667,8 +2708,16 @@ mod test {
             panic!("expected a13 to remain a tuple");
         };
         assert_eq!(a13.elements.len(), 8192);
-        assert_eq!(get_type_alias_type(&ret, "T14"), Ty::any());
-        assert_eq!(get_global_symbol_type(&ret, "a14"), Ty::any());
+        for ty in [
+            get_type_alias_type(&ret, "T14"),
+            get_global_symbol_type(&ret, "a14"),
+        ] {
+            assert_eq!(
+                ty.error_kind(ret.arena),
+                Some(TypeErrorKind::TupleSizeExceeded)
+            );
+            assert_eq!(ty.to_type_string(ret.arena), "any");
+        }
 
         let tuple_9999 = Ty::tuple(ret.arena, vec![TupleElement::Regular(Ty::any()); 9999]);
         let TypeData::Tuple(tuple) = ret
@@ -2678,16 +2727,18 @@ mod test {
             panic!("expected a 9,999-element spread to remain a tuple");
         };
         assert_eq!(tuple.elements.len(), 9999);
-        assert_eq!(
-            Ty::tuple(
-                ret.arena,
-                vec![
-                    TupleElement::Regular(Ty::any()),
-                    TupleElement::Rest(tuple_9999),
-                ],
-            ),
-            Ty::any()
+        let oversized = Ty::tuple(
+            ret.arena,
+            vec![
+                TupleElement::Regular(Ty::any()),
+                TupleElement::Rest(tuple_9999),
+            ],
         );
+        assert_eq!(
+            oversized.error_kind(ret.arena),
+            Some(TypeErrorKind::TupleSizeExceeded)
+        );
+        assert_eq!(oversized.to_type_string(ret.arena), "any");
     }
 
     #[test]
@@ -2951,7 +3002,7 @@ mod test {
     }
 
     #[test]
-    fn recursive_type_instantiation_depth_bails_out_to_any() {
+    fn recursive_type_instantiation_depth_produces_error_type() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
             &allocator,
@@ -2971,7 +3022,12 @@ mod test {
             );
         };
         assert_eq!(small.elements.len(), 4);
-        assert_eq!(get_type_alias_type(&ret, "Value"), Ty::any());
+        let value = get_type_alias_type(&ret, "Value");
+        assert_eq!(
+            value.error_kind(ret.arena),
+            Some(TypeErrorKind::TypeInstantiationDepthExceeded)
+        );
+        assert_eq!(value.to_type_string(ret.arena), "any");
     }
 
     #[test]
@@ -4705,7 +4761,7 @@ mod test {
     }
 
     #[test]
-    fn invalid_object_spreads_produce_any() {
+    fn invalid_object_spreads_produce_error_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
             &allocator,
@@ -4718,8 +4774,14 @@ mod test {
         "#,
         );
 
-        assert_eq!(get_first_symbol_type(&ret, "spreadPromise"), Ty::any());
-        assert_eq!(get_first_symbol_type(&ret, "numberSpread"), Ty::any());
+        for name in ["spreadPromise", "numberSpread"] {
+            let ty = get_first_symbol_type(&ret, name);
+            assert_eq!(
+                ty.error_kind(ret.arena),
+                Some(TypeErrorKind::UnsupportedType)
+            );
+            assert_eq!(ty.to_type_string(ret.arena), "any");
+        }
     }
 
     #[test]
@@ -5598,7 +5660,12 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "regexText"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "regexTest"), Ty::boolean());
         assert_eq!(get_global_symbol_type(&ret, "regexHasOwn"), Ty::boolean());
-        assert_eq!(get_global_symbol_type(&ret, "regexLowercase"), Ty::any());
+        let regex_lowercase = get_global_symbol_type(&ret, "regexLowercase");
+        assert_eq!(
+            regex_lowercase.error_kind(ret.arena),
+            Some(TypeErrorKind::UnresolvedMember)
+        );
+        assert_eq!(regex_lowercase.to_type_string(ret.arena), "any");
     }
 
     #[test]
@@ -5628,7 +5695,12 @@ mod test {
         assert_eq!(get_global_symbol_type(&ret, "userName"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "hashValue"), Ty::string());
         assert_eq!(get_global_symbol_type(&ret, "recValue"), Ty::unknown());
-        assert_eq!(get_global_symbol_type(&ret, "recValue2"), Ty::any());
+        let rec_value2 = get_global_symbol_type(&ret, "recValue2");
+        assert_eq!(
+            rec_value2.error_kind(ret.arena),
+            Some(TypeErrorKind::UnresolvedMember)
+        );
+        assert_eq!(rec_value2.to_type_string(ret.arena), "any");
     }
 
     #[test]

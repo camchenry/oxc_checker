@@ -21,8 +21,8 @@ use crate::{
     relations::is_assignable_to_without_checker,
     types::{
         CheckerArena, MappedModifier, SignatureKind, TupleElement, Ty, TyFunction, TyInfer,
-        TyMapped, TyProperty, TyTypeParameter, TypeData, function_parameter_type_at_call_index,
-        visit_type,
+        TyMapped, TyProperty, TyTypeParameter, TypeData, TypeErrorKind,
+        function_parameter_type_at_call_index, visit_type,
     },
 };
 
@@ -541,7 +541,7 @@ fn inferred_type_from_candidates<'a>(
 
     match (covariant, contravariant) {
         (Some(covariant), Some(contravariant)) => {
-            if covariant.is_never() || covariant.is_any() {
+            if covariant.is_never() || covariant.is_any_like(arena) {
                 return Some(contravariant);
             }
             if inference
@@ -842,7 +842,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if current >= CONDITIONAL_TYPE_MAX_DEPTH {
             if !self.resolving_type_aliases.borrow().is_empty() {
                 self.mark_type_instantiation_overflow();
-                return Ty::any();
+                return Ty::error(self.arena(), TypeErrorKind::ConditionalTypeDepthExceeded);
             }
             return Ty::conditional(
                 self.arena(),
@@ -1008,11 +1008,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             (_, TypeData::Infer(infer)) => {
                 self.add_conditional_inference(inferences, infer, source)
             }
-            (TypeData::Any, _) if !self.infer_type_parameter_names(target).is_empty() => {
+            (TypeData::Any | TypeData::Error(_), _)
+                if !self.infer_type_parameter_names(target).is_empty() =>
+            {
                 let mut result = ConditionalInferMatchResult::Matched;
                 self.collect_infer_types(target, &mut |infer| {
-                    result =
-                        result.and(self.add_conditional_inference(inferences, infer, Ty::any()));
+                    result = result.and(self.add_conditional_inference(inferences, infer, source));
                 });
                 result
             }
@@ -1415,7 +1416,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
             };
             let Some(body) = body else {
-                return Ty::any();
+                return Ty::error(self.arena(), TypeErrorKind::MissingFunctionBody);
             };
             let expressions = ReturnExpressionVisitor::expressions_in_body(body);
             let has_implicit_return = matches!(function, FunctionKind::Function(function) if function.generator)
@@ -1475,10 +1476,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         return_type,
                         next_type,
                     )
-                    .unwrap_or(Ty::any())
+                    .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType))
                 } else {
                     self.get_global_generator_type(program_id, yield_type, return_type, next_type)
-                        .unwrap_or(Ty::any())
+                        .unwrap_or_else(|| {
+                            Ty::error(self.arena(), TypeErrorKind::MissingGlobalType)
+                        })
                 }
             } else {
                 // non-generator function: look at return expressions

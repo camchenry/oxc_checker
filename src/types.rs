@@ -50,6 +50,7 @@ struct InternedTypeCache<'a> {
     indexed_accesses: RefCell<ArenaHashMap<'a, (TypeId, TypeId), Ty<'a>>>,
     conditionals: RefCell<ArenaHashMap<'a, ConditionalTypeKey, Ty<'a>>>,
     type_references: RefCell<ArenaHashMap<'a, TypeReferenceKey<'a>, Ty<'a>>>,
+    errors: RefCell<ArenaHashMap<'a, TypeErrorKind, Ty<'a>>>,
     fresh_object_literals: RefCell<ArenaHashSet<'a, TypeId>>,
 }
 
@@ -107,6 +108,7 @@ impl<'a> InternedTypeCache<'a> {
             indexed_accesses: RefCell::new(ArenaHashMap::new_in(allocator)),
             conditionals: RefCell::new(ArenaHashMap::new_in(allocator)),
             type_references: RefCell::new(ArenaHashMap::new_in(allocator)),
+            errors: RefCell::new(ArenaHashMap::new_in(allocator)),
             fresh_object_literals: RefCell::new(ArenaHashSet::new_in(allocator)),
         }
     }
@@ -307,6 +309,22 @@ pub struct Ty<'a> {
     marker: PhantomData<&'a ()>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum TypeErrorKind {
+    TypeInstantiationDepthExceeded,
+    TypeResolutionDepthExceeded,
+    ConditionalTypeDepthExceeded,
+    TypeAliasResolutionDepthExceeded,
+    UnresolvedImport,
+    UnresolvedSymbol,
+    UnresolvedMember,
+    UnresolvedType,
+    MissingGlobalType,
+    MissingFunctionBody,
+    TupleSizeExceeded,
+    UnsupportedType,
+}
+
 impl<'a> Ty<'a> {
     const fn from_raw(raw: u32) -> Self {
         let Some(raw) = NonZeroU32::new(raw) else {
@@ -381,6 +399,7 @@ pub enum TypeData<'a> {
     Undefined,
     Null,
     Any,
+    Error(TypeErrorKind),
     Unknown,
     Void,
     Never,
@@ -884,6 +903,7 @@ impl<'a> TypeIdentity<'a> {
             | (TypeData::PrimitiveObject, TypeData::PrimitiveObject)
             | (TypeData::This, TypeData::This)
             | (TypeData::GlobalThis, TypeData::GlobalThis) => true,
+            (TypeData::Error(left), TypeData::Error(right)) => left == right,
             (TypeData::UniqueSymbol(left), TypeData::UniqueSymbol(right)) => left == right,
             (TypeData::Object(left), TypeData::Object(right)) => {
                 self.objects_are_identical(left, right)
@@ -1342,6 +1362,15 @@ impl<'a> Ty<'a> {
         Self::Any
     }
 
+    pub fn error(arena: CheckerArena<'a>, kind: TypeErrorKind) -> Self {
+        if let Some(ty) = arena.interned_types.errors.borrow().get(&kind) {
+            return *ty;
+        }
+        let ty = arena.alloc_type(TypeData::Error(kind));
+        arena.interned_types.errors.borrow_mut().insert(kind, ty);
+        ty
+    }
+
     pub fn unknown() -> Self {
         Self::Unknown
     }
@@ -1732,7 +1761,7 @@ impl<'a> Ty<'a> {
                 && let TypeData::Tuple(tuple) = arena.type_data(ty)
             {
                 if normalized.len() + tuple.elements.len() >= TUPLE_SPREAD_MAX_LENGTH {
-                    return Ty::any();
+                    return Ty::error(arena, TypeErrorKind::TupleSizeExceeded);
                 }
                 normalized.extend(tuple.elements.iter().copied());
                 normalized_labels.extend(tuple.labels.iter().copied());
@@ -1894,6 +1923,26 @@ impl<'a> Ty<'a> {
         *self == Self::Any
     }
 
+    /// Returns `true` if the type is `unknown`.
+    pub fn is_unknown(&self) -> bool {
+        *self == Self::Unknown
+    }
+
+    pub fn is_error(&self, arena: CheckerArena<'a>) -> bool {
+        matches!(arena.type_data(*self), TypeData::Error(_))
+    }
+
+    pub fn error_kind(&self, arena: CheckerArena<'a>) -> Option<TypeErrorKind> {
+        match arena.type_data(*self) {
+            TypeData::Error(kind) => Some(kind),
+            _ => None,
+        }
+    }
+
+    pub fn is_any_like(&self, arena: CheckerArena<'a>) -> bool {
+        self.is_any() || self.is_error(arena)
+    }
+
     /// Returns `true` if the type is `never`.
     pub fn is_never(&self) -> bool {
         *self == Self::Never
@@ -1930,6 +1979,7 @@ impl<'a> Ty<'a> {
                 | TypeData::Void
                 | TypeData::Never
                 | TypeData::Any
+                | TypeData::Error(_)
                 | TypeData::Unknown
                 | TypeData::PrimitiveObject
                 | TypeData::StringLiteral(_)
@@ -1974,6 +2024,7 @@ impl<'a> Ty<'a> {
             TypeData::Undefined => "TyUndefined",
             TypeData::Null => "TyNull",
             TypeData::Any => "TyAny",
+            TypeData::Error(_) => "TyError",
             TypeData::Unknown => "TyUnknown",
             TypeData::Void => "TyVoid",
             TypeData::Never => "TyNever",
@@ -2061,6 +2112,7 @@ impl<'a> Ty<'a> {
             TypeData::Undefined => "undefined".to_string(),
             TypeData::Null => "null".to_string(),
             TypeData::Any => "any".to_string(),
+            TypeData::Error(_) => "any".to_string(),
             TypeData::Unknown => "unknown".to_string(),
             TypeData::Void => "void".to_string(),
             TypeData::Never => "never".to_string(),

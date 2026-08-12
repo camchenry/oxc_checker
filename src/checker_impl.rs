@@ -51,7 +51,7 @@ use crate::{
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTypeParameter,
-        TyTypePredicate, TyTypeQuery, TyTypeReference, TypeData, TypeId,
+        TyTypePredicate, TyTypeQuery, TyTypeReference, TypeData, TypeErrorKind, TypeId,
         binding_pattern_to_parameter_name, function_maximum_argument_count,
         function_minimum_argument_count, function_parameter_type_at_call_index,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
@@ -59,8 +59,11 @@ use crate::{
     },
 };
 
-fn should_display_implicit_default_type_argument(ty: Ty<'_>) -> bool {
-    !matches!(ty, Ty::Any | Ty::Unknown)
+fn should_display_implicit_default_type_argument<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> bool {
+    !matches!(
+        arena.type_data(ty),
+        TypeData::Any | TypeData::Error(_) | TypeData::Unknown
+    )
 }
 
 fn array_expression_element_span(element: &ArrayExpressionElement<'_>) -> Option<Span> {
@@ -401,7 +404,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let current = depth.get();
         if current >= TYPE_INSTANTIATION_MAX_DEPTH {
             self.mark_type_instantiation_overflow();
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded);
         }
 
         depth.set(current + 1);
@@ -435,7 +438,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         depth: usize,
     ) -> Ty<'a> {
         if depth >= TYPE_INSTANTIATION_MAX_DEPTH {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded);
         }
         if mapper.is_empty() || !self.could_contain_type_variables(ty) {
             return ty;
@@ -1000,7 +1003,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if identifier.name == GLOBAL_THIS_IDENT {
                     return Ty::global_this();
                 }
-                Ty::any()
+                Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol)
             }
             AstKind::ObjectExpression(object) => {
                 self.get_type_of_object_expression(program_id, object, node_id, context)
@@ -1246,14 +1249,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::string()
                 }
             }
-            AstKind::RegExpLiteral(_) => {
-                self.get_global_regexp_type(program_id).unwrap_or(Ty::any())
-            }
+            AstKind::RegExpLiteral(_) => self
+                .get_global_regexp_type(program_id)
+                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType)),
             AstKind::Super(_) => node_id
                 .and_then(|node_id| {
                     self.get_enclosing_base_class_instance_type(program_id, node_id)
                 })
-                .unwrap_or_else(Ty::any),
+                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType)),
             AstKind::Class(class) if class.is_expression() => {
                 self.get_type_of_class_expression(program_id, class)
             }
@@ -1265,7 +1268,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
             AstKind::NewTarget(_) => node_id
                 .and_then(|node_id| self.get_type_of_new_target(program_id, node_id))
-                .unwrap_or_else(Ty::any),
+                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType)),
             AstKind::ImportExpression(import_expression) => {
                 self.get_type_of_import_expression(program_id, import_expression)
             }
@@ -1276,7 +1279,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_type_of_expression_with_node(program_id, expression, node_id, flags)
                 })
                 .last()
-                .unwrap_or_else(Ty::any),
+                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType)),
             AstKind::TaggedTemplateExpression(tagged_template) => {
                 self.get_type_of_tagged_template_expression(program_id, tagged_template, node_id)
             }
@@ -1298,10 +1301,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             AstKind::PrivateInExpression(_) => Ty::boolean(),
             // TODO(correctness): Handle all of these cases.
-            AstKind::JSXElement(_) => Ty::any(),
-            AstKind::JSXFragment(_) => Ty::any(),
-            AstKind::TSInstantiationExpression(_) => Ty::any(),
-            AstKind::V8IntrinsicExpression(_) => Ty::any(),
+            AstKind::JSXElement(_) => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
+            AstKind::JSXFragment(_) => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
+            AstKind::TSInstantiationExpression(_) => {
+                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+            }
+            AstKind::V8IntrinsicExpression(_) => {
+                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+            }
             _ => unreachable!("expected expression AST kind"),
         }
     }
@@ -1315,22 +1322,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             Expression::StringLiteral(source) => self
                 .store
                 .resolved_module(program_id, source.value.as_str())
-                .map_or_else(Ty::any, |imported_program_id| {
-                    let module_type =
-                        self.get_module_namespace_type(imported_program_id, source.value.as_str());
-                    let name = self
-                        .arena()
-                        .str(&format!("import(\"{}\")", source.value.as_str()));
-                    Ty::type_query(self.arena(), name, module_type, std::iter::empty())
-                }),
-            _ => Ty::any(),
+                .map_or_else(
+                    || Ty::error(self.arena(), TypeErrorKind::UnresolvedImport),
+                    |imported_program_id| {
+                        let module_type = self
+                            .get_module_namespace_type(imported_program_id, source.value.as_str());
+                        let name = self
+                            .arena()
+                            .str(&format!("import(\"{}\")", source.value.as_str()));
+                        Ty::type_query(self.arena(), name, module_type, std::iter::empty())
+                    },
+                ),
+            _ => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
         };
 
         let Some(promise_type) = self.get_global_promise_type(program_id) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::MissingGlobalType);
         };
         let TypeData::TypeReference(reference) = self.arena().type_data(promise_type) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
         };
         Ty::type_reference(self.arena(), reference.name, [imported_type])
     }
@@ -1355,12 +1365,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 _ => None,
                             });
                         return class_name.map_or_else(
-                            || Some(Ty::any()),
+                            || Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol)),
                             |class_name| {
                                 Some(Ty::type_query(
                                     self.arena(),
                                     class_name,
-                                    Ty::any(),
+                                    Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
                                     std::iter::empty(),
                                 ))
                             },
@@ -1371,7 +1381,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         self.nodes(program_id).parent_kind(function.node_id()),
                         AstKind::MethodDefinition(_)
                     ) {
-                        return Some(Ty::any());
+                        return Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedType));
                     }
 
                     if let Some(symbol_id) = function
@@ -1491,11 +1501,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 AstKind::TSInterfaceDeclaration(interface)
                     if interface.id.name.as_str() == type_name =>
                 {
-                    Some(Ty::any())
+                    Some(Ty::error(self.arena(), TypeErrorKind::UnsupportedType))
                 }
                 AstKind::TSTypeAliasDeclaration(alias) if alias.id.name.as_str() == type_name => {
                     let ty = self.get_type_of_type_alias_declaration(program_id, alias);
-                    Some(if ty.is_none() { Ty::any() } else { ty })
+                    Some(if ty.is_none() {
+                        Ty::error(self.arena(), TypeErrorKind::UnresolvedType)
+                    } else {
+                        ty
+                    })
                 }
                 _ => None,
             })
@@ -1634,8 +1648,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if self.is_string_like_for_addition(left) || self.is_string_like_for_addition(right)
                 {
                     Ty::string()
-                } else if matches!(left, Ty::Any) {
-                    Ty::any()
+                } else if left.is_any_like(self.arena()) {
+                    left
                 } else {
                     Ty::number()
                 }
@@ -1692,7 +1706,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if let Some(target) = target.as_simple_assignment_target() {
             return self.get_type_of_simple_assignment_target(program_id, target, node_id, flags);
         }
-        Ty::any()
+        Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
     }
 
     fn get_type_of_simple_assignment_target(
@@ -1715,7 +1729,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if identifier.name == UNDEFINED_IDENT {
                     return Ty::undefined();
                 }
-                Ty::any()
+                Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol)
             }
             SimpleAssignmentTarget::ComputedMemberExpression(member) => {
                 self.get_type_of_computed_member_expression(program_id, member, node_id, flags)
@@ -1753,7 +1767,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     node_id,
                     flags,
                 ),
-            SimpleAssignmentTarget::PrivateFieldExpression(_) => Ty::any(),
+            SimpleAssignmentTarget::PrivateFieldExpression(_) => {
+                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+            }
         }
     }
 
@@ -2457,7 +2473,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let depth = &self.ts_type_resolution_depth;
         let current = depth.get();
         if current >= TS_TYPE_RESOLUTION_MAX_DEPTH {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::TypeResolutionDepthExceeded);
         }
 
         depth.set(current + 1);
@@ -2885,7 +2901,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             | TSType::JSDocNonNullableType(_)
             | TSType::JSDocUnknownType(_) => {
                 // TODO(completeness): We are not currently handling JSDoc.
-                Ty::any()
+                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
             }
         }
     }
@@ -2897,7 +2913,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         let source = import_type.source.value.as_str();
         let Some(imported_program_id) = self.store.resolved_module(program_id, source) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
         };
 
         let module_type = self.get_module_namespace_type(imported_program_id, source);
@@ -2941,19 +2957,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 _ => None,
             })
         else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
         };
         let Some(imported_program_id) = self
             .store
             .resolved_module(program_id, import_type.source.value.as_str())
         else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
         };
         let Some(symbol) = self.get_root_symbol(imported_program_id, name) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol);
         };
         self.get_type_of_ts_import_type_symbol(symbol, &[])
-            .unwrap_or_else(Ty::any)
+            .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType))
     }
 
     fn get_type_from_ts_import_type_qualifier(
@@ -2971,7 +2987,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     identifier.name.as_str(),
                     type_arguments,
                 )
-                .unwrap_or_else(Ty::any),
+                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember)),
             TSImportTypeQualifier::QualifiedName(qualified) => {
                 let object_type = self.get_type_from_ts_import_type_qualifier(
                     program_id,
@@ -2985,7 +3001,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     qualified.right.name.as_str(),
                     type_arguments,
                 )
-                .unwrap_or_else(Ty::any)
+                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember))
             }
         }
     }
@@ -3162,7 +3178,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         query: &'a TSTypeQuery<'a>,
     ) -> Ty<'a> {
         let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
         };
 
         let resolved = match &query.expr_name {
@@ -3173,12 +3189,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 match symbol {
                     Some(symbol) => self.get_type_of_symbol(symbol),
                     None if identifier.name == GLOBAL_THIS_IDENT => return Ty::global_this(),
-                    None => Ty::any(),
+                    None => Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
                 }
             }
             // TODO(correctness): resolve qualified-name and `this` typeof targets to a
             // real symbol so `resolved` is meaningful instead of `Ty::any`.
-            _ => Ty::any(),
+            _ => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
         };
 
         let type_arguments = query
@@ -3232,7 +3248,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             .iter()
                             .map(|ty| self.get_type_from_ts_type(program_id, ty))
                     });
-            return Ty::type_query(self.arena(), name, Ty::any(), type_arguments);
+            let resolved = match self.arena().type_data(query_type) {
+                TypeData::TypeQuery(query) if query.resolved.is_error(self.arena()) => {
+                    query.resolved
+                }
+                TypeData::Error(_) => query_type,
+                _ => Ty::any(),
+            };
+            return Ty::type_query(self.arena(), name, resolved, type_arguments);
         }
 
         let ty = self
@@ -4471,7 +4494,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 )
                         });
                     if previously_overflowed {
-                        return Some(Ty::any());
+                        return Some(Ty::error(
+                            self.arena(),
+                            TypeErrorKind::TypeAliasResolutionDepthExceeded,
+                        ));
                     }
                 }
                 let key = TypeAliasResolution {
@@ -4485,6 +4511,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 {
                     let mut resolving_type_aliases = self.resolving_type_aliases.borrow_mut();
                     if resolving_type_aliases.len() >= TYPE_INSTANTIATION_MAX_DEPTH {
+                        let error = Ty::error(
+                            self.arena(),
+                            TypeErrorKind::TypeAliasResolutionDepthExceeded,
+                        );
                         let should_propagate =
                             resolving_type_aliases.first().is_some_and(|resolution| {
                                 resolution.type_arguments.iter().all(|type_id| {
@@ -4504,16 +4534,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             }
                             let mut cache = self.type_alias_resolution_cache.borrow_mut();
                             for active_resolution in active_resolutions {
-                                cache.insert(active_resolution, Ty::any());
+                                cache.insert(active_resolution, error);
                             }
-                            cache.insert(key, Ty::any());
+                            cache.insert(key, error);
                         } else {
                             drop(resolving_type_aliases);
                             self.type_alias_resolution_cache
                                 .borrow_mut()
-                                .insert(key, Ty::any());
+                                .insert(key, error);
                         }
-                        return Some(Ty::any());
+                        return Some(error);
                     }
                     if resolving_type_aliases.contains(&key) {
                         return None;
@@ -4542,18 +4572,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 };
                 let ty = self.instantiate_type(ty, &substitutions.to_mapper(self.arena()));
                 let ty = if self.type_instantiation_overflowed.get() {
-                    Ty::any()
+                    Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded)
                 } else {
                     self.expand_type_at_use(program_id, ty, depth + 1)
                 };
                 let ty = if self.type_instantiation_overflowed.get() {
-                    Ty::any()
+                    Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded)
                 } else {
                     ty
                 };
 
                 self.resolving_type_aliases.borrow_mut().pop();
-                if self.type_instantiation_overflowed.get() && ty == Ty::any() {
+                if self.type_instantiation_overflowed.get() && ty.is_error(self.arena()) {
                     self.overflowed_type_alias_resolutions
                         .borrow_mut()
                         .push(key.clone());
@@ -4684,7 +4714,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::type_reference(self.arena(), name, [ty])
                 }
             }
-            TypeData::String | TypeData::Any | TypeData::Unknown => {
+            TypeData::String | TypeData::Any | TypeData::Error(_) | TypeData::Unknown => {
                 Ty::type_reference(self.arena(), name, [ty])
             }
             _ => ty,
@@ -5033,6 +5063,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let ty = self.get_type_from_ts_type(program_id, ty);
         match self.arena().type_data(ty) {
             TypeData::TypeQuery(query)
+                if query.type_arguments.is_empty() && query.resolved.is_error(self.arena()) =>
+            {
+                query.resolved
+            }
+            TypeData::TypeQuery(query)
                 if query.type_arguments.is_empty() && !query.resolved.is_any() =>
             {
                 query.resolved
@@ -5374,7 +5409,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let display_count = if explicit_count == 0 {
             default_type_arguments
                 .iter()
-                .rposition(|ty| should_display_implicit_default_type_argument(*ty))
+                .rposition(|ty| should_display_implicit_default_type_argument(self.arena(), *ty))
                 .map_or(0, |index| index + 1)
         } else {
             default_type_arguments
@@ -5508,10 +5543,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         property_flags,
                     );
                     let spread_type = self.expand_type_at_use(program_id, spread_type, 0);
-                    if spread_type.is_any()
-                        || self.is_invalid_object_spread_type(program_id, spread_type, 0)
-                    {
-                        return Ty::any();
+                    if spread_type.is_any_like(self.arena()) {
+                        return spread_type;
+                    }
+                    if self.is_invalid_object_spread_type(program_id, spread_type, 0) {
+                        return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
                     }
                     spread_index_infos.extend(
                         spread_type
@@ -5847,7 +5883,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 None
             }
         })
-        .unwrap_or_else(Ty::any);
+        .unwrap_or_else(|| {
+            if object_type.is_any_like(self.arena()) {
+                object_type
+            } else {
+                Ty::error(self.arena(), TypeErrorKind::UnresolvedMember)
+            }
+        });
         let ty = if ty.is_function(self.arena()) {
             ty
         } else {
@@ -5900,13 +5942,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let (class_name, is_static) = match self.arena().type_data(object_type) {
             TypeData::TypeReference(reference) => (reference.name, false),
             TypeData::TypeQuery(query) => (query.name, true),
-            _ => return Ty::any(),
+            TypeData::Any => return Ty::any(),
+            TypeData::Error(_) => return object_type,
+            _ => return Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
         };
         let Some(class_symbol) = self.get_class_symbol_for_type(program_id, class_name) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
         };
         let Some((class_node_id, class)) = self.get_class_for_symbol(class_symbol) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
         };
         let private_name = member.field.name.as_str();
         let ty = class.body.body.iter().find_map(|element| match element {
@@ -5940,7 +5984,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             _ => None,
         });
-        let ty = ty.unwrap_or_else(Ty::any);
+        let ty = ty.unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember));
         if member.optional {
             ty.or_undefined(self.arena())
         } else {
@@ -6137,7 +6181,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Ty::indexed_access(self.arena(), object_type, key_type);
         }
 
-        Ty::any()
+        if object_type.is_error(self.arena()) {
+            object_type
+        } else if key_type.is_error(self.arena()) {
+            key_type
+        } else if object_type.is_any() {
+            object_type
+        } else if key_type.is_any() {
+            key_type
+        } else {
+            Ty::error(self.arena(), TypeErrorKind::UnresolvedMember)
+        }
     }
 
     fn get_property_type_of_global_interface_type(
@@ -6420,7 +6474,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let candidates =
             self.get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call);
         if candidates.is_empty() {
-            return Ty::any();
+            return if callee_type.is_any_like(self.arena()) {
+                callee_type
+            } else {
+                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+            };
         }
 
         let applicable = candidates
@@ -6451,7 +6509,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 })
             })
             .map(ResolvedSignatureCandidate::into_return_type)
-            .unwrap_or_else(Ty::any)
+            .unwrap_or_else(|| {
+                if callee_type.is_any_like(self.arena()) {
+                    callee_type
+                } else {
+                    Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                }
+            })
     }
 
     fn get_type_of_tagged_template_expression(
@@ -6469,7 +6533,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let candidates =
             self.get_signatures_of_type_in_program(program_id, tag_type, SignatureKind::Call);
         if candidates.is_empty() {
-            return Ty::any();
+            return if tag_type.is_any_like(self.arena()) {
+                tag_type
+            } else {
+                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+            };
         }
 
         let applicable = candidates
@@ -6498,7 +6566,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 })
             })
             .map(ResolvedSignatureCandidate::into_return_type)
-            .unwrap_or_else(Ty::any)
+            .unwrap_or_else(|| {
+                if tag_type.is_any_like(self.arena()) {
+                    tag_type
+                } else {
+                    Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                }
+            })
     }
 
     fn resolve_tagged_template_signature_candidate(
@@ -7163,7 +7237,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         flags: GetTypeFlags,
     ) -> Ty<'a> {
         let Expression::Identifier(identifier) = &new_expression.callee else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
         };
 
         let constructor_type = self
@@ -7398,7 +7472,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         };
         if cycle_detected {
-            return Some(Ty::any());
+            return Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedMember));
         }
 
         let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
@@ -8106,7 +8180,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         {
             let mut resolving_class_members = self.resolving_class_members.borrow_mut();
             if resolving_class_members.contains(&resolution) {
-                return Some(Ty::any());
+                return Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedMember));
             }
             resolving_class_members.push(resolution);
         }
@@ -9254,9 +9328,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     // TODO(correctness): TypeScript wraps async returns with Promise<Awaited<T>>.
                     Ty::type_reference(self.arena(), reference.name, [return_type])
                 }
-                _ => Ty::any(),
+                TypeData::Any | TypeData::Error(_) => promise_type,
+                _ => Ty::error(self.arena(), TypeErrorKind::MissingGlobalType),
             },
-            _ => Ty::any(),
+            None => Ty::error(self.arena(), TypeErrorKind::MissingGlobalType),
         }
     }
 
@@ -9367,7 +9442,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_module_namespace_type(&self, program_id: ProgramId, namespace_name: &str) -> Ty<'a> {
         let Some(entry) = self.store.entry(program_id) else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
         };
         let namespace_name = self.arena().str(namespace_name);
         let properties = entry
@@ -9592,7 +9667,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
                 .yield_type
                 .or_else(|| argument_type.array_element_type(self.arena()))
-                .unwrap_or_else(Ty::any)
+                .or_else(|| {
+                    argument_type
+                        .is_any_like(self.arena())
+                        .then_some(argument_type)
+                })
+                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnsupportedType))
             }
             ArrayExpressionElement::Elision(_) => Ty::any(),
             _ => self.check_expression_with_context(
@@ -10622,7 +10702,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 _ => None,
             })
         else {
-            return Ty::any();
+            return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
         };
         let resolver = if function.r#async {
             IterationResolverKind::Async
@@ -10632,7 +10712,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         if yield_expression.delegate {
             let Some(argument) = yield_expression.argument.as_ref() else {
-                return Ty::any();
+                return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
             };
             let argument_type = self.get_type_of_expression_with_node(
                 program_id,
@@ -10893,6 +10973,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 yield_type: Some(Ty::any()),
                 return_type: Some(Ty::any()),
                 next_type: Some(Ty::any()),
+            },
+            TypeData::Error(_) => IterationTypes {
+                yield_type: Some(iterable_type),
+                return_type: Some(iterable_type),
+                next_type: Some(iterable_type),
             },
             TypeData::Union(union) => self.combine_iteration_types(union.types.iter().map(|ty| {
                 self.get_iteration_types_of_iterable(program_id, *ty, resolver, depth + 1, context)
@@ -11155,6 +11240,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Any => IterationTypes {
                 yield_type: Some(Ty::any()),
                 return_type: Some(Ty::any()),
+                next_type: None,
+            },
+            TypeData::Error(_) => IterationTypes {
+                yield_type: Some(result_type),
+                return_type: Some(result_type),
                 next_type: None,
             },
             TypeData::Union(union) => {
@@ -12191,6 +12281,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::IdentifierName(_)
                 if matches!(
                     self.nodes(node.program_id).parent_kind(node.node_id),
+                    AstKind::ImportMeta(_) | AstKind::NewTarget(_)
+                ) =>
+            {
+                let parent_id = self.nodes(node.program_id).parent_id(node.node_id);
+                self.get_type_at_location(NodeRef::new(node.program_id, parent_id))
+            }
+            AstKind::IdentifierName(_)
+                if matches!(
+                    self.nodes(node.program_id).parent_kind(node.node_id),
                     AstKind::TSImportType(_)
                 ) =>
             {
@@ -12585,7 +12684,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         {
             let mut resolving_symbols = self.resolving_symbols.borrow_mut();
             if resolving_symbols.contains(&sym) {
-                return Ty::any();
+                return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
             }
             resolving_symbols.push(sym);
         }

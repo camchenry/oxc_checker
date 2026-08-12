@@ -472,7 +472,7 @@ fn narrow_by_undefined_equality<'a>(
     ty: Ty<'a>,
     assume_undefined: bool,
 ) -> Ty<'a> {
-    if matches!(ty, Ty::Any | Ty::Unknown) {
+    if ty.is_any_like(checker.arena()) || ty.is_unknown() {
         return ty;
     }
     if assume_undefined {
@@ -515,7 +515,7 @@ fn narrow_by_null_equality<'a>(
     ty: Ty<'a>,
     assume_null: bool,
 ) -> Ty<'a> {
-    if matches!(ty, Ty::Any | Ty::Unknown) {
+    if ty.is_any_like(checker.arena()) || ty.is_unknown() {
         return ty;
     }
     if assume_null {
@@ -541,7 +541,7 @@ fn narrow_by_in_property<'a>(
     property_name: &'a str,
     assume_true: bool,
 ) -> Ty<'a> {
-    if !assume_true || matches!(ty, Ty::Any) {
+    if !assume_true || ty.is_any_like(checker.arena()) {
         return ty;
     }
 
@@ -709,7 +709,7 @@ fn narrow_by_truthiness<'a>(
     ty: Ty<'a>,
     assume_true: bool,
 ) -> Ty<'a> {
-    if !assume_true || matches!(ty, Ty::Any | Ty::Unknown) {
+    if !assume_true || ty.is_any_like(checker.arena()) || ty.is_unknown() {
         return ty;
     }
 
@@ -724,7 +724,7 @@ fn narrow_by_typeof<'a>(
     witness: TypeofWitness,
     assume_true: bool,
 ) -> Ty<'a> {
-    if matches!(ty, Ty::Any) {
+    if ty.is_any_like(checker.arena()) {
         return ty;
     }
 
@@ -761,7 +761,10 @@ fn type_from_typeof_witness<'a>(
                         checker.arena(),
                         std::iter::empty(),
                         std::iter::empty(),
-                        Ty::any(),
+                        Ty::error(
+                            checker.arena(),
+                            crate::types::TypeErrorKind::MissingGlobalType,
+                        ),
                         None,
                     )
                 })
