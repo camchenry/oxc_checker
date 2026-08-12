@@ -570,7 +570,10 @@ impl<'a> ProgramStore<'a> {
         })
     }
 
-    fn push_entry(&mut self, create_entry: impl FnOnce(ProgramId) -> ProgramEntry<'a>) -> ProgramId {
+    fn push_entry(
+        &mut self,
+        create_entry: impl FnOnce(ProgramId) -> ProgramEntry<'a>,
+    ) -> ProgramId {
         let id = self.entries.next_idx();
         let entry = create_entry(id);
         let id = entry.id;
