@@ -2118,20 +2118,18 @@ impl<'a> Ty<'a> {
             TypeData::Never => "never".to_string(),
             TypeData::PrimitiveObject => "object".to_string(),
             TypeData::This => "this".to_string(),
-            TypeData::Object(object) if object.is_constructor_type => {
-                let signature = object
-                    .signatures
-                    .first()
-                    .expect("constructor types have a construct signature");
-                constructor_type_to_string(
-                    arena,
-                    signature.function(arena),
-                    &|_| None,
-                    flags,
-                    depth,
-                )
-            }
             TypeData::Object(object) => {
+                if object.is_constructor_type
+                    && let Some(signature) = object.signatures.first()
+                {
+                    return constructor_type_to_string(
+                        arena,
+                        signature.function(arena),
+                        &|_| None,
+                        flags,
+                        depth,
+                    );
+                }
                 if object.properties.is_empty()
                     && object.signatures.is_empty()
                     && object.index_infos.is_empty()
@@ -3385,6 +3383,20 @@ mod tests {
             object.to_type_string(arena),
             "{ (): number; (): bigint; new (): string; new (): boolean; }"
         );
+    }
+
+    #[test]
+    fn empty_constructor_object_renders_as_empty_object() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let object = arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
+            properties: arena.vec_from_iter([]),
+            signatures: arena.vec_from_iter([]),
+            index_infos: arena.vec_from_iter([]),
+            is_constructor_type: true,
+        })));
+
+        assert_eq!(object.to_type_string(arena), "{}");
     }
 
     #[test]
