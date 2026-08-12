@@ -27,7 +27,10 @@ use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
 use terminal_size::{Width, terminal_size};
 
-use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef};
+use crate::{
+    checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef},
+    program::ProgramId,
+};
 
 use super::*;
 
@@ -1867,7 +1870,7 @@ fn virtual_module_source_text(source_text: &str) -> String {
 
 fn actual_identifier_records<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     path: &str,
     source_text: &str,
 ) -> Vec<TypeRecord> {
@@ -2018,7 +2021,7 @@ fn actual_export_specifier_records<'a>(
 }
 
 fn export_specifier_node_ref<'a>(
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     entry: &program::ProgramEntry<'a>,
     export_entry: &ExportEntry<'a>,
 ) -> Option<NodeRef> {

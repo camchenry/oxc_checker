@@ -11,7 +11,7 @@ use oxc_syntax::operator::AssignmentOperator;
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     checker_impl::GetTypeFlags,
-    program,
+    program::{self, ProgramId},
     types::{TupleElement, Ty, TypeData},
 };
 
@@ -28,7 +28,7 @@ enum EvolvingArrayEvent<'a> {
 /// `never[]`.
 pub(crate) fn empty_array_literal_element_type<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     array_expression: &'a ArrayExpression<'a>,
     node_id: Option<NodeId>,
 ) -> Ty<'a> {
@@ -155,7 +155,7 @@ fn array_type_from_elements<'a>(
 
 fn is_direct_empty_array_variable_initializer<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     array_expression: &'a ArrayExpression<'a>,
     node_id: Option<NodeId>,
 ) -> bool {
@@ -179,7 +179,7 @@ fn expression_is_empty_array_literal(expression: &Expression<'_>) -> bool {
 
 fn evolving_array_event_for_reference<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     reference_id: NodeId,
 ) -> Option<EvolvingArrayEvent<'a>> {
     push_call_element_events(checker, program_id, reference_id)
@@ -189,7 +189,7 @@ fn evolving_array_event_for_reference<'a>(
 
 fn push_call_element_events<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     reference_id: NodeId,
 ) -> Option<EvolvingArrayEvent<'a>> {
     let member_id = checker.nodes(program_id).parent_id(reference_id);
@@ -235,7 +235,7 @@ fn push_call_element_events<'a>(
 
 fn indexed_assignment_element_event<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     reference_id: NodeId,
 ) -> Option<EvolvingArrayEvent<'a>> {
     let member_id = checker.nodes(program_id).parent_id(reference_id);
@@ -268,7 +268,7 @@ fn indexed_assignment_element_event<'a>(
 
 fn direct_assignment_event<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     reference_id: NodeId,
 ) -> Option<EvolvingArrayEvent<'a>> {
     let assignment_id = checker.nodes(program_id).parent_id(reference_id);

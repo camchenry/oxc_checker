@@ -10,7 +10,8 @@ use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
-    evolving_arrays, program,
+    evolving_arrays,
+    program::{self, ProgramId},
     types::{Ty, TyTypePredicateKind, TypeData},
 };
 
@@ -94,7 +95,7 @@ pub(crate) fn get_flow_type_of_reference<'a>(
 
 pub(crate) fn get_flow_type_of_static_member_reference<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     member: &StaticMemberExpression<'_>,
     base_type: Ty<'a>,
 ) -> Ty<'a> {
@@ -340,7 +341,7 @@ fn narrow_by_condition<'a>(
 
 fn optional_chain_base_matches_symbol(
     checker: &CheckerReturn<'_, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     symbol: SymbolRef,
     expression: &Expression<'_>,
 ) -> bool {
@@ -357,7 +358,7 @@ fn optional_chain_base_matches_symbol(
 
 fn optional_chain_property_matches_symbol(
     checker: &CheckerReturn<'_, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     symbol: SymbolRef,
     property_name: &str,
     expression: &Expression<'_>,
@@ -441,7 +442,7 @@ fn narrow_by_call_type_predicate<'a>(
 /// Recognize `x === undefined` / `x !== undefined` and reversed-operand equivalents.
 fn undefined_equality_guard(
     checker: &CheckerReturn<'_, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     symbol: SymbolRef,
     binary: &oxc_ast::ast::BinaryExpression<'_>,
 ) -> Option<bool> {
@@ -484,7 +485,7 @@ fn narrow_by_undefined_equality<'a>(
 /// Recognize `x === null` / `x !== null` and reversed-operand equivalents.
 fn null_equality_guard(
     checker: &CheckerReturn<'_, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     symbol: SymbolRef,
     binary: &oxc_ast::ast::BinaryExpression<'_>,
 ) -> Option<bool> {
@@ -536,7 +537,7 @@ fn in_guard<'a>(
 
 fn narrow_by_in_property<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     ty: Ty<'a>,
     property_name: &'a str,
     assume_true: bool,
@@ -680,7 +681,7 @@ fn skip_parentheses<'a>(expression: &'a Expression<'a>) -> &'a Expression<'a> {
 /// Check whether an expression is an identifier reference to the target symbol.
 fn expression_matches_symbol(
     checker: &CheckerReturn<'_, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     symbol: SymbolRef,
     expression: &Expression<'_>,
 ) -> bool {
@@ -712,7 +713,7 @@ fn narrow_by_truthiness<'a>(
 /// Apply a `typeof` witness or its negation to a type.
 fn narrow_by_typeof<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     ty: Ty<'a>,
     witness: TypeofWitness,
     assume_true: bool,
@@ -737,7 +738,7 @@ fn narrow_by_typeof<'a>(
 // TODO(cleanup): inline this
 fn type_from_typeof_witness<'a>(
     checker: &CheckerReturn<'a, '_>,
-    program_id: program::ProgramId,
+    program_id: ProgramId,
     witness: TypeofWitness,
 ) -> Ty<'a> {
     match witness {
