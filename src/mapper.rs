@@ -233,12 +233,9 @@ impl<'a> TypeMapper<'a> {
     }
 
     fn from_pairs(arena: CheckerArena<'a>, pairs: Vec<(Ty<'a>, Ty<'a>)>) -> Self {
-        match pairs.len() {
-            0 => Self::Empty,
-            1 => {
-                let (source, target) = pairs.into_iter().next().expect("checked length");
-                Self::Simple { source, target }
-            }
+        match pairs.as_slice() {
+            [] => Self::Empty,
+            &[(source, target)] => Self::Simple { source, target },
             _ => Self::Array {
                 sources: arena.vec_from_iter(pairs.iter().map(|(source, _)| *source)),
                 targets: arena.vec_from_iter(pairs.into_iter().map(|(_, target)| target)),
