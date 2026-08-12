@@ -1584,10 +1584,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         return_type: Ty<'a>,
     ) -> Ty<'a> {
         match self.arena().type_data(return_type) {
-            TypeData::TypeReference(reference)
-                if self.is_global_non_nullable_type_reference(program_id, reference) =>
+            TypeData::TypeReference(_)
+                if self.is_empty_object_intersection_alias_reference(program_id, return_type) =>
             {
-                reference.type_arguments[0]
+                self.get_expanded_type_alias_reference_type(program_id, return_type, 0)
+                    .map(|(expanded_program_id, expanded)| {
+                        self.inference_return_type_for_literal_widening(
+                            expanded_program_id,
+                            expanded,
+                        )
+                    })
+                    .unwrap_or(return_type)
             }
             TypeData::Union(union) => Ty::union(
                 self.arena(),
@@ -1601,6 +1608,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 intersection
                     .types
                     .iter()
+                    .filter(|ty| {
+                        !matches!(
+                            self.arena().type_data(**ty),
+                            TypeData::Object(object) if object.is_empty()
+                        )
+                    })
                     .map(|ty| self.inference_return_type_for_literal_widening(program_id, *ty)),
             ),
             _ => return_type,

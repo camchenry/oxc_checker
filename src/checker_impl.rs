@@ -39,7 +39,8 @@ use crate::{
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
     infer::{InferenceResolution, ts_type_contains_infer},
-    is_mapped_empty_object_intersection, is_promise_like_type_reference,
+    is_empty_object_intersection, is_mapped_empty_object_intersection,
+    is_promise_like_type_reference,
     limits::{
         TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_DEPTH,
     },
@@ -1536,17 +1537,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return self.get_global_non_nullable_type(program_id, non_nullish);
         }
         non_nullish
-    }
-
-    fn get_non_nullable_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
-        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
-            return ty;
-        };
-        if self.is_global_non_nullable_type_reference(program_id, reference) {
-            self.remove_null_or_undefined(reference.type_arguments[0])
-        } else {
-            ty
-        }
     }
 
     pub(crate) fn get_string_literal_value(&self, literal: &StringLiteral<'a>) -> &'a str {
@@ -3914,11 +3904,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         _ => *ty,
                     })
                     .collect::<Vec<_>>();
-                self.rebuild_type_reference_with_display_type_argument_count(
+                let reference_ty = self.rebuild_type_reference_with_display_type_argument_count(
                     ty,
                     type_arguments,
                     reference.display_type_argument_count,
-                )
+                );
+                if !self.is_empty_object_intersection_alias_reference(program_id, reference_ty) {
+                    return reference_ty;
+                }
+                self.get_expanded_type_alias_reference_type(program_id, reference_ty, depth + 1)
+                    .map(|(expanded_program_id, expanded)| {
+                        self.normalize_instantiated_signature_return_type(
+                            expanded_program_id,
+                            expanded,
+                            depth + 1,
+                        )
+                    })
+                    .unwrap_or(reference_ty)
             }
             TypeData::Mapped(mapped) => self
                 .materialize_homomorphic_mapped_type(program_id, mapped, depth + 1)
@@ -4932,6 +4934,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
             _ => None,
         }
+    }
+
+    pub(crate) fn is_empty_object_intersection_alias_reference(
+        &self,
+        program_id: ProgramId,
+        ty: Ty<'a>,
+    ) -> bool {
+        let TypeData::TypeReference(reference) = self.arena().type_data(ty) else {
+            return false;
+        };
+        let Some((symbol, declaration)) =
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+        else {
+            return false;
+        };
+        let Some(declaration) = self.type_alias_declaration_node(symbol.program_id, declaration)
+        else {
+            return false;
+        };
+        matches!(
+            self.nodes(symbol.program_id).kind(declaration),
+            AstKind::TSTypeAliasDeclaration(alias)
+                if is_empty_object_intersection(&alias.type_annotation)
+        )
     }
 
     fn register_type_alias_metadata(&self, reference_program_id: ProgramId, ty: Ty<'a>) {
@@ -6999,8 +7025,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         return_type: Ty<'a>,
         mapper: &TypeMapper<'a>,
     ) -> Ty<'a> {
-        let return_type =
-            self.get_non_nullable_type(program_id, self.instantiate_type(return_type, mapper));
+        let return_type = self.instantiate_type(return_type, mapper);
         self.normalize_instantiated_signature_return_type(program_id, return_type, 0)
     }
 

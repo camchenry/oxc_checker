@@ -3594,6 +3594,41 @@ mod tests {
     }
 
     #[test]
+    fn empty_object_intersection_removes_nullish_union_members() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let empty_object = Ty::object(arena, []);
+        let nullable = Ty::union(arena, [Ty::string(), Ty::null(), Ty::undefined()]);
+
+        assert_eq!(
+            Ty::intersection(arena, [nullable, empty_object]),
+            Ty::string()
+        );
+        assert_eq!(
+            Ty::intersection(arena, [Ty::never(), empty_object]),
+            Ty::never()
+        );
+        assert_eq!(
+            Ty::intersection(arena, [Ty::unknown(), empty_object]),
+            empty_object
+        );
+    }
+
+    #[test]
+    fn empty_object_intersection_preserves_unresolved_type_parameters() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let type_parameter = Ty::type_reference(arena, "T", []);
+        let empty_object = Ty::object(arena, []);
+        let intersection = Ty::intersection(arena, [type_parameter, empty_object]);
+
+        assert!(matches!(
+            arena.type_data(intersection),
+            TypeData::Intersection(_)
+        ));
+    }
+
+    #[test]
     fn union_reduction_flattens_deduplicates_and_returns_singletons() {
         let allocator = Allocator::default();
         let arena = arena(&allocator);

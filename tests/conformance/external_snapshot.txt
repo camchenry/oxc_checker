@@ -314,7 +314,7 @@ FAIL tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts 
       actual:   any
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:24 `taskSummary` type mismatch
       expected: { id: string; points?: number | undefined; }
-      actual:   Merge<Pick<Task, keyof Task>>
+      actual:   { id: string; status: "todo" | "done"; points: number | undefined; }
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:25 `pointTotal` type mismatch
       expected: number
       actual:   any
@@ -368,10 +368,10 @@ FAIL tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts 
       actual:   any
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:32 `taskSummary` type mismatch
       expected: { id: string; points?: number | undefined; }
-      actual:   Merge<Pick<Task, keyof Task>>
+      actual:   { id: string; status: "todo" | "done"; points: number | undefined; }
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:33 `taskSummary` type mismatch
       expected: { id: string; points?: number | undefined; }
-      actual:   Merge<Pick<Task, keyof Task>>
+      actual:   { id: string; status: "todo" | "done"; points: number | undefined; }
   - tests/conformance/external/remeda/data-first.ts::tests/data-first-usage.ts:34 `firstPoint` type mismatch
       expected: number
       actual:   U
@@ -581,13 +581,13 @@ FAIL tests/conformance/external/valibot/schema-output.ts::library/types.ts match
 FAIL tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts matched_types=37 mismatched_types=17 total_types=54 match_percentage=68.52%
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:11 `UserInput` type mismatch
       expected: { id: string; age: number | undefined; active: boolean; tags: string[]; }
-      actual:   (({ readonly input: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly output: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly issue: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]; } | undefined) & {})["input"]
+      actual:   { id: string; age: number | undefined; active: boolean; tags: InferInput<StringSchema>[]; }
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:12 `UserOutput` type mismatch
       expected: { id: string; age: number; active: boolean; tags: string[]; }
-      actual:   (({ readonly input: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly output: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly issue: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]; } | undefined) & {})["output"]
+      actual:   { id: string; age: number; active: boolean; tags: InferOutput<StringSchema>[]; }
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:13 `UserIssue` type mismatch
       expected: BaseIssue<"string"> | BaseIssue<"number"> | BaseIssue<"boolean">
-      actual:   (({ readonly input: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly output: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }; readonly issue: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]; } | undefined) & {})["issue"]
+      actual:   { id: { readonly kind: "schema"; readonly expected: "string"; readonly message: string; }; age: { readonly kind: "schema"; readonly expected: "number"; readonly message: string; }; active: { readonly kind: "schema"; readonly expected: "boolean"; readonly message: string; }; tags: { readonly kind: "schema"; readonly expected: "string"; readonly message: string; }; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]
   - tests/conformance/external/valibot/schema-output.ts::tests/schema-output-usage.ts:15 `input` type mismatch
       expected: ObjectInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
       actual:   UserInput

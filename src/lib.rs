@@ -96,6 +96,16 @@ fn is_mapped_empty_object_intersection(ty: &TSType<'_>) -> bool {
     has_mapped && has_empty_object
 }
 
+fn is_empty_object_intersection(ty: &TSType<'_>) -> bool {
+    matches!(
+        ty,
+        TSType::TSIntersectionType(intersection)
+            if intersection.types.iter().any(|ty| {
+                matches!(ty, TSType::TSTypeLiteral(type_literal) if type_literal.members.is_empty())
+            })
+    )
+}
+
 /// Convert a `typeof` query target into a lookup key when it can be resolved locally.
 fn ts_type_query_expr_name_to_str<'a>(
     arena: CheckerArena<'a>,

@@ -105,6 +105,26 @@ pub(crate) fn reduce_intersection_type<'a>(
         return Ty::any();
     }
 
+    let empty_object = type_set
+        .iter()
+        .find(|ty| matches!(arena.type_data(**ty), TypeData::Object(object) if object.is_empty()));
+    if let Some(empty_object) = empty_object.copied() {
+        for ty in &mut type_set {
+            if matches!(arena.type_data(*ty), TypeData::Union(_)) {
+                *ty = intersect_with_empty_object(arena, *ty, empty_object);
+            }
+        }
+        if type_set
+            .iter()
+            .any(|ty| matches!(arena.type_data(*ty), TypeData::Null | TypeData::Undefined))
+        {
+            return Ty::never();
+        }
+    }
+    if type_set.contains(&Ty::Never) {
+        return Ty::never();
+    }
+
     if type_set.len() > 1 {
         type_set.retain(|ty| *ty != Ty::Unknown);
     }
@@ -113,6 +133,9 @@ pub(crate) fn reduce_intersection_type<'a>(
 
     let has_object_like_member = type_set
         .iter()
+        .filter(
+            |ty| !matches!(arena.type_data(**ty), TypeData::Object(object) if object.is_empty()),
+        )
         .any(|ty| is_empty_object_intersection_identity_target(arena, *ty));
     if has_object_like_member {
         type_set.retain(
@@ -145,10 +168,52 @@ fn add_type_to_intersection<'a>(
     }
 }
 
+fn intersect_with_empty_object<'a>(
+    arena: CheckerArena<'a>,
+    ty: Ty<'a>,
+    empty_object: Ty<'a>,
+) -> Ty<'a> {
+    match arena.type_data(ty) {
+        TypeData::Union(union) => Ty::union(
+            arena,
+            union
+                .types
+                .iter()
+                .map(|ty| intersect_with_empty_object(arena, *ty, empty_object)),
+        ),
+        TypeData::Null | TypeData::Undefined => Ty::never(),
+        TypeData::Unknown => empty_object,
+        TypeData::Object(object) if object.is_empty() => ty,
+        _ => Ty::intersection(arena, [ty, empty_object]),
+    }
+}
+
 fn is_empty_object_intersection_identity_target<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> bool {
     match arena.type_data(ty) {
-        TypeData::Mapped(_) => true,
-        TypeData::Object(object) => !object.is_empty(),
+        TypeData::Number
+        | TypeData::String
+        | TypeData::Boolean
+        | TypeData::Bigint
+        | TypeData::Symbol
+        | TypeData::PrimitiveObject
+        | TypeData::NumberLiteral(_)
+        | TypeData::StringLiteral(_)
+        | TypeData::BooleanLiteral(_)
+        | TypeData::BigIntLiteral(_)
+        | TypeData::UniqueSymbol(_)
+        | TypeData::TemplateLiteral(_)
+        | TypeData::ModuleNamespace(_)
+        | TypeData::Function(_)
+        | TypeData::TypeQuery(_)
+        | TypeData::Array(_)
+        | TypeData::Tuple(_)
+        | TypeData::Mapped(_)
+        | TypeData::GlobalThis => true,
+        TypeData::Object(_) => true,
+        TypeData::Union(union) => union
+            .types
+            .iter()
+            .all(|ty| is_empty_object_intersection_identity_target(arena, *ty)),
         _ => false,
     }
 }

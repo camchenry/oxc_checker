@@ -2,8 +2,7 @@ type T0 = string | null | undefined;
 >    ^^: string | null | undefined   (TyUnion) (TSTypeAliasDeclaration)
 
 type T1 = NonNullable<T0>;
->    ^^: (string | null | undefined) & {}   (TyIntersection) (TSTypeAliasDeclaration)
-expected: string
+>    ^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type T1 = NonNullable<T0>;
 >         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -15,8 +14,7 @@ type T1 = NonNullable<T0>;
 >                     ^^: any   (TyAny) (TSTypeReference)
 
 type T2 = NonNullable<T0 | number | boolean | {}>;
->    ^^: (string | null | undefined | number | boolean | {}) & {}   (TyIntersection) (TSTypeAliasDeclaration)
-expected: string | number | boolean | {}
+>    ^^: string | number | boolean | {}   (TyUnion) (TSTypeAliasDeclaration)
 
 type T2 = NonNullable<T0 | number | boolean | {}>;
 >         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -46,8 +44,7 @@ type T4 = NonNullable<unknown>;
 >         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 type T5 = NonNullable<never>;
->    ^^: never & {}   (TyIntersection) (TSTypeAliasDeclaration)
-expected: never
+>    ^^: never   (TyNever) (TSTypeAliasDeclaration)
 
 type T5 = NonNullable<never>;
 >         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -56,8 +53,7 @@ type T5 = NonNullable<never>;
 >         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 type T6 = NonNullable<Array<number>>;
->    ^^: number[] & {}   (TyIntersection) (TSTypeAliasDeclaration)
-expected: number[]
+>    ^^: number[]   (TyArray) (TSTypeAliasDeclaration)
 
 type T6 = NonNullable<Array<number>>;
 >         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -72,8 +68,7 @@ type T6 = NonNullable<Array<number>>;
 >                     ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->    ^^: (string | null | undefined) & {} & {} & {}   (TyIntersection) (TSTypeAliasDeclaration)
-expected: string
+>    ^^: string   (TyString) (TSTypeAliasDeclaration)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
 >         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
