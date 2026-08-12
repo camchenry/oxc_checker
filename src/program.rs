@@ -9,6 +9,7 @@ use oxc_ast::{
     AstKind,
     ast::{Expression, Program},
 };
+use oxc_index::{Idx, IndexVec};
 use oxc_parser::Parser;
 use oxc_resolver::{ResolveError, ResolveOptions, Resolver};
 use oxc_semantic::{Semantic, SemanticBuilder};
@@ -17,13 +18,25 @@ use oxc_syntax::module_record::ModuleRecord;
 
 use crate::global_types::GlobalSymbolTable;
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct ProgramId(usize);
 
 impl ProgramId {
     #[inline]
     pub const fn index(self) -> usize {
         self.0
+    }
+}
+
+impl Idx for ProgramId {
+    const MAX: usize = usize::MAX;
+
+    unsafe fn from_usize_unchecked(index: usize) -> Self {
+        Self(index)
+    }
+
+    fn index(self) -> usize {
+        Self::index(self)
     }
 }
 
@@ -416,8 +429,8 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         data: ProgramEntryData<'a>,
         is_lib: bool,
     ) -> ProgramStoreResult<ProgramId> {
-        let id = store.push_entry(ProgramEntry {
-            id: ProgramId(store.entries.len()),
+        let id = store.push_entry(|id| ProgramEntry {
+            id,
             path: path.clone(),
             data,
             is_lib,
@@ -488,7 +501,7 @@ fn parse_program<'a>(
 
 pub struct ProgramStore<'a> {
     allocator: &'a Allocator,
-    entries: Vec<ProgramEntry<'a>>,
+    entries: IndexVec<ProgramId, ProgramEntry<'a>>,
     paths: HashMap<PathBuf, ProgramId>,
     edges: Vec<ModuleEdge>,
     global_symbols: GlobalSymbolTable,
@@ -499,7 +512,7 @@ impl<'a> ProgramStore<'a> {
     pub fn new(allocator: &'a Allocator) -> Self {
         Self {
             allocator,
-            entries: Vec::new(),
+            entries: IndexVec::new(),
             paths: HashMap::new(),
             edges: Vec::new(),
             global_symbols: GlobalSymbolTable::default(),
@@ -513,7 +526,7 @@ impl<'a> ProgramStore<'a> {
 
     #[inline]
     pub fn entries(&self) -> &[ProgramEntry<'a>] {
-        &self.entries
+        &self.entries.raw
     }
 
     #[inline]
@@ -523,7 +536,7 @@ impl<'a> ProgramStore<'a> {
 
     #[inline]
     pub fn entry(&self, id: ProgramId) -> Option<&ProgramEntry<'a>> {
-        self.entries.get(id.index())
+        self.entries.get(id)
     }
 
     #[inline]
@@ -557,7 +570,9 @@ impl<'a> ProgramStore<'a> {
         })
     }
 
-    fn push_entry(&mut self, entry: ProgramEntry<'a>) -> ProgramId {
+    fn push_entry(&mut self, create_entry: impl FnOnce(ProgramId) -> ProgramEntry<'a>) -> ProgramId {
+        let id = self.entries.next_idx();
+        let entry = create_entry(id);
         let id = entry.id;
         self.paths.insert(entry.path.clone(), id);
         self.entries.push(entry);
@@ -604,6 +619,14 @@ impl<'a> ProgramStore<'a> {
             }
         }
         requests
+    }
+}
+
+impl<'a> std::ops::Index<ProgramId> for ProgramStore<'a> {
+    type Output = ProgramEntry<'a>;
+
+    fn index(&self, id: ProgramId) -> &Self::Output {
+        &self.entries[id]
     }
 }
 

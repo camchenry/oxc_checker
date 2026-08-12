@@ -366,9 +366,7 @@ impl SubstituteTypeFlags {
 impl<'a, 'store> CheckerReturn<'a, 'store> {
     #[inline]
     pub fn entry(&self, program_id: ProgramId) -> &program::ProgramEntry<'a> {
-        self.store
-            .entry(program_id)
-            .expect("store-backed checker must reference a valid program")
+        &self.store[program_id]
     }
 
     #[inline]
