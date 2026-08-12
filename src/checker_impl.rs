@@ -3786,13 +3786,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         match self.arena().type_data(ty) {
-            TypeData::TypeReference(reference)
-                if self.is_global_awaited_type_reference(program_id, reference) =>
-            {
-                let target =
-                    self.expand_type_at_use(program_id, reference.type_arguments[0], depth + 1);
-                self.get_awaited_type(program_id, target)
-            }
             TypeData::TypeReference(_) => self
                 .get_expanded_type_alias_reference_type(program_id, ty, depth + 1)
                 .map(|(expanded_program_id, expanded)| {
@@ -4379,6 +4372,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     )
                 }),
             ),
+            TypeData::IndexedAccess(_) => self.expand_type_at_use(program_id, ty, depth + 1),
             _ => ty,
         }
     }

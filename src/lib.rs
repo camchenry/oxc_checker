@@ -4986,7 +4986,7 @@ mod test {
     }
 
     #[test]
-    fn awaited_special_handling_requires_global_awaited_type() {
+    fn user_defined_awaited_alias_is_evaluated_normally() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
             &allocator,
@@ -5036,9 +5036,18 @@ mod test {
         const requiredCopyOfOptionalUnionUndefined = requiredCopy(optionalUnionUndefinedTuple);
         const constructedAll = new All(tupleOfPromises);
         type T1 = Awaited<number>;
+        type T2 = Awaited<Promise<void>>;
         "#,
         );
 
+        assert_eq!(
+            get_type_alias_type(&ret, "T1").to_type_string(ret.arena),
+            "number"
+        );
+        assert_eq!(
+            get_type_alias_type(&ret, "T2").to_type_string(ret.arena),
+            "void"
+        );
         assert_eq!(
             get_global_symbol_type(&ret, "arrayOfPromises").to_type_string(ret.arena),
             "Promise<number>[]"
@@ -5080,10 +5089,6 @@ mod test {
         assert_eq!(
             get_global_symbol_type(&ret, "constructedAll").to_type_string(ret.arena),
             "Promise<[number, string]>"
-        );
-        assert_eq!(
-            get_type_alias_type(&ret, "T1").to_type_string(ret.arena),
-            "number"
         );
     }
 

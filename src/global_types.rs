@@ -8,7 +8,7 @@ use crate::{
     checker::{CheckerReturn, SymbolRef},
     checker_impl::UNDEFINED_IDENT,
     program,
-    types::{Ty, TyTypeReference, TypeErrorKind},
+    types::{Ty, TypeErrorKind},
 };
 
 const ARRAY_TYPE_NAME: &str = "Array";
@@ -413,25 +413,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         element_type: Ty<'a>,
     ) -> Ty<'a> {
         self.expect_global_type_reference(program_id, ITERABLE_TYPE_NAME, [element_type])
-    }
-
-    pub(crate) fn is_global_awaited_type_reference(
-        &self,
-        program_id: program::ProgramId,
-        reference: &TyTypeReference<'a>,
-    ) -> bool {
-        reference.name == AWAITED_TYPE_NAME
-            && reference.type_arguments.len() == 1
-            && self.is_default_lib_type(program_id, AWAITED_TYPE_NAME)
-    }
-
-    fn is_default_lib_type(&self, program_id: program::ProgramId, name: &str) -> bool {
-        self.get_type_symbol_for_name(program_id, name)
-            .is_some_and(|symbol| {
-                self.store
-                    .entry(symbol.program_id)
-                    .is_some_and(program::ProgramEntry::is_lib)
-            })
     }
 
     pub(crate) fn get_global_type_reference(
