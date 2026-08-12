@@ -78,6 +78,7 @@ struct LibCatalogEntry {
 pub(crate) const DEFAULT_LIB_TARGET: LibTarget = LibTarget::Es2020;
 
 #[cfg(test)]
+#[expect(clippy::expect_used)]
 pub(crate) fn default_lib_files() -> Vec<EmbeddedLibFile> {
     resolve_lib_files(&LibSelection::default()).expect("default lib selection should be valid")
 }

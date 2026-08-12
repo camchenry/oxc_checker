@@ -824,6 +824,7 @@ mod test {
     }
 
     #[test]
+    #[expect(clippy::expect_used)]
     fn type_alias_binding_location_uses_type_meaning_for_merged_symbol() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
@@ -903,6 +904,7 @@ mod test {
     }
 
     #[test]
+    #[expect(clippy::expect_used)]
     fn checker_renders_transparent_default_lib_type_aliases() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(

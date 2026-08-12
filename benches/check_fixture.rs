@@ -8,6 +8,7 @@ const MEMBER_EXPRESSION_PATH: &str = concat!(
     "/tests/conformance/cases/compiler/memberExpression.ts"
 );
 
+#[expect(clippy::expect_used)]
 fn bench_member_expression(criterion: &mut Criterion) {
     let allocator = Allocator::default();
     let store = program::ProgramStoreBuilder::new(&allocator, program::FsProgramHost::new())

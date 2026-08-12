@@ -1342,6 +1342,7 @@ fn collect_oxc_records(
     collection
 }
 
+#[expect(clippy::expect_used)]
 fn balance_conformance_batches(
     mut files: Vec<ReadyConformanceFile>,
     batch_count: usize,
@@ -2713,6 +2714,7 @@ fn quoted_type_part_end(type_repr: &str, quote_index: usize) -> usize {
     type_repr.len()
 }
 
+#[expect(clippy::expect_used)]
 fn char_at(text: &str, index: usize) -> (char, usize) {
     let character = text[index..]
         .chars()
