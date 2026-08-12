@@ -1243,12 +1243,11 @@ fn collect_oxc_records(
             let mut ready_files = Vec::new();
             for path in paths {
                 let read_started_at = reader_timing.is_enabled().then(Instant::now);
-                let source_text = match read_to_string_simd_utf8(&path) {
-                    Ok(source_text) => source_text,
-                    Err(_) => {
-                        reader_progress.finish(None);
-                        continue;
-                    }
+                let source_text = if let Ok(source_text) = read_to_string_simd_utf8(&path) {
+                    source_text
+                } else {
+                    reader_progress.finish(None);
+                    continue;
                 };
                 if let Some(read_started_at) = read_started_at {
                     reader_timing.record_read(read_started_at.elapsed(), source_text.len());

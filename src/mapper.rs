@@ -113,18 +113,16 @@ impl<'a> TypeMapper<'a> {
         pairs: Vec<(Ty<'a>, Ty<'a>)>,
         resolver: impl FnMut(&str) -> Option<Ty<'a>> + 'a,
     ) -> Self {
-        match pairs.len() {
-            0 => Self::Empty,
-            _ => {
-                let len = pairs.len();
-                Self::ContextualInference {
-                    arena,
-                    sources: arena.vec_from_iter(pairs.iter().map(|(source, _)| *source)),
-                    fallback_targets: arena
-                        .vec_from_iter(pairs.into_iter().map(|(_, target)| target)),
-                    fixed: RefCell::new(vec![false; len]),
-                    resolver: Rc::new(RefCell::new(resolver)),
-                }
+        if pairs.is_empty() {
+            Self::Empty
+        } else {
+            let len = pairs.len();
+            Self::ContextualInference {
+                arena,
+                sources: arena.vec_from_iter(pairs.iter().map(|(source, _)| *source)),
+                fallback_targets: arena.vec_from_iter(pairs.into_iter().map(|(_, target)| target)),
+                fixed: RefCell::new(vec![false; len]),
+                resolver: Rc::new(RefCell::new(resolver)),
             }
         }
     }

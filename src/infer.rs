@@ -2021,21 +2021,16 @@ fn resolve_indexed_access_for_inference<'a>(
         return tuple.elements.get(index).map(TupleElement::ty);
     }
 
-    match arena.type_data(index_type) {
-        TypeData::Union(union) => {
-            let property_types = union
-                .types
-                .iter()
-                .map(|index_type| {
-                    resolve_indexed_access_for_inference(object_type, *index_type, arena)
-                })
-                .collect::<Option<Vec<_>>>()?;
-            Some(Ty::union(arena, property_types))
-        }
-        _ => {
-            let property_name = index_type_to_property_name(arena, index_type)?;
-            property_type_for_inference_index(object_type, property_name, arena)
-        }
+    if let TypeData::Union(union) = arena.type_data(index_type) {
+        let property_types = union
+            .types
+            .iter()
+            .map(|index_type| resolve_indexed_access_for_inference(object_type, *index_type, arena))
+            .collect::<Option<Vec<_>>>()?;
+        Some(Ty::union(arena, property_types))
+    } else {
+        let property_name = index_type_to_property_name(arena, index_type)?;
+        property_type_for_inference_index(object_type, property_name, arena)
     }
 }
 
