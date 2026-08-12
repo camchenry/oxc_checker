@@ -6292,15 +6292,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Bigint | TypeData::BigIntLiteral(_) => {
                 Some(self.get_global_bigint_type(program_id))
             }
-            TypeData::TypeReference(reference) => {
-                if self.is_global_regexp_type_reference(program_id, reference) {
-                    return self.get_property_type_of_global_object_augmented_interface_type(
-                        program_id,
-                        reference,
-                        property_name,
-                    );
-                }
-
+            TypeData::TypeReference(_) => {
                 let expanded = self.expand_type_at_use(program_id, object_type, 0);
                 if expanded != object_type {
                     return self.get_property_type_of_global_interface_type(

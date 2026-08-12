@@ -437,16 +437,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
     }
 
-    pub(crate) fn is_global_regexp_type_reference(
-        &self,
-        program_id: program::ProgramId,
-        reference: &TyTypeReference<'a>,
-    ) -> bool {
-        reference.name == REGEXP_TYPE_NAME
-            && reference.is_bare()
-            && self.is_default_lib_type(program_id, REGEXP_TYPE_NAME)
-    }
-
     fn is_default_lib_type(&self, program_id: program::ProgramId, name: &str) -> bool {
         self.get_type_symbol_for_name(program_id, name)
             .is_some_and(|symbol| {
