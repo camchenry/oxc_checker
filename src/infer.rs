@@ -1476,12 +1476,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         return_type,
                         next_type,
                     )
-                    .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType))
                 } else {
                     self.get_global_generator_type(program_id, yield_type, return_type, next_type)
-                        .unwrap_or_else(|| {
-                            Ty::error(self.arena(), TypeErrorKind::MissingGlobalType)
-                        })
                 }
             } else {
                 // non-generator function: look at return expressions

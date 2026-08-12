@@ -271,70 +271,74 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: program::ProgramId,
         element_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, ARRAY_TYPE_NAME, [element_type])
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, ARRAY_TYPE_NAME, [element_type])
     }
 
     pub(crate) fn get_global_readonly_array_type(
         &self,
         program_id: program::ProgramId,
         element_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, READONLY_ARRAY_TYPE_NAME, [element_type])
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, READONLY_ARRAY_TYPE_NAME, [element_type])
     }
 
-    pub(crate) fn get_global_object_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, OBJECT_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_object_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, OBJECT_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_function_type(
-        &self,
-        program_id: program::ProgramId,
-    ) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, FUNCTION_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_function_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, FUNCTION_TYPE_NAME, std::iter::empty())
     }
 
     pub(crate) fn get_global_callable_function_type(
         &self,
         program_id: program::ProgramId,
-    ) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, CALLABLE_FUNCTION_TYPE_NAME, std::iter::empty())
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(
+            program_id,
+            CALLABLE_FUNCTION_TYPE_NAME,
+            std::iter::empty(),
+        )
     }
 
     pub(crate) fn get_global_newable_function_type(
         &self,
         program_id: program::ProgramId,
-    ) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, NEWABLE_FUNCTION_TYPE_NAME, std::iter::empty())
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(
+            program_id,
+            NEWABLE_FUNCTION_TYPE_NAME,
+            std::iter::empty(),
+        )
     }
 
-    pub(crate) fn get_global_string_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, STRING_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_string_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, STRING_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_boolean_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, BOOLEAN_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_boolean_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, BOOLEAN_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_number_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, NUMBER_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_number_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, NUMBER_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_symbol_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, SYMBOL_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_symbol_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, SYMBOL_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_bigint_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, BIGINT_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_bigint_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, BIGINT_TYPE_NAME, std::iter::empty())
     }
 
-    pub(crate) fn get_global_regexp_type(&self, program_id: program::ProgramId) -> Option<Ty<'a>> {
-        self.get_global_type_reference(program_id, REGEXP_TYPE_NAME, std::iter::empty())
+    pub(crate) fn get_global_regexp_type(&self, program_id: program::ProgramId) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, REGEXP_TYPE_NAME, std::iter::empty())
     }
 
     pub(crate) fn get_global_promise_type(&self, program_id: program::ProgramId) -> Ty<'a> {
-        self.get_global_type_reference(program_id, "Promise", std::iter::empty())
-            .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType))
+        self.expect_global_type_reference(program_id, "Promise", std::iter::empty())
     }
 
     pub(crate) fn get_global_awaited_type(
@@ -342,19 +346,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         awaited_type: Ty<'a>,
     ) -> Ty<'a> {
-        if !self.is_default_lib_type(program_id, AWAITED_TYPE_NAME) {
-            return Ty::error(self.arena(), TypeErrorKind::MissingGlobalType);
-        }
-        Ty::type_reference(self.arena(), AWAITED_TYPE_NAME, [awaited_type])
+        self.expect_global_type_reference(program_id, AWAITED_TYPE_NAME, [awaited_type])
     }
 
     pub(crate) fn get_global_non_nullable_type(
         &self,
         program_id: program::ProgramId,
         target_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        self.is_default_lib_type(program_id, NON_NULLABLE_TYPE_NAME)
-            .then(|| Ty::type_reference(self.arena(), NON_NULLABLE_TYPE_NAME, [target_type]))
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, NON_NULLABLE_TYPE_NAME, [target_type])
     }
 
     pub(crate) fn get_global_extract_type(
@@ -362,15 +362,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         target_type: Ty<'a>,
         constraint_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        self.is_default_lib_type(program_id, EXTRACT_TYPE_NAME)
-            .then(|| {
-                Ty::type_reference(
-                    self.arena(),
-                    EXTRACT_TYPE_NAME,
-                    [target_type, constraint_type],
-                )
-            })
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(
+            program_id,
+            EXTRACT_TYPE_NAME,
+            [target_type, constraint_type],
+        )
     }
 
     pub(crate) fn get_global_generator_type(
@@ -379,8 +376,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         yield_type: Ty<'a>,
         return_type: Ty<'a>,
         next_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        self.get_global_type_reference(
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(
             program_id,
             GENERATOR_TYPE_NAME,
             [yield_type, return_type, next_type],
@@ -393,8 +390,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         yield_type: Ty<'a>,
         return_type: Ty<'a>,
         next_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        self.get_global_type_reference(
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(
             program_id,
             ASYNC_GENERATOR_TYPE_NAME,
             [yield_type, return_type, next_type],
@@ -406,9 +403,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: program::ProgramId,
         key_type: Ty<'a>,
         value_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        self.is_default_lib_type(program_id, RECORD_TYPE_NAME)
-            .then(|| Ty::type_reference(self.arena(), RECORD_TYPE_NAME, [key_type, value_type]))
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, RECORD_TYPE_NAME, [key_type, value_type])
     }
 
     pub(crate) fn is_global_iterable_type_reference(
@@ -473,5 +469,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena().str(name),
             type_arguments,
         ))
+    }
+
+    /// Calls `get_global_type_reference` and returns an error type if the type is not found.
+    pub(crate) fn expect_global_type_reference(
+        &self,
+        program_id: program::ProgramId,
+        name: &str,
+        type_arguments: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Ty<'a> {
+        self.get_global_type_reference(program_id, name, type_arguments)
+            .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType))
     }
 }

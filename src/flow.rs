@@ -546,14 +546,7 @@ fn narrow_by_in_property<'a>(
     }
 
     let property_key = Ty::string_literal(checker.arena(), property_name);
-    let property_record = checker
-        .get_global_record_type(program_id, property_key, Ty::unknown())
-        .unwrap_or_else(|| {
-            Ty::object(
-                checker.arena(),
-                [Ty::property(property_name, Ty::unknown())],
-            )
-        });
+    let property_record = checker.get_global_record_type(program_id, property_key, Ty::unknown());
     match checker.arena().type_data(ty) {
         TypeData::Unknown => property_record,
         TypeData::PrimitiveObject
@@ -741,6 +734,7 @@ fn narrow_by_typeof<'a>(
     })
 }
 
+// TODO(cleanup): inline this
 fn type_from_typeof_witness<'a>(
     checker: &CheckerReturn<'a, '_>,
     program_id: program::ProgramId,
@@ -753,22 +747,7 @@ fn type_from_typeof_witness<'a>(
         TypeofWitness::Bigint => Ty::bigint(),
         TypeofWitness::Undefined => Ty::undefined(),
         TypeofWitness::Object => Ty::union(checker.arena(), [Ty::primitive_object(), Ty::null()]),
-        TypeofWitness::Function => {
-            checker
-                .get_global_function_type(program_id)
-                .unwrap_or_else(|| {
-                    Ty::function_with_type_predicate(
-                        checker.arena(),
-                        std::iter::empty(),
-                        std::iter::empty(),
-                        Ty::error(
-                            checker.arena(),
-                            crate::types::TypeErrorKind::MissingGlobalType,
-                        ),
-                        None,
-                    )
-                })
-        }
+        TypeofWitness::Function => checker.get_global_function_type(program_id),
     }
 }
 

@@ -1249,9 +1249,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::string()
                 }
             }
-            AstKind::RegExpLiteral(_) => self
-                .get_global_regexp_type(program_id)
-                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType)),
+            AstKind::RegExpLiteral(_) => self.get_global_regexp_type(program_id),
             AstKind::Super(_) => node_id
                 .and_then(|node_id| {
                     self.get_enclosing_base_class_instance_type(program_id, node_id)
@@ -1534,10 +1532,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_non_null_assertion_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         let non_nullish = self.remove_null_or_undefined(ty);
-        if self.could_contain_type_variables(non_nullish)
-            && let Some(non_nullable) = self.get_global_non_nullable_type(program_id, non_nullish)
-        {
-            return non_nullable;
+        if self.could_contain_type_variables(non_nullish) {
+            return self.get_global_non_nullable_type(program_id, non_nullish);
         }
         non_nullish
     }
@@ -6244,9 +6240,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .map(|symbol| self.get_type_of_symbol(symbol));
             }
             TypeData::Array(array) if array.readonly => {
-                self.get_global_readonly_array_type(program_id, array.element_type)
+                Some(self.get_global_readonly_array_type(program_id, array.element_type))
             }
-            TypeData::Array(array) => self.get_global_array_type(program_id, array.element_type),
+            TypeData::Array(array) => {
+                Some(self.get_global_array_type(program_id, array.element_type))
+            }
             TypeData::Tuple(tuple) => {
                 let element_type = Ty::union(
                     self.arena(),
@@ -6258,9 +6256,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     }),
                 );
                 if tuple.readonly {
-                    self.get_global_readonly_array_type(program_id, element_type)
+                    Some(self.get_global_readonly_array_type(program_id, element_type))
                 } else {
-                    self.get_global_array_type(program_id, element_type)
+                    Some(self.get_global_array_type(program_id, element_type))
                 }
             }
             TypeData::Object(object) => {
@@ -6270,7 +6268,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     property_name,
                 );
             }
-            TypeData::PrimitiveObject => self.get_global_object_type(program_id),
+            TypeData::PrimitiveObject => Some(self.get_global_object_type(program_id)),
             TypeData::Function(_) => {
                 return self.get_property_type_of_global_function_augmented_type(
                     program_id,
@@ -6280,17 +6278,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 );
             }
             TypeData::String | TypeData::StringLiteral(_) => {
-                self.get_global_string_type(program_id)
+                Some(self.get_global_string_type(program_id))
             }
             TypeData::Boolean | TypeData::BooleanLiteral(_) => {
-                self.get_global_boolean_type(program_id)
+                Some(self.get_global_boolean_type(program_id))
             }
             TypeData::Number | TypeData::NumberLiteral(_) => {
-                self.get_global_number_type(program_id)
+                Some(self.get_global_number_type(program_id))
             }
-            TypeData::Symbol | TypeData::UniqueSymbol(_) => self.get_global_symbol_type(program_id),
+            TypeData::Symbol | TypeData::UniqueSymbol(_) => {
+                Some(self.get_global_symbol_type(program_id))
+            }
             TypeData::Bigint | TypeData::BigIntLiteral(_) => {
-                self.get_global_bigint_type(program_id)
+                Some(self.get_global_bigint_type(program_id))
             }
             TypeData::TypeReference(reference) => {
                 if self.is_global_regexp_type_reference(program_id, reference) {
@@ -6365,9 +6365,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
     ) -> Option<Ty<'a>> {
         let function_type = if has_call_signatures {
-            self.get_global_callable_function_type(program_id)
+            Some(self.get_global_callable_function_type(program_id))
         } else if has_construct_signatures {
-            self.get_global_newable_function_type(program_id)
+            Some(self.get_global_newable_function_type(program_id))
         } else {
             None
         };
@@ -6378,25 +6378,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
             .or_else(|| {
                 if has_call_signatures || has_construct_signatures {
-                    self.get_global_function_type(program_id).and_then(|ty| {
-                        self.get_property_type_of_global_interface_reference(
-                            program_id,
-                            ty,
-                            property_name,
-                        )
-                    })
+                    let function_type = self.get_global_function_type(program_id);
+                    self.get_property_type_of_global_interface_reference(
+                        program_id,
+                        function_type,
+                        property_name,
+                    )
                 } else {
                     None
                 }
             })
             .or_else(|| {
-                self.get_global_object_type(program_id).and_then(|ty| {
-                    self.get_property_type_of_global_interface_reference(
-                        program_id,
-                        ty,
-                        property_name,
-                    )
-                })
+                let object_type = self.get_global_object_type(program_id);
+                self.get_property_type_of_global_interface_reference(
+                    program_id,
+                    object_type,
+                    property_name,
+                )
             })
     }
 
@@ -6408,13 +6406,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         self.get_property_type_of_interface_type(program_id, reference, property_name)
             .or_else(|| {
-                self.get_global_object_type(program_id).and_then(|ty| {
-                    self.get_property_type_of_global_interface_reference(
-                        program_id,
-                        ty,
-                        property_name,
-                    )
-                })
+                let object_type = self.get_global_object_type(program_id);
+                self.get_property_type_of_global_interface_reference(
+                    program_id,
+                    object_type,
+                    property_name,
+                )
             })
     }
 
@@ -10225,11 +10222,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     );
                     if self.is_scoped_type_parameter_reference(program_id, ancestor_id, object_type)
                     {
-                        return self.get_global_extract_type(
+                        return Some(self.get_global_extract_type(
                             program_id,
                             Ty::keyof(self.arena(), object_type),
                             Ty::string(),
-                        );
+                        ));
                     }
                     return Some(Ty::string());
                 }
