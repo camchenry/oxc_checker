@@ -294,7 +294,8 @@ impl Idx for TypeId {
     const MAX: usize = u32::MAX as usize - 1;
 
     unsafe fn from_usize_unchecked(index: usize) -> Self {
-        Self(NonZeroU32::new(index as u32 + 1).expect("type IDs must be nonzero"))
+        // SAFETY: `Idx` requires callers to guarantee `index <= Self::MAX`.
+        Self(unsafe { NonZeroU32::new_unchecked(index as u32 + 1) })
     }
 
     fn index(self) -> usize {
@@ -337,8 +338,7 @@ impl<'a> Ty<'a> {
     }
 
     fn from_index(index: usize) -> Self {
-        let raw = u32::try_from(index + 1).expect("type ID overflow");
-        Self::from_raw(raw)
+        Self::from_id(TypeId::from_usize(index))
     }
 
     const fn from_id(id: TypeId) -> Self {
