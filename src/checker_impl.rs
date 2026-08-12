@@ -10930,7 +10930,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let TypeData::TypeReference(reference) = self.arena().type_data(parameter_type) else {
             return argument_type;
         };
-        if !self.is_global_iterable_type_reference(program_id, reference) {
+
+        let global_iterable_type_ref = self.get_global_iterable_type(program_id, Ty::any());
+        let TypeData::TypeReference(global_iterable_reference) =
+            self.arena().type_data(global_iterable_type_ref)
+        else {
+            return argument_type;
+        };
+
+        if global_iterable_reference.name != reference.name
+            || !self.is_lib_type_reference(program_id, reference)
+        {
             return argument_type;
         }
 

@@ -407,14 +407,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.expect_global_type_reference(program_id, RECORD_TYPE_NAME, [key_type, value_type])
     }
 
-    pub(crate) fn is_global_iterable_type_reference(
+    pub(crate) fn get_global_iterable_type(
         &self,
         program_id: program::ProgramId,
-        reference: &TyTypeReference<'a>,
-    ) -> bool {
-        reference.name == ITERABLE_TYPE_NAME
-            && !reference.type_arguments.is_empty()
-            && self.is_default_lib_type(program_id, ITERABLE_TYPE_NAME)
+        element_type: Ty<'a>,
+    ) -> Ty<'a> {
+        self.expect_global_type_reference(program_id, ITERABLE_TYPE_NAME, [element_type])
     }
 
     pub(crate) fn is_global_awaited_type_reference(
