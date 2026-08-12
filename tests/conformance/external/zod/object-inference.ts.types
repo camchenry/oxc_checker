@@ -173,7 +173,7 @@ export class ZodOptional<T extends ZodTypeAny> extends ZodType<
 >                                 ^: any   (TyAny) (TSTypeReference)
 
     super()
->   ^^^^^^^: any   (TyAny) (ExpressionStatement)
+>   ^^^^^^^: any   (TyError) (ExpressionStatement)
    expected: void
 
   parse(data: unknown): output<T> | undefined {
@@ -201,7 +201,7 @@ export class ZodOptional<T extends ZodTypeAny> extends ZodType<
 >                                                ^^^^^^^^^: T   (TyTypeReference) (StaticMemberExpression)
 
     return data === undefined ? undefined : this.innerType.parse(data)
->                                                          ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                          ^^^^^: any   (TyError) (StaticMemberExpression)
                                                         expected: (data: unknown) => any
 
     return data === undefined ? undefined : this.innerType.parse(data)
@@ -239,7 +239,7 @@ export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T
 >                               ^: any   (TyAny) (TSTypeReference)
 
     super()
->   ^^^^^^^: any   (TyAny) (ExpressionStatement)
+>   ^^^^^^^: any   (TyError) (ExpressionStatement)
    expected: void
 
   parse(data: unknown): output<T>[] {
@@ -267,7 +267,7 @@ export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T
 >                                                ^^^^^^^: T   (TyTypeReference) (StaticMemberExpression)
 
     return (data as unknown[]).map(value => this.element.parse(value))
->                                                        ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                        ^^^^^: any   (TyError) (StaticMemberExpression)
                                                       expected: (data: unknown) => any
 
     return (data as unknown[]).map(value => this.element.parse(value))
@@ -281,7 +281,7 @@ export type ZodRawShape = Record<string, ZodTypeAny>
 >                         ^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type ZodRawShape = Record<string, ZodTypeAny>
->                         ^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^: any   (TyError) (IdentifierReference)
 
 export type ZodRawShape = Record<string, ZodTypeAny>
 >                                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -365,7 +365,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >                             ^^^^^: any   (TyAny) (TSTypeReference)
 
     super()
->   ^^^^^^^: any   (TyAny) (ExpressionStatement)
+>   ^^^^^^^: any   (TyError) (ExpressionStatement)
    expected: void
 
   parse(data: unknown): objectOutputType<Shape> {
@@ -387,7 +387,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >              ^^^^^^: any   (TyAny) (TSTypeReference)
 
     const out: Record<string, unknown> = {}
->              ^^^^^^: any   (TyAny) (IdentifierReference)
+>              ^^^^^^: any   (TyError) (IdentifierReference)
 
     for (const key in this.shape) {
 >              ^^^: Extract<keyof Shape, string>   (TyTypeReference) (BindingIdentifier)
@@ -399,7 +399,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >     ^^^: Record<string, unknown>   (TyTypeReference) (IdentifierReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
 >         ^^^: Extract<keyof Shape, string>   (TyTypeReference) (IdentifierReference)
@@ -411,7 +411,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >                           ^^^: Extract<keyof Shape, string>   (TyTypeReference) (IdentifierReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                                ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                ^^^^^: any   (TyError) (StaticMemberExpression)
                               expected: (data: unknown) => any
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
@@ -421,7 +421,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >                                               ^^^^^^: any   (TyAny) (TSTypeReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                                               ^^^^^^: any   (TyAny) (IdentifierReference)
+>                                               ^^^^^^: any   (TyError) (IdentifierReference)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
 >                                                                        ^^^: Extract<keyof Shape, string>   (TyTypeReference) (IdentifierReference)
@@ -464,7 +464,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >              ^^^^: any   (TyAny) (TSTypeReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->              ^^^^: any   (TyAny) (IdentifierReference)
+>              ^^^^: any   (TyError) (IdentifierReference)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
 >                   ^^^^^: any   (TyAny) (TSTypeReference)
@@ -482,7 +482,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >                     ^^^^: any   (TyAny) (TSTypeReference)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
->                     ^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^: any   (TyError) (IdentifierReference)
 
     const out = {} as Pick<Shape, keyof Mask & keyof Shape>
 >                          ^^^^^: any   (TyAny) (TSTypeReference)
@@ -627,7 +627,7 @@ expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => Zod
 >       ^^^^^^: () => ZodString   (TyFunction) (StaticMemberExpression)
 
   email: z.string().optional(),
-> ^^^^^: any   (TyAny) (ObjectProperty)
+> ^^^^^: any   (TyError) (ObjectProperty)
 expected: ZodOptional<ZodString>
 
   email: z.string().optional(),
@@ -638,11 +638,11 @@ expected: ZodOptional<ZodString>
 >          ^^^^^^: () => ZodString   (TyFunction) (StaticMemberExpression)
 
   email: z.string().optional(),
->                   ^^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                   ^^^^^^^^: any   (TyError) (StaticMemberExpression)
                     expected: () => ZodOptional<ZodString>
 
   scores: z.number().array(),
-> ^^^^^^: any   (TyAny) (ObjectProperty)
+> ^^^^^^: any   (TyError) (ObjectProperty)
 expected: ZodArray<ZodNumber>
 
   scores: z.number().array(),
@@ -653,7 +653,7 @@ expected: ZodArray<ZodNumber>
 >           ^^^^^^: () => ZodNumber   (TyFunction) (StaticMemberExpression)
 
   scores: z.number().array(),
->                    ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                    ^^^^^: any   (TyError) (StaticMemberExpression)
                   expected: () => ZodArray<ZodNumber>
 
   active: z.boolean(),
@@ -797,7 +797,7 @@ const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
                                                                     expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const score = parsedAccount.scores[0]
->     ^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^: any   (TyError) (BindingIdentifier)
    expected: number
 
 const score = parsedAccount.scores[0]
@@ -805,11 +805,11 @@ const score = parsedAccount.scores[0]
                    expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 
 const score = parsedAccount.scores[0]
->                           ^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                           ^^^^^^: any   (TyError) (StaticMemberExpression)
                           expected: number[]
 
 const publicActive = publicAccount.active
->     ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
           expected: boolean
 
 const publicActive = publicAccount.active
@@ -817,5 +817,5 @@ const publicActive = publicAccount.active
                           expected: objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
 
 const publicActive = publicAccount.active
->                                  ^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                  ^^^^^^: any   (TyError) (StaticMemberExpression)
                                  expected: boolean

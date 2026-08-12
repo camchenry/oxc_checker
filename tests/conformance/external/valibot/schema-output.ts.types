@@ -79,7 +79,7 @@ export type InferInput<TSchema extends GenericSchema> = NonNullable<
 >                                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type InferInput<TSchema extends GenericSchema> = NonNullable<
->                                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                       ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   TSchema['~types']
 > ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -97,7 +97,7 @@ export type InferOutput<TSchema extends GenericSchema> = NonNullable<
 >                                                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type InferOutput<TSchema extends GenericSchema> = NonNullable<
->                                                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   TSchema['~types']
 > ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -115,7 +115,7 @@ export type InferIssue<TSchema extends GenericSchema> = NonNullable<
 >                                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type InferIssue<TSchema extends GenericSchema> = NonNullable<
->                                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                       ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   TSchema['~types']
 > ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -308,7 +308,7 @@ export type ObjectEntries = Record<string, GenericSchema>
 >                           ^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type ObjectEntries = Record<string, GenericSchema>
->                           ^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^: any   (TyError) (IdentifierReference)
 
 export type ObjectEntries = Record<string, GenericSchema>
 >                                          ^^^^^^^^^^^^^: { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }   (TyObject) (TSTypeReference)
@@ -626,7 +626,7 @@ export function object<TEntries extends ObjectEntries>(
 >                ^^^^^^: any   (TyAny) (TSTypeReference)
 
       const out: Record<string, unknown> = {}
->                ^^^^^^: any   (TyAny) (IdentifierReference)
+>                ^^^^^^: any   (TyError) (IdentifierReference)
 
       for (const key in entries) {
 >                ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (BindingIdentifier)
@@ -638,7 +638,7 @@ export function object<TEntries extends ObjectEntries>(
 >       ^^^: Record<string, unknown>   (TyTypeReference) (IdentifierReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >           ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
@@ -657,7 +657,7 @@ export function object<TEntries extends ObjectEntries>(
 >                                                 ^^^^^^: any   (TyAny) (TSTypeReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                                                 ^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^: any   (TyError) (IdentifierReference)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >                                                                          ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
@@ -818,7 +818,7 @@ const explicitOutput: UserOutput = output
                                  expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
->     ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^: any   (TyError) (BindingIdentifier)
      expected: number
 
 const userAge = output.age
@@ -826,11 +826,11 @@ const userAge = output.age
               expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
->                      ^^^: any   (TyAny) (StaticMemberExpression)
+>                      ^^^: any   (TyError) (StaticMemberExpression)
                   expected: number
 
 const userTags = output.tags
->     ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^: any   (TyError) (BindingIdentifier)
       expected: string[]
 
 const userTags = output.tags
@@ -838,7 +838,7 @@ const userTags = output.tags
                expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userTags = output.tags
->                       ^^^^: any   (TyAny) (StaticMemberExpression)
+>                       ^^^^: any   (TyError) (StaticMemberExpression)
                     expected: string[]
 
 const issue: UserIssue = {

@@ -80,7 +80,7 @@ declare const dictionary: Record<string, Profile | undefined> | undefined
 >                         ^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const dictionary: Record<string, Profile | undefined> | undefined
->                         ^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^: any   (TyError) (IdentifierReference)
 
 declare const dictionary: Record<string, Profile | undefined> | undefined
 >                                        ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -92,7 +92,7 @@ declare const handlers: Record<string, ((value: number) => string) | undefined> 
 >                       ^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const handlers: Record<string, ((value: number) => string) | undefined> | undefined
->                       ^^^^^^: any   (TyAny) (IdentifierReference)
+>                       ^^^^^^: any   (TyError) (IdentifierReference)
 
 declare const handlers: Record<string, ((value: number) => string) | undefined> | undefined
 >                                        ^^^^^: number   (TyNumber) (BindingIdentifier)

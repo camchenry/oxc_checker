@@ -71,7 +71,7 @@ interface PromiseConstructor {
 >                                                                                                                      ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                                                                                      ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                                                      ^^^^^^^: any   (TyError) (IdentifierReference)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
 >                                                                                                                              ^: any   (TyAny) (TSTypeReference)
@@ -92,7 +92,7 @@ interface PromiseConstructor {
 >                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                         ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
 >                                  ^: any   (TyAny) (TSTypeReference)
@@ -101,7 +101,7 @@ interface PromiseConstructor {
 >                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                      ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                      ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
 >                                                  ^: any   (TyAny) (TSTypeReference)
@@ -119,7 +119,7 @@ interface PromiseConstructor {
 >                                                                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
->                                                                                     ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                     ^^^^^^^: any   (TyError) (IdentifierReference)
 
     allSettled<T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>;
 >                                                                                             ^: any   (TyAny) (TSTypeReference)

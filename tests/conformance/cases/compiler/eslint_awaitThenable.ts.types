@@ -218,7 +218,7 @@ function makeSyncDisposable(): Disposable {
 >                              ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 function makeSyncDisposable(): Disposable {
->                              ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     [Symbol.dispose](): void {
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -242,7 +242,7 @@ function makeSyncDisposable(): Disposable {
 >                              ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 function makeSyncDisposable(): Disposable {
->                              ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     [Symbol.dispose](): void {
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -266,7 +266,7 @@ function makeAsyncDisposable(): AsyncDisposable {
 >                               ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 function makeAsyncDisposable(): AsyncDisposable {
->                               ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     async [Symbol.asyncDispose](): Promise<void> {
 >          ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)

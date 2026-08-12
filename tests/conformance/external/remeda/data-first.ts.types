@@ -378,7 +378,7 @@ export function groupBy<T, Key extends PropertyKey>(
 >                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export function groupBy<T, Key extends PropertyKey>(
->                                      ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                      ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   data: readonly T[],
 > ^^^^: readonly T[]   (TyArray) (BindingIdentifier)
@@ -411,13 +411,13 @@ export function groupBy<T, Key extends PropertyKey>(
 >  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 ): Partial<Record<Key, T[]>> {
->  ^^^^^^^: any   (TyAny) (IdentifierReference)
+>  ^^^^^^^: any   (TyError) (IdentifierReference)
 
 ): Partial<Record<Key, T[]>> {
 >          ^^^^^^: any   (TyAny) (TSTypeReference)
 
 ): Partial<Record<Key, T[]>> {
->          ^^^^^^: any   (TyAny) (IdentifierReference)
+>          ^^^^^^: any   (TyError) (IdentifierReference)
 
 ): Partial<Record<Key, T[]>> {
 >                 ^^^: any   (TyAny) (TSTypeReference)
@@ -432,13 +432,13 @@ export function groupBy<T, Key extends PropertyKey>(
 >            ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   const out: Partial<Record<Key, T[]>> = {}
->            ^^^^^^^: any   (TyAny) (IdentifierReference)
+>            ^^^^^^^: any   (TyError) (IdentifierReference)
 
   const out: Partial<Record<Key, T[]>> = {}
 >                    ^^^^^^: any   (TyAny) (TSTypeReference)
 
   const out: Partial<Record<Key, T[]>> = {}
->                    ^^^^^^: any   (TyAny) (IdentifierReference)
+>                    ^^^^^^: any   (TyError) (IdentifierReference)
 
   const out: Partial<Record<Key, T[]>> = {}
 >                           ^^^: any   (TyAny) (TSTypeReference)
@@ -486,7 +486,7 @@ export function groupBy<T, Key extends PropertyKey>(
 >                                        ^^^^: readonly T[]   (TyArray) (IdentifierReference)
 
     ;(out[key] ??= []).push(value)
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
                           expected: number
 
     ;(out[key] ??= []).push(value)
@@ -496,7 +496,7 @@ export function groupBy<T, Key extends PropertyKey>(
 >         ^^^: Key   (TyTypeReference) (IdentifierReference)
 
     ;(out[key] ??= []).push(value)
->                      ^^^^: any   (TyAny) (StaticMemberExpression)
+>                      ^^^^: any   (TyError) (StaticMemberExpression)
                    expected: (...items: T[]) => number
 
     ;(out[key] ??= []).push(value)
@@ -551,7 +551,7 @@ export function pick<T extends object, Keys extends keyof T>(
 >        ^^^^: any   (TyAny) (TSTypeReference)
 
 ): Merge<Pick<T, Keys>> {
->        ^^^^: any   (TyAny) (IdentifierReference)
+>        ^^^^: any   (TyError) (IdentifierReference)
 
 ): Merge<Pick<T, Keys>> {
 >             ^: any   (TyAny) (TSTypeReference)
@@ -566,7 +566,7 @@ export function pick<T extends object, Keys extends keyof T>(
 >                   ^^^^: any   (TyAny) (TSTypeReference)
 
   const out = {} as Pick<T, Keys>
->                   ^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^: any   (TyError) (IdentifierReference)
 
   const out = {} as Pick<T, Keys>
 >                        ^: any   (TyAny) (TSTypeReference)
@@ -875,7 +875,7 @@ expected: Task
                                                            expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->                                                                   ^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                                   ^^^^^^: any   (TyError) (StaticMemberExpression)
                                                                   expected: "todo" | "done"
 
 const donePoints = map(doneTasks, task => task.points)
@@ -898,7 +898,7 @@ const donePoints = map(doneTasks, task => task.points)
                                       expected: Task & { status: "done"; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
->                                              ^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                              ^^^^^^: any   (TyError) (StaticMemberExpression)
                                              expected: number
 
 const groupedTasks = groupBy(tasks, task => task.status)
@@ -920,7 +920,7 @@ const groupedTasks = groupBy(tasks, task => task.status)
                                         expected: Task
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                                                ^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                ^^^^^^: any   (TyError) (StaticMemberExpression)
                                                expected: "todo" | "done"
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
@@ -964,7 +964,7 @@ expected: (Task & { status: "done"; points: number; })[]
                           expected: Task & { status: "done"; points: number; }
 
   items => map(items, item => item.points),
->                                  ^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                  ^^^^^^: any   (TyError) (StaticMemberExpression)
                                  expected: number
 
   points => points.reduce((sum, point) => sum + point, 0),
@@ -996,7 +996,7 @@ expected: number[]
                                              expected: number
 
 const groupedDone = groupedTasks.done
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
          expected: Task[] | undefined
 
 const groupedDone = groupedTasks.done
@@ -1004,7 +1004,7 @@ const groupedDone = groupedTasks.done
                         expected: Partial<Record<"todo" | "done", Task[]>>
 
 const groupedDone = groupedTasks.done
->                                ^^^^: any   (TyAny) (StaticMemberExpression)
+>                                ^^^^: any   (TyError) (StaticMemberExpression)
                              expected: Task[] | undefined
 
 const summaryId = taskSummary.id

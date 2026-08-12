@@ -20,7 +20,7 @@ export type QueryKey = Register extends {
 >                     ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ? TQueryKey extends ReadonlyArray<unknown>
->                     ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     ? TQueryKey
 >     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -41,13 +41,13 @@ export type QueryKey = Register extends {
 >       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       : ReadonlyArray<unknown>
->       ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>       ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   : ReadonlyArray<unknown>
 >   ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   : ReadonlyArray<unknown>
->   ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>   ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 export declare const dataTagSymbol: unique symbol
 >                    ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
@@ -233,7 +233,7 @@ export type QueryMeta = Register extends {
 >                      ^^^^^^: any   (TyAny) (TSTypeReference)
 
   ? TQueryMeta extends Record<string, unknown>
->                      ^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^: any   (TyError) (IdentifierReference)
 
     ? TQueryMeta
 >     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -242,13 +242,13 @@ export type QueryMeta = Register extends {
 >     ^^^^^^: any   (TyAny) (TSTypeReference)
 
     : Record<string, unknown>
->     ^^^^^^: any   (TyAny) (IdentifierReference)
+>     ^^^^^^: any   (TyError) (IdentifierReference)
 
   : Record<string, unknown>
 >   ^^^^^^: any   (TyAny) (TSTypeReference)
 
   : Record<string, unknown>
->   ^^^^^^: any   (TyAny) (IdentifierReference)
+>   ^^^^^^: any   (TyError) (IdentifierReference)
 
 export type FetchDirection = 'forward' | 'backward'
 >           ^^^^^^^^^^^^^^: "forward" | "backward"   (TyUnion) (TSTypeAliasDeclaration)
@@ -437,7 +437,7 @@ export type OmitKeyof<
 >                               ^^^^^^: any   (TyAny) (TSTypeReference)
 
     ? keyof TObject | (string & Record<never, never>)
->                               ^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^: any   (TyError) (IdentifierReference)
 
     : keyof TObject,
 >           ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -449,7 +449,7 @@ export type OmitKeyof<
 >   ^^^^: any   (TyAny) (TSTypeReference)
 
 > = Omit<TObject, TKey>
->   ^^^^: any   (TyAny) (IdentifierReference)
+>   ^^^^: any   (TyError) (IdentifierReference)
 
 > = Omit<TObject, TKey>
 >        ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -503,7 +503,7 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->      ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>      ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
 >                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -518,7 +518,7 @@ type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >                                            ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->                                            ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                            ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
 >                                                          ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -975,7 +975,7 @@ declare const todoStream: AsyncIterable<Todo>
 >                         ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare const todoStream: AsyncIterable<Todo>
->                         ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 declare const todoStream: AsyncIterable<Todo>
 >                                       ^^^^: any   (TyAny) (TSTypeReference)

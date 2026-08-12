@@ -36,7 +36,7 @@ interface AsyncIterator<T, TReturn = any, TNext = any> {
 >                                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                           ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
 >                                                          ^: any   (TyAny) (TSTypeReference)
@@ -58,7 +58,7 @@ interface AsyncIterator<T, TReturn = any, TNext = any> {
 >                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
 >                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -73,7 +73,7 @@ interface AsyncIterator<T, TReturn = any, TNext = any> {
 >                                                            ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                            ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                            ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
 >                                                                           ^: any   (TyAny) (TSTypeReference)
@@ -98,7 +98,7 @@ interface AsyncIterator<T, TReturn = any, TNext = any> {
 >                            ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
 >                                           ^: any   (TyAny) (TSTypeReference)

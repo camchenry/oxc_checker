@@ -20,7 +20,7 @@ declare function getObject(): Record<string, string>;
 >                             ^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare function getObject(): Record<string, string>;
->                             ^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^: any   (TyError) (IdentifierReference)
 
 const getObjectSpread = { ...getObject };
 >     ^^^^^^^^^^^^^^^: {}   (TyObject) (BindingIdentifier)
@@ -89,7 +89,7 @@ declare const promise: Promise<number>;
 >                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
 
 const spreadPromise = { ...(await promise) };
->     ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
 
 const spreadPromise = { ...(await promise) };
 >                                 ^^^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
@@ -101,7 +101,7 @@ declare function getObject(): Record<string, string>;
 >                             ^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare function getObject(): Record<string, string>;
->                             ^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^: any   (TyError) (IdentifierReference)
 
 const getObjectSpread = { ...getObject() };
 >     ^^^^^^^^^^^^^^^: { [x: string]: string; }   (TyObject) (BindingIdentifier)

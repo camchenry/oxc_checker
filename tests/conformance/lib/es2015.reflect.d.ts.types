@@ -47,7 +47,7 @@ declare namespace Reflect {
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         argumentsList: Readonly<A>,
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (TyError) (IdentifierReference)
 
         argumentsList: Readonly<A>,
 >                               ^: any   (TyAny) (TSTypeReference)
@@ -77,7 +77,7 @@ declare namespace Reflect {
 >                                                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                                                                      ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function construct<A extends readonly any[], R>(
 >            ^^^^^^^^^: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject) (BindingIdentifier)
@@ -107,7 +107,7 @@ declare namespace Reflect {
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         argumentsList: Readonly<A>,
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (TyError) (IdentifierReference)
 
         argumentsList: Readonly<A>,
 >                               ^: any   (TyAny) (TSTypeReference)
@@ -140,7 +140,7 @@ declare namespace Reflect {
 >                                                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                                       ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                       ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
 >                                                                       ^^^^^^^^^: Function | undefined   (TyUnion) (BindingIdentifier)
@@ -164,7 +164,7 @@ declare namespace Reflect {
 >                                                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
 >                                                                     ^^^^^^^^^^: PropertyDescriptor & ThisType<any>   (TyIntersection) (BindingIdentifier)
@@ -173,13 +173,13 @@ declare namespace Reflect {
 >                                                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                 ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
 >                                                                                                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                                                                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                                      ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
 >            ^^^^^^^^^^^^^^: { (target: object, propertyKey: PropertyKey): boolean; (target: object, propertyKey: PropertyKey): boolean; }   (TyObject) (BindingIdentifier)
@@ -194,7 +194,7 @@ declare namespace Reflect {
 >                                                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
->                                                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function get<T extends object, P extends PropertyKey>(
 >            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, receiver?: unknown): P extends keyof T ? T[P] : any; <T extends object, P extends PropertyKey>(target: T, propertyKey: P, receiver?: unknown): P extends keyof T ? T[P] : any; }   (TyObject) (BindingIdentifier)
@@ -209,7 +209,7 @@ declare namespace Reflect {
 >                                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function get<T extends object, P extends PropertyKey>(
->                                            ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                            ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         target: T,
 >       ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -251,7 +251,7 @@ declare namespace Reflect {
 >                                                                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
->                                                                 ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                 ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         target: T,
 >       ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -269,7 +269,7 @@ declare namespace Reflect {
 >      ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
->      ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>      ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -302,7 +302,7 @@ declare namespace Reflect {
 >                                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function has(target: object, propertyKey: PropertyKey): boolean;
->                                             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function isExtensible(target: object): boolean;
 >            ^^^^^^^^^^^^: { (target: object): boolean; (target: object): boolean; }   (TyObject) (BindingIdentifier)
@@ -335,7 +335,7 @@ declare namespace Reflect {
 >                                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function set<T extends object, P extends PropertyKey>(
->                                            ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                            ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         target: T,
 >       ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -380,7 +380,7 @@ declare namespace Reflect {
 >                                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->                                             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
 >                                                          ^^^^^: any   (TyAny) (BindingIdentifier)

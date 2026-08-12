@@ -111,13 +111,13 @@ declare namespace Intl {
 >                 ^^^^^^^: any   (TyAny) (TSTypeReference)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                 ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                 ^^^^^^^: any   (TyError) (IdentifierReference)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
 >                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
             value: string;
 >           ^^^^^: string   (TyString) (TSPropertySignature)
@@ -622,14 +622,14 @@ declare namespace Intl {
 >                                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >                                                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
                                                                     expected: CollatorConstructor
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                   ^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                     expected: CollatorConstructor
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
@@ -646,14 +646,14 @@ declare namespace Intl {
 >                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                             ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >                                                               ^^^^^^^^: any   (TyAny) (TSTypeReference)
                                                                 expected: CollatorConstructor
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                               ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                               ^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                 expected: CollatorConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
@@ -673,7 +673,7 @@ declare namespace Intl {
 >                                                              ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
->                                                              ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                              ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     interface DateTimeFormatConstructor {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -696,7 +696,7 @@ declare namespace Intl {
                                                                                 expected: DateTimeFormatConstructor
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                                         ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                         ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                                 expected: DateTimeFormatConstructor
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
@@ -717,7 +717,7 @@ declare namespace Intl {
                                                                             expected: DateTimeFormatConstructor
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                                     ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                     ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                             expected: DateTimeFormatConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
@@ -757,7 +757,7 @@ declare namespace Intl {
                                                                             expected: NumberFormatConstructor
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                                       ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                       ^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                             expected: NumberFormatConstructor
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
@@ -778,7 +778,7 @@ declare namespace Intl {
                                                                         expected: NumberFormatConstructor
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                                   ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                   ^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                         expected: NumberFormatConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
@@ -814,14 +814,14 @@ declare namespace Intl {
 >                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >                                                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
                                                                           expected: PluralRulesConstructor
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                                      ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                      ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                           expected: PluralRulesConstructor
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
@@ -838,14 +838,14 @@ declare namespace Intl {
 >                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >                                                                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
                                                                       expected: PluralRulesConstructor
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                                  ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                  ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                       expected: PluralRulesConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];

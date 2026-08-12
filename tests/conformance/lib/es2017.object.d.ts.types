@@ -20,7 +20,7 @@ interface ObjectConstructor {
 >                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->                                      ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
 >                                                ^: any   (TyAny) (TSTypeReference)
@@ -53,7 +53,7 @@ interface ObjectConstructor {
 >                                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->                                       ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                       ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
 >                                                 ^: any   (TyAny) (TSTypeReference)
@@ -89,7 +89,7 @@ interface ObjectConstructor {
 >                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
 >                                                                                 ^: any   (TyAny) (TSTypeReference)
@@ -104,4 +104,4 @@ interface ObjectConstructor {
 >                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)

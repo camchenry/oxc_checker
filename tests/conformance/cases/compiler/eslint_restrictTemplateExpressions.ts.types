@@ -107,7 +107,7 @@ const arg = condition ? 'ok' : null;
 >     ^^^: "ok" | null   (TyUnion) (BindingIdentifier)
 
 const arg = condition ? 'ok' : null;
->           ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>           ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 const msg1 = `arg = ${arg}`;
 >     ^^^^: string   (TyString) (BindingIdentifier)

@@ -41,7 +41,7 @@ export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
 >                             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
->                             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
 >                                                                  ^: any   (TyAny) (TSTypeReference)
@@ -56,13 +56,13 @@ export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any
 >                               ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                               ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
 >                                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                                                     ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                     ^^^^^^^: any   (TyError) (IdentifierReference)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
 >                                                                   ^: any   (TyAny) (TSTypeReference)
@@ -206,7 +206,7 @@ type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
 >                                                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                    ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
 >                                                                        ^: any   (TyAny) (TSTypeParameter)
@@ -401,7 +401,7 @@ type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
 >                   ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         ? T extends ReadonlyArray<infer V>
->                   ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         ? T extends ReadonlyArray<infer V>
 >                                       ^: any   (TyAny) (TSTypeParameter)
@@ -449,7 +449,7 @@ type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
 >                   ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         ? T extends ReadonlyArray<infer V>
->                   ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         ? T extends ReadonlyArray<infer V>
 >                                       ^: any   (TyAny) (TSTypeParameter)
@@ -491,7 +491,7 @@ type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   : V extends ReadonlyArray<infer U>
->             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   : V extends ReadonlyArray<infer U>
 >                                 ^: any   (TyAny) (TSTypeParameter)
@@ -587,7 +587,7 @@ type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
 >                                                         ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                         ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                         ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
 >                                                                             ^: any   (TyAny) (TSTypeParameter)

@@ -61,7 +61,7 @@ interface WeakMap<K extends WeakKey, V> {
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface WeakMap<K extends WeakKey, V> {
->                           ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^: any   (TyError) (IdentifierReference)
 
 interface WeakMap<K extends WeakKey, V> {
 >                                    ^: any   (TyAny) (TSTypeParameter)

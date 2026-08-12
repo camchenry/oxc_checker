@@ -161,7 +161,7 @@ interface ArrayConstructor {
 >                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
->                      ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from<T>(arrayLike: ArrayLike<T>): T[];
 >                                ^: any   (TyAny) (TSTypeReference)
@@ -185,7 +185,7 @@ interface ArrayConstructor {
 >                         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                         ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                                   ^: any   (TyAny) (TSTypeReference)
@@ -867,7 +867,7 @@ interface StringConstructor {
 >                                            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
->                                            ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                            ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     raw(template: { raw: readonly string[] | ArrayLike<string>; }, ...substitutions: any[]): string;
 >                                                                     ^^^^^^^^^^^^^: any[]   (TyArray) (BindingIdentifier)
@@ -883,7 +883,7 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -912,7 +912,7 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -941,7 +941,7 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -970,7 +970,7 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -999,7 +999,7 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -1028,7 +1028,7 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -1057,7 +1057,7 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -1086,7 +1086,7 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -1115,7 +1115,7 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     toLocaleString(locales: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)

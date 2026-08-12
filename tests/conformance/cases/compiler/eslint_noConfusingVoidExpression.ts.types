@@ -17,13 +17,13 @@ console.log(alert('Are you sure?'));
 >           ^^^^^: (message?: any) => void   (TyFunction) (IdentifierReference)
 
 promise.then(value => window.postMessage(value));
->^^^^^^^: any   (TyAny) (IdentifierReference)
+>^^^^^^^: any   (TyError) (IdentifierReference)
 
 promise.then(value => window.postMessage(value));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
 promise.then(value => window.postMessage(value));
->       ^^^^: any   (TyAny) (StaticMemberExpression)
+>       ^^^^: any   (TyError) (StaticMemberExpression)
 
 promise.then(value => window.postMessage(value));
 >            ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -41,7 +41,7 @@ function doSomething() {
 >        ^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
 
   if (!somethingToDo) {
->      ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>      ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     return console.error('Nothing to do!');
 >          ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
@@ -83,13 +83,13 @@ console.log(confirm('Are you sure?'));
 >           ^^^^^^^: (message?: string) => boolean   (TyFunction) (IdentifierReference)
 
 promise.then(value => {
->^^^^^^^: any   (TyAny) (IdentifierReference)
+>^^^^^^^: any   (TyError) (IdentifierReference)
 
 promise.then(value => {
->^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
 promise.then(value => {
->       ^^^^: any   (TyAny) (StaticMemberExpression)
+>       ^^^^: any   (TyError) (StaticMemberExpression)
 
 promise.then(value => {
 >            ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -110,7 +110,7 @@ function doSomething() {
 >        ^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
 
   if (!somethingToDo) {
->      ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>      ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     console.error('Nothing to do!');
 >   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
@@ -131,10 +131,10 @@ function doSomething() {
 >         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 cond && console.log('true');
->^^^^: any   (TyAny) (IdentifierReference)
+>^^^^: any   (TyError) (IdentifierReference)
 
 cond && console.log('true');
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
 cond && console.log('true');
 >       ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
@@ -143,10 +143,10 @@ cond && console.log('true');
 >               ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 cond || console.error('false');
->^^^^: any   (TyAny) (IdentifierReference)
+>^^^^: any   (TyError) (IdentifierReference)
 
 cond || console.error('false');
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
 cond || console.error('false');
 >       ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
@@ -155,7 +155,7 @@ cond || console.error('false');
 >               ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 cond ? console.log('true') : console.error('false');
->^^^^: any   (TyAny) (IdentifierReference)
+>^^^^: any   (TyError) (IdentifierReference)
 
 cond ? console.log('true') : console.error('false');
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
@@ -173,13 +173,13 @@ cond ? console.log('true') : console.error('false');
 >                                    ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
 
 promise.then(value => window.postMessage(value));
->^^^^^^^: any   (TyAny) (IdentifierReference)
+>^^^^^^^: any   (TyError) (IdentifierReference)
 
 promise.then(value => window.postMessage(value));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
 promise.then(value => window.postMessage(value));
->       ^^^^: any   (TyAny) (StaticMemberExpression)
+>       ^^^^: any   (TyError) (StaticMemberExpression)
 
 promise.then(value => window.postMessage(value));
 >            ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -194,13 +194,13 @@ promise.then(value => window.postMessage(value));
 >                                        ^^^^^: any   (TyAny) (IdentifierReference)
 
 promise.then(value => void window.postMessage(value));
->^^^^^^^: any   (TyAny) (IdentifierReference)
+>^^^^^^^: any   (TyError) (IdentifierReference)
 
 promise.then(value => void window.postMessage(value));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
 promise.then(value => void window.postMessage(value));
->       ^^^^: any   (TyAny) (StaticMemberExpression)
+>       ^^^^: any   (TyError) (StaticMemberExpression)
 
 promise.then(value => void window.postMessage(value));
 >            ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -218,7 +218,7 @@ function doSomething() {
 >        ^^^^^^^^^^^: () => undefined   (TyFunction) (BindingIdentifier)
 
   if (!somethingToDo) {
->      ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>      ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     return void console.error('Nothing to do!');
 >               ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)

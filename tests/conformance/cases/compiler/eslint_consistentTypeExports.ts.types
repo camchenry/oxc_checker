@@ -26,7 +26,7 @@ export { Button, ButtonProps };
 >        ^^^^^^: typeof Button   (TyTypeQuery) (IdentifierReference)
 
 export { Button, ButtonProps };
->                ^^^^^^^^^^^: any   (TyAny) (ExportSpecifier)
+>                ^^^^^^^^^^^: any   (TyError) (ExportSpecifier)
 
 interface ButtonProps {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
@@ -56,7 +56,7 @@ export { Button };
 >        ^^^^^^: typeof Button   (TyTypeQuery) (IdentifierReference)
 
 export type { ButtonProps };
->             ^^^^^^^^^^^: any   (TyAny) (ExportSpecifier)
+>             ^^^^^^^^^^^: any   (TyError) (ExportSpecifier)
 
 const x = 1;
 >     ^: 1   (TyNumberLiteral) (BindingIdentifier)

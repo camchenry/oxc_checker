@@ -232,7 +232,7 @@ interface WeakMap<K extends WeakKey, V> {
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface WeakMap<K extends WeakKey, V> {
->                           ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^: any   (TyError) (IdentifierReference)
 
 interface WeakMap<K extends WeakKey, V> {
 >                                    ^: any   (TyAny) (TSTypeParameter)
@@ -292,13 +292,13 @@ interface WeakMapConstructor {
 >                  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                  ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                  ^^^^^^^: any   (TyError) (IdentifierReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
 >                            ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
->                            ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^: any   (TyError) (IdentifierReference)
 
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
 >                                     ^: any   (TyAny) (TSTypeParameter)
@@ -338,7 +338,7 @@ interface WeakMapConstructor {
 >                               ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: WeakMap<WeakKey, any>;
->                               ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^: any   (TyError) (IdentifierReference)
 
 declare var WeakMap: WeakMapConstructor;
 >           ^^^^^^^: WeakMapConstructor   (TyTypeReference) (BindingIdentifier)
@@ -522,7 +522,7 @@ interface WeakSet<T extends WeakKey> {
 >                           ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface WeakSet<T extends WeakKey> {
->                           ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^: any   (TyError) (IdentifierReference)
 
     add(value: T): this;
 >   ^^^: { (value: T): this; (value: T): this; }   (TyObject) (TSMethodSignature)
@@ -561,13 +561,13 @@ interface WeakSetConstructor {
 >                  ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                  ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                  ^^^^^^^: any   (TyError) (IdentifierReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
 >                            ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
->                            ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^: any   (TyError) (IdentifierReference)
 
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
 >                                     ^^^^^^: readonly T[] | null | undefined   (TyUnion) (BindingIdentifier)
@@ -597,7 +597,7 @@ interface WeakSetConstructor {
 >                               ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: WeakSet<WeakKey>;
->                               ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^: any   (TyError) (IdentifierReference)
 
 declare var WeakSet: WeakSetConstructor;
 >           ^^^^^^^: WeakSetConstructor   (TyTypeReference) (BindingIdentifier)

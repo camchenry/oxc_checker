@@ -14,4 +14,4 @@ interface ObjectConstructor {
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)

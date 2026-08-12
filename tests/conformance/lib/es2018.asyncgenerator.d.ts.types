@@ -14,7 +14,7 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 >                                                                         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
 interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncIteratorObject<T, TReturn, TNext> {
->                                                                         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                         ^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncIteratorObject<T, TReturn, TNext> {
 >                                                                                             ^: any   (TyAny) (TSTypeReference)
@@ -45,7 +45,7 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 >                                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                           ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
 >                                                          ^: any   (TyAny) (TSTypeReference)
@@ -66,7 +66,7 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 >                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     return(value: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
 >                                       ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -81,7 +81,7 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 >                                                          ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return(value: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                          ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                          ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     return(value: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
 >                                                                         ^: any   (TyAny) (TSTypeReference)
@@ -105,7 +105,7 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 >                          ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     throw(e: any): Promise<IteratorResult<T, TReturn>>;
->                          ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     throw(e: any): Promise<IteratorResult<T, TReturn>>;
 >                                         ^: any   (TyAny) (TSTypeReference)

@@ -185,7 +185,7 @@ const literalKey = "name" as const;
 >                            ^^^^^: any   (TyAny) (TSTypeReference)
 
 const literalKey = "name" as const;
->                            ^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^: any   (TyError) (IdentifierReference)
 
 const unionKey: "name" | "id" = Math.random() > 0.5 ? "name" : "id";
 >     ^^^^^^^^: "name" | "id"   (TyUnion) (BindingIdentifier)
@@ -218,7 +218,7 @@ const unionKeyValue = user[unionKey];
 >                          ^^^^^^^^: "name" | "id"   (TyUnion) (IdentifierReference)
 
 const dynamicStringKeyValue = user[dynamicStringKey];
->     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
 
 const dynamicStringKeyValue = user[dynamicStringKey];
 >                             ^^^^: User   (TyTypeReference) (IdentifierReference)
@@ -329,7 +329,7 @@ const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >                                                                 ^^^^^: any   (TyAny) (TSTypeReference)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->                                                                 ^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                 ^^^^^: any   (TyError) (IdentifierReference)
 
 const firstUser = users[0];
 >     ^^^^^^^^^: User   (TyTypeReference) (BindingIdentifier)
@@ -374,7 +374,7 @@ const tuple = ["ready", 200, { ok: true }] as const;
 >                                             ^^^^^: any   (TyAny) (TSTypeReference)
 
 const tuple = ["ready", 200, { ok: true }] as const;
->                                             ^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^: any   (TyError) (IdentifierReference)
 
 const tupleStatus = tuple[0];
 >     ^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
@@ -455,7 +455,7 @@ const matrix = [[1, 2], [3, 4]] as const;
 >                                  ^^^^^: any   (TyAny) (TSTypeReference)
 
 const matrix = [[1, 2], [3, 4]] as const;
->                                  ^^^^^: any   (TyAny) (IdentifierReference)
+>                                  ^^^^^: any   (TyError) (IdentifierReference)
 
 const matrixFirstRow = matrix[0];
 >     ^^^^^^^^^^^^^^: readonly [1, 2]   (TyTuple) (BindingIdentifier)

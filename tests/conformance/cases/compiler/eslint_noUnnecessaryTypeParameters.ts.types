@@ -215,7 +215,7 @@ declare function length<T>(array: ReadonlyArray<T>): number;
 >                                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
->                                 ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
 >                                               ^: any   (TyAny) (TSTypeReference)
@@ -230,4 +230,4 @@ declare function length2(array: ReadonlyArray<unknown>): number;
 >                               ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 declare function length2(array: ReadonlyArray<unknown>): number;
->                               ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)

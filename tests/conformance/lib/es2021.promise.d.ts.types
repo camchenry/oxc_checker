@@ -25,7 +25,7 @@ interface AggregateErrorConstructor {
 >                ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
->                ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
 >                               ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -43,7 +43,7 @@ interface AggregateErrorConstructor {
 >            ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (errors: Iterable<any>, message?: string): AggregateError;
->            ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>            ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     (errors: Iterable<any>, message?: string): AggregateError;
 >                           ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -94,7 +94,7 @@ interface PromiseConstructor {
 >                                                              ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                              ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                              ^^^^^^^: any   (TyError) (IdentifierReference)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >                                                                      ^: any   (TyAny) (TSTypeReference)
@@ -112,7 +112,7 @@ interface PromiseConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                  ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                           ^: any   (TyAny) (TSTypeReference)
@@ -121,7 +121,7 @@ interface PromiseConstructor {
 >                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                               ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                                           ^: any   (TyAny) (TSTypeReference)
@@ -136,7 +136,7 @@ interface PromiseConstructor {
 >                                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                                                         ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                         ^^^^^^^: any   (TyError) (IdentifierReference)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                                                                 ^: any   (TyAny) (TSTypeReference)

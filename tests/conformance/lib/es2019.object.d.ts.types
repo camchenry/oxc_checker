@@ -14,13 +14,13 @@ interface ObjectConstructor {
 >                                 ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                                 ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                 ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
 >                                                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
->                                                    ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                    ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     fromEntries<T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; };
 >                                                                 ^: any   (TyAny) (TSTypeReference)
@@ -41,4 +41,4 @@ interface ObjectConstructor {
 >                        ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     fromEntries(entries: Iterable<readonly any[]>): any;
->                        ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^^^^^^: any   (TyError) (IdentifierReference)

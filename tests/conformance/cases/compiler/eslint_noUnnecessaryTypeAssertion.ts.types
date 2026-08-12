@@ -2,10 +2,10 @@ const foo1 = 3;
 >     ^^^^: 3   (TyNumberLiteral) (BindingIdentifier)
 
 const bar = foo!;
->     ^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^: any   (TyError) (BindingIdentifier)
 
 const bar = foo!;
->           ^^^: any   (TyAny) (IdentifierReference)
+>           ^^^: any   (TyError) (IdentifierReference)
 
 const foo1_1 = <number>3;
 >     ^^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -41,7 +41,7 @@ let foo5 = 'foo' as const;
 >                   ^^^^^: any   (TyAny) (TSTypeReference)
 
 let foo5 = 'foo' as const;
->                   ^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^: any   (TyError) (IdentifierReference)
 
 function foo6(x: number | undefined): number {
 >        ^^^^: (x: number | undefined) => number   (TyFunction) (BindingIdentifier)

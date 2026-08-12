@@ -143,13 +143,13 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 >                                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->                                            ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                            ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                                                              ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->                                                              ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                              ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     readonly BYTES_PER_ELEMENT: number;
 >            ^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -185,7 +185,7 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     entries(): ArrayIterator<[number, bigint]>;
->              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>              ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     every(predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
 >   ^^^^^: { (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; (predicate: (value: bigint, index: number, array: BigInt64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; }   (TyObject) (TSMethodSignature)
@@ -377,7 +377,7 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     keys(): ArrayIterator<number>;
->           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>           ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     lastIndexOf(searchElement: bigint, fromIndex?: number): number;
 >   ^^^^^^^^^^^: { (searchElement: bigint, fromIndex?: number): number; (searchElement: bigint, fromIndex?: number): number; }   (TyObject) (TSMethodSignature)
@@ -587,7 +587,7 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 >              ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     set(array: ArrayLike<bigint>, offset?: number): void;
->              ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>              ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     set(array: ArrayLike<bigint>, offset?: number): void;
 >                                 ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
@@ -708,7 +708,7 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): ArrayIterator<bigint>;
->             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     [Symbol.iterator](): ArrayIterator<bigint>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -720,7 +720,7 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): ArrayIterator<bigint>;
->                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "BigInt64Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -747,7 +747,7 @@ interface BigInt64ArrayConstructor {
 >                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: BigInt64Array<ArrayBufferLike>;
->                                     ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                     ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (length?: number): BigInt64Array<ArrayBuffer>;
 >        ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
@@ -771,13 +771,13 @@ interface BigInt64ArrayConstructor {
 >               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
->               ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>               ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
 >                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
->                                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                   ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigInt64Array<ArrayBuffer>;
 >                                                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -798,7 +798,7 @@ interface BigInt64ArrayConstructor {
 >                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
->                             ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigInt64Array<TArrayBuffer>;
 >                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
@@ -861,7 +861,7 @@ interface BigInt64ArrayConstructor {
 >               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
->               ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>               ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (array: ArrayLike<bigint> | ArrayBuffer): BigInt64Array<ArrayBuffer>;
 >                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
@@ -912,7 +912,7 @@ interface BigInt64ArrayConstructor {
 >                   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
->                   ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from(arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>;
 >                                       ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -939,7 +939,7 @@ interface BigInt64ArrayConstructor {
 >                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
->                      ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
 >                                ^: any   (TyAny) (TSTypeReference)
@@ -981,7 +981,7 @@ interface BigInt64ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
->                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                  ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from(elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -1008,7 +1008,7 @@ interface BigInt64ArrayConstructor {
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
->                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1061,13 +1061,13 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->                                             ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                                                               ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->                                                               ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                               ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     readonly BYTES_PER_ELEMENT: number;
 >            ^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -1103,7 +1103,7 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     entries(): ArrayIterator<[number, bigint]>;
->              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>              ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     every(predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean;
 >   ^^^^^: { (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; (predicate: (value: bigint, index: number, array: BigUint64Array<TArrayBuffer>) => boolean, thisArg?: any): boolean; }   (TyObject) (TSMethodSignature)
@@ -1295,7 +1295,7 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     keys(): ArrayIterator<number>;
->           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>           ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     lastIndexOf(searchElement: bigint, fromIndex?: number): number;
 >   ^^^^^^^^^^^: { (searchElement: bigint, fromIndex?: number): number; (searchElement: bigint, fromIndex?: number): number; }   (TyObject) (TSMethodSignature)
@@ -1505,7 +1505,7 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >              ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     set(array: ArrayLike<bigint>, offset?: number): void;
->              ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>              ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     set(array: ArrayLike<bigint>, offset?: number): void;
 >                                 ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
@@ -1626,7 +1626,7 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): ArrayIterator<bigint>;
->             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     [Symbol.iterator](): ArrayIterator<bigint>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1638,7 +1638,7 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): ArrayIterator<bigint>;
->                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     readonly [Symbol.toStringTag]: "BigUint64Array";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1665,7 +1665,7 @@ interface BigUint64ArrayConstructor {
 >                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly prototype: BigUint64Array<ArrayBufferLike>;
->                                      ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                      ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (length?: number): BigUint64Array<ArrayBuffer>;
 >        ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
@@ -1689,13 +1689,13 @@ interface BigUint64ArrayConstructor {
 >               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
->               ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>               ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
 >                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
->                                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                   ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (array: ArrayLike<bigint> | Iterable<bigint>): BigUint64Array<ArrayBuffer>;
 >                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -1716,7 +1716,7 @@ interface BigUint64ArrayConstructor {
 >                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
->                             ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): BigUint64Array<TArrayBuffer>;
 >                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
@@ -1779,7 +1779,7 @@ interface BigUint64ArrayConstructor {
 >               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
->               ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>               ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     new (array: ArrayLike<bigint> | ArrayBuffer): BigUint64Array<ArrayBuffer>;
 >                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
@@ -1830,7 +1830,7 @@ interface BigUint64ArrayConstructor {
 >                   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
->                   ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from(arrayLike: ArrayLike<bigint>): BigUint64Array<ArrayBuffer>;
 >                                       ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -1857,7 +1857,7 @@ interface BigUint64ArrayConstructor {
 >                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
->                      ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
 >                                ^: any   (TyAny) (TSTypeReference)
@@ -1899,7 +1899,7 @@ interface BigUint64ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
->                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                  ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from(elements: Iterable<bigint>): BigUint64Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -1926,7 +1926,7 @@ interface BigUint64ArrayConstructor {
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
->                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^^^^^: any   (TyError) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigUint64Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1975,7 +1975,7 @@ interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
->                                       ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                       ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     getBigInt64(byteOffset: number, littleEndian?: boolean): bigint;
 >   ^^^^^^^^^^^: { (byteOffset: number, littleEndian?: boolean): bigint; (byteOffset: number, littleEndian?: boolean): bigint; }   (TyObject) (TSMethodSignature)

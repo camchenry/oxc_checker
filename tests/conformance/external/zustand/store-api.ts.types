@@ -19,7 +19,7 @@ expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?:
 >                ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                ^^^^^^^: any   (TyError) (IdentifierReference)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 >                        ^: any   (TyAny) (TSTypeReference)
@@ -37,7 +37,7 @@ expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?:
 >                                                ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                                                ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                ^^^^^^^: any   (TyError) (IdentifierReference)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 >                                                        ^: any   (TyAny) (TSTypeReference)
@@ -537,7 +537,7 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 > ^^^^^: any   (TyAny) (IdentifierReference)
 
   state = initializer(api.setState, api.getState, api)
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
   state = initializer(api.setState, api.getState, api)
 >         ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion) (IdentifierReference)
@@ -593,7 +593,7 @@ export type ReadonlyStoreApi<T> = Pick<
 >                                 ^^^^: any   (TyAny) (TSTypeReference)
 
 export type ReadonlyStoreApi<T> = Pick<
->                                 ^^^^: any   (TyAny) (IdentifierReference)
+>                                 ^^^^: any   (TyError) (IdentifierReference)
 
   StoreApi<T>,
 > ^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -994,7 +994,7 @@ const increment = useCounter(state => state.increment)
                                              expected: (by?: number) => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
          expected: () => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
@@ -1002,7 +1002,7 @@ const unsubscribe = useCounter.subscribe((state, prevState) => {
                       expected: UseBoundStore<StoreApi<CounterState>>
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
->                              ^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                              ^^^^^^^^^: any   (TyError) (StaticMemberExpression)
                                 expected: (listener: (state: CounterState, prevState: CounterState) => void) => () => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
@@ -1074,11 +1074,11 @@ useCounter.setState({ label: 'ready' })
    expected: UseBoundStore<StoreApi<CounterState>>
 
 useCounter.setState({ label: 'ready' })
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
                                 expected: void
 
 useCounter.setState({ label: 'ready' })
->          ^^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>          ^^^^^^^^: any   (TyError) (StaticMemberExpression)
            expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
 useCounter.setState({ label: 'ready' })
@@ -1093,9 +1093,9 @@ increment(2)
      expected: void
 
 unsubscribe()
->^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>^^^^^^^^^^^: any   (TyError) (IdentifierReference)
     expected: () => void
 
 unsubscribe()
->^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
       expected: void

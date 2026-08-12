@@ -32,7 +32,7 @@ class Base {
 > ^^^^^^: () => void   (TyFunction) (MethodDefinition)
 
     const methodTarget = new.target;
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
 
 function functionTarget() {
 >        ^^^^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)

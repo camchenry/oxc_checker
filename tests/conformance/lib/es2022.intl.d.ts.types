@@ -53,7 +53,7 @@ declare namespace Intl {
 >                                        ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                        ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                                       ^: any   (TyAny) (TSTypeReference)
@@ -62,7 +62,7 @@ declare namespace Intl {
 >                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         [Symbol.iterator](): SegmentIterator<T>;
 >        ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -136,7 +136,7 @@ declare namespace Intl {
 >                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
 >                                       ^^^^^^^: SegmenterOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -160,7 +160,7 @@ declare namespace Intl {
 >                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                    ^^^^^^^: Pick<SegmenterOptions, "localeMatcher"> | undefined   (TyUnion) (BindingIdentifier)
@@ -169,7 +169,7 @@ declare namespace Intl {
 >                                                              ^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                              ^^^^: any   (TyAny) (IdentifierReference)
+>                                                              ^^^^: any   (TyError) (IdentifierReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -178,7 +178,7 @@ declare namespace Intl {
 >                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
 >            ^^^^^^^^^^^^^^^^^: { (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }   (TyObject) (BindingIdentifier)

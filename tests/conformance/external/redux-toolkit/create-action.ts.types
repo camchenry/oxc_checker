@@ -197,7 +197,7 @@ export type AtLeastTS35<True, False> = [True, False][IsUnknown<
 > ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ReturnType<<T>() => T>,
-> ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+> ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
   ReturnType<<T>() => T>,
 >             ^: any   (TyAny) (TSTypeParameter)
@@ -506,7 +506,7 @@ export type _ActionCreatorWithPreparedPayload<
 >     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       Parameters<PA>,
->     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>     ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
       Parameters<PA>,
 >                ^^: any   (TyAny) (TSTypeReference)
@@ -521,7 +521,7 @@ export type _ActionCreatorWithPreparedPayload<
 >     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
->     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>     ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
       ReturnType<PA> extends { error: infer E } ? E : never,
 >                ^^: any   (TyAny) (TSTypeReference)
@@ -539,7 +539,7 @@ export type _ActionCreatorWithPreparedPayload<
 >     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
->     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>     ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
       ReturnType<PA> extends { meta: infer M } ? M : never
 >                ^^: any   (TyAny) (TSTypeReference)
@@ -929,7 +929,7 @@ export function createAction<
 >                                                   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->                                                   ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                   ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
 >                                                              ^^: any   (TyAny) (TSTypeReference)
@@ -966,7 +966,7 @@ export function createAction(type: string, prepareAction?: Function): any {
 >       ^^^^^^^^^^^^^: Function | undefined   (TyUnion) (IdentifierReference)
 
       const prepared = prepareAction(...args)
->           ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>           ^^^^^^^^: any   (TyError) (BindingIdentifier)
 
       const prepared = prepareAction(...args)
 >                      ^^^^^^^^^^^^^: Function   (TyTypeReference) (IdentifierReference)
@@ -981,37 +981,37 @@ export function createAction(type: string, prepareAction?: Function): any {
 >       ^^^^: string   (TyString) (IdentifierReference)
 
         payload: prepared.payload,
->       ^^^^^^^: any   (TyAny) (ObjectProperty)
+>       ^^^^^^^: any   (TyError) (ObjectProperty)
 
         payload: prepared.payload,
->                ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                ^^^^^^^^: any   (TyError) (IdentifierReference)
 
         payload: prepared.payload,
->                         ^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                         ^^^^^^^: any   (TyError) (StaticMemberExpression)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^^^^^: any   (TyError) (IdentifierReference)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                                   ^^^^: any   (TyAny) (ObjectProperty)
+>                                   ^^^^: any   (TyError) (ObjectProperty)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                                         ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                         ^^^^^^^^: any   (TyError) (IdentifierReference)
 
         ...('meta' in prepared && { meta: prepared.meta }),
->                                                  ^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                  ^^^^: any   (TyError) (StaticMemberExpression)
 
         ...('error' in prepared && { error: prepared.error }),
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (TyError) (IdentifierReference)
 
         ...('error' in prepared && { error: prepared.error }),
->                                    ^^^^^: any   (TyAny) (ObjectProperty)
+>                                    ^^^^^: any   (TyError) (ObjectProperty)
 
         ...('error' in prepared && { error: prepared.error }),
->                                           ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                           ^^^^^^^^: any   (TyError) (IdentifierReference)
 
         ...('error' in prepared && { error: prepared.error }),
->                                                    ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                    ^^^^^: any   (TyError) (StaticMemberExpression)
 
     return { type, payload: args[0] }
 >            ^^^^: string   (TyString) (ObjectProperty)
@@ -1156,7 +1156,7 @@ export const increment = createAction<number, 'counter/increment'>('counter/incr
 >                        ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (IdentifierReference)
 
 export const incrementAction = increment(5)
->            ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                     expected: { payload: number; type: "counter/increment"; }
 
 export const incrementAction = increment(5)
@@ -1164,15 +1164,15 @@ export const incrementAction = increment(5)
                                 expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export const incrementPayload = incrementAction.payload
->            ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                      expected: number
 
 export const incrementPayload = incrementAction.payload
->                               ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                        expected: { payload: number; type: "counter/increment"; }
 
 export const incrementPayload = incrementAction.payload
->                                               ^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                               ^^^^^^^: any   (TyError) (StaticMemberExpression)
                                                expected: number
 
 export const reset = createAction('counter/reset')
@@ -1183,7 +1183,7 @@ export const reset = createAction('counter/reset')
 >                    ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (IdentifierReference)
 
 export const resetAction = reset()
->            ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                 expected: { payload: undefined; type: "counter/reset"; }
 
 export const resetAction = reset()
@@ -1191,15 +1191,15 @@ export const resetAction = reset()
                         expected: ActionCreatorWithoutPayload<"counter/reset">
 
 export const resetPayload = resetAction.payload
->            ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                  expected: undefined
 
 export const resetPayload = resetAction.payload
->                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                expected: { payload: undefined; type: "counter/reset"; }
 
 export const resetPayload = resetAction.payload
->                                       ^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                       ^^^^^^^: any   (TyError) (StaticMemberExpression)
                                        expected: undefined
 
 export const setName = createAction<string | undefined, 'user/nameChanged'>(
@@ -1210,7 +1210,7 @@ export const setName = createAction<string | undefined, 'user/nameChanged'>(
 >                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (TyObject) (IdentifierReference)
 
 export const missingNameAction = setName()
->            ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                       expected: { payload: string | undefined; type: "user/nameChanged"; }
 
 export const missingNameAction = setName()
@@ -1218,7 +1218,7 @@ export const missingNameAction = setName()
                                 expected: ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
 
 export const namedAction = setName('Ada')
->            ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                 expected: { payload: string | undefined; type: "user/nameChanged"; }
 
 export const namedAction = setName('Ada')
@@ -1263,7 +1263,7 @@ export const addTodo = createAction(
 >   ^^^^^: boolean   (TyBoolean) (ObjectProperty)
 
 export const preparedTodoAction = addTodo('read fixture', 2)
->            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                        expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedTodoAction = addTodo('read fixture', 2)
@@ -1271,39 +1271,39 @@ export const preparedTodoAction = addTodo('read fixture', 2)
                                  expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export const preparedPayload = preparedTodoAction.payload
->            ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                     expected: { title: string; priority: any; }
 
 export const preparedPayload = preparedTodoAction.payload
->                              ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                          expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedPayload = preparedTodoAction.payload
->                                                 ^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                 ^^^^^^^: any   (TyError) (StaticMemberExpression)
                                                  expected: { title: string; priority: any; }
 
 export const preparedMeta = preparedTodoAction.meta
->            ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                  expected: { createdAt: number; }
 
 export const preparedMeta = preparedTodoAction.meta
->                           ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                       expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedMeta = preparedTodoAction.meta
->                                              ^^^^: any   (TyAny) (StaticMemberExpression)
+>                                              ^^^^: any   (TyError) (StaticMemberExpression)
                                            expected: { createdAt: number; }
 
 export const preparedError = preparedTodoAction.error
->            ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                   expected: boolean
 
 export const preparedError = preparedTodoAction.error
->                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                        expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedError = preparedTodoAction.error
->                                               ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                               ^^^^^: any   (TyError) (StaticMemberExpression)
                                              expected: boolean
 
 declare const unknownAction: unknown
@@ -1314,14 +1314,14 @@ if (increment.match(unknownAction)) {
      expected: ActionCreatorWithPayload<number, "counter/increment">
 
 if (increment.match(unknownAction)) {
->             ^^^^^: any   (TyAny) (StaticMemberExpression)
+>             ^^^^^: any   (TyError) (StaticMemberExpression)
            expected: (action: unknown) => action is { payload: number; type: "counter/increment"; }
 
 if (increment.match(unknownAction)) {
 >                   ^^^^^^^^^^^^^: unknown   (TyUnknown) (IdentifierReference)
 
   const matchedPayload = unknownAction.payload
->       ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>       ^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
               expected: number
 
   const matchedPayload = unknownAction.payload
@@ -1329,11 +1329,11 @@ if (increment.match(unknownAction)) {
                               expected: { payload: number; type: "counter/increment"; }
 
   const matchedPayload = unknownAction.payload
->                                      ^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                      ^^^^^^^: any   (TyError) (StaticMemberExpression)
                                       expected: number
 
   const matchedType = unknownAction.type
->       ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>       ^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
            expected: "counter/increment"
 
   const matchedType = unknownAction.type
@@ -1341,21 +1341,21 @@ if (increment.match(unknownAction)) {
                            expected: { payload: number; type: "counter/increment"; }
 
   const matchedType = unknownAction.type
->                                   ^^^^: any   (TyAny) (StaticMemberExpression)
+>                                   ^^^^: any   (TyError) (StaticMemberExpression)
                                 expected: "counter/increment"
 
   void matchedPayload
 > ^^^^^^^^^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
   void matchedPayload
->      ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>      ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
              expected: number
 
   void matchedType
 > ^^^^^^^^^^^^^^^^: undefined   (TyUndefined) (ExpressionStatement)
 
   void matchedType
->      ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>      ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
           expected: "counter/increment"
 
 export type IncrementAction = ReturnType<typeof increment>
@@ -1365,7 +1365,7 @@ export type IncrementAction = ReturnType<typeof increment>
 >                             ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type IncrementAction = ReturnType<typeof increment>
->                             ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 export type IncrementAction = ReturnType<typeof increment>
 >                                               ^^^^^^^^^: PayloadActionCreator<number, "counter/increment">   (TyTypeReference) (IdentifierReference)
@@ -1379,7 +1379,7 @@ export type TodoAction = ReturnType<typeof addTodo>
 >                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
->                        ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 export type TodoAction = ReturnType<typeof addTodo>
 >                                          ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TyTypeReference) (IdentifierReference)
@@ -1445,7 +1445,7 @@ declare const genericCreator: GenericCreator
 >                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 export const unknownValueAction = unknownCreator({ nested: true })
->            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                        expected: { payload: { nested: boolean; }; type: "unknown/value"; }
 
 export const unknownValueAction = unknownCreator({ nested: true })
@@ -1457,7 +1457,7 @@ export const unknownValueAction = unknownCreator({ nested: true })
                                                  expected: true
 
 export const anythingValueAction = anythingCreator({ count: 1 })
->            ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                         expected: { payload: any; type: "anything/value"; }
 
 export const anythingValueAction = anythingCreator({ count: 1 })
@@ -1468,7 +1468,7 @@ export const anythingValueAction = anythingCreator({ count: 1 })
 >                                                    ^^^^^: number   (TyNumber) (ObjectProperty)
 
 export const genericValueAction = genericCreator(['a', 'b'])
->            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
                        expected: { payload: string[]; type: "generic/value"; }
 
 export const genericValueAction = genericCreator(['a', 'b'])
@@ -1496,7 +1496,7 @@ export const explicitAction: PayloadAction<number, 'counter/increment'> = increm
 >                            ^^^^^^^^^^^^^: { payload: P; type: T; } & ([M] extends [never] ? {} : { meta: M; }) & ([E] extends [never] ? {} : { error: E; })   (TyIntersection) (IdentifierReference)
 
 export const explicitAction: PayloadAction<number, 'counter/increment'> = incrementAction
->                                                                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
                                                                                  expected: { payload: number; type: "counter/increment"; }
 
 export const creatorCheck = isActionCreator(addTodo)
