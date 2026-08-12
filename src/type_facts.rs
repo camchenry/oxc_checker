@@ -25,14 +25,10 @@ pub(crate) fn get_type_facts<'a>(
     ty: Ty<'a>,
     mask: TypeFacts,
 ) -> TypeFacts {
-    get_type_facts_worker(arena, ty, mask) & mask
+    get_type_facts_worker(arena, ty) & mask
 }
 
-fn get_type_facts_worker<'a>(
-    arena: CheckerArena<'a>,
-    ty: Ty<'a>,
-    caller_only_needs: TypeFacts,
-) -> TypeFacts {
+fn get_type_facts_worker<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFacts {
     match arena.type_data(ty) {
         TypeData::String
         | TypeData::Number
@@ -81,7 +77,7 @@ fn get_type_facts_worker<'a>(
         | TypeData::TypeQuery(_) => TypeFacts::TRUTHY,
         TypeData::Object(object) if !object.is_empty() => TypeFacts::TRUTHY,
         TypeData::Union(union) => union.types.iter().fold(TypeFacts::NONE, |facts, ty| {
-            facts | get_type_facts_worker(arena, *ty, caller_only_needs)
+            facts | get_type_facts_worker(arena, *ty)
         }),
         TypeData::Never => TypeFacts::NONE,
         _ => TypeFacts::TRUTHY | TypeFacts::FALSY,

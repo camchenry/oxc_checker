@@ -11,7 +11,7 @@ use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays,
-    program::{self, ProgramId},
+    program::ProgramId,
     types::{Ty, TyTypePredicateKind, TypeData},
 };
 

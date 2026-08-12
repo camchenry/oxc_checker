@@ -11,7 +11,7 @@ use oxc_syntax::operator::AssignmentOperator;
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     checker_impl::GetTypeFlags,
-    program::{self, ProgramId},
+    program::ProgramId,
     types::{TupleElement, Ty, TypeData},
 };
 
