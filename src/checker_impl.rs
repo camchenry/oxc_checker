@@ -6390,23 +6390,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             })
     }
 
-    fn get_property_type_of_global_object_augmented_interface_type(
-        &self,
-        program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
-        property_name: &str,
-    ) -> Option<Ty<'a>> {
-        self.get_property_type_of_interface_type(program_id, reference, property_name)
-            .or_else(|| {
-                let object_type = self.get_global_object_type(program_id);
-                self.get_property_type_of_global_interface_reference(
-                    program_id,
-                    object_type,
-                    property_name,
-                )
-            })
-    }
-
     fn get_property_type_of_global_interface_reference(
         &self,
         program_id: ProgramId,
