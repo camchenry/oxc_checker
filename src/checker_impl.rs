@@ -490,36 +490,66 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn instantiate_type_worker(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>, depth: usize) -> Ty<'a> {
+        // Recursively apply the mapper to structured types. When the mapped structure is
+        // semantically unchanged, return the original handle: checker arena allocations are
+        // append-only, so rebuilding an equivalent type would retain duplicate data permanently.
         match self.arena().type_data(ty) {
             TypeData::Object(object) => {
-                let instantiated = Ty::object(
-                    self.arena(),
-                    object.properties.iter().map(|property| TyProperty {
-                        name: property.name,
-                        computed: property.computed,
-                        optional: property.optional,
-                        method: property.method,
-                        readonly: property.readonly,
-                        ty: self.instantiate_type_at_depth(property.ty, mapper, depth + 1),
-                    }),
-                )
-                .with_index_infos(
-                    self.arena(),
-                    object.index_infos.iter().map(|info| {
-                        IndexInfo::new(
-                            info.name,
-                            self.instantiate_type_at_depth(info.key_type, mapper, depth + 1),
-                            self.instantiate_type_at_depth(info.value_type, mapper, depth + 1),
-                            info.readonly,
-                        )
-                    }),
-                )
-                .with_signatures(
-                    self.arena(),
-                    object.signatures.iter().map(|signature| {
-                        self.instantiate_signature_at_depth(*signature, mapper, depth + 1)
-                    }),
-                );
+                // Stage mapped members in ordinary Vecs until at least one member changes. Only
+                // then copy the replacement object and its members into the checker arena.
+                let mut was_semantically_instantiated = false;
+                let properties = object
+                    .properties
+                    .iter()
+                    .map(|property| {
+                        let property_ty =
+                            self.instantiate_type_at_depth(property.ty, mapper, depth + 1);
+                        was_semantically_instantiated |=
+                            !self.arena().is_type_identical_to(property.ty, property_ty);
+                        TyProperty {
+                            name: property.name,
+                            computed: property.computed,
+                            optional: property.optional,
+                            method: property.method,
+                            readonly: property.readonly,
+                            ty: property_ty,
+                        }
+                    })
+                    .collect::<Vec<_>>();
+                let index_infos = object
+                    .index_infos
+                    .iter()
+                    .map(|info| {
+                        let key_type =
+                            self.instantiate_type_at_depth(info.key_type, mapper, depth + 1);
+                        let value_type =
+                            self.instantiate_type_at_depth(info.value_type, mapper, depth + 1);
+                        was_semantically_instantiated |=
+                            !self.arena().is_type_identical_to(info.key_type, key_type)
+                                || !self
+                                    .arena()
+                                    .is_type_identical_to(info.value_type, value_type);
+                        IndexInfo::new(info.name, key_type, value_type, info.readonly)
+                    })
+                    .collect::<Vec<_>>();
+                let signatures = object
+                    .signatures
+                    .iter()
+                    .map(|signature| {
+                        let instantiated =
+                            self.instantiate_signature_at_depth(*signature, mapper, depth + 1);
+                        was_semantically_instantiated |= !self
+                            .arena()
+                            .is_type_identical_to(signature.ty, instantiated.ty);
+                        instantiated
+                    })
+                    .collect::<Vec<_>>();
+                if !was_semantically_instantiated {
+                    return ty;
+                }
+                let instantiated = Ty::object(self.arena(), properties)
+                    .with_index_infos(self.arena(), index_infos)
+                    .with_signatures(self.arena(), signatures);
                 if object.is_constructor_type {
                     instantiated.with_constructor_type(self.arena())
                 } else {
@@ -539,6 +569,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }),
             ),
             TypeData::Function(function) => {
+                // A function's own type parameters shadow mappings with the same names from the
+                // enclosing context. Remove them before instantiating its signature components.
                 let type_parameter_names = function
                     .type_parameters
                     .iter()
@@ -549,6 +581,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     type_parameter_names.iter().copied(),
                 );
 
+                // Stage the signature outside the arena and compare its mapped types recursively.
+                // Handle inequality alone is insufficient because equivalent types may have been
+                // constructed independently.
                 let mut was_semantically_instantiated = false;
                 let type_parameters = function
                     .type_parameters
@@ -617,6 +652,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         target_type,
                     }
                 });
+
+                if !was_semantically_instantiated {
+                    return ty;
+                }
 
                 Ty::function_with_type_predicate_and_display(
                     self.arena(),

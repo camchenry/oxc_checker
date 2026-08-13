@@ -25,6 +25,9 @@ The terminal report includes:
 - process peak resident set size (RSS);
 - min, mean, median, p95, max, and standard deviation across measured passes.
 
+The unmeasured `census` line runs the same check workload once and groups registered checker types by
+kind. Use its largest families to identify which type constructors dominate retained arena storage.
+
 ### Phases
 
 **Build** creates the `ProgramStore`. It reads the root files, resolves and reads their transitive

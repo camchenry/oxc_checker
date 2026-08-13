@@ -112,6 +112,22 @@ struct Workload {
 }
 
 #[derive(Serialize)]
+struct TypeKindCount {
+    kind: &'static str,
+    count: usize,
+}
+
+#[derive(Serialize)]
+struct CheckerCensus {
+    checked_types: usize,
+    registered_types: usize,
+    arena_bytes: usize,
+    allocations: Option<usize>,
+    reallocations: Option<usize>,
+    type_kinds: Vec<TypeKindCount>,
+}
+
+#[derive(Serialize)]
 struct Report {
     schema_version: u32,
     pid: u32,
@@ -120,6 +136,7 @@ struct Report {
     workload: Workload,
     build: PhaseMeasurement,
     planning: PhaseMeasurement,
+    checker_census: CheckerCensus,
     process_after_measurement: UsageSnapshot,
     summary: Summary,
     iterations: Vec<IterationMeasurement>,
@@ -242,7 +259,10 @@ fn run(options: &Options) -> Result<(), Box<dyn Error>> {
         lib_target: options.lib_target.clone(),
     };
 
+    let checker_census = checker_census(&allocator, &store, &plans);
+
     print_workload(&workload, &build, &planning);
+    print_checker_census(&checker_census);
     for _ in 0..options.warmup {
         black_box(check_all(&store, &plans));
     }
@@ -287,6 +307,7 @@ fn run(options: &Options) -> Result<(), Box<dyn Error>> {
         workload,
         build,
         planning,
+        checker_census,
         process_after_measurement: process_usage()?,
         summary: summarize(&iterations),
         iterations,
@@ -298,6 +319,55 @@ fn run(options: &Options) -> Result<(), Box<dyn Error>> {
         println!("json report: {}", path.display());
     }
     Ok(())
+}
+
+fn checker_census(
+    allocator: &Allocator,
+    store: &program::ProgramStore<'_>,
+    plans: &[benchmark_support::CheckPlan],
+) -> CheckerCensus {
+    let allocations_before = AllocationSnapshot::capture(allocator);
+    let mut checked_types = 0;
+    let mut registered_types = 0;
+    let mut type_kinds = std::collections::BTreeMap::new();
+    for plan in plans {
+        let stats = benchmark_support::check_program_with_plan_stats(store, plan);
+        checked_types += stats.checked_types;
+        registered_types += stats.registered_types;
+        for (kind, count) in stats.type_kinds {
+            *type_kinds.entry(kind).or_default() += count;
+        }
+    }
+    let allocations_after = AllocationSnapshot::capture(allocator);
+    #[cfg(feature = "allocation-stats")]
+    let allocations = Some(
+        allocations_after
+            .allocations
+            .saturating_sub(allocations_before.allocations),
+    );
+    #[cfg(not(feature = "allocation-stats"))]
+    let allocations = None;
+    #[cfg(feature = "allocation-stats")]
+    let reallocations = Some(
+        allocations_after
+            .reallocations
+            .saturating_sub(allocations_before.reallocations),
+    );
+    #[cfg(not(feature = "allocation-stats"))]
+    let reallocations = None;
+    CheckerCensus {
+        checked_types,
+        registered_types,
+        arena_bytes: allocations_after
+            .used_bytes
+            .saturating_sub(allocations_before.used_bytes),
+        allocations,
+        reallocations,
+        type_kinds: type_kinds
+            .into_iter()
+            .map(|(kind, count)| TypeKindCount { kind, count })
+            .collect(),
+    }
 }
 
 fn build_store<'a>(
@@ -508,6 +578,24 @@ fn print_workload(workload: &Workload, build: &PhaseMeasurement, planning: &Phas
         planning.user_cpu_ms + planning.system_cpu_ms,
         planning.arena_bytes_delta,
     );
+}
+
+fn print_checker_census(census: &CheckerCensus) {
+    let mut type_kinds = census.type_kinds.iter().collect::<Vec<_>>();
+    type_kinds.sort_unstable_by_key(|entry| std::cmp::Reverse(entry.count));
+    println!(
+        "census:   {} registered types, {} arena bytes, {} allocations",
+        census.registered_types,
+        census.arena_bytes,
+        census
+            .allocations
+            .map_or_else(|| "n/a".to_string(), |count| count.to_string()),
+    );
+    print!("  largest type families:");
+    for entry in type_kinds.into_iter().take(10) {
+        print!(" {}={}", entry.kind, entry.count);
+    }
+    println!();
 }
 
 fn print_summary(report: &Report) {

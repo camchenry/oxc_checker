@@ -280,6 +280,8 @@ fn index_signature_key_types<'a>(
 
 #[doc(hidden)]
 pub mod benchmark_support {
+    use std::collections::BTreeMap;
+
     use crate::checker::{Checker, CheckerBuilder, NodeRef};
 
     use super::{AstKind, program};
@@ -288,6 +290,12 @@ pub mod benchmark_support {
     pub struct CheckPlan {
         program_id: program::ProgramId,
         queries: Vec<CheckQuery>,
+    }
+
+    pub struct CheckStats {
+        pub checked_types: usize,
+        pub registered_types: usize,
+        pub type_kinds: Vec<(&'static str, usize)>,
     }
 
     impl CheckPlan {
@@ -377,6 +385,36 @@ pub mod benchmark_support {
     #[must_use]
     pub fn check_program_with_plan(store: &program::ProgramStore<'_>, plan: &CheckPlan) -> usize {
         let checker = CheckerBuilder::new().build(store);
+        run_check_plan(&checker, plan)
+    }
+
+    #[must_use]
+    pub fn check_program_with_plan_stats(
+        store: &program::ProgramStore<'_>,
+        plan: &CheckPlan,
+    ) -> CheckStats {
+        let checker = CheckerBuilder::new().build(store);
+        let checked_types = run_check_plan(&checker, plan);
+        let mut type_kinds = BTreeMap::new();
+        for ty in checker.types() {
+            let kind = match checker.arena.type_data(ty) {
+                crate::types::TypeData::TypeReference(reference) if reference.target.is_some() => {
+                    "TyTypeReference(symbol)"
+                }
+                crate::types::TypeData::TypeReference(_) => "TyTypeReference(name)",
+                _ => ty.enum_variant_name(checker.arena),
+            };
+            *type_kinds.entry(kind).or_default() += 1;
+        }
+        CheckStats {
+            checked_types,
+            registered_types: checker.type_count(),
+            type_kinds: type_kinds.into_iter().collect(),
+        }
+    }
+
+    fn run_check_plan(checker: &crate::checker::CheckerReturn<'_, '_>, plan: &CheckPlan) -> usize {
+        let store = checker.store;
         let Some(entry) = store.entry(plan.program_id) else {
             return 0;
         };

@@ -50,6 +50,7 @@ struct InternedTypeCache<'a> {
     indexed_accesses: RefCell<ArenaHashMap<'a, (TypeId, TypeId), Ty<'a>>>,
     conditionals: RefCell<ArenaHashMap<'a, ConditionalTypeKey, Ty<'a>>>,
     type_references: RefCell<ArenaHashMap<'a, TypeReferenceKey<'a>, Ty<'a>>>,
+    named_type_references: RefCell<ArenaHashMap<'a, NamedTypeReferenceKey<'a>, Ty<'a>>>,
     errors: RefCell<ArenaHashMap<'a, TypeErrorKind, Ty<'a>>>,
     fresh_object_literals: RefCell<ArenaHashSet<'a, TypeId>>,
 }
@@ -93,6 +94,13 @@ struct TypeReferenceKey<'a> {
     display_type_argument_count: usize,
 }
 
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+struct NamedTypeReferenceKey<'a> {
+    name: &'a str,
+    type_arguments: &'a [TypeId],
+    display_type_argument_count: usize,
+}
+
 impl<'a> InternedTypeCache<'a> {
     fn new(allocator: &'a Allocator) -> Self {
         Self {
@@ -108,6 +116,7 @@ impl<'a> InternedTypeCache<'a> {
             indexed_accesses: RefCell::new(ArenaHashMap::new_in(allocator)),
             conditionals: RefCell::new(ArenaHashMap::new_in(allocator)),
             type_references: RefCell::new(ArenaHashMap::new_in(allocator)),
+            named_type_references: RefCell::new(ArenaHashMap::new_in(allocator)),
             errors: RefCell::new(ArenaHashMap::new_in(allocator)),
             fresh_object_literals: RefCell::new(ArenaHashSet::new_in(allocator)),
         }
@@ -1607,14 +1616,9 @@ impl<'a> Ty<'a> {
         name: &'a str,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
-        let type_arguments = arena.vec_from_iter(type_arguments);
+        let type_arguments = type_arguments.into_iter().collect::<Vec<_>>();
         let display_type_argument_count = type_arguments.len();
-        arena.alloc_type(TypeData::TypeReference(arena.alloc(TyTypeReference {
-            name,
-            target: None,
-            type_arguments,
-            display_type_argument_count,
-        })))
+        Self::intern_named_type_reference(arena, name, type_arguments, display_type_argument_count)
     }
 
     pub(crate) fn type_reference_with_display_type_argument_count(
@@ -1623,14 +1627,50 @@ impl<'a> Ty<'a> {
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
         display_type_argument_count: usize,
     ) -> Self {
-        let type_arguments = arena.vec_from_iter(type_arguments);
+        let type_arguments = type_arguments.into_iter().collect::<Vec<_>>();
         let display_type_argument_count = display_type_argument_count.min(type_arguments.len());
-        arena.alloc_type(TypeData::TypeReference(arena.alloc(TyTypeReference {
+        Self::intern_named_type_reference(arena, name, type_arguments, display_type_argument_count)
+    }
+
+    fn intern_named_type_reference(
+        arena: CheckerArena<'a>,
+        name: &'a str,
+        type_arguments: Vec<Ty<'a>>,
+        display_type_argument_count: usize,
+    ) -> Self {
+        let type_argument_ids = type_arguments.iter().map(|ty| ty.id()).collect::<Vec<_>>();
+        let key = NamedTypeReferenceKey {
+            name,
+            type_arguments: &type_argument_ids,
+            display_type_argument_count,
+        };
+        if let Some(ty) = arena
+            .interned_types
+            .named_type_references
+            .borrow()
+            .get(&key)
+        {
+            return *ty;
+        }
+        let ty = arena.alloc_type(TypeData::TypeReference(arena.alloc(TyTypeReference {
             name,
             target: None,
-            type_arguments,
+            type_arguments: arena.vec_from_iter(type_arguments),
             display_type_argument_count,
-        })))
+        })));
+        arena
+            .interned_types
+            .named_type_references
+            .borrow_mut()
+            .insert(
+                NamedTypeReferenceKey {
+                    name,
+                    type_arguments: arena.alloc_slice_copy(&type_argument_ids),
+                    display_type_argument_count,
+                },
+                ty,
+            );
+        ty
     }
 
     pub(crate) fn type_reference_for_symbol(
@@ -3318,6 +3358,19 @@ mod tests {
         assert_eq!(std::mem::size_of::<Ty<'_>>(), 4);
         assert_eq!(std::mem::size_of::<Option<Ty<'_>>>(), 4);
         assert_eq!(std::mem::size_of::<TypeId>(), 4);
+    }
+
+    #[test]
+    fn name_only_type_references_are_interned() {
+        let allocator = Allocator::default();
+        let arena = arena(&allocator);
+        let first = Ty::type_reference(arena, "Result", [Ty::string()]);
+        let second = Ty::type_reference(arena, "Result", [Ty::string()]);
+        let hidden_arguments =
+            Ty::type_reference_with_display_type_argument_count(arena, "Result", [Ty::string()], 0);
+
+        assert_eq!(first, second);
+        assert_ne!(first, hidden_arguments);
     }
 
     #[test]
