@@ -1,0 +1,26 @@
+type DefinedString = (string | null | undefined) & {};
+>    ^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+
+interface Container {
+>         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+  value: DefinedString;
+> ^^^^^: string   (TyString) (TSPropertySignature)
+
+  value: DefinedString;
+>        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const container: Container;
+>             ^^^^^^^^^: Container   (TyTypeReference) (BindingIdentifier)
+
+declare const container: Container;
+>                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+const _value = container.value;
+>     ^^^^^^: string   (TyString) (BindingIdentifier)
+
+const _value = container.value;
+>              ^^^^^^^^^: Container   (TyTypeReference) (IdentifierReference)
+
+const _value = container.value;
+>                        ^^^^^: string   (TyString) (StaticMemberExpression)

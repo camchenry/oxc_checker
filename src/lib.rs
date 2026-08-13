@@ -60,26 +60,6 @@ fn ts_type_name_to_str<'a>(arena: CheckerArena<'a>, name: &TSTypeName<'a>) -> &'
     }
 }
 
-fn is_mapped_empty_object_intersection(ty: &TSType<'_>) -> bool {
-    let TSType::TSIntersectionType(intersection) = ty else {
-        return false;
-    };
-
-    let mut has_mapped = false;
-    let mut has_empty_object = false;
-    for ty in &intersection.types {
-        match ty {
-            TSType::TSMappedType(_) => has_mapped = true,
-            TSType::TSTypeLiteral(type_literal) if type_literal.members.is_empty() => {
-                has_empty_object = true;
-            }
-            _ => return false,
-        }
-    }
-
-    has_mapped && has_empty_object
-}
-
 fn is_empty_object_intersection(ty: &TSType<'_>) -> bool {
     matches!(
         ty,

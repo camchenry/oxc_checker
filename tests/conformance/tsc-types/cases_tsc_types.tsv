@@ -568,6 +568,15 @@ compiler/conditionalTypes.ts	341	352	distributed	number | boolean
 compiler/conditionalTypes.ts	355	361	choose	<T>() => T extends string ? boolean : number
 compiler/conditionalTypes.ts	5	17	ConcreteTrue	boolean
 compiler/conditionalTypes.ts	67	80	ConcreteFalse	string
+compiler/emptyObjectIntersectionAlias.ts	120	129	container	Container
+compiler/emptyObjectIntersectionAlias.ts	131	140	Container	any
+compiler/emptyObjectIntersectionAlias.ts	148	154	_value	string
+compiler/emptyObjectIntersectionAlias.ts	157	166	container	Container
+compiler/emptyObjectIntersectionAlias.ts	167	172	value	string
+compiler/emptyObjectIntersectionAlias.ts	6	19	DefinedString	string
+compiler/emptyObjectIntersectionAlias.ts	67	76	Container	any
+compiler/emptyObjectIntersectionAlias.ts	81	86	value	string
+compiler/emptyObjectIntersectionAlias.ts	88	101	DefinedString	any
 compiler/eslint_awaitThenable.ts::a.ts	0	14	await 'value';	"value"
 compiler/eslint_awaitThenable.ts::a.ts	22	33	createValue	() => string
 compiler/eslint_awaitThenable.ts::a.ts	51	71	await createValue();	string

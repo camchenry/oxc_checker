@@ -40,7 +40,7 @@ use crate::{
     evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
     infer::{InferenceResolution, ts_type_contains_infer},
-    is_empty_object_intersection, is_mapped_empty_object_intersection,
+    is_empty_object_intersection,
     limits::{
         TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_DEPTH,
     },
@@ -2326,14 +2326,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: ProgramId,
         type_annotation: &'a TSTypeAnnotation<'a>,
     ) -> Ty<'a> {
-        if let TSType::TSTypeReference(reference) = &type_annotation.type_annotation
-            && let Some(expanded) =
-                self.get_flat_mapped_intersection_alias_reference(program_id, reference, 0)
+        let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
+        if self.is_empty_object_intersection_alias_reference(program_id, ty)
+            && let Some((expanded_program_id, expanded)) =
+                self.get_expanded_type_alias_reference_type(program_id, ty, 0)
         {
-            return expanded;
+            return self.expand_type_at_use(expanded_program_id, expanded, 0);
         }
 
-        let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
         let ty = self.with_implicit_type_arguments_visible(ty);
         self.get_apparent_property_signature_type(program_id, ty, 0)
     }
@@ -4417,68 +4417,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.get_type_symbol_for_name(program_id, type_name)
             .and_then(|symbol| self.store.entry(symbol.program_id))
             .is_some_and(program::ProgramEntry::is_lib)
-    }
-
-    fn get_flat_mapped_intersection_alias_reference(
-        &self,
-        program_id: ProgramId,
-        reference: &'a TSTypeReference<'a>,
-        depth: usize,
-    ) -> Option<Ty<'a>> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return None;
-        }
-
-        let name = ts_type_name_to_str(self.arena(), &reference.type_name);
-        let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
-
-        self.fill_default_type_arguments(program_id, name, &mut type_arguments);
-
-        let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, name)?;
-        self.get_flat_mapped_intersection_alias_declaration(
-            symbol.program_id,
-            declaration,
-            &type_arguments,
-            depth + 1,
-        )
-    }
-
-    fn get_flat_mapped_intersection_alias_declaration(
-        &self,
-        program_id: ProgramId,
-        declaration: NodeId,
-        type_arguments: &[Ty<'a>],
-        depth: usize,
-    ) -> Option<Ty<'a>> {
-        match self.nodes(program_id).kind(declaration) {
-            AstKind::TSTypeAliasDeclaration(alias)
-                if is_mapped_empty_object_intersection(&alias.type_annotation) =>
-            {
-                let substitutions = self.type_parameter_substitutions_for_type_arguments(
-                    program_id,
-                    alias.type_parameters.as_deref(),
-                    type_arguments,
-                );
-                let ty = self.get_type_from_ts_type_expanding_top_level_aliases_at_depth(
-                    program_id,
-                    &alias.type_annotation,
-                    depth + 1,
-                );
-                let ty = self.instantiate_type(ty, &substitutions.to_mapper(self.arena()));
-                Some(self.expand_type_at_use(program_id, ty, depth + 1))
-            }
-            AstKind::BindingIdentifier(_) => {
-                let parent_id = self.nodes(program_id).parent_id(declaration);
-                self.get_flat_mapped_intersection_alias_declaration(
-                    program_id,
-                    parent_id,
-                    type_arguments,
-                    depth + 1,
-                )
-            }
-            _ => None,
-        }
     }
 
     fn get_expanded_type_alias_declaration(
@@ -7596,7 +7534,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .type_annotation
                     .as_deref()
                     .map_or_else(Ty::any, |annotation| {
-                        self.get_type_from_ts_type(program_id, &annotation.type_annotation)
+                        self.get_type_from_property_signature_annotation(program_id, annotation)
                     }),
             );
         }
