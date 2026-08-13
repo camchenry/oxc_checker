@@ -75,15 +75,8 @@ fn ts_type_query_expr_name_to_str<'a>(
     arena: CheckerArena<'a>,
     name: &TSTypeQueryExprName<'a>,
 ) -> Option<&'a str> {
-    match name {
-        TSTypeQueryExprName::IdentifierReference(identifier) => Some(identifier.name.as_str()),
-        TSTypeQueryExprName::QualifiedName(qualified) => {
-            let left = ts_type_name_to_str(arena, &qualified.left);
-            Some(arena.str(&format!("{}.{}", left, qualified.right.name)))
-        }
-        TSTypeQueryExprName::ThisExpression(_) => Some("this"),
-        TSTypeQueryExprName::TSImportType(_) => None,
-    }
+    name.as_ts_type_name()
+        .map(|name| ts_type_name_to_str(arena, name))
 }
 
 fn binding_pattern_symbol_id(pattern: &BindingPattern<'_>) -> Option<SymbolId> {
