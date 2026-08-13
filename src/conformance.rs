@@ -891,7 +891,7 @@ fn run_type_record_conformance_on_thread(
             ConformanceError::new(format!("failed to spawn conformance test thread: {err}"))
         })?
         .join()
-        .map_err(thread_panic_error)?
+        .map_err(|payload| thread_panic_error(payload.as_ref()))?
 }
 
 fn run_single_file_conformance_on_thread(
@@ -907,7 +907,7 @@ fn run_single_file_conformance_on_thread(
             ConformanceError::new(format!("failed to spawn conformance test thread: {err}"))
         })?
         .join()
-        .map_err(thread_panic_error)?
+        .map_err(|payload| thread_panic_error(payload.as_ref()))?
 }
 
 #[cfg(feature = "conformance-tsc")]
@@ -1079,7 +1079,7 @@ fn ensure_cases_root(suite: &ConformanceSuite, cases_root: &Path) -> Conformance
     )))
 }
 
-fn thread_panic_error(payload: Box<dyn Any + Send>) -> ConformanceError {
+fn thread_panic_error(payload: &(dyn Any + Send)) -> ConformanceError {
     let message = payload
         .downcast_ref::<&str>()
         .map(|message| (*message).to_string())
@@ -1325,9 +1325,9 @@ fn collect_oxc_records(
         pool.install(collect_records)
     };
 
-    reader
-        .join()
-        .unwrap_or_else(|payload| panic!("{}", thread_panic_error(payload).into_message()));
+    reader.join().unwrap_or_else(|payload| {
+        panic!("{}", thread_panic_error(payload.as_ref()).into_message())
+    });
 
     eprintln!();
     timing.report(suite, total_paths, worker_count);
@@ -1632,7 +1632,7 @@ fn parse_compiler_test_case(source_text: &str, fixture_path: &str) -> CompilerTe
                 if let Some(name) = current_file_name.replace(value) {
                     push_compiler_test_file(
                         &mut files,
-                        name,
+                        &name,
                         &mut current_file_lines,
                         std::mem::take(&mut current_file_settings),
                     );
@@ -1657,7 +1657,7 @@ fn parse_compiler_test_case(source_text: &str, fixture_path: &str) -> CompilerTe
         .to_string();
     push_compiler_test_file(
         &mut files,
-        current_file_name.unwrap_or(fallback_name),
+        &current_file_name.unwrap_or(fallback_name),
         &mut current_file_lines,
         current_file_settings,
     );
@@ -1692,12 +1692,12 @@ fn parse_compiler_directive(line: &str) -> Option<(String, String)> {
 
 fn push_compiler_test_file(
     files: &mut Vec<CompilerTestFile>,
-    name: String,
+    name: &str,
     lines: &mut Vec<String>,
     settings: HashMap<String, String>,
 ) {
     files.push(CompilerTestFile {
-        name: normalize_test_file_name(&name),
+        name: normalize_test_file_name(name),
         source_text: std::mem::take(lines).join("\n"),
         settings,
     });

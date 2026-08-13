@@ -364,11 +364,11 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
                 .prepared_programs
                 .and_then(|programs| programs.get(&path))
             {
-                self.build_entry_from_prepared(store, path, program, true)?;
+                self.build_entry_from_prepared(store, &path, program, true)?;
                 continue;
             }
             let source_text = self.allocator.alloc_str(lib_file.contents);
-            self.build_entry_from_source(store, path, source_text, SourceType::d_ts(), true)?;
+            self.build_entry_from_source(store, &path, source_text, SourceType::d_ts(), true)?;
         }
         Ok(())
     }
@@ -387,13 +387,13 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             .prepared_programs
             .and_then(|programs| programs.get(&path))
         {
-            return self.build_entry_from_prepared(store, path, program, false);
+            return self.build_entry_from_prepared(store, &path, program, false);
         }
 
         let source_text = self.host.read_source(&path)?;
         let source_text = self.allocator.alloc_str(&source_text);
         let source_type = SourceType::from_path(&path).unwrap_or_else(|_| SourceType::ts());
-        self.build_entry_from_source(store, path, source_text, source_type, false)
+        self.build_entry_from_source(store, &path, source_text, source_type, false)
     }
 
     /// Parse `source_text`, run semantic analysis, store the resulting entry,
@@ -402,12 +402,12 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     fn build_entry_from_source(
         &self,
         store: &mut ProgramStore<'a>,
-        path: PathBuf,
+        path: &Path,
         source_text: &'a str,
         source_type: SourceType,
         is_lib: bool,
     ) -> ProgramStoreResult<ProgramId> {
-        let program = parse_program(self.allocator, &path, source_text, source_type)?;
+        let program = parse_program(self.allocator, path, source_text, source_type)?;
         self.build_entry(
             store,
             path,
@@ -419,7 +419,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     fn build_entry_from_prepared(
         &self,
         store: &mut ProgramStore<'a>,
-        path: PathBuf,
+        path: &Path,
         program: &'a PreparedProgram<'a>,
         is_lib: bool,
     ) -> ProgramStoreResult<ProgramId> {
@@ -429,20 +429,20 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     fn build_entry(
         &self,
         store: &mut ProgramStore<'a>,
-        path: PathBuf,
+        path: &Path,
         data: ProgramEntryData<'a>,
         is_lib: bool,
     ) -> ProgramStoreResult<ProgramId> {
         let id = store.push_entry(|id| ProgramEntry {
             id,
-            path: path.clone(),
+            path: path.to_path_buf(),
             data,
             is_lib,
         });
 
         let requests = store.module_requests(id);
         for request in requests {
-            let resolution = match self.host.resolve_module(&path, &request.specifier) {
+            let resolution = match self.host.resolve_module(path, &request.specifier) {
                 HostModuleResolution::Path(resolved_path) => {
                     let resolved_path = self.host.canonicalize_path(&resolved_path);
                     ModuleEdgeResolution::Resolved(self.ensure_program(store, &resolved_path)?)
