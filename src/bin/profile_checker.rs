@@ -1,4 +1,5 @@
 use std::{
+    alloc::{GlobalAlloc, Layout, System},
     env,
     error::Error,
     ffi::OsString,
@@ -7,12 +8,115 @@ use std::{
     io::{self, Write},
     path::PathBuf,
     process,
+    sync::atomic::{AtomicU64, Ordering},
     time::{Duration, Instant},
 };
 
 use oxc_allocator::Allocator;
 use oxc_checker::{benchmark_support, program};
 use serde::Serialize;
+
+struct TrackingAllocator;
+
+struct SystemAllocationCounters {
+    allocation_calls: AtomicU64,
+    deallocation_calls: AtomicU64,
+    reallocation_calls: AtomicU64,
+    allocated_bytes: AtomicU64,
+    deallocated_bytes: AtomicU64,
+    live_bytes: AtomicU64,
+    peak_live_bytes: AtomicU64,
+}
+
+static SYSTEM_ALLOCATIONS: SystemAllocationCounters = SystemAllocationCounters {
+    allocation_calls: AtomicU64::new(0),
+    deallocation_calls: AtomicU64::new(0),
+    reallocation_calls: AtomicU64::new(0),
+    allocated_bytes: AtomicU64::new(0),
+    deallocated_bytes: AtomicU64::new(0),
+    live_bytes: AtomicU64::new(0),
+    peak_live_bytes: AtomicU64::new(0),
+};
+
+#[global_allocator]
+static GLOBAL_ALLOCATOR: TrackingAllocator = TrackingAllocator;
+
+// SAFETY: Every allocation operation is forwarded to `System` with its original pointer and
+// layout. Successful operations perform only atomic bookkeeping and do not allocate recursively.
+unsafe impl GlobalAlloc for TrackingAllocator {
+    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+        // SAFETY: Forward the allocation request unchanged to the system allocator.
+        let pointer = unsafe { System.alloc(layout) };
+        if !pointer.is_null() {
+            SYSTEM_ALLOCATIONS.record_allocation(layout.size());
+        }
+        pointer
+    }
+
+    unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
+        // SAFETY: Forward the allocation request unchanged to the system allocator.
+        let pointer = unsafe { System.alloc_zeroed(layout) };
+        if !pointer.is_null() {
+            SYSTEM_ALLOCATIONS.record_allocation(layout.size());
+        }
+        pointer
+    }
+
+    unsafe fn dealloc(&self, pointer: *mut u8, layout: Layout) {
+        SYSTEM_ALLOCATIONS.record_deallocation(layout.size());
+        // SAFETY: The pointer and layout are the values supplied by GlobalAlloc's caller.
+        unsafe { System.dealloc(pointer, layout) };
+    }
+
+    unsafe fn realloc(&self, pointer: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
+        // SAFETY: Forward the reallocation request unchanged to the system allocator.
+        let new_pointer = unsafe { System.realloc(pointer, layout, new_size) };
+        if !new_pointer.is_null() {
+            SYSTEM_ALLOCATIONS.record_reallocation(layout.size(), new_size);
+        }
+        new_pointer
+    }
+}
+
+impl SystemAllocationCounters {
+    fn record_allocation(&self, bytes: usize) {
+        let bytes = bytes as u64;
+        self.allocation_calls.fetch_add(1, Ordering::Relaxed);
+        self.allocated_bytes.fetch_add(bytes, Ordering::Relaxed);
+        let live_bytes = self.live_bytes.fetch_add(bytes, Ordering::Relaxed) + bytes;
+        self.peak_live_bytes
+            .fetch_max(live_bytes, Ordering::Relaxed);
+    }
+
+    fn record_deallocation(&self, bytes: usize) {
+        let bytes = bytes as u64;
+        self.deallocation_calls.fetch_add(1, Ordering::Relaxed);
+        self.deallocated_bytes.fetch_add(bytes, Ordering::Relaxed);
+        self.live_bytes.fetch_sub(bytes, Ordering::Relaxed);
+    }
+
+    fn record_reallocation(&self, old_bytes: usize, new_bytes: usize) {
+        let old_bytes = old_bytes as u64;
+        let new_bytes = new_bytes as u64;
+        self.reallocation_calls.fetch_add(1, Ordering::Relaxed);
+        self.allocated_bytes.fetch_add(new_bytes, Ordering::Relaxed);
+        self.deallocated_bytes
+            .fetch_add(old_bytes, Ordering::Relaxed);
+        let live_bytes = if new_bytes >= old_bytes {
+            self.live_bytes
+                .fetch_add(new_bytes - old_bytes, Ordering::Relaxed)
+                + new_bytes
+                - old_bytes
+        } else {
+            self.live_bytes
+                .fetch_sub(old_bytes - new_bytes, Ordering::Relaxed)
+                - old_bytes
+                + new_bytes
+        };
+        self.peak_live_bytes
+            .fetch_max(live_bytes, Ordering::Relaxed);
+    }
+}
 
 const USAGE: &str = "\
 Usage: profile_checker [OPTIONS] <ROOT>...
@@ -28,8 +132,8 @@ Options:
   --pause-before-check   Wait for Enter after setup so a profiler can attach
   -h, --help             Print this help
 
-Build with --release for measurements. Add --features allocation-stats to
-include allocation/reallocation counts in addition to arena byte usage.";
+Build with --release for measurements. System allocator counters are always
+enabled. Add --features allocation-stats for arena allocation/reallocation counts.";
 
 #[derive(Debug)]
 struct Options {
@@ -52,10 +156,33 @@ struct UsageSnapshot {
 #[derive(Clone, Copy)]
 struct AllocationSnapshot {
     used_bytes: usize,
+    system: SystemAllocationSnapshot,
     #[cfg(feature = "allocation-stats")]
     allocations: usize,
     #[cfg(feature = "allocation-stats")]
     reallocations: usize,
+}
+
+#[derive(Clone, Copy)]
+struct SystemAllocationSnapshot {
+    allocation_calls: u64,
+    deallocation_calls: u64,
+    reallocation_calls: u64,
+    allocated_bytes: u64,
+    deallocated_bytes: u64,
+    live_bytes: u64,
+    peak_live_bytes: u64,
+}
+
+#[derive(Clone, Copy, Serialize)]
+struct SystemAllocationMeasurement {
+    allocation_calls: u64,
+    deallocation_calls: u64,
+    reallocation_calls: u64,
+    allocated_bytes: u64,
+    deallocated_bytes: u64,
+    live_bytes_delta: i64,
+    peak_live_bytes: u64,
 }
 
 #[derive(Serialize)]
@@ -67,6 +194,7 @@ struct PhaseMeasurement {
     arena_bytes_delta: usize,
     allocations_delta: Option<usize>,
     reallocations_delta: Option<usize>,
+    system_allocations: SystemAllocationMeasurement,
     peak_rss_bytes: u64,
 }
 
@@ -94,6 +222,9 @@ struct Summary {
     cpu_ms: Distribution,
     cpu_percent: Distribution,
     arena_bytes_delta: Distribution,
+    system_allocation_calls: Distribution,
+    system_allocated_bytes: Distribution,
+    system_live_bytes_delta: Distribution,
 }
 
 #[derive(Serialize)]
@@ -124,6 +255,7 @@ struct CheckerCensus {
     arena_bytes: usize,
     allocations: Option<usize>,
     reallocations: Option<usize>,
+    system_allocations: SystemAllocationMeasurement,
     type_kinds: Vec<TypeKindCount>,
 }
 
@@ -132,7 +264,7 @@ struct Report {
     schema_version: u32,
     pid: u32,
     profile: &'static str,
-    allocation_counts_enabled: bool,
+    arena_allocation_counts_enabled: bool,
     workload: Workload,
     build: PhaseMeasurement,
     planning: PhaseMeasurement,
@@ -277,16 +409,23 @@ fn run(options: &Options) -> Result<(), Box<dyn Error>> {
     }
 
     let mut iterations = Vec::with_capacity(options.iterations);
+    println!("\nChecks");
+    println!(
+        "{:>3}  {:>7}  {:>7}  {:>9}  {:>9}  {:>8}  {:>10}",
+        "#", "wall ms", "CPU ms", "arena", "system", "allocs", "live"
+    );
     for iteration in 1..=options.iterations {
         let (checked_types, measurement) = measure_phase(&allocator, || {
             Ok::<_, io::Error>(black_box(check_all(&store, &plans)))
         })?;
         println!(
-            "check {iteration:>3}: wall={:>9.3} ms cpu={:>9.3} ms ({:>6.1}%) arena={:>10} B checked={checked_types}",
+            "{iteration:>3}  {:>7.3}  {:>7.3}  {:>9}  {:>9}  {:>8}  {:>10}",
             measurement.wall_ms,
             measurement.user_cpu_ms + measurement.system_cpu_ms,
-            measurement.cpu_percent,
-            measurement.arena_bytes_delta,
+            format_bytes(measurement.arena_bytes_delta as u64),
+            format_bytes(measurement.system_allocations.allocated_bytes),
+            format_count(measurement.system_allocations.allocation_calls),
+            format_signed_bytes(measurement.system_allocations.live_bytes_delta),
         );
         iterations.push(IterationMeasurement {
             iteration,
@@ -296,14 +435,14 @@ fn run(options: &Options) -> Result<(), Box<dyn Error>> {
     }
 
     let report = Report {
-        schema_version: 1,
+        schema_version: 2,
         pid: process::id(),
         profile: if cfg!(debug_assertions) {
             "debug"
         } else {
             "release"
         },
-        allocation_counts_enabled: cfg!(feature = "allocation-stats"),
+        arena_allocation_counts_enabled: cfg!(feature = "allocation-stats"),
         workload,
         build,
         planning,
@@ -363,6 +502,10 @@ fn checker_census(
             .saturating_sub(allocations_before.used_bytes),
         allocations,
         reallocations,
+        system_allocations: SystemAllocationMeasurement::between(
+            allocations_before.system,
+            allocations_after.system,
+        ),
         type_kinds: type_kinds
             .into_iter()
             .map(|(kind, count)| TypeKindCount { kind, count })
@@ -423,11 +566,60 @@ impl AllocationSnapshot {
     fn capture(allocator: &Allocator) -> Self {
         Self {
             used_bytes: allocator.used_bytes(),
+            system: SystemAllocationSnapshot::capture(),
             #[cfg(feature = "allocation-stats")]
             allocations: allocator.get_allocation_stats().0,
             #[cfg(feature = "allocation-stats")]
             reallocations: allocator.get_allocation_stats().1,
         }
+    }
+}
+
+impl SystemAllocationSnapshot {
+    fn capture() -> Self {
+        Self {
+            allocation_calls: SYSTEM_ALLOCATIONS.allocation_calls.load(Ordering::Relaxed),
+            deallocation_calls: SYSTEM_ALLOCATIONS
+                .deallocation_calls
+                .load(Ordering::Relaxed),
+            reallocation_calls: SYSTEM_ALLOCATIONS
+                .reallocation_calls
+                .load(Ordering::Relaxed),
+            allocated_bytes: SYSTEM_ALLOCATIONS.allocated_bytes.load(Ordering::Relaxed),
+            deallocated_bytes: SYSTEM_ALLOCATIONS.deallocated_bytes.load(Ordering::Relaxed),
+            live_bytes: SYSTEM_ALLOCATIONS.live_bytes.load(Ordering::Relaxed),
+            peak_live_bytes: SYSTEM_ALLOCATIONS.peak_live_bytes.load(Ordering::Relaxed),
+        }
+    }
+}
+
+impl SystemAllocationMeasurement {
+    fn between(before: SystemAllocationSnapshot, after: SystemAllocationSnapshot) -> Self {
+        Self {
+            allocation_calls: after
+                .allocation_calls
+                .saturating_sub(before.allocation_calls),
+            deallocation_calls: after
+                .deallocation_calls
+                .saturating_sub(before.deallocation_calls),
+            reallocation_calls: after
+                .reallocation_calls
+                .saturating_sub(before.reallocation_calls),
+            allocated_bytes: after.allocated_bytes.saturating_sub(before.allocated_bytes),
+            deallocated_bytes: after
+                .deallocated_bytes
+                .saturating_sub(before.deallocated_bytes),
+            live_bytes_delta: signed_delta(after.live_bytes, before.live_bytes),
+            peak_live_bytes: after.peak_live_bytes,
+        }
+    }
+}
+
+fn signed_delta(after: u64, before: u64) -> i64 {
+    if after >= before {
+        i64::try_from(after - before).unwrap_or(i64::MAX)
+    } else {
+        -i64::try_from(before - after).unwrap_or(i64::MAX)
     }
 }
 
@@ -473,6 +665,10 @@ impl PhaseMeasurement {
                 .saturating_sub(allocations_before.used_bytes),
             allocations_delta,
             reallocations_delta,
+            system_allocations: SystemAllocationMeasurement::between(
+                allocations_before.system,
+                allocations_after.system,
+            ),
             peak_rss_bytes: usage_after.peak_rss_bytes,
         }
     }
@@ -529,6 +725,21 @@ fn summarize(iterations: &[IterationMeasurement]) -> Summary {
                 .iter()
                 .map(|item| item.measurement.arena_bytes_delta as f64),
         ),
+        system_allocation_calls: distribution(
+            iterations
+                .iter()
+                .map(|item| item.measurement.system_allocations.allocation_calls as f64),
+        ),
+        system_allocated_bytes: distribution(
+            iterations
+                .iter()
+                .map(|item| item.measurement.system_allocations.allocated_bytes as f64),
+        ),
+        system_live_bytes_delta: distribution(
+            iterations
+                .iter()
+                .map(|item| item.measurement.system_allocations.live_bytes_delta as f64),
+        ),
     }
 }
 
@@ -556,27 +767,62 @@ fn percentile(sorted: &[f64], percentile: f64) -> f64 {
     sorted[index]
 }
 
+fn format_bytes(bytes: u64) -> String {
+    const KIB: f64 = 1_024.0;
+    const MIB: f64 = KIB * 1_024.0;
+    const GIB: f64 = MIB * 1_024.0;
+    let bytes = bytes as f64;
+    if bytes >= GIB {
+        format!("{:.1} GiB", bytes / GIB)
+    } else if bytes >= MIB {
+        format!("{:.1} MiB", bytes / MIB)
+    } else if bytes >= KIB {
+        format!("{:.1} KiB", bytes / KIB)
+    } else {
+        format!("{bytes:.0} B")
+    }
+}
+
+fn format_signed_bytes(bytes: i64) -> String {
+    if bytes < 0 {
+        format!("-{}", format_bytes(bytes.unsigned_abs()))
+    } else {
+        format!("+{}", format_bytes(bytes as u64))
+    }
+}
+
+fn format_count(count: u64) -> String {
+    if count >= 1_000_000 {
+        format!("{:.1}m", count as f64 / 1_000_000.0)
+    } else if count >= 1_000 {
+        format!("{:.1}k", count as f64 / 1_000.0)
+    } else {
+        count.to_string()
+    }
+}
+
 fn print_workload(workload: &Workload, build: &PhaseMeasurement, planning: &PhaseMeasurement) {
     println!(
-        "workload: {} source + {} lib files, {} bytes, {} nodes, {} queries",
+        "Workload\n  {} source + {} lib files | {} | {} nodes | {} queries",
         workload.source_files,
         workload.library_files,
-        workload.source_bytes,
-        workload.semantic_nodes,
+        format_bytes(workload.source_bytes as u64),
+        format_count(workload.semantic_nodes as u64),
         workload.checker_queries,
     );
     println!(
-        "build:    wall={:.3} ms cpu={:.3} ms arena={} B peak_rss={} B",
+        "\nSetup\n  build     {:>7.3} ms\n    arena {:>9} | system {:>9} | live {:>9}",
         build.wall_ms,
-        build.user_cpu_ms + build.system_cpu_ms,
-        build.arena_bytes_delta,
-        build.peak_rss_bytes,
+        format_bytes(build.arena_bytes_delta as u64),
+        format_bytes(build.system_allocations.allocated_bytes),
+        format_signed_bytes(build.system_allocations.live_bytes_delta),
     );
     println!(
-        "planning: wall={:.3} ms cpu={:.3} ms arena={} B",
+        "  planning  {:>7.3} ms\n    arena {:>9} | system {:>9} | live {:>9}",
         planning.wall_ms,
-        planning.user_cpu_ms + planning.system_cpu_ms,
-        planning.arena_bytes_delta,
+        format_bytes(planning.arena_bytes_delta as u64),
+        format_bytes(planning.system_allocations.allocated_bytes),
+        format_signed_bytes(planning.system_allocations.live_bytes_delta),
     );
 }
 
@@ -584,39 +830,80 @@ fn print_checker_census(census: &CheckerCensus) {
     let mut type_kinds = census.type_kinds.iter().collect::<Vec<_>>();
     type_kinds.sort_unstable_by_key(|entry| std::cmp::Reverse(entry.count));
     println!(
-        "census:   {} registered types, {} arena bytes, {} allocations",
+        "\nCensus\n  {} types | arena {} / {} allocs\n  system {} / {} allocs | live {}",
         census.registered_types,
-        census.arena_bytes,
+        format_bytes(census.arena_bytes as u64),
         census
             .allocations
             .map_or_else(|| "n/a".to_string(), |count| count.to_string()),
+        format_bytes(census.system_allocations.allocated_bytes),
+        format_count(census.system_allocations.allocation_calls),
+        format_signed_bytes(census.system_allocations.live_bytes_delta),
     );
-    print!("  largest type families:");
-    for entry in type_kinds.into_iter().take(10) {
-        print!(" {}={}", entry.kind, entry.count);
+    println!("  Largest type families:");
+    for entries in type_kinds.into_iter().take(8).collect::<Vec<_>>().chunks(2) {
+        print!("  ");
+        for entry in entries {
+            print!("  {:<24} {:>5}", entry.kind, entry.count);
+        }
+        println!();
     }
-    println!();
 }
 
 fn print_summary(report: &Report) {
     let wall = &report.summary.wall_ms;
     let cpu = &report.summary.cpu_ms;
     let arena = &report.summary.arena_bytes_delta;
-    println!("\nsummary ({} measured passes):", report.iterations.len());
+    let system_calls = &report.summary.system_allocation_calls;
+    let system_allocated = &report.summary.system_allocated_bytes;
+    let system_live = &report.summary.system_live_bytes_delta;
+    println!("\nSummary ({} measured passes)", report.iterations.len());
+    println!("  {:<8} {:>10} {:>10} {:>10}", "", "median", "p95", "max");
     println!(
-        "  wall ms: min={:.3} mean={:.3} median={:.3} p95={:.3} max={:.3} stddev={:.3}",
-        wall.min, wall.mean, wall.median, wall.p95, wall.max, wall.stddev,
+        "  {:<8} {:>10} {:>10} {:>10}",
+        "wall",
+        format!("{:.3} ms", wall.median),
+        format!("{:.3} ms", wall.p95),
+        format!("{:.3} ms", wall.max),
     );
     println!(
-        "  cpu ms:  min={:.3} mean={:.3} median={:.3} p95={:.3} max={:.3}",
-        cpu.min, cpu.mean, cpu.median, cpu.p95, cpu.max,
+        "  {:<8} {:>10} {:>10} {:>10}",
+        "CPU",
+        format!("{:.3} ms", cpu.median),
+        format!("{:.3} ms", cpu.p95),
+        format!("{:.3} ms", cpu.max),
     );
     println!(
-        "  arena:   min={:.0} mean={:.0} p95={:.0} max={:.0} bytes/pass",
-        arena.min, arena.mean, arena.p95, arena.max,
+        "  {:<8} {:>10} {:>10} {:>10}",
+        "arena",
+        format_bytes(arena.median as u64),
+        format_bytes(arena.p95 as u64),
+        format_bytes(arena.max as u64),
     );
     println!(
-        "  process peak RSS: {} bytes",
-        report.process_after_measurement.peak_rss_bytes,
+        "  {:<8} {:>10} {:>10} {:>10}",
+        "system",
+        format_bytes(system_allocated.median as u64),
+        format_bytes(system_allocated.p95 as u64),
+        format_bytes(system_allocated.max as u64),
+    );
+    println!(
+        "  {:<8} {:>10} {:>10} {:>10}",
+        "allocs",
+        format_count(system_calls.median as u64),
+        format_count(system_calls.p95 as u64),
+        format_count(system_calls.max as u64),
+    );
+    println!(
+        "  {:<8} {:>10} {:>10} {:>10}",
+        "live",
+        format_signed_bytes(system_live.median as i64),
+        format_signed_bytes(system_live.p95 as i64),
+        format_signed_bytes(system_live.max as i64),
+    );
+    println!(
+        "  {:<8} {:>10}",
+        "peak RSS",
+        format_bytes(report.process_after_measurement.peak_rss_bytes),
     );
 }

@@ -22,6 +22,7 @@ The terminal report includes:
 - source/library file counts, source bytes, semantic nodes, and planned checker queries;
 - wall time, user CPU time, system CPU time, and effective CPU utilization;
 - arena byte growth for build, planning, and every checker pass;
+- system allocator calls, allocated/deallocated bytes, and net live-byte change;
 - process peak resident set size (RSS);
 - min, mean, median, p95, max, and standard deviation across measured passes.
 
@@ -50,7 +51,22 @@ The JSON report retains every raw iteration and uses `schema_version` for future
 input commit, Rust toolchain, command, machine power mode, and report together when comparing runs.
 Close noisy applications and run several independent processes when a change is within a few percent.
 
-Allocation/reallocation counts require OXC allocator instrumentation:
+The harness wraps Rust's system allocator and always counts process-wide allocation, reallocation,
+and deallocation requests. `system.allocated_bytes` measures total heap traffic during a phase,
+including memory freed before the phase ends. `system.live_bytes_delta` measures retained heap bytes;
+a positive per-check value can reveal data moved out of the arena into ordinary collections.
+
+System allocated bytes include backing chunks requested by the arena. They cannot be directly
+subtracted from `arena_bytes_delta`: arena bytes measure occupied bump storage, while system bytes
+measure allocator requests and include unused chunk capacity. Compare both trends across otherwise
+identical runs. An occasional large positive system live delta can be an arena chunk-capacity growth
+event, especially when many checker passes share one allocator; check whether later passes reuse that
+capacity before attributing the spike to an off-arena cache. Repeated positive live deltas without
+corresponding arena growth are stronger evidence of off-arena retention. `peak_live_bytes` is the
+tracked allocator's process-lifetime high-water mark; RSS also includes code, mapped files, allocator
+metadata, and other memory outside this wrapper.
+
+Arena allocation/reallocation call counts require OXC allocator instrumentation:
 
 ```sh
 cargo run --release --features allocation-stats --bin profile_checker -- \
@@ -59,8 +75,9 @@ cargo run --release --features allocation-stats --bin profile_checker -- \
 ```
 
 `arena_bytes_delta` is retained arena growth, not total temporary allocation traffic. Peak RSS is a
-process lifetime high-water mark, so it does not decrease between phases. Allocation tracking adds
-overhead; compare tracked runs only with other tracked runs.
+process lifetime high-water mark, so it does not decrease between phases. Both the system wrapper's
+atomic counters and OXC allocation tracking add overhead; compare timing results only between runs
+with the same instrumentation.
 
 Use `--no-default-lib` to isolate a declaration file or `--lib-target es2022` to control the embedded
 standard libraries. Multiple positional roots are accepted and deduplicated by `ProgramStore`.
