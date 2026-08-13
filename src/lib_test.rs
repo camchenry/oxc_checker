@@ -4081,9 +4081,19 @@ fn async_function_inference_wraps_return_type_in_promise() {
 
     async function empty() {}
 
+    async function unwrapPromise(value: Promise<number>) {
+        return value;
+    }
+
+    async function preserveGeneric<T>(value: T) {
+        return value;
+    }
+
     const returnsNumber = async () => 1;
     const stringResult = returnsString();
     const emptyResult = empty();
+    const unwrappedResult = unwrapPromise(Promise.resolve(1));
+    const genericResult = preserveGeneric('value');
     const numberResult = returnsNumber();
     "#,
     );
@@ -4102,6 +4112,24 @@ fn async_function_inference_wraps_return_type_in_promise() {
         arena,
         &get_global_symbol_type(&ret, "emptyResult"),
         &Ty::type_reference(arena, "Promise", [Ty::void()]),
+    );
+    assert_eq!(
+        get_global_symbol_type(&ret, "unwrapPromise").to_type_string(ret.arena),
+        "(value: Promise<number>) => Promise<number>"
+    );
+    assert_eq!(
+        get_global_symbol_type(&ret, "preserveGeneric").to_type_string(ret.arena),
+        "<T>(value: T) => Promise<T>"
+    );
+    assert_type_eq(
+        arena,
+        &get_global_symbol_type(&ret, "unwrappedResult"),
+        &Ty::type_reference(arena, "Promise", [Ty::number()]),
+    );
+    assert_type_eq(
+        arena,
+        &get_global_symbol_type(&ret, "genericResult"),
+        &Ty::type_reference(arena, "Promise", [Ty::string()]),
     );
     assert_type_eq(
         arena,

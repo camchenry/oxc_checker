@@ -9308,8 +9308,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let promise_type = self.get_global_promise_type(program_id);
         match self.arena().type_data(promise_type) {
             TypeData::TypeReference(reference) => {
-                // TODO(correctness): TypeScript wraps async returns with Promise<Awaited<T>>.
-                Ty::type_reference(self.arena(), reference.name, [return_type])
+                let awaited_type = self.get_awaited_type(program_id, return_type);
+                Ty::type_reference(self.arena(), reference.name, [awaited_type])
             }
             TypeData::Any | TypeData::Error(_) => promise_type,
             _ => Ty::error(self.arena(), TypeErrorKind::MissingGlobalType),
