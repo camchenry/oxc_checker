@@ -696,6 +696,7 @@ pub struct TyTypeQuery<'a> {
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct TyStringLiteral<'a> {
+    /// Decoded string contents without source quotes.
     pub value: &'a str,
 }
 
@@ -731,17 +732,6 @@ fn canonical_number_literal_key(value: f64) -> u64 {
         0.0f64.to_bits()
     } else {
         value.to_bits()
-    }
-}
-
-fn canonical_string_literal_value(value: &str) -> &str {
-    if value.len() >= 2
-        && ((value.starts_with('"') && value.ends_with('"'))
-            || (value.starts_with('\'') && value.ends_with('\'')))
-    {
-        &value[1..value.len() - 1]
-    } else {
-        value
     }
 }
 
@@ -1767,7 +1757,6 @@ impl<'a> Ty<'a> {
     }
 
     pub fn string_literal(arena: CheckerArena<'a>, value: &'a str) -> Self {
-        let value = canonical_string_literal_value(value);
         if let Some(ty) = arena.interned_types.strings.borrow().get(value) {
             return *ty;
         }
@@ -2342,18 +2331,7 @@ impl<'a> Ty<'a> {
             }
             TypeData::GlobalThis => "typeof globalThis".to_string(),
             TypeData::StringLiteral(string_literal) => {
-                let content = string_literal
-                    .value
-                    .strip_prefix('\'')
-                    .and_then(|name| name.strip_suffix('\''))
-                    .or_else(|| {
-                        string_literal
-                            .value
-                            .strip_prefix('"')
-                            .and_then(|name| name.strip_suffix('"'))
-                    })
-                    .unwrap_or(string_literal.value);
-                format!("{content:?}")
+                format!("{:?}", string_literal.value)
             }
             TypeData::NumberLiteral(number_literal) => {
                 // Print the base-10 representation of the number
@@ -2759,20 +2737,7 @@ impl<'a> Ty<'a> {
     /// Returns the string value of the type (if applicable).
     pub fn string_value(&self, arena: CheckerArena<'a>) -> Option<&'a str> {
         match arena.type_data(*self) {
-            // Remove quoting
-            TypeData::StringLiteral(string_literal) => Some(
-                string_literal
-                    .value
-                    .strip_prefix('\'')
-                    .and_then(|name| name.strip_suffix('\''))
-                    .or_else(|| {
-                        string_literal
-                            .value
-                            .strip_prefix('"')
-                            .and_then(|name| name.strip_suffix('"'))
-                    })
-                    .unwrap_or(string_literal.value),
-            ),
+            TypeData::StringLiteral(string_literal) => Some(string_literal.value),
             // TODO(completeness): Handle template literals
             _ => None,
         }

@@ -3028,6 +3028,7 @@ fn const_initializers_use_literal_types() {
         r#"
     const count = 1;
     const label = "ready";
+    const quoted = '\"ready\"';
     const enabled = true;
     "#,
     );
@@ -3040,6 +3041,11 @@ fn const_initializers_use_literal_types() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "label"),
+        &Ty::string_literal(arena(&ret), "ready"),
+    );
+    assert_type_eq(
+        ret.arena,
+        &get_global_symbol_type(&ret, "quoted"),
         &Ty::string_literal(arena(&ret), "\"ready\""),
     );
     assert_eq!(get_global_symbol_type(&ret, "enabled"), Ty::boolean_true());
@@ -3103,7 +3109,7 @@ fn get_type_at_location_checks_direct_expressions() {
     assert_eq!(expression_types["bigint"].to_type_string(ret.arena), "1n");
     assert_eq!(
         expression_types["string"],
-        Ty::string_literal(arena(&ret), "\"hello\"")
+        Ty::string_literal(arena(&ret), "hello")
     );
     assert_eq!(expression_types["boolean"], Ty::boolean_true());
     assert_eq!(expression_types["call"], Ty::number());
@@ -3287,7 +3293,7 @@ fn generic_function_infers_type_parameters_from_arguments() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "y"),
-        &Ty::string_literal(arena, "\"test\""),
+        &Ty::string_literal(arena, "test"),
     );
     assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean_true());
 }
@@ -3337,7 +3343,7 @@ fn generic_function_merges_repeated_inference_candidates() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "value"),
-        &Ty::string_literal(arena(&ret), "\"ready\""),
+        &Ty::string_literal(arena(&ret), "ready"),
     );
 }
 
@@ -3359,7 +3365,7 @@ fn generic_function_prefers_naked_type_variable_inference_candidate() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "result"),
-        &Ty::string_literal(arena(&ret), "\"ready\""),
+        &Ty::string_literal(arena(&ret), "ready"),
     );
 }
 
@@ -3715,7 +3721,7 @@ fn generic_overloads_use_candidate_inference_for_applicability() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "value"),
-        &Ty::string_literal(arena(&ret), "\"ready\""),
+        &Ty::string_literal(arena(&ret), "ready"),
     );
 }
 

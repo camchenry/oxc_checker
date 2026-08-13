@@ -281,8 +281,7 @@ fn is_assignable_to_at_depth<'a>(
         (TypeData::NumberLiteral(_), TypeData::Number) => true,
         (TypeData::StringLiteral(_), TypeData::String) => true,
         (TypeData::StringLiteral(source), TypeData::StringLiteral(target)) => {
-            string_literal_type_to_property_name(source.value)
-                == string_literal_type_to_property_name(target.value)
+            source.value == target.value
         }
         (TypeData::BooleanLiteral(_), TypeData::Boolean) => true,
         (_, TypeData::Keyof(keyof)) => {
@@ -376,26 +375,11 @@ fn is_assignable_to_keyof<'a>(
 
 fn property_name_from_key_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
     match arena.type_data(ty) {
-        TypeData::StringLiteral(literal) => {
-            Some(string_literal_type_to_property_name(literal.value))
-        }
+        TypeData::StringLiteral(literal) => Some(literal.value),
         TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
         TypeData::BooleanLiteral(true) => Some("true"),
         TypeData::BooleanLiteral(false) => Some("false"),
         _ => None,
-    }
-}
-
-// TODO: There is a better way to do this. We should avoid storing the quotes
-// in the string literal type to begin with.
-fn string_literal_type_to_property_name(value: &str) -> &str {
-    if value.len() >= 2
-        && ((value.starts_with('"') && value.ends_with('"'))
-            || (value.starts_with('\'') && value.ends_with('\'')))
-    {
-        &value[1..value.len() - 1]
-    } else {
-        value
     }
 }
 

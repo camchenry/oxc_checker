@@ -45,9 +45,9 @@ use crate::{
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self, ProgramId},
-    property_key_name_str, push_type_parameter_names, string_literal_type_to_property_name,
-    ts_type_name_to_str, ts_type_query_expr_name_to_str, tuple_element_type_at_index,
-    tuple_index_from_expression, tuple_index_from_index_type, type_facts,
+    property_key_name_str, push_type_parameter_names, ts_type_name_to_str,
+    ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
+    tuple_index_from_index_type, type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTypeParameter,
@@ -1879,10 +1879,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn template_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {
         match self.arena().type_data(ty) {
-            TypeData::StringLiteral(literal) => Some(string_literal_type_to_property_name(
-                self.arena(),
-                literal.value,
-            )),
+            TypeData::StringLiteral(literal) => Some(literal.value),
             TypeData::NumberLiteral(literal) => Some(if literal.value == 0.0 {
                 "0"
             } else {

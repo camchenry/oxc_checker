@@ -36,9 +36,7 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
 
 fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
     match arena.type_data(ty) {
-        types::TypeData::StringLiteral(literal) => {
-            Some(string_literal_type_to_property_name(arena, literal.value))
-        }
+        types::TypeData::StringLiteral(literal) => Some(literal.value),
         types::TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
         types::TypeData::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
         types::TypeData::TemplateLiteral(template) if template.expressions.is_empty() => {
@@ -48,17 +46,6 @@ fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
         types::TypeData::String => Some(arena.str("string")),
         types::TypeData::Number => Some(arena.str("number")),
         _ => None,
-    }
-}
-
-fn string_literal_type_to_property_name<'a>(arena: CheckerArena<'a>, value: &'a str) -> &'a str {
-    if value.len() >= 2
-        && ((value.starts_with('"') && value.ends_with('"'))
-            || (value.starts_with('\'') && value.ends_with('\'')))
-    {
-        arena.str(&value[1..value.len() - 1])
-    } else {
-        value
     }
 }
 
