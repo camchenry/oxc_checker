@@ -819,6 +819,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         names
     }
 
+    pub(crate) fn contains_infer_type_parameter(&self, ty: Ty<'a>) -> bool {
+        let mut contains = false;
+        visit_type(self.arena(), ty, &mut |ty| {
+            contains |= matches!(self.arena().type_data(ty), TypeData::Infer(_));
+        });
+        contains
+    }
+
     fn collect_infer_type_parameter_names(&self, ty: Ty<'a>, names: &mut Vec<&'a str>) {
         visit_type(self.arena(), ty, &mut |ty| {
             if let TypeData::Infer(infer) = self.arena().type_data(ty)
@@ -874,8 +882,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         false_type: Ty<'a>,
         is_distributive: bool,
     ) -> Ty<'a> {
-        if !self.infer_type_parameter_names(check_type).is_empty()
-            || !self.infer_type_parameter_names(extends_type).is_empty()
+        if self.contains_infer_type_parameter(check_type)
+            || self.contains_infer_type_parameter(extends_type)
         {
             let mut inferences = self.conditional_inference_context(check_type, extends_type);
             let inference_result =
@@ -967,7 +975,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let substitutions = inferences.candidate_substitutions(self.arena());
             let constraint_type =
                 self.instantiate_type(constraint_type, &substitutions.to_mapper(self.arena()));
-            if !self.infer_type_parameter_names(constraint_type).is_empty()
+            if self.contains_infer_type_parameter(constraint_type)
                 || self.could_contain_type_variables(constraint_type)
             {
                 return ConditionalInferMatchResult::Deferred;
@@ -996,7 +1004,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return ConditionalInferMatchResult::Deferred;
         }
         if self.arena().is_type_identical_to(source, target)
-            && self.infer_type_parameter_names(target).is_empty()
+            && !self.contains_infer_type_parameter(target)
         {
             return ConditionalInferMatchResult::Matched;
         }
@@ -1009,7 +1017,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.add_conditional_inference(inferences, infer, source)
             }
             (TypeData::Any | TypeData::Error(_), _)
-                if !self.infer_type_parameter_names(target).is_empty() =>
+                if self.contains_infer_type_parameter(target) =>
             {
                 let mut result = ConditionalInferMatchResult::Matched;
                 self.collect_infer_types(target, &mut |infer| {

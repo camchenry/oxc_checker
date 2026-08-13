@@ -3867,7 +3867,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.expand_type_at_use(program_id, conditional.check_type, depth + 1);
                 let extends_type =
                     self.expand_type_at_use(program_id, conditional.extends_type, depth + 1);
-                let match_check_type = if self.infer_type_parameter_names(extends_type).is_empty() {
+                let match_check_type = if !self.contains_infer_type_parameter(extends_type) {
                     check_type
                 } else {
                     self.apparent_type_for_conditional_match(program_id, check_type, depth + 1)
@@ -5446,9 +5446,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let explicit_count = type_arguments.len();
         let mut default_type_arguments = Vec::new();
         let mut substitutions =
-            self.explicit_type_argument_substitutions(&type_parameters, type_arguments.as_slice());
+            self.explicit_type_argument_substitutions(type_parameters, type_arguments.as_slice());
         self.add_default_type_argument_substitutions(
-            &type_parameters,
+            type_parameters,
             explicit_count,
             &mut substitutions,
             |default_type| default_type_arguments.push(default_type),
@@ -8001,7 +8001,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: ProgramId,
         type_name: &str,
-    ) -> Option<Vec<TyTypeParameter<'a>>> {
+    ) -> Option<&'a [TyTypeParameter<'a>]> {
         let (symbol, declaration) =
             self.get_type_symbol_and_declaration_for_name(program_id, type_name)?;
         self.get_type_parameters_for_declaration(symbol.program_id, declaration)
@@ -8011,8 +8011,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: ProgramId,
         declaration: NodeId,
-    ) -> Option<Vec<TyTypeParameter<'a>>> {
-        match self.nodes(program_id).kind(declaration) {
+    ) -> Option<&'a [TyTypeParameter<'a>]> {
+        let key = (program_id, declaration);
+        if let Some(type_parameters) = self.type_parameter_declaration_cache.borrow().get(&key) {
+            return Some(type_parameters);
+        }
+        let should_cache = self.resolving_type_parameters.borrow().is_empty();
+
+        if matches!(
+            self.nodes(program_id).kind(declaration),
+            AstKind::BindingIdentifier(_)
+        ) {
+            let parent_id = self.nodes(program_id).parent_id(declaration);
+            let type_parameters =
+                self.get_type_parameters_for_declaration(program_id, parent_id)?;
+            if should_cache {
+                self.type_parameter_declaration_cache
+                    .borrow_mut()
+                    .insert(key, type_parameters);
+            }
+            return Some(type_parameters);
+        }
+
+        let type_parameters = match self.nodes(program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(interface) => {
                 Some(self.type_parameters_from_declaration(
                     program_id,
@@ -8025,12 +8046,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::Class(class) => Some(
                 self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
             ),
-            AstKind::BindingIdentifier(_) => {
-                let parent_id = self.nodes(program_id).parent_id(declaration);
-                self.get_type_parameters_for_declaration(program_id, parent_id)
-            }
             _ => None,
+        }?;
+        let type_parameters = self.arena().alloc_slice_from_iter(type_parameters);
+        if should_cache {
+            self.type_parameter_declaration_cache
+                .borrow_mut()
+                .insert(key, type_parameters);
         }
+        Some(type_parameters)
     }
 
     fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<(NodeId, &'a Class<'a>)> {
