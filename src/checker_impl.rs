@@ -517,7 +517,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     })
                     .collect::<Vec<_>>();
                 let index_infos = object
-                    .index_infos
+                    .index_infos()
                     .iter()
                     .map(|info| {
                         let key_type =
@@ -533,7 +533,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     })
                     .collect::<Vec<_>>();
                 let signatures = object
-                    .signatures
+                    .signatures()
                     .iter()
                     .map(|signature| {
                         let instantiated =
@@ -3514,7 +3514,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         match self.arena().type_data(object_type) {
             TypeData::Object(object) => object
-                .index_infos
+                .index_infos()
                 .iter()
                 .find(|index_info| self.is_assignable_to(index_type, index_info.key_type))
                 .map(|index_info| index_info.value_type),
@@ -6097,7 +6097,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
 
                 // Try to get an index signature from the resolved type
-                for index_info in &object.index_infos {
+                for index_info in object.index_infos() {
                     // TODO(correctness): Don't hard-code the key type here
                     if index_info.key_type == Ty::string() {
                         return Some(index_info.value_type);
@@ -6217,7 +6217,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let object_type = self.expand_type_at_use(object_program_id, object_type, 0);
         if let TypeData::Object(object) = self.arena().type_data(object_type)
             && let Some(index_info) = object
-                .index_infos
+                .index_infos()
                 .iter()
                 .find(|index_info| self.is_assignable_to(lookup_key_type, index_info.key_type))
         {
@@ -6391,11 +6391,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.get_property_type_of_global_function_augmented_type(
             program_id,
             object
-                .signatures
+                .signatures()
                 .iter()
                 .any(|signature| signature.kind == SignatureKind::Call),
             object
-                .signatures
+                .signatures()
                 .iter()
                 .any(|signature| signature.kind == SignatureKind::Construct),
             property_name,
@@ -10019,20 +10019,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 expando_properties,
                 [Signature::new(SignatureKind::Call, ty)],
             ),
-            TypeData::Object(object) => self.arena().alloc_type(TypeData::Object(
-                self.arena().alloc(TyObject {
-                    properties: self
-                        .arena()
-                        .vec_from_iter(object.properties.iter().copied().chain(expando_properties)),
-                    signatures: self
-                        .arena()
-                        .vec_from_iter(object.signatures.iter().copied()),
-                    index_infos: self
-                        .arena()
-                        .vec_from_iter(object.index_infos.iter().copied()),
-                    is_constructor_type: object.is_constructor_type,
-                }),
-            )),
+            TypeData::Object(object) => Ty::object_from_slices(
+                self.arena(),
+                self.arena().alloc_slice_from_iter(
+                    object.properties.iter().copied().chain(expando_properties),
+                ),
+                object.signatures(),
+                object.index_infos(),
+                object.is_constructor_type,
+            ),
             _ => ty,
         }
     }
@@ -12790,7 +12785,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 vec![Signature::new(SignatureKind::Call, t)]
             }
             TypeData::Object(object) => object
-                .signatures
+                .signatures()
                 .iter()
                 .copied()
                 .filter(|signature| signature.kind == kind)
@@ -12820,7 +12815,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 
     fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo<'a>> {
         match self.arena().type_data(t) {
-            TypeData::Object(object) => object.index_infos.iter().copied().collect(),
+            TypeData::Object(object) => object.index_infos().to_vec(),
             TypeData::Intersection(intersection) => intersection
                 .types
                 .iter()

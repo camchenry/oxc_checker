@@ -1025,7 +1025,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     depth + 1,
                 ),
             (TypeData::Object(source), TypeData::Function(target)) => source
-                .signatures
+                .signatures()
                 .iter()
                 .rev()
                 .find(|signature| signature.kind == SignatureKind::Call)
@@ -1887,9 +1887,9 @@ fn infer_types_with_variance<'a>(
                     arena,
                 );
             }
-            for parameter_index in &parameter_object.index_infos {
+            for parameter_index in parameter_object.index_infos() {
                 if let Some(argument_index) =
-                    argument_object.index_infos.iter().find(|argument_index| {
+                    argument_object.index_infos().iter().find(|argument_index| {
                         arena
                             .is_type_identical_to(parameter_index.key_type, argument_index.key_type)
                     })

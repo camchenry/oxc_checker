@@ -171,6 +171,10 @@ impl<'a> CheckerArena<'a> {
         self.allocator.alloc_slice_copy(values)
     }
 
+    pub(crate) fn alloc_slice_from_iter<T>(&self, values: impl IntoIterator<Item = T>) -> &'a [T] {
+        self.vec_from_iter(values).into_arena_slice()
+    }
+
     pub(crate) fn vec_from_iter<T>(&self, iter: impl IntoIterator<Item = T>) -> ArenaVec<'a, T> {
         ArenaVec::from_iter_in(iter, &self.allocator)
     }
@@ -442,16 +446,29 @@ pub enum TypeData<'a> {
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct TyObject<'a> {
-    pub properties: ArenaVec<'a, TyProperty<'a>>,
-    pub signatures: ArenaVec<'a, Signature<'a>>,
-    pub index_infos: ArenaVec<'a, IndexInfo<'a>>,
+    pub properties: &'a [TyProperty<'a>],
+    members: Option<&'a TyObjectMembers<'a>>,
     pub is_constructor_type: bool,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+struct TyObjectMembers<'a> {
+    signatures: &'a [Signature<'a>],
+    index_infos: &'a [IndexInfo<'a>],
 }
 
 impl<'a> TyObject<'a> {
     /// Returns `true` if the object has no properties, signatures, or index infos.
     pub fn is_empty(&self) -> bool {
-        self.properties.is_empty() && self.signatures.is_empty() && self.index_infos.is_empty()
+        self.properties.is_empty() && self.members.is_none()
+    }
+
+    pub fn signatures(&self) -> &'a [Signature<'a>] {
+        self.members.map_or(&[], |members| members.signatures)
+    }
+
+    pub fn index_infos(&self) -> &'a [IndexInfo<'a>] {
+        self.members.map_or(&[], |members| members.index_infos)
     }
 }
 
@@ -1012,18 +1029,18 @@ impl<'a> TypeIdentity<'a> {
     }
 
     fn objects_are_identical(&mut self, left: &TyObject<'a>, right: &TyObject<'a>) -> bool {
-        self.properties_are_identical(&left.properties, &right.properties)
-            && left.signatures.len() == right.signatures.len()
+        self.properties_are_identical(left.properties, right.properties)
+            && left.signatures().len() == right.signatures().len()
             && left
-                .signatures
+                .signatures()
                 .iter()
-                .zip(&right.signatures)
+                .zip(right.signatures())
                 .all(|(left, right)| left.kind == right.kind && self.compare(left.ty, right.ty))
-            && left.index_infos.len() == right.index_infos.len()
+            && left.index_infos().len() == right.index_infos().len()
             && left
-                .index_infos
+                .index_infos()
                 .iter()
-                .zip(&right.index_infos)
+                .zip(right.index_infos())
                 .all(|(left, right)| {
                     left.name == right.name
                         && left.readonly == right.readonly
@@ -1130,13 +1147,13 @@ fn visit_type_at_depth<'a>(
     let next_depth = depth + 1;
     match arena.type_data(ty) {
         TypeData::Object(object) => {
-            for property in &object.properties {
+            for property in object.properties {
                 visit_type_at_depth(arena, property.ty, f, visited, next_depth);
             }
-            for signature in &object.signatures {
+            for signature in object.signatures() {
                 visit_type_at_depth(arena, signature.ty, f, visited, next_depth);
             }
-            for info in &object.index_infos {
+            for info in object.index_infos() {
                 visit_type_at_depth(arena, info.key_type, f, visited, next_depth);
                 visit_type_at_depth(arena, info.value_type, f, visited, next_depth);
             }
@@ -1521,12 +1538,13 @@ impl<'a> Ty<'a> {
     }
 
     pub fn constructor_type(arena: CheckerArena<'a>, signature: Signature<'a>) -> Self {
-        arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(std::iter::empty()),
-            signatures: arena.vec_from_iter([signature]),
-            index_infos: arena.vec_from_iter(std::iter::empty()),
-            is_constructor_type: true,
-        })))
+        Self::object_from_slices(
+            arena,
+            &[],
+            arena.alloc_slice_from_iter([signature]),
+            &[],
+            true,
+        )
     }
 
     pub fn object_with_index_infos(
@@ -1548,11 +1566,32 @@ impl<'a> Ty<'a> {
         signatures: impl IntoIterator<Item = Signature<'a>>,
         index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
     ) -> Self {
+        Self::object_from_slices(
+            arena,
+            arena.alloc_slice_from_iter(properties),
+            arena.alloc_slice_from_iter(signatures),
+            arena.alloc_slice_from_iter(index_infos),
+            false,
+        )
+    }
+
+    pub(crate) fn object_from_slices(
+        arena: CheckerArena<'a>,
+        properties: &'a [TyProperty<'a>],
+        signatures: &'a [Signature<'a>],
+        index_infos: &'a [IndexInfo<'a>],
+        is_constructor_type: bool,
+    ) -> Self {
+        let members = (!signatures.is_empty() || !index_infos.is_empty()).then(|| {
+            arena.alloc(TyObjectMembers {
+                signatures,
+                index_infos,
+            })
+        });
         arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(properties),
-            signatures: arena.vec_from_iter(signatures),
-            index_infos: arena.vec_from_iter(index_infos),
-            is_constructor_type: false,
+            properties,
+            members,
+            is_constructor_type,
         })))
     }
 
@@ -2160,7 +2199,7 @@ impl<'a> Ty<'a> {
             TypeData::This => "this".to_string(),
             TypeData::Object(object) => {
                 if object.is_constructor_type
-                    && let Some(signature) = object.signatures.first()
+                    && let Some(signature) = object.signatures().first()
                 {
                     return constructor_type_to_string(
                         arena,
@@ -2171,19 +2210,19 @@ impl<'a> Ty<'a> {
                     );
                 }
                 if object.properties.is_empty()
-                    && object.signatures.is_empty()
-                    && object.index_infos.is_empty()
+                    && object.signatures().is_empty()
+                    && object.index_infos().is_empty()
                 {
                     return "{}".to_string();
                 }
 
                 let signatures = object
-                    .signatures
+                    .signatures()
                     .iter()
                     .filter(|signature| signature.kind == SignatureKind::Call)
                     .chain(
                         object
-                            .signatures
+                            .signatures()
                             .iter()
                             .filter(|signature| signature.kind == SignatureKind::Construct),
                     );
@@ -2191,7 +2230,7 @@ impl<'a> Ty<'a> {
                     .map(|signature| {
                         signature.to_type_string_with_flags(arena, &|_| None, flags, depth)
                     })
-                    .chain(object.index_infos.iter().map(|info| {
+                    .chain(object.index_infos().iter().map(|info| {
                         let readonly = if info.readonly { "readonly " } else { "" };
                         format!(
                             "{}[{}: {}]: {};",
@@ -2639,12 +2678,13 @@ impl<'a> Ty<'a> {
         let TypeData::Object(object) = arena.type_data(self) else {
             return self;
         };
-        arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(object.properties.iter().copied()),
-            signatures: arena.vec_from_iter(signatures),
-            index_infos: arena.vec_from_iter(object.index_infos.iter().copied()),
-            is_constructor_type: object.is_constructor_type,
-        })))
+        Self::object_from_slices(
+            arena,
+            object.properties,
+            arena.alloc_slice_from_iter(signatures),
+            object.index_infos(),
+            object.is_constructor_type,
+        )
     }
 
     pub(crate) fn with_index_infos(
@@ -2655,12 +2695,13 @@ impl<'a> Ty<'a> {
         let TypeData::Object(object) = arena.type_data(self) else {
             return self;
         };
-        arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(object.properties.iter().copied()),
-            signatures: arena.vec_from_iter(object.signatures.iter().copied()),
-            index_infos: arena.vec_from_iter(index_infos),
-            is_constructor_type: object.is_constructor_type,
-        })))
+        Self::object_from_slices(
+            arena,
+            object.properties,
+            object.signatures(),
+            arena.alloc_slice_from_iter(index_infos),
+            object.is_constructor_type,
+        )
     }
 
     pub(crate) fn with_constructor_type(self, arena: CheckerArena<'a>) -> Self {
@@ -2670,12 +2711,13 @@ impl<'a> Ty<'a> {
         if object.is_constructor_type {
             return self;
         }
-        arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter(object.properties.iter().copied()),
-            signatures: arena.vec_from_iter(object.signatures.iter().copied()),
-            index_infos: arena.vec_from_iter(object.index_infos.iter().copied()),
-            is_constructor_type: true,
-        })))
+        Self::object_from_slices(
+            arena,
+            object.properties,
+            object.signatures(),
+            object.index_infos(),
+            true,
+        )
     }
 
     /// Returns `true` if the type is an object with no properties or signatures and has index infos.
@@ -2683,9 +2725,9 @@ impl<'a> Ty<'a> {
         let TypeData::Object(object) = arena.type_data(*self) else {
             return false;
         };
-        object.signatures.is_empty()
+        object.signatures().is_empty()
             && object.properties.is_empty()
-            && !object.index_infos.is_empty()
+            && !object.index_infos().is_empty()
     }
 
     /// Returns the index infos of the type, or `None` if the type is not an object with index infos.
@@ -2693,10 +2735,10 @@ impl<'a> Ty<'a> {
         let TypeData::Object(object) = arena.type_data(*self) else {
             return None;
         };
-        if object.index_infos.is_empty() {
+        if object.index_infos().is_empty() {
             None
         } else {
-            Some(&object.index_infos)
+            Some(object.index_infos())
         }
     }
 
@@ -3358,6 +3400,7 @@ mod tests {
         assert_eq!(std::mem::size_of::<Ty<'_>>(), 4);
         assert_eq!(std::mem::size_of::<Option<Ty<'_>>>(), 4);
         assert_eq!(std::mem::size_of::<TypeId>(), 4);
+        assert_eq!(std::mem::size_of::<TyObject<'_>>(), 32);
     }
 
     #[test]
@@ -3443,12 +3486,7 @@ mod tests {
     fn empty_constructor_object_renders_as_empty_object() {
         let allocator = Allocator::default();
         let arena = arena(&allocator);
-        let object = arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
-            properties: arena.vec_from_iter([]),
-            signatures: arena.vec_from_iter([]),
-            index_infos: arena.vec_from_iter([]),
-            is_constructor_type: true,
-        })));
+        let object = Ty::object_from_slices(arena, &[], &[], &[], true);
 
         assert_eq!(object.to_type_string(arena), "{}");
     }
