@@ -148,19 +148,19 @@ fn is_assignable_to_at_depth<'a>(
         // `undefined` is assignable to `void`
         (TypeData::Undefined, TypeData::Void) => true,
         (TypeData::Object(source), TypeData::Object(target)) => properties_assignable_to(
-            &source.properties,
-            &target.properties,
+            source.properties,
+            target.properties,
             next_depth,
             is_assignable_to_at_depth,
         ),
         (TypeData::PrimitiveObject, TypeData::Object(target)) => properties_assignable_to(
             &[],
-            &target.properties,
+            target.properties,
             next_depth,
             is_assignable_to_at_depth,
         ),
         (TypeData::Object(source), TypeData::PrimitiveObject) => properties_assignable_to(
-            &source.properties,
+            source.properties,
             &[],
             next_depth,
             is_assignable_to_at_depth,
@@ -175,12 +175,12 @@ fn is_assignable_to_at_depth<'a>(
         ) => true,
         (TypeData::ModuleNamespace(source), TypeData::Object(target)) => properties_assignable_to(
             &source.properties,
-            &target.properties,
+            target.properties,
             next_depth,
             is_assignable_to_at_depth,
         ),
         (TypeData::Object(source), TypeData::ModuleNamespace(target)) => properties_assignable_to(
-            &source.properties,
+            source.properties,
             &target.properties,
             next_depth,
             is_assignable_to_at_depth,

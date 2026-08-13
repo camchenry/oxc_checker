@@ -17,7 +17,7 @@ use std::{
 use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind, AstType,
-    ast::{MethodDefinitionKind, PropertyKey, Statement},
+    ast::{Expression, MethodDefinitionKind, PropertyKey, Statement},
 };
 use oxc_ast_visit::Visit;
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
