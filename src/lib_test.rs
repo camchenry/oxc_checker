@@ -1718,6 +1718,32 @@ fn flow_merges_loop_carried_assignments_from_pre_loop_default() {
 }
 
 #[test]
+fn structural_property_lookup_stops_on_unchanged_conditional_expansion() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    type Enum = Record<string, string | number>;
+    type TypeMap<E extends Enum> = {
+        [key in E[keyof E]]: number | boolean | string | number[]
+    };
+    class BufferPool<E extends Enum, M extends TypeMap<E>> {
+        setArray<K extends E[keyof E]>(array: Extract<M[K], ArrayLike<any>>) {
+            array.length;
+        }
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "array");
+    assert_eq!(reference_types.len(), 1);
+    assert_eq!(
+        reference_types[0].to_type_string(ret.arena),
+        "Extract<M[K], ArrayLike<any>>"
+    );
+}
+
+#[test]
 fn flow_assignment_does_not_refine_later_compound_write_target() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

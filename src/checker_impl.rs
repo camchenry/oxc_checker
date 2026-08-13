@@ -6098,7 +6098,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             TypeData::IndexedAccess(_) | TypeData::Conditional(_) => {
                 let apparent = self.expand_type_at_use(program_id, ty, 0);
-                (apparent != ty).then(|| {
+                (!self.is_type_identical_to(apparent, ty)).then(|| {
                     self.get_property_type_of_structural_type(program_id, apparent, property_name)
                 })?
             }
