@@ -3708,32 +3708,48 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        if let Some(properties) =
+        let key_types = if let Some(properties) =
             self.properties_for_mapped_constraint(program_id, mapped.constraint, depth + 1)
-            && !properties
-                .iter()
-                .any(|property| !property.computed && property.name == property_name)
         {
-            return None;
-        }
-
-        let key_type = Ty::string_literal(self.arena(), self.arena().str(property_name));
+            properties
+                .into_iter()
+                .filter(|property| !property.computed)
+                .map(|property| Ty::string_literal(self.arena(), property.name))
+                .collect::<Vec<_>>()
+        } else {
+            let constraint = self.expand_type_at_use(program_id, mapped.constraint, depth + 1);
+            match self.arena().type_data(constraint) {
+                TypeData::Union(union) => union.types.iter().copied().collect(),
+                _ if index_type_to_property_name(self.arena(), constraint).is_some() => {
+                    vec![constraint]
+                }
+                _ => {
+                    let key_type =
+                        Ty::string_literal(self.arena(), self.arena().str(property_name));
+                    if !self.is_assignable_to(key_type, constraint) {
+                        return None;
+                    }
+                    vec![key_type]
+                }
+            }
+        };
+        let key_type = key_types.into_iter().find(|key_type| {
+            let source_name = index_type_to_property_name(self.arena(), *key_type);
+            let resolved_name = mapped.name_type.map_or(source_name, |name_type| {
+                let mapper = TypeMapper::single(
+                    Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                    *key_type,
+                );
+                let name_type =
+                    self.instantiate_mapped_name_type(program_id, name_type, &mapper, depth + 1);
+                index_type_to_property_name(self.arena(), name_type)
+            });
+            resolved_name == Some(property_name)
+        })?;
         let mapper = TypeMapper::single(
             Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
             key_type,
         );
-
-        if let Some(name_type) = mapped.name_type {
-            let name_type = self.instantiate_type(name_type, &mapper);
-            let name_type = self.expand_type_at_use(program_id, name_type, depth + 1);
-            if name_type.is_never() {
-                return None;
-            }
-            let remapped_name = index_type_to_property_name(self.arena(), name_type)?;
-            if remapped_name != property_name {
-                return None;
-            }
-        }
 
         let ty = self.instantiate_type(mapped.template, &mapper);
         let ty = self.expand_type_at_use(program_id, ty, depth + 1);
@@ -3745,6 +3761,27 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 ty
             },
         )
+    }
+
+    fn instantiate_mapped_name_type(
+        &self,
+        program_id: ProgramId,
+        name_type: Ty<'a>,
+        mapper: &TypeMapper<'a>,
+        depth: usize,
+    ) -> Ty<'a> {
+        let name_type = match self.arena().type_data(name_type) {
+            TypeData::TemplateLiteral(template) => self.get_template_literal_type(
+                program_id,
+                template.quasis.iter().copied(),
+                template
+                    .expressions
+                    .iter()
+                    .map(|ty| self.instantiate_type(*ty, mapper)),
+            ),
+            _ => self.instantiate_type(name_type, mapper),
+        };
+        self.expand_type_at_use(program_id, name_type, depth + 1)
     }
 
     fn expand_deferred_conditional_branches_at_use(
@@ -4093,8 +4130,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 key_type,
             );
             let property_name = if let Some(name_type) = mapped.name_type {
-                let name_type = self.instantiate_type(name_type, &mapper);
-                let name_type = self.expand_type_at_use(program_id, name_type, depth + 1);
+                let name_type =
+                    self.instantiate_mapped_name_type(program_id, name_type, &mapper, depth + 1);
                 if name_type.is_never() {
                     continue;
                 }
@@ -6056,17 +6093,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     )
                 })
             }
-            TypeData::Mapped(map) => match self.arena().type_data(map.constraint) {
-                TypeData::StringLiteral(string_lit) => {
-                    if string_lit.value == property_name {
-                        Some(map.template)
-                    } else {
-                        None
-                    }
-                }
-                // TODO(completeness): handle more cases
-                _ => None,
-            },
+            TypeData::Mapped(mapped) => {
+                self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
+            }
+            TypeData::IndexedAccess(_) | TypeData::Conditional(_) => {
+                let apparent = self.expand_type_at_use(program_id, ty, 0);
+                (apparent != ty).then(|| {
+                    self.get_property_type_of_structural_type(program_id, apparent, property_name)
+                })?
+            }
             // TODO(completeness): handle all types explicitly
             _ => None,
         }

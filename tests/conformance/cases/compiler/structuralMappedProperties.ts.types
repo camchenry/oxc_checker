@@ -1,0 +1,89 @@
+type Source = {
+>    ^^^^^^: { name: string; count: number; }   (TyObject) (TSTypeAliasDeclaration)
+
+  name: string;
+> ^^^^: string   (TyString) (TSPropertySignature)
+
+  count: number;
+> ^^^^^: number   (TyNumber) (TSPropertySignature)
+
+declare const optionalCopy: Partial<Source>;
+>             ^^^^^^^^^^^^: Partial<Source>   (TyTypeReference) (BindingIdentifier)
+
+declare const optionalCopy: Partial<Source>;
+>                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const optionalCopy: Partial<Source>;
+>                           ^^^^^^^: any   (TyError) (IdentifierReference)
+
+declare const optionalCopy: Partial<Source>;
+>                                   ^^^^^^: any   (TyAny) (TSTypeReference)
+
+const optionalName = optionalCopy.name;
+>     ^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+
+const optionalName = optionalCopy.name;
+>                    ^^^^^^^^^^^^: Partial<Source>   (TyTypeReference) (IdentifierReference)
+
+const optionalName = optionalCopy.name;
+>                                 ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
+
+const optionalCount = optionalCopy.count;
+>     ^^^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+const optionalCount = optionalCopy.count;
+>                     ^^^^^^^^^^^^: Partial<Source>   (TyTypeReference) (IdentifierReference)
+
+const optionalCount = optionalCopy.count;
+>                                  ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
+
+declare const recorded: Record<"value", string>;
+>             ^^^^^^^^: Record<"value", string>   (TyTypeReference) (BindingIdentifier)
+
+declare const recorded: Record<"value", string>;
+>                       ^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const recorded: Record<"value", string>;
+>                       ^^^^^^: any   (TyError) (IdentifierReference)
+
+const recordedValue = recorded.value;
+>     ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+const recordedValue = recorded.value;
+>                     ^^^^^^^^: Record<"value", string>   (TyTypeReference) (IdentifierReference)
+
+const recordedValue = recorded.value;
+>                              ^^^^^: string   (TyString) (StaticMemberExpression)
+
+type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
+>    ^^^^^: Value extends string ? { value: Value; } : { value: number; }   (TyConditional) (TSTypeAliasDeclaration)
+
+type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
+>          ^^^^^: any   (TyAny) (TSTypeParameter)
+
+type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
+>                   ^^^^^: any   (TyAny) (TSTypeReference)
+
+type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
+>                                            ^^^^^: Value   (TyTypeReference) (TSPropertySignature)
+
+type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
+>                                                   ^^^^^: any   (TyAny) (TSTypeReference)
+
+type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
+>                                                               ^^^^^: number   (TyNumber) (TSPropertySignature)
+
+declare const boxed: Boxed<"ready">;
+>             ^^^^^: { value: "ready"; }   (TyObject) (BindingIdentifier)
+
+declare const boxed: Boxed<"ready">;
+>                    ^^^^^: any   (TyAny) (TSTypeReference)
+
+const conditionalValue = boxed.value;
+>     ^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+
+const conditionalValue = boxed.value;
+>                        ^^^^^: { value: "ready"; }   (TyObject) (IdentifierReference)
+
+const conditionalValue = boxed.value;
+>                              ^^^^^: "ready"   (TyStringLiteral) (StaticMemberExpression)

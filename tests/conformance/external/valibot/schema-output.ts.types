@@ -818,19 +818,17 @@ const explicitOutput: UserOutput = output
                                  expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
->     ^^^^^^^: any   (TyError) (BindingIdentifier)
-     expected: number
+>     ^^^^^^^: number   (TyNumber) (BindingIdentifier)
 
 const userAge = output.age
 >               ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (IdentifierReference)
               expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
->                      ^^^: any   (TyError) (StaticMemberExpression)
-                  expected: number
+>                      ^^^: number   (TyNumber) (StaticMemberExpression)
 
 const userTags = output.tags
->     ^^^^^^^^: any   (TyError) (BindingIdentifier)
+>     ^^^^^^^^: InferOutput<StringSchema>[]   (TyArray) (BindingIdentifier)
       expected: string[]
 
 const userTags = output.tags
@@ -838,7 +836,7 @@ const userTags = output.tags
                expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userTags = output.tags
->                       ^^^^: any   (TyError) (StaticMemberExpression)
+>                       ^^^^: InferOutput<StringSchema>[]   (TyArray) (StaticMemberExpression)
                     expected: string[]
 
 const issue: UserIssue = {

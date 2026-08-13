@@ -2532,6 +2532,34 @@ compiler/sequenceExpressions.ts	164	176	nestedResult	"nested"
 compiler/sequenceExpressions.ts	37	49	stringResult	"result"
 compiler/sequenceExpressions.ts	7	19	numberResult	42
 compiler/sequenceExpressions.ts	73	86	booleanResult	true
+compiler/structuralMappedProperties.ts	104	116	optionalName	string | undefined
+compiler/structuralMappedProperties.ts	119	131	optionalCopy	Partial<Source>
+compiler/structuralMappedProperties.ts	132	136	name	string | undefined
+compiler/structuralMappedProperties.ts	144	157	optionalCount	number | undefined
+compiler/structuralMappedProperties.ts	160	172	optionalCopy	Partial<Source>
+compiler/structuralMappedProperties.ts	173	178	count	number | undefined
+compiler/structuralMappedProperties.ts	18	22	name	string
+compiler/structuralMappedProperties.ts	195	203	recorded	Record<"value", string>
+compiler/structuralMappedProperties.ts	205	211	Record	any
+compiler/structuralMappedProperties.ts	236	249	recordedValue	string
+compiler/structuralMappedProperties.ts	252	260	recorded	Record<"value", string>
+compiler/structuralMappedProperties.ts	261	266	value	string
+compiler/structuralMappedProperties.ts	274	279	Boxed	Value extends string ? { value: Value; } : { value: number; }
+compiler/structuralMappedProperties.ts	280	285	Value	any
+compiler/structuralMappedProperties.ts	289	294	Value	any
+compiler/structuralMappedProperties.ts	314	319	value	Value
+compiler/structuralMappedProperties.ts	321	326	Value	any
+compiler/structuralMappedProperties.ts	333	338	value	number
+compiler/structuralMappedProperties.ts	34	39	count	number
+compiler/structuralMappedProperties.ts	364	369	boxed	{ value: "ready"; }
+compiler/structuralMappedProperties.ts	371	376	Boxed	any
+compiler/structuralMappedProperties.ts	393	409	conditionalValue	"ready"
+compiler/structuralMappedProperties.ts	412	417	boxed	{ value: "ready"; }
+compiler/structuralMappedProperties.ts	418	423	value	"ready"
+compiler/structuralMappedProperties.ts	5	11	Source	{ name: string; count: number; }
+compiler/structuralMappedProperties.ts	67	79	optionalCopy	Partial<Source>
+compiler/structuralMappedProperties.ts	81	88	Partial	any
+compiler/structuralMappedProperties.ts	89	95	Source	any
 compiler/taggedTemplateExpressions.ts	116	122	values	any[]
 compiler/taggedTemplateExpressions.ts	160	170	genericTag	<T>(template: any, value: T) => T
 compiler/taggedTemplateExpressions.ts	171	172	T	any
