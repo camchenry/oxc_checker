@@ -6095,14 +6095,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     });
                 }
 
-                // Try to get an index signature from the resolved type
-                for index_info in object.index_infos() {
-                    // TODO(correctness): Don't hard-code the key type here
-                    if index_info.key_type == Ty::string() {
-                        return Some(index_info.value_type);
-                    }
-                }
-                None
+                let property_name = self.arena().str(property_name);
+                let string_key = Ty::string_literal(self.arena(), property_name);
+                self.get_index_signature_type_for_indexed_access(program_id, ty, string_key, 0)
+                    .or_else(|| {
+                        let value = property_name.parse::<f64>().ok()?;
+                        let number_key = Ty::number_literal(
+                            self.arena(),
+                            value,
+                            property_name,
+                            NumberBase::Decimal,
+                        );
+                        self.get_index_signature_type_for_indexed_access(
+                            program_id, ty, number_key, 0,
+                        )
+                    })
             }
             TypeData::ModuleNamespace(namespace) => {
                 namespace.properties.iter().find_map(|property| {

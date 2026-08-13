@@ -3437,6 +3437,27 @@ mod test {
     }
 
     #[test]
+    fn structural_property_lookup_uses_compatible_index_signatures() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        declare const literal: { [key: "foo"]: number };
+        declare const union: { [key: "foo" | "bar"]: boolean };
+        declare const string: { [key: string]: bigint };
+
+        const literalValue = literal.foo;
+        const unionValue = union.bar;
+        const stringValue = string.anything;
+        "#,
+        );
+
+        assert_eq!(get_global_symbol_type(&ret, "literalValue"), Ty::number());
+        assert_eq!(get_global_symbol_type(&ret, "unionValue"), Ty::boolean());
+        assert_eq!(get_global_symbol_type(&ret, "stringValue"), Ty::bigint());
+    }
+
+    #[test]
     fn contextually_typed_boolean_object_properties_keep_literal_location_types() {
         let allocator = Allocator::default();
         let ret = parse_and_check_source(
