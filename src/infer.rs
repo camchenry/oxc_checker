@@ -51,7 +51,7 @@ impl ConditionalInferMatchResult {
 
 #[allow(dead_code)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub(crate) enum InferencePriority {
+enum InferencePriority {
     None,
     Low,
     ReturnType,
@@ -78,16 +78,16 @@ impl InferencePriority {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(crate) struct InferenceResolutionFlags {
+struct InferenceResolutionFlags {
     fill_unresolved_with_unknown: bool,
 }
 
 impl InferenceResolutionFlags {
-    pub(crate) const NONE: Self = Self {
+    const NONE: Self = Self {
         fill_unresolved_with_unknown: false,
     };
 
-    pub(crate) const FILL_UNRESOLVED_WITH_UNKNOWN: Self = Self {
+    const FILL_UNRESOLVED_WITH_UNKNOWN: Self = Self {
         fill_unresolved_with_unknown: true,
     };
 
@@ -97,14 +97,14 @@ impl InferenceResolutionFlags {
 }
 
 #[derive(Clone, Debug)]
-pub(crate) struct InferenceInfo<'a> {
-    pub(crate) type_parameter: TyTypeParameter<'a>,
-    pub(crate) candidates: Vec<Ty<'a>>,
-    pub(crate) contra_candidates: Vec<Ty<'a>>,
-    pub(crate) inferred_type: Option<Ty<'a>>,
-    pub(crate) priority: InferencePriority,
-    pub(crate) top_level: bool,
-    pub(crate) is_fixed: bool,
+struct InferenceInfo<'a> {
+    type_parameter: TyTypeParameter<'a>,
+    candidates: Vec<Ty<'a>>,
+    contra_candidates: Vec<Ty<'a>>,
+    inferred_type: Option<Ty<'a>>,
+    priority: InferencePriority,
+    top_level: bool,
+    is_fixed: bool,
 }
 
 impl<'a> InferenceInfo<'a> {
@@ -122,7 +122,7 @@ impl<'a> InferenceInfo<'a> {
 }
 
 #[derive(Clone)]
-pub(crate) struct InferenceContext<'a> {
+struct InferenceContext<'a> {
     arena: CheckerArena<'a>,
     inferences: Vec<InferenceInfo<'a>>,
     return_type: Option<Ty<'a>>,
@@ -159,7 +159,7 @@ impl<'a> InferenceResolution<'a> {
 }
 
 impl<'a> InferenceContext<'a> {
-    pub(crate) fn with_substitutions(
+    fn with_substitutions(
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         substitutions: &TypeParameterSubstitutions<'a>,
         arena: CheckerArena<'a>,
@@ -176,7 +176,7 @@ impl<'a> InferenceContext<'a> {
         }
     }
 
-    pub(crate) fn with_return_type(mut self, return_type: Ty<'a>) -> Self {
+    fn with_return_type(mut self, return_type: Ty<'a>) -> Self {
         self.return_type = Some(return_type);
         self
     }
@@ -214,7 +214,7 @@ impl<'a> InferenceContext<'a> {
             .any(|inference| inference.type_parameter.name == name)
     }
 
-    pub(crate) fn add_candidate(
+    fn add_candidate(
         &mut self,
         type_parameter: TyTypeParameter<'a>,
         candidate: Ty<'a>,
@@ -244,7 +244,7 @@ impl<'a> InferenceContext<'a> {
         }
     }
 
-    pub(crate) fn add_contra_candidate(
+    fn add_contra_candidate(
         &mut self,
         type_parameter: TyTypeParameter<'a>,
         candidate: Ty<'a>,
@@ -276,7 +276,7 @@ impl<'a> InferenceContext<'a> {
     }
 
     #[cfg(test)]
-    pub(crate) fn resolve_with_contextual_mapper(
+    fn resolve_with_contextual_mapper(
         self,
         arena: crate::types::CheckerArena<'a>,
         flags: InferenceResolutionFlags,
@@ -288,7 +288,7 @@ impl<'a> InferenceContext<'a> {
         self.resolve_with_contextual_mapper_and_comparer(arena, flags, &comparer, &instantiator)
     }
 
-    pub(crate) fn resolve_with_contextual_mapper_and_comparer(
+    fn resolve_with_contextual_mapper_and_comparer(
         mut self,
         arena: crate::types::CheckerArena<'a>,
         flags: InferenceResolutionFlags,
@@ -344,7 +344,7 @@ impl<'a> InferenceContext<'a> {
         substitutions
     }
 
-    pub(crate) fn resolve_type_parameter_by_name(
+    fn resolve_type_parameter_by_name(
         &mut self,
         name: &str,
         arena: crate::types::CheckerArena<'a>,
@@ -2657,7 +2657,7 @@ fn remove_matching_intersection_constituents<'a>(
     (source_types, unmatched_targets, removed_match)
 }
 
-pub fn ts_signature_contains_infer(signature: &TSSignature<'_>) -> bool {
+fn ts_signature_contains_infer(signature: &TSSignature<'_>) -> bool {
     match signature {
         TSSignature::TSPropertySignature(property) => property
             .type_annotation
@@ -2688,7 +2688,7 @@ pub fn ts_signature_contains_infer(signature: &TSSignature<'_>) -> bool {
     }
 }
 
-pub fn formal_parameters_contain_infer(parameters: &FormalParameters<'_>) -> bool {
+fn formal_parameters_contain_infer(parameters: &FormalParameters<'_>) -> bool {
     parameters.items.iter().any(|parameter| {
         parameter
             .type_annotation
