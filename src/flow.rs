@@ -3,7 +3,7 @@ use oxc_ast::{
     ast::{ChainElement, Expression, LogicalExpression, StaticMemberExpression},
 };
 use oxc_span::{GetSpan, Span};
-use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
+use oxc_syntax::operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator};
 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
@@ -87,7 +87,7 @@ pub(crate) fn get_flow_type_of_reference<'a>(
         narrowed_type = candidate_type;
     }
 
-    latest_same_block_assignment_type(checker, node, symbol).unwrap_or(narrowed_type)
+    assignment_flow_type(checker, node, symbol, narrowed_type).unwrap_or(narrowed_type)
 }
 
 pub(crate) fn get_flow_type_of_static_member_reference<'a>(
@@ -749,6 +749,21 @@ fn assigned_type_for_write<'a>(
     program_id: ProgramId,
     write_node_id: oxc_semantic::NodeId,
 ) -> Option<Ty<'a>> {
+    if let AstKind::VariableDeclarator(declarator) = checker.nodes(program_id).kind(write_node_id) {
+        return declarator.init.as_ref().map(|initializer| {
+            let flags = if declarator.kind == oxc_ast::ast::VariableDeclarationKind::Const {
+                GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS
+            } else {
+                GetTypeFlags::CONTEXT_FREE
+            };
+            checker.get_type_of_expression_with_node(
+                program_id,
+                initializer,
+                Some(write_node_id),
+                flags,
+            )
+        });
+    }
     let assignment_id = checker.nodes(program_id).parent_id(write_node_id);
     let AstKind::AssignmentExpression(assignment) = checker.nodes(program_id).kind(assignment_id)
     else {
@@ -767,12 +782,14 @@ fn assigned_type_for_write<'a>(
     ))
 }
 
-fn latest_same_block_assignment_type<'a>(
+fn assignment_flow_type<'a>(
     checker: &CheckerReturn<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
+    current_type: Ty<'a>,
 ) -> Option<Ty<'a>> {
     let nodes = checker.nodes(node.program_id);
+    let mut is_compound_write = false;
     if let AstKind::IdentifierReference(identifier) = nodes.kind(node.node_id)
         && identifier.reference_id.get().is_some_and(|reference_id| {
             checker
@@ -782,14 +799,90 @@ fn latest_same_block_assignment_type<'a>(
                 .is_write()
         })
     {
+        let parent_id = nodes.parent_id(node.node_id);
+        let AstKind::AssignmentExpression(assignment) = nodes.kind(parent_id) else {
+            return None;
+        };
+        if assignment.operator == AssignmentOperator::Assign {
+            return None;
+        }
+        is_compound_write = true;
+    }
+    let assignment_flow = flow_graph::assignment_flow(checker, node, symbol.symbol_id)?;
+    if is_compound_write && !assignment_flow.crosses_blocks {
         return None;
     }
-    let query_span = nodes.kind(node.node_id).span();
-    let query_block = nodes.cfg_id(node.node_id);
+    let seed_type =
+        assigned_type_for_write(checker, symbol.program_id, assignment_flow.seed.node_id)?;
+    if current_type.array_element_type(checker.arena()).is_some()
+        && seed_type.array_element_type(checker.arena()).is_some()
+    {
+        return Some(current_type);
+    }
+    if assignment_flow.loop_writes.is_empty() {
+        return Some(seed_type);
+    }
 
-    flow_graph::symbol_writes(checker, symbol.program_id, symbol.symbol_id)
-        .into_iter()
-        .rev()
-        .find(|write| write.span.end <= query_span.start && write.block_id == query_block)
-        .and_then(|write| assigned_type_for_write(checker, symbol.program_id, write.node_id))
+    let mut types = Vec::with_capacity(assignment_flow.loop_writes.len() + 1);
+    types.push(seed_type);
+    for write in assignment_flow.loop_writes {
+        types.push(loop_write_type(
+            checker,
+            symbol.program_id,
+            write.node_id,
+            seed_type,
+        )?);
+    }
+    Some(Ty::union(checker.arena(), types))
+}
+
+fn loop_write_type<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: ProgramId,
+    write_node_id: oxc_semantic::NodeId,
+    seed_type: Ty<'a>,
+) -> Option<Ty<'a>> {
+    if let Some(assigned) = assigned_type_for_write(checker, program_id, write_node_id) {
+        return Some(assigned);
+    }
+
+    let nodes = checker.nodes(program_id);
+    let parent_id = nodes.parent_id(write_node_id);
+    match nodes.kind(parent_id) {
+        AstKind::AssignmentExpression(assignment)
+            if assignment.left.span() == nodes.kind(write_node_id).span() =>
+        {
+            match assignment.operator {
+                AssignmentOperator::Addition => {
+                    let right = checker.get_type_of_expression_with_node(
+                        program_id,
+                        &assignment.right,
+                        Some(parent_id),
+                        GetTypeFlags::CONTEXT_FREE,
+                    );
+                    if checker.is_assignable_to(seed_type, Ty::number())
+                        && checker.is_assignable_to(right, Ty::number())
+                    {
+                        Some(Ty::number())
+                    } else {
+                        None
+                    }
+                }
+                AssignmentOperator::Subtraction
+                | AssignmentOperator::Multiplication
+                | AssignmentOperator::Division
+                | AssignmentOperator::Remainder
+                | AssignmentOperator::Exponential
+                | AssignmentOperator::ShiftLeft
+                | AssignmentOperator::ShiftRight
+                | AssignmentOperator::ShiftRightZeroFill
+                | AssignmentOperator::BitwiseOR
+                | AssignmentOperator::BitwiseXOR
+                | AssignmentOperator::BitwiseAnd => Some(Ty::number()),
+                _ => None,
+            }
+        }
+        AstKind::UpdateExpression(_) => Some(Ty::number()),
+        _ => None,
+    }
 }

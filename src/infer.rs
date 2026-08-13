@@ -1334,6 +1334,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &'a TyFunction<'a>,
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
+        flags: GetTypeFlags,
     ) -> InferenceResolution<'a> {
         let argument_types = call_expression
             .arguments
@@ -1343,11 +1344,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let argument = argument.as_expression()?;
                 let parameter_type =
                     function_parameter_type_at_call_index(self.arena(), function, index)?;
-                let flags = if self.could_contain_type_variables(parameter_type) {
-                    GetTypeFlags::PRESERVE_LITERALS
-                } else {
-                    GetTypeFlags::NONE
-                };
+                let flags = flags
+                    | if self.could_contain_type_variables(parameter_type) {
+                        GetTypeFlags::PRESERVE_LITERALS
+                    } else {
+                        GetTypeFlags::NONE
+                    };
                 let argument_type = self.get_type_of_call_argument_for_parameter(
                     program_id,
                     argument,

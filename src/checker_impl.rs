@@ -1094,7 +1094,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_type_of_new_expression(program_id, new_expression, flags)
             }
             AstKind::CallExpression(call_expression) => {
-                self.get_type_of_call_expression(program_id, call_expression, node_id)
+                self.get_type_of_call_expression(program_id, call_expression, node_id, flags)
             }
             AstKind::ArrayExpression(array_expression) => {
                 self.get_type_of_array_expression(program_id, array_expression, node_id, context)
@@ -1132,7 +1132,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         computed_member_type.or_undefined(self.arena())
                     }
                     ChainElement::CallExpression(call_expr) => self
-                        .get_type_of_call_expression(program_id, call_expr, node_id)
+                        .get_type_of_call_expression(program_id, call_expr, node_id, flags)
                         .or_undefined(self.arena()),
                     ChainElement::PrivateFieldExpression(member) => self
                         .get_type_of_private_field_expression(program_id, member, node_id, flags)
@@ -6459,12 +6459,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: ProgramId,
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
+        flags: GetTypeFlags,
     ) -> Ty<'a> {
         let callee_type = self.get_type_of_expression_with_node(
             program_id,
             &call_expression.callee,
             node_id,
-            GetTypeFlags::NONE,
+            flags,
         );
         let candidates =
             self.get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call);
@@ -6485,6 +6486,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     call_expression,
                     node_id,
                     true,
+                    flags,
                 )
             })
             .collect::<Vec<_>>();
@@ -6500,6 +6502,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         call_expression,
                         node_id,
                         false,
+                        flags,
                     )
                 })
             })
@@ -6669,6 +6672,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             std::iter::once(None).chain(tagged_template.quasi.expressions.iter().map(Some)),
             node_id,
             substitutions,
+            GetTypeFlags::NONE,
         )
     }
 
@@ -7035,6 +7039,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
         require_applicable: bool,
+        flags: GetTypeFlags,
     ) -> Option<ResolvedSignatureCandidate<'a>> {
         let function = signature.function(self.arena());
         let inference = self.infer_call_type_parameter_resolution(
@@ -7042,6 +7047,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             function,
             call_expression,
             node_id,
+            flags,
         );
         let instantiated = self.instantiate_signature_return_type(
             program_id,
@@ -7056,6 +7062,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 CallKind::Call(call_expression),
                 node_id,
                 inference.substitutions(),
+                flags,
             )
         {
             return None;
@@ -7088,6 +7095,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     call_expression,
                     Some(call_expression.node_id.get()),
                     true,
+                    GetTypeFlags::CONTEXT_FREE,
                 )
             })
             .find_map(|candidate| {
@@ -7184,6 +7192,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
         substitutions: &TypeParameterSubstitutions<'a>,
+        flags: GetTypeFlags,
     ) -> bool {
         let type_arguments = call_kind.type_arguments();
         let type_argument_count =
@@ -7213,6 +7222,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             arguments.iter().map(|argument| argument.as_expression()),
             node_id,
             substitutions,
+            flags,
         )
     }
 
@@ -7344,6 +7354,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 CallKind::New(new_expression),
                 None,
                 inference.substitutions(),
+                GetTypeFlags::NONE,
             )
         {
             return None;
@@ -7368,6 +7379,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         arguments: impl Iterator<Item = Option<&'a Expression<'a>>>,
         node_id: Option<NodeId>,
         substitutions: &TypeParameterSubstitutions<'a>,
+        flags: GetTypeFlags,
     ) -> bool {
         let mapper = substitutions.to_mapper(self.arena());
         for (index, argument) in arguments.enumerate() {
@@ -7377,12 +7389,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
                 return false;
             };
-            let flags = if self.should_preserve_argument_literals_for_parameter_type(parameter_type)
-            {
-                GetTypeFlags::PRESERVE_LITERALS
-            } else {
-                GetTypeFlags::NONE
-            };
+            let flags = flags
+                | if self.should_preserve_argument_literals_for_parameter_type(parameter_type) {
+                    GetTypeFlags::PRESERVE_LITERALS
+                } else {
+                    GetTypeFlags::NONE
+                };
             let parameter_type = self.instantiate_type(parameter_type, &mapper);
             let argument_type = self.get_type_of_call_argument_for_parameter(
                 program_id,

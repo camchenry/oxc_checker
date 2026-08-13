@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 
 use oxc_ast::AstKind;
-use oxc_cfg::BlockNodeId;
+use oxc_cfg::{
+    BlockNodeId, EdgeType,
+    graph::{algo::dominators::simple_fast, visit::EdgeRef},
+};
 use oxc_semantic::{NodeId, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::LogicalOperator;
@@ -23,6 +26,13 @@ pub(crate) struct WriteEvent {
     pub(crate) node_id: NodeId,
     pub(crate) block_id: BlockNodeId,
     pub(crate) span: Span,
+}
+
+/// Writes that determine an assignment-based flow type at a reference.
+pub(crate) struct AssignmentFlow {
+    pub(crate) seed: WriteEvent,
+    pub(crate) loop_writes: SmallVec<[WriteEvent; 4]>,
+    pub(crate) crosses_blocks: bool,
 }
 
 /// Lazily collected, type-independent flow effects for one program.
@@ -105,6 +115,25 @@ pub(crate) fn symbol_writes(
             }
         })
         .collect::<SmallVec<[WriteEvent; 4]>>();
+    if let Some((declaration_id, declarator)) = checker
+        .variable_declarator_for_symbol(crate::checker::SymbolRef::new(program_id, symbol_id))
+        && declarator.init.as_ref().is_some_and(|initializer| {
+            matches!(
+                initializer,
+                oxc_ast::ast::Expression::BooleanLiteral(_)
+                    | oxc_ast::ast::Expression::NullLiteral(_)
+                    | oxc_ast::ast::Expression::NumericLiteral(_)
+                    | oxc_ast::ast::Expression::StringLiteral(_)
+                    | oxc_ast::ast::Expression::BigIntLiteral(_)
+            )
+        })
+    {
+        writes.push(WriteEvent {
+            node_id: declaration_id,
+            block_id: nodes.cfg_id(declaration_id),
+            span: declarator.span,
+        });
+    }
     writes.sort_unstable_by_key(|write| write.span.end);
 
     checker
@@ -114,6 +143,62 @@ pub(crate) fn symbol_writes(
         .or_default()
         .cache_writes(symbol_id, &writes);
     writes
+}
+
+/// Find the linear or loop-carried writes that can determine a reference's flow type.
+pub(crate) fn assignment_flow(
+    checker: &CheckerReturn<'_, '_>,
+    node: NodeRef,
+    symbol_id: SymbolId,
+) -> Option<AssignmentFlow> {
+    let nodes = checker.nodes(node.program_id);
+    let query_span = nodes.kind(node.node_id).span();
+    let query_block = nodes.cfg_id(node.node_id);
+    let writes = symbol_writes(checker, node.program_id, symbol_id);
+
+    if let Some(seed) = writes.iter().rev().find(|write| {
+        write.span.end <= query_span.start
+            && write.block_id == query_block
+            && !matches!(nodes.kind(write.node_id), AstKind::VariableDeclarator(_))
+    }) {
+        return Some(AssignmentFlow {
+            seed: *seed,
+            loop_writes: SmallVec::new(),
+            crosses_blocks: false,
+        });
+    }
+
+    let cfg = checker.semantic(node.program_id).cfg()?;
+    let entry = cfg
+        .graph()
+        .edge_references()
+        .filter(|edge| matches!(edge.weight(), EdgeType::NewFunction))
+        .map(|edge| edge.target())
+        .find(|entry| cfg.is_reachable(*entry, query_block))
+        .or_else(|| cfg.graph().node_indices().next())?;
+    let dominators = simple_fast(cfg.graph(), entry);
+    let seed = writes.iter().rev().find(|write| {
+        write.span.end <= query_span.start
+            && dominators
+                .dominators(query_block)
+                .is_some_and(|mut blocks| blocks.any(|block| block == write.block_id))
+    })?;
+
+    let loop_writes = writes
+        .iter()
+        .copied()
+        .filter(|write| {
+            write.span.end > seed.span.end
+                && cfg.is_reachable(query_block, write.block_id)
+                && cfg.is_reachable(write.block_id, query_block)
+        })
+        .collect();
+
+    Some(AssignmentFlow {
+        seed: *seed,
+        loop_writes,
+        crosses_blocks: true,
+    })
 }
 
 fn write_effect_span(

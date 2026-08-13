@@ -1676,6 +1676,48 @@ fn flow_self_referential_assignment_reads_pre_write_type() {
 }
 
 #[test]
+fn flow_self_referential_call_assignment_terminates() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    function next(value: any): number { return 1; }
+    let value: any = 0;
+    value = next(value);
+    value = next(value);
+    value;
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 5);
+    assert_eq!(reference_types[3], Ty::number());
+    assert_eq!(reference_types[4], Ty::number());
+}
+
+#[test]
+fn flow_merges_loop_carried_assignments_from_pre_loop_default() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    function test() {
+        let value: any;
+        value = 1;
+        for (let index = 0; index < 1; index += 1) {
+            value;
+            value = 2;
+        }
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 3);
+    assert_eq!(reference_types[1].to_type_string(ret.arena), "number");
+}
+
+#[test]
 fn flow_assignment_does_not_refine_later_compound_write_target() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
