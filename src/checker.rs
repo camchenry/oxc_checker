@@ -10,6 +10,7 @@ use oxc_span::Span;
 use smallvec::SmallVec;
 
 use crate::{
+    flow_graph::ProgramFlowGraph,
     global_types::GlobalSymbolTable,
     mapper::MapperCacheEntry,
     program::{ProgramId, ProgramStore},
@@ -81,6 +82,7 @@ pub struct CheckerReturn<'a, 'store> {
     pub(crate) type_string_cache: RefCell<HashMap<TypeStringCacheKey<'a>, String>>,
     pub(crate) expando_assignments_by_container:
         RefCell<HashMap<ProgramId, HashMap<NodeId, Vec<NodeId>>>>,
+    pub(crate) flow_graph_cache: RefCell<HashMap<ProgramId, ProgramFlowGraph>>,
     pub(crate) evolving_array_flow_cache: RefCell<HashMap<SymbolRef, HashMap<NodeId, Ty<'a>>>>,
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
@@ -238,6 +240,7 @@ impl CheckerBuilder {
             overflowed_type_alias_resolutions: RefCell::new(Vec::new()),
             type_string_cache: RefCell::new(HashMap::new()),
             expando_assignments_by_container: RefCell::new(HashMap::new()),
+            flow_graph_cache: RefCell::new(HashMap::new()),
             evolving_array_flow_cache: RefCell::new(HashMap::new()),
             interface_declarations_cache: RefCell::new(HashMap::new()),
             resolving_symbols: RefCell::new(Vec::new()),

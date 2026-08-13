@@ -1616,6 +1616,172 @@ fn flow_write_invalidates_previous_narrowing() {
 }
 
 #[test]
+fn flow_applies_nested_branch_effects_in_order() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    declare const value: string | number | undefined;
+    if (value) {
+        if (typeof value === 'string') {
+            value;
+        }
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 3);
+    assert_type_eq(
+        ret.arena,
+        &reference_types[1],
+        &Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
+    );
+    assert_eq!(reference_types[2], Ty::string());
+}
+
+#[test]
+fn flow_narrows_logical_expression_rhs() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    declare const value: string | undefined;
+    const result = value && value;
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 2);
+    assert_type_eq(
+        ret.arena,
+        &reference_types[0],
+        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+    );
+    assert_eq!(reference_types[1], Ty::string());
+}
+
+#[test]
+fn flow_does_not_cross_deferred_closure_boundary() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    declare const value: string | undefined;
+    if (value) {
+        const read = () => value;
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 2);
+    for ty in reference_types {
+        assert_type_eq(
+            ret.arena,
+            &ty,
+            &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+        );
+    }
+}
+
+#[test]
+fn flow_ignores_write_in_sibling_branch() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let value: string | undefined;
+    declare const condition: boolean;
+    if (condition && value) {
+        value;
+    } else {
+        value = undefined;
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types[1], Ty::string());
+}
+
+#[test]
+fn flow_conservatively_invalidates_narrow_after_nested_write() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let value: string | undefined;
+    declare const condition: boolean;
+    if (value) {
+        if (condition) {
+            value = undefined;
+        }
+        value;
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_type_eq(
+        ret.arena,
+        reference_types.last().unwrap(),
+        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+    );
+}
+
+#[test]
+fn flow_narrows_optional_static_member_in_true_branch() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    declare const container: { value: string | undefined };
+    if (container?.value) {
+        container.value;
+    }
+    ",
+    );
+
+    let member_types = get_static_member_expression_types(&ret, "value");
+    assert_eq!(member_types.len(), 2);
+    assert_eq!(member_types[1], Ty::string());
+}
+
+#[test]
+fn flow_graph_effects_match_legacy_discovery() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    declare const value: string | number | undefined;
+    declare const condition: boolean;
+    if (value) {
+        const nested = typeof value === 'string' ? value : value && value;
+        const closure = () => value;
+    } else if (condition) {
+        value;
+    }
+    ",
+    );
+    let checker = checker(&ret);
+    let nodes = checker.nodes(ret.program_id);
+
+    for (node_id, node) in nodes.iter_enumerated() {
+        if !matches!(node.kind(), AstKind::IdentifierReference(_)) {
+            continue;
+        }
+        let node = NodeRef::new(ret.program_id, node_id);
+        assert_eq!(
+            crate::flow_graph::branch_effects(&checker, node),
+            crate::flow_graph::legacy_branch_effects(&checker, node),
+            "branch effects differ for {:?}",
+            nodes.kind(node_id).span()
+        );
+    }
+}
+
+#[test]
 fn flow_evolves_empty_array_locals_from_mutations() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

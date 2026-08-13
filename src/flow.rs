@@ -1,9 +1,6 @@
 use oxc_ast::{
     AstKind,
-    ast::{
-        ChainElement, ConditionalExpression, Expression, IfStatement, LogicalExpression,
-        StaticMemberExpression,
-    },
+    ast::{ChainElement, Expression, LogicalExpression, StaticMemberExpression},
 };
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
@@ -11,18 +8,10 @@ use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     evolving_arrays,
+    flow_graph::{self, BranchEffect},
     program::ProgramId,
     types::{Ty, TyTypePredicateKind, TypeData},
 };
-
-/// A branch-local condition that may narrow identifier references inside an `if` arm.
-#[derive(Clone, Copy)]
-struct BranchFact<'a> {
-    condition: &'a Expression<'a>,
-    condition_span: Span,
-    branch_span: Span,
-    assume_true: bool,
-}
 
 /// String witnesses supported by JavaScript's `typeof` operator.
 #[derive(Clone, Copy, Eq, PartialEq)]
@@ -69,22 +58,22 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     let mut narrowed_type =
         evolving_arrays::get_flow_type_of_reference(checker, node, symbol, base_type)
             .unwrap_or(base_type);
-    let mut facts = collect_branch_facts(checker, node);
-    facts.reverse();
-
-    for fact in facts {
+    for effect in flow_graph::branch_effects(checker, node) {
+        let Some(condition) = branch_effect_condition(checker, node.program_id, effect) else {
+            continue;
+        };
         let candidate_type = narrow_by_condition(
             checker,
             node,
             symbol,
             narrowed_type,
-            fact.condition,
-            fact.assume_true,
+            condition,
+            effect.assume_true,
         );
         if candidate_type == narrowed_type {
             continue;
         }
-        if has_intervening_write(checker, node, symbol, fact) {
+        if has_intervening_write(checker, node, symbol, effect, condition.span()) {
             continue;
         }
         narrowed_type = candidate_type;
@@ -108,140 +97,38 @@ pub(crate) fn get_flow_type_of_static_member_reference<'a>(
     let node = NodeRef::new(program_id, identifier.node_id());
     let property_name = member.property.name.as_str();
 
-    collect_branch_facts(checker, node)
+    flow_graph::branch_effects(checker, node)
         .into_iter()
-        .find(|fact| {
-            fact.assume_true
+        .find(|effect| {
+            let Some(condition) = branch_effect_condition(checker, program_id, *effect) else {
+                return false;
+            };
+            effect.assume_true
                 && optional_chain_property_matches_symbol(
                     checker,
                     program_id,
                     symbol,
                     property_name,
-                    fact.condition,
+                    condition,
                 )
-                && !has_intervening_write(checker, node, symbol, *fact)
+                && !has_intervening_write(checker, node, symbol, *effect, condition.span())
         })
         .map_or(base_type, |_| {
             narrow_by_truthiness(checker, base_type, true)
         })
 }
 
-/// Collect enclosing `if` branch facts for a reference location, innermost first.
-fn collect_branch_facts<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef) -> Vec<BranchFact<'a>> {
-    let query_span = checker.node_kind(node).span();
-    let mut facts = Vec::new();
-
-    for (_ancestor_id, ancestor) in checker
-        .nodes(node.program_id)
-        .ancestors_enumerated(node.node_id)
-    {
-        match ancestor.kind() {
-            AstKind::Function(_) | AstKind::ArrowFunctionExpression(_) | AstKind::Class(_) => break,
-            AstKind::IfStatement(if_statement) => {
-                if let Some(fact) = branch_fact_for_if(if_statement, query_span) {
-                    facts.push(fact);
-                }
-            }
-            AstKind::ConditionalExpression(conditional) => {
-                if let Some(fact) = branch_fact_for_conditional(conditional, query_span) {
-                    facts.push(fact);
-                }
-            }
-            AstKind::LogicalExpression(logical) => {
-                if let Some(fact) = branch_fact_for_logical(logical, query_span) {
-                    facts.push(fact);
-                }
-            }
-            _ => {}
-        }
+fn branch_effect_condition<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: ProgramId,
+    effect: BranchEffect,
+) -> Option<&'a Expression<'a>> {
+    match checker.nodes(program_id).kind(effect.controller) {
+        AstKind::IfStatement(if_statement) => Some(&if_statement.test),
+        AstKind::ConditionalExpression(conditional) => Some(&conditional.test),
+        AstKind::LogicalExpression(logical) => Some(&logical.left),
+        _ => None,
     }
-
-    facts
-}
-
-/// Return the branch fact for an `if` statement when a query is inside one of its arms.
-fn branch_fact_for_if<'a>(
-    if_statement: &'a IfStatement<'a>,
-    query_span: Span,
-) -> Option<BranchFact<'a>> {
-    let condition = &if_statement.test;
-    let condition_span = condition.span();
-    let consequent_span = if_statement.consequent.span();
-    if consequent_span.contains_inclusive(query_span) {
-        return Some(BranchFact {
-            condition,
-            condition_span,
-            branch_span: consequent_span,
-            assume_true: true,
-        });
-    }
-
-    let alternate = if_statement.alternate.as_ref()?;
-    let alternate_span = alternate.span();
-    if alternate_span.contains_inclusive(query_span) {
-        return Some(BranchFact {
-            condition,
-            condition_span,
-            branch_span: alternate_span,
-            assume_true: false,
-        });
-    }
-
-    None
-}
-
-/// Return the branch fact for a conditional expression when a query is inside one of its arms.
-fn branch_fact_for_conditional<'a>(
-    conditional: &'a ConditionalExpression<'a>,
-    query_span: Span,
-) -> Option<BranchFact<'a>> {
-    let condition = &conditional.test;
-    let condition_span = condition.span();
-    let consequent_span = conditional.consequent.span();
-    if consequent_span.contains_inclusive(query_span) {
-        return Some(BranchFact {
-            condition,
-            condition_span,
-            branch_span: consequent_span,
-            assume_true: true,
-        });
-    }
-
-    let alternate_span = conditional.alternate.span();
-    if alternate_span.contains_inclusive(query_span) {
-        return Some(BranchFact {
-            condition,
-            condition_span,
-            branch_span: alternate_span,
-            assume_true: false,
-        });
-    }
-
-    None
-}
-
-/// Return the branch fact for a logical expression when a query is inside the RHS.
-fn branch_fact_for_logical<'a>(
-    logical: &'a LogicalExpression<'a>,
-    query_span: Span,
-) -> Option<BranchFact<'a>> {
-    let right_span = logical.right.span();
-    if !right_span.contains_inclusive(query_span) {
-        return None;
-    }
-
-    let assume_true = match logical.operator {
-        LogicalOperator::And => true,
-        LogicalOperator::Or => false,
-        LogicalOperator::Coalesce => return None,
-    };
-
-    Some(BranchFact {
-        condition: &logical.left,
-        condition_span: logical.left.span(),
-        branch_span: right_span,
-        assume_true,
-    })
 }
 
 /// Narrow a type based on one condition expression and an assumed condition outcome.
@@ -807,13 +694,18 @@ fn has_intervening_write(
     checker: &CheckerReturn<'_, '_>,
     node: NodeRef,
     symbol: SymbolRef,
-    fact: BranchFact<'_>,
+    effect: BranchEffect,
+    condition_span: Span,
 ) -> bool {
     if symbol.program_id != node.program_id {
         return false;
     }
 
     let query_span = checker.node_kind(node).span();
+    let branch_span = checker
+        .nodes(node.program_id)
+        .kind(effect.branch_root)
+        .span();
     checker
         .semantic(symbol.program_id)
         .symbol_references(symbol.symbol_id)
@@ -825,8 +717,8 @@ fn has_intervening_write(
                 .nodes(symbol.program_id)
                 .kind(reference.node_id())
                 .span();
-            write_span.start > fact.condition_span.end
+            write_span.start > condition_span.end
                 && write_span.start < query_span.start
-                && fact.branch_span.contains_inclusive(write_span)
+                && branch_span.contains_inclusive(write_span)
         })
 }
