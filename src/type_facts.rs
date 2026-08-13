@@ -38,7 +38,7 @@ fn get_type_facts_worker<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFacts {
         | TypeData::Error(_)
         | TypeData::Unknown => TypeFacts::TRUTHY | TypeFacts::FALSY,
         TypeData::StringLiteral(literal) => {
-            if string_literal_value_is_empty(literal.value) {
+            if literal.value.is_empty() {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
@@ -82,19 +82,6 @@ fn get_type_facts_worker<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFacts {
         TypeData::Never => TypeFacts::NONE,
         _ => TypeFacts::TRUTHY | TypeFacts::FALSY,
     }
-}
-
-fn string_literal_value_is_empty(value: &str) -> bool {
-    let unquoted = value
-        .strip_prefix('\'')
-        .and_then(|value| value.strip_suffix('\''))
-        .or_else(|| {
-            value
-                .strip_prefix('"')
-                .and_then(|value| value.strip_suffix('"'))
-        })
-        .unwrap_or(value);
-    unquoted.is_empty()
 }
 
 // TODO: Simplify this when big int literals just support storing the actual value

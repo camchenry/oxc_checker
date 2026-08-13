@@ -3029,6 +3029,7 @@ fn const_initializers_use_literal_types() {
     const count = 1;
     const label = "ready";
     const quoted = '\"ready\"';
+    const quoteOnlyNot = !'\"\"';
     const enabled = true;
     "#,
     );
@@ -3047,6 +3048,10 @@ fn const_initializers_use_literal_types() {
         ret.arena,
         &get_global_symbol_type(&ret, "quoted"),
         &Ty::string_literal(arena(&ret), "\"ready\""),
+    );
+    assert_eq!(
+        get_global_symbol_type(&ret, "quoteOnlyNot"),
+        Ty::boolean_false()
     );
     assert_eq!(get_global_symbol_type(&ret, "enabled"), Ty::boolean_true());
 }
