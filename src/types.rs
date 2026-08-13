@@ -13,14 +13,17 @@ use oxc_ast::ast::{
 use oxc_index::Idx;
 use oxc_str::Str;
 use oxc_syntax::identifier::is_identifier_name;
+use smallvec::SmallVec;
+#[cfg(test)]
+use std::collections::HashSet;
 use std::{
     cell::{Cell, RefCell},
-    collections::HashSet,
     marker::PhantomData,
     num::NonZeroU32,
 };
 
 const SYNTHETIC_INDEX_SIGNATURE_NAME: &str = "x";
+const TYPE_VISIT_INLINE_WORDS: usize = 32;
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -1129,19 +1132,25 @@ impl<'a> TypeIdentity<'a> {
 }
 
 pub(crate) fn visit_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>, f: &mut impl FnMut(Ty<'a>)) {
-    visit_type_at_depth(arena, ty, f, &mut HashSet::new(), 0);
+    let mut visited = SmallVec::<[u64; TYPE_VISIT_INLINE_WORDS]>::new();
+    visited.resize(arena.type_count().div_ceil(u64::BITS as usize), 0);
+    visit_type_at_depth(arena, ty, f, &mut visited, 0);
 }
 
 fn visit_type_at_depth<'a>(
     arena: CheckerArena<'a>,
     ty: Ty<'a>,
     f: &mut impl FnMut(Ty<'a>),
-    visited: &mut HashSet<TypeId>,
+    visited: &mut [u64],
     depth: usize,
 ) {
-    if depth >= TYPE_VISIT_MAX_DEPTH || !visited.insert(ty.id()) {
+    let index = ty.id().index();
+    let word = index / u64::BITS as usize;
+    let mask = 1 << (index % u64::BITS as usize);
+    if depth >= TYPE_VISIT_MAX_DEPTH || visited[word] & mask != 0 {
         return;
     }
+    visited[word] |= mask;
 
     f(ty);
     let next_depth = depth + 1;
