@@ -290,6 +290,13 @@ pub mod benchmark_support {
         queries: Vec<CheckQuery>,
     }
 
+    impl CheckPlan {
+        #[must_use]
+        pub const fn query_count(&self) -> usize {
+            self.queries.len()
+        }
+    }
+
     #[derive(Clone, Copy)]
     enum CheckQueryKind {
         Location,
@@ -341,6 +348,17 @@ pub mod benchmark_support {
             program_id,
             queries,
         }
+    }
+
+    /// Build reusable checker query plans for every non-library file in a program store.
+    #[must_use]
+    pub fn check_plans(store: &program::ProgramStore<'_>) -> Vec<CheckPlan> {
+        store
+            .entries()
+            .iter()
+            .filter(|entry| !entry.is_lib())
+            .map(|entry| check_plan(store, entry.id()))
+            .collect()
     }
 
     /// Run checker type queries over an already parsed and semantically built program.

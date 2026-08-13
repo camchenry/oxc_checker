@@ -749,6 +749,7 @@ version = "0.1.0"
 dependencies = [
  "bitflags",
  "criterion",
+ "libc",
  "num-traits",
  "oxc_allocator",
  "oxc_ast",
@@ -763,6 +764,8 @@ dependencies = [
  "oxc_str",
  "oxc_syntax",
  "rayon",
+ "serde",
+ "serde_json",
  "simdutf8",
  "terminal_size",
 ]
