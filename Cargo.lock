@@ -767,6 +767,7 @@ dependencies = [
  "serde",
  "serde_json",
  "simdutf8",
+ "smallvec",
  "terminal_size",
 ]
 

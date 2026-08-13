@@ -7,6 +7,7 @@ use oxc_ast::ast::TSInterfaceDeclaration;
 use oxc_index::IndexVec;
 use oxc_semantic::{NodeId, SymbolId};
 use oxc_span::Span;
+use smallvec::SmallVec;
 
 use crate::{
     global_types::GlobalSymbolTable,
@@ -34,13 +35,13 @@ pub(crate) struct TypeAliasMetadata {
 pub(crate) struct TypeAliasResolution {
     pub(crate) program_id: ProgramId,
     pub(crate) declaration: NodeId,
-    pub(crate) type_arguments: Vec<TypeId>,
+    pub(crate) type_arguments: SmallVec<[TypeId; 4]>,
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct InstantiationCacheKey<'a> {
     pub(crate) target: TypeId,
-    pub(crate) mapper: Vec<MapperCacheEntry<'a>>,
+    pub(crate) mapper: SmallVec<[MapperCacheEntry<'a>; 1]>,
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]

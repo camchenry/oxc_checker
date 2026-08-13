@@ -10557,8 +10557,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     NodeRef::new(alias_symbol.program_id, declaration),
                 )
             };
-        let type_arguments = if alias_symbol.program_id != reference_program_id {
-            reference
+        let expanded = if alias_symbol.program_id != reference_program_id {
+            let type_arguments = reference
                 .type_arguments
                 .iter()
                 .map(|ty| {
@@ -10568,17 +10568,22 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         depth + 1,
                     )
                 })
-                .collect::<Vec<_>>()
+                .collect::<Vec<_>>();
+            self.get_expanded_type_alias_declaration(
+                declaration.program_id,
+                declaration.node_id,
+                &type_arguments,
+                depth + 1,
+            )
         } else {
-            reference.type_arguments.iter().copied().collect::<Vec<_>>()
+            self.get_expanded_type_alias_declaration(
+                declaration.program_id,
+                declaration.node_id,
+                &reference.type_arguments,
+                depth + 1,
+            )
         };
-        self.get_expanded_type_alias_declaration(
-            declaration.program_id,
-            declaration.node_id,
-            &type_arguments,
-            depth + 1,
-        )
-        .map(|ty| (declaration.program_id, ty))
+        expanded.map(|ty| (declaration.program_id, ty))
     }
 
     pub(crate) fn expand_type_alias_for_relation(

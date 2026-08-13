@@ -1,10 +1,12 @@
 use std::{cell::RefCell, rc::Rc};
 
 use oxc_allocator::Vec as ArenaVec;
+use smallvec::{SmallVec, smallvec};
 
 use crate::types::{CheckerArena, Ty, TyTypeParameter, TypeData, TypeId};
 
 type TypeParameterResolver<'a> = Rc<RefCell<dyn FnMut(&str) -> Option<Ty<'a>> + 'a>>;
+type MapperPairs<'a> = SmallVec<[(Ty<'a>, Ty<'a>); 4]>;
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum MapperCacheSource<'a> {
@@ -20,12 +22,14 @@ pub(crate) struct MapperCacheEntry<'a> {
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct TypeParameterSubstitutions<'a> {
-    pairs: Vec<(TyTypeParameter<'a>, Ty<'a>)>,
+    pairs: SmallVec<[(TyTypeParameter<'a>, Ty<'a>); 4]>,
 }
 
 impl<'a> TypeParameterSubstitutions<'a> {
     pub(crate) fn new() -> Self {
-        Self { pairs: Vec::new() }
+        Self {
+            pairs: SmallVec::new(),
+        }
     }
 
     pub(crate) fn insert(&mut self, type_parameter: TyTypeParameter<'a>, ty: Ty<'a>) {
@@ -104,7 +108,7 @@ impl<'a> TypeMapper<'a> {
                     type_argument,
                 )
             })
-            .collect::<Vec<_>>();
+            .collect::<MapperPairs<'a>>();
         Self::from_pairs(arena, pairs)
     }
 
@@ -133,7 +137,7 @@ impl<'a> TypeMapper<'a> {
         source: Ty<'a>,
         target: Ty<'a>,
     ) -> Self {
-        let mut pairs = vec![(source, target)];
+        let mut pairs = smallvec![(source, target)];
         self.push_pairs_excluding(arena, &mut pairs, source);
         Self::from_pairs(arena, pairs)
     }
@@ -144,7 +148,7 @@ impl<'a> TypeMapper<'a> {
         names: impl IntoIterator<Item = &'a str>,
     ) -> Self {
         let names = names.into_iter().collect::<Vec<_>>();
-        let mut pairs = Vec::new();
+        let mut pairs = SmallVec::new();
         self.push_pairs(&mut pairs);
         pairs.retain(|(source, _)| !is_bare_type_reference_with_name(arena, *source, &names));
         Self::from_pairs(arena, pairs)
@@ -157,7 +161,7 @@ impl<'a> TypeMapper<'a> {
     pub(crate) fn cache_entries(
         &self,
         arena: CheckerArena<'a>,
-    ) -> Option<Vec<MapperCacheEntry<'a>>> {
+    ) -> Option<SmallVec<[MapperCacheEntry<'a>; 1]>> {
         let source_key = |source: Ty<'a>| match arena.type_data(source) {
             TypeData::TypeReference(reference)
                 if reference.is_bare() && reference.target.is_none() =>
@@ -167,8 +171,8 @@ impl<'a> TypeMapper<'a> {
             _ => MapperCacheSource::Type(source.id()),
         };
         match self {
-            Self::Empty => Some(Vec::new()),
-            Self::Simple { source, target } => Some(vec![MapperCacheEntry {
+            Self::Empty => Some(SmallVec::new()),
+            Self::Simple { source, target } => Some(smallvec![MapperCacheEntry {
                 source: source_key(*source),
                 target: target.id(),
             }]),
@@ -230,7 +234,7 @@ impl<'a> TypeMapper<'a> {
         }
     }
 
-    fn from_pairs(arena: CheckerArena<'a>, pairs: Vec<(Ty<'a>, Ty<'a>)>) -> Self {
+    fn from_pairs(arena: CheckerArena<'a>, pairs: MapperPairs<'a>) -> Self {
         match pairs.as_slice() {
             [] => Self::Empty,
             &[(source, target)] => Self::Simple { source, target },
@@ -241,7 +245,7 @@ impl<'a> TypeMapper<'a> {
         }
     }
 
-    fn push_pairs(&self, pairs: &mut Vec<(Ty<'a>, Ty<'a>)>) {
+    fn push_pairs(&self, pairs: &mut MapperPairs<'a>) {
         match self {
             Self::Empty => {}
             Self::Simple { source, target } => pairs.push((*source, *target)),
@@ -266,7 +270,7 @@ impl<'a> TypeMapper<'a> {
     fn push_pairs_excluding(
         &self,
         arena: CheckerArena<'a>,
-        pairs: &mut Vec<(Ty<'a>, Ty<'a>)>,
+        pairs: &mut MapperPairs<'a>,
         excluded: Ty<'a>,
     ) {
         match self {
