@@ -82,7 +82,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let references_match = matches!(
             (self.arena().type_data(source), self.arena().type_data(target)),
             (TypeData::TypeReference(source), TypeData::TypeReference(target))
-                if source.name == target.name
+                if source.has_identical_target(target)
                     && source.type_arguments.len() == target.type_arguments.len()
         );
         if !references_match {
@@ -228,7 +228,7 @@ fn is_assignable_to_at_depth<'a>(
                 )
         }
         (TypeData::TypeReference(source), TypeData::TypeReference(target)) => {
-            source.name == target.name
+            source.has_identical_target(target)
                 && source.type_arguments.len() == target.type_arguments.len()
                 && source
                     .type_arguments

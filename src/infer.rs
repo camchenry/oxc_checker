@@ -1073,7 +1073,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     depth + 1,
                 ),
             (TypeData::TypeReference(source), TypeData::TypeReference(target))
-                if source.name == target.name
+                if source.has_identical_target(target)
                     && source.type_arguments.len() == target.type_arguments.len() =>
             {
                 self.infer_conditional_from_type_pairs(

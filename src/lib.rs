@@ -1795,6 +1795,9 @@ mod test {
         assert_ne!(member_types[0], member_types[1]);
         assert_eq!(member_types[0].to_type_string(ret.arena), "E.A");
         assert_eq!(member_types[1].to_type_string(ret.arena), "E.A");
+        let checker = checker(&ret);
+        assert!(!checker.is_assignable_to(member_types[0], member_types[1]));
+        assert!(!checker.is_assignable_to(member_types[1], member_types[0]));
     }
 
     #[test]

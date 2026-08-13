@@ -667,6 +667,13 @@ impl TyTypeReference<'_> {
     pub fn is_bare(&self) -> bool {
         self.type_arguments.is_empty()
     }
+
+    pub(crate) fn has_identical_target(&self, other: &Self) -> bool {
+        match (self.target, other.target) {
+            (Some(left), Some(right)) => left == right,
+            _ => self.name == other.name,
+        }
+    }
 }
 
 impl PartialEq for TyTypeReference<'_> {
@@ -674,16 +681,6 @@ impl PartialEq for TyTypeReference<'_> {
         self.name == other.name
             && self.target == other.target
             && self.type_arguments == other.type_arguments
-    }
-}
-
-fn type_reference_targets_are_identical(
-    left: &TyTypeReference<'_>,
-    right: &TyTypeReference<'_>,
-) -> bool {
-    match (left.target, right.target) {
-        (Some(left), Some(right)) => left == right,
-        _ => left.name == right.name,
     }
 }
 
@@ -945,7 +942,7 @@ impl<'a> TypeIdentity<'a> {
                 self.functions_are_identical(left, right)
             }
             (TypeData::TypeReference(left), TypeData::TypeReference(right)) => {
-                type_reference_targets_are_identical(left, right)
+                left.has_identical_target(right)
                     && self.types_are_identical(&left.type_arguments, &right.type_arguments)
             }
             (TypeData::TypeQuery(left), TypeData::TypeQuery(right)) => {
