@@ -1608,11 +1608,89 @@ fn flow_write_invalidates_previous_narrowing() {
         &Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
     );
     assert_eq!(reference_types[1], Ty::string());
+    assert_eq!(reference_types[2], Ty::number());
+}
+
+#[test]
+fn flow_compatible_assignment_preserves_previous_narrowing() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let value: string | number;
+    if (typeof value === 'string') {
+        value = 'next';
+        value;
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 3);
+    assert_eq!(reference_types[1], Ty::string());
+    assert_eq!(reference_types[2], Ty::string());
+}
+
+#[test]
+fn flow_direct_assignment_updates_current_type() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let value: string | number;
+    value = 1;
+    value;
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 2);
     assert_type_eq(
         ret.arena,
-        &reference_types[2],
+        &reference_types[0],
         &Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
     );
+    assert_eq!(reference_types[1], Ty::number());
+}
+
+#[test]
+fn flow_self_referential_assignment_reads_pre_write_type() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let value: number | undefined;
+    value = +value;
+    value;
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 3);
+    assert_type_eq(
+        ret.arena,
+        &reference_types[1],
+        &Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
+    );
+    assert_eq!(reference_types[2], Ty::number());
+}
+
+#[test]
+fn flow_assignment_does_not_refine_later_compound_write_target() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let value: any = 0;
+    value = 1;
+    value += 2;
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "value");
+    assert_eq!(reference_types.len(), 2);
+    assert_eq!(reference_types[0], Ty::any());
+    assert_eq!(reference_types[1], Ty::any());
 }
 
 #[test]

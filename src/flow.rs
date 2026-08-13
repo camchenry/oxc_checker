@@ -7,6 +7,7 @@ use oxc_syntax::operator::{BinaryOperator, LogicalOperator, UnaryOperator};
 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
+    checker_impl::GetTypeFlags,
     evolving_arrays,
     flow_graph::{self, BranchEffect},
     program::ProgramId,
@@ -73,13 +74,20 @@ pub(crate) fn get_flow_type_of_reference<'a>(
         if candidate_type == narrowed_type {
             continue;
         }
-        if has_intervening_write(checker, node, symbol, effect, condition.span()) {
+        if intervening_write_invalidates(
+            checker,
+            node,
+            symbol,
+            effect,
+            condition.span(),
+            candidate_type,
+        ) {
             continue;
         }
         narrowed_type = candidate_type;
     }
 
-    narrowed_type
+    latest_same_block_assignment_type(checker, node, symbol).unwrap_or(narrowed_type)
 }
 
 pub(crate) fn get_flow_type_of_static_member_reference<'a>(
@@ -111,7 +119,14 @@ pub(crate) fn get_flow_type_of_static_member_reference<'a>(
                     property_name,
                     condition,
                 )
-                && !has_intervening_write(checker, node, symbol, *effect, condition.span())
+                && !intervening_write_invalidates(
+                    checker,
+                    node,
+                    symbol,
+                    *effect,
+                    condition.span(),
+                    base_type,
+                )
         })
         .map_or(base_type, |_| {
             narrow_by_truthiness(checker, base_type, true)
@@ -689,13 +704,14 @@ fn is_definitely_falsy<'a>(checker: &CheckerReturn<'a, '_>, ty: Ty<'a>) -> bool 
     }
 }
 
-/// Return whether a symbol is written between the branch condition and reference location.
-fn has_intervening_write(
-    checker: &CheckerReturn<'_, '_>,
+/// Return whether an intervening write may escape the candidate narrowed type.
+fn intervening_write_invalidates<'a>(
+    checker: &CheckerReturn<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     effect: BranchEffect,
     condition_span: Span,
+    candidate_type: Ty<'a>,
 ) -> bool {
     if symbol.program_id != node.program_id {
         return false;
@@ -706,19 +722,74 @@ fn has_intervening_write(
         .nodes(node.program_id)
         .kind(effect.branch_root)
         .span();
-    checker
-        .semantic(symbol.program_id)
-        .symbol_references(symbol.symbol_id)
-        .any(|reference| {
-            if !reference.is_write() {
-                return false;
-            }
-            let write_span = checker
-                .nodes(symbol.program_id)
-                .kind(reference.node_id())
-                .span();
-            write_span.start > condition_span.end
-                && write_span.start < query_span.start
-                && branch_span.contains_inclusive(write_span)
+    let nodes = checker.nodes(symbol.program_id);
+    let Some(cfg) = checker.semantic(symbol.program_id).cfg() else {
+        return false;
+    };
+    let branch_block = nodes.cfg_id(effect.branch_root);
+    let query_block = nodes.cfg_id(node.node_id);
+
+    flow_graph::symbol_writes(checker, symbol.program_id, symbol.symbol_id)
+        .into_iter()
+        .filter(|write| {
+            write.span.start > condition_span.end
+                && write.span.end <= query_span.start
+                && branch_span.contains_inclusive(write.span)
+                && cfg.is_reachable(branch_block, write.block_id)
+                && cfg.is_reachable(write.block_id, query_block)
         })
+        .any(|write| {
+            assigned_type_for_write(checker, symbol.program_id, write.node_id)
+                .is_none_or(|assigned| !checker.is_assignable_to(assigned, candidate_type))
+        })
+}
+
+fn assigned_type_for_write<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: ProgramId,
+    write_node_id: oxc_semantic::NodeId,
+) -> Option<Ty<'a>> {
+    let assignment_id = checker.nodes(program_id).parent_id(write_node_id);
+    let AstKind::AssignmentExpression(assignment) = checker.nodes(program_id).kind(assignment_id)
+    else {
+        return None;
+    };
+    if assignment.operator != oxc_syntax::operator::AssignmentOperator::Assign
+        || assignment.left.span() != checker.nodes(program_id).kind(write_node_id).span()
+    {
+        return None;
+    }
+    Some(checker.get_type_of_expression_with_node(
+        program_id,
+        &assignment.right,
+        Some(assignment_id),
+        GetTypeFlags::CONTEXT_FREE,
+    ))
+}
+
+fn latest_same_block_assignment_type<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    symbol: SymbolRef,
+) -> Option<Ty<'a>> {
+    let nodes = checker.nodes(node.program_id);
+    if let AstKind::IdentifierReference(identifier) = nodes.kind(node.node_id)
+        && identifier.reference_id.get().is_some_and(|reference_id| {
+            checker
+                .semantic(node.program_id)
+                .scoping()
+                .get_reference(reference_id)
+                .is_write()
+        })
+    {
+        return None;
+    }
+    let query_span = nodes.kind(node.node_id).span();
+    let query_block = nodes.cfg_id(node.node_id);
+
+    flow_graph::symbol_writes(checker, symbol.program_id, symbol.symbol_id)
+        .into_iter()
+        .rev()
+        .find(|write| write.span.end <= query_span.start && write.block_id == query_block)
+        .and_then(|write| assigned_type_for_write(checker, symbol.program_id, write.node_id))
 }
