@@ -7,7 +7,6 @@ use oxc_span::{GetSpan, Span};
 
 pub mod checker;
 mod checker_impl;
-mod evolving_arrays;
 mod flow;
 mod flow_graph;
 mod global_lib;

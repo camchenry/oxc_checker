@@ -37,7 +37,7 @@ use crate::{
         TypeAliasMetadata, TypeAliasResolution, TypeParameterResolution, TypeStringCacheKey,
         TypeStringContext,
     },
-    evolving_arrays, flow, for_statement_left_contains_declarator, index_signature_key_types,
+    flow, for_statement_left_contains_declarator, index_signature_key_types,
     index_type_to_property_name,
     infer::{InferenceResolution, ts_type_contains_infer},
     is_empty_object_intersection,
@@ -9592,12 +9592,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         match array_expression.elements.len() {
             0 => Ty::array(
                 self.arena(),
-                evolving_arrays::empty_array_literal_element_type(
-                    self,
-                    program_id,
-                    array_expression,
-                    node_id,
-                ),
+                flow::empty_array_literal_element_type(self, program_id, array_expression, node_id),
             ),
             // For 1 element: infer the type of the first element
             1 => {

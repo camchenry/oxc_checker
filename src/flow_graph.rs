@@ -31,6 +31,22 @@ pub(crate) struct WriteEvent {
     pub(crate) span: Span,
 }
 
+/// The syntax that changes an evolving empty-array local.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum ArrayMutationKind {
+    AddCall(NodeId),
+    IndexedAssignment(NodeId),
+    ResetAssignment(NodeId),
+}
+
+/// An evolving-array mutation at a specific control-flow location.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct ArrayMutationEvent {
+    pub(crate) kind: ArrayMutationKind,
+    pub(crate) block_id: BlockNodeId,
+    pub(crate) span: Span,
+}
+
 /// Writes that determine an assignment-based flow type at a reference.
 pub(crate) struct AssignmentFlow {
     pub(crate) seed: WriteEvent,
@@ -43,6 +59,7 @@ pub(crate) struct AssignmentFlow {
 pub(crate) struct ProgramFlowGraph {
     effects_by_node: HashMap<NodeId, Box<[BranchEffect]>>,
     writes_by_symbol: HashMap<SymbolId, Box<[WriteEvent]>>,
+    array_mutations_by_symbol: HashMap<SymbolId, Box<[ArrayMutationEvent]>>,
     dominators_by_entry: HashMap<BlockNodeId, Dominators<BlockNodeId>>,
 }
 
@@ -63,6 +80,24 @@ impl ProgramFlowGraph {
     pub(crate) fn cache_writes(&mut self, symbol_id: SymbolId, writes: &[WriteEvent]) {
         self.writes_by_symbol
             .insert(symbol_id, writes.to_vec().into_boxed_slice());
+    }
+
+    pub(crate) fn cached_array_mutations(
+        &self,
+        symbol_id: SymbolId,
+    ) -> Option<&[ArrayMutationEvent]> {
+        self.array_mutations_by_symbol
+            .get(&symbol_id)
+            .map(Box::as_ref)
+    }
+
+    pub(crate) fn cache_array_mutations(
+        &mut self,
+        symbol_id: SymbolId,
+        mutations: &[ArrayMutationEvent],
+    ) {
+        self.array_mutations_by_symbol
+            .insert(symbol_id, mutations.to_vec().into_boxed_slice());
     }
 }
 
@@ -149,6 +184,95 @@ pub(crate) fn symbol_writes(
     writes
 }
 
+/// Return evolving-array mutations in source order, collecting their syntax once per checker.
+pub(crate) fn array_mutations(
+    checker: &CheckerReturn<'_, '_>,
+    program_id: crate::program::ProgramId,
+    symbol_id: SymbolId,
+) -> SmallVec<[ArrayMutationEvent; 4]> {
+    if let Some(mutations) = checker
+        .flow_graph_cache
+        .borrow()
+        .get(&program_id)
+        .and_then(|graph| graph.cached_array_mutations(symbol_id))
+    {
+        return mutations.iter().copied().collect();
+    }
+
+    let mut mutations = checker
+        .semantic(program_id)
+        .symbol_references(symbol_id)
+        .filter_map(|reference| {
+            array_mutation_for_reference(checker, program_id, reference.node_id())
+        })
+        .collect::<SmallVec<[ArrayMutationEvent; 4]>>();
+    mutations.sort_unstable_by_key(|mutation| mutation.span.end);
+
+    checker
+        .flow_graph_cache
+        .borrow_mut()
+        .entry(program_id)
+        .or_default()
+        .cache_array_mutations(symbol_id, &mutations);
+    mutations
+}
+
+fn array_mutation_for_reference(
+    checker: &CheckerReturn<'_, '_>,
+    program_id: crate::program::ProgramId,
+    reference_id: NodeId,
+) -> Option<ArrayMutationEvent> {
+    let nodes = checker.nodes(program_id);
+    let reference_span = nodes.kind(reference_id).span();
+    let parent_id = nodes.parent_id(reference_id);
+
+    if let AstKind::StaticMemberExpression(member) = nodes.kind(parent_id)
+        && member.object.span() == reference_span
+        && matches!(member.property.name.as_str(), "push" | "unshift")
+    {
+        let call_id = nodes.parent_id(parent_id);
+        if let AstKind::CallExpression(call) = nodes.kind(call_id)
+            && call.callee.span() == member.span
+            && !call.arguments.is_empty()
+        {
+            return Some(ArrayMutationEvent {
+                kind: ArrayMutationKind::AddCall(call_id),
+                block_id: nodes.cfg_id(call_id),
+                span: call.span,
+            });
+        }
+    }
+
+    if let AstKind::ComputedMemberExpression(member) = nodes.kind(parent_id)
+        && member.object.span() == reference_span
+    {
+        let assignment_id = nodes.parent_id(parent_id);
+        if let AstKind::AssignmentExpression(assignment) = nodes.kind(assignment_id)
+            && assignment.operator == oxc_syntax::operator::AssignmentOperator::Assign
+            && assignment.left.span() == member.span
+        {
+            return Some(ArrayMutationEvent {
+                kind: ArrayMutationKind::IndexedAssignment(assignment_id),
+                block_id: nodes.cfg_id(assignment_id),
+                span: assignment.span,
+            });
+        }
+    }
+
+    if let AstKind::AssignmentExpression(assignment) = nodes.kind(parent_id)
+        && assignment.operator == oxc_syntax::operator::AssignmentOperator::Assign
+        && assignment.left.span() == reference_span
+    {
+        return Some(ArrayMutationEvent {
+            kind: ArrayMutationKind::ResetAssignment(parent_id),
+            block_id: nodes.cfg_id(parent_id),
+            span: assignment.span,
+        });
+    }
+
+    None
+}
+
 /// Find the linear or loop-carried writes that can determine a reference's flow type.
 pub(crate) fn assignment_flow(
     checker: &CheckerReturn<'_, '_>,
@@ -184,25 +308,7 @@ pub(crate) fn assignment_flow(
     if !is_in_loop {
         return None;
     }
-    let entry = cfg
-        .graph()
-        .edge_references()
-        .filter(|edge| matches!(edge.weight(), EdgeType::NewFunction))
-        .map(|edge| edge.target())
-        .find(|entry| cfg.is_reachable(*entry, query_block))
-        .or_else(|| cfg.graph().node_indices().next())?;
-    let dominating_blocks = {
-        let mut cache = checker.flow_graph_cache.borrow_mut();
-        let dominators = cache
-            .entry(node.program_id)
-            .or_default()
-            .dominators_by_entry
-            .entry(entry)
-            .or_insert_with(|| simple_fast(cfg.graph(), entry));
-        dominators
-            .dominators(query_block)
-            .map(Iterator::collect::<HashSet<_>>)?
-    };
+    let dominating_blocks = dominating_blocks(checker, node.program_id, query_block)?;
     let seed = writes.iter().rev().find(|write| {
         write.span.end <= query_span.start && dominating_blocks.contains(&write.block_id)
     })?;
@@ -222,6 +328,53 @@ pub(crate) fn assignment_flow(
         loop_writes,
         crosses_blocks: true,
     })
+}
+
+fn dominating_blocks(
+    checker: &CheckerReturn<'_, '_>,
+    program_id: crate::program::ProgramId,
+    block: BlockNodeId,
+) -> Option<HashSet<BlockNodeId>> {
+    let cfg = checker.semantic(program_id).cfg()?;
+    let entry = flow_container_entry(cfg, block);
+    let mut cache = checker.flow_graph_cache.borrow_mut();
+    cache
+        .entry(program_id)
+        .or_default()
+        .dominators_by_entry
+        .entry(entry)
+        .or_insert_with(|| simple_fast(cfg.graph(), entry))
+        .dominators(block)
+        .map(Iterator::collect)
+}
+
+pub(crate) fn flow_container_entry(
+    cfg: &oxc_cfg::ControlFlowGraph,
+    block: BlockNodeId,
+) -> BlockNodeId {
+    cfg.graph()
+        .edge_references()
+        .filter(|edge| matches!(edge.weight(), EdgeType::NewFunction))
+        .map(|edge| edge.target())
+        .find(|entry| cfg.is_reachable(*entry, block))
+        .or_else(|| {
+            cfg.graph().node_indices().find(|candidate| {
+                cfg.is_reachable(*candidate, block)
+                    && cfg
+                        .graph()
+                        .edges_directed(*candidate, oxc_cfg::graph::Direction::Incoming)
+                        .all(|edge| {
+                            !matches!(
+                                edge.weight(),
+                                EdgeType::Normal
+                                    | EdgeType::Jump
+                                    | EdgeType::Backedge
+                                    | EdgeType::Join
+                            )
+                        })
+            })
+        })
+        .unwrap_or(block)
 }
 
 fn write_effect_span(
@@ -303,73 +456,6 @@ fn collect_branch_effects(
                     assume_true,
                 });
             }
-        }
-        branch_root = ancestor_id;
-    }
-
-    effects.reverse();
-    effects
-}
-
-#[cfg(test)]
-pub(crate) fn legacy_branch_effects(
-    checker: &CheckerReturn<'_, '_>,
-    node: NodeRef,
-) -> SmallVec<[BranchEffect; 4]> {
-    let nodes = checker.nodes(node.program_id);
-    let query_span = nodes.kind(node.node_id).span();
-    let mut effects = SmallVec::new();
-    let mut branch_root = node.node_id;
-
-    for (ancestor_id, ancestor) in nodes.ancestors_enumerated(node.node_id) {
-        let assume_true = match ancestor.kind() {
-            AstKind::Function(_) | AstKind::ArrowFunctionExpression(_) | AstKind::Class(_) => break,
-            AstKind::IfStatement(if_statement) => {
-                if if_statement
-                    .consequent
-                    .span()
-                    .contains_inclusive(query_span)
-                {
-                    Some(true)
-                } else if if_statement
-                    .alternate
-                    .as_ref()
-                    .is_some_and(|alternate| alternate.span().contains_inclusive(query_span))
-                {
-                    Some(false)
-                } else {
-                    None
-                }
-            }
-            AstKind::ConditionalExpression(conditional) => {
-                if conditional.consequent.span().contains_inclusive(query_span) {
-                    Some(true)
-                } else if conditional.alternate.span().contains_inclusive(query_span) {
-                    Some(false)
-                } else {
-                    None
-                }
-            }
-            AstKind::LogicalExpression(logical) => {
-                if !logical.right.span().contains_inclusive(query_span) {
-                    None
-                } else {
-                    match logical.operator {
-                        LogicalOperator::And => Some(true),
-                        LogicalOperator::Or => Some(false),
-                        LogicalOperator::Coalesce => None,
-                    }
-                }
-            }
-            _ => None,
-        };
-
-        if let Some(assume_true) = assume_true {
-            effects.push(BranchEffect {
-                controller: ancestor_id,
-                branch_root,
-                assume_true,
-            });
         }
         branch_root = ancestor_id;
     }

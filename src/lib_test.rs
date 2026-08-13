@@ -1735,6 +1735,24 @@ fn flow_merges_loop_carried_assignments_from_pre_loop_default() {
 }
 
 #[test]
+fn flow_for_in_body_does_not_reapply_null_assignment() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    var values = null;
+    for (var key in values) {
+        values[key];
+    }
+    ",
+    );
+
+    let reference_types = get_identifier_reference_types(&ret, "values");
+    assert_eq!(reference_types.len(), 2);
+    assert!(reference_types[1].is_any_like(ret.arena));
+}
+
+#[test]
 fn structural_property_lookup_stops_on_unchanged_conditional_expansion() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -1912,39 +1930,6 @@ fn flow_narrows_optional_static_member_in_true_branch() {
 }
 
 #[test]
-fn flow_graph_effects_match_legacy_discovery() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: string | number | undefined;
-    declare const condition: boolean;
-    if (value) {
-        const nested = typeof value === 'string' ? value : value && value;
-        const closure = () => value;
-    } else if (condition) {
-        value;
-    }
-    ",
-    );
-    let checker = checker(&ret);
-    let nodes = checker.nodes(ret.program_id);
-
-    for (node_id, node) in nodes.iter_enumerated() {
-        if !matches!(node.kind(), AstKind::IdentifierReference(_)) {
-            continue;
-        }
-        let node = NodeRef::new(ret.program_id, node_id);
-        assert_eq!(
-            crate::flow_graph::branch_effects(&checker, node),
-            crate::flow_graph::legacy_branch_effects(&checker, node),
-            "branch effects differ for {:?}",
-            nodes.kind(node_id).span()
-        );
-    }
-}
-
-#[test]
 fn flow_evolves_empty_array_locals_from_mutations() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -1981,6 +1966,54 @@ fn flow_evolves_empty_array_locals_from_mutations() {
         arena,
         &get_global_symbol_type(&ret, "afterReset"),
         &Ty::array(arena, Ty::boolean()),
+    );
+}
+
+#[test]
+fn flow_evolving_array_mutation_target_stays_auto_array() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let values = [];
+    values.push(1);
+    values.push('ready');
+    const result = values;
+    ",
+    );
+    let arena = arena(&ret);
+    let reference_types = get_identifier_reference_types(&ret, "values");
+
+    assert_eq!(reference_types.len(), 3);
+    assert_type_eq(arena, &reference_types[0], &Ty::array(arena, Ty::any()));
+    assert_type_eq(arena, &reference_types[1], &Ty::array(arena, Ty::any()));
+    assert_type_eq(
+        arena,
+        &get_global_symbol_type(&ret, "result"),
+        &Ty::array(arena, Ty::union(arena, [Ty::number(), Ty::string()])),
+    );
+}
+
+#[test]
+fn flow_evolving_array_ignores_mutation_in_sibling_branch() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    let values = [];
+    declare const condition: boolean;
+    if (condition) {
+        values.push(1);
+    } else {
+        const untouched = values;
+    }
+    ",
+    );
+
+    assert_type_eq(
+        ret.arena,
+        &get_first_symbol_type(&ret, "untouched"),
+        &Ty::array(arena(&ret), Ty::any()),
     );
 }
 

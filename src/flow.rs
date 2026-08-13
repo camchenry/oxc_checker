@@ -1,8 +1,15 @@
+use std::collections::{HashMap, VecDeque};
+
 use oxc_ast::{
     AstKind,
     ast::{
-        ChainElement, Expression, LogicalExpression, SimpleAssignmentTarget, StaticMemberExpression,
+        ArrayExpression, ChainElement, Expression, LogicalExpression, SimpleAssignmentTarget,
+        StaticMemberExpression,
     },
+};
+use oxc_cfg::{
+    BlockNodeId, EdgeType,
+    graph::{Direction, visit::EdgeRef},
 };
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator};
@@ -10,11 +17,16 @@ use oxc_syntax::operator::{AssignmentOperator, BinaryOperator, LogicalOperator, 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
     checker_impl::GetTypeFlags,
-    evolving_arrays,
-    flow_graph::{self, BranchEffect},
+    flow_graph::{self, ArrayMutationKind, BranchEffect},
     program::ProgramId,
-    types::{Ty, TyTypePredicateKind, TypeData},
+    types::{TupleElement, Ty, TyTypePredicateKind, TypeData},
 };
+
+#[derive(Clone, Copy)]
+enum EvolvingArrayChange<'a> {
+    Add(Ty<'a>),
+    Reset(Ty<'a>),
+}
 
 /// String witnesses supported by JavaScript's `typeof` operator.
 #[derive(Clone, Copy, Eq, PartialEq)]
@@ -59,8 +71,7 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     }
 
     let mut narrowed_type =
-        evolving_arrays::get_flow_type_of_reference(checker, node, symbol, base_type)
-            .unwrap_or(base_type);
+        evolving_array_flow_type(checker, node, symbol, base_type).unwrap_or(base_type);
     for effect in flow_graph::branch_effects(checker, node) {
         let Some(condition) = branch_effect_condition(checker, node.program_id, effect) else {
             continue;
@@ -90,6 +101,295 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     }
 
     assignment_flow_type(checker, node, symbol, narrowed_type).unwrap_or(narrowed_type)
+}
+
+/// Return the element type for an empty array literal in expression typing.
+pub(crate) fn empty_array_literal_element_type<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: ProgramId,
+    array_expression: &'a ArrayExpression<'a>,
+    node_id: Option<oxc_semantic::NodeId>,
+) -> Ty<'a> {
+    if is_direct_empty_array_variable_initializer(checker, program_id, array_expression, node_id) {
+        Ty::any()
+    } else {
+        Ty::never()
+    }
+}
+
+fn evolving_array_flow_type<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    symbol: SymbolRef,
+    base_type: Ty<'a>,
+) -> Option<Ty<'a>> {
+    let (_declaration_id, declarator) = checker.variable_declarator_for_symbol(symbol)?;
+    if declarator.type_annotation.is_some()
+        || !declarator
+            .init
+            .as_ref()
+            .is_some_and(expression_is_empty_array_literal)
+        || checker.node_kind(node).span().start <= declarator.span.start
+    {
+        return None;
+    }
+    if is_evolving_array_operation_target(checker, node) {
+        return Some(Ty::array(checker.arena(), Ty::any()));
+    }
+
+    let empty_element_type = finalized_empty_element_type(checker, base_type);
+    let mut changes_by_block: HashMap<_, Vec<_>> = HashMap::new();
+    for mutation in flow_graph::array_mutations(checker, symbol.program_id, symbol.symbol_id) {
+        if let Some(change) = evolving_array_change(checker, symbol.program_id, mutation.kind) {
+            changes_by_block
+                .entry(mutation.block_id)
+                .or_default()
+                .push((mutation.span, change));
+        }
+    }
+    for changes in changes_by_block.values_mut() {
+        changes.sort_unstable_by_key(|(span, _)| span.end);
+    }
+
+    let element_type = evolving_array_element_at_reference(checker, node, &changes_by_block)?;
+    Some(Ty::array(
+        checker.arena(),
+        if element_type.is_never() {
+            empty_element_type
+        } else {
+            element_type
+        },
+    ))
+}
+
+fn is_evolving_array_operation_target(checker: &CheckerReturn<'_, '_>, node: NodeRef) -> bool {
+    let nodes = checker.nodes(node.program_id);
+    let reference_span = nodes.kind(node.node_id).span();
+    let parent_id = nodes.parent_id(node.node_id);
+    match nodes.kind(parent_id) {
+        AstKind::StaticMemberExpression(member) if member.object.span() == reference_span => {
+            member.property.name == "length"
+                || matches!(member.property.name.as_str(), "push" | "unshift")
+                    && matches!(
+                        nodes.kind(nodes.parent_id(parent_id)),
+                        AstKind::CallExpression(call) if call.callee.span() == member.span
+                    )
+        }
+        AstKind::ComputedMemberExpression(member) if member.object.span() == reference_span => {
+            matches!(
+                nodes.kind(nodes.parent_id(parent_id)),
+                AstKind::AssignmentExpression(assignment)
+                    if assignment.operator == AssignmentOperator::Assign
+                        && assignment.left.span() == member.span
+            )
+        }
+        _ => false,
+    }
+}
+
+fn evolving_array_element_at_reference<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    node: NodeRef,
+    changes_by_block: &HashMap<BlockNodeId, Vec<(Span, EvolvingArrayChange<'a>)>>,
+) -> Option<Ty<'a>> {
+    const MAX_FLOW_UPDATES: usize = 10_000;
+
+    let nodes = checker.nodes(node.program_id);
+    let cfg = checker.semantic(node.program_id).cfg()?;
+    let query_block = nodes.cfg_id(node.node_id);
+    let entry = flow_graph::flow_container_entry(cfg, query_block);
+
+    let mut outputs = HashMap::new();
+    let mut pending = VecDeque::from([entry]);
+    let mut queued = std::collections::HashSet::from([entry]);
+    let mut updates = 0;
+    while let Some(block) = pending.pop_front() {
+        queued.remove(&block);
+        let Some(mut element_type) =
+            evolving_array_block_input(checker, cfg, entry, block, &outputs)
+        else {
+            continue;
+        };
+        if let Some(changes) = changes_by_block.get(&block) {
+            for (_, change) in changes {
+                element_type = apply_evolving_array_change(checker, element_type, *change);
+            }
+        }
+        if outputs.get(&block).copied() == Some(element_type) {
+            continue;
+        }
+        outputs.insert(block, element_type);
+        updates += 1;
+        if updates > MAX_FLOW_UPDATES {
+            return None;
+        }
+        for edge in cfg.graph().edges_directed(block, Direction::Outgoing) {
+            if follows_value_flow(edge.weight()) && queued.insert(edge.target()) {
+                pending.push_back(edge.target());
+            }
+        }
+    }
+
+    let mut element_type = evolving_array_block_input(checker, cfg, entry, query_block, &outputs)?;
+    let query_start = nodes.kind(node.node_id).span().start;
+    if let Some(changes) = changes_by_block.get(&query_block) {
+        for (span, change) in changes {
+            if span.end > query_start {
+                break;
+            }
+            element_type = apply_evolving_array_change(checker, element_type, *change);
+        }
+    }
+    Some(element_type)
+}
+
+fn evolving_array_block_input<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    cfg: &oxc_cfg::ControlFlowGraph,
+    entry: BlockNodeId,
+    block: BlockNodeId,
+    outputs: &HashMap<BlockNodeId, Ty<'a>>,
+) -> Option<Ty<'a>> {
+    if block == entry {
+        return Some(Ty::never());
+    }
+    let predecessor_types = cfg
+        .graph()
+        .edges_directed(block, Direction::Incoming)
+        .filter(|edge| follows_value_flow(edge.weight()))
+        .filter_map(|edge| outputs.get(&edge.source()).copied())
+        .collect::<Vec<_>>();
+    match predecessor_types.as_slice() {
+        [] => None,
+        [ty] => Some(*ty),
+        types => Some(Ty::union(checker.arena(), types.iter().copied())),
+    }
+}
+
+fn follows_value_flow(edge: &EdgeType) -> bool {
+    matches!(
+        edge,
+        EdgeType::Normal
+            | EdgeType::Jump
+            | EdgeType::Backedge
+            | EdgeType::NewFunction
+            | EdgeType::Join
+    )
+}
+
+fn apply_evolving_array_change<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    current: Ty<'a>,
+    change: EvolvingArrayChange<'a>,
+) -> Ty<'a> {
+    match change {
+        EvolvingArrayChange::Add(ty) => Ty::union(checker.arena(), [current, ty]),
+        EvolvingArrayChange::Reset(ty) => ty,
+    }
+}
+
+fn evolving_array_change<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: ProgramId,
+    kind: ArrayMutationKind,
+) -> Option<EvolvingArrayChange<'a>> {
+    let nodes = checker.nodes(program_id);
+    match kind {
+        ArrayMutationKind::AddCall(call_id) => {
+            let AstKind::CallExpression(call) = nodes.kind(call_id) else {
+                return None;
+            };
+            let element_types = call
+                .arguments
+                .iter()
+                .filter_map(|argument| argument.as_expression())
+                .map(|argument| {
+                    checker.get_type_of_expression_with_node(
+                        program_id,
+                        argument,
+                        Some(call_id),
+                        GetTypeFlags::NONE,
+                    )
+                })
+                .collect::<Vec<_>>();
+            match element_types.as_slice() {
+                [] => None,
+                [ty] => Some(EvolvingArrayChange::Add(*ty)),
+                _ => Some(EvolvingArrayChange::Add(Ty::union(
+                    checker.arena(),
+                    element_types,
+                ))),
+            }
+        }
+        ArrayMutationKind::IndexedAssignment(assignment_id) => {
+            let AstKind::AssignmentExpression(assignment) = nodes.kind(assignment_id) else {
+                return None;
+            };
+            Some(EvolvingArrayChange::Add(
+                checker.get_type_of_expression_with_node(
+                    program_id,
+                    &assignment.right,
+                    Some(assignment_id),
+                    GetTypeFlags::CONTEXT_FREE,
+                ),
+            ))
+        }
+        ArrayMutationKind::ResetAssignment(assignment_id) => {
+            let AstKind::AssignmentExpression(assignment) = nodes.kind(assignment_id) else {
+                return None;
+            };
+            let assigned_type = checker.get_type_of_expression_with_node(
+                program_id,
+                &assignment.right,
+                Some(assignment_id),
+                GetTypeFlags::CONTEXT_FREE,
+            );
+            match checker.arena().type_data(assigned_type) {
+                TypeData::Array(array) => Some(EvolvingArrayChange::Reset(array.element_type)),
+                TypeData::Tuple(tuple) => Some(EvolvingArrayChange::Reset(Ty::union(
+                    checker.arena(),
+                    tuple.elements.iter().map(|element| match element {
+                        TupleElement::Regular(ty)
+                        | TupleElement::Rest(ty)
+                        | TupleElement::Optional(ty) => *ty,
+                    }),
+                ))),
+                _ => None,
+            }
+        }
+    }
+}
+
+fn is_direct_empty_array_variable_initializer<'a>(
+    checker: &CheckerReturn<'a, '_>,
+    program_id: ProgramId,
+    array_expression: &'a ArrayExpression<'a>,
+    node_id: Option<oxc_semantic::NodeId>,
+) -> bool {
+    let Some(node_id) = node_id else {
+        return false;
+    };
+    let AstKind::VariableDeclarator(declarator) =
+        checker.node_kind(NodeRef::new(program_id, node_id))
+    else {
+        return false;
+    };
+    declarator
+        .init
+        .as_ref()
+        .is_some_and(|initializer| initializer.span() == array_expression.span)
+}
+
+fn expression_is_empty_array_literal(expression: &Expression<'_>) -> bool {
+    matches!(expression, Expression::ArrayExpression(array) if array.elements.is_empty())
+}
+
+fn finalized_empty_element_type<'a>(checker: &CheckerReturn<'a, '_>, base_type: Ty<'a>) -> Ty<'a> {
+    match checker.arena().type_data(base_type) {
+        TypeData::Array(array) if array.element_type.is_never() => Ty::any(),
+        TypeData::Array(array) => array.element_type,
+        _ => Ty::any(),
+    }
 }
 
 pub(crate) fn get_flow_type_of_static_member_reference<'a>(
@@ -791,6 +1091,9 @@ fn assignment_flow_type<'a>(
     current_type: Ty<'a>,
 ) -> Option<Ty<'a>> {
     let nodes = checker.nodes(node.program_id);
+    if is_for_in_expression_reference(checker, node, symbol) {
+        return None;
+    }
     if is_in_self_referential_sequence_assignment(checker, node, symbol) {
         return None;
     }
@@ -845,6 +1148,32 @@ fn assignment_flow_type<'a>(
         )?);
     }
     Some(Ty::union(checker.arena(), types))
+}
+
+fn is_for_in_expression_reference(
+    checker: &CheckerReturn<'_, '_>,
+    node: NodeRef,
+    symbol: SymbolRef,
+) -> bool {
+    checker
+        .nodes(node.program_id)
+        .ancestors(node.node_id)
+        .find_map(|ancestor| match ancestor.kind() {
+            AstKind::ForInStatement(statement) => Some(
+                statement
+                    .right
+                    .span()
+                    .contains_inclusive(checker.node_kind(node).span())
+                    || statement
+                        .body
+                        .span()
+                        .contains_inclusive(checker.node_kind(node).span()),
+            ),
+            AstKind::Function(_) | AstKind::ArrowFunctionExpression(_) => Some(false),
+            _ => None,
+        })
+        .unwrap_or(false)
+        && symbol.program_id == node.program_id
 }
 
 fn is_in_self_referential_sequence_assignment(
