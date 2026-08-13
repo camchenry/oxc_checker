@@ -159,35 +159,6 @@ fn push_type_parameter_names<'a>(
     }
 }
 
-fn tuple_element_type_at_index<'a>(
-    arena: CheckerArena<'a>,
-    object_type: Ty<'a>,
-    index: usize,
-) -> Option<Ty<'a>> {
-    let types::TypeData::Tuple(tuple) = arena.type_data(object_type) else {
-        return None;
-    };
-
-    let mut current_index = 0;
-    for element in &tuple.elements {
-        match element {
-            TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
-                if current_index == index {
-                    return Some(*ty);
-                }
-                current_index += 1;
-            }
-            TupleElement::Rest(ty) => {
-                if index >= current_index {
-                    return Some(ty.array_element_type(arena).unwrap_or(*ty));
-                }
-            }
-        }
-    }
-
-    Some(Ty::undefined())
-}
-
 fn index_signature_key_types<'a>(
     arena: CheckerArena<'a>,
     constraint: Ty<'a>,

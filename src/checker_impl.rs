@@ -47,7 +47,7 @@ use crate::{
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self, ProgramId},
     property_key_name_str, push_type_parameter_names, ts_type_name_to_str,
-    ts_type_query_expr_name_to_str, tuple_element_type_at_index, type_facts,
+    ts_type_query_expr_name_to_str, type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTypeParameter,
@@ -777,7 +777,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.arena().type_data(index_type),
                 ) && property.value == "length"
                 {
-                    self.get_property_type_of_tuple(object_type, tuple, property.value)
+                    self.get_property_type_of_tuple(tuple, property.value)
                         .unwrap_or_else(|| {
                             Ty::indexed_access(self.arena(), object_type, index_type)
                         })
@@ -3411,13 +3411,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return IndexedAccessResolution::Resolved(array.element_type);
         }
 
-        if let TypeData::Tuple(_) = self.arena().type_data(object_type)
+        if let TypeData::Tuple(tuple) = self.arena().type_data(object_type)
             && let TypeData::NumberLiteral(literal) = self.arena().type_data(index_type)
             && let Some(index) = literal.value.to_usize()
         {
-            return tuple_element_type_at_index(self.arena(), object_type, index).map_or(
-                IndexedAccessResolution::Missing,
-                IndexedAccessResolution::Resolved,
+            return IndexedAccessResolution::Resolved(
+                tuple.element_type_at_index(self.arena(), index),
             );
         }
 
@@ -3668,7 +3667,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             }),
             TypeData::Tuple(tuple) if !computed => {
-                self.get_property_type_of_tuple(object_type, tuple, property_name)
+                self.get_property_type_of_tuple(tuple, property_name)
             }
             TypeData::Mapped(mapped) if !computed => {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
@@ -6015,7 +6014,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_of_structural_type(program_id, *ty, property_name)
             }),
-            TypeData::Tuple(tuple) => self.get_property_type_of_tuple(ty, tuple, property_name),
+            TypeData::Tuple(tuple) => self.get_property_type_of_tuple(tuple, property_name),
             TypeData::Object(object) => {
                 if let Some(property) = object
                     .properties
@@ -6075,7 +6074,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_property_type_of_tuple(
         &self,
-        tuple_type: Ty<'a>,
         tuple: &crate::types::TyTuple<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
@@ -6104,8 +6102,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let index = property_name.parse::<usize>().ok()?;
         (index.to_string() == property_name)
-            .then(|| tuple_element_type_at_index(self.arena(), tuple_type, index))
-            .flatten()
+            .then(|| tuple.element_type_at_index(self.arena(), index))
     }
 
     fn get_type_of_computed_member_expression(
@@ -6135,10 +6132,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if key_type.is_number_like(self.arena())
             && let Expression::NumericLiteral(literal) = &member.expression
             && let Some(index) = literal.value.to_usize()
-            && let Some(element_type) =
-                tuple_element_type_at_index(self.arena(), object_type, index)
+            && let TypeData::Tuple(tuple) = self.arena().type_data(object_type)
         {
-            return element_type;
+            return tuple.element_type_at_index(self.arena(), index);
         };
 
         // Try accessing as array with a generic numeric key
@@ -9041,8 +9037,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let array_context = self.expand_type_at_use(program_id, array_context, 0);
         match self.arena().type_data(array_context) {
             TypeData::Array(array) => Some(array.element_type),
-            TypeData::Tuple(_) => {
-                tuple_element_type_at_index(self.arena(), array_context, element_index)
+            TypeData::Tuple(tuple) => {
+                Some(tuple.element_type_at_index(self.arena(), element_index))
             }
             TypeData::Union(union) => {
                 let element_types = union
@@ -10367,10 +10363,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     let Some(element) = element else {
                         continue;
                     };
-                    let element_type =
-                        tuple_element_type_at_index(self.arena(), pattern_type, index)
-                            .or_else(|| pattern_type.array_element_type(self.arena()))
-                            .unwrap_or_else(Ty::any);
+                    let element_type = match self.arena().type_data(pattern_type) {
+                        TypeData::Tuple(tuple) => {
+                            tuple.element_type_at_index(self.arena(), index)
+                        }
+                        _ => pattern_type
+                            .array_element_type(self.arena())
+                            .unwrap_or_else(Ty::any),
+                    };
                     if let Some(ty) = self.get_type_of_binding_pattern_symbol(
                         program_id,
                         element,

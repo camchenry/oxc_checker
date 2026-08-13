@@ -772,6 +772,28 @@ pub struct TyTuple<'a> {
     pub readonly: bool,
 }
 
+impl<'a> TyTuple<'a> {
+    pub fn element_type_at_index(&self, arena: CheckerArena<'a>, index: usize) -> Ty<'a> {
+        let mut current_index = 0;
+        for element in &self.elements {
+            match element {
+                TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
+                    if current_index == index {
+                        return *ty;
+                    }
+                    current_index += 1;
+                }
+                TupleElement::Rest(ty) if index >= current_index => {
+                    return ty.array_element_type(arena).unwrap_or(*ty);
+                }
+                TupleElement::Rest(_) => {}
+            }
+        }
+
+        Ty::undefined()
+    }
+}
+
 /// A tuple element is either: a regular type [`Ty`], a rest type, or an optional type.
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub enum TupleElement<'a> {
