@@ -8,9 +8,12 @@ use oxc_ast::{
     },
 };
 use oxc_ast_visit::Visit;
-use oxc_cfg::InstructionKind;
+use oxc_cfg::{
+    EdgeType, InstructionKind,
+    graph::{Direction, visit::EdgeRef},
+};
 use oxc_semantic::{NodeId, ScopeFlags};
-use std::cell::RefCell;
+use std::{cell::RefCell, collections::HashSet};
 
 use crate::{
     checker::CheckerReturn,
@@ -1531,14 +1534,30 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return false;
         };
 
-        cfg.graph.node_indices().any(|block_id| {
-            cfg.is_reachable(function_block, block_id)
-                && cfg
-                    .basic_block(block_id)
-                    .instructions()
-                    .iter()
-                    .any(|instruction| matches!(instruction.kind, InstructionKind::ImplicitReturn))
-        })
+        let mut pending = vec![function_block];
+        let mut visited = HashSet::new();
+        while let Some(block_id) = pending.pop() {
+            if !visited.insert(block_id) {
+                continue;
+            }
+            if cfg
+                .basic_block(block_id)
+                .instructions()
+                .iter()
+                .any(|instruction| matches!(instruction.kind, InstructionKind::ImplicitReturn))
+            {
+                return true;
+            }
+            pending.extend(
+                cfg.graph
+                    .edges_directed(block_id, Direction::Outgoing)
+                    .filter(|edge| {
+                        !matches!(edge.weight(), EdgeType::NewFunction | EdgeType::Unreachable)
+                    })
+                    .map(|edge| edge.target()),
+            );
+        }
+        false
     }
 
     pub(crate) fn infer_construct_type_parameter_resolution(

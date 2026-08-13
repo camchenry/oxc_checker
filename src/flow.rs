@@ -1,6 +1,8 @@
 use oxc_ast::{
     AstKind,
-    ast::{ChainElement, Expression, LogicalExpression, StaticMemberExpression},
+    ast::{
+        ChainElement, Expression, LogicalExpression, SimpleAssignmentTarget, StaticMemberExpression,
+    },
 };
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator};
@@ -789,6 +791,9 @@ fn assignment_flow_type<'a>(
     current_type: Ty<'a>,
 ) -> Option<Ty<'a>> {
     let nodes = checker.nodes(node.program_id);
+    if is_in_self_referential_sequence_assignment(checker, node, symbol) {
+        return None;
+    }
     let mut is_compound_write = false;
     if let AstKind::IdentifierReference(identifier) = nodes.kind(node.node_id)
         && identifier.reference_id.get().is_some_and(|reference_id| {
@@ -812,8 +817,14 @@ fn assignment_flow_type<'a>(
     if is_compound_write && !assignment_flow.crosses_blocks {
         return None;
     }
+    if !current_type.is_any_like(checker.arena()) && !current_type.is_union(checker.arena()) {
+        return None;
+    }
     let seed_type =
         assigned_type_for_write(checker, symbol.program_id, assignment_flow.seed.node_id)?;
+    if !checker.is_assignable_to(seed_type, current_type) {
+        return None;
+    }
     if current_type.array_element_type(checker.arena()).is_some()
         && seed_type.array_element_type(checker.arena()).is_some()
     {
@@ -834,6 +845,35 @@ fn assignment_flow_type<'a>(
         )?);
     }
     Some(Ty::union(checker.arena(), types))
+}
+
+fn is_in_self_referential_sequence_assignment(
+    checker: &CheckerReturn<'_, '_>,
+    node: NodeRef,
+    symbol: SymbolRef,
+) -> bool {
+    let nodes = checker.nodes(node.program_id);
+    let mut inside_sequence = false;
+    for ancestor in nodes.ancestors(node.node_id) {
+        match ancestor.kind() {
+            AstKind::SequenceExpression(_) => inside_sequence = true,
+            AstKind::AssignmentExpression(assignment) if inside_sequence => {
+                let Some(SimpleAssignmentTarget::AssignmentTargetIdentifier(identifier)) =
+                    assignment.left.as_simple_assignment_target()
+                else {
+                    continue;
+                };
+                if checker.symbol_for_identifier_reference(node.program_id, identifier)
+                    == Some(symbol)
+                {
+                    return true;
+                }
+            }
+            AstKind::Function(_) | AstKind::ArrowFunctionExpression(_) => return false,
+            _ => {}
+        }
+    }
+    false
 }
 
 fn loop_write_type<'a>(

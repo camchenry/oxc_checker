@@ -1,9 +1,12 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use oxc_ast::AstKind;
 use oxc_cfg::{
     BlockNodeId, EdgeType,
-    graph::{algo::dominators::simple_fast, visit::EdgeRef},
+    graph::{
+        algo::dominators::{Dominators, simple_fast},
+        visit::EdgeRef,
+    },
 };
 use oxc_semantic::{NodeId, SymbolId};
 use oxc_span::{GetSpan, Span};
@@ -40,6 +43,7 @@ pub(crate) struct AssignmentFlow {
 pub(crate) struct ProgramFlowGraph {
     effects_by_node: HashMap<NodeId, Box<[BranchEffect]>>,
     writes_by_symbol: HashMap<SymbolId, Box<[WriteEvent]>>,
+    dominators_by_entry: HashMap<BlockNodeId, Dominators<BlockNodeId>>,
 }
 
 impl ProgramFlowGraph {
@@ -155,6 +159,9 @@ pub(crate) fn assignment_flow(
     let query_span = nodes.kind(node.node_id).span();
     let query_block = nodes.cfg_id(node.node_id);
     let writes = symbol_writes(checker, node.program_id, symbol_id);
+    if writes.is_empty() {
+        return None;
+    }
 
     if let Some(seed) = writes.iter().rev().find(|write| {
         write.span.end <= query_span.start
@@ -169,6 +176,14 @@ pub(crate) fn assignment_flow(
     }
 
     let cfg = checker.semantic(node.program_id).cfg()?;
+    let is_in_loop = cfg.graph().edge_references().any(|edge| {
+        matches!(edge.weight(), EdgeType::Backedge)
+            && cfg.is_reachable(edge.target(), query_block)
+            && cfg.is_reachable(query_block, edge.source())
+    });
+    if !is_in_loop {
+        return None;
+    }
     let entry = cfg
         .graph()
         .edge_references()
@@ -176,12 +191,20 @@ pub(crate) fn assignment_flow(
         .map(|edge| edge.target())
         .find(|entry| cfg.is_reachable(*entry, query_block))
         .or_else(|| cfg.graph().node_indices().next())?;
-    let dominators = simple_fast(cfg.graph(), entry);
+    let dominating_blocks = {
+        let mut cache = checker.flow_graph_cache.borrow_mut();
+        let dominators = cache
+            .entry(node.program_id)
+            .or_default()
+            .dominators_by_entry
+            .entry(entry)
+            .or_insert_with(|| simple_fast(cfg.graph(), entry));
+        dominators
+            .dominators(query_block)
+            .map(Iterator::collect::<HashSet<_>>)?
+    };
     let seed = writes.iter().rev().find(|write| {
-        write.span.end <= query_span.start
-            && dominators
-                .dominators(query_block)
-                .is_some_and(|mut blocks| blocks.any(|block| block == write.block_id))
+        write.span.end <= query_span.start && dominating_blocks.contains(&write.block_id)
     })?;
 
     let loop_writes = writes

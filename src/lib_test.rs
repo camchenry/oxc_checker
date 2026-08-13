@@ -1324,6 +1324,23 @@ fn enum_member_types_are_canonical_across_locations() {
 }
 
 #[test]
+fn array_inference_reduces_sibling_enum_members_to_parent_enum() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+        enum E { A, B }
+        const values = [E.A, E.B];
+        ",
+    );
+
+    assert_eq!(
+        get_global_symbol_type(&ret, "values").to_type_string(ret.arena),
+        "E[]"
+    );
+}
+
+#[test]
 fn same_named_enum_members_in_different_scopes_are_distinct() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

@@ -2135,6 +2135,42 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         })
     }
 
+    fn get_common_enum_parent_type(&self, types: &[Ty<'a>]) -> Option<Ty<'a>> {
+        let mut parent = None;
+        for ty in types {
+            let TypeData::TypeReference(reference) = self.arena().type_data(*ty) else {
+                return None;
+            };
+            let target = reference.target?;
+            let declaration = self
+                .semantic(target.program_id)
+                .scoping()
+                .symbol_declaration(target.symbol_id);
+            let enum_declaration = self
+                .nodes(target.program_id)
+                .ancestors_enumerated(declaration)
+                .find_map(|(_, ancestor)| match ancestor.kind() {
+                    AstKind::TSEnumDeclaration(declaration) => Some(declaration),
+                    _ => None,
+                })?;
+            let enum_symbol =
+                SymbolRef::new(target.program_id, enum_declaration.id.symbol_id.get()?);
+            if parent.is_some_and(|(symbol, _)| symbol != enum_symbol) {
+                return None;
+            }
+            parent = Some((enum_symbol, enum_declaration.id.name.as_str()));
+        }
+
+        let (symbol, name) = parent?;
+        Some(Ty::type_reference_for_symbol(
+            self.arena(),
+            name,
+            symbol,
+            [],
+            0,
+        ))
+    }
+
     fn get_template_literal_type(
         &self,
         program_id: ProgramId,
@@ -9604,7 +9640,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let element_type = if element_types.len() == 1 {
                     element_types[0]
                 } else {
-                    Ty::union(self.arena(), element_types)
+                    self.get_common_enum_parent_type(&element_types)
+                        .unwrap_or_else(|| Ty::union(self.arena(), element_types))
                 };
                 Ty::array(self.arena(), element_type)
             }
