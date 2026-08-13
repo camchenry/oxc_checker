@@ -7,7 +7,7 @@ use bitflags::bitflags;
 use num_traits::{Zero, cast::ToPrimitive};
 use oxc_allocator::{Allocator, HashMap as ArenaHashMap, HashSet as ArenaHashSet, Vec as ArenaVec};
 use oxc_ast::ast::{
-    BindingPattern, NumberBase, PropertyKey, TSMappedTypeModifierOperator, TSType,
+    BigintBase, BindingPattern, NumberBase, PropertyKey, TSMappedTypeModifierOperator, TSType,
     TSTypeAnnotation, TSTypePredicate, TSTypePredicateName,
 };
 use oxc_index::Idx;
@@ -737,8 +737,12 @@ fn canonical_number_literal_key(value: f64) -> u64 {
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct TyBigIntLiteral<'a> {
-    // TODO(ast): use a number type?
+    /// Value in base 10 without numeric separators.
     pub value: &'a str,
+    /// The bigint as it appears in source code.
+    pub raw: Option<Str<'a>>,
+    /// The base representation used by the literal in source code.
+    pub base: BigintBase,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -1331,14 +1335,21 @@ impl<'a> Ty<'a> {
         Self::Bigint
     }
 
-    pub fn bigint_literal(arena: CheckerArena<'a>, name: &'a str) -> Self {
-        if let Some(ty) = arena.interned_types.bigints.borrow().get(name) {
+    pub fn bigint_literal(
+        arena: CheckerArena<'a>,
+        value: &'a str,
+        raw: Option<Str<'a>>,
+        base: BigintBase,
+    ) -> Self {
+        if let Some(ty) = arena.interned_types.bigints.borrow().get(value) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::BigIntLiteral(
-            arena.alloc(TyBigIntLiteral { value: name }),
-        ));
-        arena.interned_types.bigints.borrow_mut().insert(name, ty);
+        let ty = arena.alloc_type(TypeData::BigIntLiteral(arena.alloc(TyBigIntLiteral {
+            value,
+            raw,
+            base,
+        })));
+        arena.interned_types.bigints.borrow_mut().insert(value, ty);
         ty
     }
 

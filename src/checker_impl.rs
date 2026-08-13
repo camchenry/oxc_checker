@@ -3,7 +3,7 @@ use oxc_ast::{
     AstKind,
     ast::{
         ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
-        AssignmentTarget, AwaitExpression, BigIntLiteral, BinaryExpression, BindingPattern,
+        AssignmentTarget, AwaitExpression, BigintBase, BinaryExpression, BindingPattern,
         CallExpression, ChainElement, Class, ClassElement, ComputedMemberExpression,
         ConditionalExpression, ExportSpecifier, Expression, FormalParameter, FormalParameterRest,
         FormalParameters, Function, IdentifierReference, ImportExpression, LogicalExpression,
@@ -1249,7 +1249,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             AstKind::BigIntLiteral(literal) => {
                 if flags.preserve_literals() {
-                    Ty::bigint_literal(self.arena(), self.get_bigint_literal_value(literal))
+                    Ty::bigint_literal(
+                        self.arena(),
+                        literal.value.as_str(),
+                        literal.raw,
+                        literal.base,
+                    )
                 } else {
                     Ty::bigint()
                 }
@@ -1575,18 +1580,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         literal.value.as_str()
     }
 
-    // TODO(cleanup): just allow bigint literals to store all the info instead of just str
-    pub(crate) fn get_bigint_literal_value(&self, literal: &BigIntLiteral<'a>) -> &'a str {
-        literal
-            .raw
-            .as_ref()
-            .map_or_else(
-                || self.arena().str(&format!("{:?}", literal.value)),
-                |raw| raw.as_str(),
-            )
-            .trim_end_matches('n')
-    }
-
     fn get_type_of_binary_expression(
         &self,
         program_id: ProgramId,
@@ -1822,7 +1815,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
             TypeData::String => Ty::string_literal(self.arena(), ""),
             TypeData::Number => Ty::number_literal(self.arena(), 0.0, "0", NumberBase::Decimal),
-            TypeData::Bigint => Ty::bigint_literal(self.arena(), "0"),
+            TypeData::Bigint => Ty::bigint_literal(self.arena(), "0", None, BigintBase::Decimal),
             TypeData::Boolean => Ty::boolean_false(),
             TypeData::StringLiteral(_)
             | TypeData::NumberLiteral(_)
@@ -2715,7 +2708,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     Ty::string_literal(self.arena(), string_literal.value.as_str())
                 }
                 TSLiteral::BigIntLiteral(bigint_literal) => {
-                    Ty::bigint_literal(self.arena(), bigint_literal.value.as_str())
+                    Ty::bigint_literal(
+                        self.arena(),
+                        bigint_literal.value.as_str(),
+                        bigint_literal.raw,
+                        bigint_literal.base,
+                    )
                 }
                 TSLiteral::TemplateLiteral(template_literal) => {
                     let quasis = template_literal

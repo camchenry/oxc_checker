@@ -59,7 +59,7 @@ fn get_type_facts_worker<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFacts {
             }
         }
         TypeData::BigIntLiteral(literal) => {
-            if bigint_literal_value_is_zero(literal.value) {
+            if literal.value == "0" {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
@@ -82,19 +82,4 @@ fn get_type_facts_worker<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFacts {
         TypeData::Never => TypeFacts::NONE,
         _ => TypeFacts::TRUTHY | TypeFacts::FALSY,
     }
-}
-
-// TODO: Simplify this when big int literals just support storing the actual value
-fn bigint_literal_value_is_zero(value: &str) -> bool {
-    let value = value
-        .strip_prefix('-')
-        .or_else(|| value.strip_prefix('+'))
-        .unwrap_or(value)
-        .to_ascii_lowercase();
-    let digits = value
-        .strip_prefix("0x")
-        .or_else(|| value.strip_prefix("0o"))
-        .or_else(|| value.strip_prefix("0b"))
-        .unwrap_or(&value);
-    digits.chars().all(|c| matches!(c, '0' | '_'))
 }

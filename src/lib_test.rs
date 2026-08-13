@@ -4,7 +4,10 @@ use crate::checker_impl::UNDEFINED_IDENT;
 use crate::mapper::TypeMapper;
 use crate::program::ProgramHost;
 use oxc_allocator::Allocator;
-use oxc_ast::{AstKind, ast::NumberBase};
+use oxc_ast::{
+    AstKind,
+    ast::{BigintBase, NumberBase},
+};
 use oxc_str::Ident;
 use std::{
     collections::HashMap,
@@ -3119,6 +3122,55 @@ fn get_type_at_location_checks_direct_expressions() {
     assert_eq!(expression_types["boolean"], Ty::boolean_true());
     assert_eq!(expression_types["call"], Ty::number());
     assert!(expression_types.values().all(|ty| !ty.is_none()));
+}
+
+#[test]
+fn bigint_literal_types_store_parsed_value_and_source_metadata() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "const decimal = 1n; const hex = 0x2n; const zero = 0b0_0n; const octal = 0o1n;",
+    );
+    let checker = checker(&ret);
+    let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+    let literal_types = semantic
+        .nodes()
+        .iter_enumerated()
+        .filter_map(|(node_id, node)| match node.kind() {
+            AstKind::BigIntLiteral(_) => {
+                Some(checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)))
+            }
+            _ => None,
+        })
+        .collect::<Vec<_>>();
+
+    assert_eq!(literal_types.len(), 4);
+    assert_eq!(literal_types[0], literal_types[3]);
+
+    let TypeData::BigIntLiteral(decimal) = ret.arena.type_data(literal_types[0]) else {
+        panic!("expected decimal bigint literal type")
+    };
+    assert_eq!(decimal.value, "1");
+    assert_eq!(decimal.raw.as_ref().map(oxc_str::Str::as_str), Some("1n"));
+    assert_eq!(decimal.base, BigintBase::Decimal);
+
+    let TypeData::BigIntLiteral(hex) = ret.arena.type_data(literal_types[1]) else {
+        panic!("expected hexadecimal bigint literal type")
+    };
+    assert_eq!(hex.value, "2");
+    assert_eq!(hex.raw.as_ref().map(oxc_str::Str::as_str), Some("0x2n"));
+    assert_eq!(hex.base, BigintBase::Hex);
+
+    let TypeData::BigIntLiteral(zero) = ret.arena.type_data(literal_types[2]) else {
+        panic!("expected binary bigint literal type")
+    };
+    assert_eq!(zero.value, "0");
+    assert_eq!(zero.raw.as_ref().map(oxc_str::Str::as_str), Some("0b0_0n"));
+    assert_eq!(zero.base, BigintBase::Binary);
+    assert_eq!(
+        crate::type_facts::get_logical_not_type(ret.arena, literal_types[2]),
+        Ty::boolean_true()
+    );
 }
 
 #[test]

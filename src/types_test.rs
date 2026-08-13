@@ -176,8 +176,8 @@ fn literal_types_are_canonicalized() {
         Ty::number_literal(arena, 1.0, "0x1", NumberBase::Hex)
     );
     assert_eq!(
-        Ty::bigint_literal(arena, "1"),
-        Ty::bigint_literal(arena, "1")
+        Ty::bigint_literal(arena, "1", None, BigintBase::Decimal),
+        Ty::bigint_literal(arena, "1", None, BigintBase::Decimal)
     );
     assert_eq!(
         Ty::template_literal(
@@ -273,7 +273,13 @@ fn union_reduction_collapses_literals_to_primitive_types() {
         Ty::boolean()
     );
     assert_eq!(
-        Ty::r#union(arena, [Ty::bigint_literal(arena, "1"), Ty::bigint()]),
+        Ty::r#union(
+            arena,
+            [
+                Ty::bigint_literal(arena, "1", None, BigintBase::Decimal),
+                Ty::bigint(),
+            ]
+        ),
         Ty::bigint()
     );
 }
@@ -284,7 +290,7 @@ fn intersection_reduction_collapses_primitive_to_literal_types() {
     let arena = arena(&allocator);
     let number_literal = Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal);
     let string_literal = Ty::string_literal(arena, "ready");
-    let bigint_literal = Ty::bigint_literal(arena, "1");
+    let bigint_literal = Ty::bigint_literal(arena, "1", None, BigintBase::Decimal);
 
     assert_eq!(
         Ty::intersection(arena, [Ty::boolean(), Ty::boolean_false()]),
