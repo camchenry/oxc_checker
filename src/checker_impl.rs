@@ -10364,9 +10364,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         continue;
                     };
                     let element_type = match self.arena().type_data(pattern_type) {
-                        TypeData::Tuple(tuple) => {
-                            tuple.element_type_at_index(self.arena(), index)
-                        }
+                        TypeData::Tuple(tuple) => tuple.element_type_at_index(self.arena(), index),
                         _ => pattern_type
                             .array_element_type(self.arena())
                             .unwrap_or_else(Ty::any),
