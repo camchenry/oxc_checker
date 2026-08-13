@@ -181,10 +181,6 @@ fn for_statement_left_contains_declarator(
     }
 }
 
-fn is_promise_like_type_reference(name: &str) -> bool {
-    matches!(name, "Promise" | "PromiseLike")
-}
-
 fn push_type_parameter_names<'a>(
     names: &mut Vec<&'a str>,
     type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
@@ -4884,6 +4880,29 @@ mod test {
         assert_eq!(
             get_first_symbol_type(&ret, "customThenableValue"),
             Ty::never()
+        );
+    }
+
+    #[test]
+    fn await_does_not_unwrap_non_thenable_named_promise() {
+        let allocator = Allocator::default();
+        let ret = parse_and_check_source(
+            &allocator,
+            r#"
+        export {};
+
+        interface Promise<T> {
+            value: T;
+        }
+
+        declare const promise: Promise<number>;
+        const value = await promise;
+        "#,
+        );
+
+        assert_eq!(
+            get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
+            "Promise<number>"
         );
     }
 

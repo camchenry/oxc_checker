@@ -40,7 +40,6 @@ use crate::{
     index_type_to_property_name,
     infer::{InferenceResolution, ts_type_contains_infer},
     is_empty_object_intersection, is_mapped_empty_object_intersection,
-    is_promise_like_type_reference,
     limits::{
         TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_DEPTH,
     },
@@ -10796,19 +10795,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.get_awaited_type(program_id, *ty)),
             ),
-            TypeData::TypeReference(reference)
-                if is_promise_like_type_reference(reference.name) =>
-            {
-                reference
-                    .type_arguments
-                    .first()
-                    .copied()
-                    .map(|ty| {
-                        let awaited = self.get_awaited_type(program_id, ty);
-                        self.expand_type_at_use(program_id, awaited, 0)
-                    })
-                    .unwrap_or(ty)
-            }
             _ => self
                 .get_structural_thenable_awaited_type(program_id, ty)
                 .unwrap_or(ty),
