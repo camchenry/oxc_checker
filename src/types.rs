@@ -887,14 +887,14 @@ impl MappedModifier {
 
 struct TypeIdentity<'a> {
     arena: CheckerArena<'a>,
-    active: Vec<(TypeId, TypeId)>,
+    active: SmallVec<[(TypeId, TypeId); 8]>,
 }
 
 impl<'a> TypeIdentity<'a> {
     fn new(arena: CheckerArena<'a>) -> Self {
         Self {
             arena,
-            active: Vec::new(),
+            active: SmallVec::new(),
         }
     }
 
