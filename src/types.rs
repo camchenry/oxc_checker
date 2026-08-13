@@ -4,7 +4,7 @@ use crate::{
     type_set::{reduce_intersection_type, reduce_union_type},
 };
 use bitflags::bitflags;
-use num_traits::{Zero, cast::ToPrimitive};
+use num_traits::Zero;
 use oxc_allocator::{Allocator, HashMap as ArenaHashMap, HashSet as ArenaHashSet, Vec as ArenaVec};
 use oxc_ast::ast::{
     BigintBase, BindingPattern, NumberBase, PropertyKey, TSMappedTypeModifierOperator, TSType,
@@ -710,12 +710,6 @@ pub struct TyNumberLiteral<'a> {
     pub raw: Option<Str<'a>>,
     /// The base representation used by the literal in source code
     pub base: NumberBase,
-}
-
-impl<'a> TyNumberLiteral<'a> {
-    pub fn to_usize(&self) -> Option<usize> {
-        self.value.to_usize()
-    }
 }
 
 impl PartialEq for TyNumberLiteral<'_> {

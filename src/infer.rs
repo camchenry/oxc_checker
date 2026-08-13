@@ -1,3 +1,4 @@
+use num_traits::ToPrimitive;
 use oxc_ast::{
     AstKind,
     ast::{
@@ -2024,7 +2025,8 @@ fn resolve_indexed_access_for_inference<'a>(
     }
 
     if let TypeData::Tuple(tuple) = arena.type_data(object_type)
-        && let Some(index) = tuple_index_from_index_type(arena, index_type)
+        && let TypeData::NumberLiteral(literal) = arena.type_data(index_type)
+        && let Some(index) = literal.value.to_usize()
     {
         return tuple.elements.get(index).map(TupleElement::ty);
     }
@@ -2039,13 +2041,6 @@ fn resolve_indexed_access_for_inference<'a>(
     } else {
         let property_name = index_type_to_property_name(arena, index_type)?;
         property_type_for_inference_index(object_type, property_name, arena)
-    }
-}
-
-fn tuple_index_from_index_type<'a>(arena: CheckerArena<'a>, index_type: Ty<'a>) -> Option<usize> {
-    match arena.type_data(index_type) {
-        TypeData::NumberLiteral(literal) => literal.to_usize(),
-        _ => None,
     }
 }
 

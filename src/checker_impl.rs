@@ -1,4 +1,5 @@
 use bitflags::bitflags;
+use num_traits::ToPrimitive;
 use oxc_ast::{
     AstKind,
     ast::{
@@ -46,8 +47,7 @@ use crate::{
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self, ProgramId},
     property_key_name_str, push_type_parameter_names, ts_type_name_to_str,
-    ts_type_query_expr_name_to_str, tuple_element_type_at_index, tuple_index_from_expression,
-    tuple_index_from_index_type, type_facts,
+    ts_type_query_expr_name_to_str, tuple_element_type_at_index, type_facts,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTypeParameter,
@@ -3412,7 +3412,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         if let TypeData::Tuple(_) = self.arena().type_data(object_type)
-            && let Some(index) = tuple_index_from_index_type(self.arena(), index_type)
+            && let TypeData::NumberLiteral(literal) = self.arena().type_data(index_type)
+            && let Some(index) = literal.value.to_usize()
         {
             return tuple_element_type_at_index(self.arena(), object_type, index).map_or(
                 IndexedAccessResolution::Missing,
@@ -6194,7 +6195,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         // Try accessing like tuple with specific numeric key
         if key_type.is_number_like(self.arena())
-            && let Some(index) = tuple_index_from_expression(&member.expression)
+            && let Expression::NumericLiteral(literal) = &member.expression
+            && let Some(index) = literal.value.to_usize()
             && let Some(element_type) =
                 tuple_element_type_at_index(self.arena(), object_type, index)
         {

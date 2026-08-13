@@ -1,6 +1,6 @@
 use oxc_ast::ast::{
-    BindingPattern, Expression, ForStatementLeft, PropertyKey, TSType, TSTypeName,
-    TSTypeQueryExprName, VariableDeclarator,
+    BindingPattern, ForStatementLeft, PropertyKey, TSType, TSTypeName, TSTypeQueryExprName,
+    VariableDeclarator,
 };
 use oxc_semantic::SymbolId;
 use oxc_span::{GetSpan, Span};
@@ -177,32 +177,6 @@ fn push_type_parameter_names<'a>(
                 .map(|parameter| parameter.name.name.as_str()),
         );
     }
-}
-
-fn tuple_index_from_expression(expression: &Expression<'_>) -> Option<usize> {
-    let Expression::NumericLiteral(literal) = expression else {
-        return None;
-    };
-    if !literal.value.is_finite() || literal.value < 0.0 || literal.value.fract() != 0.0 {
-        return None;
-    }
-    if literal.value > usize::MAX as f64 {
-        return None;
-    }
-    Some(literal.value as usize)
-}
-
-fn tuple_index_from_index_type<'a>(arena: CheckerArena<'a>, index_type: Ty<'a>) -> Option<usize> {
-    let types::TypeData::NumberLiteral(literal) = arena.type_data(index_type) else {
-        return None;
-    };
-    if !literal.value.is_finite() || literal.value < 0.0 || literal.value.fract() != 0.0 {
-        return None;
-    }
-    if literal.value > usize::MAX as f64 {
-        return None;
-    }
-    Some(literal.value as usize)
 }
 
 fn tuple_element_type_at_index<'a>(
