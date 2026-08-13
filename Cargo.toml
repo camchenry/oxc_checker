@@ -62,7 +62,7 @@ unnecessary_wraps = "deny"
 [features]
 default = []
 bench = []
-allocation-stats = ["oxc_allocator/track_allocations"]
+allocation-stats = ["bench", "oxc_allocator/track_allocations"]
 conformance = []
 conformance-tsc = []
 
@@ -95,14 +95,22 @@ criterion = { version = "0.5", features = ["html_reports"] }
 [[bench]]
 name = "check_es5_lib"
 harness = false
+required-features = ["bench"]
 
 [[bench]]
 name = "check_fixture"
 harness = false
+required-features = ["bench"]
 
 [[bench]]
 name = "type_set"
 harness = false
+required-features = ["bench"]
+
+[[bin]]
+name = "profile_checker"
+path = "src/bin/profile_checker.rs"
+required-features = ["bench"]
 
 [[example]]
 name = "type_counts"

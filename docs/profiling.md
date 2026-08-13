@@ -12,7 +12,7 @@ execution so CPU profiles can focus on either part.
 Always measure an optimized build. Debug builds are useful for debugging but not comparisons.
 
 ```sh
-cargo run --release --bin profile_checker -- \
+cargo run --release --features bench --bin profile_checker -- \
   --warmup 5 --iterations 30 --json target/profile-baseline.json \
   /path/to/project/src/index.ts
 ```
@@ -87,7 +87,7 @@ standard libraries. Multiple positional roots are accepted and deduplicated by `
 Build once with release optimizations and debug symbols:
 
 ```sh
-cargo build --profile release-with-debug --bin profile_checker
+cargo build --profile release-with-debug --features bench --bin profile_checker
 ```
 
 Generate an interactive Firefox Profiler capture with `samply`:
@@ -100,7 +100,7 @@ samply record target/release-with-debug/profile_checker \
 Generate a flamegraph (macOS may request elevated profiling permissions):
 
 ```sh
-cargo flamegraph --profile release-with-debug --bin profile_checker -- \
+cargo flamegraph --profile release-with-debug --features bench --bin profile_checker -- \
   --warmup 5 --iterations 100 /path/to/project/src/index.ts
 ```
 

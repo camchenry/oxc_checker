@@ -4,7 +4,7 @@ use crate::checker_impl::UNDEFINED_IDENT;
 use crate::mapper::TypeMapper;
 use crate::program::ProgramHost;
 use oxc_allocator::Allocator;
-use oxc_ast::ast::NumberBase;
+use oxc_ast::{AstKind, ast::NumberBase};
 use oxc_str::Ident;
 use std::{
     collections::HashMap,
