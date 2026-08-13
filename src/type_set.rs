@@ -59,6 +59,15 @@ fn add_type_to_union<'a>(
     {
         // Symbol-backed references are interned, so handle identity is sufficient here.
         type_set.push(ty);
+    } else if matches!(
+        arena.type_data(ty),
+        TypeData::StringLiteral(_)
+            | TypeData::NumberLiteral(_)
+            | TypeData::BigIntLiteral(_)
+            | TypeData::TemplateLiteral(_)
+    ) {
+        // Canonical literal types are interned, so `seen_ids` has already removed duplicates.
+        type_set.push(ty);
     } else if (matches!(arena.type_data(ty), TypeData::Object(_))
         && !arena.is_fresh_object_literal(ty))
         || !type_set
