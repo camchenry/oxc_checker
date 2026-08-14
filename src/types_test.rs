@@ -526,6 +526,7 @@ fn object_method_display_uses_signature_syntax() {
     let abort_signal = Ty::type_reference(arena, "AbortSignal", []);
     let abort = TyProperty {
         name: "abort",
+        flags: TyPropertyFlags::NONE,
         ty: Ty::function(
             arena,
             [],
@@ -550,6 +551,7 @@ fn object_readonly_property_display() {
     let arena = arena(&allocator);
     let readonly = TyProperty {
         name: "x",
+        flags: TyPropertyFlags::NONE,
         ty: Ty::string(),
         computed: false,
         optional: false,
@@ -564,12 +566,88 @@ fn object_readonly_property_display() {
 }
 
 #[test]
+fn object_non_identifier_property_uses_single_quotes() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+    let property = TyProperty {
+        name: "~types",
+        flags: TyPropertyFlags::SINGLE_QUOTED,
+        ty: Ty::string(),
+        computed: false,
+        optional: true,
+        method: false,
+        readonly: true,
+    };
+
+    assert_eq!(
+        Ty::object(arena, [property]).to_type_string(arena),
+        "{ readonly '~types'?: string; }"
+    );
+}
+
+#[test]
+fn object_non_identifier_property_preserves_double_quotes() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+    let property = TyProperty {
+        name: "data-id",
+        flags: TyPropertyFlags::NONE,
+        ty: Ty::string(),
+        computed: false,
+        optional: false,
+        method: false,
+        readonly: false,
+    };
+
+    assert_eq!(
+        Ty::object(arena, [property]).to_type_string(arena),
+        "{ \"data-id\": string; }"
+    );
+}
+
+#[test]
+fn nested_object_property_uses_default_double_quotes() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+    let nested = Ty::object(
+        arena,
+        [TyProperty {
+            name: "stage-0",
+            flags: TyPropertyFlags::SINGLE_QUOTED,
+            ty: Ty::string(),
+            computed: false,
+            optional: false,
+            method: false,
+            readonly: false,
+        }],
+    );
+    let outer = Ty::object(
+        arena,
+        [TyProperty {
+            name: "configs",
+            flags: TyPropertyFlags::NONE,
+            ty: nested,
+            computed: false,
+            optional: false,
+            method: false,
+            readonly: false,
+        }],
+    );
+
+    assert_eq!(
+        outer.to_type_string(arena),
+        "{ configs: { \"stage-0\": string; }; }"
+    );
+}
+
+#[test]
 fn object_property_preserves_generic_array_declaration_syntax() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
     let array = Ty::generic_array(arena, Ty::string(), false);
     let values = TyProperty {
         name: "values",
+        flags: TyPropertyFlags::NONE,
         ty: array,
         computed: false,
         optional: true,
@@ -578,6 +656,7 @@ fn object_property_preserves_generic_array_declaration_syntax() {
     };
     let maybe_values = TyProperty {
         name: "maybeValues",
+        flags: TyPropertyFlags::NONE,
         ty: Ty::union(arena, [array, Ty::undefined()]),
         computed: false,
         optional: false,

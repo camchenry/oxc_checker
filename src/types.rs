@@ -30,6 +30,7 @@ bitflags! {
     struct TypeFormatFlags: u8 {
         const NONE = 0;
         const WRITE_ARRAY_AS_GENERIC_TYPE = 1 << 0;
+        const PRESERVE_PROPERTY_NAME_QUOTES = 1 << 1;
     }
 }
 
@@ -482,9 +483,18 @@ pub struct TyModuleNamespace<'a> {
     pub properties: ArenaVec<'a, TyProperty<'a>>,
 }
 
+bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+    pub struct TyPropertyFlags: u8 {
+        const NONE = 0;
+        const SINGLE_QUOTED = 1 << 0;
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct TyProperty<'a> {
     pub name: &'a str,
+    pub flags: TyPropertyFlags,
     pub ty: Ty<'a>,
     pub computed: bool,
     pub optional: bool,
@@ -1457,6 +1467,7 @@ impl<'a> Ty<'a> {
     pub fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty {
             name,
+            flags: TyPropertyFlags::NONE,
             computed: false,
             optional: false,
             method: false,
@@ -2184,7 +2195,12 @@ impl<'a> Ty<'a> {
         replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
         depth: &Cell<usize>,
     ) -> String {
-        self.to_type_string_with_flags(arena, replace_type_reference, TypeFormatFlags::NONE, depth)
+        self.to_type_string_with_flags(
+            arena,
+            replace_type_reference,
+            TypeFormatFlags::PRESERVE_PROPERTY_NAME_QUOTES,
+            depth,
+        )
     }
 
     fn to_type_string_with_flags(
@@ -2199,6 +2215,11 @@ impl<'a> Ty<'a> {
             return "...".to_string();
         }
 
+        let flags = if current == 0 {
+            flags
+        } else {
+            flags & !TypeFormatFlags::PRESERVE_PROPERTY_NAME_QUOTES
+        };
         depth.set(current + 1);
         let result = self.to_type_string_inner(arena, replace_type_reference, flags, depth);
         depth.set(current);
@@ -2290,14 +2311,14 @@ impl<'a> Ty<'a> {
                             format!(
                                 "{}{}{};",
                                 readonly,
-                                property_name_to_type_string(property),
+                                property_name_to_type_string(property, flags),
                                 signature_to_type_string(arena, function, &|_| None, flags, depth,)
                             )
                         } else {
                             format!(
                                 "{}{}: {};",
                                 readonly,
-                                property_name_to_type_string(property),
+                                property_name_to_type_string(property, flags),
                                 property.ty.to_type_string_with_flags(
                                     arena,
                                     replace_type_reference,
@@ -3300,19 +3321,64 @@ fn property_key_to_binding_pattern_string(key: &PropertyKey<'_>) -> Option<Strin
     }
 }
 
-fn property_name_to_type_string(property: &TyProperty<'_>) -> String {
+pub(crate) fn property_name_flags(key: &PropertyKey<'_>) -> TyPropertyFlags {
+    match key {
+        PropertyKey::StringLiteral(literal) => literal
+            .raw
+            .as_ref()
+            .and_then(|raw| raw.as_str().chars().next())
+            .map_or(TyPropertyFlags::NONE, |delimiter| {
+                if delimiter == '\'' {
+                    TyPropertyFlags::SINGLE_QUOTED
+                } else {
+                    TyPropertyFlags::NONE
+                }
+            }),
+        _ => TyPropertyFlags::NONE,
+    }
+}
+
+fn property_name_to_type_string(
+    property: &TyProperty<'_>,
+    format_flags: TypeFormatFlags,
+) -> String {
     let name = if property.computed {
         format!("[{}]", property.name)
     } else if is_identifier_name(property.name) || is_numeric_property_name(property.name) {
         property.name.to_string()
     } else {
-        format!("{:?}", property.name)
+        quoted_property_name(
+            property.name,
+            format_flags.contains(TypeFormatFlags::PRESERVE_PROPERTY_NAME_QUOTES)
+                && property.flags.contains(TyPropertyFlags::SINGLE_QUOTED),
+        )
     };
     if property.optional {
         format!("{name}?")
     } else {
         name
     }
+}
+
+fn quoted_property_name(name: &str, single_quoted: bool) -> String {
+    let mut quoted = String::with_capacity(name.len() + 2);
+    let delimiter = if single_quoted { '\'' } else { '"' };
+    quoted.push(delimiter);
+    for character in name.chars() {
+        match character {
+            '\\' => quoted.push_str("\\\\"),
+            '\n' => quoted.push_str("\\n"),
+            '\r' => quoted.push_str("\\r"),
+            '\t' => quoted.push_str("\\t"),
+            _ if character == delimiter => {
+                quoted.push('\\');
+                quoted.push(character);
+            }
+            _ => quoted.push(character),
+        }
+    }
+    quoted.push(delimiter);
+    quoted
 }
 
 fn is_numeric_property_name(name: &str) -> bool {

@@ -51,12 +51,12 @@ use crate::{
     type_set::UnionAccumulator,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
-        TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTypeParameter,
-        TyTypePredicate, TyTypeQuery, TyTypeReference, TypeData, TypeErrorKind, TypeId,
-        binding_pattern_to_parameter_name, function_maximum_argument_count,
+        TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyPropertyFlags,
+        TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference, TypeData, TypeErrorKind,
+        TypeId, binding_pattern_to_parameter_name, function_maximum_argument_count,
         function_minimum_argument_count, function_parameter_type_at_call_index,
-        return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
-        visit_type,
+        property_name_flags, return_type_and_type_predicate_from_annotation_with_resolver,
+        type_predicate_return_type, visit_type,
     },
 };
 
@@ -519,6 +519,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             !self.arena().is_type_identical_to(property.ty, property_ty);
                         TyProperty {
                             name: property.name,
+                            flags: property.flags,
                             computed: property.computed,
                             optional: property.optional,
                             method: property.method,
@@ -572,6 +573,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 namespace.name,
                 namespace.properties.iter().map(|property| TyProperty {
                     name: property.name,
+                    flags: property.flags,
                     computed: property.computed,
                     optional: property.optional,
                     method: property.method,
@@ -2058,6 +2060,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         let member_name = member.id.static_name();
                         TyProperty {
                             name: member_name.as_str(),
+                            flags: TyPropertyFlags::NONE,
                             ty: *ty,
                             computed: false,
                             optional: false,
@@ -2561,6 +2564,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             );
                             Some(TyProperty {
                                 name,
+                                flags: property_name_flags(&property.key),
                                 ty,
                                 computed: property.computed,
                                 optional: property.optional,
@@ -2594,6 +2598,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 });
                                 return Some(TyProperty {
                                     name,
+                                    flags: property_name_flags(&method.key),
                                     ty,
                                     computed: method.computed,
                                     optional: method.optional,
@@ -2625,6 +2630,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             );
                             Some(TyProperty {
                                 name,
+                                flags: property_name_flags(&method.key),
                                 ty,
                                 computed: method.computed,
                                 optional: method.optional,
@@ -4176,6 +4182,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
             expanded.push(TyProperty {
                 name: property_name,
+                flags: property.flags,
                 ty,
                 computed: false,
                 optional: matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus),
@@ -5296,6 +5303,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         let ty = self.instantiate_type(ty, &mapper);
                         properties.push(TyProperty {
                             name,
+                            flags: property_name_flags(&property.key),
                             ty,
                             computed: property.computed,
                             optional: property.optional,
@@ -5333,6 +5341,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             });
                             properties.push(TyProperty {
                                 name,
+                                flags: property_name_flags(&method.key),
                                 ty,
                                 computed: method.computed,
                                 optional: method.optional,
@@ -5346,6 +5355,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         let signature = self.instantiate_signature(signature, &mapper);
                         properties.push(TyProperty {
                             name,
+                            flags: property_name_flags(&method.key),
                             ty: signature.ty,
                             computed: method.computed,
                             optional: method.optional,
@@ -5572,6 +5582,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     );
                     let property = TyProperty {
                         name,
+                        flags: property_name_flags(&property.key),
                         ty,
                         computed: false,
                         optional: false,
@@ -5786,6 +5797,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     };
                     properties.push(TyProperty {
                         name,
+                        flags: property_name_flags(key),
                         ty,
                         computed,
                         optional,
@@ -5850,6 +5862,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 };
                 properties.push(TyProperty {
                     name,
+                    flags: property_name_flags(&property.key),
                     ty: self.instantiate_type(
                         self.get_type_of_property_definition(
                             class_symbol.program_id,
@@ -8146,6 +8159,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     let name = property_key_name_str(&method.key)?;
                     Some(TyProperty {
                         name,
+                        flags: property_name_flags(&method.key),
                         computed: false,
                         optional: false,
                         method: true,
@@ -8155,14 +8169,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
                 ClassElement::PropertyDefinition(property) if !property.r#static => {
                     let name = property_key_name_str(&property.key)?;
-                    Some(Ty::property(
+                    Some(TyProperty {
                         name,
-                        self.get_type_of_property_definition(
+                        flags: property_name_flags(&property.key),
+                        ty: self.get_type_of_property_definition(
                             program_id,
                             property,
                             Some(class_node_id),
                         ),
-                    ))
+                        computed: false,
+                        optional: property.optional,
+                        method: false,
+                        readonly: property.readonly,
+                    })
                 }
                 _ => None,
             }),
@@ -8917,7 +8936,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     None,
                     GetTypeFlags::NONE,
                 );
-                Some(Ty::property(name, ty))
+                Some(TyProperty {
+                    name,
+                    flags: property_name_flags(&property.key),
+                    ty,
+                    computed: false,
+                    optional: false,
+                    method: property.method,
+                    readonly: false,
+                })
             }),
         )
     }
@@ -10140,6 +10167,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             } else {
                 properties.push(TyProperty {
                     name,
+                    flags: TyPropertyFlags::NONE,
                     ty,
                     computed: false,
                     optional: false,
