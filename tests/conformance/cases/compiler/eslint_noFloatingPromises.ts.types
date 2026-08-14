@@ -256,14 +256,8 @@ await (async function () {
   await res(1);
 > ^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
 
-  await res(1);
->       ^^^: any   (TyError) (IdentifierReference)
-
 (async function () {
 >^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference) (ExpressionStatement)
 
   await res(1);
 > ^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
-
-  await res(1);
->       ^^^: any   (TyError) (IdentifierReference)

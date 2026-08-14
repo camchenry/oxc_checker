@@ -2240,6 +2240,18 @@ fn actual_identifier_record<'a>(
     if ty.is_none() {
         return None;
     }
+    if matches!(kind, AstKind::IdentifierReference(_))
+        && ty.is_error(arena)
+        && checker.get_symbol_at_location(node_ref).is_none()
+        && !matches!(
+            entry.semantic().nodes().parent_kind(node_id),
+            AstKind::TSTypeReference(_)
+                | AstKind::TSClassImplements(_)
+                | AstKind::TSInterfaceHeritage(_)
+        )
+    {
+        return None;
+    }
 
     let ty_variant = ty.enum_variant_name(arena);
     let ast_kind = conformance_ast_type_name(kind.ty());

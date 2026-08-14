@@ -4,9 +4,6 @@ const foo1 = 3;
 const bar = foo!;
 >     ^^^: any   (TyError) (BindingIdentifier)
 
-const bar = foo!;
->           ^^^: any   (TyError) (IdentifierReference)
-
 const foo1_1 = <number>3;
 >     ^^^^^^: number   (TyNumber) (BindingIdentifier)
 
