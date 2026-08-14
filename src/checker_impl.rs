@@ -266,6 +266,17 @@ pub(crate) enum BindingPatternKind<'a> {
     RestParameter(&'a FormalParameterRest<'a>),
 }
 
+impl<'a> BindingPatternKind<'a> {
+    fn from_ast_kind(kind: AstKind<'a>) -> Option<Self> {
+        match kind {
+            AstKind::FormalParameter(parameter) => Some(Self::FormalParameter(parameter)),
+            AstKind::FormalParameterRest(parameter) => Some(Self::RestParameter(parameter)),
+            AstKind::VariableDeclarator(declarator) => Some(Self::VariableDeclarator(declarator)),
+            _ => None,
+        }
+    }
+}
+
 // TODO: Consolidate this with `CheckMode`?
 bitflags! {
     /// Flags for changing behavior when getting the types of expressions or nodes.
@@ -10389,27 +10400,15 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Option<Ty<'a>> {
         self.nodes(program_id)
             .ancestors_enumerated(node_id)
-            .find_map(|(ancestor_id, ancestor)| match ancestor.kind() {
-                // TODO: Change this to use a new `BindingPatternKind::from_kind` function so this is more generic
-                AstKind::FormalParameter(parameter) => self.get_type_of_binding_pattern(
-                    program_id,
-                    ancestor_id,
-                    BindingPatternKind::FormalParameter(parameter),
-                    symbol_id,
-                ),
-                AstKind::FormalParameterRest(parameter) => self.get_type_of_binding_pattern(
-                    program_id,
-                    ancestor_id,
-                    BindingPatternKind::RestParameter(parameter),
-                    symbol_id,
-                ),
-                AstKind::VariableDeclarator(declarator) => self.get_type_of_binding_pattern(
-                    program_id,
-                    ancestor_id,
-                    BindingPatternKind::VariableDeclarator(declarator),
-                    symbol_id,
-                ),
-                _ => None,
+            .find_map(|(ancestor_id, ancestor)| {
+                BindingPatternKind::from_ast_kind(ancestor.kind()).and_then(|binding_pattern| {
+                    self.get_type_of_binding_pattern(
+                        program_id,
+                        ancestor_id,
+                        binding_pattern,
+                        symbol_id,
+                    )
+                })
             })
     }
 
@@ -12601,14 +12600,18 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 .semantic(sym.program_id)
                 .scoping()
                 .symbol_declaration(sym.symbol_id);
-            match self.nodes(sym.program_id).kind(declaration) {
-                AstKind::VariableDeclarator(declarator) => self
-                    .get_type_of_binding_pattern(
-                        sym.program_id,
-                        declaration,
-                        BindingPatternKind::VariableDeclarator(declarator),
-                        sym.symbol_id,
-                    )
+            let declaration_kind = self.nodes(sym.program_id).kind(declaration);
+            let binding_pattern = BindingPatternKind::from_ast_kind(declaration_kind);
+            match declaration_kind {
+                AstKind::VariableDeclarator(declarator) => binding_pattern
+                    .and_then(|binding_pattern| {
+                        self.get_type_of_binding_pattern(
+                            sym.program_id,
+                            declaration,
+                            binding_pattern,
+                            sym.symbol_id,
+                        )
+                    })
                     .unwrap_or_else(|| {
                         self.get_type_of_variable_declarator(
                             sym.program_id,
@@ -12616,13 +12619,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             declarator,
                         )
                     }),
-                AstKind::FormalParameter(parameter) => self
-                    .get_type_of_binding_pattern(
-                        sym.program_id,
-                        declaration,
-                        BindingPatternKind::FormalParameter(parameter),
-                        sym.symbol_id,
-                    )
+                AstKind::FormalParameter(parameter) => binding_pattern
+                    .and_then(|binding_pattern| {
+                        self.get_type_of_binding_pattern(
+                            sym.program_id,
+                            declaration,
+                            binding_pattern,
+                            sym.symbol_id,
+                        )
+                    })
                     .unwrap_or_else(|| match parameter.type_annotation.as_deref() {
                         Some(annotation) => self.get_declared_type_of_formal_parameter(
                             sym.program_id,
@@ -12637,13 +12642,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             )
                             .unwrap_or_else(Ty::any),
                     }),
-                AstKind::FormalParameterRest(parameter) => self
-                    .get_type_of_binding_pattern(
-                        sym.program_id,
-                        declaration,
-                        BindingPatternKind::RestParameter(parameter),
-                        sym.symbol_id,
-                    )
+                AstKind::FormalParameterRest(parameter) => binding_pattern
+                    .and_then(|binding_pattern| {
+                        self.get_type_of_binding_pattern(
+                            sym.program_id,
+                            declaration,
+                            binding_pattern,
+                            sym.symbol_id,
+                        )
+                    })
                     .unwrap_or_else(|| {
                         self.get_type_from_ts_type_annotation(
                             sym.program_id,
