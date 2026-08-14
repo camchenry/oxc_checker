@@ -679,12 +679,10 @@ const publicAccountSchema = accountSchema.pick({ id: true, active: true })
                                       expected: <Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("id" | "email" | "scores" | "active")>>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                                                ^^: boolean   (TyBoolean) (ObjectProperty)
-                                           expected: true
+>                                                ^^: true   (TyBooleanLiteral) (ObjectProperty)
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                                                          ^^^^^^: boolean   (TyBoolean) (ObjectProperty)
-                                                         expected: true
+>                                                          ^^^^^^: true   (TyBooleanLiteral) (ObjectProperty)
 
 type AccountInput = input<typeof accountSchema>
 >    ^^^^^^^^^^^^: ZodObject["_input"]   (TyIndexedAccess) (TSTypeAliasDeclaration)

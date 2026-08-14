@@ -1353,11 +1353,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     } else {
                         GetTypeFlags::NONE
                     };
+                let contextual_type =
+                    self.inference_contextual_parameter_type(function, parameter_type);
                 let argument_type = self.get_type_of_call_argument_for_parameter(
                     program_id,
                     argument,
                     node_id,
-                    parameter_type,
+                    contextual_type,
                     flags,
                 );
                 Some((index, argument_type))
@@ -1593,8 +1595,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             } else {
                 GetTypeFlags::NONE
             };
-            let argument_type =
-                self.get_type_of_expression_with_node(program_id, argument, None, flags);
+            let contextual_type = self.inference_contextual_parameter_type(function, parameter.ty);
+            let argument_type = self.get_type_of_call_argument_for_parameter(
+                program_id,
+                argument,
+                None,
+                contextual_type,
+                flags,
+            );
             let argument_type =
                 self.get_inference_argument_type(program_id, parameter.ty, argument_type);
             infer_types(parameter.ty, argument_type, &mut context, self.arena());

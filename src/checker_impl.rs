@@ -8653,6 +8653,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .next()?;
         let callee_function = callee_signature.function(self.arena());
         let parameter_type = self.get_call_parameter_type_at(callee_function, argument_index)?;
+        let parameter_type =
+            self.inference_contextual_parameter_type(callee_function, parameter_type);
         let substitutions = self.explicit_call_type_parameter_substitutions(
             program_id,
             callee_function,
@@ -8693,6 +8695,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .next()?;
         let construct_function = construct_signature.function(self.arena());
         let parameter_type = self.get_call_parameter_type_at(construct_function, argument_index)?;
+        let parameter_type =
+            self.inference_contextual_parameter_type(construct_function, parameter_type);
         let substitutions = self.explicit_call_type_parameter_substitutions(
             program_id,
             construct_function,
@@ -9052,7 +9056,36 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
         }
 
-        self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
+        let contextual_type =
+            self.get_apparent_contextual_parameter_type(program_id, parameter_type);
+        let context = ExpressionCheckContext::new(flags)
+            .with_contextual_type(contextual_type, CheckMode::CONTEXTUAL);
+        self.check_expression_with_context(
+            program_id,
+            AstKind::from_expression(argument),
+            node_id,
+            context,
+        )
+    }
+
+    pub(crate) fn inference_contextual_parameter_type(
+        &self,
+        function: &TyFunction<'a>,
+        parameter_type: Ty<'a>,
+    ) -> Ty<'a> {
+        let TypeData::TypeReference(reference) = self.arena().type_data(parameter_type) else {
+            return parameter_type;
+        };
+        if !reference.is_bare() {
+            return parameter_type;
+        }
+
+        function
+            .type_parameters
+            .iter()
+            .find(|type_parameter| type_parameter.name == reference.name)
+            .and_then(|type_parameter| type_parameter.constraint_type)
+            .unwrap_or(parameter_type)
     }
 
     pub(crate) fn get_type_of_array_expression_as_tuple_for_call_argument(
@@ -10552,6 +10585,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     depth + 1,
                 )
             }),
+            TypeData::Mapped(mapped) => {
+                if let Some(expanded) = self.expand_mapped_type(program_id, mapped, depth + 1) {
+                    return self.get_destructured_property_type_at_depth(
+                        program_id,
+                        expanded,
+                        property_name,
+                        depth + 1,
+                    );
+                }
+                if mapped.name_type.is_some() {
+                    return None;
+                }
+
+                let key_type = Ty::string_literal(self.arena(), self.arena().str(property_name));
+                if !self.could_contain_type_variables(mapped.constraint)
+                    && !self.is_assignable_to(key_type, mapped.constraint)
+                {
+                    return None;
+                }
+                let ty =
+                    self.instantiate_mapped_type_template(program_id, mapped, key_type, depth + 1);
+                Some(
+                    if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) {
+                        ty.or_undefined(self.arena())
+                    } else {
+                        ty
+                    },
+                )
+            }
             TypeData::TypeReference(reference) => self
                 .get_property_type_of_structural_type(program_id, object_type, property_name)
                 .or_else(|| {
@@ -12124,6 +12186,7 @@ fn type_contains_literal_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>, depth: us
             .types
             .iter()
             .any(|ty| type_contains_literal_type(arena, *ty, depth + 1)),
+        TypeData::Mapped(mapped) => type_contains_literal_type(arena, mapped.template, depth + 1),
         _ => false,
     }
 }

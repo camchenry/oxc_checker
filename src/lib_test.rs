@@ -3718,6 +3718,27 @@ fn generic_function_infers_type_parameters_from_arguments() {
 }
 
 #[test]
+fn generic_function_mapped_constraint_preserves_literal_inference() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    declare function pick<Shape, Mask extends { [Key in keyof Shape]?: true }>(
+        shape: Shape,
+        mask: Mask,
+    ): void;
+
+    pick({ id: "", active: false }, { id: true, active: true });
+    "#,
+    );
+
+    assert_eq!(
+        get_object_property_types(&ret, "active"),
+        vec![Ty::boolean(), Ty::boolean_true()]
+    );
+}
+
+#[test]
 fn generic_function_non_null_assertion_returns_non_nullable_type() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
