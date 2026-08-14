@@ -9282,18 +9282,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             contextual_function,
         );
         let annotated_return_type = function.annotated_return_type();
-        let return_type = match annotated_return_type {
-            Some(annotation) => self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
-            None => self.infer_function_return_type(program_id, function, node_id),
-        };
-
         let (return_type, type_predicate) = match annotated_return_type {
             Some(annotation) => self.return_type_and_type_predicate_from_annotation(
                 program_id,
                 &parameters,
                 Some(annotation),
             ),
-            None => (return_type, None),
+            None => (
+                self.infer_function_return_type(program_id, function, node_id),
+                None,
+            ),
         };
 
         Ty::function_with_type_predicate(
