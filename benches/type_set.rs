@@ -1,5 +1,6 @@
-use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
+use criterion::{BatchSize, BenchmarkId, Criterion, Throughput, criterion_group, criterion_main};
 use oxc_allocator::Allocator;
+use oxc_ast::ast::NumberBase;
 use oxc_checker::{CheckerArena, Ty, type_set::reduce_union_type};
 
 fn bench_type_set(criterion: &mut Criterion) {
@@ -78,6 +79,46 @@ fn bench_type_set(criterion: &mut Criterion) {
             BatchSize::SmallInput,
         )
     });
+
+    let distinct_types = (0..256)
+        .map(|index| Ty::number_literal(arena, index as f64, "0", NumberBase::Decimal))
+        .collect::<Vec<_>>();
+    let mut distinct_group = criterion.benchmark_group("reduce_union_type/distinct");
+    for size in [2, 4, 8, 16, 64, 256] {
+        let types = &distinct_types[..size];
+        distinct_group.throughput(Throughput::Elements(size as u64));
+        distinct_group.bench_with_input(BenchmarkId::from_parameter(size), types, |b, types| {
+            b.iter(|| reduce_union_type(arena, types.iter().copied()))
+        });
+    }
+    distinct_group.finish();
+
+    let mut duplicates_group = criterion.benchmark_group("reduce_union_type/duplicates");
+    for size in [8, 64, 256] {
+        let types = (0..size)
+            .map(|index| distinct_types[index % 4])
+            .collect::<Vec<_>>();
+        duplicates_group.throughput(Throughput::Elements(size as u64));
+        duplicates_group.bench_with_input(BenchmarkId::from_parameter(size), &types, |b, types| {
+            b.iter(|| reduce_union_type(arena, types.iter().copied()))
+        });
+    }
+    duplicates_group.finish();
+
+    let nested = distinct_types
+        .chunks_exact(4)
+        .take(16)
+        .map(|types| Ty::union(arena, types.iter().copied()))
+        .collect::<Vec<_>>();
+    let mut nested_group = criterion.benchmark_group("reduce_union_type/nested");
+    for size in [2, 4, 8, 16] {
+        let types = &nested[..size];
+        nested_group.throughput(Throughput::Elements((size * 4) as u64));
+        nested_group.bench_with_input(BenchmarkId::from_parameter(size * 4), types, |b, types| {
+            b.iter(|| reduce_union_type(arena, types.iter().copied()))
+        });
+    }
+    nested_group.finish();
 }
 
 criterion_group!(benches, bench_type_set);

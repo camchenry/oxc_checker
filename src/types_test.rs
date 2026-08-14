@@ -1,4 +1,5 @@
 use super::*;
+use crate::type_set::UnionAccumulator;
 use oxc_allocator::Allocator;
 use std::collections::HashMap;
 
@@ -361,6 +362,57 @@ fn union_reduction_flattens_deduplicates_and_returns_singletons() {
         Ty::r#union(arena, [Ty::number(), Ty::number()]),
         Ty::number()
     );
+}
+
+#[test]
+fn union_accumulator_completes_empty_and_singleton_inputs() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+
+    assert!(UnionAccumulator::new(arena).is_empty());
+    assert_eq!(UnionAccumulator::new(arena).try_build(), None);
+
+    let mut accumulator = UnionAccumulator::new(arena);
+    accumulator.add(Ty::string());
+    assert!(!accumulator.is_empty());
+    assert_eq!(accumulator.try_build(), Some(Ty::string()));
+}
+
+#[test]
+fn union_accumulator_preserves_canonical_identity_and_flattens_nested_unions() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+
+    let mut first = UnionAccumulator::new(arena);
+    first.extend([Ty::number(), Ty::string()]);
+    let first = first.build();
+
+    let mut reordered = UnionAccumulator::new(arena);
+    reordered.extend([Ty::string(), Ty::number()]);
+    assert_eq!(reordered.build(), first);
+
+    let mut nested = UnionAccumulator::new(arena);
+    nested.extend([first, Ty::number(), Ty::string()]);
+    assert_eq!(nested.build(), first);
+}
+
+#[test]
+fn union_accumulator_spills_seen_ids_without_changing_members() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+    let members = (0..20)
+        .map(|value| Ty::number_literal(arena, f64::from(value), "0", NumberBase::Decimal))
+        .collect::<Vec<_>>();
+
+    let mut accumulator = UnionAccumulator::new(arena);
+    accumulator.extend(members.iter().copied());
+    accumulator.extend(members.iter().copied());
+    let union = accumulator.build();
+
+    let TypeData::Union(union) = arena.type_data(union) else {
+        panic!("twenty distinct literals should produce a union");
+    };
+    assert_eq!(union.types.as_slice(), members);
 }
 
 #[test]

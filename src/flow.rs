@@ -19,6 +19,7 @@ use crate::{
     checker_impl::GetTypeFlags,
     flow_graph::{self, ArrayMutationKind, BranchEffect},
     program::ProgramId,
+    type_set::UnionAccumulator,
     types::{TupleElement, Ty, TyTypePredicateKind, TypeData},
 };
 
@@ -253,17 +254,14 @@ fn evolving_array_block_input<'a>(
     if block == entry {
         return Some(Ty::never());
     }
-    let predecessor_types = cfg
-        .graph()
-        .edges_directed(block, Direction::Incoming)
-        .filter(|edge| follows_value_flow(edge.weight()))
-        .filter_map(|edge| outputs.get(&edge.source()).copied())
-        .collect::<Vec<_>>();
-    match predecessor_types.as_slice() {
-        [] => None,
-        [ty] => Some(*ty),
-        types => Some(Ty::union(checker.arena(), types.iter().copied())),
-    }
+    let mut predecessor_types = UnionAccumulator::new(checker.arena());
+    predecessor_types.extend(
+        cfg.graph()
+            .edges_directed(block, Direction::Incoming)
+            .filter(|edge| follows_value_flow(edge.weight()))
+            .filter_map(|edge| outputs.get(&edge.source()).copied()),
+    );
+    predecessor_types.try_build()
 }
 
 fn follows_value_flow(edge: &EdgeType) -> bool {
@@ -299,27 +297,21 @@ fn evolving_array_change<'a>(
             let AstKind::CallExpression(call) = nodes.kind(call_id) else {
                 return None;
             };
-            let element_types = call
-                .arguments
-                .iter()
-                .filter_map(|argument| argument.as_expression())
-                .map(|argument| {
-                    checker.get_type_of_expression_with_node(
-                        program_id,
-                        argument,
-                        Some(call_id),
-                        GetTypeFlags::NONE,
-                    )
-                })
-                .collect::<Vec<_>>();
-            match element_types.as_slice() {
-                [] => None,
-                [ty] => Some(EvolvingArrayChange::Add(*ty)),
-                _ => Some(EvolvingArrayChange::Add(Ty::union(
-                    checker.arena(),
-                    element_types,
-                ))),
-            }
+            let mut element_types = UnionAccumulator::new(checker.arena());
+            element_types.extend(
+                call.arguments
+                    .iter()
+                    .filter_map(|argument| argument.as_expression())
+                    .map(|argument| {
+                        checker.get_type_of_expression_with_node(
+                            program_id,
+                            argument,
+                            Some(call_id),
+                            GetTypeFlags::NONE,
+                        )
+                    }),
+            );
+            element_types.try_build().map(EvolvingArrayChange::Add)
         }
         ArrayMutationKind::IndexedAssignment(assignment_id) => {
             let AstKind::AssignmentExpression(assignment) = nodes.kind(assignment_id) else {
@@ -1137,17 +1129,17 @@ fn assignment_flow_type<'a>(
         return Some(seed_type);
     }
 
-    let mut types = Vec::with_capacity(assignment_flow.loop_writes.len() + 1);
-    types.push(seed_type);
+    let mut types = UnionAccumulator::new(checker.arena());
+    types.add(seed_type);
     for write in assignment_flow.loop_writes {
-        types.push(loop_write_type(
+        types.add(loop_write_type(
             checker,
             symbol.program_id,
             write.node_id,
             seed_type,
         )?);
     }
-    Some(Ty::union(checker.arena(), types))
+    Some(types.build())
 }
 
 fn is_for_in_expression_reference(

@@ -48,6 +48,7 @@ use crate::{
     program::{self, ProgramId},
     property_key_name_str, push_type_parameter_names, ts_type_name_to_str,
     ts_type_query_expr_name_to_str, type_facts,
+    type_set::UnionAccumulator,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
         TyConditional, TyFunction, TyMapped, TyObject, TyParameter, TyProperty, TyTypeParameter,
@@ -3407,7 +3408,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         if let TypeData::Union(union) = self.arena().type_data(object_type) {
-            let mut property_types = Vec::with_capacity(union.types.len());
+            let mut property_types = UnionAccumulator::new(self.arena());
             let mut has_deferred = false;
             for object_type in &union.types {
                 match self.resolve_indexed_access_type(
@@ -3416,10 +3417,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     *object_type,
                     index_type,
                 ) {
-                    IndexedAccessResolution::Resolved(ty) => property_types.push(ty),
+                    IndexedAccessResolution::Resolved(ty) => property_types.add(ty),
                     IndexedAccessResolution::Deferred => {
                         has_deferred = true;
-                        property_types.push(Ty::indexed_access(
+                        property_types.add(Ty::indexed_access(
                             self.arena(),
                             *object_type,
                             index_type,
@@ -3435,7 +3436,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             }
             return if has_deferred || !property_types.is_empty() {
-                IndexedAccessResolution::Resolved(Ty::union(self.arena(), property_types))
+                IndexedAccessResolution::Resolved(property_types.build())
             } else {
                 IndexedAccessResolution::Missing
             };
@@ -3458,7 +3459,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         match self.arena().type_data(index_type) {
             TypeData::Union(union) => {
-                let mut property_types = Vec::with_capacity(union.types.len());
+                let mut property_types = UnionAccumulator::new(self.arena());
                 let mut has_deferred = false;
                 for index_type in &union.types {
                     match self.resolve_indexed_access_type(
@@ -3467,7 +3468,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         object_type,
                         *index_type,
                     ) {
-                        IndexedAccessResolution::Resolved(ty) => property_types.push(ty),
+                        IndexedAccessResolution::Resolved(ty) => property_types.add(ty),
                         IndexedAccessResolution::Deferred => has_deferred = true,
                         IndexedAccessResolution::Missing => {
                             return IndexedAccessResolution::Missing;
@@ -3477,7 +3478,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 if has_deferred {
                     IndexedAccessResolution::Deferred
                 } else {
-                    IndexedAccessResolution::Resolved(Ty::union(self.arena(), property_types))
+                    IndexedAccessResolution::Resolved(property_types.build())
                 }
             }
             TypeData::UniqueSymbol(symbol) => {
@@ -11255,7 +11256,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     }),
             );
         };
-        let mut next_types = Vec::new();
+        let mut next_types = UnionAccumulator::new(self.arena());
         let mut result_types = Vec::new();
         for signature in
             self.get_signatures_of_type_in_program(program_id, next_type, SignatureKind::Call)
@@ -11265,7 +11266,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 signature.function(self.arena()),
                 0,
             ) {
-                next_types.push(next_type);
+                next_types.add(next_type);
             }
             let mut result_type = signature.function(self.arena()).return_type;
             if resolver == IterationResolverKind::Async {
@@ -11278,11 +11279,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ));
         }
         let mut iteration_types = self.combine_iteration_types(result_types);
-        iteration_types.next_type = Some(if next_types.is_empty() {
-            Ty::unknown()
-        } else {
-            Ty::union(self.arena(), next_types)
-        });
+        iteration_types.next_type = Some(next_types.try_build().unwrap_or_else(Ty::unknown));
         iteration_types
     }
 
@@ -11404,20 +11401,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         iteration_types: impl IntoIterator<Item = IterationTypes<'a>>,
     ) -> IterationTypes<'a> {
-        let mut yield_types = Vec::new();
-        let mut return_types = Vec::new();
-        let mut next_types = Vec::new();
+        let mut yield_types = UnionAccumulator::new(self.arena());
+        let mut return_types = UnionAccumulator::new(self.arena());
+        let mut next_types = UnionAccumulator::new(self.arena());
         for iteration_types in iteration_types {
             yield_types.extend(iteration_types.yield_type);
             return_types.extend(iteration_types.return_type);
             next_types.extend(iteration_types.next_type);
         }
-        let combine =
-            |types: Vec<Ty<'a>>| (!types.is_empty()).then(|| Ty::union(self.arena(), types));
         IterationTypes {
-            yield_type: combine(yield_types),
-            return_type: combine(return_types),
-            next_type: combine(next_types),
+            yield_type: yield_types.try_build(),
+            return_type: return_types.try_build(),
+            next_type: next_types.try_build(),
         }
     }
 

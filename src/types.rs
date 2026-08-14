@@ -196,7 +196,7 @@ impl<'a> CheckerArena<'a> {
             .contains(&ty.id())
     }
 
-    pub(crate) fn intern_union(&self, types: Vec<Ty<'a>>) -> Ty<'a> {
+    pub(crate) fn intern_union(&self, types: impl IntoIterator<Item = Ty<'a>>) -> Ty<'a> {
         self.intern_type_list(types, true)
     }
 
@@ -236,8 +236,9 @@ impl<'a> CheckerArena<'a> {
         ty
     }
 
-    fn intern_type_list(&self, types: Vec<Ty<'a>>, union: bool) -> Ty<'a> {
-        let mut canonical_ids = types.iter().map(|ty| ty.id()).collect::<Vec<_>>();
+    fn intern_type_list(&self, types: impl IntoIterator<Item = Ty<'a>>, union: bool) -> Ty<'a> {
+        let types = types.into_iter().collect::<SmallVec<[_; 8]>>();
+        let mut canonical_ids = types.iter().map(|ty| ty.id()).collect::<SmallVec<[_; 8]>>();
         if union {
             canonical_ids.sort_unstable();
         }

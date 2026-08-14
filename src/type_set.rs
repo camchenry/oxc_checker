@@ -1,49 +1,121 @@
 use std::collections::HashSet;
 
 use crate::types::{CheckerArena, Ty, TyTemplateLiteral, TypeData, TypeId};
+use smallvec::SmallVec;
+
+const UNION_INLINE_TYPE_CAPACITY: usize = 8;
+const UNION_INLINE_SEEN_ID_CAPACITY: usize = 16;
+
+type UnionTypes<'a> = SmallVec<[Ty<'a>; UNION_INLINE_TYPE_CAPACITY]>;
+
+enum SeenTypeIds {
+    Inline(SmallVec<[TypeId; UNION_INLINE_SEEN_ID_CAPACITY]>),
+    Spilled(HashSet<TypeId>),
+}
+
+impl SeenTypeIds {
+    fn new() -> Self {
+        Self::Inline(SmallVec::new())
+    }
+
+    fn insert(&mut self, id: TypeId) -> bool {
+        match self {
+            Self::Inline(ids) => {
+                if ids.contains(&id) {
+                    return false;
+                }
+                if ids.len() < UNION_INLINE_SEEN_ID_CAPACITY {
+                    ids.push(id);
+                    return true;
+                }
+
+                let mut spilled = HashSet::with_capacity(ids.len() * 2);
+                spilled.extend(ids.iter().copied());
+                let inserted = spilled.insert(id);
+                *self = Self::Spilled(spilled);
+                inserted
+            }
+            Self::Spilled(ids) => ids.insert(id),
+        }
+    }
+}
+
+pub(crate) struct UnionAccumulator<'a> {
+    arena: CheckerArena<'a>,
+    types: UnionTypes<'a>,
+    seen_ids: SeenTypeIds,
+}
+
+impl<'a> UnionAccumulator<'a> {
+    pub(crate) fn new(arena: CheckerArena<'a>) -> Self {
+        Self {
+            arena,
+            types: SmallVec::new(),
+            seen_ids: SeenTypeIds::new(),
+        }
+    }
+
+    pub(crate) fn add(&mut self, ty: Ty<'a>) {
+        add_type_to_union(self.arena, &mut self.types, &mut self.seen_ids, ty);
+    }
+
+    pub(crate) fn extend(&mut self, types: impl IntoIterator<Item = Ty<'a>>) {
+        for ty in types {
+            self.add(ty);
+        }
+    }
+
+    pub(crate) fn is_empty(&self) -> bool {
+        self.types.is_empty()
+    }
+
+    pub(crate) fn try_build(self) -> Option<Ty<'a>> {
+        (!self.is_empty()).then(|| self.build())
+    }
+
+    pub(crate) fn build(mut self) -> Ty<'a> {
+        if let Some(error) = self.types.iter().find(|ty| ty.is_error(self.arena)) {
+            return *error;
+        }
+        if self.types.contains(&Ty::Any) {
+            return Ty::any();
+        }
+        if self.types.contains(&Ty::Unknown) {
+            return Ty::unknown();
+        }
+
+        remove_redundant_literal_types(self.arena, &mut self.types);
+        reduce_boolean_literal_union(self.arena, &mut self.types);
+
+        if self.types.len() > 1 {
+            self.types.retain(|ty| !ty.is_never());
+        }
+
+        // TODO(perf): this is just for nicer display purposes but we
+        // should handle this when printing instead, with flags?
+        normalize_null_undefined_order(&mut self.types);
+
+        if self.types.len() == 1 {
+            return self.types[0];
+        }
+
+        self.arena.intern_union(self.types)
+    }
+}
 
 pub fn reduce_union_type<'a>(
     arena: CheckerArena<'a>,
     types: impl IntoIterator<Item = Ty<'a>>,
 ) -> Ty<'a> {
-    let mut type_set = Vec::new();
-    let mut seen_ids = HashSet::new();
-    for ty in types {
-        add_type_to_union(arena, &mut type_set, &mut seen_ids, ty);
-    }
-
-    if let Some(error) = type_set.iter().find(|ty| ty.is_error(arena)) {
-        return *error;
-    }
-    if type_set.contains(&Ty::Any) {
-        return Ty::any();
-    }
-    if type_set.contains(&Ty::Unknown) {
-        return Ty::unknown();
-    }
-
-    remove_redundant_literal_types(arena, &mut type_set);
-    reduce_boolean_literal_union(arena, &mut type_set);
-
-    if type_set.len() > 1 {
-        type_set.retain(|ty| !ty.is_never());
-    }
-
-    // TODO(perf): this is just for nicer display purposes but we
-    // should handle this when printing instead, with flags?
-    normalize_null_undefined_order(&mut type_set);
-
-    if type_set.len() == 1 {
-        return type_set[0];
-    }
-
-    arena.intern_union(type_set)
+    let mut accumulator = UnionAccumulator::new(arena);
+    accumulator.extend(types);
+    accumulator.build()
 }
 
 fn add_type_to_union<'a>(
     arena: CheckerArena<'a>,
-    type_set: &mut Vec<Ty<'a>>,
-    seen_ids: &mut HashSet<TypeId>,
+    type_set: &mut UnionTypes<'a>,
+    seen_ids: &mut SeenTypeIds,
     ty: Ty<'a>,
 ) {
     if !seen_ids.insert(ty.id()) {
@@ -268,7 +340,7 @@ fn normalize_null_undefined_order(type_set: &mut [Ty<'_>]) {
     }
 }
 
-fn remove_redundant_literal_types<'a>(arena: CheckerArena<'a>, type_set: &mut Vec<Ty<'a>>) {
+fn remove_redundant_literal_types<'a>(arena: CheckerArena<'a>, type_set: &mut UnionTypes<'a>) {
     let has_string = type_set.contains(&Ty::String);
     let has_number = type_set.contains(&Ty::Number);
     let has_boolean = type_set.contains(&Ty::Boolean);
@@ -308,7 +380,7 @@ fn remove_redundant_literal_types<'a>(arena: CheckerArena<'a>, type_set: &mut Ve
     });
 }
 
-fn reduce_boolean_literal_union<'a>(arena: CheckerArena<'a>, type_set: &mut Vec<Ty<'a>>) {
+fn reduce_boolean_literal_union<'a>(arena: CheckerArena<'a>, type_set: &mut UnionTypes<'a>) {
     let has_true = type_set
         .iter()
         .any(|ty| matches!(arena.type_data(*ty), TypeData::BooleanLiteral(true)));
