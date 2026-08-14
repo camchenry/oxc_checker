@@ -2399,17 +2399,7 @@ fn substitute_type<'a>(
             tuple
                 .elements
                 .iter()
-                .map(|element| match element {
-                    TupleElement::Regular(ty) => {
-                        TupleElement::Regular(substitute_type(*ty, mapper, arena))
-                    }
-                    TupleElement::Rest(ty) => {
-                        TupleElement::Rest(substitute_type(*ty, mapper, arena))
-                    }
-                    TupleElement::Optional(ty) => {
-                        TupleElement::Optional(substitute_type(*ty, mapper, arena))
-                    }
-                })
+                .map(|element| element.map_ty(|ty| substitute_type(ty, mapper, arena)))
                 .collect(),
             tuple.labels.iter().copied().collect(),
             tuple.readonly,

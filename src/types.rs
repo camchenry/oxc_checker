@@ -813,6 +813,15 @@ impl<'a> TupleElement<'a> {
             TupleElement::Regular(ty) | TupleElement::Rest(ty) | TupleElement::Optional(ty) => *ty,
         }
     }
+
+    /// Maps the type of this tuple element while preserving its kind.
+    pub fn map_ty(self, f: impl FnOnce(Ty<'a>) -> Ty<'a>) -> Self {
+        match self {
+            TupleElement::Regular(ty) => TupleElement::Regular(f(ty)),
+            TupleElement::Rest(ty) => TupleElement::Rest(f(ty)),
+            TupleElement::Optional(ty) => TupleElement::Optional(f(ty)),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]

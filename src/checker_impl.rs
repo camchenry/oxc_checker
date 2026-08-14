@@ -731,16 +731,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let elements = tuple
                     .elements
                     .iter()
-                    .map(|element| match element {
-                        TupleElement::Regular(ty) => TupleElement::Regular(
-                            self.instantiate_type_at_depth(*ty, mapper, depth + 1),
-                        ),
-                        TupleElement::Rest(ty) => TupleElement::Rest(
-                            self.instantiate_type_at_depth(*ty, mapper, depth + 1),
-                        ),
-                        TupleElement::Optional(ty) => TupleElement::Optional(
-                            self.instantiate_type_at_depth(*ty, mapper, depth + 1),
-                        ),
+                    .map(|element| {
+                        element.map_ty(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1))
                     })
                     .collect::<Vec<_>>();
                 Ty::tuple_with_labels(
@@ -2306,16 +2298,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let elements = tuple
                     .elements
                     .iter()
-                    .map(|element| match element {
-                        TupleElement::Regular(ty) => {
-                            TupleElement::Regular(self.with_implicit_type_arguments_visible(*ty))
-                        }
-                        TupleElement::Rest(ty) => {
-                            TupleElement::Rest(self.with_implicit_type_arguments_visible(*ty))
-                        }
-                        TupleElement::Optional(ty) => {
-                            TupleElement::Optional(self.with_implicit_type_arguments_visible(*ty))
-                        }
+                    .map(|element| {
+                        element.map_ty(|ty| self.with_implicit_type_arguments_visible(ty))
                     })
                     .collect::<Vec<_>>();
                 Ty::tuple_with_labels(
@@ -5159,16 +5143,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let elements = tuple
                     .elements
                     .iter()
-                    .map(|element| match element {
-                        TupleElement::Regular(ty) => TupleElement::Regular(
-                            self.apparent_type_for_conditional_match(program_id, *ty, depth + 1),
-                        ),
-                        TupleElement::Rest(ty) => TupleElement::Rest(
-                            self.apparent_type_for_conditional_match(program_id, *ty, depth + 1),
-                        ),
-                        TupleElement::Optional(ty) => TupleElement::Optional(
-                            self.apparent_type_for_conditional_match(program_id, *ty, depth + 1),
-                        ),
+                    .map(|element| {
+                        element.map_ty(|ty| {
+                            self.apparent_type_for_conditional_match(program_id, ty, depth + 1)
+                        })
                     })
                     .collect::<Vec<_>>();
                 Ty::tuple_with_labels(

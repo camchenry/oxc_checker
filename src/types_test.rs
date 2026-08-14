@@ -16,6 +16,22 @@ fn type_handles_are_compact() {
 }
 
 #[test]
+fn tuple_element_map_ty_preserves_kind() {
+    assert_eq!(
+        TupleElement::Regular(Ty::string()).map_ty(|_| Ty::number()),
+        TupleElement::Regular(Ty::number())
+    );
+    assert_eq!(
+        TupleElement::Rest(Ty::string()).map_ty(|_| Ty::number()),
+        TupleElement::Rest(Ty::number())
+    );
+    assert_eq!(
+        TupleElement::Optional(Ty::string()).map_ty(|_| Ty::number()),
+        TupleElement::Optional(Ty::number())
+    );
+}
+
+#[test]
 fn name_only_type_references_are_interned() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);

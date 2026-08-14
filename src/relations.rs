@@ -229,25 +229,21 @@ fn is_assignable_to_at_depth<'a>(
         }
         (TypeData::TypeReference(source), TypeData::TypeReference(target)) => {
             source.has_identical_target(target)
-                && source.type_arguments.len() == target.type_arguments.len()
-                && source
-                    .type_arguments
-                    .iter()
-                    .zip(target.type_arguments.iter())
-                    .all(|(source_argument, target_argument)| {
-                        is_assignable_to_at_depth(*source_argument, *target_argument, next_depth)
-                    })
+                && type_arguments_assignable_to(
+                    &source.type_arguments,
+                    &target.type_arguments,
+                    next_depth,
+                    is_assignable_to_at_depth,
+                )
         }
         (TypeData::TypeQuery(source), TypeData::TypeQuery(target)) => {
             source.name == target.name
-                && source.type_arguments.len() == target.type_arguments.len()
-                && source
-                    .type_arguments
-                    .iter()
-                    .zip(target.type_arguments.iter())
-                    .all(|(source_argument, target_argument)| {
-                        is_assignable_to_at_depth(*source_argument, *target_argument, next_depth)
-                    })
+                && type_arguments_assignable_to(
+                    &source.type_arguments,
+                    &target.type_arguments,
+                    next_depth,
+                    is_assignable_to_at_depth,
+                )
         }
         // A `typeof X` query is transparently compatible with whatever the queried symbol's type allows.
         (TypeData::TypeQuery(source), _) => {
@@ -404,6 +400,20 @@ fn keyof_type_contains_property<'a>(
             .any(|ty| keyof_type_contains_property(arena, *ty, name, depth + 1)),
         _ => false,
     }
+}
+
+fn type_arguments_assignable_to<'a>(
+    source_arguments: &[Ty<'a>],
+    target_arguments: &[Ty<'a>],
+    depth: usize,
+    is_assignable_to_at_depth: impl Copy + Fn(Ty<'a>, Ty<'a>, usize) -> bool,
+) -> bool {
+    source_arguments.len() == target_arguments.len()
+        && source_arguments.iter().zip(target_arguments.iter()).all(
+            |(source_argument, target_argument)| {
+                is_assignable_to_at_depth(*source_argument, *target_argument, depth)
+            },
+        )
 }
 
 fn tuple_element_assignable_to<'a>(
