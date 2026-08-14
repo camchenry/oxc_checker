@@ -30,6 +30,9 @@ interface WeakRef<T extends WeakKey> {
 interface WeakRefConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface WeakRefConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly prototype: WeakRef<any>;
 >            ^^^^^^^^^: WeakRef<any>   (TyTypeReference) (TSPropertySignature)
 
@@ -68,6 +71,9 @@ declare var WeakRef: WeakRefConstructor;
 
 declare var WeakRef: WeakRefConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var WeakRef: WeakRefConstructor;
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface FinalizationRegistry<T> {
 >         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (BindingIdentifier)
@@ -128,6 +134,9 @@ interface FinalizationRegistry<T> {
 interface FinalizationRegistryConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface FinalizationRegistryConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly prototype: FinalizationRegistry<any>;
 >            ^^^^^^^^^: FinalizationRegistry<any>   (TyTypeReference) (TSPropertySignature)
 
@@ -163,3 +172,6 @@ declare var FinalizationRegistry: FinalizationRegistryConstructor;
 
 declare var FinalizationRegistry: FinalizationRegistryConstructor;
 >                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var FinalizationRegistry: FinalizationRegistryConstructor;
+>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

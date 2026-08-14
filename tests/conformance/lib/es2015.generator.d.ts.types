@@ -2,6 +2,9 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
+>         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
 >                   ^: any   (TyAny) (TSTypeParameter)
 
 interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObject<T, TReturn, TNext> {
@@ -96,6 +99,9 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
+>                        ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): Generator<T, TReturn, TNext>;
 >                                  ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): Generator<T, TReturn, TNext>;
@@ -107,17 +113,26 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 interface GeneratorFunction {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface GeneratorFunction {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (...args: any[]): Generator;
 >           ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     new (...args: any[]): Generator;
 >                         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    new (...args: any[]): Generator;
+>                         ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     (...args: any[]): Generator;
 >       ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     (...args: any[]): Generator;
 >                     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    (...args: any[]): Generator;
+>                     ^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly length: number;
 >            ^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -131,8 +146,14 @@ interface GeneratorFunction {
     readonly prototype: Generator;
 >                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly prototype: Generator;
+>                       ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface GeneratorFunctionConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface GeneratorFunctionConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (...args: string[]): GeneratorFunction;
 >           ^^^^: string[]   (TyArray) (BindingIdentifier)
@@ -140,11 +161,17 @@ interface GeneratorFunctionConstructor {
     new (...args: string[]): GeneratorFunction;
 >                            ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    new (...args: string[]): GeneratorFunction;
+>                            ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     (...args: string[]): GeneratorFunction;
 >       ^^^^: string[]   (TyArray) (BindingIdentifier)
 
     (...args: string[]): GeneratorFunction;
 >                        ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    (...args: string[]): GeneratorFunction;
+>                        ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly length: number;
 >            ^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -157,3 +184,6 @@ interface GeneratorFunctionConstructor {
 
     readonly prototype: GeneratorFunction;
 >                       ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly prototype: GeneratorFunction;
+>                       ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

@@ -1,11 +1,17 @@
 interface SymbolConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly matchAll: unique symbol;
 >            ^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                              ^: any   (TyAny) (TSTypeParameter)
@@ -35,10 +41,17 @@ interface RegExpStringIterator<T> extends IteratorObject<T, BuiltinIteratorRetur
 >                        ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): RegExpStringIterator<T>;
+>                        ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): RegExpStringIterator<T>;
 >                                             ^: any   (TyAny) (TSTypeReference)
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: RegExpConstructor
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: RegExpConstructor
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
@@ -52,6 +65,9 @@ interface RegExp {
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
 >                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
+>                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray>;
 >                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

@@ -2,6 +2,10 @@ interface Number {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: NumberConstructor
 
+interface Number {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: NumberConstructor
+
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
 

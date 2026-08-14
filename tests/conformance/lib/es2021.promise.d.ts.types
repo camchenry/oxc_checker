@@ -18,6 +18,9 @@ interface AggregateError extends Error {
 interface AggregateErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface AggregateErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (errors: Iterable<any>, message?: string): AggregateError;
 >        ^^^^^^: Iterable<any>   (TyTypeReference) (BindingIdentifier)
 
@@ -69,8 +72,14 @@ declare var AggregateError: AggregateErrorConstructor;
 declare var AggregateError: AggregateErrorConstructor;
 >                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare var AggregateError: AggregateErrorConstructor;
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface PromiseConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)

@@ -71,6 +71,9 @@ export interface StoreApi<T> {
 >                ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 export interface StoreApi<T> {
+>                ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+export interface StoreApi<T> {
 >                         ^: any   (TyAny) (TSTypeParameter)
 
   setState: SetStateInternal<T>
@@ -120,8 +123,14 @@ export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
 export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
 >                                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
+>                                          ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 export interface StoreMutators<S, A> {}
 >                ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+export interface StoreMutators<S, A> {}
+>                ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 export interface StoreMutators<S, A> {}
 >                              ^: any   (TyAny) (TSTypeParameter)
@@ -171,6 +180,9 @@ export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+      ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
 >                            ^: any   (TyAny) (TSTypeReference)
@@ -224,6 +236,9 @@ export type StateCreator<
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
+>                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
 >                               ^: any   (TyAny) (TSTypeReference)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
@@ -242,6 +257,9 @@ export type StateCreator<
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
+>                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
 >                               ^: any   (TyAny) (TSTypeReference)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
@@ -255,6 +273,9 @@ export type StateCreator<
 
   store: Mutate<StoreApi<T>, Mis>,
 >               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  store: Mutate<StoreApi<T>, Mis>,
+>               ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   store: Mutate<StoreApi<T>, Mis>,
 >                        ^: any   (TyAny) (TSTypeReference)
@@ -347,6 +368,9 @@ export type CreateStore = {
 >           ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ): Mutate<StoreApi<T>, Mos>
+>           ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  ): Mutate<StoreApi<T>, Mos>
 >                    ^: any   (TyAny) (TSTypeReference)
 
   ): Mutate<StoreApi<T>, Mos>
@@ -378,6 +402,9 @@ export type CreateStore = {
 
   ) => Mutate<StoreApi<T>, Mos>
 >             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  ) => Mutate<StoreApi<T>, Mos>
+>             ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   ) => Mutate<StoreApi<T>, Mos>
 >                      ^: any   (TyAny) (TSTypeReference)
@@ -436,6 +463,9 @@ export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
 
   const api: StoreApi<any> = {
 >            ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  const api: StoreApi<any> = {
+>            ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     setState(partial: any) {
 >   ^^^^^^^^: (partial: any) => void   (TyFunction) (ObjectProperty)
@@ -578,6 +608,9 @@ expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms ex
   StateCreator,
 > ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (BindingIdentifier)
 
+  StoreApi,
+> ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   StoreMutatorIdentifier,
 > ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof) (BindingIdentifier)
                 expected: never
@@ -597,6 +630,9 @@ export type ReadonlyStoreApi<T> = Pick<
 
   StoreApi<T>,
 > ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  StoreApi<T>,
+> ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   StoreApi<T>,
 >          ^: any   (TyAny) (TSTypeReference)
@@ -693,6 +729,9 @@ export type Create = {
 >                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
+>                         ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+  ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                                  ^: any   (TyAny) (TSTypeReference)
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
@@ -740,6 +779,9 @@ export type Create = {
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
+>                           ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
 >                                    ^: any   (TyAny) (TSTypeReference)
@@ -847,6 +889,9 @@ import type { ExtractState, StateCreator, StoreApi } from '../src/vanilla'
 import type { ExtractState, StateCreator, StoreApi } from '../src/vanilla'
 >                           ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (BindingIdentifier)
 
+import type { ExtractState, StateCreator, StoreApi } from '../src/vanilla'
+>                                         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
 type CounterState = {
 >    ^^^^^^^^^^^^: { count: number; label?: string; increment: (by?: number) => void; }   (TyObject) (TSTypeAliasDeclaration)
 
@@ -941,6 +986,9 @@ type CounterStore = StoreApi<CounterState>
 
 type CounterStore = StoreApi<CounterState>
 >                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type CounterStore = StoreApi<CounterState>
+>                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 type CounterStore = StoreApi<CounterState>
 >                            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

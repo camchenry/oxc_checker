@@ -1,6 +1,9 @@
 interface ButtonProps {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface ButtonProps {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   onClick: () => void;
 > ^^^^^^^: () => void   (TyFunction) (TSPropertySignature)
 
@@ -9,6 +12,9 @@ class Button implements ButtonProps {
 
 class Button implements ButtonProps {
 >                       ^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
+
+class Button implements ButtonProps {
+>                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   onClick = () => console.log('button!');
 > ^^^^^^^: () => void   (TyFunction) (PropertyDefinition)
@@ -26,10 +32,16 @@ export { Button, ButtonProps };
 >        ^^^^^^: typeof Button   (TyTypeQuery) (IdentifierReference)
 
 export { Button, ButtonProps };
->                ^^^^^^^^^^^: any   (TyError) (ExportSpecifier)
+>                ^^^^^^^^^^^: any   (TyAny) (ExportSpecifier)
+
+export { Button, ButtonProps };
+>                ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface ButtonProps {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ButtonProps {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
   onClick: () => void;
 > ^^^^^^^: () => void   (TyFunction) (TSPropertySignature)
@@ -39,6 +51,9 @@ class Button implements ButtonProps {
 
 class Button implements ButtonProps {
 >                       ^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
+
+class Button implements ButtonProps {
+>                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   onClick = () => console.log('button!');
 > ^^^^^^^: () => void   (TyFunction) (PropertyDefinition)
@@ -56,7 +71,10 @@ export { Button };
 >        ^^^^^^: typeof Button   (TyTypeQuery) (IdentifierReference)
 
 export type { ButtonProps };
->             ^^^^^^^^^^^: any   (TyError) (ExportSpecifier)
+>             ^^^^^^^^^^^: any   (TyAny) (ExportSpecifier)
+
+export type { ButtonProps };
+>             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 const x = 1;
 >     ^: 1   (TyNumberLiteral) (BindingIdentifier)

@@ -166,6 +166,9 @@ createPromiseLike();
 interface MyThenable {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface MyThenable {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 > ^^^^: (onFulfilled: () => void, onRejected: () => void) => MyThenable   (TyFunction) (TSMethodSignature)
 
@@ -178,11 +181,17 @@ interface MyThenable {
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 >                                                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+>                                                        ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 declare function createMyThenable(): MyThenable;
 >                ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction) (BindingIdentifier)
 
 declare function createMyThenable(): MyThenable;
 >                                    ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare function createMyThenable(): MyThenable;
+>                                    ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 createMyThenable();
 >^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction) (IdentifierReference)
@@ -208,6 +217,9 @@ await createPromiseLike();
 interface MyThenable {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface MyThenable {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 > ^^^^: (onFulfilled: () => void, onRejected: () => void) => MyThenable   (TyFunction) (TSMethodSignature)
 
@@ -220,11 +232,17 @@ interface MyThenable {
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 >                                                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+>                                                        ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 declare function createMyThenable(): MyThenable;
 >                ^^^^^^^^^^^^^^^^: () => MyThenable   (TyFunction) (BindingIdentifier)
 
 declare function createMyThenable(): MyThenable;
 >                                    ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare function createMyThenable(): MyThenable;
+>                                    ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 await createMyThenable();
 >^^^^^^^^^^^^^^^^^^^^^^^^^: never   (TyNever) (ExpressionStatement)

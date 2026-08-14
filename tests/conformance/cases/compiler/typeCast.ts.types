@@ -98,6 +98,9 @@ interface i00<T = number> { a: T; }
 >         ^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface i00<T = number> { a: T; }
+>         ^^^: any   (TyAny) (BindingIdentifier)
+
+interface i00<T = number> { a: T; }
 >             ^: any   (TyAny) (TSTypeParameter)
 
 interface i00<T = number> { a: T; }
@@ -111,6 +114,9 @@ const i00c00 = (<i00>x)
 
 const i00c00 = (<i00>x)
 >                ^^^: any   (TyAny) (TSTypeReference)
+
+const i00c00 = (<i00>x)
+>                ^^^: any   (TyAny) (IdentifierReference)
 
 const i00c00 = (<i00>x)
 >                    ^: any   (TyAny) (IdentifierReference)

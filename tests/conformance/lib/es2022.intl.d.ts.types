@@ -7,6 +7,9 @@ declare namespace Intl {
     interface SegmenterOptions {
 >             ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface SegmenterOptions {
+>             ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         localeMatcher?: "best fit" | "lookup" | undefined;
 >       ^^^^^^^^^^^^^: "best fit" | "lookup" | undefined   (TyUnion) (TSPropertySignature)
 
@@ -28,14 +31,23 @@ declare namespace Intl {
         segment(input: string): Segments;
 >                               ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        segment(input: string): Segments;
+>                               ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
         resolvedOptions(): ResolvedSegmenterOptions;
 >       ^^^^^^^^^^^^^^^: () => ResolvedSegmenterOptions   (TyFunction) (TSMethodSignature)
 
         resolvedOptions(): ResolvedSegmenterOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        resolvedOptions(): ResolvedSegmenterOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface ResolvedSegmenterOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface ResolvedSegmenterOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         locale: string;
 >       ^^^^^^: string   (TyString) (TSPropertySignature)
@@ -45,6 +57,9 @@ declare namespace Intl {
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >             ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>             ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                             ^: any   (TyAny) (TSTypeParameter)
@@ -74,10 +89,16 @@ declare namespace Intl {
 >                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         [Symbol.iterator](): SegmentIterator<T>;
+>                            ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        [Symbol.iterator](): SegmentIterator<T>;
 >                                            ^: any   (TyAny) (TSTypeReference)
 
     interface Segments {
 >             ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface Segments {
+>             ^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         containing(codeUnitIndex?: number): SegmentData | undefined;
 >       ^^^^^^^^^^: (codeUnitIndex?: number) => SegmentData | undefined   (TyFunction) (TSMethodSignature)
@@ -89,6 +110,9 @@ declare namespace Intl {
         containing(codeUnitIndex?: number): SegmentData | undefined;
 >                                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        containing(codeUnitIndex?: number): SegmentData | undefined;
+>                                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
         [Symbol.iterator](): SegmentIterator<SegmentData>;
 >        ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -99,10 +123,19 @@ declare namespace Intl {
 >                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         [Symbol.iterator](): SegmentIterator<SegmentData>;
+>                            ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        [Symbol.iterator](): SegmentIterator<SegmentData>;
 >                                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        [Symbol.iterator](): SegmentIterator<SegmentData>;
+>                                            ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     interface SegmentData {
 >             ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface SegmentData {
+>             ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         segment: string;
 >       ^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -145,6 +178,9 @@ declare namespace Intl {
 >                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
+>                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
 >                                                                    ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
@@ -173,6 +209,9 @@ declare namespace Intl {
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

@@ -1,6 +1,9 @@
 interface ErrorOptions {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface ErrorOptions {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     cause?: unknown;
 >   ^^^^^: unknown   (TyUnknown) (TSPropertySignature)
 
@@ -8,11 +11,18 @@ interface Error {
 >         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
        expected: ErrorConstructor
 
+interface Error {
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
+       expected: ErrorConstructor
+
     cause?: unknown;
 >   ^^^^^: unknown   (TyUnknown) (TSPropertySignature)
 
 interface ErrorConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ErrorConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (message?: string, options?: ErrorOptions): Error;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -24,7 +34,14 @@ interface ErrorConstructor {
 >                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (message?: string, options?: ErrorOptions): Error;
+>                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (message?: string, options?: ErrorOptions): Error;
 >                                                   ^^^^^: any   (TyAny) (TSTypeReference)
+                                                 expected: ErrorConstructor
+
+    new (message?: string, options?: ErrorOptions): Error;
+>                                                   ^^^^^: any   (TyAny) (IdentifierReference)
                                                  expected: ErrorConstructor
 
     (message?: string, options?: ErrorOptions): Error;
@@ -37,11 +54,21 @@ interface ErrorConstructor {
 >                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): Error;
+>                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    (message?: string, options?: ErrorOptions): Error;
 >                                               ^^^^^: any   (TyAny) (TSTypeReference)
+                                             expected: ErrorConstructor
+
+    (message?: string, options?: ErrorOptions): Error;
+>                                               ^^^^^: any   (TyAny) (IdentifierReference)
                                              expected: ErrorConstructor
 
 interface EvalErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface EvalErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (message?: string, options?: ErrorOptions): EvalError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -51,6 +78,9 @@ interface EvalErrorConstructor {
 
     new (message?: string, options?: ErrorOptions): EvalError;
 >                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (message?: string, options?: ErrorOptions): EvalError;
+>                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new (message?: string, options?: ErrorOptions): EvalError;
 >                                                   ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (TSTypeReference)
@@ -68,6 +98,9 @@ interface EvalErrorConstructor {
 >                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): EvalError;
+>                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    (message?: string, options?: ErrorOptions): EvalError;
 >                                               ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): EvalError;
@@ -75,6 +108,9 @@ interface EvalErrorConstructor {
 
 interface RangeErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface RangeErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (message?: string, options?: ErrorOptions): RangeError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -84,6 +120,9 @@ interface RangeErrorConstructor {
 
     new (message?: string, options?: ErrorOptions): RangeError;
 >                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (message?: string, options?: ErrorOptions): RangeError;
+>                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new (message?: string, options?: ErrorOptions): RangeError;
 >                                                   ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (TSTypeReference)
@@ -101,6 +140,9 @@ interface RangeErrorConstructor {
 >                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): RangeError;
+>                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    (message?: string, options?: ErrorOptions): RangeError;
 >                                               ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): RangeError;
@@ -108,6 +150,9 @@ interface RangeErrorConstructor {
 
 interface ReferenceErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReferenceErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -117,6 +162,9 @@ interface ReferenceErrorConstructor {
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
 >                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (message?: string, options?: ErrorOptions): ReferenceError;
+>                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
 >                                                   ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (TSTypeReference)
@@ -134,6 +182,9 @@ interface ReferenceErrorConstructor {
 >                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
+>                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    (message?: string, options?: ErrorOptions): ReferenceError;
 >                                               ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
@@ -141,6 +192,9 @@ interface ReferenceErrorConstructor {
 
 interface SyntaxErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface SyntaxErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -150,6 +204,9 @@ interface SyntaxErrorConstructor {
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
 >                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (message?: string, options?: ErrorOptions): SyntaxError;
+>                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
 >                                                   ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (TSTypeReference)
@@ -167,6 +224,9 @@ interface SyntaxErrorConstructor {
 >                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
+>                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    (message?: string, options?: ErrorOptions): SyntaxError;
 >                                               ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
@@ -174,6 +234,9 @@ interface SyntaxErrorConstructor {
 
 interface TypeErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface TypeErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (message?: string, options?: ErrorOptions): TypeError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -183,6 +246,9 @@ interface TypeErrorConstructor {
 
     new (message?: string, options?: ErrorOptions): TypeError;
 >                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (message?: string, options?: ErrorOptions): TypeError;
+>                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new (message?: string, options?: ErrorOptions): TypeError;
 >                                                   ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (TSTypeReference)
@@ -200,6 +266,9 @@ interface TypeErrorConstructor {
 >                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): TypeError;
+>                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    (message?: string, options?: ErrorOptions): TypeError;
 >                                               ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): TypeError;
@@ -207,6 +276,9 @@ interface TypeErrorConstructor {
 
 interface URIErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface URIErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (message?: string, options?: ErrorOptions): URIError;
 >        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
@@ -216,6 +288,9 @@ interface URIErrorConstructor {
 
     new (message?: string, options?: ErrorOptions): URIError;
 >                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (message?: string, options?: ErrorOptions): URIError;
+>                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     new (message?: string, options?: ErrorOptions): URIError;
 >                                                   ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (TSTypeReference)
@@ -233,6 +308,9 @@ interface URIErrorConstructor {
 >                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): URIError;
+>                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    (message?: string, options?: ErrorOptions): URIError;
 >                                               ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (TSTypeReference)
 
     (message?: string, options?: ErrorOptions): URIError;
@@ -240,6 +318,9 @@ interface URIErrorConstructor {
 
 interface AggregateErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface AggregateErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         errors: Iterable<any>,
 >       ^^^^^^: Iterable<any>   (TyTypeReference) (BindingIdentifier)
@@ -258,6 +339,9 @@ interface AggregateErrorConstructor {
 
         options?: ErrorOptions,
 >                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        options?: ErrorOptions,
+>                 ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     ): AggregateError;
 >      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
@@ -282,6 +366,9 @@ interface AggregateErrorConstructor {
 
         options?: ErrorOptions,
 >                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        options?: ErrorOptions,
+>                 ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     ): AggregateError;
 >      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)

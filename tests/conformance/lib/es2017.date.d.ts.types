@@ -1,6 +1,9 @@
 interface DateConstructor {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface DateConstructor {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
 >   ^^^: { (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; }   (TyObject) (TSMethodSignature)
 

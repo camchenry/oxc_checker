@@ -7,6 +7,9 @@ declare namespace Intl {
     interface DateTimeFormatPartTypesRegistry {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface DateTimeFormatPartTypesRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         day: any;
 >       ^^^: any   (TyAny) (TSPropertySignature)
 
@@ -46,8 +49,14 @@ declare namespace Intl {
     type DateTimeFormatPartTypes = keyof DateTimeFormatPartTypesRegistry;
 >                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    type DateTimeFormatPartTypes = keyof DateTimeFormatPartTypesRegistry;
+>                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface DateTimeFormatPart {
 >             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface DateTimeFormatPart {
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         type: DateTimeFormatPartTypes;
 >       ^^^^: DateTimeFormatPartTypes   (TyTypeReference) (TSPropertySignature)
@@ -61,6 +70,10 @@ declare namespace Intl {
 
     interface DateTimeFormat {
 >             ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                    expected: DateTimeFormatConstructor
+
+    interface DateTimeFormat {
+>             ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                     expected: DateTimeFormatConstructor
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
@@ -78,3 +91,6 @@ declare namespace Intl {
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
 >                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatToParts(date?: Date | number): DateTimeFormatPart[];
+>                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

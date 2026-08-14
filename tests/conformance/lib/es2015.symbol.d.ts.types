@@ -1,6 +1,9 @@
 interface SymbolConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly prototype: Symbol;
 >            ^^^^^^^^^: Symbol   (TyTypeReference) (TSPropertySignature)
 
@@ -30,3 +33,6 @@ declare var Symbol: SymbolConstructor;
 
 declare var Symbol: SymbolConstructor;
 >                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var Symbol: SymbolConstructor;
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

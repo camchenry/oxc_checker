@@ -1,6 +1,9 @@
 interface Int8ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Int8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): Int8Array<ArrayBuffer>;
 >           ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -15,6 +18,9 @@ interface Int8ArrayConstructor {
 
 interface Uint8ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Uint8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (): Uint8Array<ArrayBuffer>;
 >           ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -31,6 +37,9 @@ interface Uint8ArrayConstructor {
 interface Uint8ClampedArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Uint8ClampedArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): Uint8ClampedArray<ArrayBuffer>;
 >           ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -45,6 +54,9 @@ interface Uint8ClampedArrayConstructor {
 
 interface Int16ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Int16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (): Int16Array<ArrayBuffer>;
 >           ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -61,6 +73,9 @@ interface Int16ArrayConstructor {
 interface Uint16ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Uint16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): Uint16Array<ArrayBuffer>;
 >           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -75,6 +90,9 @@ interface Uint16ArrayConstructor {
 
 interface Int32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Int32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (): Int32Array<ArrayBuffer>;
 >           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -91,6 +109,9 @@ interface Int32ArrayConstructor {
 interface Uint32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Uint32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): Uint32Array<ArrayBuffer>;
 >           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -106,6 +127,9 @@ interface Uint32ArrayConstructor {
 interface Float32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Float32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): Float32Array<ArrayBuffer>;
 >           ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -120,6 +144,9 @@ interface Float32ArrayConstructor {
 
 interface Float64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Float64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (): Float64Array<ArrayBuffer>;
 >           ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference) (TSTypeReference)

@@ -102,6 +102,9 @@ interface Map<K, V> {
 interface MapConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface MapConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): Map<any, any>;
 >           ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -151,8 +154,14 @@ declare var Map: MapConstructor;
 declare var Map: MapConstructor;
 >                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare var Map: MapConstructor;
+>                ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface ReadonlyMap<K, V> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReadonlyMap<K, V> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface ReadonlyMap<K, V> {
 >                     ^: any   (TyAny) (TSTypeParameter)
@@ -183,6 +192,9 @@ interface ReadonlyMap<K, V> {
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
 >                                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+>                                               ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
 >                                                           ^: any   (TyAny) (TSTypeReference)
@@ -285,6 +297,9 @@ interface WeakMap<K extends WeakKey, V> {
 interface WeakMapConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface WeakMapConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
 >        ^: any   (TyAny) (TSTypeParameter)
 
@@ -345,6 +360,9 @@ declare var WeakMap: WeakMapConstructor;
 
 declare var WeakMap: WeakMapConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var WeakMap: WeakMapConstructor;
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Set<T> {
 >         ^^^: SetConstructor   (TyTypeReference) (BindingIdentifier)
@@ -426,6 +444,9 @@ interface Set<T> {
 interface SetConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SetConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new <T = any>(values?: readonly T[] | null): Set<T>;
 >        ^: any   (TyAny) (TSTypeParameter)
 
@@ -459,8 +480,14 @@ declare var Set: SetConstructor;
 declare var Set: SetConstructor;
 >                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare var Set: SetConstructor;
+>                ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface ReadonlySet<T> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReadonlySet<T> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface ReadonlySet<T> {
 >                     ^: any   (TyAny) (TSTypeParameter)
@@ -488,6 +515,9 @@ interface ReadonlySet<T> {
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
 >                                                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+>                                                  ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
 >                                                              ^: any   (TyAny) (TSTypeReference)
@@ -554,6 +584,9 @@ interface WeakSet<T extends WeakKey> {
 interface WeakSetConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface WeakSetConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
 >        ^: any   (TyAny) (TSTypeParameter)
 
@@ -604,3 +637,6 @@ declare var WeakSet: WeakSetConstructor;
 
 declare var WeakSet: WeakSetConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var WeakSet: WeakSetConstructor;
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

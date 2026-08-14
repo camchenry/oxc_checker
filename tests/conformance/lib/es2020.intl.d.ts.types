@@ -51,6 +51,9 @@ declare namespace Intl {
     interface RelativeTimeFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface RelativeTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         localeMatcher?: RelativeTimeFormatLocaleMatcher;
 >       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
 
@@ -71,6 +74,9 @@ declare namespace Intl {
 
     interface ResolvedRelativeTimeFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface ResolvedRelativeTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         locale: UnicodeBCP47LocaleIdentifier;
 >       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference) (TSPropertySignature)
@@ -167,6 +173,9 @@ declare namespace Intl {
         resolvedOptions(): ResolvedRelativeTimeFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        resolvedOptions(): ResolvedRelativeTimeFormatOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     const RelativeTimeFormat: {
 >         ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
 
@@ -182,6 +191,9 @@ declare namespace Intl {
 
             options?: RelativeTimeFormatOptions,
 >                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+            options?: RelativeTimeFormatOptions,
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         ): RelativeTimeFormat;
 >          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
@@ -205,11 +217,17 @@ declare namespace Intl {
             options?: RelativeTimeFormatOptions,
 >                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+            options?: RelativeTimeFormatOptions,
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
         ): UnicodeBCP47LocaleIdentifier[];
 >          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface NumberFormatOptionsStyleRegistry {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatOptionsStyleRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         unit: never;
 >       ^^^^: never   (TyNever) (TSPropertySignature)
@@ -217,11 +235,17 @@ declare namespace Intl {
     interface NumberFormatOptionsCurrencyDisplayRegistry {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface NumberFormatOptionsCurrencyDisplayRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         narrowSymbol: never;
 >       ^^^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
 
     interface NumberFormatOptionsSignDisplayRegistry {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatOptionsSignDisplayRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         auto: never;
 >       ^^^^: never   (TyNever) (TSPropertySignature)
@@ -241,8 +265,14 @@ declare namespace Intl {
     type NumberFormatOptionsSignDisplay = keyof NumberFormatOptionsSignDisplayRegistry;
 >                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    type NumberFormatOptionsSignDisplay = keyof NumberFormatOptionsSignDisplayRegistry;
+>                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface NumberFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         numberingSystem?: string | undefined;
 >       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
@@ -272,6 +302,9 @@ declare namespace Intl {
     interface ResolvedNumberFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface ResolvedNumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         compactDisplay?: "short" | "long";
 >       ^^^^^^^^^^^^^^: "short" | "long" | undefined   (TyUnion) (TSPropertySignature)
 
@@ -297,6 +330,9 @@ declare namespace Intl {
     interface NumberFormatPartTypeRegistry {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface NumberFormatPartTypeRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         compact: never;
 >       ^^^^^^^: never   (TyNever) (TSPropertySignature)
 
@@ -317,6 +353,9 @@ declare namespace Intl {
 
     interface DateTimeFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface DateTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         calendar?: string | undefined;
 >       ^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
@@ -344,6 +383,9 @@ declare namespace Intl {
 
     interface LocaleOptions {
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface LocaleOptions {
+>             ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         baseName?: string;
 >       ^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
@@ -391,6 +433,9 @@ declare namespace Intl {
 
     interface Locale extends LocaleOptions {
 >                            ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+    interface Locale extends LocaleOptions {
+>                            ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         baseName: string;
 >       ^^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -452,6 +497,9 @@ declare namespace Intl {
 >                                                                  ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
+>                                                                  ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSTypeReference)
                                                                                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
@@ -470,6 +518,9 @@ declare namespace Intl {
 
     interface DisplayNamesOptions {
 >             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface DisplayNamesOptions {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         localeMatcher?: RelativeTimeFormatLocaleMatcher;
 >       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
@@ -503,6 +554,9 @@ declare namespace Intl {
 
     interface ResolvedDisplayNamesOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface ResolvedDisplayNamesOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         locale: UnicodeBCP47LocaleIdentifier;
 >       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference) (TSPropertySignature)
@@ -553,6 +607,9 @@ declare namespace Intl {
         resolvedOptions(): ResolvedDisplayNamesOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        resolvedOptions(): ResolvedDisplayNamesOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     const DisplayNames: {
 >         ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
 
@@ -576,6 +633,9 @@ declare namespace Intl {
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
 >                                               ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+>                                               ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
 >                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
@@ -607,6 +667,9 @@ declare namespace Intl {
 
     interface CollatorConstructor {
 >             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface CollatorConstructor {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -678,6 +741,9 @@ declare namespace Intl {
     interface DateTimeFormatConstructor {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface DateTimeFormatConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
             expected: LocalesArgument
@@ -690,6 +756,9 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                                                                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -711,6 +780,9 @@ declare namespace Intl {
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                                             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
+>                                             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
 >                                                                     ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -736,8 +808,14 @@ declare namespace Intl {
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
 >                                                              ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
+>                                                              ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface NumberFormatConstructor {
 >             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -751,6 +829,9 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                                                 ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                                 ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                                                                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -772,6 +853,9 @@ declare namespace Intl {
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                                             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
+>                                             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
 >                                                                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -797,8 +881,14 @@ declare namespace Intl {
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
 >                                                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
+>                                                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface PluralRulesConstructor {
 >             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface PluralRulesConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
 >            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)

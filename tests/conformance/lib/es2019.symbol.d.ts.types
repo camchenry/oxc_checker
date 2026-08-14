@@ -2,5 +2,9 @@ interface Symbol {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: SymbolConstructor
 
+interface Symbol {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: SymbolConstructor
+
     readonly description: string | undefined;
 >            ^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)

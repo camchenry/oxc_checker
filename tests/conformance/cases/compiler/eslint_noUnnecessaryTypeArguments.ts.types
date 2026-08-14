@@ -47,6 +47,9 @@ interface I<T = number> {}
 >         ^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface I<T = number> {}
+>         ^: any   (TyAny) (BindingIdentifier)
+
+interface I<T = number> {}
 >           ^: any   (TyAny) (TSTypeParameter)
 
 class Impl implements I<number> {}
@@ -54,6 +57,9 @@ class Impl implements I<number> {}
 
 class Impl implements I<number> {}
 >                     ^: any   (TyAny) (TSClassImplements)
+
+class Impl implements I<number> {}
+>                     ^: any   (TyAny) (IdentifierReference)
 
 function f<T = number>() {}
 >        ^: <T = number>() => void   (TyFunction) (BindingIdentifier)
@@ -128,6 +134,9 @@ interface I<T = number> {}
 >         ^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface I<T = number> {}
+>         ^: any   (TyAny) (BindingIdentifier)
+
+interface I<T = number> {}
 >           ^: any   (TyAny) (TSTypeParameter)
 
 class Impl implements I<string> {}
@@ -135,3 +144,6 @@ class Impl implements I<string> {}
 
 class Impl implements I<string> {}
 >                     ^: any   (TyAny) (TSClassImplements)
+
+class Impl implements I<string> {}
+>                     ^: any   (TyAny) (IdentifierReference)

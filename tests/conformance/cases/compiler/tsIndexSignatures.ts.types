@@ -7,6 +7,9 @@ class A {
 interface B {
 >         ^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface B {
+>         ^: any   (TyAny) (BindingIdentifier)
+
   [key: string]: string;
 >  ^^^: string   (TyString) (TSIndexSignatureName)
 

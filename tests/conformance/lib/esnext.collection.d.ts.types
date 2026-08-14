@@ -3,6 +3,10 @@ interface Map<K, V> {
      expected: MapConstructor
 
 interface Map<K, V> {
+>         ^^^: any   (TyAny) (BindingIdentifier)
+     expected: MapConstructor
+
+interface Map<K, V> {
 >             ^: any   (TyAny) (TSTypeParameter)
 
 interface Map<K, V> {
@@ -52,6 +56,10 @@ interface Map<K, V> {
 
 interface WeakMap<K extends WeakKey, V> {
 >         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+         expected: WeakMapConstructor
+
+interface WeakMap<K extends WeakKey, V> {
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {

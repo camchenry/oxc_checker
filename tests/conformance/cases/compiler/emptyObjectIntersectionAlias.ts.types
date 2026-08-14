@@ -4,6 +4,9 @@ type DefinedString = (string | null | undefined) & {};
 interface Container {
 >         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Container {
+>         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   value: DefinedString;
 > ^^^^^: string   (TyString) (TSPropertySignature)
 
@@ -15,6 +18,9 @@ declare const container: Container;
 
 declare const container: Container;
 >                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const container: Container;
+>                        ^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 const _value = container.value;
 >     ^^^^^^: string   (TyString) (BindingIdentifier)

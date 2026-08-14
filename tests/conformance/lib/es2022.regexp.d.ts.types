@@ -1,23 +1,38 @@
 interface RegExpMatchArray {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface RegExpMatchArray {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     indices?: RegExpIndicesArray;
 >   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion) (TSPropertySignature)
 
     indices?: RegExpIndicesArray;
 >             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    indices?: RegExpIndicesArray;
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface RegExpExecArray {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface RegExpExecArray {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     indices?: RegExpIndicesArray;
 >   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion) (TSPropertySignature)
 
     indices?: RegExpIndicesArray;
 >             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    indices?: RegExpIndicesArray;
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface RegExpIndicesArray extends Array<[number, number] | undefined> {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 >                                    ^^^^^: ArrayConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -33,6 +48,10 @@ interface RegExpIndicesArray extends Array<[number, number] | undefined> {
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: RegExpConstructor
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: RegExpConstructor
 
     readonly hasIndices: boolean;

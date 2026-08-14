@@ -3,6 +3,10 @@ interface Array<T> {
        expected: ArrayConstructor
 
 interface Array<T> {
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
+       expected: ArrayConstructor
+
+interface Array<T> {
 >               ^: any   (TyAny) (TSTypeParameter)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
@@ -148,6 +152,9 @@ interface Array<T> {
 interface ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     from<T>(arrayLike: ArrayLike<T>): T[];
 >   ^^^^: { <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }   (TyObject) (TSMethodSignature)
 
@@ -229,6 +236,9 @@ interface ArrayConstructor {
 interface DateConstructor {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface DateConstructor {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (value: number | string | Date): Date;
 >        ^^^^^: number | string | Date   (TyUnion) (BindingIdentifier)
 
@@ -248,11 +258,19 @@ interface Function {
 >         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
           expected: FunctionConstructor
 
+interface Function {
+>         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+          expected: FunctionConstructor
+
     readonly name: string;
 >            ^^^^: string   (TyString) (TSPropertySignature)
 
 interface Math {
 >         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+      expected: Math
+
+interface Math {
+>         ^^^^: any   (TyAny) (BindingIdentifier)
       expected: Math
 
     clz32(x: number): number;
@@ -363,6 +381,9 @@ interface Math {
 interface NumberConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface NumberConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly EPSILON: number;
 >            ^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
@@ -413,6 +434,9 @@ interface NumberConstructor {
 
 interface ObjectConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ObjectConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
 >   ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject) (TSMethodSignature)
@@ -574,6 +598,9 @@ interface ReadonlyArray<T> {
 >         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ReadonlyArray<T> {
 >                       ^: any   (TyAny) (TSTypeParameter)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
@@ -693,6 +720,10 @@ interface RegExp {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: RegExpConstructor
 
+interface RegExp {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: RegExpConstructor
+
     readonly flags: string;
 >            ^^^^^: string   (TyString) (TSPropertySignature)
 
@@ -705,6 +736,9 @@ interface RegExp {
 interface RegExpConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface RegExpConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (pattern: RegExp | string, flags?: string): RegExp;
 >        ^^^^^^^: RegExp | string   (TyUnion) (BindingIdentifier)
 
@@ -713,10 +747,18 @@ interface RegExpConstructor {
                 expected: RegExpConstructor
 
     new (pattern: RegExp | string, flags?: string): RegExp;
+>                 ^^^^^^: any   (TyAny) (IdentifierReference)
+                expected: RegExpConstructor
+
+    new (pattern: RegExp | string, flags?: string): RegExp;
 >                                  ^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
     new (pattern: RegExp | string, flags?: string): RegExp;
 >                                                   ^^^^^^: any   (TyAny) (TSTypeReference)
+                                                  expected: RegExpConstructor
+
+    new (pattern: RegExp | string, flags?: string): RegExp;
+>                                                   ^^^^^^: any   (TyAny) (IdentifierReference)
                                                   expected: RegExpConstructor
 
     (pattern: RegExp | string, flags?: string): RegExp;
@@ -727,14 +769,26 @@ interface RegExpConstructor {
             expected: RegExpConstructor
 
     (pattern: RegExp | string, flags?: string): RegExp;
+>             ^^^^^^: any   (TyAny) (IdentifierReference)
+            expected: RegExpConstructor
+
+    (pattern: RegExp | string, flags?: string): RegExp;
 >                              ^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
     (pattern: RegExp | string, flags?: string): RegExp;
 >                                               ^^^^^^: any   (TyAny) (TSTypeReference)
                                               expected: RegExpConstructor
 
+    (pattern: RegExp | string, flags?: string): RegExp;
+>                                               ^^^^^^: any   (TyAny) (IdentifierReference)
+                                              expected: RegExpConstructor
+
 interface String {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: StringConstructor
+
+interface String {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: StringConstructor
 
     codePointAt(pos: number): number | undefined;
@@ -848,6 +902,9 @@ interface String {
 interface StringConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface StringConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     fromCodePoint(...codePoints: number[]): string;
 >   ^^^^^^^^^^^^^: { (...codePoints: number[]): string; (...codePoints: number[]): string; }   (TyObject) (TSMethodSignature)
 
@@ -874,6 +931,10 @@ interface StringConstructor {
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+           expected: Int8ArrayConstructor
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
@@ -906,6 +967,10 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+            expected: Uint8ArrayConstructor
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
@@ -932,6 +997,10 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                   expected: Uint8ClampedArrayConstructor
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
@@ -964,6 +1033,10 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+            expected: Int16ArrayConstructor
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
@@ -990,6 +1063,10 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+             expected: Uint16ArrayConstructor
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1022,6 +1099,10 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+            expected: Int32ArrayConstructor
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1048,6 +1129,10 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+             expected: Uint32ArrayConstructor
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1080,6 +1165,10 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+              expected: Float32ArrayConstructor
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1106,6 +1195,10 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+              expected: Float64ArrayConstructor
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {

@@ -1,6 +1,9 @@
 interface RegExpMatchArray {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface RegExpMatchArray {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     groups?: {
 >   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion) (TSPropertySignature)
 
@@ -10,6 +13,9 @@ interface RegExpMatchArray {
 interface RegExpExecArray {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface RegExpExecArray {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     groups?: {
 >   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion) (TSPropertySignature)
 
@@ -18,6 +24,10 @@ interface RegExpExecArray {
 
 interface RegExp {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: RegExpConstructor
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: RegExpConstructor
 
     readonly dotAll: boolean;

@@ -7,11 +7,17 @@ declare namespace Intl {
     interface DateTimeFormatPartTypesRegistry {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface DateTimeFormatPartTypesRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         fractionalSecond: any;
 >       ^^^^^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
 
     interface DateTimeFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface DateTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         formatMatcher?: "basic" | "best fit" | "best fit" | undefined;
 >       ^^^^^^^^^^^^^: "basic" | "best fit" | undefined   (TyUnion) (TSPropertySignature)
@@ -32,6 +38,9 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
     interface DateTimeRangeFormatPart extends DateTimeFormatPart {
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    interface DateTimeRangeFormatPart extends DateTimeFormatPart {
 >                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
     interface DateTimeRangeFormatPart extends DateTimeFormatPart {
@@ -42,6 +51,10 @@ declare namespace Intl {
 
     interface DateTimeFormat {
 >             ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                    expected: DateTimeFormatConstructor
+
+    interface DateTimeFormat {
+>             ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                     expected: DateTimeFormatConstructor
 
         formatRange(startDate: Date | number | bigint, endDate: Date | number | bigint): string;
@@ -91,8 +104,14 @@ declare namespace Intl {
         formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
 >                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        formatRangeToParts(startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[];
+>                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface ResolvedDateTimeFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface ResolvedDateTimeFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         formatMatcher?: "basic" | "best fit" | "best fit";
 >       ^^^^^^^^^^^^^: "basic" | "best fit" | undefined   (TyUnion) (TSPropertySignature)
@@ -124,6 +143,9 @@ declare namespace Intl {
     interface ListFormatOptions {
 >             ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface ListFormatOptions {
+>             ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         localeMatcher?: ListFormatLocaleMatcher | undefined;
 >       ^^^^^^^^^^^^^: ListFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
 
@@ -144,6 +166,9 @@ declare namespace Intl {
 
     interface ResolvedListFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface ResolvedListFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         locale: string;
 >       ^^^^^^: string   (TyString) (TSPropertySignature)
@@ -202,6 +227,9 @@ declare namespace Intl {
         resolvedOptions(): ResolvedListFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        resolvedOptions(): ResolvedListFormatOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     const ListFormat: {
 >         ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
 
@@ -229,6 +257,9 @@ declare namespace Intl {
 
         new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
 >                                                 ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
+>                                                 ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
 >                                                                     ^^^^^^^^^^: { new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat; prototype: ListFormat; supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
@@ -259,6 +290,9 @@ declare namespace Intl {
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
+>                                                                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 >                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

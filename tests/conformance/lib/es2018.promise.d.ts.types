@@ -3,6 +3,10 @@ interface Promise<T> {
          expected: PromiseConstructor
 
 interface Promise<T> {
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+         expected: PromiseConstructor
+
+interface Promise<T> {
 >                 ^: any   (TyAny) (TSTypeParameter)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
@@ -13,6 +17,10 @@ interface Promise<T> {
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
 >                                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                         expected: PromiseConstructor
+
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+>                                                         ^^^^^^^: any   (TyAny) (IdentifierReference)
                                                          expected: PromiseConstructor
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;

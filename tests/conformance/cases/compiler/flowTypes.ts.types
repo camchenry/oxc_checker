@@ -124,6 +124,9 @@ if (x && typeof y === "string") {
 interface Action {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Action {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+
   type: string;
 > ^^^^: string   (TyString) (TSPropertySignature)
 
@@ -138,6 +141,9 @@ declare function isAction(action: unknown): action is Action;
 
 declare function isAction(action: unknown): action is Action;
 >                                                     ^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare function isAction(action: unknown): action is Action;
+>                                                     ^^^^^^: any   (TyAny) (IdentifierReference)
 
 declare const maybeAction: unknown;
 >             ^^^^^^^^^^^: unknown   (TyUnknown) (BindingIdentifier)

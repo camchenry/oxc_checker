@@ -1,11 +1,17 @@
 export interface Register {
 >                ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+export interface Register {
+>                ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
 export type QueryKey = Register extends {
 >           ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeAliasDeclaration)
 
 export type QueryKey = Register extends {
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+export type QueryKey = Register extends {
+>                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   queryKey: infer TQueryKey
 > ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
@@ -172,6 +178,9 @@ export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
 export interface QueryClient {
 >                ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+export interface QueryClient {
+>                ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
 > ^^^^^^^^^^^^: <TData>(queryKey: QueryKey) => TData | undefined   (TyFunction) (TSMethodSignature)
 
@@ -219,6 +228,9 @@ export type QueryMeta = Register extends {
 
 export type QueryMeta = Register extends {
 >                       ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+export type QueryMeta = Register extends {
+>                       ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   queryMeta: infer TQueryMeta
 > ^^^^^^^^^: TQueryMeta   (TyTypeReference) (TSPropertySignature)
@@ -277,6 +289,9 @@ export type QueryFunctionContext<
       client: QueryClient
 >             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+      client: QueryClient
+>             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
       queryKey: TQueryKey
 >     ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
 
@@ -309,6 +324,9 @@ export type QueryFunctionContext<
 
       client: QueryClient
 >             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+      client: QueryClient
+>             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
       queryKey: TQueryKey
 >     ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
@@ -387,6 +405,9 @@ export type QueryFunction<
 
 export interface InfiniteData<TData, TPageParam = unknown> {
 >                ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+export interface InfiniteData<TData, TPageParam = unknown> {
+>                ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 export interface InfiniteData<TData, TPageParam = unknown> {
 >                             ^^^^^: any   (TyAny) (TSTypeParameter)
@@ -923,6 +944,9 @@ import { streamedQuery } from '../packages/query-core/src/streamedQuery'
 > ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional) (BindingIdentifier)
           expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
+  InfiniteData,
+> ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   QueryFunctionContext,
 > ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (BindingIdentifier)
 
@@ -1009,6 +1033,9 @@ const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
 >                                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
+>                                   ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
 >                                                ^^^^: any   (TyAny) (TSTypeReference)

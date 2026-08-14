@@ -13,6 +13,9 @@ declare namespace Intl {
     interface PluralRulesOptions {
 >             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface PluralRulesOptions {
+>             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         localeMatcher?: "lookup" | "best fit" | undefined;
 >       ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion) (TSPropertySignature)
 
@@ -39,6 +42,9 @@ declare namespace Intl {
 
     interface ResolvedPluralRulesOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface ResolvedPluralRulesOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         locale: string;
 >       ^^^^^^: string   (TyString) (TSPropertySignature)
@@ -84,6 +90,9 @@ declare namespace Intl {
         resolvedOptions(): ResolvedPluralRulesOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+        resolvedOptions(): ResolvedPluralRulesOptions;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
         select(n: number): LDMLPluralRule;
 >       ^^^^^^: (n: number) => LDMLPluralRule   (TyFunction) (TSMethodSignature)
 
@@ -96,6 +105,9 @@ declare namespace Intl {
     interface PluralRulesConstructor {
 >             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+    interface PluralRulesConstructor {
+>             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
 >            ^^^^^^^: string | readonly string[] | undefined   (TyUnion) (BindingIdentifier)
 
@@ -104,6 +116,9 @@ declare namespace Intl {
 
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
 >                                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         new (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
 >                                                                                 ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (TSTypeReference)
@@ -119,6 +134,9 @@ declare namespace Intl {
 
         (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
 >                                                        ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
+>                                                        ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         (locales?: string | readonly string[], options?: PluralRulesOptions): PluralRules;
 >                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (TSTypeReference)
@@ -145,8 +163,14 @@ declare namespace Intl {
     const PluralRules: PluralRulesConstructor;
 >                      ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    const PluralRules: PluralRulesConstructor;
+>                      ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface NumberFormatPartTypeRegistry {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatPartTypeRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         literal: never;
 >       ^^^^^^^: never   (TyNever) (TSPropertySignature)
@@ -190,8 +214,14 @@ declare namespace Intl {
     type NumberFormatPartTypes = keyof NumberFormatPartTypeRegistry;
 >                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    type NumberFormatPartTypes = keyof NumberFormatPartTypeRegistry;
+>                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     interface NumberFormatPart {
 >             ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatPart {
+>             ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
         type: NumberFormatPartTypes;
 >       ^^^^: NumberFormatPartTypes   (TyTypeReference) (TSPropertySignature)
@@ -207,6 +237,10 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
                   expected: NumberFormatConstructor
 
+    interface NumberFormat {
+>             ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+                  expected: NumberFormatConstructor
+
         formatToParts(number?: number | bigint): NumberFormatPart[];
 >       ^^^^^^^^^^^^^: (number?: number | bigint) => NumberFormatPart[]   (TyFunction) (TSMethodSignature)
              expected: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (number?: number | bigint): NumberFormatPart[]; }
@@ -216,3 +250,6 @@ declare namespace Intl {
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
 >                                                ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatToParts(number?: number | bigint): NumberFormatPart[];
+>                                                ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

@@ -1,6 +1,9 @@
 interface PromiseConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly prototype: Promise<any>;
 >            ^^^^^^^^^: Promise<any>   (TyTypeReference) (TSPropertySignature)
 
@@ -207,3 +210,6 @@ declare var Promise: PromiseConstructor;
 
 declare var Promise: PromiseConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var Promise: PromiseConstructor;
+>                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

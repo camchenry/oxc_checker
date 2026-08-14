@@ -1,6 +1,9 @@
 interface BigIntToLocaleStringOptions {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface BigIntToLocaleStringOptions {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     localeMatcher?: string;
 >   ^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
 
@@ -80,6 +83,9 @@ interface BigInt {
     toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
 >                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    toLocaleString(locales?: Intl.LocalesArgument, options?: BigIntToLocaleStringOptions): string;
+>                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     valueOf(): bigint;
 >   ^^^^^^^: { (): bigint; (): bigint; }   (TyObject) (TSMethodSignature)
 
@@ -91,6 +97,9 @@ interface BigInt {
 
 interface BigIntConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface BigIntConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     (value: bigint | boolean | number | string): bigint;
 >    ^^^^^: bigint | boolean | number | string   (TyUnion) (BindingIdentifier)
@@ -127,6 +136,9 @@ declare var BigInt: BigIntConstructor;
 
 declare var BigInt: BigIntConstructor;
 >                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var BigInt: BigIntConstructor;
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
@@ -734,6 +746,9 @@ interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> 
 interface BigInt64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface BigInt64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly prototype: BigInt64Array<ArrayBufferLike>;
 >            ^^^^^^^^^: BigInt64Array<ArrayBufferLike>   (TyTypeReference) (TSPropertySignature)
 
@@ -1045,6 +1060,9 @@ declare var BigInt64Array: BigInt64ArrayConstructor;
 
 declare var BigInt64Array: BigInt64ArrayConstructor;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var BigInt64Array: BigInt64ArrayConstructor;
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
@@ -1652,6 +1670,9 @@ interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike>
 interface BigUint64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface BigUint64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly prototype: BigUint64Array<ArrayBufferLike>;
 >            ^^^^^^^^^: BigUint64Array<ArrayBufferLike>   (TyTypeReference) (TSPropertySignature)
 
@@ -1964,8 +1985,15 @@ declare var BigUint64Array: BigUint64ArrayConstructor;
 declare var BigUint64Array: BigUint64ArrayConstructor;
 >                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare var BigUint64Array: BigUint64ArrayConstructor;
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+          expected: DataViewConstructor
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
           expected: DataViewConstructor
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
@@ -2027,6 +2055,10 @@ declare namespace Intl {
 
     interface NumberFormat {
 >             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                  expected: NumberFormatConstructor
+
+    interface NumberFormat {
+>             ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                   expected: NumberFormatConstructor
 
         format(value: number | bigint): string;

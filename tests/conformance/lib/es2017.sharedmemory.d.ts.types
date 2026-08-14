@@ -33,6 +33,9 @@ interface SharedArrayBuffer {
 interface SharedArrayBufferConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SharedArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly prototype: SharedArrayBuffer;
 >            ^^^^^^^^^: SharedArrayBuffer   (TyTypeReference) (TSPropertySignature)
 
@@ -60,14 +63,23 @@ interface SharedArrayBufferConstructor {
     readonly [Symbol.species]: SharedArrayBufferConstructor;
 >                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly [Symbol.species]: SharedArrayBufferConstructor;
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 declare var SharedArrayBuffer: SharedArrayBufferConstructor;
 >           ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (BindingIdentifier)
 
 declare var SharedArrayBuffer: SharedArrayBufferConstructor;
 >                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare var SharedArrayBuffer: SharedArrayBufferConstructor;
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface ArrayBufferTypes {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ArrayBufferTypes {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     SharedArrayBuffer: SharedArrayBuffer;
 >   ^^^^^^^^^^^^^^^^^: SharedArrayBuffer   (TyTypeReference) (TSPropertySignature)

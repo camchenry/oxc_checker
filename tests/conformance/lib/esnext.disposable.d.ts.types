@@ -1,6 +1,9 @@
 interface SymbolConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly dispose: unique symbol;
 >            ^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
 
@@ -10,6 +13,9 @@ interface SymbolConstructor {
 interface Disposable {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface Disposable {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     [Symbol.dispose](): void;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -18,6 +24,9 @@ interface Disposable {
 
 interface AsyncDisposable {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface AsyncDisposable {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     [Symbol.asyncDispose](): PromiseLike<void>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -53,6 +62,9 @@ interface SuppressedError extends Error {
 
 interface SuppressedErrorConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface SuppressedErrorConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (error: any, suppressed: any, message?: string): SuppressedError;
 >        ^^^^^: any   (TyAny) (BindingIdentifier)
@@ -99,6 +111,9 @@ declare var SuppressedError: SuppressedErrorConstructor;
 declare var SuppressedError: SuppressedErrorConstructor;
 >                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare var SuppressedError: SuppressedErrorConstructor;
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface DisposableStack {
 >         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
                  expected: DisposableStackConstructor
@@ -121,6 +136,9 @@ interface DisposableStack {
 
     use<T extends Disposable | null | undefined>(value: T): T;
 >                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    use<T extends Disposable | null | undefined>(value: T): T;
+>                 ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     use<T extends Disposable | null | undefined>(value: T): T;
 >                                                ^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -185,6 +203,9 @@ interface DisposableStack {
 interface DisposableStackConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface DisposableStackConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): DisposableStack;
 >           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -205,6 +226,9 @@ declare var DisposableStack: DisposableStackConstructor;
 
 declare var DisposableStack: DisposableStackConstructor;
 >                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var DisposableStack: DisposableStackConstructor;
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface AsyncDisposableStack {
 >         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
@@ -236,7 +260,13 @@ interface AsyncDisposableStack {
 >                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
+>                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
 >                                   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
+>                                   ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
 >                                                                  ^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -319,6 +349,9 @@ interface AsyncDisposableStack {
 interface AsyncDisposableStackConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface AsyncDisposableStackConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): AsyncDisposableStack;
 >           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (TSTypeReference)
 
@@ -340,8 +373,14 @@ declare var AsyncDisposableStack: AsyncDisposableStackConstructor;
 declare var AsyncDisposableStack: AsyncDisposableStackConstructor;
 >                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+declare var AsyncDisposableStack: AsyncDisposableStackConstructor;
+>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface IteratorObject<T, TReturn, TNext> extends Disposable {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
 >                        ^: any   (TyAny) (TSTypeParameter)
@@ -355,8 +394,14 @@ interface IteratorObject<T, TReturn, TNext> extends Disposable {
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
 >                                                   ^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
 
+interface IteratorObject<T, TReturn, TNext> extends Disposable {
+>                                                   ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
 >         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
+>         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
 >                             ^: any   (TyAny) (TSTypeParameter)
@@ -369,3 +414,6 @@ interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
 >                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
+>                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

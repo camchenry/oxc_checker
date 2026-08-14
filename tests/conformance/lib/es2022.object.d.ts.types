@@ -1,6 +1,9 @@
 interface ObjectConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface ObjectConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     hasOwn(o: object, v: PropertyKey): boolean;
 >   ^^^^^^: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }   (TyObject) (TSMethodSignature)
 

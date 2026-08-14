@@ -12711,6 +12711,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     }
 
                     match self.nodes(sym.program_id).parent_kind(declaration) {
+                        AstKind::TSInterfaceDeclaration(_) => Ty::any(),
                         AstKind::Class(_) => {
                             // TODO(correctness): model the class value-side as a real constructor
                             // object type instead of a `Ty::any` stub. Today the `Ty::TypeQuery`
@@ -12770,6 +12771,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         std::iter::empty(),
                     )
                 }),
+                AstKind::TSInterfaceDeclaration(_) => Ty::any(),
                 // TODO
                 AstKind::ImportSpecifier(_)
                 | AstKind::ImportDefaultSpecifier(_)

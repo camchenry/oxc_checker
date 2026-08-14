@@ -41,6 +41,9 @@ interface PredicateArray<T> {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface PredicateArray<T> {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface PredicateArray<T> {
 >                        ^: any   (TyAny) (TSTypeParameter)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
@@ -83,6 +86,9 @@ interface MethodSignatureCoverage<T> {
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface MethodSignatureCoverage<T> {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface MethodSignatureCoverage<T> {
 >                                 ^: any   (TyAny) (TSTypeParameter)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
@@ -99,6 +105,9 @@ interface MethodSignatureCoverage<T> {
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
 >                             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
+>                             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
 >                                                     ^: any   (TyAny) (TSTypeReference)
@@ -132,6 +141,9 @@ declare const methodSignatures: MethodSignatureCoverage<string>;
 
 declare const methodSignatures: MethodSignatureCoverage<string>;
 >                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const methodSignatures: MethodSignatureCoverage<string>;
+>                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 const _narrow = methodSignatures.narrow("value");
 >     ^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)

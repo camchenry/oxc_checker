@@ -2,6 +2,9 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncIteratorObject<T, TReturn, TNext> {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncIteratorObject<T, TReturn, TNext> {
 >                        ^: any   (TyAny) (TSTypeParameter)
 
 interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncIteratorObject<T, TReturn, TNext> {
@@ -123,6 +126,9 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 >                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.asyncIterator](): AsyncGenerator<T, TReturn, TNext>;
+>                             ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.asyncIterator](): AsyncGenerator<T, TReturn, TNext>;
 >                                            ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.asyncIterator](): AsyncGenerator<T, TReturn, TNext>;
@@ -134,17 +140,26 @@ interface AsyncGenerator<T = unknown, TReturn = any, TNext = any> extends AsyncI
 interface AsyncGeneratorFunction {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface AsyncGeneratorFunction {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (...args: any[]): AsyncGenerator;
 >           ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     new (...args: any[]): AsyncGenerator;
 >                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    new (...args: any[]): AsyncGenerator;
+>                         ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     (...args: any[]): AsyncGenerator;
 >       ^^^^: any[]   (TyArray) (BindingIdentifier)
 
     (...args: any[]): AsyncGenerator;
 >                     ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    (...args: any[]): AsyncGenerator;
+>                     ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly length: number;
 >            ^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -158,8 +173,14 @@ interface AsyncGeneratorFunction {
     readonly prototype: AsyncGenerator;
 >                       ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly prototype: AsyncGenerator;
+>                       ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface AsyncGeneratorFunctionConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface AsyncGeneratorFunctionConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (...args: string[]): AsyncGeneratorFunction;
 >           ^^^^: string[]   (TyArray) (BindingIdentifier)
@@ -167,11 +188,17 @@ interface AsyncGeneratorFunctionConstructor {
     new (...args: string[]): AsyncGeneratorFunction;
 >                            ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    new (...args: string[]): AsyncGeneratorFunction;
+>                            ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     (...args: string[]): AsyncGeneratorFunction;
 >       ^^^^: string[]   (TyArray) (BindingIdentifier)
 
     (...args: string[]): AsyncGeneratorFunction;
 >                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    (...args: string[]): AsyncGeneratorFunction;
+>                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     readonly length: number;
 >            ^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -184,3 +211,6 @@ interface AsyncGeneratorFunctionConstructor {
 
     readonly prototype: AsyncGeneratorFunction;
 >                       ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly prototype: AsyncGeneratorFunction;
+>                       ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

@@ -2,6 +2,10 @@ interface String {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
+interface String {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: StringConstructor
+
     trimEnd(): string;
 >   ^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 

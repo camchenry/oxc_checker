@@ -1,6 +1,9 @@
 interface SymbolConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly hasInstance: unique symbol;
 >            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
 
@@ -35,6 +38,10 @@ interface Symbol {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: SymbolConstructor
 
+interface Symbol {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: SymbolConstructor
+
     [Symbol.toPrimitive](hint: string): symbol;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -55,6 +62,10 @@ interface Array<T> {
        expected: ArrayConstructor
 
 interface Array<T> {
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
+       expected: ArrayConstructor
+
+interface Array<T> {
 >               ^: any   (TyAny) (TSTypeParameter)
 
     readonly [Symbol.unscopables]: {
@@ -70,6 +81,9 @@ interface ReadonlyArray<T> {
 >         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ReadonlyArray<T> {
 >                       ^: any   (TyAny) (TSTypeParameter)
 
     readonly [Symbol.unscopables]: {
@@ -83,6 +97,10 @@ interface ReadonlyArray<T> {
 
 interface Date {
 >         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+      expected: DateConstructor
+
+interface Date {
+>         ^^^^: any   (TyAny) (BindingIdentifier)
       expected: DateConstructor
 
     [Symbol.toPrimitive](hint: "default"): string;
@@ -126,6 +144,10 @@ interface Map<K, V> {
      expected: MapConstructor
 
 interface Map<K, V> {
+>         ^^^: any   (TyAny) (BindingIdentifier)
+     expected: MapConstructor
+
+interface Map<K, V> {
 >             ^: any   (TyAny) (TSTypeParameter)
 
 interface Map<K, V> {
@@ -139,6 +161,10 @@ interface Map<K, V> {
 
 interface WeakMap<K extends WeakKey, V> {
 >         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+         expected: WeakMapConstructor
+
+interface WeakMap<K extends WeakKey, V> {
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
@@ -164,6 +190,10 @@ interface Set<T> {
      expected: SetConstructor
 
 interface Set<T> {
+>         ^^^: any   (TyAny) (BindingIdentifier)
+     expected: SetConstructor
+
+interface Set<T> {
 >             ^: any   (TyAny) (TSTypeParameter)
 
     readonly [Symbol.toStringTag]: string;
@@ -174,6 +204,10 @@ interface Set<T> {
 
 interface WeakSet<T extends WeakKey> {
 >         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+         expected: WeakSetConstructor
+
+interface WeakSet<T extends WeakKey> {
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {
@@ -195,6 +229,10 @@ interface JSON {
 >         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
       expected: JSON
 
+interface JSON {
+>         ^^^^: any   (TyAny) (BindingIdentifier)
+      expected: JSON
+
     readonly [Symbol.toStringTag]: string;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -203,6 +241,10 @@ interface JSON {
 
 interface Function {
 >         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+          expected: FunctionConstructor
+
+interface Function {
+>         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
           expected: FunctionConstructor
 
     [Symbol.hasInstance](value: any): boolean;
@@ -217,6 +259,9 @@ interface Function {
 interface GeneratorFunction {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface GeneratorFunction {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly [Symbol.toStringTag]: string;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -227,6 +272,10 @@ interface Math {
 >         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
       expected: Math
 
+interface Math {
+>         ^^^^: any   (TyAny) (BindingIdentifier)
+      expected: Math
+
     readonly [Symbol.toStringTag]: string;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -235,6 +284,10 @@ interface Math {
 
 interface Promise<T> {
 >         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+         expected: PromiseConstructor
+
+interface Promise<T> {
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: PromiseConstructor
 
 interface Promise<T> {
@@ -249,6 +302,9 @@ interface Promise<T> {
 interface PromiseConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly [Symbol.species]: PromiseConstructor;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -258,8 +314,15 @@ interface PromiseConstructor {
     readonly [Symbol.species]: PromiseConstructor;
 >                              ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly [Symbol.species]: PromiseConstructor;
+>                              ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface RegExp {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: RegExpConstructor
+
+interface RegExp {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: RegExpConstructor
 
     [Symbol.match](string: string): RegExpMatchArray | null;
@@ -331,6 +394,9 @@ interface RegExp {
 interface RegExpConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface RegExpConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly [Symbol.species]: RegExpConstructor;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -340,8 +406,15 @@ interface RegExpConstructor {
     readonly [Symbol.species]: RegExpConstructor;
 >                              ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly [Symbol.species]: RegExpConstructor;
+>                              ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface String {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: StringConstructor
+
+interface String {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: StringConstructor
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
@@ -465,6 +538,10 @@ interface ArrayBuffer {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
              expected: ArrayBufferConstructor
 
+interface ArrayBuffer {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+             expected: ArrayBufferConstructor
+
     readonly [Symbol.toStringTag]: "ArrayBuffer";
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -473,6 +550,10 @@ interface ArrayBuffer {
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+          expected: DataViewConstructor
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
           expected: DataViewConstructor
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
@@ -495,6 +576,10 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+           expected: Int8ArrayConstructor
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
@@ -511,6 +596,10 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Uint8ArrayConstructor
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
@@ -533,6 +622,10 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+                   expected: Uint8ClampedArrayConstructor
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
@@ -549,6 +642,10 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Int16ArrayConstructor
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
@@ -571,6 +668,10 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+             expected: Uint16ArrayConstructor
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
@@ -587,6 +688,10 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Int32ArrayConstructor
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -609,6 +714,10 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+             expected: Uint32ArrayConstructor
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -625,6 +734,10 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+              expected: Float32ArrayConstructor
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -647,6 +760,10 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+              expected: Float64ArrayConstructor
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
@@ -664,6 +781,9 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 interface ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly [Symbol.species]: ArrayConstructor;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -673,8 +793,14 @@ interface ArrayConstructor {
     readonly [Symbol.species]: ArrayConstructor;
 >                              ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly [Symbol.species]: ArrayConstructor;
+>                              ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface MapConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface MapConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     readonly [Symbol.species]: MapConstructor;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -684,10 +810,16 @@ interface MapConstructor {
 
     readonly [Symbol.species]: MapConstructor;
 >                              ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly [Symbol.species]: MapConstructor;
+>                              ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface SetConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SetConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly [Symbol.species]: SetConstructor;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
 
@@ -697,8 +829,14 @@ interface SetConstructor {
     readonly [Symbol.species]: SetConstructor;
 >                              ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    readonly [Symbol.species]: SetConstructor;
+>                              ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface ArrayBufferConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     readonly [Symbol.species]: ArrayBufferConstructor;
 >             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -708,3 +846,6 @@ interface ArrayBufferConstructor {
 
     readonly [Symbol.species]: ArrayBufferConstructor;
 >                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly [Symbol.species]: ArrayBufferConstructor;
+>                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

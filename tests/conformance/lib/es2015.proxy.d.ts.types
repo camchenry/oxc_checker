@@ -2,6 +2,9 @@ interface ProxyHandler<T extends object> {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ProxyHandler<T extends object> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ProxyHandler<T extends object> {
 >                      ^: any   (TyAny) (TSTypeParameter)
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
@@ -206,6 +209,9 @@ expected: { (target: T, p: string | symbol, newValue: any, receiver: any): boole
 interface ProxyConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface ProxyConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
 >   ^^^^^^^^^: { <T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; }; <T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; }; }   (TyObject) (TSMethodSignature)
 
@@ -223,6 +229,9 @@ interface ProxyConstructor {
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
 >                                                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
+>                                                   ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
 >                                                                ^: any   (TyAny) (TSTypeReference)
@@ -252,6 +261,9 @@ interface ProxyConstructor {
 >                                              ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+>                                              ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <T extends object>(target: T, handler: ProxyHandler<T>): T;
 >                                                           ^: any   (TyAny) (TSTypeReference)
 
     new <T extends object>(target: T, handler: ProxyHandler<T>): T;
@@ -262,3 +274,6 @@ declare var Proxy: ProxyConstructor;
 
 declare var Proxy: ProxyConstructor;
 >                  ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var Proxy: ProxyConstructor;
+>                  ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

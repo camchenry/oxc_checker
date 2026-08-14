@@ -2,6 +2,10 @@ interface String {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
+interface String {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: StringConstructor
+
     replaceAll(searchValue: string | RegExp, replaceValue: string): string;
 >   ^^^^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
 

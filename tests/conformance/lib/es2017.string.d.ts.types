@@ -2,6 +2,10 @@ interface String {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
         expected: StringConstructor
 
+interface String {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: StringConstructor
+
     padStart(maxLength: number, fillString?: string): string;
 >   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject) (TSMethodSignature)
 

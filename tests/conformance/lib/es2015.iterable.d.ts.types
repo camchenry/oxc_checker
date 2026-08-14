@@ -1,11 +1,17 @@
 interface SymbolConstructor {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface SymbolConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     readonly iterator: unique symbol;
 >            ^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
 
 interface IteratorYieldResult<TYield> {
 >         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface IteratorYieldResult<TYield> {
+>         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface IteratorYieldResult<TYield> {
 >                             ^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -21,6 +27,9 @@ interface IteratorYieldResult<TYield> {
 
 interface IteratorReturnResult<TReturn> {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface IteratorReturnResult<TReturn> {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface IteratorReturnResult<TReturn> {
 >                              ^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -47,16 +56,26 @@ type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnR
 >                                       ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                                       ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
 >                                                           ^: any   (TyAny) (TSTypeReference)
 
 type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
 >                                                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
+>                                                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+type IteratorResult<T, TReturn = any> = IteratorYieldResult<T> | IteratorReturnResult<TReturn>;
 >                                                                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Iterator<T, TReturn = any, TNext = any> {
 >         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+          expected: IteratorConstructor
+
+interface Iterator<T, TReturn = any, TNext = any> {
+>         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
           expected: IteratorConstructor
 
 interface Iterator<T, TReturn = any, TNext = any> {
@@ -126,6 +145,9 @@ interface Iterable<T, TReturn = any, TNext = any> {
 >         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface Iterable<T, TReturn = any, TNext = any> {
+>         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface Iterable<T, TReturn = any, TNext = any> {
 >                  ^: any   (TyAny) (TSTypeParameter)
 
 interface Iterable<T, TReturn = any, TNext = any> {
@@ -145,6 +167,10 @@ interface Iterable<T, TReturn = any, TNext = any> {
                          expected: IteratorConstructor
 
     [Symbol.iterator](): Iterator<T, TReturn, TNext>;
+>                        ^^^^^^^^: any   (TyAny) (IdentifierReference)
+                         expected: IteratorConstructor
+
+    [Symbol.iterator](): Iterator<T, TReturn, TNext>;
 >                                 ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): Iterator<T, TReturn, TNext>;
@@ -157,6 +183,9 @@ interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TR
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
 >                          ^: any   (TyAny) (TSTypeParameter)
 
 interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
@@ -167,6 +196,10 @@ interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TR
 
 interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
 >                                                                 ^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+                                                                  expected: IteratorConstructor
+
+interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
+>                                                                 ^^^^^^^^: any   (TyAny) (IdentifierReference)
                                                                   expected: IteratorConstructor
 
 interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TReturn, TNext> {
@@ -188,6 +221,9 @@ interface IterableIterator<T, TReturn = any, TNext = any> extends Iterator<T, TR
 >                        ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
+>                        ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
 >                                         ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): IterableIterator<T, TReturn, TNext>;
@@ -200,6 +236,9 @@ interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
 >                        ^: any   (TyAny) (TSTypeParameter)
 
 interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
@@ -210,6 +249,10 @@ interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator
 
 interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
 >                                                                       ^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+                                                                        expected: IteratorConstructor
+
+interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
+>                                                                       ^^^^^^^^: any   (TyAny) (IdentifierReference)
                                                                         expected: IteratorConstructor
 
 interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator<T, TReturn, TNext> {
@@ -231,6 +274,9 @@ interface IteratorObject<T, TReturn = unknown, TNext = unknown> extends Iterator
 >                        ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
+>                        ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
 >                                       ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
@@ -246,10 +292,16 @@ interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unkn
 >         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                       ^: any   (TyAny) (TSTypeParameter)
 
 interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                  ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                  ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                                 ^: any   (TyAny) (TSTypeReference)
@@ -267,10 +319,17 @@ interface ArrayIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unkn
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): ArrayIterator<T>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): ArrayIterator<T>;
 >                                      ^: any   (TyAny) (TSTypeReference)
 
 interface Array<T> {
 >         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+       expected: ArrayConstructor
+
+interface Array<T> {
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
        expected: ArrayConstructor
 
 interface Array<T> {
@@ -286,6 +345,9 @@ interface Array<T> {
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): ArrayIterator<T>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): ArrayIterator<T>;
 >                                      ^: any   (TyAny) (TSTypeReference)
 
     entries(): ArrayIterator<[number, T]>;
@@ -293,6 +355,9 @@ interface Array<T> {
 
     entries(): ArrayIterator<[number, T]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, T]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     entries(): ArrayIterator<[number, T]>;
 >                                     ^: any   (TyAny) (TSTypeReference)
@@ -303,6 +368,9 @@ interface Array<T> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<T>;
 >   ^^^^^^: { (): ArrayIterator<T>; (): ArrayIterator<T>; }   (TyObject) (TSMethodSignature)
 
@@ -310,10 +378,16 @@ interface Array<T> {
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): ArrayIterator<T>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    values(): ArrayIterator<T>;
 >                           ^: any   (TyAny) (TSTypeReference)
 
 interface ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
 >   ^^^^: { <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }   (TyObject) (TSMethodSignature)
@@ -326,6 +400,9 @@ interface ArrayConstructor {
 
     from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(iterable: Iterable<T> | ArrayLike<T>): T[];
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -356,6 +433,9 @@ interface ArrayConstructor {
 
     from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                        ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+>                        ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                                 ^: any   (TyAny) (TSTypeReference)
@@ -394,6 +474,9 @@ interface ReadonlyArray<T> {
 >         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ReadonlyArray<T> {
 >                       ^: any   (TyAny) (TSTypeParameter)
 
     [Symbol.iterator](): ArrayIterator<T>;
@@ -406,6 +489,9 @@ interface ReadonlyArray<T> {
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): ArrayIterator<T>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): ArrayIterator<T>;
 >                                      ^: any   (TyAny) (TSTypeReference)
 
     entries(): ArrayIterator<[number, T]>;
@@ -413,6 +499,9 @@ interface ReadonlyArray<T> {
 
     entries(): ArrayIterator<[number, T]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, T]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     entries(): ArrayIterator<[number, T]>;
 >                                     ^: any   (TyAny) (TSTypeReference)
@@ -423,6 +512,9 @@ interface ReadonlyArray<T> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<T>;
 >   ^^^^^^: { (): ArrayIterator<T>; (): ArrayIterator<T>; }   (TyObject) (TSMethodSignature)
 
@@ -430,10 +522,16 @@ interface ReadonlyArray<T> {
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): ArrayIterator<T>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    values(): ArrayIterator<T>;
 >                           ^: any   (TyAny) (TSTypeReference)
 
 interface IArguments {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface IArguments {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     [Symbol.iterator](): ArrayIterator<any>;
 >    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -444,14 +542,23 @@ interface IArguments {
     [Symbol.iterator](): ArrayIterator<any>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<any>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                     ^: any   (TyAny) (TSTypeParameter)
 
 interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                               ^: any   (TyAny) (TSTypeReference)
@@ -469,10 +576,17 @@ interface MapIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknow
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): MapIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): MapIterator<T>;
 >                                    ^: any   (TyAny) (TSTypeReference)
 
 interface Map<K, V> {
 >         ^^^: any   (TyAny) (TSInterfaceDeclaration)
+     expected: MapConstructor
+
+interface Map<K, V> {
+>         ^^^: any   (TyAny) (BindingIdentifier)
      expected: MapConstructor
 
 interface Map<K, V> {
@@ -491,6 +605,9 @@ interface Map<K, V> {
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): MapIterator<[K, V]>;
+>                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
 >                                     ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): MapIterator<[K, V]>;
@@ -501,6 +618,9 @@ interface Map<K, V> {
 
     entries(): MapIterator<[K, V]>;
 >              ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): MapIterator<[K, V]>;
+>              ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     entries(): MapIterator<[K, V]>;
 >                           ^: any   (TyAny) (TSTypeReference)
@@ -515,6 +635,9 @@ interface Map<K, V> {
 >           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     keys(): MapIterator<K>;
+>           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    keys(): MapIterator<K>;
 >                       ^: any   (TyAny) (TSTypeReference)
 
     values(): MapIterator<V>;
@@ -524,10 +647,16 @@ interface Map<K, V> {
 >             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): MapIterator<V>;
+>             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    values(): MapIterator<V>;
 >                         ^: any   (TyAny) (TSTypeReference)
 
 interface ReadonlyMap<K, V> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReadonlyMap<K, V> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface ReadonlyMap<K, V> {
 >                     ^: any   (TyAny) (TSTypeParameter)
@@ -545,6 +674,9 @@ interface ReadonlyMap<K, V> {
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): MapIterator<[K, V]>;
+>                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): MapIterator<[K, V]>;
 >                                     ^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): MapIterator<[K, V]>;
@@ -555,6 +687,9 @@ interface ReadonlyMap<K, V> {
 
     entries(): MapIterator<[K, V]>;
 >              ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): MapIterator<[K, V]>;
+>              ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     entries(): MapIterator<[K, V]>;
 >                           ^: any   (TyAny) (TSTypeReference)
@@ -569,6 +704,9 @@ interface ReadonlyMap<K, V> {
 >           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     keys(): MapIterator<K>;
+>           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    keys(): MapIterator<K>;
 >                       ^: any   (TyAny) (TSTypeReference)
 
     values(): MapIterator<V>;
@@ -578,13 +716,23 @@ interface ReadonlyMap<K, V> {
 >             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): MapIterator<V>;
+>             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    values(): MapIterator<V>;
 >                         ^: any   (TyAny) (TSTypeReference)
 
 interface MapConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface MapConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
     new (): Map<any, any>;
 >           ^^^: any   (TyAny) (TSTypeReference)
+       expected: MapConstructor
+
+    new (): Map<any, any>;
+>           ^^^: any   (TyAny) (IdentifierReference)
        expected: MapConstructor
 
     new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
@@ -600,6 +748,9 @@ interface MapConstructor {
 >                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                         ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
 >                                            ^: any   (TyAny) (TSTypeReference)
 
     new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
@@ -610,6 +761,10 @@ interface MapConstructor {
                                                         expected: MapConstructor
 
     new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
+>                                                            ^^^: any   (TyAny) (IdentifierReference)
+                                                        expected: MapConstructor
+
+    new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
 >                                                                ^: any   (TyAny) (TSTypeReference)
 
     new <K, V>(iterable?: Iterable<readonly [K, V]> | null): Map<K, V>;
@@ -617,6 +772,10 @@ interface MapConstructor {
 
 interface WeakMap<K extends WeakKey, V> {}
 >         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+         expected: WeakMapConstructor
+
+interface WeakMap<K extends WeakKey, V> {}
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {}
@@ -633,6 +792,9 @@ interface WeakMap<K extends WeakKey, V> {}
 
 interface WeakMapConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface WeakMapConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
 >        ^: any   (TyAny) (TSTypeParameter)
@@ -659,6 +821,9 @@ interface WeakMapConstructor {
 >                                                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                         ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
 >                                                                            ^: any   (TyAny) (TSTypeReference)
 
     new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
@@ -666,6 +831,10 @@ interface WeakMapConstructor {
 
     new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
 >                                                                                            ^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                                            expected: WeakMapConstructor
+
+    new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
+>                                                                                            ^^^^^^^: any   (TyAny) (IdentifierReference)
                                                                                             expected: WeakMapConstructor
 
     new <K extends WeakKey = WeakKey, V = any>(iterable?: Iterable<readonly [K, V]> | null): WeakMap<K, V>;
@@ -678,10 +847,16 @@ interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknow
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                     ^: any   (TyAny) (TSTypeParameter)
 
 interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                               ^: any   (TyAny) (TSTypeReference)
@@ -699,10 +874,17 @@ interface SetIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknow
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): SetIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): SetIterator<T>;
 >                                    ^: any   (TyAny) (TSTypeReference)
 
 interface Set<T> {
 >         ^^^: any   (TyAny) (TSInterfaceDeclaration)
+     expected: SetConstructor
+
+interface Set<T> {
+>         ^^^: any   (TyAny) (BindingIdentifier)
      expected: SetConstructor
 
 interface Set<T> {
@@ -718,6 +900,9 @@ interface Set<T> {
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): SetIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): SetIterator<T>;
 >                                    ^: any   (TyAny) (TSTypeReference)
 
     entries(): SetIterator<[T, T]>;
@@ -725,6 +910,9 @@ interface Set<T> {
 
     entries(): SetIterator<[T, T]>;
 >              ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): SetIterator<[T, T]>;
+>              ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     entries(): SetIterator<[T, T]>;
 >                           ^: any   (TyAny) (TSTypeReference)
@@ -739,6 +927,9 @@ interface Set<T> {
 >           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     keys(): SetIterator<T>;
+>           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    keys(): SetIterator<T>;
 >                       ^: any   (TyAny) (TSTypeReference)
 
     values(): SetIterator<T>;
@@ -748,10 +939,16 @@ interface Set<T> {
 >             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): SetIterator<T>;
+>             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    values(): SetIterator<T>;
 >                         ^: any   (TyAny) (TSTypeReference)
 
 interface ReadonlySet<T> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReadonlySet<T> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
 interface ReadonlySet<T> {
 >                     ^: any   (TyAny) (TSTypeParameter)
@@ -766,6 +963,9 @@ interface ReadonlySet<T> {
 >                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): SetIterator<T>;
+>                        ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): SetIterator<T>;
 >                                    ^: any   (TyAny) (TSTypeReference)
 
     entries(): SetIterator<[T, T]>;
@@ -773,6 +973,9 @@ interface ReadonlySet<T> {
 
     entries(): SetIterator<[T, T]>;
 >              ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): SetIterator<[T, T]>;
+>              ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     entries(): SetIterator<[T, T]>;
 >                           ^: any   (TyAny) (TSTypeReference)
@@ -787,6 +990,9 @@ interface ReadonlySet<T> {
 >           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     keys(): SetIterator<T>;
+>           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    keys(): SetIterator<T>;
 >                       ^: any   (TyAny) (TSTypeReference)
 
     values(): SetIterator<T>;
@@ -796,10 +1002,16 @@ interface ReadonlySet<T> {
 >             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     values(): SetIterator<T>;
+>             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    values(): SetIterator<T>;
 >                         ^: any   (TyAny) (TSTypeReference)
 
 interface SetConstructor {
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface SetConstructor {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new <T>(iterable?: Iterable<T> | null): Set<T>;
 >        ^: any   (TyAny) (TSTypeParameter)
@@ -811,6 +1023,9 @@ interface SetConstructor {
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T>(iterable?: Iterable<T> | null): Set<T>;
+>                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
 >                               ^: any   (TyAny) (TSTypeReference)
 
     new <T>(iterable?: Iterable<T> | null): Set<T>;
@@ -818,10 +1033,18 @@ interface SetConstructor {
                                        expected: SetConstructor
 
     new <T>(iterable?: Iterable<T> | null): Set<T>;
+>                                           ^^^: any   (TyAny) (IdentifierReference)
+                                       expected: SetConstructor
+
+    new <T>(iterable?: Iterable<T> | null): Set<T>;
 >                                               ^: any   (TyAny) (TSTypeReference)
 
 interface WeakSet<T extends WeakKey> {}
 >         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+         expected: WeakSetConstructor
+
+interface WeakSet<T extends WeakKey> {}
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
          expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {}
@@ -835,6 +1058,9 @@ interface WeakSet<T extends WeakKey> {}
 
 interface WeakSetConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface WeakSetConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
 >        ^: any   (TyAny) (TSTypeParameter)
@@ -858,10 +1084,17 @@ interface WeakSetConstructor {
 >                                               ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                                               ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
 >                                                        ^: any   (TyAny) (TSTypeReference)
 
     new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
 >                                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                             expected: WeakSetConstructor
+
+    new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
+>                                                             ^^^^^^^: any   (TyAny) (IdentifierReference)
                                                              expected: WeakSetConstructor
 
     new <T extends WeakKey = WeakKey>(iterable: Iterable<T>): WeakSet<T>;
@@ -872,10 +1105,17 @@ interface Promise<T> {}
          expected: PromiseConstructor
 
 interface Promise<T> {}
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+         expected: PromiseConstructor
+
+interface Promise<T> {}
 >                 ^: any   (TyAny) (TSTypeParameter)
 
 interface PromiseConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
 >   ^^^: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; }   (TyObject) (TSMethodSignature)
@@ -888,6 +1128,9 @@ interface PromiseConstructor {
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
 >                           ^: any   (TyAny) (TSTypeReference)
@@ -903,6 +1146,10 @@ interface PromiseConstructor {
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
 >                                                 ^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                 expected: PromiseConstructor
+
+    all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
+>                                                 ^^^^^^^: any   (TyAny) (IdentifierReference)
                                                  expected: PromiseConstructor
 
     all<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>;
@@ -927,6 +1174,9 @@ interface PromiseConstructor {
 >                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                            ^: any   (TyAny) (TSTypeReference)
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
@@ -943,6 +1193,10 @@ interface PromiseConstructor {
                                                   expected: PromiseConstructor
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
+>                                                  ^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                  expected: PromiseConstructor
+
+    race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
 >                                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     race<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
@@ -955,10 +1209,16 @@ interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unk
 >         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                        ^: any   (TyAny) (TSTypeParameter)
 
 interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                   ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
+>                                   ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
 >                                                  ^: any   (TyAny) (TSTypeReference)
@@ -976,10 +1236,17 @@ interface StringIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unk
 >                        ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     [Symbol.iterator](): StringIterator<T>;
+>                        ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    [Symbol.iterator](): StringIterator<T>;
 >                                       ^: any   (TyAny) (TSTypeReference)
 
 interface String {
 >         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: StringConstructor
+
+interface String {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
         expected: StringConstructor
 
     [Symbol.iterator](): StringIterator<string>;
@@ -991,8 +1258,15 @@ interface String {
     [Symbol.iterator](): StringIterator<string>;
 >                        ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): StringIterator<string>;
+>                        ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+           expected: Int8ArrayConstructor
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1013,11 +1287,17 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1025,14 +1305,23 @@ interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Int8ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Int8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1041,7 +1330,14 @@ interface Int8ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
 >                                     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                       expected: Int8ArrayConstructor
+
+    new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                        expected: Int8ArrayConstructor
 
     new (elements: Iterable<number>): Int8Array<ArrayBuffer>;
@@ -1060,7 +1356,14 @@ interface Int8ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
 >                                     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                       expected: Int8ArrayConstructor
+
+    from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                        expected: Int8ArrayConstructor
 
     from(elements: Iterable<number>): Int8Array<ArrayBuffer>;
@@ -1080,6 +1383,9 @@ interface Int8ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1104,6 +1410,10 @@ interface Int8ArrayConstructor {
                                                                                          expected: Int8ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                         expected: Int8ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
 >                                                                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
@@ -1111,6 +1421,10 @@ interface Int8ArrayConstructor {
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Uint8ArrayConstructor
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1131,11 +1445,17 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1143,14 +1463,23 @@ interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Uint8ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Uint8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1159,7 +1488,14 @@ interface Uint8ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                        expected: Uint8ArrayConstructor
+
+    new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                         expected: Uint8ArrayConstructor
 
     new (elements: Iterable<number>): Uint8Array<ArrayBuffer>;
@@ -1178,7 +1514,14 @@ interface Uint8ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                        expected: Uint8ArrayConstructor
+
+    from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                         expected: Uint8ArrayConstructor
 
     from(elements: Iterable<number>): Uint8Array<ArrayBuffer>;
@@ -1198,6 +1541,9 @@ interface Uint8ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1222,6 +1568,10 @@ interface Uint8ArrayConstructor {
                                                                                           expected: Uint8ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                          expected: Uint8ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
 >                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
@@ -1229,6 +1579,10 @@ interface Uint8ArrayConstructor {
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                   expected: Uint8ClampedArrayConstructor
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
@@ -1249,11 +1603,17 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1261,14 +1621,23 @@ interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Uint8ClampedArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Uint8ClampedArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1277,7 +1646,14 @@ interface Uint8ClampedArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                               expected: Uint8ClampedArrayConstructor
+
+    new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                                expected: Uint8ClampedArrayConstructor
 
     new (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
@@ -1296,7 +1672,14 @@ interface Uint8ClampedArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                               expected: Uint8ClampedArrayConstructor
+
+    from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                                expected: Uint8ClampedArrayConstructor
 
     from(elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>;
@@ -1316,6 +1699,9 @@ interface Uint8ClampedArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1340,6 +1726,10 @@ interface Uint8ClampedArrayConstructor {
                                                                                                  expected: Uint8ClampedArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                                 expected: Uint8ClampedArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
 >                                                                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
@@ -1347,6 +1737,10 @@ interface Uint8ClampedArrayConstructor {
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Int16ArrayConstructor
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1367,11 +1761,17 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1379,14 +1779,23 @@ interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Int16ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Int16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1395,7 +1804,14 @@ interface Int16ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                        expected: Int16ArrayConstructor
+
+    new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                         expected: Int16ArrayConstructor
 
     new (elements: Iterable<number>): Int16Array<ArrayBuffer>;
@@ -1414,7 +1830,14 @@ interface Int16ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                        expected: Int16ArrayConstructor
+
+    from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                         expected: Int16ArrayConstructor
 
     from(elements: Iterable<number>): Int16Array<ArrayBuffer>;
@@ -1434,6 +1857,9 @@ interface Int16ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1458,6 +1884,10 @@ interface Int16ArrayConstructor {
                                                                                           expected: Int16ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                          expected: Int16ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
 >                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
@@ -1465,6 +1895,10 @@ interface Int16ArrayConstructor {
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+             expected: Uint16ArrayConstructor
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1485,11 +1919,17 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1497,14 +1937,23 @@ interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Uint16ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Uint16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1513,7 +1962,14 @@ interface Uint16ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                         expected: Uint16ArrayConstructor
+
+    new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                          expected: Uint16ArrayConstructor
 
     new (elements: Iterable<number>): Uint16Array<ArrayBuffer>;
@@ -1532,7 +1988,14 @@ interface Uint16ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                         expected: Uint16ArrayConstructor
+
+    from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                          expected: Uint16ArrayConstructor
 
     from(elements: Iterable<number>): Uint16Array<ArrayBuffer>;
@@ -1552,6 +2015,9 @@ interface Uint16ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1576,6 +2042,10 @@ interface Uint16ArrayConstructor {
                                                                                            expected: Uint16ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                           expected: Uint16ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
 >                                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
@@ -1583,6 +2053,10 @@ interface Uint16ArrayConstructor {
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Int32ArrayConstructor
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1603,11 +2077,17 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1615,14 +2095,23 @@ interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Int32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Int32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1631,7 +2120,14 @@ interface Int32ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                        expected: Int32ArrayConstructor
+
+    new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                         expected: Int32ArrayConstructor
 
     new (elements: Iterable<number>): Int32Array<ArrayBuffer>;
@@ -1650,7 +2146,14 @@ interface Int32ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                        expected: Int32ArrayConstructor
+
+    from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                         expected: Int32ArrayConstructor
 
     from(elements: Iterable<number>): Int32Array<ArrayBuffer>;
@@ -1670,6 +2173,9 @@ interface Int32ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1694,6 +2200,10 @@ interface Int32ArrayConstructor {
                                                                                           expected: Int32ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                          expected: Int32ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
 >                                                                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
@@ -1701,6 +2211,10 @@ interface Int32ArrayConstructor {
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+             expected: Uint32ArrayConstructor
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1721,11 +2235,17 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1733,14 +2253,23 @@ interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Uint32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Uint32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1749,7 +2278,14 @@ interface Uint32ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                         expected: Uint32ArrayConstructor
+
+    new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                          expected: Uint32ArrayConstructor
 
     new (elements: Iterable<number>): Uint32Array<ArrayBuffer>;
@@ -1768,7 +2304,14 @@ interface Uint32ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                         expected: Uint32ArrayConstructor
+
+    from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                          expected: Uint32ArrayConstructor
 
     from(elements: Iterable<number>): Uint32Array<ArrayBuffer>;
@@ -1788,6 +2331,9 @@ interface Uint32ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1812,6 +2358,10 @@ interface Uint32ArrayConstructor {
                                                                                            expected: Uint32ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                           expected: Uint32ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
 >                                                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
@@ -1819,6 +2369,10 @@ interface Uint32ArrayConstructor {
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+              expected: Float32ArrayConstructor
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1839,11 +2393,17 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1851,14 +2411,23 @@ interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Float32ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Float32ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1867,7 +2436,14 @@ interface Float32ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                          expected: Float32ArrayConstructor
+
+    new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                           expected: Float32ArrayConstructor
 
     new (elements: Iterable<number>): Float32Array<ArrayBuffer>;
@@ -1886,7 +2462,14 @@ interface Float32ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                          expected: Float32ArrayConstructor
+
+    from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                           expected: Float32ArrayConstructor
 
     from(elements: Iterable<number>): Float32Array<ArrayBuffer>;
@@ -1906,6 +2489,9 @@ interface Float32ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
@@ -1930,6 +2516,10 @@ interface Float32ArrayConstructor {
                                                                                             expected: Float32ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                                            expected: Float32ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
 >                                                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
@@ -1937,6 +2527,10 @@ interface Float32ArrayConstructor {
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
 >         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+              expected: Float64ArrayConstructor
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
@@ -1957,11 +2551,17 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
     [Symbol.iterator](): ArrayIterator<number>;
 >                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     entries(): ArrayIterator<[number, number]>;
 >   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
 
     entries(): ArrayIterator<[number, number]>;
 >              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     keys(): ArrayIterator<number>;
 >   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
@@ -1969,14 +2569,23 @@ interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
     keys(): ArrayIterator<number>;
 >           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
     values(): ArrayIterator<number>;
 >   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
 
     values(): ArrayIterator<number>;
 >             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface Float64ArrayConstructor {
 >         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Float64ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
 >        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
@@ -1985,7 +2594,14 @@ interface Float64ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                          expected: Float64ArrayConstructor
+
+    new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                           expected: Float64ArrayConstructor
 
     new (elements: Iterable<number>): Float64Array<ArrayBuffer>;
@@ -2004,7 +2620,14 @@ interface Float64ArrayConstructor {
 >                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
 >                                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                          expected: Float64ArrayConstructor
+
+    from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                           expected: Float64ArrayConstructor
 
     from(elements: Iterable<number>): Float64Array<ArrayBuffer>;
@@ -2026,6 +2649,9 @@ interface Float64ArrayConstructor {
 >                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
 >                              ^: any   (TyAny) (TSTypeReference)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
@@ -2045,6 +2671,10 @@ interface Float64ArrayConstructor {
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
 >                                                                                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                                            expected: Float64ArrayConstructor
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
                                                                                             expected: Float64ArrayConstructor
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;

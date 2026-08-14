@@ -2,6 +2,9 @@ interface PromiseFulfilledResult<T> {
 >         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
 interface PromiseFulfilledResult<T> {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface PromiseFulfilledResult<T> {
 >                                ^: any   (TyAny) (TSTypeParameter)
 
     status: "fulfilled";
@@ -15,6 +18,9 @@ interface PromiseFulfilledResult<T> {
 
 interface PromiseRejectedResult {
 >         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface PromiseRejectedResult {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     status: "rejected";
 >   ^^^^^^: "rejected"   (TyStringLiteral) (TSPropertySignature)
@@ -32,13 +38,22 @@ type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult
 >                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
+>                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
 >                                                     ^: any   (TyAny) (TSTypeReference)
 
 type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
 >                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
+type PromiseSettledResult<T> = PromiseFulfilledResult<T> | PromiseRejectedResult;
+>                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
 interface PromiseConstructor {
 >         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface PromiseConstructor {
+>         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
 >   ^^^^^^^^^^: { <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; }   (TyObject) (TSMethodSignature)

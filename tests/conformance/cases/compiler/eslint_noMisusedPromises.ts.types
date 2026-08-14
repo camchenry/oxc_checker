@@ -142,6 +142,9 @@ document.addEventListener('click', async () => {
 interface MySyncInterface {
 >         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface MySyncInterface {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   setThing(): void;
 > ^^^^^^^^: () => void   (TyFunction) (TSMethodSignature)
 
@@ -150,6 +153,9 @@ class MyClass implements MySyncInterface {
 
 class MyClass implements MySyncInterface {
 >                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
+
+class MyClass implements MySyncInterface {
+>                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   async setThing(): Promise<void> {
 >       ^^^^^^^^: () => Promise<void>   (TyFunction) (MethodDefinition)
@@ -265,6 +271,9 @@ document.addEventListener('click', () => {
 interface MyAsyncInterface {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
 
+interface MyAsyncInterface {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
   setThing(): Promise<void>;
 > ^^^^^^^^: () => Promise<void>   (TyFunction) (TSMethodSignature)
 
@@ -279,6 +288,9 @@ class MyClass implements MyAsyncInterface {
 
 class MyClass implements MyAsyncInterface {
 >                        ^^^^^^^^^^^^^^^^: any   (TyAny) (TSClassImplements)
+
+class MyClass implements MyAsyncInterface {
+>                        ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
   async setThing(): Promise<void> {
 >       ^^^^^^^^: () => Promise<void>   (TyFunction) (MethodDefinition)
