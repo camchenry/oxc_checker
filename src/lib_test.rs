@@ -3739,6 +3739,24 @@ fn generic_function_mapped_constraint_preserves_literal_inference() {
 }
 
 #[test]
+fn generic_function_contextualizes_object_properties_independently() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    declare function accept<T extends { kind: "event"; value: string }>(value: T): T;
+
+    const result = accept({ kind: "event", value: "payload" });
+    "#,
+    );
+
+    assert_eq!(
+        get_global_symbol_type(&ret, "result").to_type_string(ret.arena),
+        "{ kind: \"event\"; value: string; }"
+    );
+}
+
+#[test]
 fn generic_function_non_null_assertion_returns_non_nullable_type() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

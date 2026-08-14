@@ -5546,13 +5546,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         node_id: Option<NodeId>,
         context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
-        let mut property_flags = context.flags;
-        if !context.check_mode.const_context()
-            && context
-                .contextual_type
-                .is_none_or(|ty| !type_contains_literal_type(self.arena(), ty, 0))
-        {
-            property_flags.remove(GetTypeFlags::PRESERVE_LITERALS);
+        let mut spread_flags = context.flags;
+        if !context.check_mode.const_context() {
+            spread_flags.remove(GetTypeFlags::PRESERVE_LITERALS);
         }
 
         let mut explicit_properties: Vec<TyProperty<'a>> = Vec::new();
@@ -5564,11 +5560,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     let Some(name) = property_key_name_str(&property.key) else {
                         continue;
                     };
-                    let ty = self.get_type_of_expression_with_node(
+                    let contextual_type = context.contextual_type.and_then(|contextual_type| {
+                        self.get_contextual_object_property_type(program_id, contextual_type, name)
+                    });
+                    let mut flags = context.flags;
+                    if !context.check_mode.const_context()
+                        && contextual_type
+                            .is_none_or(|ty| !type_contains_literal_type(self.arena(), ty, 0))
+                    {
+                        flags.remove(GetTypeFlags::PRESERVE_LITERALS);
+                    }
+                    let property_context = ExpressionCheckContext {
+                        flags,
+                        contextual_type,
+                        check_mode: context.check_mode,
+                    };
+                    let ty = self.check_expression_with_context(
                         program_id,
-                        &property.value,
+                        AstKind::from_expression(&property.value),
                         node_id,
-                        property_flags,
+                        property_context,
                     );
                     let property = TyProperty {
                         name,
@@ -5593,7 +5604,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         program_id,
                         &spread.argument,
                         node_id,
-                        property_flags,
+                        spread_flags,
                     );
                     let spread_type = self.expand_type_at_use(program_id, spread_type, 0);
                     if spread_type.is_any_like(self.arena()) {
@@ -8744,7 +8755,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_contextual_type_of_object_expression(program_id, node_id, object)
             })?;
 
-        self.get_destructured_property_type(program_id, object_context, property_name)
+        self.get_contextual_object_property_type(program_id, object_context, property_name)
     }
 
     fn get_contextual_type_of_object_expression(
@@ -10528,10 +10539,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object_type: Ty<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        self.get_destructured_property_type_at_depth(program_id, object_type, property_name, 0)
+        self.get_contextual_or_destructured_property_type_at_depth(
+            program_id,
+            object_type,
+            property_name,
+            0,
+        )
     }
 
-    fn get_destructured_property_type_at_depth(
+    fn get_contextual_object_property_type(
+        &self,
+        program_id: ProgramId,
+        object_type: Ty<'a>,
+        property_name: &str,
+    ) -> Option<Ty<'a>> {
+        self.get_contextual_or_destructured_property_type_at_depth(
+            program_id,
+            object_type,
+            property_name,
+            0,
+        )
+    }
+
+    fn get_contextual_or_destructured_property_type_at_depth(
         &self,
         program_id: ProgramId,
         object_type: Ty<'a>,
@@ -10567,7 +10597,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .types
                     .iter()
                     .filter_map(|ty| {
-                        self.get_destructured_property_type_at_depth(
+                        self.get_contextual_or_destructured_property_type_at_depth(
                             program_id,
                             *ty,
                             property_name,
@@ -10578,7 +10608,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 (!property_types.is_empty()).then(|| Ty::union(self.arena(), property_types))
             }
             TypeData::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
-                self.get_destructured_property_type_at_depth(
+                self.get_contextual_or_destructured_property_type_at_depth(
                     program_id,
                     *ty,
                     property_name,
@@ -10587,7 +10617,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }),
             TypeData::Mapped(mapped) => {
                 if let Some(expanded) = self.expand_mapped_type(program_id, mapped, depth + 1) {
-                    return self.get_destructured_property_type_at_depth(
+                    return self.get_contextual_or_destructured_property_type_at_depth(
                         program_id,
                         expanded,
                         property_name,
@@ -10619,7 +10649,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .or_else(|| {
                     self.get_expanded_type_alias_reference_type(program_id, object_type, depth + 1)
                         .and_then(|(expanded_program_id, expanded)| {
-                            self.get_destructured_property_type_at_depth(
+                            self.get_contextual_or_destructured_property_type_at_depth(
                                 expanded_program_id,
                                 expanded,
                                 property_name,
@@ -12186,7 +12216,6 @@ fn type_contains_literal_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>, depth: us
             .types
             .iter()
             .any(|ty| type_contains_literal_type(arena, *ty, depth + 1)),
-        TypeData::Mapped(mapped) => type_contains_literal_type(arena, mapped.template, depth + 1),
         _ => false,
     }
 }
