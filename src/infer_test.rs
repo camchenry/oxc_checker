@@ -60,6 +60,7 @@ fn resolving_type_parameter_fixes_it_before_dependent_default() {
         type_parameter_t,
         Ty::number(),
         InferencePriority::NakedTypeVariable,
+        InferenceVariance::Covariant,
     );
 
     assert_eq!(
@@ -115,6 +116,7 @@ fn indexed_access_inference_simplifies_when_index_candidate_is_known() {
         type_parameter_k,
         Ty::string_literal(arena, "value"),
         InferencePriority::NakedTypeVariable,
+        InferenceVariance::Covariant,
     );
 
     infer_types(
@@ -188,11 +190,13 @@ fn covariant_candidates_use_common_supertype_without_combination_priority() {
         type_parameter,
         Ty::string_literal(arena, "ready"),
         InferencePriority::Low,
+        InferenceVariance::Covariant,
     );
     context.add_candidate(
         type_parameter,
         Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
         InferencePriority::Low,
+        InferenceVariance::Covariant,
     );
 
     assert_optional_type_eq(
@@ -216,11 +220,13 @@ fn covariant_candidates_combine_for_naked_type_variable_priority() {
         type_parameter,
         Ty::string_literal(arena, "ready"),
         InferencePriority::NakedTypeVariable,
+        InferenceVariance::Covariant,
     );
     context.add_candidate(
         type_parameter,
         Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
         InferencePriority::NakedTypeVariable,
+        InferenceVariance::Covariant,
     );
 
     assert_optional_type_eq(
@@ -257,6 +263,7 @@ fn top_level_literal_candidates_widen_when_not_top_level_in_return() {
         type_parameter,
         Ty::string_literal(arena, "ready"),
         InferencePriority::NakedTypeVariable,
+        InferenceVariance::Covariant,
     );
 
     assert_eq!(context.get_inferred_type(0, arena), Some(Ty::string()));
@@ -277,6 +284,7 @@ fn top_level_literal_candidates_are_preserved_for_top_level_return() {
         type_parameter,
         Ty::string_literal(arena, "ready"),
         InferencePriority::NakedTypeVariable,
+        InferenceVariance::Covariant,
     );
 
     assert_optional_type_eq(

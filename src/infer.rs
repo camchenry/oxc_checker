@@ -223,6 +223,7 @@ impl<'a> InferenceContext<'a> {
         type_parameter: TyTypeParameter<'a>,
         candidate: Ty<'a>,
         priority: InferencePriority,
+        direction: InferenceVariance,
     ) {
         let arena = self.arena;
         let Some(inference) = self.inference_for_type_parameter_mut(type_parameter) else {
@@ -232,49 +233,33 @@ impl<'a> InferenceContext<'a> {
             return;
         }
         if priority > inference.priority {
-            inference.candidates.clear();
+            match direction {
+                InferenceVariance::Covariant => inference.candidates.clear(),
+                InferenceVariance::Contravariant => {
+                    inference.candidates.clear();
+                    inference.contra_candidates.clear();
+                }
+            }
             inference.priority = priority;
         } else if priority < inference.priority {
             return;
         }
         inference.top_level |= priority == InferencePriority::NakedTypeVariable;
-        if !inference
-            .candidates
-            .iter()
-            .any(|existing| arena.is_type_identical_to(*existing, candidate))
-        {
-            inference.candidates.push(candidate);
-            inference.inferred_type = None;
-        }
-    }
-
-    fn add_contra_candidate(
-        &mut self,
-        type_parameter: TyTypeParameter<'a>,
-        candidate: Ty<'a>,
-        priority: InferencePriority,
-    ) {
-        let arena = self.arena;
-        let Some(inference) = self.inference_for_type_parameter_mut(type_parameter) else {
-            return;
+        let is_duplicate = match direction {
+            InferenceVariance::Covariant => inference
+                .candidates
+                .iter()
+                .any(|existing| arena.is_type_identical_to(*existing, candidate)),
+            InferenceVariance::Contravariant => inference
+                .contra_candidates
+                .iter()
+                .any(|existing| arena.is_type_identical_to(*existing, candidate)),
         };
-        if inference.is_fixed {
-            return;
-        }
-        if priority > inference.priority {
-            inference.candidates.clear();
-            inference.contra_candidates.clear();
-            inference.priority = priority;
-        } else if priority < inference.priority {
-            return;
-        }
-        inference.top_level |= priority == InferencePriority::NakedTypeVariable;
-        if !inference
-            .contra_candidates
-            .iter()
-            .any(|existing| arena.is_type_identical_to(*existing, candidate))
-        {
-            inference.contra_candidates.push(candidate);
+        if !is_duplicate {
+            match direction {
+                InferenceVariance::Covariant => inference.candidates.push(candidate),
+                InferenceVariance::Contravariant => inference.contra_candidates.push(candidate),
+            }
             inference.inferred_type = None;
         }
     }
@@ -993,6 +978,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             infer.type_parameter,
             candidate,
             InferencePriority::NakedTypeVariable,
+            InferenceVariance::Covariant,
         );
         ConditionalInferMatchResult::Matched
     }
@@ -1884,14 +1870,7 @@ fn infer_types_with_variance<'a>(
             else {
                 return;
             };
-            match variance {
-                InferenceVariance::Covariant => {
-                    context.add_candidate(type_parameter, argument_type, priority)
-                }
-                InferenceVariance::Contravariant => {
-                    context.add_contra_candidate(type_parameter, argument_type, priority)
-                }
-            }
+            context.add_candidate(type_parameter, argument_type, priority, variance)
         }
         (
             TypeData::TypeReference(parameter_reference),
