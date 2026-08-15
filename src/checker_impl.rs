@@ -715,11 +715,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             metadata.declaration.node_id,
                         )
                     {
-                        self.expand_type_at_use(
-                            metadata.reference_program_id,
-                            instantiated,
-                            depth + 1,
-                        )
+                        self.expand_type(metadata.reference_program_id, instantiated, depth + 1)
                     } else {
                         instantiated
                     }
@@ -1220,7 +1216,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 // However, it can change the type if the `satisfies` type is more specific than the apparent type.
                 let target_type =
                     self.get_type_from_ts_type(program_id, &satisfies_expr.type_annotation);
-                let target_type = self.expand_type_at_use(program_id, target_type, 0);
+                let target_type = self.expand_type(program_id, target_type, 0);
                 let satisfies_context = context
                     .with_flags(
                         flags | GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
@@ -1337,7 +1333,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     node_id,
                     flags | GetTypeFlags::CONTEXT_FREE,
                 );
-                let target_type = self.expand_type_at_use(program_id, target_type, 0);
+                let target_type = self.expand_type(program_id, target_type, 0);
                 match self.arena().type_data(target_type) {
                     TypeData::Bigint | TypeData::BigIntLiteral(_) => Ty::bigint(),
                     _ => Ty::number(),
@@ -1904,7 +1900,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         program_id: ProgramId,
         ty: Ty<'a>,
     ) -> Option<Vec<&'a str>> {
-        let ty = self.expand_type_at_use(program_id, ty, 0);
+        let ty = self.expand_type(program_id, ty, 0);
         let ty = self
             .get_enum_literal_union_type(program_id, ty)
             .unwrap_or(ty);
@@ -2371,7 +2367,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             && let Some((expanded_program_id, expanded)) =
                 self.get_expanded_type_alias_reference_type(program_id, ty, 0)
         {
-            return self.expand_type_at_use(expanded_program_id, expanded, 0);
+            return self.expand_type(expanded_program_id, expanded, 0);
         }
 
         let ty = self.with_implicit_type_arguments_visible(ty);
@@ -2876,7 +2872,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.arena().type_data(source_check_type),
                     TypeData::IndexedAccess(_)
                 ) {
-                    self.expand_type_at_use(program_id, source_check_type, 0)
+                    self.expand_type(program_id, source_check_type, 0)
                 } else {
                     source_check_type
                 };
@@ -3760,7 +3756,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .map(|property| Ty::string_literal(self.arena(), property.name))
                 .collect::<Vec<_>>()
         } else {
-            let constraint = self.expand_type_at_use(program_id, mapped.constraint, depth + 1);
+            let constraint = self.expand_type(program_id, mapped.constraint, depth + 1);
             match self.arena().type_data(constraint) {
                 TypeData::Union(union) => union.types.iter().copied().collect(),
                 _ if index_type_to_property_name(self.arena(), constraint).is_some() => {
@@ -3795,7 +3791,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
 
         let ty = self.instantiate_type(mapped.template, &mapper);
-        let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+        let ty = self.expand_type(program_id, ty, depth + 1);
         let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
         Some(
             if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) {
@@ -3824,7 +3820,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             ),
             _ => self.instantiate_type(name_type, mapper),
         };
-        self.expand_type_at_use(program_id, name_type, depth + 1)
+        self.expand_type(program_id, name_type, depth + 1)
     }
 
     fn expand_deferred_conditional_branches_at_use(
@@ -3887,7 +3883,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn expand_type_at_use(&self, program_id: ProgramId, ty: Ty<'a>, depth: usize) -> Ty<'a> {
+    fn expand_type(&self, program_id: ProgramId, ty: Ty<'a>, depth: usize) -> Ty<'a> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return ty;
         }
@@ -3896,12 +3892,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::TypeReference(_) => self
                 .get_expanded_type_alias_reference_type(program_id, ty, depth + 1)
                 .map(|(expanded_program_id, expanded)| {
-                    self.expand_type_at_use(expanded_program_id, expanded, depth + 1)
+                    self.expand_type(expanded_program_id, expanded, depth + 1)
                 })
                 .unwrap_or(ty),
             TypeData::IndexedAccess(indexed_access) => {
                 let object_type =
-                    self.expand_type_at_use(program_id, indexed_access.object_type, depth + 1);
+                    self.expand_type(program_id, indexed_access.object_type, depth + 1);
                 let index_type = indexed_access.index_type;
                 let lookup_index_type =
                     self.expand_type_for_index_lookup(program_id, index_type, depth + 1);
@@ -3912,7 +3908,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     lookup_index_type,
                 ) {
                     IndexedAccessResolution::Resolved(resolved) => {
-                        self.expand_type_at_use(program_id, resolved, depth + 1)
+                        self.expand_type(program_id, resolved, depth + 1)
                     }
                     IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
                         Ty::indexed_access(self.arena(), object_type, index_type)
@@ -3927,20 +3923,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 union
                     .types
                     .iter()
-                    .map(|ty| self.expand_type_at_use(program_id, *ty, depth + 1)),
+                    .map(|ty| self.expand_type(program_id, *ty, depth + 1)),
             ),
             TypeData::Intersection(intersection) => Ty::intersection(
                 self.arena(),
                 intersection
                     .types
                     .iter()
-                    .map(|ty| self.expand_type_at_use(program_id, *ty, depth + 1)),
+                    .map(|ty| self.expand_type(program_id, *ty, depth + 1)),
             ),
             TypeData::Conditional(conditional) => {
-                let check_type =
-                    self.expand_type_at_use(program_id, conditional.check_type, depth + 1);
+                let check_type = self.expand_type(program_id, conditional.check_type, depth + 1);
                 let extends_type =
-                    self.expand_type_at_use(program_id, conditional.extends_type, depth + 1);
+                    self.expand_type(program_id, conditional.extends_type, depth + 1);
                 let match_check_type = if !self.contains_infer_type_parameter(extends_type) {
                     check_type
                 } else {
@@ -3970,12 +3965,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         ty
                     }
                 } else {
-                    self.expand_type_at_use(program_id, ty, depth + 1)
+                    self.expand_type(program_id, ty, depth + 1)
                 }
             }
             TypeData::Keyof(keyof) => Ty::keyof(
                 self.arena(),
-                self.expand_type_at_use(program_id, keyof.target, depth + 1),
+                self.expand_type(program_id, keyof.target, depth + 1),
             ),
             _ => ty,
         }
@@ -3992,7 +3987,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         match self.arena().type_data(ty) {
-            TypeData::IndexedAccess(_) => self.expand_type_at_use(program_id, ty, depth + 1),
+            TypeData::IndexedAccess(_) => self.expand_type(program_id, ty, depth + 1),
             TypeData::TypeReference(reference) => {
                 let type_arguments = reference
                     .type_arguments
@@ -4183,7 +4178,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 property.name
             };
             let ty = self.instantiate_type(mapped.template, &mapper);
-            let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+            let ty = self.expand_type(program_id, ty, depth + 1);
             let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
             expanded.push(TyProperty {
                 name: property_name,
@@ -4208,7 +4203,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let TypeData::Keyof(keyof) = self.arena().type_data(mapped.constraint) else {
             return None;
         };
-        let target = self.expand_type_at_use(program_id, keyof.target, depth + 1);
+        let target = self.expand_type(program_id, keyof.target, depth + 1);
         if mapped.name_type.is_some() {
             return None;
         }
@@ -4276,7 +4271,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             key_type,
         );
         let template = self.instantiate_type(mapped.template, &mapper);
-        self.expand_type_at_use(program_id, template, depth + 1)
+        self.expand_type(program_id, template, depth + 1)
     }
 
     fn materialize_mapped_tuple_element(
@@ -4356,7 +4351,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+        let ty = self.expand_type(program_id, ty, depth + 1);
         match self.arena().type_data(ty) {
             TypeData::Object(object) => Some(
                 object
@@ -4457,7 +4452,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::TypeReference(_) => self
                 .get_expanded_type_alias_reference_type(program_id, ty, depth + 1)
                 .map(|(expanded_program_id, expanded)| {
-                    self.expand_type_at_use(expanded_program_id, expanded, depth + 1)
+                    self.expand_type(expanded_program_id, expanded, depth + 1)
                 })
                 .unwrap_or(ty),
             TypeData::Union(union) => Ty::union(
@@ -4480,7 +4475,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     )
                 }),
             ),
-            TypeData::IndexedAccess(_) => self.expand_type_at_use(program_id, ty, depth + 1),
+            TypeData::IndexedAccess(_) => self.expand_type(program_id, ty, depth + 1),
             _ => ty,
         }
     }
@@ -4610,7 +4605,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 let ty = if self.type_instantiation_overflowed.get() {
                     Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded)
                 } else {
-                    self.expand_type_at_use(program_id, ty, depth + 1)
+                    self.expand_type(program_id, ty, depth + 1)
                 };
                 let ty = if self.type_instantiation_overflowed.get() {
                     Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded)
@@ -4743,7 +4738,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             TypeData::TypeReference(reference) if reference.name == name => ty,
             TypeData::TypeReference(_) => {
-                let expanded = self.expand_type_at_use(program_id, ty, depth + 1);
+                let expanded = self.expand_type(program_id, ty, depth + 1);
                 if expanded != ty {
                     self.apply_intrinsic_string_mapping(program_id, name, expanded, depth + 1)
                 } else {
@@ -5132,7 +5127,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             {
                 query.resolved
             }
-            _ => self.get_apparent_type_at_use(program_id, ty, 0),
+            _ => self.get_apparent_type(program_id, ty, 0),
         }
     }
 
@@ -5616,7 +5611,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         node_id,
                         spread_flags,
                     );
-                    let spread_type = self.expand_type_at_use(program_id, spread_type, 0);
+                    let spread_type = self.expand_type(program_id, spread_type, 0);
                     if spread_type.is_any_like(self.arena()) {
                         return spread_type;
                     }
@@ -5668,7 +5663,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return false;
         }
 
-        let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+        let ty = self.expand_type(program_id, ty, depth + 1);
         match self.arena().type_data(ty) {
             TypeData::Null
             | TypeData::Undefined
@@ -5704,7 +5699,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Vec::new();
         }
 
-        let ty = self.expand_type_at_use(program_id, ty, depth + 1);
+        let ty = self.expand_type(program_id, ty, depth + 1);
         match self.arena().type_data(ty) {
             TypeData::Object(object) => object
                 .properties
@@ -5969,7 +5964,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let ty = if ty.is_function(self.arena()) {
             ty
         } else {
-            self.get_apparent_type_at_use(program_id, ty, 0)
+            self.get_apparent_type(program_id, ty, 0)
         };
         let ty = flow::get_flow_type_of_static_member_reference(self, program_id, member, ty);
         if in_chain {
@@ -5985,7 +5980,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object_type: Ty<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        let apparent_object_type = self.get_apparent_type_at_use(program_id, object_type, 0);
+        let apparent_object_type = self.get_apparent_type(program_id, object_type, 0);
         self.get_property_type_of_structural_type(program_id, object_type, property_name)
             .or_else(|| {
                 self.get_property_type_of_structural_type(
@@ -6096,7 +6091,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             TypeData::TypeReference(_) => {
                 // Resolve type reference into its underlying type
-                let resolved_type = self.expand_type_at_use(program_id, ty, 0);
+                let resolved_type = self.expand_type(program_id, ty, 0);
                 if matches!(
                     self.arena().type_data(resolved_type),
                     TypeData::TypeReference(_)
@@ -6157,7 +6152,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
             }
             TypeData::IndexedAccess(_) | TypeData::Conditional(_) => {
-                let apparent = self.expand_type_at_use(program_id, ty, 0);
+                let apparent = self.expand_type(program_id, ty, 0);
                 (!self.is_type_identical_to(apparent, ty)).then(|| {
                     self.get_property_type_of_structural_type(program_id, apparent, property_name)
                 })?
@@ -6246,7 +6241,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let (object_program_id, object_type) = self
             .get_expanded_type_alias_reference_preserving_arguments(program_id, object_type, 0)
             .unwrap_or((program_id, object_type));
-        let object_type = self.expand_type_at_use(object_program_id, object_type, 0);
+        let object_type = self.expand_type(object_program_id, object_type, 0);
         if let TypeData::Object(object) = self.arena().type_data(object_type)
             && let Some(index_info) = object
                 .index_infos()
@@ -6378,7 +6373,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Some(self.get_global_bigint_type(program_id))
             }
             TypeData::TypeReference(_) => {
-                let expanded = self.expand_type_at_use(program_id, object_type, 0);
+                let expanded = self.expand_type(program_id, object_type, 0);
                 if expanded != object_type {
                     return self.get_property_type_of_global_interface_type(
                         program_id,
@@ -7944,7 +7939,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .as_ref()
             .map(|constraint| self.get_type_from_ts_type(program_id, constraint));
         let default = parameter.default.as_ref().map(|default| {
-            self.get_apparent_type_at_use(
+            self.get_apparent_type(
                 program_id,
                 self.get_type_from_ts_type(program_id, default),
                 0,
@@ -8427,7 +8422,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         callback_function
             .parameters
             .get(parameter_index)
-            .map(|parameter| self.get_apparent_type_at_use(program_id, parameter.ty, 0))
+            .map(|parameter| self.get_apparent_type(program_id, parameter.ty, 0))
     }
 
     fn get_apparent_contextual_parameter_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
@@ -8489,7 +8484,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let expanded_type_arguments = reference
             .type_arguments
             .iter()
-            .map(|ty| self.expand_type_at_use(program_id, *ty, 0))
+            .map(|ty| self.expand_type(program_id, *ty, 0))
             .collect::<Vec<_>>();
         if expanded_type_arguments
             .iter()
@@ -8553,7 +8548,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn get_apparent_type_at_use(&self, program_id: ProgramId, ty: Ty<'a>, depth: usize) -> Ty<'a> {
+    fn get_apparent_type(&self, program_id: ProgramId, ty: Ty<'a>, depth: usize) -> Ty<'a> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return ty;
         }
@@ -8567,13 +8562,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 union
                     .types
                     .iter()
-                    .map(|ty| self.get_apparent_type_at_use(program_id, *ty, depth + 1)),
+                    .map(|ty| self.get_apparent_type(program_id, *ty, depth + 1)),
             ),
             TypeData::Function(function) => Ty::function_with_type_predicate_and_display(
                 self.arena(),
                 function.type_parameters.iter().copied(),
                 function.parameters.iter().map(|parameter| {
-                    let ty = self.get_apparent_type_at_use(program_id, parameter.ty, depth + 1);
+                    let ty = self.get_apparent_type(program_id, parameter.ty, depth + 1);
                     if parameter.rest {
                         Ty::rest_parameter(parameter.name, ty)
                     } else if parameter.optional {
@@ -8582,7 +8577,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         Ty::parameter(parameter.name, ty)
                     }
                 }),
-                self.get_apparent_type_at_use(program_id, function.return_type, depth + 1),
+                self.get_apparent_type(program_id, function.return_type, depth + 1),
                 function.type_predicate.copied(),
                 function.display_type_parameters_as_arguments,
             ),
@@ -9095,7 +9090,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if let Expression::ArrayExpression(array) = argument
             && matches!(
                 self.arena()
-                    .type_data(self.expand_type_at_use(program_id, parameter_type, 0)),
+                    .type_data(self.expand_type(program_id, parameter_type, 0)),
                 TypeData::Tuple(_)
             )
         {
@@ -9121,7 +9116,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         array_context: Ty<'a>,
         element_index: usize,
     ) -> Option<Ty<'a>> {
-        let array_context = self.expand_type_at_use(program_id, array_context, 0);
+        let array_context = self.expand_type(program_id, array_context, 0);
         match self.arena().type_data(array_context) {
             TypeData::Array(array) => Some(array.element_type),
             TypeData::Tuple(tuple) => {
@@ -9382,7 +9377,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_annotation: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Ty<'a> {
         let ty = self.get_type_from_ts_type_annotation(program_id, type_annotation);
-        self.get_apparent_type_at_use(program_id, ty, 0)
+        self.get_apparent_type(program_id, ty, 0)
     }
 
     pub(crate) fn get_async_function_return_type(
@@ -10391,7 +10386,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             BindingPattern::BindingIdentifier(identifier)
                 if identifier.symbol_id.get() == Some(symbol_id) =>
             {
-                Some(self.get_apparent_type_at_use(program_id, pattern_type, 0))
+                Some(self.get_apparent_type(program_id, pattern_type, 0))
             }
             BindingPattern::BindingIdentifier(_) => None,
             BindingPattern::ObjectPattern(object) => {
@@ -10846,7 +10841,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .flat_map(|parameter| self.get_fulfilled_value_types(program_id, parameter.ty))
             .map(|ty| {
                 let awaited = self.get_awaited_type(program_id, ty);
-                self.expand_type_at_use(program_id, awaited, 0)
+                self.expand_type(program_id, awaited, 0)
             })
             .collect::<Vec<_>>();
 
