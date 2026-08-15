@@ -337,7 +337,13 @@ impl<'a> ExpressionCheckContext<'a> {
         }
     }
 
-    // TODO: Add a new_in_check_mode function
+    fn new_in_check_mode(flags: GetTypeFlags, check_mode: CheckMode) -> Self {
+        Self {
+            flags,
+            contextual_type: None,
+            check_mode,
+        }
+    }
 
     fn with_flags(self, flags: GetTypeFlags) -> Self {
         Self { flags, ..self }
@@ -9030,8 +9036,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         program_id,
                         array,
                         None,
-                        ExpressionCheckContext::new(GetTypeFlags::NONE)
-                            .with_check_mode(CheckMode::FORCE_TUPLE),
+                        ExpressionCheckContext::new_in_check_mode(
+                            GetTypeFlags::NONE,
+                            CheckMode::FORCE_TUPLE,
+                        ),
                     )
                 } else {
                     let parameter_type = self.get_call_parameter_type_at(callee_function, index);
@@ -9085,7 +9093,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 program_id,
                 array,
                 node_id,
-                ExpressionCheckContext::new(flags).with_check_mode(CheckMode::FORCE_TUPLE),
+                ExpressionCheckContext::new_in_check_mode(flags, CheckMode::FORCE_TUPLE),
             );
         }
 
