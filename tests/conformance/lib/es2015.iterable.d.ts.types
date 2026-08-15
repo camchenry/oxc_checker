@@ -107,8 +107,7 @@ interface Iterator<T, TReturn = any, TNext = any> {
 >                                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return?(value?: TReturn): IteratorResult<T, TReturn>;
->   ^^^^^^: { (value?: TReturn): IteratorResult<T, TReturn>; (value?: TReturn): IteratorResult<T, TReturn>; }   (TyObject) (TSMethodSignature)
-  expected: { (value?: TReturn): IteratorResult<T, TReturn>; (value?: TReturn): IteratorResult<T, TReturn>; } | undefined
+>   ^^^^^^: { (value?: TReturn): IteratorResult<T, TReturn>; (value?: TReturn): IteratorResult<T, TReturn>; } | undefined   (TyUnion) (TSMethodSignature)
 
     return?(value?: TReturn): IteratorResult<T, TReturn>;
 >           ^^^^^: TReturn | undefined   (TyUnion) (BindingIdentifier)
@@ -126,8 +125,7 @@ interface Iterator<T, TReturn = any, TNext = any> {
 >                                               ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     throw?(e?: any): IteratorResult<T, TReturn>;
->   ^^^^^: { (e?: any): IteratorResult<T, TReturn>; (e?: any): IteratorResult<T, TReturn>; }   (TyObject) (TSMethodSignature)
- expected: { (e?: any): IteratorResult<T, TReturn>; (e?: any): IteratorResult<T, TReturn>; } | undefined
+>   ^^^^^: { (e?: any): IteratorResult<T, TReturn>; (e?: any): IteratorResult<T, TReturn>; } | undefined   (TyUnion) (TSMethodSignature)
 
     throw?(e?: any): IteratorResult<T, TReturn>;
 >          ^: any   (TyAny) (BindingIdentifier)

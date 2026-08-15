@@ -8,8 +8,7 @@ interface ProxyHandler<T extends object> {
 >                      ^: any   (TyAny) (TSTypeParameter)
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
->   ^^^^^: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; }   (TyObject) (TSMethodSignature)
- expected: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; } | undefined
+>   ^^^^^: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; } | undefined   (TyUnion) (TSMethodSignature)
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
 >          ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -24,8 +23,7 @@ interface ProxyHandler<T extends object> {
 >                                   ^^^^^^^^: any[]   (TyArray) (BindingIdentifier)
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
->   ^^^^^^^^^: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; }   (TyObject) (TSMethodSignature)
-     expected: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; } | undefined
+>   ^^^^^^^^^: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; } | undefined   (TyUnion) (TSMethodSignature)
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
 >              ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -46,8 +44,7 @@ interface ProxyHandler<T extends object> {
 >                                                     ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
->   ^^^^^^^^^^^^^^: { (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; }   (TyObject) (TSMethodSignature)
-          expected: { (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; } | undefined
+>   ^^^^^^^^^^^^^^: { (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; } | undefined   (TyUnion) (TSMethodSignature)
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
 >                   ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -68,8 +65,7 @@ interface ProxyHandler<T extends object> {
 >                                                                     ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     deleteProperty?(target: T, p: string | symbol): boolean;
->   ^^^^^^^^^^^^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; }   (TyObject) (TSMethodSignature)
-          expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined
+>   ^^^^^^^^^^^^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined   (TyUnion) (TSMethodSignature)
 
     deleteProperty?(target: T, p: string | symbol): boolean;
 >                   ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -81,8 +77,7 @@ interface ProxyHandler<T extends object> {
 >                              ^: string | symbol   (TyUnion) (BindingIdentifier)
 
     get?(target: T, p: string | symbol, receiver: any): any;
->   ^^^: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; }   (TyObject) (TSMethodSignature)
-expected: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; } | undefined
+>   ^^^: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; } | undefined   (TyUnion) (TSMethodSignature)
 
     get?(target: T, p: string | symbol, receiver: any): any;
 >        ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -97,8 +92,7 @@ expected: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: 
 >                                       ^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
->   ^^^^^^^^^^^^^^^^^^^^^^^^: { (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; }   (TyObject) (TSMethodSignature)
-                    expected: { (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; } | undefined
+>   ^^^^^^^^^^^^^^^^^^^^^^^^: { (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; } | undefined   (TyUnion) (TSMethodSignature)
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
 >                             ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -116,8 +110,7 @@ expected: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: 
 >                                                             ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     getPrototypeOf?(target: T): object | null;
->   ^^^^^^^^^^^^^^: { (target: T): object | null; (target: T): object | null; }   (TyObject) (TSMethodSignature)
-          expected: { (target: T): object | null; (target: T): object | null; } | undefined
+>   ^^^^^^^^^^^^^^: { (target: T): object | null; (target: T): object | null; } | undefined   (TyUnion) (TSMethodSignature)
 
     getPrototypeOf?(target: T): object | null;
 >                   ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -126,8 +119,7 @@ expected: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: 
 >                           ^: any   (TyAny) (TSTypeReference)
 
     has?(target: T, p: string | symbol): boolean;
->   ^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; }   (TyObject) (TSMethodSignature)
-expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined
+>   ^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined   (TyUnion) (TSMethodSignature)
 
     has?(target: T, p: string | symbol): boolean;
 >        ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -139,8 +131,7 @@ expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | sy
 >                   ^: string | symbol   (TyUnion) (BindingIdentifier)
 
     isExtensible?(target: T): boolean;
->   ^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; }   (TyObject) (TSMethodSignature)
-        expected: { (target: T): boolean; (target: T): boolean; } | undefined
+>   ^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; } | undefined   (TyUnion) (TSMethodSignature)
 
     isExtensible?(target: T): boolean;
 >                 ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -149,8 +140,7 @@ expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | sy
 >                         ^: any   (TyAny) (TSTypeReference)
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
->   ^^^^^^^: { (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; }   (TyObject) (TSMethodSignature)
-   expected: { (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; } | undefined
+>   ^^^^^^^: { (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; } | undefined   (TyUnion) (TSMethodSignature)
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
 >            ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -165,8 +155,7 @@ expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | sy
 >                        ^^^^^^^^^: any   (TyError) (IdentifierReference)
 
     preventExtensions?(target: T): boolean;
->   ^^^^^^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; }   (TyObject) (TSMethodSignature)
-             expected: { (target: T): boolean; (target: T): boolean; } | undefined
+>   ^^^^^^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; } | undefined   (TyUnion) (TSMethodSignature)
 
     preventExtensions?(target: T): boolean;
 >                      ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -175,8 +164,7 @@ expected: { (target: T, p: string | symbol): boolean; (target: T, p: string | sy
 >                              ^: any   (TyAny) (TSTypeReference)
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
->   ^^^: { (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; }   (TyObject) (TSMethodSignature)
-expected: { (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; } | undefined
+>   ^^^: { (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; } | undefined   (TyUnion) (TSMethodSignature)
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
 >        ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
@@ -194,8 +182,7 @@ expected: { (target: T, p: string | symbol, newValue: any, receiver: any): boole
 >                                                      ^^^^^^^^: any   (TyAny) (BindingIdentifier)
 
     setPrototypeOf?(target: T, v: object | null): boolean;
->   ^^^^^^^^^^^^^^: { (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; }   (TyObject) (TSMethodSignature)
-          expected: { (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; } | undefined
+>   ^^^^^^^^^^^^^^: { (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; } | undefined   (TyUnion) (TSMethodSignature)
 
     setPrototypeOf?(target: T, v: object | null): boolean;
 >                   ^^^^^^: T   (TyTypeReference) (BindingIdentifier)

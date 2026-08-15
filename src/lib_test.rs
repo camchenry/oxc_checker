@@ -4246,6 +4246,29 @@ fn single_interface_method_signature_location_uses_function_type() {
 }
 
 #[test]
+fn optional_interface_method_signature_location_includes_undefined() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    interface AccessorResult<This, Value> {
+        get?(this: This): Value;
+        set(this: This, value: Value): void;
+    }
+    "#,
+    );
+
+    assert_eq!(
+        get_ts_method_signature_types(&ret, "get"),
+        vec!["((this: This) => Value) | undefined".to_string()]
+    );
+    assert_eq!(
+        get_ts_method_signature_types(&ret, "set"),
+        vec!["(this: This, value: Value) => void".to_string()]
+    );
+}
+
+#[test]
 fn instantiated_interface_method_type_parameters_render_as_arguments() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

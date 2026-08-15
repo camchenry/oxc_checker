@@ -120,12 +120,10 @@ interface PropertyDescriptor {
 >   ^^^^^^^^: boolean | undefined   (TyUnion) (TSPropertySignature)
 
     get?(): any;
->   ^^^: { (): any; (): any; }   (TyObject) (TSMethodSignature)
-expected: { (): any; (): any; } | undefined
+>   ^^^: { (): any; (): any; } | undefined   (TyUnion) (TSMethodSignature)
 
     set?(v: any): void;
->   ^^^: { (v: any): void; (v: any): void; }   (TyObject) (TSMethodSignature)
-expected: { (v: any): void; (v: any): void; } | undefined
+>   ^^^: { (v: any): void; (v: any): void; } | undefined   (TyUnion) (TSMethodSignature)
 
     set?(v: any): void;
 >        ^: any   (TyAny) (BindingIdentifier)

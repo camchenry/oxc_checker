@@ -12066,7 +12066,16 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 }
             }
             AstKind::TSMethodSignature(method) => {
-                self.get_type_of_ts_method_signature_location(node.program_id, node.node_id, method)
+                let ty = self.get_type_of_ts_method_signature_location(
+                    node.program_id,
+                    node.node_id,
+                    method,
+                );
+                if method.optional {
+                    ty.or_undefined(self.arena())
+                } else {
+                    ty
+                }
             }
             AstKind::FormalParameter(parameter) => {
                 parameter.type_annotation.as_deref().map_or_else(

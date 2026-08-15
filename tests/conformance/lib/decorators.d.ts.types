@@ -470,8 +470,7 @@ interface ClassAccessorDecoratorResult<This, Value> {
 >                                            ^^^^^: any   (TyAny) (TSTypeParameter)
 
     get?(this: This): Value;
->   ^^^: { (this: This): Value; (this: This): Value; }   (TyObject) (TSMethodSignature)
-expected: { (this: This): Value; (this: This): Value; } | undefined
+>   ^^^: { (this: This): Value; (this: This): Value; } | undefined   (TyUnion) (TSMethodSignature)
 
     get?(this: This): Value;
 >        ^^^^: This   (TyTypeReference) (TSThisParameter)
@@ -483,8 +482,7 @@ expected: { (this: This): Value; (this: This): Value; } | undefined
 >                     ^^^^^: any   (TyAny) (TSTypeReference)
 
     set?(this: This, value: Value): void;
->   ^^^: { (this: This, value: Value): void; (this: This, value: Value): void; }   (TyObject) (TSMethodSignature)
-expected: { (this: This, value: Value): void; (this: This, value: Value): void; } | undefined
+>   ^^^: { (this: This, value: Value): void; (this: This, value: Value): void; } | undefined   (TyUnion) (TSMethodSignature)
 
     set?(this: This, value: Value): void;
 >        ^^^^: This   (TyTypeReference) (TSThisParameter)
@@ -499,8 +497,7 @@ expected: { (this: This, value: Value): void; (this: This, value: Value): void; 
 >                           ^^^^^: any   (TyAny) (TSTypeReference)
 
     init?(this: This, value: Value): Value;
->   ^^^^: { (this: This, value: Value): Value; (this: This, value: Value): Value; }   (TyObject) (TSMethodSignature)
-expected: { (this: This, value: Value): Value; (this: This, value: Value): Value; } | undefined
+>   ^^^^: { (this: This, value: Value): Value; (this: This, value: Value): Value; } | undefined   (TyUnion) (TSMethodSignature)
 
     init?(this: This, value: Value): Value;
 >         ^^^^: This   (TyTypeReference) (TSThisParameter)

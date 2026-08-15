@@ -51,8 +51,7 @@ interface AsyncIterator<T, TReturn = any, TNext = any> {
 >                                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->   ^^^^^^: { (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; }   (TyObject) (TSMethodSignature)
-  expected: { (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; } | undefined
+>   ^^^^^^: { (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; } | undefined   (TyUnion) (TSMethodSignature)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
 >           ^^^^^: TReturn | PromiseLike<TReturn> | undefined   (TyUnion) (BindingIdentifier)
@@ -88,8 +87,7 @@ interface AsyncIterator<T, TReturn = any, TNext = any> {
 >                                                                              ^^^^^^^: any   (TyAny) (TSTypeReference)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->   ^^^^^: { (e?: any): Promise<IteratorResult<T, TReturn>>; (e?: any): Promise<IteratorResult<T, TReturn>>; }   (TyObject) (TSMethodSignature)
- expected: { (e?: any): Promise<IteratorResult<T, TReturn>>; (e?: any): Promise<IteratorResult<T, TReturn>>; } | undefined
+>   ^^^^^: { (e?: any): Promise<IteratorResult<T, TReturn>>; (e?: any): Promise<IteratorResult<T, TReturn>>; } | undefined   (TyUnion) (TSMethodSignature)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
 >          ^: any   (TyAny) (BindingIdentifier)
