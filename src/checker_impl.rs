@@ -1559,7 +1559,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn remove_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
+    /// Remove `undefined` from the type. If type is `undefined`, returns `never`. If the type
+    /// is a union, removes `undefined` from the union.
+    pub(crate) fn remove_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
         if ty == Ty::Undefined {
             Ty::never()
         } else {
@@ -10438,13 +10440,9 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     program_id,
                     &assignment.left,
                     symbol_id,
-                    self.get_non_undefined_type(pattern_type),
+                    self.remove_undefined(pattern_type),
                 ),
         }
-    }
-
-    fn get_non_undefined_type(&self, ty: Ty<'a>) -> Ty<'a> {
-        ty.map_union(self.arena(), |ty| (ty != Ty::Undefined).then_some(ty))
     }
 
     fn get_contextual_or_destructured_property_type_at_depth(
