@@ -3,7 +3,7 @@ use std::{
     collections::HashMap,
 };
 
-use oxc_ast::ast::TSInterfaceDeclaration;
+use oxc_ast::ast::{AssignmentExpression, TSInterfaceDeclaration};
 use oxc_index::IndexVec;
 use oxc_semantic::{NodeId, SymbolId};
 use oxc_span::Span;
@@ -81,7 +81,7 @@ pub struct CheckerReturn<'a, 'store> {
     pub(crate) overflowed_type_alias_resolutions: RefCell<Vec<TypeAliasResolution>>,
     pub(crate) type_string_cache: RefCell<HashMap<TypeStringCacheKey<'a>, String>>,
     pub(crate) expando_assignments_by_container:
-        RefCell<HashMap<ProgramId, HashMap<NodeId, Vec<NodeId>>>>,
+        RefCell<HashMap<ProgramId, HashMap<NodeId, Vec<&'a AssignmentExpression<'a>>>>>,
     pub(crate) flow_graph_cache: RefCell<HashMap<ProgramId, ProgramFlowGraph>>,
     pub interface_declarations_cache:
         RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,

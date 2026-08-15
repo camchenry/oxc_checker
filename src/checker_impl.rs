@@ -10138,11 +10138,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         let mut properties: Vec<TyProperty<'a>> = Vec::new();
-        for node_id in self.expando_assignments_in_container(program_id, host_container_id) {
-            let AstKind::AssignmentExpression(assignment) = self.nodes(program_id).kind(node_id)
-            else {
-                unreachable!("expando assignment index contains only assignment expressions")
-            };
+        for assignment in self.expando_assignments_in_container(program_id, host_container_id) {
             let Some((name, right)) =
                 self.static_property_assignment_for_symbol(program_id, assignment, host_symbol)
             else {
@@ -10177,13 +10173,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         program_id: ProgramId,
         host_container_id: NodeId,
-    ) -> Vec<NodeId> {
+    ) -> Vec<&'a AssignmentExpression<'a>> {
         if !self
             .expando_assignments_by_container
             .borrow()
             .contains_key(&program_id)
         {
-            let mut assignments_by_container: HashMap<NodeId, Vec<NodeId>> = HashMap::new();
+            let mut assignments_by_container: HashMap<NodeId, Vec<&'a AssignmentExpression<'a>>> =
+                HashMap::new();
             for (node_id, node) in self.nodes(program_id).iter_enumerated() {
                 let AstKind::AssignmentExpression(assignment) = node.kind() else {
                     continue;
@@ -10198,7 +10195,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 assignments_by_container
                     .entry(container_id)
                     .or_default()
-                    .push(node_id);
+                    .push(assignment);
             }
             self.expando_assignments_by_container
                 .borrow_mut()
