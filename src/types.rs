@@ -1903,14 +1903,12 @@ impl<'a> Ty<'a> {
         }
         let elements = arena.vec_from_iter(normalized);
         let labels = arena.vec_from_iter(normalized_labels);
-        let ty = arena.alloc_type(TypeData::Tuple(arena.alloc(TyTuple {
+        let tuple = arena.alloc(TyTuple {
             elements,
             labels,
             readonly,
-        })));
-        let TypeData::Tuple(tuple) = arena.type_data(ty) else {
-            unreachable!()
-        };
+        });
+        let ty = arena.alloc_type(TypeData::Tuple(tuple));
         arena.interned_types.tuples.borrow_mut().insert(
             TupleTypeKey {
                 elements: &tuple.elements,

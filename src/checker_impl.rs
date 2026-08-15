@@ -1348,7 +1348,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             AstKind::V8IntrinsicExpression(_) => {
                 Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
             }
-            _ => unreachable!("expected expression AST kind"),
+            _ => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
         }
     }
 
@@ -7050,9 +7050,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return_type,
             type_predicate,
         );
-        let TypeData::Function(_) = self.arena().type_data(ty) else {
-            unreachable!("signature construction always creates a function type")
-        };
         Signature::new(kind, ty)
     }
 
