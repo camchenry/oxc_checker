@@ -12,6 +12,7 @@ mod flow_graph;
 mod global_lib;
 mod global_types;
 mod infer;
+mod intrinsics;
 mod limits;
 mod mapper;
 pub mod program;
