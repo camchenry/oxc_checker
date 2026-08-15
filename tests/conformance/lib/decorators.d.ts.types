@@ -61,7 +61,7 @@ type DecoratorMetadataObject = Record<PropertyKey, unknown> & object;
 >                                     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
->    ^^^^^^^^^^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: DecoratorMetadataObject   (TyTypeReference) (TSTypeAliasDeclaration)
               expected: Record<PropertyKey, unknown> & object
 
 type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
@@ -113,8 +113,7 @@ interface ClassDecoratorContext<
 >                                      ^^^^^: any   (TyAny) (TSTypeReference)
 
     readonly metadata: DecoratorMetadata;
->            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
-             expected: DecoratorMetadataObject
+>            ^^^^^^^^: DecoratorMetadataObject   (TyTypeReference) (TSPropertySignature)
 
     readonly metadata: DecoratorMetadata;
 >                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -198,8 +197,7 @@ interface ClassMethodDecoratorContext<
 >                                      ^^^^: any   (TyAny) (TSTypeReference)
 
     readonly metadata: DecoratorMetadata;
->            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
-             expected: DecoratorMetadataObject
+>            ^^^^^^^^: DecoratorMetadataObject   (TyTypeReference) (TSPropertySignature)
 
     readonly metadata: DecoratorMetadata;
 >                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -265,8 +263,7 @@ interface ClassGetterDecoratorContext<
 >                                      ^^^^: any   (TyAny) (TSTypeReference)
 
     readonly metadata: DecoratorMetadata;
->            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
-             expected: DecoratorMetadataObject
+>            ^^^^^^^^: DecoratorMetadataObject   (TyTypeReference) (TSPropertySignature)
 
     readonly metadata: DecoratorMetadata;
 >                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -335,8 +332,7 @@ interface ClassSetterDecoratorContext<
 >                                      ^^^^: any   (TyAny) (TSTypeReference)
 
     readonly metadata: DecoratorMetadata;
->            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
-             expected: DecoratorMetadataObject
+>            ^^^^^^^^: DecoratorMetadataObject   (TyTypeReference) (TSPropertySignature)
 
     readonly metadata: DecoratorMetadata;
 >                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -417,8 +413,7 @@ interface ClassAccessorDecoratorContext<
 >                                      ^^^^: any   (TyAny) (TSTypeReference)
 
     readonly metadata: DecoratorMetadata;
->            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
-             expected: DecoratorMetadataObject
+>            ^^^^^^^^: DecoratorMetadataObject   (TyTypeReference) (TSPropertySignature)
 
     readonly metadata: DecoratorMetadata;
 >                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -598,8 +593,7 @@ interface ClassFieldDecoratorContext<
 >                                      ^^^^: any   (TyAny) (TSTypeReference)
 
     readonly metadata: DecoratorMetadata;
->            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
-             expected: DecoratorMetadataObject
+>            ^^^^^^^^: DecoratorMetadataObject   (TyTypeReference) (TSPropertySignature)
 
     readonly metadata: DecoratorMetadata;
 >                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

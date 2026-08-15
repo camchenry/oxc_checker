@@ -1192,6 +1192,28 @@ fn global_this_exposes_script_var_but_not_lexical_bindings() {
 }
 
 #[test]
+fn global_this_conditional_matches_nested_global_value_property() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+        interface SymbolConstructor {
+            readonly metadata: unique symbol;
+        }
+        type HasMetadata = typeof globalThis extends {
+            Symbol: { readonly metadata: symbol };
+        } ? true : false;
+        "#,
+    );
+
+    assert_type_eq(
+        arena(&ret),
+        &get_type_alias_type(&ret, "HasMetadata"),
+        &Ty::boolean_true(),
+    );
+}
+
+#[test]
 fn global_this_excludes_module_scoped_variables() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

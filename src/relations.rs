@@ -26,7 +26,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 } else {
                     self.global_symbols
                         .global_this_value_symbol(name)
-                        .map(|symbol| self.get_type_of_symbol(symbol))
+                        .map(|symbol| {
+                            self.apparent_type_for_conditional_match(
+                                symbol.program_id,
+                                self.get_type_of_symbol(symbol),
+                                depth + 1,
+                            )
+                        })
                 }
             };
             match self.ty_kind(target) {

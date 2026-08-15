@@ -4929,7 +4929,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn apparent_type_for_conditional_match(
+    pub(crate) fn apparent_type_for_conditional_match(
         &self,
         program_id: ProgramId,
         ty: Ty<'a>,
