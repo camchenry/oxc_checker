@@ -1,12 +1,10 @@
-use std::{
-    cell::{Cell, RefCell},
-    collections::HashMap,
-};
+use std::cell::{Cell, RefCell};
 
 use oxc_ast::ast::{AssignmentExpression, TSInterfaceDeclaration};
 use oxc_index::IndexVec;
 use oxc_semantic::{NodeId, SymbolId};
 use oxc_span::Span;
+use rustc_hash::FxHashMap;
 use smallvec::SmallVec;
 
 use crate::{
@@ -70,21 +68,20 @@ pub struct CheckerReturn<'a, 'store> {
     pub store: &'store ProgramStore<'a>,
     pub arena: CheckerArena<'a>,
     pub global_symbols: &'store GlobalSymbolTable,
-    // TODO(perf): these should use the Arena Vec/HashMap?
     pub declared_type_cache: RefCell<SymbolTypeCache<'a>>,
     pub value_type_cache: RefCell<SymbolTypeCache<'a>>,
     pub(crate) type_alias_metadata_by_type: RefCell<IndexVec<TypeId, Option<TypeAliasMetadata>>>,
-    pub(crate) instantiation_cache: RefCell<HashMap<InstantiationCacheKey<'a>, Ty<'a>>>,
-    pub(crate) type_alias_resolution_cache: RefCell<HashMap<TypeAliasResolution, Ty<'a>>>,
+    pub(crate) instantiation_cache: RefCell<FxHashMap<InstantiationCacheKey<'a>, Ty<'a>>>,
+    pub(crate) type_alias_resolution_cache: RefCell<FxHashMap<TypeAliasResolution, Ty<'a>>>,
     pub(crate) type_parameter_declaration_cache:
-        RefCell<HashMap<(ProgramId, NodeId), &'a [TyTypeParameter<'a>]>>,
+        RefCell<FxHashMap<(ProgramId, NodeId), &'a [TyTypeParameter<'a>]>>,
     pub(crate) overflowed_type_alias_resolutions: RefCell<Vec<TypeAliasResolution>>,
-    pub(crate) type_string_cache: RefCell<HashMap<TypeStringCacheKey<'a>, String>>,
+    pub(crate) type_string_cache: RefCell<FxHashMap<TypeStringCacheKey<'a>, String>>,
     pub(crate) expando_assignments_by_container:
-        RefCell<HashMap<ProgramId, HashMap<NodeId, Vec<&'a AssignmentExpression<'a>>>>>,
-    pub(crate) flow_graph_cache: RefCell<HashMap<ProgramId, ProgramFlowGraph>>,
+        RefCell<FxHashMap<ProgramId, FxHashMap<NodeId, Vec<&'a AssignmentExpression<'a>>>>>,
+    pub(crate) flow_graph_cache: RefCell<FxHashMap<ProgramId, ProgramFlowGraph>>,
     pub interface_declarations_cache:
-        RefCell<HashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
+        RefCell<FxHashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
     pub resolving_symbols: RefCell<Vec<SymbolRef>>,
     pub(crate) resolving_type_aliases: RefCell<Vec<TypeAliasResolution>>,
     pub resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
@@ -233,14 +230,14 @@ impl CheckerBuilder {
                 None;
                 arena.type_count()
             ])),
-            instantiation_cache: RefCell::new(HashMap::new()),
-            type_alias_resolution_cache: RefCell::new(HashMap::new()),
-            type_parameter_declaration_cache: RefCell::new(HashMap::new()),
+            instantiation_cache: RefCell::new(FxHashMap::default()),
+            type_alias_resolution_cache: RefCell::new(FxHashMap::default()),
+            type_parameter_declaration_cache: RefCell::new(FxHashMap::default()),
             overflowed_type_alias_resolutions: RefCell::new(Vec::new()),
-            type_string_cache: RefCell::new(HashMap::new()),
-            expando_assignments_by_container: RefCell::new(HashMap::new()),
-            flow_graph_cache: RefCell::new(HashMap::new()),
-            interface_declarations_cache: RefCell::new(HashMap::new()),
+            type_string_cache: RefCell::new(FxHashMap::default()),
+            expando_assignments_by_container: RefCell::new(FxHashMap::default()),
+            flow_graph_cache: RefCell::new(FxHashMap::default()),
+            interface_declarations_cache: RefCell::new(FxHashMap::default()),
             resolving_symbols: RefCell::new(Vec::new()),
             resolving_type_aliases: RefCell::new(Vec::new()),
             resolving_type_parameters: RefCell::new(Vec::new()),

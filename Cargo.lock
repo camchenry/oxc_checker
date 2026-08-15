@@ -764,6 +764,7 @@ dependencies = [
  "oxc_str",
  "oxc_syntax",
  "rayon",
+ "rustc-hash",
  "serde",
  "serde_json",
  "simdutf8",

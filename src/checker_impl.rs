@@ -28,6 +28,7 @@ use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator},
 };
+use rustc_hash::FxHashMap;
 use std::collections::{HashMap, HashSet};
 
 use crate::{
@@ -9916,8 +9917,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .borrow()
             .contains_key(&program_id)
         {
-            let mut assignments_by_container: HashMap<NodeId, Vec<&'a AssignmentExpression<'a>>> =
-                HashMap::new();
+            let mut assignments_by_container: FxHashMap<NodeId, Vec<&'a AssignmentExpression<'a>>> =
+                FxHashMap::default();
             for (node_id, node) in self.nodes(program_id).iter_enumerated() {
                 let AstKind::AssignmentExpression(assignment) = node.kind() else {
                     continue;
