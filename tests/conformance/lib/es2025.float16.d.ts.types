@@ -1,0 +1,1041 @@
+interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
+              expected: Float16ArrayConstructor
+
+interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+              expected: Float16ArrayConstructor
+
+interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
+>                                                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    readonly BYTES_PER_ELEMENT: number;
+>            ^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
+
+    readonly buffer: TArrayBuffer;
+>            ^^^^^^: TArrayBuffer   (TyTypeReference) (TSPropertySignature)
+
+    readonly buffer: TArrayBuffer;
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly byteLength: number;
+>            ^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
+
+    readonly byteOffset: number;
+>            ^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
+
+    at(index: number): number | undefined;
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    at(index: number): number | undefined;
+>      ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>   ^^^^^^^^^^: { (target: number, start: number, end?: number): this; (target: number, start: number, end?: number): this; }   (TyObject) (TSMethodSignature)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>              ^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>                              ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    copyWithin(target: number, start: number, end?: number): this;
+>                                             ^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    every(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>   ^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; }   (TyObject) (TSMethodSignature)
+
+    every(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>         ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+    every(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    every(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    every(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                                                   ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    every(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                                                                            ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    fill(value: number, start?: number, end?: number): this;
+>   ^^^^: { (value: number, start?: number, end?: number): this; (value: number, start?: number, end?: number): this; }   (TyObject) (TSMethodSignature)
+
+    fill(value: number, start?: number, end?: number): this;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    fill(value: number, start?: number, end?: number): this;
+>                       ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    fill(value: number, start?: number, end?: number): this;
+>                                       ^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>   ^^^^^^: { (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>; (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>          ^^^^^^^^^: (value: number, index: number, array: this) => any   (TyFunction) (BindingIdentifier)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                      ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                    ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    filter(predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    find(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined;
+>   ^^^^: { (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined; (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    find(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined;
+>        ^^^^^^^^^: (value: number, index: number, obj: this) => boolean   (TyFunction) (BindingIdentifier)
+
+    find(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined;
+>                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    find(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined;
+>                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    find(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined;
+>                                                  ^^^: this   (TyThis) (BindingIdentifier)
+
+    find(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined;
+>                                                                         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findIndex(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number;
+>   ^^^^^^^^^: { (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number; (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+    findIndex(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number;
+>             ^^^^^^^^^: (value: number, index: number, obj: this) => boolean   (TyFunction) (BindingIdentifier)
+
+    findIndex(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number;
+>                         ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    findIndex(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number;
+>                                        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    findIndex(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number;
+>                                                       ^^^: this   (TyThis) (BindingIdentifier)
+
+    findIndex(predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number;
+>                                                                              ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    forEach(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void;
+>   ^^^^^^^: { (callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void; (callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void; }   (TyObject) (TSMethodSignature)
+
+    forEach(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void;
+>           ^^^^^^^^^^: (value: number, index: number, array: this) => void   (TyFunction) (BindingIdentifier)
+
+    forEach(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void;
+>                        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    forEach(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void;
+>                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    forEach(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void;
+>                                                      ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    forEach(callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void;
+>                                                                            ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    includes(searchElement: number, fromIndex?: number): boolean;
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+
+    includes(searchElement: number, fromIndex?: number): boolean;
+>            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    includes(searchElement: number, fromIndex?: number): boolean;
+>                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    indexOf(searchElement: number, fromIndex?: number): number;
+>   ^^^^^^^: { (searchElement: number, fromIndex?: number): number; (searchElement: number, fromIndex?: number): number; }   (TyObject) (TSMethodSignature)
+
+    indexOf(searchElement: number, fromIndex?: number): number;
+>           ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    indexOf(searchElement: number, fromIndex?: number): number;
+>                                  ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    join(separator?: string): string;
+>   ^^^^: { (separator?: string): string; (separator?: string): string; }   (TyObject) (TSMethodSignature)
+
+    join(separator?: string): string;
+>        ^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+
+    lastIndexOf(searchElement: number, fromIndex?: number): number;
+>   ^^^^^^^^^^^: { (searchElement: number, fromIndex?: number): number; (searchElement: number, fromIndex?: number): number; }   (TyObject) (TSMethodSignature)
+
+    lastIndexOf(searchElement: number, fromIndex?: number): number;
+>               ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    lastIndexOf(searchElement: number, fromIndex?: number): number;
+>                                      ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    readonly length: number;
+>            ^^^^^^: number   (TyNumber) (TSPropertySignature)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>   ^^^: { (callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>; (callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>       ^^^^^^^^^^: (value: number, index: number, array: this) => number   (TyFunction) (BindingIdentifier)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                  ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                          ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                          ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                          ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    map(callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>   ^^^^^^: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }   (TyObject) (TSMethodSignature)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>          ^^^^^^^^^^: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number   (TyFunction) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                       ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                                              ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                                                                    ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                                                                                          ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>   ^^^^^^: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }   (TyObject) (TSMethodSignature)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>          ^^^^^^^^^^: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number   (TyFunction) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                       ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                              ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                                                    ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                                                                          ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    reduce(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                                                                                                  ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>   ^^^^^^: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }   (TyObject) (TSMethodSignature)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>          ^: any   (TyAny) (TSTypeParameter)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>             ^^^^^^^^^^: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U   (TyFunction) (BindingIdentifier)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                          ^^^^^^^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                         ^: any   (TyAny) (TSTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                            ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                  ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                        ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                        ^: any   (TyAny) (TSTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                           ^^^^^^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                                         ^: any   (TyAny) (TSTypeReference)
+
+    reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                                             ^: any   (TyAny) (TSTypeReference)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>   ^^^^^^^^^^^: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }   (TyObject) (TSMethodSignature)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>               ^^^^^^^^^^: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number   (TyFunction) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                                                   ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                                                                         ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number;
+>                                                                                               ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>   ^^^^^^^^^^^: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }   (TyObject) (TSMethodSignature)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>               ^^^^^^^^^^: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number   (TyFunction) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                                   ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                                                         ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                                                                               ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    reduceRight(callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number;
+>                                                                                                                       ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>   ^^^^^^^^^^^: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }   (TyObject) (TSMethodSignature)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>               ^: any   (TyAny) (TSTypeParameter)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                  ^^^^^^^^^^: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U   (TyFunction) (BindingIdentifier)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                               ^^^^^^^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                              ^: any   (TyAny) (TSTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                 ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                       ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                             ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                             ^: any   (TyAny) (TSTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                                ^^^^^^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                                              ^: any   (TyAny) (TSTypeReference)
+
+    reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
+>                                                                                                                                  ^: any   (TyAny) (TSTypeReference)
+
+    reverse(): this;
+>   ^^^^^^^: { (): this; (): this; }   (TyObject) (TSMethodSignature)
+
+    set(array: ArrayLike<number>, offset?: number): void;
+>   ^^^: { (array: ArrayLike<number>, offset?: number): void; (array: ArrayLike<number>, offset?: number): void; }   (TyObject) (TSMethodSignature)
+
+    set(array: ArrayLike<number>, offset?: number): void;
+>       ^^^^^: ArrayLike<number>   (TyTypeReference) (BindingIdentifier)
+
+    set(array: ArrayLike<number>, offset?: number): void;
+>              ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    set(array: ArrayLike<number>, offset?: number): void;
+>              ^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    set(array: ArrayLike<number>, offset?: number): void;
+>                                 ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    slice(start?: number, end?: number): Float16Array<ArrayBuffer>;
+>   ^^^^^: { (start?: number, end?: number): Float16Array<ArrayBuffer>; (start?: number, end?: number): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    slice(start?: number, end?: number): Float16Array<ArrayBuffer>;
+>         ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    slice(start?: number, end?: number): Float16Array<ArrayBuffer>;
+>                         ^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    slice(start?: number, end?: number): Float16Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    slice(start?: number, end?: number): Float16Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    slice(start?: number, end?: number): Float16Array<ArrayBuffer>;
+>                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    slice(start?: number, end?: number): Float16Array<ArrayBuffer>;
+>                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    some(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>   ^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; }   (TyObject) (TSMethodSignature)
+
+    some(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>        ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+    some(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    some(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    some(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                                                  ^^^^^: this   (TyThis) (BindingIdentifier)
+
+    some(predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean;
+>                                                                           ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    sort(compareFn?: (a: number, b: number) => number): this;
+>   ^^^^: { (compareFn?: (a: number, b: number) => number): this; (compareFn?: (a: number, b: number) => number): this; }   (TyObject) (TSMethodSignature)
+
+    sort(compareFn?: (a: number, b: number) => number): this;
+>        ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    sort(compareFn?: (a: number, b: number) => number): this;
+>                     ^: number   (TyNumber) (BindingIdentifier)
+
+    sort(compareFn?: (a: number, b: number) => number): this;
+>                                ^: number   (TyNumber) (BindingIdentifier)
+
+    subarray(begin?: number, end?: number): Float16Array<TArrayBuffer>;
+>   ^^^^^^^^: { (begin?: number, end?: number): Float16Array<TArrayBuffer>; (begin?: number, end?: number): Float16Array<TArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    subarray(begin?: number, end?: number): Float16Array<TArrayBuffer>;
+>            ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    subarray(begin?: number, end?: number): Float16Array<TArrayBuffer>;
+>                            ^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    subarray(begin?: number, end?: number): Float16Array<TArrayBuffer>;
+>                                           ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    subarray(begin?: number, end?: number): Float16Array<TArrayBuffer>;
+>                                           ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    subarray(begin?: number, end?: number): Float16Array<TArrayBuffer>;
+>                                                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                  ^^^^^^^: string | string[] | undefined   (TyUnion) (BindingIdentifier)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                               ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+
+    toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
+>                                                              ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+                                                                          expected: any
+
+    toReversed(): Float16Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Float16Array<ArrayBuffer>; (): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Float16Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Float16Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    toReversed(): Float16Array<ArrayBuffer>;
+>                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Float16Array<ArrayBuffer>;
+>                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>                                                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>;
+>                                                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toString(): string;
+>   ^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+
+    valueOf(): this;
+>   ^^^^^^^: { (): this; (): this; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Float16Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Float16Array<ArrayBuffer>; (index: number, value: number): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Float16Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Float16Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Float16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Float16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Float16Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Float16Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    [index: number]: number;
+>    ^^^^^: number   (TyNumber) (TSIndexSignatureName)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>           ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    [Symbol.iterator](): ArrayIterator<number>;
+>                        ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>   ^^^^^^^: { (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }   (TyObject) (TSMethodSignature)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    entries(): ArrayIterator<[number, number]>;
+>              ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    keys(): ArrayIterator<number>;
+>   ^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    keys(): ArrayIterator<number>;
+>           ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    values(): ArrayIterator<number>;
+>   ^^^^^^: { (): ArrayIterator<number>; (): ArrayIterator<number>; }   (TyObject) (TSMethodSignature)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    values(): ArrayIterator<number>;
+>             ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    readonly [Symbol.toStringTag]: "Float16Array";
+>             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+
+    readonly [Symbol.toStringTag]: "Float16Array";
+>                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+
+interface Float16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Float16ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    readonly prototype: Float16Array<ArrayBufferLike>;
+>            ^^^^^^^^^: Float16Array<ArrayBufferLike>   (TyTypeReference) (TSPropertySignature)
+
+    readonly prototype: Float16Array<ArrayBufferLike>;
+>                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    readonly prototype: Float16Array<ArrayBufferLike>;
+>                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    readonly prototype: Float16Array<ArrayBufferLike>;
+>                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly prototype: Float16Array<ArrayBufferLike>;
+>                                    ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    new (length?: number): Float16Array<ArrayBuffer>;
+>        ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    new (length?: number): Float16Array<ArrayBuffer>;
+>                          ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (length?: number): Float16Array<ArrayBuffer>;
+>                          ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (length?: number): Float16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (length?: number): Float16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>        ^^^^^: ArrayLike<number> | Iterable<number>   (TyUnion) (BindingIdentifier)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>                                   ^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (array: ArrayLike<number> | Iterable<number>): Float16Array<ArrayBuffer>;
+>                                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>        ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                                            ^^^^^^: TArrayBuffer   (TyTypeReference) (BindingIdentifier)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                                                                  ^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                                                                                       ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                                                                                                         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                                                                                                         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
+>                                                                                                                                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>        ^^^^^^: ArrayBuffer   (TyTypeReference) (BindingIdentifier)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                             ^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                                                  ^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                                                                    ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                                                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (buffer: ArrayBuffer, byteOffset?: number, length?: number): Float16Array<ArrayBuffer>;
+>                                                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>        ^^^^^: ArrayLike<number> | ArrayBuffer   (TyUnion) (BindingIdentifier)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>               ^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>                                                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    new (array: ArrayLike<number> | ArrayBuffer): Float16Array<ArrayBuffer>;
+>                                                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    readonly BYTES_PER_ELEMENT: number;
+>            ^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
+
+    of(...items: number[]): Float16Array<ArrayBuffer>;
+>   ^^: { (...items: number[]): Float16Array<ArrayBuffer>; (...items: number[]): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    of(...items: number[]): Float16Array<ArrayBuffer>;
+>         ^^^^^: number[]   (TyArray) (BindingIdentifier)
+
+    of(...items: number[]): Float16Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    of(...items: number[]): Float16Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    of(...items: number[]): Float16Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    of(...items: number[]): Float16Array<ArrayBuffer>;
+>                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>        ^^^^^^^^^: ArrayLike<number>   (TyTypeReference) (BindingIdentifier)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>                   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>                   ^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    from(arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>        ^: any   (TyAny) (TSTypeParameter)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>           ^^^^^^^^^: ArrayLike<T>   (TyTypeReference) (BindingIdentifier)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                ^: any   (TyAny) (TSTypeReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                    ^^^^^: (v: T, k: number) => number   (TyFunction) (BindingIdentifier)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                            ^: T   (TyTypeReference) (BindingIdentifier)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                               ^: any   (TyAny) (TSTypeReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                  ^: number   (TyNumber) (BindingIdentifier)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                        ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                        ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                        ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>        ^^^^^^^^: Iterable<number>   (TyTypeReference) (BindingIdentifier)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>                  ^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>                                     ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    from(elements: Iterable<number>): Float16Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>   ^^^^: { (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>        ^: any   (TyAny) (TSTypeParameter)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>           ^^^^^^^^: Iterable<T>   (TyTypeReference) (BindingIdentifier)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                     ^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                              ^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                  ^^^^^: ((v: T, k: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                           ^: T   (TyTypeReference) (BindingIdentifier)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                              ^: any   (TyAny) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                 ^: number   (TyNumber) (BindingIdentifier)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                       ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
+>                                                                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+declare var Float16Array: Float16ArrayConstructor;
+>           ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
+
+declare var Float16Array: Float16ArrayConstructor;
+>                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var Float16Array: Float16ArrayConstructor;
+>                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+interface Math {
+>         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+      expected: Math
+
+interface Math {
+>         ^^^^: any   (TyAny) (BindingIdentifier)
+      expected: Math
+
+    f16round(x: number): number;
+>   ^^^^^^^^: { (x: number): number; (x: number): number; }   (TyObject) (TSMethodSignature)
+
+    f16round(x: number): number;
+>            ^: number   (TyNumber) (BindingIdentifier)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+          expected: DataViewConstructor
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+          expected: DataViewConstructor
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface DataView<TArrayBuffer extends ArrayBufferLike> {
+>                                       ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    getFloat16(byteOffset: number, littleEndian?: boolean): number;
+>   ^^^^^^^^^^: { (byteOffset: number, littleEndian?: boolean): number; (byteOffset: number, littleEndian?: boolean): number; }   (TyObject) (TSMethodSignature)
+
+    getFloat16(byteOffset: number, littleEndian?: boolean): number;
+>              ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    getFloat16(byteOffset: number, littleEndian?: boolean): number;
+>                                  ^^^^^^^^^^^^: boolean | undefined   (TyUnion) (BindingIdentifier)
+
+    setFloat16(byteOffset: number, value: number, littleEndian?: boolean): void;
+>   ^^^^^^^^^^: { (byteOffset: number, value: number, littleEndian?: boolean): void; (byteOffset: number, value: number, littleEndian?: boolean): void; }   (TyObject) (TSMethodSignature)
+
+    setFloat16(byteOffset: number, value: number, littleEndian?: boolean): void;
+>              ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    setFloat16(byteOffset: number, value: number, littleEndian?: boolean): void;
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    setFloat16(byteOffset: number, value: number, littleEndian?: boolean): void;
+>                                                 ^^^^^^^^^^^^: boolean | undefined   (TyUnion) (BindingIdentifier)

@@ -1,0 +1,6 @@
+declare function importScripts(...urls: string[]): void;
+>                ^^^^^^^^^^^^^: (...urls: string[]) => void   (TyFunction) (BindingIdentifier)
+                      expected: { (...urls: string[]): void; (...urls: string[]): void; }
+
+declare function importScripts(...urls: string[]): void;
+>                                 ^^^^: string[]   (TyArray) (BindingIdentifier)

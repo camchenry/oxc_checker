@@ -1,0 +1,128 @@
+interface Atomics {
+>         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+         expected: Atomics
+
+interface Atomics {
+>         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+         expected: Atomics
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>   ^^^^^^^^^: { (typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; (typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; (typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; (typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; }   (TyObject) (TSMethodSignature)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>             ^^^^^^^^^^: Int32Array<ArrayBufferLike>   (TyTypeReference) (BindingIdentifier)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                         ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                         ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                   ^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                        ^^^^^: false   (TyBooleanLiteral) (TSPropertySignature)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                      ^^^^^: "not-equal" | "timed-out"   (TyUnion) (TSPropertySignature)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                              ^^^^^: true   (TyBooleanLiteral) (TSPropertySignature)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                                           ^^^^^: Promise<"ok" | "timed-out">   (TyTypeReference) (TSPropertySignature)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+
+    waitAsync(typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>   ^^^^^^^^^: { (typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; (typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; (typedArray: Int32Array, index: number, value: number, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; (typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; }; }   (TyObject) (TSMethodSignature)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>             ^^^^^^^^^^: BigInt64Array<ArrayBufferLike>   (TyTypeReference) (BindingIdentifier)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                       ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                      ^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                           ^^^^^: false   (TyBooleanLiteral) (TSPropertySignature)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                         ^^^^^: "not-equal" | "timed-out"   (TyUnion) (TSPropertySignature)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                                 ^^^^^: true   (TyBooleanLiteral) (TSPropertySignature)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                                              ^^^^^: Promise<"ok" | "timed-out">   (TyTypeReference) (TSPropertySignature)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                                                     ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+
+    waitAsync(typedArray: BigInt64Array, index: number, value: bigint, timeout?: number): { async: false; value: "not-equal" | "timed-out"; } | { async: true; value: Promise<"ok" | "timed-out">; };
+>                                                                                                                                                                     ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+
+interface SharedArrayBuffer {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                   expected: SharedArrayBufferConstructor
+
+interface SharedArrayBuffer {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+                   expected: SharedArrayBufferConstructor
+
+    get growable(): boolean;
+>       ^^^^^^^^: boolean   (TyBoolean) (TSMethodSignature)
+
+    get maxByteLength(): number;
+>       ^^^^^^^^^^^^^: number   (TyNumber) (TSMethodSignature)
+
+    grow(newByteLength?: number): void;
+>   ^^^^: { (newByteLength?: number): void; (newByteLength?: number): void; }   (TyObject) (TSMethodSignature)
+
+    grow(newByteLength?: number): void;
+>        ^^^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+interface SharedArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface SharedArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): SharedArrayBuffer;
+>        ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): SharedArrayBuffer;
+>                            ^^^^^^^: { maxByteLength?: number; } | undefined   (TyUnion) (BindingIdentifier)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): SharedArrayBuffer;
+>                                        ^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): SharedArrayBuffer;
+>                                                                    ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                              expected: SharedArrayBufferConstructor
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): SharedArrayBuffer;
+>                                                                    ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                              expected: SharedArrayBufferConstructor

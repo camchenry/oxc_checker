@@ -1,0 +1,11 @@
+interface RegExpConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface RegExpConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    escape(string: string): string;
+>   ^^^^^^: { (string: string): string; (string: string): string; }   (TyObject) (TSMethodSignature)
+
+    escape(string: string): string;
+>          ^^^^^^: string   (TyString) (BindingIdentifier)

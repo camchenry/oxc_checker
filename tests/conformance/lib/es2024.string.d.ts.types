@@ -1,0 +1,13 @@
+interface String {
+>         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+        expected: StringConstructor
+
+interface String {
+>         ^^^^^^: any   (TyAny) (BindingIdentifier)
+        expected: StringConstructor
+
+    isWellFormed(): boolean;
+>   ^^^^^^^^^^^^: { (): boolean; (): boolean; }   (TyObject) (TSMethodSignature)
+
+    toWellFormed(): string;
+>   ^^^^^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)

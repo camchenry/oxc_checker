@@ -1,0 +1,73 @@
+interface ArrayBuffer {
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+             expected: ArrayBufferConstructor
+
+interface ArrayBuffer {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+             expected: ArrayBufferConstructor
+
+    get maxByteLength(): number;
+>       ^^^^^^^^^^^^^: number   (TyNumber) (TSMethodSignature)
+
+    get resizable(): boolean;
+>       ^^^^^^^^^: boolean   (TyBoolean) (TSMethodSignature)
+
+    resize(newByteLength?: number): void;
+>   ^^^^^^: { (newByteLength?: number): void; (newByteLength?: number): void; }   (TyObject) (TSMethodSignature)
+
+    resize(newByteLength?: number): void;
+>          ^^^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    get detached(): boolean;
+>       ^^^^^^^^: boolean   (TyBoolean) (TSMethodSignature)
+
+    transfer(newByteLength?: number): ArrayBuffer;
+>   ^^^^^^^^: { (newByteLength?: number): ArrayBuffer; (newByteLength?: number): ArrayBuffer; }   (TyObject) (TSMethodSignature)
+
+    transfer(newByteLength?: number): ArrayBuffer;
+>            ^^^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    transfer(newByteLength?: number): ArrayBuffer;
+>                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                         expected: ArrayBufferConstructor
+
+    transfer(newByteLength?: number): ArrayBuffer;
+>                                     ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                         expected: ArrayBufferConstructor
+
+    transferToFixedLength(newByteLength?: number): ArrayBuffer;
+>   ^^^^^^^^^^^^^^^^^^^^^: { (newByteLength?: number): ArrayBuffer; (newByteLength?: number): ArrayBuffer; }   (TyObject) (TSMethodSignature)
+
+    transferToFixedLength(newByteLength?: number): ArrayBuffer;
+>                         ^^^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    transferToFixedLength(newByteLength?: number): ArrayBuffer;
+>                                                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                      expected: ArrayBufferConstructor
+
+    transferToFixedLength(newByteLength?: number): ArrayBuffer;
+>                                                  ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                      expected: ArrayBufferConstructor
+
+interface ArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ArrayBufferConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): ArrayBuffer;
+>        ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): ArrayBuffer;
+>                            ^^^^^^^: { maxByteLength?: number; } | undefined   (TyUnion) (BindingIdentifier)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): ArrayBuffer;
+>                                        ^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): ArrayBuffer;
+>                                                                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                        expected: ArrayBufferConstructor
+
+    new (byteLength: number, options?: { maxByteLength?: number; }): ArrayBuffer;
+>                                                                    ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                        expected: ArrayBufferConstructor

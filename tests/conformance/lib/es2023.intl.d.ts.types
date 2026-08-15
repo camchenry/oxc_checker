@@ -1,0 +1,183 @@
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
+
+declare namespace Intl {
+>                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+
+    interface NumberFormatOptionsUseGroupingRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatOptionsUseGroupingRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+        min2: never;
+>       ^^^^: never   (TyNever) (TSPropertySignature)
+
+        auto: never;
+>       ^^^^: never   (TyNever) (TSPropertySignature)
+
+        always: never;
+>       ^^^^^^: never   (TyNever) (TSPropertySignature)
+
+    interface NumberFormatOptionsSignDisplayRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatOptionsSignDisplayRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+        negative: never;
+>       ^^^^^^^^: never   (TyNever) (TSPropertySignature)
+
+    interface NumberFormatRangePartTypeRegistry extends NumberFormatPartTypeRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatRangePartTypeRegistry extends NumberFormatPartTypeRegistry {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    interface NumberFormatRangePartTypeRegistry extends NumberFormatPartTypeRegistry {
+>                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+    interface NumberFormatRangePartTypeRegistry extends NumberFormatPartTypeRegistry {
+>                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+        approximatelySign: never;
+>       ^^^^^^^^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
+
+    type NumberFormatRangePartTypes = keyof NumberFormatRangePartTypeRegistry;
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^: keyof NumberFormatRangePartTypeRegistry   (TyKeyof) (TSTypeAliasDeclaration)
+
+    type NumberFormatRangePartTypes = keyof NumberFormatRangePartTypeRegistry;
+>                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    type NumberFormatRangePartTypes = keyof NumberFormatRangePartTypeRegistry;
+>                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    interface NumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+        roundingPriority?: "auto" | "morePrecision" | "lessPrecision" | undefined;
+>       ^^^^^^^^^^^^^^^^: "auto" | "morePrecision" | "lessPrecision" | undefined   (TyUnion) (TSPropertySignature)
+
+        roundingIncrement?: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000 | undefined;
+>       ^^^^^^^^^^^^^^^^^: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000 | undefined   (TyUnion) (TSPropertySignature)
+
+        roundingMode?: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined;
+>       ^^^^^^^^^^^^: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined   (TyUnion) (TSPropertySignature)
+
+        trailingZeroDisplay?: "auto" | "stripIfInteger" | undefined;
+>       ^^^^^^^^^^^^^^^^^^^: "auto" | "stripIfInteger" | undefined   (TyUnion) (TSPropertySignature)
+
+    interface ResolvedNumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface ResolvedNumberFormatOptions {
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+        roundingPriority: "auto" | "morePrecision" | "lessPrecision";
+>       ^^^^^^^^^^^^^^^^: "auto" | "morePrecision" | "lessPrecision"   (TyUnion) (TSPropertySignature)
+
+        roundingMode: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven";
+>       ^^^^^^^^^^^^: "ceil" | "floor" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven"   (TyUnion) (TSPropertySignature)
+
+        roundingIncrement: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000;
+>       ^^^^^^^^^^^^^^^^^: 1 | 2 | 5 | 10 | 20 | 25 | 50 | 100 | 200 | 250 | 500 | 1000 | 2000 | 2500 | 5000   (TyUnion) (TSPropertySignature)
+
+        trailingZeroDisplay: "auto" | "stripIfInteger";
+>       ^^^^^^^^^^^^^^^^^^^: "auto" | "stripIfInteger"   (TyUnion) (TSPropertySignature)
+
+    interface NumberRangeFormatPart {
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+    interface NumberRangeFormatPart {
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+        type: NumberFormatRangePartTypes;
+>       ^^^^: NumberFormatRangePartTypes   (TyTypeReference) (TSPropertySignature)
+    expected: keyof NumberFormatRangePartTypeRegistry
+
+        type: NumberFormatRangePartTypes;
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        value: string;
+>       ^^^^^: string   (TyString) (TSPropertySignature)
+
+        source: "startRange" | "endRange" | "shared";
+>       ^^^^^^: "startRange" | "endRange" | "shared"   (TyUnion) (TSPropertySignature)
+
+    type StringNumericLiteral = `${number}` | "Infinity" | "-Infinity" | "+Infinity";
+>        ^^^^^^^^^^^^^^^^^^^^: `${number}` | "Infinity" | "-Infinity" | "+Infinity"   (TyUnion) (TSTypeAliasDeclaration)
+
+    interface NumberFormat {
+>             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                  expected: NumberFormatConstructor
+
+    interface NumberFormat {
+>             ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+                  expected: NumberFormatConstructor
+
+        format(value: number | bigint | StringNumericLiteral): string;
+>       ^^^^^^: (value: number | bigint | StringNumericLiteral) => string   (TyFunction) (TSMethodSignature)
+      expected: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number | bigint | StringNumericLiteral): string; }
+
+        format(value: number | bigint | StringNumericLiteral): string;
+>              ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
+
+        format(value: number | bigint | StringNumericLiteral): string;
+>                                       ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatToParts(value: number | bigint | StringNumericLiteral): NumberFormatPart[];
+>       ^^^^^^^^^^^^^: (value: number | bigint | StringNumericLiteral) => NumberFormatPart[]   (TyFunction) (TSMethodSignature)
+             expected: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; }
+
+        formatToParts(value: number | bigint | StringNumericLiteral): NumberFormatPart[];
+>                     ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
+
+        formatToParts(value: number | bigint | StringNumericLiteral): NumberFormatPart[];
+>                                              ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatToParts(value: number | bigint | StringNumericLiteral): NumberFormatPart[];
+>                                                                     ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatToParts(value: number | bigint | StringNumericLiteral): NumberFormatPart[];
+>                                                                     ^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+        formatRange(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string;
+>       ^^^^^^^^^^^: (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral) => string   (TyFunction) (TSMethodSignature)
+           expected: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; }
+
+        formatRange(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string;
+>                   ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
+
+        formatRange(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string;
+>                                            ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatRange(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string;
+>                                                                  ^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
+
+        formatRange(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string;
+>                                                                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
+>       ^^^^^^^^^^^^^^^^^^: (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral) => NumberRangeFormatPart[]   (TyFunction) (TSMethodSignature)
+                  expected: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; }
+
+        formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
+>                          ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
+
+        formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
+>                                                   ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
+>                                                                         ^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
+
+        formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
+>                                                                                                ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
+>                                                                                                                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
+>                                                                                                                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

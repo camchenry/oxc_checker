@@ -20,6 +20,9 @@ pub(crate) enum LibTarget {
     Es2020,
     Es2021,
     Es2022,
+    Es2023,
+    Es2024,
+    Es2025,
     EsNext,
 }
 
@@ -41,9 +44,9 @@ impl LibTarget {
             "es2020" => Some(Self::Es2020),
             "es2021" => Some(Self::Es2021),
             "es2022" => Some(Self::Es2022),
-            // TODO(correctness): embed ES2023+ libs instead of capping newer
-            // yearly targets at the highest bundled yearly target.
-            "es2023" | "es2024" | "es2025" => Some(Self::Es2022),
+            "es2023" => Some(Self::Es2023),
+            "es2024" => Some(Self::Es2024),
+            "es2025" => Some(Self::Es2025),
             "esnext" | "latest" => Some(Self::EsNext),
             _ => None,
         }
@@ -125,6 +128,14 @@ fn append_default_host_files(files: &mut Vec<EmbeddedLibFile>) {
 
 fn append_lib_name(files: &mut Vec<EmbeddedLibFile>, name: &str) -> Result<(), String> {
     let normalized = normalize_lib_name(name);
+    if let Some(target) = normalized
+        .strip_suffix(".full")
+        .and_then(aggregate_lib_target)
+    {
+        append_target_files(files, target);
+        append_default_host_files(files);
+        return Ok(());
+    }
     if let Some(target) = aggregate_lib_target(&normalized) {
         append_target_files(files, target);
         return Ok(());
@@ -164,9 +175,9 @@ fn aggregate_lib_target(name: &str) -> Option<LibTarget> {
         "es2020" => Some(LibTarget::Es2020),
         "es2021" => Some(LibTarget::Es2021),
         "es2022" => Some(LibTarget::Es2022),
-        // TODO(correctness): embed ES2023+ libs instead of capping newer
-        // yearly aggregate libs at the highest bundled yearly target.
-        "es2023" | "es2024" | "es2025" => Some(LibTarget::Es2022),
+        "es2023" => Some(LibTarget::Es2023),
+        "es2024" => Some(LibTarget::Es2024),
+        "es2025" => Some(LibTarget::Es2025),
         "esnext" => Some(LibTarget::EsNext),
         _ => None,
     }
@@ -177,6 +188,15 @@ fn lib_name_to_virtual_path(name: &str) -> Option<&'static str> {
         "dom" | "dom.generated" => "lib.dom.d.ts",
         "dom.iterable" | "dom.iterable.generated" => "lib.dom.iterable.d.ts",
         "dom.asynciterable" | "dom.asynciterable.generated" => "lib.dom.asynciterable.d.ts",
+        "webworker" | "webworker.generated" => "lib.webworker.d.ts",
+        "webworker.importscripts" => "lib.webworker.importscripts.d.ts",
+        "webworker.iterable" | "webworker.iterable.generated" => "lib.webworker.iterable.d.ts",
+        "webworker.asynciterable" | "webworker.asynciterable.generated" => {
+            "lib.webworker.asynciterable.d.ts"
+        }
+        "scripthost" => "lib.scripthost.d.ts",
+        "decorators" => "lib.decorators.d.ts",
+        "decorators.legacy" => "lib.decorators.legacy.d.ts",
         "es2015.core" => "lib.es2015.core.d.ts",
         "es2015.collection" => "lib.es2015.collection.d.ts",
         "es2015.generator" => "lib.es2015.generator.d.ts",
@@ -223,8 +243,32 @@ fn lib_name_to_virtual_path(name: &str) -> Option<&'static str> {
         "es2022.object" => "lib.es2022.object.d.ts",
         "es2022.regexp" => "lib.es2022.regexp.d.ts",
         "es2022.string" => "lib.es2022.string.d.ts",
+        "es2023.array" => "lib.es2023.array.d.ts",
+        "es2023.collection" => "lib.es2023.collection.d.ts",
+        "es2023.intl" => "lib.es2023.intl.d.ts",
+        "es2024.arraybuffer" => "lib.es2024.arraybuffer.d.ts",
+        "es2024.collection" => "lib.es2024.collection.d.ts",
+        "es2024.object" => "lib.es2024.object.d.ts",
+        "es2024.promise" => "lib.es2024.promise.d.ts",
+        "es2024.regexp" => "lib.es2024.regexp.d.ts",
+        "es2024.sharedmemory" => "lib.es2024.sharedmemory.d.ts",
+        "es2024.string" => "lib.es2024.string.d.ts",
+        "es2025.collection" => "lib.es2025.collection.d.ts",
+        "es2025.float16" => "lib.es2025.float16.d.ts",
+        "es2025.intl" => "lib.es2025.intl.d.ts",
+        "es2025.iterator" => "lib.es2025.iterator.d.ts",
+        "es2025.promise" => "lib.es2025.promise.d.ts",
+        "es2025.regexp" => "lib.es2025.regexp.d.ts",
+        "esnext.array" => "lib.esnext.array.d.ts",
         "esnext.collection" => "lib.esnext.collection.d.ts",
+        "esnext.date" => "lib.esnext.date.d.ts",
+        "esnext.decorators" => "lib.esnext.decorators.d.ts",
         "esnext.disposable" => "lib.esnext.disposable.d.ts",
+        "esnext.error" => "lib.esnext.error.d.ts",
+        "esnext.intl" => "lib.esnext.intl.d.ts",
+        "esnext.sharedmemory" => "lib.esnext.sharedmemory.d.ts",
+        "esnext.temporal" => "lib.esnext.temporal.d.ts",
+        "esnext.typedarrays" => "lib.esnext.typedarrays.d.ts",
         _ => return None,
     })
 }
@@ -280,7 +324,28 @@ const fn host_file(virtual_path: &'static str, contents: &'static str) -> LibCat
     }
 }
 
+const fn plain_file(virtual_path: &'static str, contents: &'static str) -> LibCatalogEntry {
+    LibCatalogEntry {
+        file: EmbeddedLibFile {
+            virtual_path,
+            contents,
+        },
+        es_target: None,
+        default_host: false,
+    }
+}
+
 const LIB_CATALOG: &[LibCatalogEntry] = &[
+    es_file(
+        LibTarget::Es5,
+        "lib.decorators.d.ts",
+        include_str!("lib/decorators.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es5,
+        "lib.decorators.legacy.d.ts",
+        include_str!("lib/decorators.legacy.d.ts"),
+    ),
     es_file(LibTarget::Es5, "lib.es5.d.ts", include_str!("lib/es5.d.ts")),
     es_file(
         LibTarget::Es2015,
@@ -513,16 +578,141 @@ const LIB_CATALOG: &[LibCatalogEntry] = &[
         include_str!("lib/es2022.regexp.d.ts"),
     ),
     es_file(
+        LibTarget::Es2023,
+        "lib.es2023.array.d.ts",
+        include_str!("lib/es2023.array.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2023,
+        "lib.es2023.collection.d.ts",
+        include_str!("lib/es2023.collection.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2023,
+        "lib.es2023.intl.d.ts",
+        include_str!("lib/es2023.intl.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2024,
+        "lib.es2024.arraybuffer.d.ts",
+        include_str!("lib/es2024.arraybuffer.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2024,
+        "lib.es2024.collection.d.ts",
+        include_str!("lib/es2024.collection.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2024,
+        "lib.es2024.object.d.ts",
+        include_str!("lib/es2024.object.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2024,
+        "lib.es2024.promise.d.ts",
+        include_str!("lib/es2024.promise.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2024,
+        "lib.es2024.regexp.d.ts",
+        include_str!("lib/es2024.regexp.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2024,
+        "lib.es2024.sharedmemory.d.ts",
+        include_str!("lib/es2024.sharedmemory.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2024,
+        "lib.es2024.string.d.ts",
+        include_str!("lib/es2024.string.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2025,
+        "lib.es2025.collection.d.ts",
+        include_str!("lib/es2025.collection.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2025,
+        "lib.es2025.float16.d.ts",
+        include_str!("lib/es2025.float16.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2025,
+        "lib.es2025.intl.d.ts",
+        include_str!("lib/es2025.intl.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2025,
+        "lib.es2025.iterator.d.ts",
+        include_str!("lib/es2025.iterator.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2025,
+        "lib.es2025.promise.d.ts",
+        include_str!("lib/es2025.promise.d.ts"),
+    ),
+    es_file(
+        LibTarget::Es2025,
+        "lib.es2025.regexp.d.ts",
+        include_str!("lib/es2025.regexp.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.intl.d.ts",
+        include_str!("lib/esnext.intl.d.ts"),
+    ),
+    es_file(
         LibTarget::EsNext,
         "lib.esnext.collection.d.ts",
         include_str!("lib/esnext.collection.d.ts"),
     ),
     es_file(
         LibTarget::EsNext,
+        "lib.esnext.decorators.d.ts",
+        include_str!("lib/esnext.decorators.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
         "lib.esnext.disposable.d.ts",
         include_str!("lib/esnext.disposable.d.ts"),
     ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.array.d.ts",
+        include_str!("lib/esnext.array.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.error.d.ts",
+        include_str!("lib/esnext.error.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.sharedmemory.d.ts",
+        include_str!("lib/esnext.sharedmemory.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.typedarrays.d.ts",
+        include_str!("lib/esnext.typedarrays.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.temporal.d.ts",
+        include_str!("lib/esnext.temporal.d.ts"),
+    ),
+    es_file(
+        LibTarget::EsNext,
+        "lib.esnext.date.d.ts",
+        include_str!("lib/esnext.date.d.ts"),
+    ),
     host_file("lib.dom.d.ts", include_str!("lib/dom.generated.d.ts")),
+    host_file(
+        "lib.webworker.importscripts.d.ts",
+        include_str!("lib/webworker.importscripts.d.ts"),
+    ),
+    host_file("lib.scripthost.d.ts", include_str!("lib/scripthost.d.ts")),
     host_file(
         "lib.dom.iterable.d.ts",
         include_str!("lib/dom.iterable.generated.d.ts"),
@@ -530,6 +720,18 @@ const LIB_CATALOG: &[LibCatalogEntry] = &[
     host_file(
         "lib.dom.asynciterable.d.ts",
         include_str!("lib/dom.asynciterable.generated.d.ts"),
+    ),
+    plain_file(
+        "lib.webworker.d.ts",
+        include_str!("lib/webworker.generated.d.ts"),
+    ),
+    plain_file(
+        "lib.webworker.iterable.d.ts",
+        include_str!("lib/webworker.iterable.generated.d.ts"),
+    ),
+    plain_file(
+        "lib.webworker.asynciterable.d.ts",
+        include_str!("lib/webworker.asynciterable.generated.d.ts"),
     ),
 ];
 
@@ -570,9 +772,17 @@ mod tests {
         let files = resolve_lib_files(&LibSelection::DefaultTarget(LibTarget::EsNext)).unwrap();
         let paths = paths(&files);
 
-        assert!(paths.contains(&"lib.es2022.array.d.ts"));
+        assert!(paths.contains(&"lib.es2025.iterator.d.ts"));
+        assert!(paths.contains(&"lib.esnext.array.d.ts"));
         assert!(paths.contains(&"lib.esnext.collection.d.ts"));
+        assert!(paths.contains(&"lib.esnext.date.d.ts"));
+        assert!(paths.contains(&"lib.esnext.decorators.d.ts"));
         assert!(paths.contains(&"lib.esnext.disposable.d.ts"));
+        assert!(paths.contains(&"lib.esnext.error.d.ts"));
+        assert!(paths.contains(&"lib.esnext.intl.d.ts"));
+        assert!(paths.contains(&"lib.esnext.sharedmemory.d.ts"));
+        assert!(paths.contains(&"lib.esnext.temporal.d.ts"));
+        assert!(paths.contains(&"lib.esnext.typedarrays.d.ts"));
     }
 
     #[test]
@@ -587,7 +797,45 @@ mod tests {
 
         assert_eq!(
             paths,
-            vec!["lib.es5.d.ts", "lib.es2015.promise.d.ts", "lib.dom.d.ts"]
+            vec![
+                "lib.decorators.d.ts",
+                "lib.decorators.legacy.d.ts",
+                "lib.es5.d.ts",
+                "lib.es2015.promise.d.ts",
+                "lib.dom.d.ts"
+            ]
+        );
+    }
+
+    #[test]
+    fn full_lib_includes_default_hosts() {
+        let files =
+            resolve_lib_files(&LibSelection::Explicit(vec!["es2025.full".to_string()])).unwrap();
+        let paths = paths(&files);
+
+        assert!(paths.contains(&"lib.es2025.regexp.d.ts"));
+        assert!(paths.contains(&"lib.dom.d.ts"));
+        assert!(paths.contains(&"lib.webworker.importscripts.d.ts"));
+        assert!(paths.contains(&"lib.scripthost.d.ts"));
+        assert!(!paths.contains(&"lib.esnext.array.d.ts"));
+    }
+
+    #[test]
+    fn explicit_host_libs_are_supported() {
+        let files = resolve_lib_files(&LibSelection::Explicit(vec![
+            "webworker".to_string(),
+            "webworker.iterable".to_string(),
+            "webworker.asynciterable".to_string(),
+        ]))
+        .unwrap();
+
+        assert_eq!(
+            paths(&files),
+            vec![
+                "lib.webworker.d.ts",
+                "lib.webworker.iterable.d.ts",
+                "lib.webworker.asynciterable.d.ts"
+            ]
         );
     }
 }

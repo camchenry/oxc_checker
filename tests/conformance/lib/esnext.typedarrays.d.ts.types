@@ -1,0 +1,119 @@
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Uint8ArrayConstructor
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+            expected: Uint8ArrayConstructor
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    toBase64(
+>   ^^^^^^^^: { (options?: { alphabet?: "base64" | "base64url" | undefined; omitPadding?: boolean | undefined; }): string; (options?: { alphabet?: "base64" | "base64url" | undefined; omitPadding?: boolean | undefined; }): string; }   (TyObject) (TSMethodSignature)
+
+        options?: {
+>       ^^^^^^^: { alphabet?: "base64" | "base64url" | undefined; omitPadding?: boolean | undefined; } | undefined   (TyUnion) (BindingIdentifier)
+
+            alphabet?: "base64" | "base64url" | undefined;
+>           ^^^^^^^^: "base64" | "base64url" | undefined   (TyUnion) (TSPropertySignature)
+
+            omitPadding?: boolean | undefined;
+>           ^^^^^^^^^^^: boolean | undefined   (TyUnion) (TSPropertySignature)
+
+    setFromBase64(
+>   ^^^^^^^^^^^^^: { (string: string, options?: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; }): { read: number; written: number; }; (string: string, options?: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; }): { read: number; written: number; }; }   (TyObject) (TSMethodSignature)
+
+        string: string,
+>       ^^^^^^: string   (TyString) (BindingIdentifier)
+
+        options?: {
+>       ^^^^^^^: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; } | undefined   (TyUnion) (BindingIdentifier)
+
+            alphabet?: "base64" | "base64url" | undefined;
+>           ^^^^^^^^: "base64" | "base64url" | undefined   (TyUnion) (TSPropertySignature)
+
+            lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined;
+>           ^^^^^^^^^^^^^^^^^: "loose" | "strict" | "stop-before-partial" | undefined   (TyUnion) (TSPropertySignature)
+
+        read: number;
+>       ^^^^: number   (TyNumber) (TSPropertySignature)
+
+        written: number;
+>       ^^^^^^^: number   (TyNumber) (TSPropertySignature)
+
+    toHex(): string;
+>   ^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+
+    setFromHex(string: string): {
+>   ^^^^^^^^^^: { (string: string): { read: number; written: number; }; (string: string): { read: number; written: number; }; }   (TyObject) (TSMethodSignature)
+
+    setFromHex(string: string): {
+>              ^^^^^^: string   (TyString) (BindingIdentifier)
+
+        read: number;
+>       ^^^^: number   (TyNumber) (TSPropertySignature)
+
+        written: number;
+>       ^^^^^^^: number   (TyNumber) (TSPropertySignature)
+
+interface Uint8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Uint8ArrayConstructor {
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    fromBase64(
+>   ^^^^^^^^^^: { (string: string, options?: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; }): Uint8Array<ArrayBuffer>; (string: string, options?: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; }): Uint8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+        string: string,
+>       ^^^^^^: string   (TyString) (BindingIdentifier)
+
+        options?: {
+>       ^^^^^^^: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; } | undefined   (TyUnion) (BindingIdentifier)
+
+            alphabet?: "base64" | "base64url" | undefined;
+>           ^^^^^^^^: "base64" | "base64url" | undefined   (TyUnion) (TSPropertySignature)
+
+            lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined;
+>           ^^^^^^^^^^^^^^^^^: "loose" | "strict" | "stop-before-partial" | undefined   (TyUnion) (TSPropertySignature)
+
+    ): Uint8Array<ArrayBuffer>;
+>      ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+         expected: Uint8ArrayConstructor
+
+    ): Uint8Array<ArrayBuffer>;
+>      ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+         expected: Uint8ArrayConstructor
+
+    ): Uint8Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    ): Uint8Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    fromHex(
+>   ^^^^^^^: { (string: string): Uint8Array<ArrayBuffer>; (string: string): Uint8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+        string: string,
+>       ^^^^^^: string   (TyString) (BindingIdentifier)
+
+    ): Uint8Array<ArrayBuffer>;
+>      ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+         expected: Uint8ArrayConstructor
+
+    ): Uint8Array<ArrayBuffer>;
+>      ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+         expected: Uint8ArrayConstructor
+
+    ): Uint8Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    ): Uint8Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)

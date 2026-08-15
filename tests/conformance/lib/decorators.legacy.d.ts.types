@@ -1,0 +1,92 @@
+declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+>            ^^^^^^^^^^^^^^: <TFunction extends Function>(target: TFunction) => TFunction | void   (TyFunction) (TSTypeAliasDeclaration)
+
+declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+>                              ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+>                                                ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSTypeReference)
+
+declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+>                                                ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
+
+declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+>                                                          ^^^^^^: TFunction   (TyTypeReference) (BindingIdentifier)
+
+declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+>                                                                  ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare type ClassDecorator = <TFunction extends Function>(target: TFunction) => TFunction | void;
+>                                                                                ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare type PropertyDecorator = (target: Object, propertyKey: string | symbol) => void;
+>            ^^^^^^^^^^^^^^^^^: (target: Object, propertyKey: string | symbol) => void   (TyFunction) (TSTypeAliasDeclaration)
+
+declare type PropertyDecorator = (target: Object, propertyKey: string | symbol) => void;
+>                                 ^^^^^^: Object   (TyTypeReference) (BindingIdentifier)
+
+declare type PropertyDecorator = (target: Object, propertyKey: string | symbol) => void;
+>                                         ^^^^^^: ObjectConstructor   (TyTypeReference) (TSTypeReference)
+
+declare type PropertyDecorator = (target: Object, propertyKey: string | symbol) => void;
+>                                         ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+
+declare type PropertyDecorator = (target: Object, propertyKey: string | symbol) => void;
+>                                                 ^^^^^^^^^^^: string | symbol   (TyUnion) (BindingIdentifier)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>            ^^^^^^^^^^^^^^^: <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void   (TyFunction) (TSTypeAliasDeclaration)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                               ^: any   (TyAny) (TSTypeParameter)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                  ^^^^^^: Object   (TyTypeReference) (BindingIdentifier)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                          ^^^^^^: ObjectConstructor   (TyTypeReference) (TSTypeReference)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                          ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                  ^^^^^^^^^^^: string | symbol   (TyUnion) (BindingIdentifier)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                                                ^^^^^^^^^^: TypedPropertyDescriptor<T>   (TyTypeReference) (BindingIdentifier)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                                                                                    ^: any   (TyAny) (TSTypeReference)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+>                                                                                                                                                   ^: any   (TyAny) (TSTypeReference)
+
+declare type ParameterDecorator = (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void;
+>            ^^^^^^^^^^^^^^^^^^: (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void   (TyFunction) (TSTypeAliasDeclaration)
+
+declare type ParameterDecorator = (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void;
+>                                  ^^^^^^: Object   (TyTypeReference) (BindingIdentifier)
+
+declare type ParameterDecorator = (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void;
+>                                          ^^^^^^: ObjectConstructor   (TyTypeReference) (TSTypeReference)
+
+declare type ParameterDecorator = (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void;
+>                                          ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+
+declare type ParameterDecorator = (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void;
+>                                                  ^^^^^^^^^^^: string | symbol | undefined   (TyUnion) (BindingIdentifier)
+
+declare type ParameterDecorator = (target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void;
+>                                                                                            ^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)

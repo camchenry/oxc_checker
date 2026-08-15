@@ -1,0 +1,65 @@
+interface ObjectConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ObjectConstructor {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    groupBy<K extends PropertyKey, T>(
+>   ^^^^^^^: { <K extends PropertyKey, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Partial<Record<K, T[]>>; <K extends PropertyKey, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Partial<Record<K, T[]>>; }   (TyObject) (TSMethodSignature)
+
+    groupBy<K extends PropertyKey, T>(
+>           ^: any   (TyAny) (TSTypeParameter)
+
+    groupBy<K extends PropertyKey, T>(
+>                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    groupBy<K extends PropertyKey, T>(
+>                     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    groupBy<K extends PropertyKey, T>(
+>                                  ^: any   (TyAny) (TSTypeParameter)
+
+        items: Iterable<T>,
+>       ^^^^^: Iterable<T>   (TyTypeReference) (BindingIdentifier)
+
+        items: Iterable<T>,
+>              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+        items: Iterable<T>,
+>              ^^^^^^^^: any   (TyError) (IdentifierReference)
+
+        items: Iterable<T>,
+>                       ^: any   (TyAny) (TSTypeReference)
+
+        keySelector: (item: T, index: number) => K,
+>       ^^^^^^^^^^^: (item: T, index: number) => K   (TyFunction) (BindingIdentifier)
+
+        keySelector: (item: T, index: number) => K,
+>                     ^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+        keySelector: (item: T, index: number) => K,
+>                           ^: any   (TyAny) (TSTypeReference)
+
+        keySelector: (item: T, index: number) => K,
+>                              ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        keySelector: (item: T, index: number) => K,
+>                                                ^: any   (TyAny) (TSTypeReference)
+
+    ): Partial<Record<K, T[]>>;
+>      ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    ): Partial<Record<K, T[]>>;
+>      ^^^^^^^: any   (TyError) (IdentifierReference)
+
+    ): Partial<Record<K, T[]>>;
+>              ^^^^^^: any   (TyAny) (TSTypeReference)
+
+    ): Partial<Record<K, T[]>>;
+>              ^^^^^^: any   (TyError) (IdentifierReference)
+
+    ): Partial<Record<K, T[]>>;
+>                     ^: any   (TyAny) (TSTypeReference)
+
+    ): Partial<Record<K, T[]>>;
+>                        ^: any   (TyAny) (TSTypeReference)

@@ -1,0 +1,605 @@
+type ClassMemberDecoratorContext =
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^: ClassMethodDecoratorContext | ClassGetterDecoratorContext | ClassSetterDecoratorContext | ClassFieldDecoratorContext | ClassAccessorDecoratorContext   (TyUnion) (TSTypeAliasDeclaration)
+                        expected: ClassMethodDecoratorContext<unknown, (this: unknown, ...args: any) => any> | ClassGetterDecoratorContext<unknown, unknown> | ClassSetterDecoratorContext<unknown, unknown> | ClassFieldDecoratorContext<unknown, unknown> | ClassAccessorDecoratorContext<unknown, unknown>
+
+    | ClassMethodDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    | ClassMethodDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    | ClassGetterDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    | ClassGetterDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    | ClassSetterDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    | ClassSetterDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    | ClassFieldDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    | ClassFieldDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    | ClassAccessorDecoratorContext;
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    | ClassAccessorDecoratorContext;
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+type DecoratorContext =
+>    ^^^^^^^^^^^^^^^^: ClassDecoratorContext | ClassMemberDecoratorContext   (TyUnion) (TSTypeAliasDeclaration)
+             expected: ClassDecoratorContext<abstract new (...args: any) => any> | ClassMemberDecoratorContext
+
+    | ClassDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    | ClassDecoratorContext
+>     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    | ClassMemberDecoratorContext;
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type DecoratorMetadataObject = Record<PropertyKey, unknown> & object;
+>    ^^^^^^^^^^^^^^^^^^^^^^^: Record<PropertyKey, unknown> & object   (TyIntersection) (TSTypeAliasDeclaration)
+
+type DecoratorMetadataObject = Record<PropertyKey, unknown> & object;
+>                              ^^^^^^: any   (TyAny) (TSTypeReference)
+
+type DecoratorMetadataObject = Record<PropertyKey, unknown> & object;
+>                              ^^^^^^: any   (TyError) (IdentifierReference)
+
+type DecoratorMetadataObject = Record<PropertyKey, unknown> & object;
+>                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type DecoratorMetadataObject = Record<PropertyKey, unknown> & object;
+>                                     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
+>    ^^^^^^^^^^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSTypeAliasDeclaration)
+              expected: Record<PropertyKey, unknown> & object
+
+type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
+>                               ^^^^^^^^^^: typeof globalThis   (TyGlobalThis) (IdentifierReference)
+
+type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
+>                                                    ^^^^^^: { readonly metadata: symbol; }   (TyObject) (TSPropertySignature)
+
+type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
+>                                                                       ^^^^^^^^: symbol   (TySymbol) (TSPropertySignature)
+
+type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
+>                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type DecoratorMetadata = typeof globalThis extends { Symbol: { readonly metadata: symbol; }; } ? DecoratorMetadataObject : DecoratorMetadataObject | undefined;
+>                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    Class extends abstract new (...args: any) => any = abstract new (...args: any) => any,
+>   ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    Class extends abstract new (...args: any) => any = abstract new (...args: any) => any,
+>                                  ^^^^: any   (TyAny) (BindingIdentifier)
+
+    Class extends abstract new (...args: any) => any = abstract new (...args: any) => any,
+>                                                                       ^^^^: any   (TyAny) (BindingIdentifier)
+
+    readonly kind: "class";
+>            ^^^^: "class"   (TyStringLiteral) (TSPropertySignature)
+
+    readonly name: string | undefined;
+>            ^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+
+    addInitializer(initializer: (this: Class) => void): void;
+>   ^^^^^^^^^^^^^^: { (initializer: (this: Class) => void): void; (initializer: (this: Class) => void): void; }   (TyObject) (TSMethodSignature)
+
+    addInitializer(initializer: (this: Class) => void): void;
+>                  ^^^^^^^^^^^: (this: Class) => void   (TyFunction) (BindingIdentifier)
+
+    addInitializer(initializer: (this: Class) => void): void;
+>                                ^^^^: Class   (TyTypeReference) (TSThisParameter)
+
+    addInitializer(initializer: (this: Class) => void): void;
+>                                      ^^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly metadata: DecoratorMetadata;
+>            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
+             expected: DecoratorMetadataObject
+
+    readonly metadata: DecoratorMetadata;
+>                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassMethodDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassMethodDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    This = unknown,
+>   ^^^^: any   (TyAny) (TSTypeParameter)
+
+    Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
+>   ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
+>                  ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
+>                        ^^^^: any   (TyAny) (TSTypeReference)
+
+    Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
+>                                 ^^^^: any   (TyAny) (BindingIdentifier)
+
+    Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
+>                                                      ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
+>                                                            ^^^^: any   (TyAny) (TSTypeReference)
+
+    Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
+>                                                                     ^^^^: any   (TyAny) (BindingIdentifier)
+
+    readonly kind: "method";
+>            ^^^^: "method"   (TyStringLiteral) (TSPropertySignature)
+
+    readonly name: string | symbol;
+>            ^^^^: string | symbol   (TyUnion) (TSPropertySignature)
+
+    readonly static: boolean;
+>            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly private: boolean;
+>            ^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly access: {
+>            ^^^^^^: { has(object: This): boolean; get(object: This): Value; }   (TyObject) (TSPropertySignature)
+
+        has(object: This): boolean;
+>       ^^^: (object: This) => boolean   (TyFunction) (TSMethodSignature)
+
+        has(object: This): boolean;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        has(object: This): boolean;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>       ^^^: (object: This) => Value   (TyFunction) (TSMethodSignature)
+
+        get(object: This): Value;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        get(object: This): Value;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>                          ^^^^^: any   (TyAny) (TSTypeReference)
+
+    addInitializer(initializer: (this: This) => void): void;
+>   ^^^^^^^^^^^^^^: { (initializer: (this: This) => void): void; (initializer: (this: This) => void): void; }   (TyObject) (TSMethodSignature)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                  ^^^^^^^^^^^: (this: This) => void   (TyFunction) (BindingIdentifier)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                      ^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly metadata: DecoratorMetadata;
+>            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
+             expected: DecoratorMetadataObject
+
+    readonly metadata: DecoratorMetadata;
+>                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassGetterDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassGetterDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    This = unknown,
+>   ^^^^: any   (TyAny) (TSTypeParameter)
+
+    Value = unknown,
+>   ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    readonly kind: "getter";
+>            ^^^^: "getter"   (TyStringLiteral) (TSPropertySignature)
+
+    readonly name: string | symbol;
+>            ^^^^: string | symbol   (TyUnion) (TSPropertySignature)
+
+    readonly static: boolean;
+>            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly private: boolean;
+>            ^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly access: {
+>            ^^^^^^: { has(object: This): boolean; get(object: This): Value; }   (TyObject) (TSPropertySignature)
+
+        has(object: This): boolean;
+>       ^^^: (object: This) => boolean   (TyFunction) (TSMethodSignature)
+
+        has(object: This): boolean;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        has(object: This): boolean;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>       ^^^: (object: This) => Value   (TyFunction) (TSMethodSignature)
+
+        get(object: This): Value;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        get(object: This): Value;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>                          ^^^^^: any   (TyAny) (TSTypeReference)
+
+    addInitializer(initializer: (this: This) => void): void;
+>   ^^^^^^^^^^^^^^: { (initializer: (this: This) => void): void; (initializer: (this: This) => void): void; }   (TyObject) (TSMethodSignature)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                  ^^^^^^^^^^^: (this: This) => void   (TyFunction) (BindingIdentifier)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                      ^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly metadata: DecoratorMetadata;
+>            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
+             expected: DecoratorMetadataObject
+
+    readonly metadata: DecoratorMetadata;
+>                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassSetterDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassSetterDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    This = unknown,
+>   ^^^^: any   (TyAny) (TSTypeParameter)
+
+    Value = unknown,
+>   ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    readonly kind: "setter";
+>            ^^^^: "setter"   (TyStringLiteral) (TSPropertySignature)
+
+    readonly name: string | symbol;
+>            ^^^^: string | symbol   (TyUnion) (TSPropertySignature)
+
+    readonly static: boolean;
+>            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly private: boolean;
+>            ^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly access: {
+>            ^^^^^^: { has(object: This): boolean; set(object: This, value: Value): void; }   (TyObject) (TSPropertySignature)
+
+        has(object: This): boolean;
+>       ^^^: (object: This) => boolean   (TyFunction) (TSMethodSignature)
+
+        has(object: This): boolean;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        has(object: This): boolean;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        set(object: This, value: Value): void;
+>       ^^^: (object: This, value: Value) => void   (TyFunction) (TSMethodSignature)
+
+        set(object: This, value: Value): void;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        set(object: This, value: Value): void;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        set(object: This, value: Value): void;
+>                         ^^^^^: Value   (TyTypeReference) (BindingIdentifier)
+
+        set(object: This, value: Value): void;
+>                                ^^^^^: any   (TyAny) (TSTypeReference)
+
+    addInitializer(initializer: (this: This) => void): void;
+>   ^^^^^^^^^^^^^^: { (initializer: (this: This) => void): void; (initializer: (this: This) => void): void; }   (TyObject) (TSMethodSignature)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                  ^^^^^^^^^^^: (this: This) => void   (TyFunction) (BindingIdentifier)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                      ^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly metadata: DecoratorMetadata;
+>            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
+             expected: DecoratorMetadataObject
+
+    readonly metadata: DecoratorMetadata;
+>                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassAccessorDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassAccessorDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    This = unknown,
+>   ^^^^: any   (TyAny) (TSTypeParameter)
+
+    Value = unknown,
+>   ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    readonly kind: "accessor";
+>            ^^^^: "accessor"   (TyStringLiteral) (TSPropertySignature)
+
+    readonly name: string | symbol;
+>            ^^^^: string | symbol   (TyUnion) (TSPropertySignature)
+
+    readonly static: boolean;
+>            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly private: boolean;
+>            ^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly access: {
+>            ^^^^^^: { has(object: This): boolean; get(object: This): Value; set(object: This, value: Value): void; }   (TyObject) (TSPropertySignature)
+
+        has(object: This): boolean;
+>       ^^^: (object: This) => boolean   (TyFunction) (TSMethodSignature)
+
+        has(object: This): boolean;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        has(object: This): boolean;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>       ^^^: (object: This) => Value   (TyFunction) (TSMethodSignature)
+
+        get(object: This): Value;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        get(object: This): Value;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>                          ^^^^^: any   (TyAny) (TSTypeReference)
+
+        set(object: This, value: Value): void;
+>       ^^^: (object: This, value: Value) => void   (TyFunction) (TSMethodSignature)
+
+        set(object: This, value: Value): void;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        set(object: This, value: Value): void;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        set(object: This, value: Value): void;
+>                         ^^^^^: Value   (TyTypeReference) (BindingIdentifier)
+
+        set(object: This, value: Value): void;
+>                                ^^^^^: any   (TyAny) (TSTypeReference)
+
+    addInitializer(initializer: (this: This) => void): void;
+>   ^^^^^^^^^^^^^^: { (initializer: (this: This) => void): void; (initializer: (this: This) => void): void; }   (TyObject) (TSMethodSignature)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                  ^^^^^^^^^^^: (this: This) => void   (TyFunction) (BindingIdentifier)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                      ^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly metadata: DecoratorMetadata;
+>            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
+             expected: DecoratorMetadataObject
+
+    readonly metadata: DecoratorMetadata;
+>                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassAccessorDecoratorTarget<This, Value> {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassAccessorDecoratorTarget<This, Value> {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ClassAccessorDecoratorTarget<This, Value> {
+>                                      ^^^^: any   (TyAny) (TSTypeParameter)
+
+interface ClassAccessorDecoratorTarget<This, Value> {
+>                                            ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    get(this: This): Value;
+>   ^^^: { (this: This): Value; (this: This): Value; }   (TyObject) (TSMethodSignature)
+
+    get(this: This): Value;
+>       ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    get(this: This): Value;
+>             ^^^^: any   (TyAny) (TSTypeReference)
+
+    get(this: This): Value;
+>                    ^^^^^: any   (TyAny) (TSTypeReference)
+
+    set(this: This, value: Value): void;
+>   ^^^: { (this: This, value: Value): void; (this: This, value: Value): void; }   (TyObject) (TSMethodSignature)
+
+    set(this: This, value: Value): void;
+>       ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    set(this: This, value: Value): void;
+>             ^^^^: any   (TyAny) (TSTypeReference)
+
+    set(this: This, value: Value): void;
+>                   ^^^^^: Value   (TyTypeReference) (BindingIdentifier)
+
+    set(this: This, value: Value): void;
+>                          ^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassAccessorDecoratorResult<This, Value> {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassAccessorDecoratorResult<This, Value> {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ClassAccessorDecoratorResult<This, Value> {
+>                                      ^^^^: any   (TyAny) (TSTypeParameter)
+
+interface ClassAccessorDecoratorResult<This, Value> {
+>                                            ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    get?(this: This): Value;
+>   ^^^: { (this: This): Value; (this: This): Value; }   (TyObject) (TSMethodSignature)
+expected: { (this: This): Value; (this: This): Value; } | undefined
+
+    get?(this: This): Value;
+>        ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    get?(this: This): Value;
+>              ^^^^: any   (TyAny) (TSTypeReference)
+
+    get?(this: This): Value;
+>                     ^^^^^: any   (TyAny) (TSTypeReference)
+
+    set?(this: This, value: Value): void;
+>   ^^^: { (this: This, value: Value): void; (this: This, value: Value): void; }   (TyObject) (TSMethodSignature)
+expected: { (this: This, value: Value): void; (this: This, value: Value): void; } | undefined
+
+    set?(this: This, value: Value): void;
+>        ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    set?(this: This, value: Value): void;
+>              ^^^^: any   (TyAny) (TSTypeReference)
+
+    set?(this: This, value: Value): void;
+>                    ^^^^^: Value   (TyTypeReference) (BindingIdentifier)
+
+    set?(this: This, value: Value): void;
+>                           ^^^^^: any   (TyAny) (TSTypeReference)
+
+    init?(this: This, value: Value): Value;
+>   ^^^^: { (this: This, value: Value): Value; (this: This, value: Value): Value; }   (TyObject) (TSMethodSignature)
+expected: { (this: This, value: Value): Value; (this: This, value: Value): Value; } | undefined
+
+    init?(this: This, value: Value): Value;
+>         ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    init?(this: This, value: Value): Value;
+>               ^^^^: any   (TyAny) (TSTypeReference)
+
+    init?(this: This, value: Value): Value;
+>                     ^^^^^: Value   (TyTypeReference) (BindingIdentifier)
+
+    init?(this: This, value: Value): Value;
+>                            ^^^^^: any   (TyAny) (TSTypeReference)
+
+    init?(this: This, value: Value): Value;
+>                                    ^^^^^: any   (TyAny) (TSTypeReference)
+
+interface ClassFieldDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ClassFieldDecoratorContext<
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    This = unknown,
+>   ^^^^: any   (TyAny) (TSTypeParameter)
+
+    Value = unknown,
+>   ^^^^^: any   (TyAny) (TSTypeParameter)
+
+    readonly kind: "field";
+>            ^^^^: "field"   (TyStringLiteral) (TSPropertySignature)
+
+    readonly name: string | symbol;
+>            ^^^^: string | symbol   (TyUnion) (TSPropertySignature)
+
+    readonly static: boolean;
+>            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly private: boolean;
+>            ^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+    readonly access: {
+>            ^^^^^^: { has(object: This): boolean; get(object: This): Value; set(object: This, value: Value): void; }   (TyObject) (TSPropertySignature)
+
+        has(object: This): boolean;
+>       ^^^: (object: This) => boolean   (TyFunction) (TSMethodSignature)
+
+        has(object: This): boolean;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        has(object: This): boolean;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>       ^^^: (object: This) => Value   (TyFunction) (TSMethodSignature)
+
+        get(object: This): Value;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        get(object: This): Value;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        get(object: This): Value;
+>                          ^^^^^: any   (TyAny) (TSTypeReference)
+
+        set(object: This, value: Value): void;
+>       ^^^: (object: This, value: Value) => void   (TyFunction) (TSMethodSignature)
+
+        set(object: This, value: Value): void;
+>           ^^^^^^: This   (TyTypeReference) (BindingIdentifier)
+
+        set(object: This, value: Value): void;
+>                   ^^^^: any   (TyAny) (TSTypeReference)
+
+        set(object: This, value: Value): void;
+>                         ^^^^^: Value   (TyTypeReference) (BindingIdentifier)
+
+        set(object: This, value: Value): void;
+>                                ^^^^^: any   (TyAny) (TSTypeReference)
+
+    addInitializer(initializer: (this: This) => void): void;
+>   ^^^^^^^^^^^^^^: { (initializer: (this: This) => void): void; (initializer: (this: This) => void): void; }   (TyObject) (TSMethodSignature)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                  ^^^^^^^^^^^: (this: This) => void   (TyFunction) (BindingIdentifier)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                ^^^^: This   (TyTypeReference) (TSThisParameter)
+
+    addInitializer(initializer: (this: This) => void): void;
+>                                      ^^^^: any   (TyAny) (TSTypeReference)
+
+    readonly metadata: DecoratorMetadata;
+>            ^^^^^^^^: DecoratorMetadataObject | undefined   (TyUnion) (TSPropertySignature)
+             expected: DecoratorMetadataObject
+
+    readonly metadata: DecoratorMetadata;
+>                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

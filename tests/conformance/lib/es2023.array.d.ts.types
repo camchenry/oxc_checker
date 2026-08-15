@@ -1,0 +1,1982 @@
+interface Array<T> {
+>         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+       expected: ArrayConstructor
+
+interface Array<T> {
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
+       expected: ArrayConstructor
+
+interface Array<T> {
+>               ^: any   (TyAny) (TSTypeParameter)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>   ^^^^^^^^: { <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>            ^: any   (TyAny) (TSTypeParameter)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                      ^: any   (TyAny) (TSTypeReference)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                         ^^^^^^^^^: (value: T, index: number, array: T[]) => value is S   (TyFunction) (BindingIdentifier)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                     ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                            ^: any   (TyAny) (TSTypeReference)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                               ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                                              ^^^^^: T[]   (TyArray) (BindingIdentifier)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                                                     ^: any   (TyAny) (TSTypeReference)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                                                             ^^^^^: T   (TyTypeReference) (IdentifierName)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                                                                      ^: any   (TyAny) (TSTypeReference)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                                                                         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
+>                                                                                                         ^: any   (TyAny) (TSTypeReference)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>   ^^^^^^^^: { <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>            ^^^^^^^^^: (value: T, index: number, array: T[]) => unknown   (TyFunction) (BindingIdentifier)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>                               ^: any   (TyAny) (TSTypeReference)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>                                                 ^^^^^: T[]   (TyArray) (BindingIdentifier)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>                                                        ^: any   (TyAny) (TSTypeReference)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>                                                                         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
+>                                                                                         ^: any   (TyAny) (TSTypeReference)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>   ^^^^^^^^^^^^^: { (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>                 ^^^^^^^^^: (value: T, index: number, array: T[]) => unknown   (TyFunction) (BindingIdentifier)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>                             ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>                                    ^: any   (TyAny) (TSTypeReference)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>                                                      ^^^^^: T[]   (TyArray) (BindingIdentifier)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>                                                             ^: any   (TyAny) (TSTypeReference)
+
+    findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
+>                                                                              ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): T[];
+>   ^^^^^^^^^^: { (): T[]; (): T[]; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): T[];
+>                 ^: any   (TyAny) (TSTypeReference)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>   ^^^^^^^^: { (compareFn?: (a: T, b: T) => number): T[]; (compareFn?: (a: T, b: T) => number): T[]; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>            ^^^^^^^^^: ((a: T, b: T) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                         ^: T   (TyTypeReference) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                            ^: any   (TyAny) (TSTypeReference)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                               ^: T   (TyTypeReference) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                                  ^: any   (TyAny) (TSTypeReference)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                                                 ^: any   (TyAny) (TSTypeReference)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>   ^^^^^^^^^: { (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }   (TyObject) (TSMethodSignature)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>             ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                            ^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                                                    ^^^^^: T[]   (TyArray) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                                                           ^: any   (TyAny) (TSTypeReference)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                                                                 ^: any   (TyAny) (TSTypeReference)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>   ^^^^^^^^^: { (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }   (TyObject) (TSMethodSignature)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>             ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>                            ^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>                                                   ^: any   (TyAny) (TSTypeReference)
+
+    with(index: number, value: T): T[];
+>   ^^^^: { (index: number, value: T): T[]; (index: number, value: T): T[]; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: T): T[];
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: T): T[];
+>                       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+    with(index: number, value: T): T[];
+>                              ^: any   (TyAny) (TSTypeReference)
+
+    with(index: number, value: T): T[];
+>                                  ^: any   (TyAny) (TSTypeReference)
+
+interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReadonlyArray<T> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ReadonlyArray<T> {
+>                       ^: any   (TyAny) (TSTypeParameter)
+
+    findLast<S extends T>(
+>   ^^^^^^^^: { <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends T>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+    findLast<S extends T>(
+>                      ^: any   (TyAny) (TSTypeReference)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>       ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>                   ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>                          ^: any   (TyAny) (TSTypeReference)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>                             ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>                                            ^^^^^: readonly T[]   (TyArray) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>                                                            ^: any   (TyAny) (TSTypeReference)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>                                                                    ^^^^^: T   (TyTypeReference) (IdentifierName)
+
+        predicate: (value: T, index: number, array: readonly T[]) => value is S,
+>                                                                             ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>       ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                   ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                          ^: any   (TyAny) (TSTypeReference)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                             ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                                            ^^^^^: readonly T[]   (TyArray) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                                                            ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): T | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>       ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                   ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                          ^: any   (TyAny) (TSTypeReference)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                             ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                                            ^^^^^: readonly T[]   (TyArray) (BindingIdentifier)
+
+        predicate: (value: T, index: number, array: readonly T[]) => unknown,
+>                                                            ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): T[];
+>   ^^^^^^^^^^: { (): T[]; (): T[]; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): T[];
+>                 ^: any   (TyAny) (TSTypeReference)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>   ^^^^^^^^: { (compareFn?: (a: T, b: T) => number): T[]; (compareFn?: (a: T, b: T) => number): T[]; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>            ^^^^^^^^^: ((a: T, b: T) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                         ^: T   (TyTypeReference) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                            ^: any   (TyAny) (TSTypeReference)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                               ^: T   (TyTypeReference) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                                  ^: any   (TyAny) (TSTypeReference)
+
+    toSorted(compareFn?: (a: T, b: T) => number): T[];
+>                                                 ^: any   (TyAny) (TSTypeReference)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>   ^^^^^^^^^: { (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }   (TyObject) (TSMethodSignature)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>             ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                            ^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                                                    ^^^^^: T[]   (TyArray) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                                                           ^: any   (TyAny) (TSTypeReference)
+
+    toSpliced(start: number, deleteCount: number, ...items: T[]): T[];
+>                                                                 ^: any   (TyAny) (TSTypeReference)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>   ^^^^^^^^^: { (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }   (TyObject) (TSMethodSignature)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>             ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>                            ^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+
+    toSpliced(start: number, deleteCount?: number): T[];
+>                                                   ^: any   (TyAny) (TSTypeReference)
+
+    with(index: number, value: T): T[];
+>   ^^^^: { (index: number, value: T): T[]; (index: number, value: T): T[]; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: T): T[];
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: T): T[];
+>                       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+    with(index: number, value: T): T[];
+>                              ^: any   (TyAny) (TSTypeReference)
+
+    with(index: number, value: T): T[];
+>                                  ^: any   (TyAny) (TSTypeReference)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+           expected: Int8ArrayConstructor
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+           expected: Int8ArrayConstructor
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                        ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Int8Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Int8Array<ArrayBuffer>; (): Int8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Int8Array<ArrayBuffer>;
+>                 ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                   expected: Int8ArrayConstructor
+
+    toReversed(): Int8Array<ArrayBuffer>;
+>                 ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                   expected: Int8ArrayConstructor
+
+    toReversed(): Int8Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Int8Array<ArrayBuffer>;
+>                           ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                             expected: Int8ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                             expected: Int8ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>;
+>                                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Int8Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Int8Array<ArrayBuffer>; (index: number, value: number): Int8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Int8Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Int8Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Int8Array<ArrayBuffer>;
+>                                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                         expected: Int8ArrayConstructor
+
+    with(index: number, value: number): Int8Array<ArrayBuffer>;
+>                                       ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                         expected: Int8ArrayConstructor
+
+    with(index: number, value: number): Int8Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Int8Array<ArrayBuffer>;
+>                                                 ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Uint8ArrayConstructor
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+            expected: Uint8ArrayConstructor
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Uint8Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Uint8Array<ArrayBuffer>; (): Uint8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Uint8Array<ArrayBuffer>;
+>                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                    expected: Uint8ArrayConstructor
+
+    toReversed(): Uint8Array<ArrayBuffer>;
+>                 ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                    expected: Uint8ArrayConstructor
+
+    toReversed(): Uint8Array<ArrayBuffer>;
+>                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Uint8Array<ArrayBuffer>;
+>                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                              expected: Uint8ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                              expected: Uint8ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>;
+>                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Uint8Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Uint8Array<ArrayBuffer>; (index: number, value: number): Uint8Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Uint8Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint8Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint8Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                          expected: Uint8ArrayConstructor
+
+    with(index: number, value: number): Uint8Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                          expected: Uint8ArrayConstructor
+
+    with(index: number, value: number): Uint8Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Uint8Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                   expected: Uint8ClampedArrayConstructor
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+                   expected: Uint8ClampedArrayConstructor
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
+>                                                ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Uint8ClampedArray<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Uint8ClampedArray<ArrayBuffer>; (): Uint8ClampedArray<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Uint8ClampedArray<ArrayBuffer>;
+>                 ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                           expected: Uint8ClampedArrayConstructor
+
+    toReversed(): Uint8ClampedArray<ArrayBuffer>;
+>                 ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                           expected: Uint8ClampedArrayConstructor
+
+    toReversed(): Uint8ClampedArray<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Uint8ClampedArray<ArrayBuffer>;
+>                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                     expected: Uint8ClampedArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                     expected: Uint8ClampedArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>                                                                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>;
+>                                                                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Uint8ClampedArray<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Uint8ClampedArray<ArrayBuffer>; (index: number, value: number): Uint8ClampedArray<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Uint8ClampedArray<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint8ClampedArray<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint8ClampedArray<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                 expected: Uint8ClampedArrayConstructor
+
+    with(index: number, value: number): Uint8ClampedArray<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                 expected: Uint8ClampedArrayConstructor
+
+    with(index: number, value: number): Uint8ClampedArray<ArrayBuffer>;
+>                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Uint8ClampedArray<ArrayBuffer>;
+>                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Int16ArrayConstructor
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+            expected: Int16ArrayConstructor
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Int16Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Int16Array<ArrayBuffer>; (): Int16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Int16Array<ArrayBuffer>;
+>                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                    expected: Int16ArrayConstructor
+
+    toReversed(): Int16Array<ArrayBuffer>;
+>                 ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                    expected: Int16ArrayConstructor
+
+    toReversed(): Int16Array<ArrayBuffer>;
+>                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Int16Array<ArrayBuffer>;
+>                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                              expected: Int16ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                              expected: Int16ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>;
+>                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Int16Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Int16Array<ArrayBuffer>; (index: number, value: number): Int16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Int16Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Int16Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Int16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                          expected: Int16ArrayConstructor
+
+    with(index: number, value: number): Int16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                          expected: Int16ArrayConstructor
+
+    with(index: number, value: number): Int16Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Int16Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+             expected: Uint16ArrayConstructor
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+             expected: Uint16ArrayConstructor
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Uint16Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Uint16Array<ArrayBuffer>; (): Uint16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Uint16Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                     expected: Uint16ArrayConstructor
+
+    toReversed(): Uint16Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                     expected: Uint16ArrayConstructor
+
+    toReversed(): Uint16Array<ArrayBuffer>;
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Uint16Array<ArrayBuffer>;
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                               expected: Uint16ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                               expected: Uint16ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>;
+>                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Uint16Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Uint16Array<ArrayBuffer>; (index: number, value: number): Uint16Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Uint16Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint16Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                           expected: Uint16ArrayConstructor
+
+    with(index: number, value: number): Uint16Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                           expected: Uint16ArrayConstructor
+
+    with(index: number, value: number): Uint16Array<ArrayBuffer>;
+>                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Uint16Array<ArrayBuffer>;
+>                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+            expected: Int32ArrayConstructor
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+            expected: Int32ArrayConstructor
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+        predicate: (value: number, index: number, array: this) => unknown,
+>                                                 ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Int32Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Int32Array<ArrayBuffer>; (): Int32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Int32Array<ArrayBuffer>;
+>                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                    expected: Int32ArrayConstructor
+
+    toReversed(): Int32Array<ArrayBuffer>;
+>                 ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                    expected: Int32ArrayConstructor
+
+    toReversed(): Int32Array<ArrayBuffer>;
+>                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Int32Array<ArrayBuffer>;
+>                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                              expected: Int32ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                              expected: Int32ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>;
+>                                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Int32Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Int32Array<ArrayBuffer>; (index: number, value: number): Int32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Int32Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Int32Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Int32Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                          expected: Int32ArrayConstructor
+
+    with(index: number, value: number): Int32Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                          expected: Int32ArrayConstructor
+
+    with(index: number, value: number): Int32Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Int32Array<ArrayBuffer>;
+>                                                  ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+             expected: Uint32ArrayConstructor
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+             expected: Uint32ArrayConstructor
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Uint32Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Uint32Array<ArrayBuffer>; (): Uint32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Uint32Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                     expected: Uint32ArrayConstructor
+
+    toReversed(): Uint32Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                     expected: Uint32ArrayConstructor
+
+    toReversed(): Uint32Array<ArrayBuffer>;
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Uint32Array<ArrayBuffer>;
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                               expected: Uint32ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                               expected: Uint32ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>;
+>                                                                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Uint32Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Uint32Array<ArrayBuffer>; (index: number, value: number): Uint32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Uint32Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint32Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Uint32Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                           expected: Uint32ArrayConstructor
+
+    with(index: number, value: number): Uint32Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                           expected: Uint32ArrayConstructor
+
+    with(index: number, value: number): Uint32Array<ArrayBuffer>;
+>                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Uint32Array<ArrayBuffer>;
+>                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+              expected: Float32ArrayConstructor
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+              expected: Float32ArrayConstructor
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Float32Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Float32Array<ArrayBuffer>; (): Float32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Float32Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                      expected: Float32ArrayConstructor
+
+    toReversed(): Float32Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                      expected: Float32ArrayConstructor
+
+    toReversed(): Float32Array<ArrayBuffer>;
+>                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Float32Array<ArrayBuffer>;
+>                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                expected: Float32ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                expected: Float32ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>                                                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>;
+>                                                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Float32Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Float32Array<ArrayBuffer>; (index: number, value: number): Float32Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Float32Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Float32Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Float32Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                            expected: Float32ArrayConstructor
+
+    with(index: number, value: number): Float32Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                            expected: Float32ArrayConstructor
+
+    with(index: number, value: number): Float32Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Float32Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+              expected: Float64ArrayConstructor
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+              expected: Float64ArrayConstructor
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends number>(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends number>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: number   (TyNumber) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: number, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): Float64Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): Float64Array<ArrayBuffer>; (): Float64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): Float64Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                      expected: Float64ArrayConstructor
+
+    toReversed(): Float64Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                      expected: Float64ArrayConstructor
+
+    toReversed(): Float64Array<ArrayBuffer>;
+>                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): Float64Array<ArrayBuffer>;
+>                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: number, b: number) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>                         ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>                                    ^: number   (TyNumber) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                expected: Float64ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                expected: Float64ArrayConstructor
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>                                                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>;
+>                                                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: number): Float64Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: number): Float64Array<ArrayBuffer>; (index: number, value: number): Float64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: number): Float64Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Float64Array<ArrayBuffer>;
+>                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: number): Float64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                            expected: Float64ArrayConstructor
+
+    with(index: number, value: number): Float64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                            expected: Float64ArrayConstructor
+
+    with(index: number, value: number): Float64Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: number): Float64Array<ArrayBuffer>;
+>                                                    ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+               expected: BigInt64ArrayConstructor
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+               expected: BigInt64ArrayConstructor
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                            ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends bigint>(
+>   ^^^^^^^^: { <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends bigint>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: bigint, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: bigint,
+>           ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: bigint   (TyBigint) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: bigint, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: bigint,
+>           ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: bigint, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: bigint,
+>           ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): BigInt64Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): BigInt64Array<ArrayBuffer>; (): BigInt64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): BigInt64Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                       expected: BigInt64ArrayConstructor
+
+    toReversed(): BigInt64Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                       expected: BigInt64ArrayConstructor
+
+    toReversed(): BigInt64Array<ArrayBuffer>;
+>                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): BigInt64Array<ArrayBuffer>;
+>                               ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>; (compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: bigint, b: bigint) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>                         ^: bigint   (TyBigint) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>                                    ^: bigint   (TyBigint) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                 expected: BigInt64ArrayConstructor
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                 expected: BigInt64ArrayConstructor
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>                                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>;
+>                                                                         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: bigint): BigInt64Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: bigint): BigInt64Array<ArrayBuffer>; (index: number, value: bigint): BigInt64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: bigint): BigInt64Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: bigint): BigInt64Array<ArrayBuffer>;
+>                       ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+    with(index: number, value: bigint): BigInt64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                             expected: BigInt64ArrayConstructor
+
+    with(index: number, value: bigint): BigInt64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                             expected: BigInt64ArrayConstructor
+
+    with(index: number, value: bigint): BigInt64Array<ArrayBuffer>;
+>                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: bigint): BigInt64Array<ArrayBuffer>;
+>                                                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+                expected: BigUint64ArrayConstructor
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+                expected: BigUint64ArrayConstructor
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
+>                                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+    findLast<S extends bigint>(
+>   ^^^^^^^^: { <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }   (TyObject) (TSMethodSignature)
+
+    findLast<S extends bigint>(
+>            ^: any   (TyAny) (TSTypeParameter)
+
+        predicate: (
+>       ^^^^^^^^^: (value: bigint, index: number, array: this) => value is S   (TyFunction) (BindingIdentifier)
+
+            value: bigint,
+>           ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        ) => value is S,
+>            ^^^^^: bigint   (TyBigint) (IdentifierName)
+
+        ) => value is S,
+>                     ^: any   (TyAny) (TSTypeReference)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    ): S | undefined;
+>      ^: any   (TyAny) (TSTypeReference)
+
+    findLast(
+>   ^^^^^^^^: { <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: bigint, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: bigint,
+>           ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    findLastIndex(
+>   ^^^^^^^^^^^^^: { (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; }   (TyObject) (TSMethodSignature)
+
+        predicate: (
+>       ^^^^^^^^^: (value: bigint, index: number, array: this) => unknown   (TyFunction) (BindingIdentifier)
+
+            value: bigint,
+>           ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+            index: number,
+>           ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+            array: this,
+>           ^^^^^: this   (TyThis) (BindingIdentifier)
+
+        thisArg?: any,
+>       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    toReversed(): BigUint64Array<ArrayBuffer>;
+>   ^^^^^^^^^^: { (): BigUint64Array<ArrayBuffer>; (): BigUint64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toReversed(): BigUint64Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                        expected: BigUint64ArrayConstructor
+
+    toReversed(): BigUint64Array<ArrayBuffer>;
+>                 ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                        expected: BigUint64ArrayConstructor
+
+    toReversed(): BigUint64Array<ArrayBuffer>;
+>                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toReversed(): BigUint64Array<ArrayBuffer>;
+>                                ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>   ^^^^^^^^: { (compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>; (compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>            ^^^^^^^^^: ((a: bigint, b: bigint) => number) | undefined   (TyUnion) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>                         ^: bigint   (TyBigint) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>                                    ^: bigint   (TyBigint) (BindingIdentifier)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                                                  expected: BigUint64ArrayConstructor
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>                                                           ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                                                  expected: BigUint64ArrayConstructor
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>                                                                          ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    toSorted(compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>;
+>                                                                          ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+
+    with(index: number, value: bigint): BigUint64Array<ArrayBuffer>;
+>   ^^^^: { (index: number, value: bigint): BigUint64Array<ArrayBuffer>; (index: number, value: bigint): BigUint64Array<ArrayBuffer>; }   (TyObject) (TSMethodSignature)
+
+    with(index: number, value: bigint): BigUint64Array<ArrayBuffer>;
+>        ^^^^^: number   (TyNumber) (BindingIdentifier)
+
+    with(index: number, value: bigint): BigUint64Array<ArrayBuffer>;
+>                       ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+    with(index: number, value: bigint): BigUint64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+                                              expected: BigUint64ArrayConstructor
+
+    with(index: number, value: bigint): BigUint64Array<ArrayBuffer>;
+>                                       ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+                                              expected: BigUint64ArrayConstructor
+
+    with(index: number, value: bigint): BigUint64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+
+    with(index: number, value: bigint): BigUint64Array<ArrayBuffer>;
+>                                                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)

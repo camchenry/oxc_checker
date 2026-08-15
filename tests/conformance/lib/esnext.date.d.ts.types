@@ -1,0 +1,17 @@
+interface Date {
+>         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+      expected: DateConstructor
+
+interface Date {
+>         ^^^^: any   (TyAny) (BindingIdentifier)
+      expected: DateConstructor
+
+    toTemporalInstant(): Temporal.Instant;
+>   ^^^^^^^^^^^^^^^^^: { (): Temporal.Instant; (): Temporal.Instant; }   (TyObject) (TSMethodSignature)
+
+    toTemporalInstant(): Temporal.Instant;
+>                        ^^^^^^^^: typeof Temporal   (TyTypeQuery) (IdentifierReference)
+
+    toTemporalInstant(): Temporal.Instant;
+>                                 ^^^^^^^: Temporal.Instant   (TyTypeReference) (TSTypeReference)
+                                 expected: Temporal.InstantConstructor

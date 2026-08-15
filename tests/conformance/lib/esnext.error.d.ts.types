@@ -1,0 +1,20 @@
+interface ErrorConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ErrorConstructor {
+>         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+    isError(error: unknown): error is Error;
+>   ^^^^^^^: { (error: unknown): error is Error; (error: unknown): error is Error; }   (TyObject) (TSMethodSignature)
+
+    isError(error: unknown): error is Error;
+>           ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+
+    isError(error: unknown): error is Error;
+>                            ^^^^^: unknown   (TyUnknown) (IdentifierName)
+
+    isError(error: unknown): error is Error;
+>                                     ^^^^^: ErrorConstructor   (TyTypeReference) (TSTypeReference)
+
+    isError(error: unknown): error is Error;
+>                                     ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)

@@ -1,0 +1,376 @@
+interface ReadonlySetLike<T> {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReadonlySetLike<T> {
+>         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ReadonlySetLike<T> {
+>                         ^: any   (TyAny) (TSTypeParameter)
+
+    keys(): Iterator<T>;
+>   ^^^^: { (): Iterator<T>; (): Iterator<T>; }   (TyObject) (TSMethodSignature)
+
+    keys(): Iterator<T>;
+>           ^^^^^^^^: typeof Iterator   (TyTypeQuery) (TSTypeReference)
+            expected: IteratorConstructor
+
+    keys(): Iterator<T>;
+>           ^^^^^^^^: typeof Iterator   (TyTypeQuery) (IdentifierReference)
+            expected: IteratorConstructor
+
+    keys(): Iterator<T>;
+>                    ^: any   (TyAny) (TSTypeReference)
+
+    has(value: T): boolean;
+>   ^^^: { (value: T): boolean; (value: T): boolean; }   (TyObject) (TSMethodSignature)
+
+    has(value: T): boolean;
+>       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+    has(value: T): boolean;
+>              ^: any   (TyAny) (TSTypeReference)
+
+    readonly size: number;
+>            ^^^^: number   (TyNumber) (TSPropertySignature)
+
+interface Set<T> {
+>         ^^^: any   (TyAny) (TSInterfaceDeclaration)
+     expected: SetConstructor
+
+interface Set<T> {
+>         ^^^: any   (TyAny) (BindingIdentifier)
+     expected: SetConstructor
+
+interface Set<T> {
+>             ^: any   (TyAny) (TSTypeParameter)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>   ^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }   (TyObject) (TSMethodSignature)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>         ^: any   (TyAny) (TSTypeParameter)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>            ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                   ^: any   (TyAny) (TSTypeReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                        ^^^: any   (TyAny) (TSTypeReference)
+                                    expected: SetConstructor
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                        ^^^: any   (TyAny) (IdentifierReference)
+                                    expected: SetConstructor
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                            ^: any   (TyAny) (TSTypeReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                ^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>   ^^^^^^^^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T & U>; <U>(other: ReadonlySetLike<U>): Set<T & U>; }   (TyObject) (TSMethodSignature)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                ^: any   (TyAny) (TSTypeParameter)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                   ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                          ^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                               ^^^: any   (TyAny) (TSTypeReference)
+                                           expected: SetConstructor
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                               ^^^: any   (TyAny) (IdentifierReference)
+                                           expected: SetConstructor
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                                   ^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                                       ^: any   (TyAny) (TSTypeReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>   ^^^^^^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T>; <U>(other: ReadonlySetLike<U>): Set<T>; }   (TyObject) (TSMethodSignature)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>              ^: any   (TyAny) (TSTypeParameter)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                 ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                        ^: any   (TyAny) (TSTypeReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                             ^^^: any   (TyAny) (TSTypeReference)
+                                         expected: SetConstructor
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                             ^^^: any   (TyAny) (IdentifierReference)
+                                         expected: SetConstructor
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                                 ^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>   ^^^^^^^^^^^^^^^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }   (TyObject) (TSMethodSignature)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                       ^: any   (TyAny) (TSTypeParameter)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                          ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                 ^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                      ^^^: any   (TyAny) (TSTypeReference)
+                                                  expected: SetConstructor
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                      ^^^: any   (TyAny) (IdentifierReference)
+                                                  expected: SetConstructor
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                          ^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                              ^: any   (TyAny) (TSTypeReference)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>   ^^^^^^^^^^: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }   (TyObject) (TSMethodSignature)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>              ^^^^^: ReadonlySetLike<unknown>   (TyTypeReference) (BindingIdentifier)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>                     ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>   ^^^^^^^^^^^^: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }   (TyObject) (TSMethodSignature)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>                ^^^^^: ReadonlySetLike<unknown>   (TyTypeReference) (BindingIdentifier)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>                       ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>   ^^^^^^^^^^^^^^: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }   (TyObject) (TSMethodSignature)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>                  ^^^^^: ReadonlySetLike<unknown>   (TyTypeReference) (BindingIdentifier)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+interface ReadonlySet<T> {
+>         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface ReadonlySet<T> {
+>         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface ReadonlySet<T> {
+>                     ^: any   (TyAny) (TSTypeParameter)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>   ^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }   (TyObject) (TSMethodSignature)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>         ^: any   (TyAny) (TSTypeParameter)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>            ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                   ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                   ^: any   (TyAny) (TSTypeReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                        ^^^: any   (TyAny) (TSTypeReference)
+                                    expected: SetConstructor
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                        ^^^: any   (TyAny) (IdentifierReference)
+                                    expected: SetConstructor
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                            ^: any   (TyAny) (TSTypeReference)
+
+    union<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                ^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>   ^^^^^^^^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T & U>; <U>(other: ReadonlySetLike<U>): Set<T & U>; }   (TyObject) (TSMethodSignature)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                ^: any   (TyAny) (TSTypeParameter)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                   ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                          ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                          ^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                               ^^^: any   (TyAny) (TSTypeReference)
+                                           expected: SetConstructor
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                               ^^^: any   (TyAny) (IdentifierReference)
+                                           expected: SetConstructor
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                                   ^: any   (TyAny) (TSTypeReference)
+
+    intersection<U>(other: ReadonlySetLike<U>): Set<T & U>;
+>                                                       ^: any   (TyAny) (TSTypeReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>   ^^^^^^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T>; <U>(other: ReadonlySetLike<U>): Set<T>; }   (TyObject) (TSMethodSignature)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>              ^: any   (TyAny) (TSTypeParameter)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                 ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                        ^: any   (TyAny) (TSTypeReference)
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                             ^^^: any   (TyAny) (TSTypeReference)
+                                         expected: SetConstructor
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                             ^^^: any   (TyAny) (IdentifierReference)
+                                         expected: SetConstructor
+
+    difference<U>(other: ReadonlySetLike<U>): Set<T>;
+>                                                 ^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>   ^^^^^^^^^^^^^^^^^^^: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }   (TyObject) (TSMethodSignature)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                       ^: any   (TyAny) (TSTypeParameter)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                          ^^^^^: ReadonlySetLike<U>   (TyTypeReference) (BindingIdentifier)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                 ^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                      ^^^: any   (TyAny) (TSTypeReference)
+                                                  expected: SetConstructor
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                      ^^^: any   (TyAny) (IdentifierReference)
+                                                  expected: SetConstructor
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                          ^: any   (TyAny) (TSTypeReference)
+
+    symmetricDifference<U>(other: ReadonlySetLike<U>): Set<T | U>;
+>                                                              ^: any   (TyAny) (TSTypeReference)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>   ^^^^^^^^^^: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }   (TyObject) (TSMethodSignature)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>              ^^^^^: ReadonlySetLike<unknown>   (TyTypeReference) (BindingIdentifier)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    isSubsetOf(other: ReadonlySetLike<unknown>): boolean;
+>                     ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>   ^^^^^^^^^^^^: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }   (TyObject) (TSMethodSignature)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>                ^^^^^: ReadonlySetLike<unknown>   (TyTypeReference) (BindingIdentifier)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    isSupersetOf(other: ReadonlySetLike<unknown>): boolean;
+>                       ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>   ^^^^^^^^^^^^^^: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }   (TyObject) (TSMethodSignature)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>                  ^^^^^: ReadonlySetLike<unknown>   (TyTypeReference) (BindingIdentifier)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+    isDisjointFrom(other: ReadonlySetLike<unknown>): boolean;
+>                         ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
