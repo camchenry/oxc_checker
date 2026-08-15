@@ -961,10 +961,7 @@ fn type_matches_typeof<'a>(
 ) -> bool {
     let data = checker.ty_kind(ty);
     match witness {
-        TypeofWitness::String => matches!(
-            data,
-            TyKind::String | TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_)
-        ),
+        TypeofWitness::String => ty.is_string_like(checker.arena()),
         TypeofWitness::Number => {
             matches!(data, TyKind::Number | TyKind::NumberLiteral(_))
         }

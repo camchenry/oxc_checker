@@ -2108,6 +2108,13 @@ impl<'a> Ty<'a> {
                 | TyKind::UniqueSymbol(_)
         )
     }
+    /// Returns `true` if the type is string-like and can be used for concatenating two strings at runtime
+    pub fn is_string_like(&self, arena: CheckerArena<'a>) -> bool {
+        matches!(
+            arena.ty_kind(*self),
+            TyKind::String | TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_)
+        )
+    }
 
     /// Returns `true` if the type is a numerical index type.
     pub fn is_number_like(&self, arena: CheckerArena<'a>) -> bool {

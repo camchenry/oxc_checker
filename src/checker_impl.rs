@@ -1604,8 +1604,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             BinaryOperator::GreaterThan => Ty::boolean(),
             BinaryOperator::GreaterEqualThan => Ty::boolean(),
             BinaryOperator::Addition
-                if self.is_string_like_for_addition(left)
-                    || self.is_string_like_for_addition(right) =>
+                if left.is_string_like(self.arena()) || right.is_string_like(self.arena()) =>
             {
                 Ty::string()
             }
@@ -1648,8 +1647,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         match assignment_expression.operator {
             AssignmentOperator::Assign => right,
             AssignmentOperator::Addition => {
-                if self.is_string_like_for_addition(left) || self.is_string_like_for_addition(right)
-                {
+                if left.is_string_like(self.arena()) || right.is_string_like(self.arena()) {
                     Ty::string()
                 } else if left.is_any_like(self.arena()) {
                     left
@@ -2230,10 +2228,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         );
 
         Ty::union(self.arena(), [consequent, alternate])
-    }
-
-    fn is_string_like_for_addition(&self, ty: Ty<'a>) -> bool {
-        matches!(self.ty_kind(ty), TyKind::String | TyKind::StringLiteral(_))
     }
 
     /// Resolve a TypeScript type annotation, if any.
@@ -6313,7 +6307,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     property_name,
                 );
             }
-            TyKind::String | TyKind::StringLiteral(_) => {
+            _ if object_type.is_string_like(self.arena()) => {
                 Some(self.get_global_string_type(program_id))
             }
             TyKind::Boolean | TyKind::BooleanLiteral(_) => {
@@ -11002,14 +10996,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )),
                 ..IterationTypes::default()
             },
-            TyKind::String | TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_)
-                if resolver == IterationResolverKind::Sync =>
-            {
-                IterationTypes {
-                    yield_type: Some(Ty::string()),
-                    ..IterationTypes::default()
-                }
-            }
             TyKind::TypeReference(reference) => {
                 let fast =
                     self.get_global_iteration_types_fast(program_id, reference, resolver, true);
@@ -11023,6 +11009,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         depth + 1,
                         context,
                     )
+                }
+            }
+            _ if iterable_type.is_string_like(self.arena())
+                && resolver == IterationResolverKind::Sync =>
+            {
+                IterationTypes {
+                    yield_type: Some(Ty::string()),
+                    ..IterationTypes::default()
                 }
             }
             _ => self.get_iteration_types_of_iterable_slow(
