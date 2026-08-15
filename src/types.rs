@@ -825,6 +825,7 @@ impl<'a> TupleElement<'a> {
     }
 
     /// Maps the type of this tuple element while preserving its kind.
+    #[must_use]
     pub fn map_ty(self, f: impl FnOnce(Ty<'a>) -> Ty<'a>) -> Self {
         match self {
             TupleElement::Regular(ty) => TupleElement::Regular(f(ty)),
