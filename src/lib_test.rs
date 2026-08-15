@@ -544,7 +544,7 @@ fn checker_renders_transparent_default_lib_type_aliases() {
         .unwrap();
     let node = NodeRef::new(ret.program_id, node_id);
     let ty = checker.get_type_at_location(node);
-    let TyKind::Array(array) = checker.arena.type_data(ty) else {
+    let TyKind::Array(array) = checker.arena.ty_kind(ty) else {
         panic!("expected an array type");
     };
     let method_node_id = ret
@@ -1305,10 +1305,10 @@ fn enum_member_types_are_canonical_across_locations() {
 
     assert_eq!(declaration_type, value_type);
     assert!(matches!(
-        ret.arena.type_data(declaration_type),
+        ret.arena.ty_kind(declaration_type),
         types::TyKind::TypeReference(reference) if reference.target.is_some()
     ));
-    let types::TyKind::Union(union) = ret.arena.type_data(members_type) else {
+    let types::TyKind::Union(union) = ret.arena.ty_kind(members_type) else {
         panic!("expected enum member union");
     };
     assert_eq!(union.types.len(), 2);
@@ -2680,11 +2680,11 @@ fn tuple_spreads_are_limited_to_ten_thousand_elements() {
     ",
     );
 
-    let TyKind::Tuple(t13) = ret.arena.type_data(get_type_alias_type(&ret, "T13")) else {
+    let TyKind::Tuple(t13) = ret.arena.ty_kind(get_type_alias_type(&ret, "T13")) else {
         panic!("expected T13 to remain a tuple");
     };
     assert_eq!(t13.elements.len(), 8192);
-    let TyKind::Tuple(a13) = ret.arena.type_data(get_global_symbol_type(&ret, "a13")) else {
+    let TyKind::Tuple(a13) = ret.arena.ty_kind(get_global_symbol_type(&ret, "a13")) else {
         panic!("expected a13 to remain a tuple");
     };
     assert_eq!(a13.elements.len(), 8192);
@@ -2702,7 +2702,7 @@ fn tuple_spreads_are_limited_to_ten_thousand_elements() {
     let tuple_9999 = Ty::tuple(ret.arena, vec![TupleElement::Regular(Ty::any()); 9999]);
     let TyKind::Tuple(tuple) = ret
         .arena
-        .type_data(Ty::tuple(ret.arena, vec![TupleElement::Rest(tuple_9999)]))
+        .ty_kind(Ty::tuple(ret.arena, vec![TupleElement::Rest(tuple_9999)]))
     else {
         panic!("expected a 9,999-element spread to remain a tuple");
     };
@@ -2995,7 +2995,7 @@ fn recursive_type_instantiation_depth_produces_error_type() {
     );
 
     let small_type = get_type_alias_type(&ret, "Small");
-    let TyKind::Tuple(small) = ret.arena.type_data(small_type) else {
+    let TyKind::Tuple(small) = ret.arena.ty_kind(small_type) else {
         panic!(
             "expected a tuple, got {}",
             small_type.to_type_string(ret.arena)
@@ -3049,7 +3049,7 @@ fn recursive_tuple_rest_aliases_are_preserved_while_active() {
     );
 
     let promised = get_type_alias_type(&ret, "Promised");
-    let TyKind::Tuple(tuple) = ret.arena.type_data(promised) else {
+    let TyKind::Tuple(tuple) = ret.arena.ty_kind(promised) else {
         panic!(
             "expected an empty tuple, got {}",
             promised.to_type_string(ret.arena)
@@ -3509,21 +3509,21 @@ fn bigint_literal_types_store_parsed_value_and_source_metadata() {
     assert_eq!(literal_types.len(), 4);
     assert_eq!(literal_types[0], literal_types[3]);
 
-    let TyKind::BigIntLiteral(decimal) = ret.arena.type_data(literal_types[0]) else {
+    let TyKind::BigIntLiteral(decimal) = ret.arena.ty_kind(literal_types[0]) else {
         panic!("expected decimal bigint literal type")
     };
     assert_eq!(decimal.value, "1");
     assert_eq!(decimal.raw.as_ref().map(oxc_str::Str::as_str), Some("1n"));
     assert_eq!(decimal.base, BigintBase::Decimal);
 
-    let TyKind::BigIntLiteral(hex) = ret.arena.type_data(literal_types[1]) else {
+    let TyKind::BigIntLiteral(hex) = ret.arena.ty_kind(literal_types[1]) else {
         panic!("expected hexadecimal bigint literal type")
     };
     assert_eq!(hex.value, "2");
     assert_eq!(hex.raw.as_ref().map(oxc_str::Str::as_str), Some("0x2n"));
     assert_eq!(hex.base, BigintBase::Hex);
 
-    let TyKind::BigIntLiteral(zero) = ret.arena.type_data(literal_types[2]) else {
+    let TyKind::BigIntLiteral(zero) = ret.arena.ty_kind(literal_types[2]) else {
         panic!("expected binary bigint literal type")
     };
     assert_eq!(zero.value, "0");
@@ -5961,7 +5961,7 @@ fn rest_function_parameters_render_in_signatures() {
         "(a: string, b?: string, c?: number, ...d: number[]) => void"
     );
     let ty = get_global_symbol_type(&ret, "foo");
-    let TyKind::Function(function) = ret.arena.type_data(ty) else {
+    let TyKind::Function(function) = ret.arena.ty_kind(ty) else {
         panic!("expected function type");
     };
     let rest_parameter = function.parameters[3];

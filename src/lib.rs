@@ -35,7 +35,7 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
 }
 
 fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
-    match arena.type_data(ty) {
+    match arena.ty_kind(ty) {
         types::TyKind::StringLiteral(literal) => Some(literal.value),
         types::TyKind::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
         types::TyKind::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
@@ -156,7 +156,7 @@ fn index_signature_key_types<'a>(
     arena: CheckerArena<'a>,
     constraint: Ty<'a>,
 ) -> Option<Vec<Ty<'a>>> {
-    match arena.type_data(constraint) {
+    match arena.ty_kind(constraint) {
         types::TyKind::String => Some(vec![Ty::string()]),
         types::TyKind::Number => Some(vec![Ty::number()]),
         types::TyKind::Symbol => Some(vec![Ty::symbol()]),

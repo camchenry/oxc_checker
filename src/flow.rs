@@ -20,7 +20,7 @@ use crate::{
     flow_graph::{self, ArrayMutationKind, BranchEffect},
     program::ProgramId,
     type_set::UnionAccumulator,
-    types::{TupleElement, Ty, TyTypePredicateKind, TyKind},
+    types::{TupleElement, Ty, TyKind, TyTypePredicateKind},
 };
 
 #[derive(Clone, Copy)]
@@ -336,7 +336,7 @@ fn evolving_array_change<'a>(
                 Some(assignment_id),
                 GetTypeFlags::CONTEXT_FREE,
             );
-            match checker.arena().type_data(assigned_type) {
+            match checker.ty_kind(assigned_type) {
                 TyKind::Array(array) => Some(EvolvingArrayChange::Reset(array.element_type)),
                 TyKind::Tuple(tuple) => Some(EvolvingArrayChange::Reset(Ty::union(
                     checker.arena(),
@@ -377,7 +377,7 @@ fn expression_is_empty_array_literal(expression: &Expression<'_>) -> bool {
 }
 
 fn finalized_empty_element_type<'a>(checker: &CheckerReturn<'a, '_>, base_type: Ty<'a>) -> Ty<'a> {
-    match checker.arena().type_data(base_type) {
+    match checker.ty_kind(base_type) {
         TyKind::Array(array) if array.element_type.is_never() => Ty::any(),
         TyKind::Array(array) => array.element_type,
         _ => Ty::any(),
@@ -744,7 +744,7 @@ fn narrow_by_in_property<'a>(
 
     let property_key = Ty::string_literal(checker.arena(), property_name);
     let property_record = checker.get_global_record_type(program_id, property_key, Ty::unknown());
-    match checker.arena().type_data(ty) {
+    match checker.ty_kind(ty) {
         TyKind::Unknown => property_record,
         TyKind::PrimitiveObject
         | TyKind::Function(_)
@@ -759,7 +759,7 @@ fn remove_undefined_from_type<'a>(
     node: NodeRef,
     ty: Ty<'a>,
 ) -> Ty<'a> {
-    if !matches!(checker.arena().type_data(ty), TyKind::Union(_)) {
+    if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
         return non_undefined_constituent(checker, node, ty).unwrap_or_else(Ty::never);
     }
     ty.map_union(checker.arena(), |ty| {
@@ -791,7 +791,7 @@ fn non_undefined_constituent<'a>(
 }
 
 fn remove_null_from_type<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
-    if !matches!(checker.arena().type_data(ty), TyKind::Union(_)) {
+    if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
         return non_null_constituent(checker, node, ty).unwrap_or_else(Ty::never);
     }
     ty.map_union(checker.arena(), |ty| {
@@ -947,7 +947,7 @@ fn filter_type<'a>(
     ty: Ty<'a>,
     keep: impl Fn(Ty<'a>) -> bool + Copy,
 ) -> Ty<'a> {
-    if !matches!(checker.arena().type_data(ty), TyKind::Union(_)) {
+    if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
         return if keep(ty) { ty } else { Ty::never() };
     }
     ty.map_union(checker.arena(), |ty| keep(ty).then_some(ty))
@@ -959,7 +959,7 @@ fn type_matches_typeof<'a>(
     ty: Ty<'a>,
     witness: TypeofWitness,
 ) -> bool {
-    let data = checker.arena().type_data(ty);
+    let data = checker.ty_kind(ty);
     match witness {
         TypeofWitness::String => matches!(
             data,
@@ -991,7 +991,7 @@ fn type_matches_typeof<'a>(
 
 /// Return whether a constituent is currently known to be removed by a truthy check.
 fn is_definitely_falsy<'a>(checker: &CheckerReturn<'a, '_>, ty: Ty<'a>) -> bool {
-    match checker.arena().type_data(ty) {
+    match checker.ty_kind(ty) {
         TyKind::Undefined | TyKind::Null => true,
         TyKind::BooleanLiteral(value) => !value,
         _ => false,

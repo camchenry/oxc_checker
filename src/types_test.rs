@@ -250,7 +250,7 @@ fn union_preserves_distinct_anonymous_object_identities() {
     let second = Ty::object(arena, [Ty::property("value", Ty::string())]);
 
     let union = Ty::r#union(arena, [first, second]);
-    let TyKind::Union(union) = arena.type_data(union) else {
+    let TyKind::Union(union) = arena.ty_kind(union) else {
         panic!("distinct anonymous types should form a union")
     };
     assert_eq!(union.types.as_slice(), &[first, second]);
@@ -361,7 +361,7 @@ fn empty_object_intersection_preserves_unresolved_type_parameters() {
     let intersection = Ty::intersection(arena, [type_parameter, empty_object]);
 
     assert!(matches!(
-        arena.type_data(intersection),
+        arena.ty_kind(intersection),
         TyKind::Intersection(_)
     ));
 }
@@ -425,7 +425,7 @@ fn union_accumulator_spills_seen_ids_without_changing_members() {
     accumulator.extend(members.iter().copied());
     let union = accumulator.build();
 
-    let TyKind::Union(union) = arena.type_data(union) else {
+    let TyKind::Union(union) = arena.ty_kind(union) else {
         panic!("twenty distinct literals should produce a union");
     };
     assert_eq!(union.types.as_slice(), members);

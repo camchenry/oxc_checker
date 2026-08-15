@@ -29,7 +29,7 @@ pub(crate) fn get_type_facts<'a>(
 }
 
 fn get_type_facts_worker<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFacts {
-    match arena.type_data(ty) {
+    match arena.ty_kind(ty) {
         TyKind::String
         | TyKind::Number
         | TyKind::Boolean

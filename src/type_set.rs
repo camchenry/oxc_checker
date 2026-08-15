@@ -121,18 +121,18 @@ fn add_type_to_union<'a>(
     if !seen_ids.insert(ty.id()) {
         return;
     }
-    if let TyKind::Union(union) = arena.type_data(ty) {
+    if let TyKind::Union(union) = arena.ty_kind(ty) {
         for ty in &union.types {
             add_type_to_union(arena, type_set, seen_ids, *ty);
         }
-    } else if let TyKind::TypeReference(reference) = arena.type_data(ty)
+    } else if let TyKind::TypeReference(reference) = arena.ty_kind(ty)
         && reference.is_bare()
         && reference.target.is_some()
     {
         // Symbol-backed references are interned, so handle identity is sufficient here.
         type_set.push(ty);
     } else if matches!(
-        arena.type_data(ty),
+        arena.ty_kind(ty),
         TyKind::StringLiteral(_)
             | TyKind::NumberLiteral(_)
             | TyKind::BigIntLiteral(_)
@@ -140,8 +140,7 @@ fn add_type_to_union<'a>(
     ) {
         // Canonical literal types are interned, so `seen_ids` has already removed duplicates.
         type_set.push(ty);
-    } else if (matches!(arena.type_data(ty), TyKind::Object(_))
-        && !arena.is_fresh_object_literal(ty))
+    } else if (matches!(arena.ty_kind(ty), TyKind::Object(_)) && !arena.is_fresh_object_literal(ty))
         || !type_set
             .iter()
             .any(|existing| union_constituents_are_identical(arena, *existing, ty))
@@ -158,7 +157,7 @@ fn union_constituents_are_identical<'a>(
     if left == right {
         return true;
     }
-    match (arena.type_data(left), arena.type_data(right)) {
+    match (arena.ty_kind(left), arena.ty_kind(right)) {
         (TyKind::Object(_), TyKind::Object(_)) => {
             arena.is_fresh_object_literal(left)
                 && arena.is_fresh_object_literal(right)
@@ -188,16 +187,16 @@ pub(crate) fn reduce_intersection_type<'a>(
 
     let empty_object = type_set
         .iter()
-        .find(|ty| matches!(arena.type_data(**ty), TyKind::Object(object) if object.is_empty()));
+        .find(|ty| matches!(arena.ty_kind(**ty), TyKind::Object(object) if object.is_empty()));
     if let Some(empty_object) = empty_object.copied() {
         for ty in &mut type_set {
-            if matches!(arena.type_data(*ty), TyKind::Union(_)) {
+            if matches!(arena.ty_kind(*ty), TyKind::Union(_)) {
                 *ty = intersect_with_empty_object(arena, *ty, empty_object);
             }
         }
         if type_set
             .iter()
-            .any(|ty| matches!(arena.type_data(*ty), TyKind::Null | TyKind::Undefined))
+            .any(|ty| matches!(arena.ty_kind(*ty), TyKind::Null | TyKind::Undefined))
         {
             return Ty::never();
         }
@@ -214,11 +213,11 @@ pub(crate) fn reduce_intersection_type<'a>(
 
     let has_object_like_member = type_set
         .iter()
-        .filter(|ty| !matches!(arena.type_data(**ty), TyKind::Object(object) if object.is_empty()))
+        .filter(|ty| !matches!(arena.ty_kind(**ty), TyKind::Object(object) if object.is_empty()))
         .any(|ty| is_empty_object_intersection_identity_target(arena, *ty));
     if has_object_like_member {
         type_set.retain(
-            |ty| !matches!(arena.type_data(*ty), TyKind::Object(object) if object.is_empty()),
+            |ty| !matches!(arena.ty_kind(*ty), TyKind::Object(object) if object.is_empty()),
         );
     }
 
@@ -238,7 +237,7 @@ fn add_type_to_intersection<'a>(
     if !seen_ids.insert(ty.id()) {
         return;
     }
-    if let TyKind::Intersection(intersection) = arena.type_data(ty) {
+    if let TyKind::Intersection(intersection) = arena.ty_kind(ty) {
         for ty in &intersection.types {
             add_type_to_intersection(arena, type_set, seen_ids, *ty);
         }
@@ -252,7 +251,7 @@ fn intersect_with_empty_object<'a>(
     ty: Ty<'a>,
     empty_object: Ty<'a>,
 ) -> Ty<'a> {
-    match arena.type_data(ty) {
+    match arena.ty_kind(ty) {
         TyKind::Union(union) => Ty::union(
             arena,
             union
@@ -268,7 +267,7 @@ fn intersect_with_empty_object<'a>(
 }
 
 fn is_empty_object_intersection_identity_target<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> bool {
-    match arena.type_data(ty) {
+    match arena.ty_kind(ty) {
         TyKind::Number
         | TyKind::String
         | TyKind::Boolean
@@ -303,21 +302,21 @@ fn remove_redundant_primitive_intersection_types<'a>(
 ) {
     let has_string_literal = type_set.iter().any(|ty| {
         matches!(
-            arena.type_data(*ty),
+            arena.ty_kind(*ty),
             TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_)
         )
     });
     let has_number_literal = type_set
         .iter()
-        .any(|ty| matches!(arena.type_data(*ty), TyKind::NumberLiteral(_)));
+        .any(|ty| matches!(arena.ty_kind(*ty), TyKind::NumberLiteral(_)));
     let has_boolean_literal = type_set
         .iter()
-        .any(|ty| matches!(arena.type_data(*ty), TyKind::BooleanLiteral(_)));
+        .any(|ty| matches!(arena.ty_kind(*ty), TyKind::BooleanLiteral(_)));
     let has_bigint_literal = type_set
         .iter()
-        .any(|ty| matches!(arena.type_data(*ty), TyKind::BigIntLiteral(_)));
+        .any(|ty| matches!(arena.ty_kind(*ty), TyKind::BigIntLiteral(_)));
 
-    type_set.retain(|ty| match arena.type_data(*ty) {
+    type_set.retain(|ty| match arena.ty_kind(*ty) {
         TyKind::String => !has_string_literal,
         TyKind::Number => !has_number_literal,
         TyKind::Boolean => !has_boolean_literal,
@@ -346,14 +345,14 @@ fn remove_redundant_literal_types<'a>(arena: CheckerArena<'a>, type_set: &mut Un
     let template_literals = (!has_string).then(|| {
         type_set
             .iter()
-            .filter_map(|ty| match arena.type_data(*ty) {
+            .filter_map(|ty| match arena.ty_kind(*ty) {
                 TyKind::TemplateLiteral(template_literal) => Some((*ty, template_literal)),
                 _ => None,
             })
             .collect::<Vec<_>>()
     });
 
-    type_set.retain(|ty| match arena.type_data(*ty) {
+    type_set.retain(|ty| match arena.ty_kind(*ty) {
         TyKind::StringLiteral(string_literal) => {
             template_literals.as_ref().is_some_and(|templates| {
                 !templates.iter().any(|(_, template_literal)| {
@@ -381,12 +380,12 @@ fn remove_redundant_literal_types<'a>(arena: CheckerArena<'a>, type_set: &mut Un
 fn reduce_boolean_literal_union<'a>(arena: CheckerArena<'a>, type_set: &mut UnionTypes<'a>) {
     let has_true = type_set
         .iter()
-        .any(|ty| matches!(arena.type_data(*ty), TyKind::BooleanLiteral(true)));
+        .any(|ty| matches!(arena.ty_kind(*ty), TyKind::BooleanLiteral(true)));
     let has_false = type_set
         .iter()
-        .any(|ty| matches!(arena.type_data(*ty), TyKind::BooleanLiteral(false)));
+        .any(|ty| matches!(arena.ty_kind(*ty), TyKind::BooleanLiteral(false)));
     if has_true && has_false {
-        type_set.retain(|ty| !matches!(arena.type_data(*ty), TyKind::BooleanLiteral(_)));
+        type_set.retain(|ty| !matches!(arena.ty_kind(*ty), TyKind::BooleanLiteral(_)));
         if !type_set.contains(&Ty::Boolean) {
             type_set.push(Ty::Boolean);
         }
@@ -439,7 +438,7 @@ fn template_literal_remaining_matches<'a>(
         .get(expression_index + 1)
         .map_or("", |quasi| quasi.value);
 
-    match arena.type_data(*expression) {
+    match arena.ty_kind(*expression) {
         TyKind::String => {
             if next_quasi.is_empty() {
                 return string_split_indices(&value[offset..]).any(|split_index| {

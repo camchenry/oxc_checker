@@ -162,7 +162,7 @@ impl<'a> TypeMapper<'a> {
         &self,
         arena: CheckerArena<'a>,
     ) -> Option<SmallVec<[MapperCacheEntry<'a>; 1]>> {
-        let source_key = |source: Ty<'a>| match arena.type_data(source) {
+        let source_key = |source: Ty<'a>| match arena.ty_kind(source) {
             TyKind::TypeReference(reference)
                 if reference.is_bare() && reference.target.is_none() =>
             {
@@ -222,7 +222,7 @@ impl<'a> TypeMapper<'a> {
                         return None;
                     }
                     fixed.borrow_mut()[index] = true;
-                    let resolved = match contextual_arena.type_data(*source) {
+                    let resolved = match contextual_arena.ty_kind(*source) {
                         TyKind::TypeReference(reference) if reference.is_bare() => {
                             resolver.borrow_mut()(reference.name)
                         }
@@ -311,7 +311,7 @@ fn is_bare_type_reference_with_name<'a>(
     ty: Ty<'a>,
     names: &[&'a str],
 ) -> bool {
-    matches!(arena.type_data(ty), TyKind::TypeReference(reference) if reference.is_bare() && names.contains(&reference.name))
+    matches!(arena.ty_kind(ty), TyKind::TypeReference(reference) if reference.is_bare() && names.contains(&reference.name))
 }
 
 #[cfg(test)]

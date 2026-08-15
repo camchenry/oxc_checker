@@ -19,7 +19,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return false;
         }
 
-        if matches!(self.arena().type_data(source), TyKind::GlobalThis) {
+        if matches!(self.arena().ty_kind(source), TyKind::GlobalThis) {
             let property_type = |name| {
                 if name == "globalThis" {
                     Some(Ty::global_this())
@@ -29,7 +29,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         .map(|symbol| self.get_type_of_symbol(symbol))
                 }
             };
-            match self.arena().type_data(target) {
+            match self.arena().ty_kind(target) {
                 TyKind::PrimitiveObject => return true,
                 TyKind::Object(object) => {
                     return object.properties.iter().all(|property| {
@@ -54,12 +54,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
 
-        if let TyKind::Keyof(keyof) = self.arena().type_data(target)
-            && matches!(self.arena().type_data(keyof.target), TyKind::GlobalThis)
+        if let TyKind::Keyof(keyof) = self.arena().ty_kind(target)
+            && matches!(self.arena().ty_kind(keyof.target), TyKind::GlobalThis)
             && !source.is_any_like(self.arena())
             && !source.is_never()
         {
-            return match self.arena().type_data(source) {
+            return match self.arena().ty_kind(source) {
                 TyKind::Union(union) => union
                     .types
                     .iter()
@@ -74,7 +74,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let references_match = matches!(
-            (self.arena().type_data(source), self.arena().type_data(target)),
+            (self.arena().ty_kind(source), self.arena().ty_kind(target)),
             (TyKind::TypeReference(source), TyKind::TypeReference(target))
                 if source.has_identical_target(target)
                     && source.type_arguments.len() == target.type_arguments.len()
@@ -94,8 +94,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let next_depth = depth + 1;
 
         match (
-            self.arena().type_data(source),
-            self.arena().type_data(target),
+            self.arena().ty_kind(source),
+            self.arena().ty_kind(target),
         ) {
             // `never` is not assignable to any type
             (TyKind::Never, _) => true,
@@ -318,7 +318,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     }
 
     fn property_name_from_key_type(&self, ty: Ty<'a>) -> Option<&'a str> {
-        match self.arena().type_data(ty) {
+        match self.arena().ty_kind(ty) {
             TyKind::StringLiteral(literal) => Some(literal.value),
             TyKind::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
             TyKind::BooleanLiteral(true) => Some("true"),
@@ -332,7 +332,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return false;
         }
 
-        match self.arena().type_data(target) {
+        match self.arena().ty_kind(target) {
             TyKind::Object(object) => object
                 .properties
                 .iter()
