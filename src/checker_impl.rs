@@ -1032,7 +1032,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     }
                     return flow::get_flow_type_of_reference(
                         self,
-                        self.identifier_node_ref(program_id, identifier),
+                        NodeRef::new(program_id, identifier.node_id()),
                         symbol,
                         base_type,
                     );
@@ -1471,14 +1471,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
         None
-    }
-
-    fn identifier_node_ref(
-        &self,
-        program_id: ProgramId,
-        identifier: &IdentifierReference<'a>,
-    ) -> NodeRef {
-        NodeRef::new(program_id, identifier.node_id())
     }
 
     fn is_in_exported_declaration(&self, program_id: ProgramId, node_id: NodeId) -> bool {
@@ -7306,7 +7298,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 } else {
                     flow::get_flow_type_of_reference(
                         self,
-                        self.identifier_node_ref(program_id, identifier),
+                        NodeRef::new(program_id, identifier.node_id()),
                         symbol,
                         base_type,
                     )
@@ -10170,7 +10162,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         };
         let object_symbol =
-            self.get_symbol_at_location(self.identifier_node_ref(program_id, identifier))?;
+            self.get_symbol_at_location(NodeRef::new(program_id, identifier.node_id()))?;
         if object_symbol != host_symbol {
             return None;
         }
@@ -10910,8 +10902,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if identifier.name != "Symbol" {
             return None;
         }
-        let symbol =
-            self.get_symbol_at_location(self.identifier_node_ref(program_id, identifier))?;
+        let symbol = self.get_symbol_at_location(NodeRef::new(program_id, identifier.node_id()))?;
         if !self
             .store
             .entry(symbol.program_id)
