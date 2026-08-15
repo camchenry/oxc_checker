@@ -337,6 +337,8 @@ impl<'a> ExpressionCheckContext<'a> {
         }
     }
 
+    // TODO: Add a new_in_check_mode function
+
     fn with_flags(self, flags: GetTypeFlags) -> Self {
         Self { flags, ..self }
     }
@@ -9024,10 +9026,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .filter_map(|(index, argument)| {
                 let argument = argument.as_expression()?;
                 let argument_type = if argument.span() == array.span {
-                    self.get_type_of_array_expression_as_tuple_excluding_element(
+                    self.get_type_of_array_expression(
                         program_id,
                         array,
-                        element_index,
+                        None,
+                        ExpressionCheckContext::new(GetTypeFlags::NONE)
+                            .with_check_mode(CheckMode::FORCE_TUPLE),
                     )
                 } else {
                     let parameter_type = self.get_call_parameter_type_at(callee_function, index);
@@ -9065,6 +9069,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         parameter_type: Ty<'a>,
         flags: GetTypeFlags,
     ) -> Ty<'a> {
+        let contextual_type =
+            self.get_apparent_contextual_parameter_type(program_id, parameter_type);
+        let context = ExpressionCheckContext::new(flags)
+            .with_contextual_type(contextual_type, CheckMode::CONTEXTUAL);
+
         if let Expression::ArrayExpression(array) = argument
             && matches!(
                 self.arena()
@@ -9072,15 +9081,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 TypeData::Tuple(_)
             )
         {
-            return self.get_type_of_array_expression_as_tuple_for_call_argument(
-                program_id, array, node_id, flags,
+            return self.get_type_of_array_expression(
+                program_id,
+                array,
+                node_id,
+                ExpressionCheckContext::new(flags).with_check_mode(CheckMode::FORCE_TUPLE),
             );
         }
 
-        let contextual_type =
-            self.get_apparent_contextual_parameter_type(program_id, parameter_type);
-        let context = ExpressionCheckContext::new(flags)
-            .with_contextual_type(contextual_type, CheckMode::CONTEXTUAL);
         self.check_expression_with_context(
             program_id,
             AstKind::from_expression(argument),
@@ -9089,6 +9097,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         )
     }
 
+    // TODO(cleanup): move to inference module
     pub(crate) fn inference_contextual_parameter_type(
         &self,
         function: &TyFunction<'a>,
@@ -9107,63 +9116,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .find(|type_parameter| type_parameter.name == reference.name)
             .and_then(|type_parameter| type_parameter.constraint_type)
             .unwrap_or(parameter_type)
-    }
-
-    pub(crate) fn get_type_of_array_expression_as_tuple_for_call_argument(
-        &self,
-        program_id: ProgramId,
-        array: &'a ArrayExpression<'a>,
-        node_id: Option<NodeId>,
-        flags: GetTypeFlags,
-    ) -> Ty<'a> {
-        self.get_type_of_array_expression_as_tuple_with_excluded_element(
-            program_id, array, None, node_id, flags,
-        )
-    }
-
-    fn get_type_of_array_expression_as_tuple_excluding_element(
-        &self,
-        program_id: ProgramId,
-        array: &'a ArrayExpression<'a>,
-        excluded_index: usize,
-    ) -> Ty<'a> {
-        self.get_type_of_array_expression_as_tuple_with_excluded_element(
-            program_id,
-            array,
-            Some(excluded_index),
-            None,
-            GetTypeFlags::NONE,
-        )
-    }
-
-    fn get_type_of_array_expression_as_tuple_with_excluded_element(
-        &self,
-        program_id: ProgramId,
-        array: &'a ArrayExpression<'a>,
-        excluded_index: Option<usize>,
-        node_id: Option<NodeId>,
-        flags: GetTypeFlags,
-    ) -> Ty<'a> {
-        Ty::tuple(
-            self.arena(),
-            array
-                .elements
-                .iter()
-                .enumerate()
-                .map(|(index, element)| {
-                    if excluded_index == Some(index) {
-                        TupleElement::Regular(Ty::any())
-                    } else {
-                        TupleElement::Regular(self.get_type_of_array_expression_element(
-                            program_id,
-                            element,
-                            node_id,
-                            ExpressionCheckContext::new(flags),
-                        ))
-                    }
-                })
-                .collect(),
-        )
     }
 
     fn get_contextual_type_of_array_element_at(
