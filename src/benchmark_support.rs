@@ -112,10 +112,10 @@ pub fn check_program_with_plan_stats(
     let mut type_kinds = BTreeMap::new();
     for ty in checker.types() {
         let kind = match checker.arena.type_data(ty) {
-            crate::types::TypeData::TypeReference(reference) if reference.target.is_some() => {
+            crate::types::TyKind::TypeReference(reference) if reference.target.is_some() => {
                 "TyTypeReference(symbol)"
             }
-            crate::types::TypeData::TypeReference(_) => "TyTypeReference(name)",
+            crate::types::TyKind::TypeReference(_) => "TyTypeReference(name)",
             _ => ty.enum_variant_name(checker.arena),
         };
         *type_kinds.entry(kind).or_default() += 1;

@@ -36,15 +36,15 @@ fn property_key_name_str<'a>(key: &PropertyKey<'a>) -> Option<&'a str> {
 
 fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
     match arena.type_data(ty) {
-        types::TypeData::StringLiteral(literal) => Some(literal.value),
-        types::TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
-        types::TypeData::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
-        types::TypeData::TemplateLiteral(template) if template.expressions.is_empty() => {
+        types::TyKind::StringLiteral(literal) => Some(literal.value),
+        types::TyKind::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
+        types::TyKind::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
+        types::TyKind::TemplateLiteral(template) if template.expressions.is_empty() => {
             Some(template.quasis[0].value)
         }
-        types::TypeData::TypeReference(reference) if reference.is_bare() => Some(reference.name),
-        types::TypeData::String => Some(arena.str("string")),
-        types::TypeData::Number => Some(arena.str("number")),
+        types::TyKind::TypeReference(reference) if reference.is_bare() => Some(reference.name),
+        types::TyKind::String => Some(arena.str("string")),
+        types::TyKind::Number => Some(arena.str("number")),
         _ => None,
     }
 }
@@ -157,10 +157,10 @@ fn index_signature_key_types<'a>(
     constraint: Ty<'a>,
 ) -> Option<Vec<Ty<'a>>> {
     match arena.type_data(constraint) {
-        types::TypeData::String => Some(vec![Ty::string()]),
-        types::TypeData::Number => Some(vec![Ty::number()]),
-        types::TypeData::Symbol => Some(vec![Ty::symbol()]),
-        types::TypeData::Union(union) => {
+        types::TyKind::String => Some(vec![Ty::string()]),
+        types::TyKind::Number => Some(vec![Ty::number()]),
+        types::TyKind::Symbol => Some(vec![Ty::symbol()]),
+        types::TyKind::Union(union) => {
             let mut key_types = Vec::new();
             for ty in &union.types {
                 let keys = index_signature_key_types(arena, *ty)?;

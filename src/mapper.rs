@@ -3,7 +3,7 @@ use std::{cell::RefCell, rc::Rc};
 use oxc_allocator::Vec as ArenaVec;
 use smallvec::{SmallVec, smallvec};
 
-use crate::types::{CheckerArena, Ty, TyTypeParameter, TypeData, TypeId};
+use crate::types::{CheckerArena, Ty, TyTypeParameter, TyKind, TypeId};
 
 type TypeParameterResolver<'a> = Rc<RefCell<dyn FnMut(&str) -> Option<Ty<'a>> + 'a>>;
 type MapperPairs<'a> = SmallVec<[(Ty<'a>, Ty<'a>); 4]>;
@@ -163,7 +163,7 @@ impl<'a> TypeMapper<'a> {
         arena: CheckerArena<'a>,
     ) -> Option<SmallVec<[MapperCacheEntry<'a>; 1]>> {
         let source_key = |source: Ty<'a>| match arena.type_data(source) {
-            TypeData::TypeReference(reference)
+            TyKind::TypeReference(reference)
                 if reference.is_bare() && reference.target.is_none() =>
             {
                 MapperCacheSource::TypeParameter(reference.name)
@@ -223,7 +223,7 @@ impl<'a> TypeMapper<'a> {
                     }
                     fixed.borrow_mut()[index] = true;
                     let resolved = match contextual_arena.type_data(*source) {
-                        TypeData::TypeReference(reference) if reference.is_bare() => {
+                        TyKind::TypeReference(reference) if reference.is_bare() => {
                             resolver.borrow_mut()(reference.name)
                         }
                         _ => None,
@@ -311,7 +311,7 @@ fn is_bare_type_reference_with_name<'a>(
     ty: Ty<'a>,
     names: &[&'a str],
 ) -> bool {
-    matches!(arena.type_data(ty), TypeData::TypeReference(reference) if reference.is_bare() && names.contains(&reference.name))
+    matches!(arena.type_data(ty), TyKind::TypeReference(reference) if reference.is_bare() && names.contains(&reference.name))
 }
 
 #[cfg(test)]

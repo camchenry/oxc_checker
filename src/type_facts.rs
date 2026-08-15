@@ -1,6 +1,6 @@
 use bitflags::bitflags;
 
-use crate::types::{CheckerArena, Ty, TypeData};
+use crate::types::{CheckerArena, Ty, TyKind};
 
 bitflags! {
     /// Minimal facts about the possible runtime values of a type.
@@ -30,56 +30,56 @@ pub(crate) fn get_type_facts<'a>(
 
 fn get_type_facts_worker<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFacts {
     match arena.type_data(ty) {
-        TypeData::String
-        | TypeData::Number
-        | TypeData::Boolean
-        | TypeData::Bigint
-        | TypeData::Any
-        | TypeData::Error(_)
-        | TypeData::Unknown => TypeFacts::TRUTHY | TypeFacts::FALSY,
-        TypeData::StringLiteral(literal) => {
+        TyKind::String
+        | TyKind::Number
+        | TyKind::Boolean
+        | TyKind::Bigint
+        | TyKind::Any
+        | TyKind::Error(_)
+        | TyKind::Unknown => TypeFacts::TRUTHY | TypeFacts::FALSY,
+        TyKind::StringLiteral(literal) => {
             if literal.value.is_empty() {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
             }
         }
-        TypeData::NumberLiteral(literal) => {
+        TyKind::NumberLiteral(literal) => {
             if literal.value == 0.0 {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
             }
         }
-        TypeData::BooleanLiteral(value) => {
+        TyKind::BooleanLiteral(value) => {
             if value {
                 TypeFacts::TRUTHY
             } else {
                 TypeFacts::FALSY
             }
         }
-        TypeData::BigIntLiteral(literal) => {
+        TyKind::BigIntLiteral(literal) => {
             if literal.value == "0" {
                 TypeFacts::FALSY
             } else {
                 TypeFacts::TRUTHY
             }
         }
-        TypeData::Undefined | TypeData::Null | TypeData::Void => TypeFacts::FALSY,
-        TypeData::Symbol
-        | TypeData::UniqueSymbol(_)
-        | TypeData::PrimitiveObject
-        | TypeData::ModuleNamespace(_)
-        | TypeData::Function(_)
-        | TypeData::Array(_)
-        | TypeData::Tuple(_)
-        | TypeData::GlobalThis
-        | TypeData::TypeQuery(_) => TypeFacts::TRUTHY,
-        TypeData::Object(object) if !object.is_empty() => TypeFacts::TRUTHY,
-        TypeData::Union(union) => union.types.iter().fold(TypeFacts::NONE, |facts, ty| {
+        TyKind::Undefined | TyKind::Null | TyKind::Void => TypeFacts::FALSY,
+        TyKind::Symbol
+        | TyKind::UniqueSymbol(_)
+        | TyKind::PrimitiveObject
+        | TyKind::ModuleNamespace(_)
+        | TyKind::Function(_)
+        | TyKind::Array(_)
+        | TyKind::Tuple(_)
+        | TyKind::GlobalThis
+        | TyKind::TypeQuery(_) => TypeFacts::TRUTHY,
+        TyKind::Object(object) if !object.is_empty() => TypeFacts::TRUTHY,
+        TyKind::Union(union) => union.types.iter().fold(TypeFacts::NONE, |facts, ty| {
             facts | get_type_facts_worker(arena, *ty)
         }),
-        TypeData::Never => TypeFacts::NONE,
+        TyKind::Never => TypeFacts::NONE,
         _ => TypeFacts::TRUTHY | TypeFacts::FALSY,
     }
 }

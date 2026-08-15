@@ -250,7 +250,7 @@ fn union_preserves_distinct_anonymous_object_identities() {
     let second = Ty::object(arena, [Ty::property("value", Ty::string())]);
 
     let union = Ty::r#union(arena, [first, second]);
-    let TypeData::Union(union) = arena.type_data(union) else {
+    let TyKind::Union(union) = arena.type_data(union) else {
         panic!("distinct anonymous types should form a union")
     };
     assert_eq!(union.types.as_slice(), &[first, second]);
@@ -362,7 +362,7 @@ fn empty_object_intersection_preserves_unresolved_type_parameters() {
 
     assert!(matches!(
         arena.type_data(intersection),
-        TypeData::Intersection(_)
+        TyKind::Intersection(_)
     ));
 }
 
@@ -425,7 +425,7 @@ fn union_accumulator_spills_seen_ids_without_changing_members() {
     accumulator.extend(members.iter().copied());
     let union = accumulator.build();
 
-    let TypeData::Union(union) = arena.type_data(union) else {
+    let TyKind::Union(union) = arena.type_data(union) else {
         panic!("twenty distinct literals should produce a union");
     };
     assert_eq!(union.types.as_slice(), members);
@@ -463,12 +463,12 @@ fn union_reduction_absorbs_literals_contained_by_template_literals() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
     let literal_template =
-        arena.alloc_type(TypeData::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+        arena.alloc_type(TyKind::TemplateLiteral(arena.alloc(TyTemplateLiteral {
             quasis: arena.vec_from_iter([TemplateLiteralElement { value: "test" }]),
             expressions: arena.vec_from_iter([]),
         })));
     let pattern_template =
-        arena.alloc_type(TypeData::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+        arena.alloc_type(TyKind::TemplateLiteral(arena.alloc(TyTemplateLiteral {
             quasis: arena.vec_from_iter([
                 TemplateLiteralElement { value: "test" },
                 TemplateLiteralElement { value: "" },
@@ -487,7 +487,7 @@ fn union_reduction_absorbs_literals_contained_by_template_literals() {
     );
 
     let backtracking_template =
-        arena.alloc_type(TypeData::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+        arena.alloc_type(TyKind::TemplateLiteral(arena.alloc(TyTemplateLiteral {
             quasis: arena.vec_from_iter([
                 TemplateLiteralElement { value: "" },
                 TemplateLiteralElement { value: "a" },

@@ -37,7 +37,7 @@ bitflags! {
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
     allocator: &'a Allocator,
-    types: &'a RefCell<ArenaVec<'a, TypeData<'a>>>,
+    types: &'a RefCell<ArenaVec<'a, TyKind<'a>>>,
     interned_types: &'a InternedTypeCache<'a>,
 }
 
@@ -139,23 +139,23 @@ impl<'a> CheckerArena<'a> {
         {
             let mut types = arena.types.borrow_mut();
             for data in [
-                TypeData::None,
-                TypeData::Number,
-                TypeData::String,
-                TypeData::Boolean,
-                TypeData::Bigint,
-                TypeData::Symbol,
-                TypeData::Undefined,
-                TypeData::Null,
-                TypeData::Any,
-                TypeData::Unknown,
-                TypeData::Void,
-                TypeData::Never,
-                TypeData::PrimitiveObject,
-                TypeData::This,
-                TypeData::BooleanLiteral(false),
-                TypeData::BooleanLiteral(true),
-                TypeData::GlobalThis,
+                TyKind::None,
+                TyKind::Number,
+                TyKind::String,
+                TyKind::Boolean,
+                TyKind::Bigint,
+                TyKind::Symbol,
+                TyKind::Undefined,
+                TyKind::Null,
+                TyKind::Any,
+                TyKind::Unknown,
+                TyKind::Void,
+                TyKind::Never,
+                TyKind::PrimitiveObject,
+                TyKind::This,
+                TyKind::BooleanLiteral(false),
+                TyKind::BooleanLiteral(true),
+                TyKind::GlobalThis,
             ] {
                 types.push(data);
             }
@@ -183,7 +183,7 @@ impl<'a> CheckerArena<'a> {
         ArenaVec::from_iter_in(iter, &self.allocator)
     }
 
-    pub(crate) fn alloc_type(&self, data: TypeData<'a>) -> Ty<'a> {
+    pub(crate) fn alloc_type(&self, data: TyKind<'a>) -> Ty<'a> {
         let mut types = self.types.borrow_mut();
         let ty = Ty::from_index(types.len());
         types.push(data);
@@ -223,7 +223,7 @@ impl<'a> CheckerArena<'a> {
         if let Some(ty) = self.interned_types.conditionals.borrow().get(&key) {
             return *ty;
         }
-        let ty = self.alloc_type(TypeData::Conditional(self.alloc(TyConditional {
+        let ty = self.alloc_type(TyKind::Conditional(self.alloc(TyConditional {
             check_type,
             extends_type,
             true_type,
@@ -253,11 +253,11 @@ impl<'a> CheckerArena<'a> {
             return *ty;
         }
         let data = if union {
-            TypeData::Union(self.alloc(TyUnion {
+            TyKind::Union(self.alloc(TyUnion {
                 types: self.vec_from_iter(types),
             }))
         } else {
-            TypeData::Intersection(self.alloc(TyIntersection {
+            TyKind::Intersection(self.alloc(TyIntersection {
                 types: self.vec_from_iter(types),
             }))
         };
@@ -268,7 +268,7 @@ impl<'a> CheckerArena<'a> {
         ty
     }
 
-    pub fn type_data(&self, ty: Ty<'a>) -> TypeData<'a> {
+    pub fn type_data(&self, ty: Ty<'a>) -> TyKind<'a> {
         self.types.borrow()[ty.id().index()]
     }
 
@@ -406,7 +406,7 @@ impl<'a> Ty<'a> {
 
 #[repr(C, u8)]
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub enum TypeData<'a> {
+pub enum TyKind<'a> {
     None,
     Number,
     String,
@@ -610,7 +610,7 @@ pub(crate) fn function_parameter_type_at_call_index<'a>(
 }
 
 fn rest_tuple_minimum_argument_count<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> usize {
-    let TypeData::Tuple(tuple) = arena.type_data(ty) else {
+    let TyKind::Tuple(tuple) = arena.type_data(ty) else {
         return 0;
     };
     tuple
@@ -622,7 +622,7 @@ fn rest_tuple_minimum_argument_count<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) ->
 }
 
 fn rest_tuple_maximum_argument_count<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<usize> {
-    let TypeData::Tuple(tuple) = arena.type_data(ty) else {
+    let TyKind::Tuple(tuple) = arena.type_data(ty) else {
         return None;
     };
     if tuple
@@ -641,7 +641,7 @@ fn rest_parameter_type_at_call_index<'a>(
     ty: Ty<'a>,
     index: usize,
 ) -> Option<Ty<'a>> {
-    let TypeData::Tuple(tuple) = arena.type_data(ty) else {
+    let TyKind::Tuple(tuple) = arena.type_data(ty) else {
         return Some(ty.array_element_type(arena).unwrap_or(ty));
     };
 
@@ -945,55 +945,55 @@ impl<'a> TypeIdentity<'a> {
 
         self.active.push(pair);
         let identical = match (self.arena.type_data(left), self.arena.type_data(right)) {
-            (TypeData::None, TypeData::None)
-            | (TypeData::Number, TypeData::Number)
-            | (TypeData::String, TypeData::String)
-            | (TypeData::Boolean, TypeData::Boolean)
-            | (TypeData::Bigint, TypeData::Bigint)
-            | (TypeData::Symbol, TypeData::Symbol)
-            | (TypeData::Undefined, TypeData::Undefined)
-            | (TypeData::Null, TypeData::Null)
-            | (TypeData::Any, TypeData::Any)
-            | (TypeData::Unknown, TypeData::Unknown)
-            | (TypeData::Void, TypeData::Void)
-            | (TypeData::Never, TypeData::Never)
-            | (TypeData::PrimitiveObject, TypeData::PrimitiveObject)
-            | (TypeData::This, TypeData::This)
-            | (TypeData::GlobalThis, TypeData::GlobalThis) => true,
-            (TypeData::Error(left), TypeData::Error(right)) => left == right,
-            (TypeData::UniqueSymbol(left), TypeData::UniqueSymbol(right)) => left == right,
-            (TypeData::Object(left), TypeData::Object(right)) => {
+            (TyKind::None, TyKind::None)
+            | (TyKind::Number, TyKind::Number)
+            | (TyKind::String, TyKind::String)
+            | (TyKind::Boolean, TyKind::Boolean)
+            | (TyKind::Bigint, TyKind::Bigint)
+            | (TyKind::Symbol, TyKind::Symbol)
+            | (TyKind::Undefined, TyKind::Undefined)
+            | (TyKind::Null, TyKind::Null)
+            | (TyKind::Any, TyKind::Any)
+            | (TyKind::Unknown, TyKind::Unknown)
+            | (TyKind::Void, TyKind::Void)
+            | (TyKind::Never, TyKind::Never)
+            | (TyKind::PrimitiveObject, TyKind::PrimitiveObject)
+            | (TyKind::This, TyKind::This)
+            | (TyKind::GlobalThis, TyKind::GlobalThis) => true,
+            (TyKind::Error(left), TyKind::Error(right)) => left == right,
+            (TyKind::UniqueSymbol(left), TyKind::UniqueSymbol(right)) => left == right,
+            (TyKind::Object(left), TyKind::Object(right)) => {
                 self.objects_are_identical(left, right)
             }
-            (TypeData::ModuleNamespace(left), TypeData::ModuleNamespace(right)) => {
+            (TyKind::ModuleNamespace(left), TyKind::ModuleNamespace(right)) => {
                 left.name == right.name
                     && self.properties_are_identical(&left.properties, &right.properties)
             }
-            (TypeData::Function(left), TypeData::Function(right)) => {
+            (TyKind::Function(left), TyKind::Function(right)) => {
                 self.functions_are_identical(left, right)
             }
-            (TypeData::TypeReference(left), TypeData::TypeReference(right)) => {
+            (TyKind::TypeReference(left), TyKind::TypeReference(right)) => {
                 left.has_identical_target(right)
                     && self.types_are_identical(&left.type_arguments, &right.type_arguments)
             }
-            (TypeData::TypeQuery(left), TypeData::TypeQuery(right)) => {
+            (TyKind::TypeQuery(left), TyKind::TypeQuery(right)) => {
                 left.name == right.name
                     && self.compare(left.resolved, right.resolved)
                     && self.types_are_identical(&left.type_arguments, &right.type_arguments)
             }
-            (TypeData::StringLiteral(left), TypeData::StringLiteral(right)) => left == right,
-            (TypeData::NumberLiteral(left), TypeData::NumberLiteral(right)) => left == right,
-            (TypeData::BooleanLiteral(left), TypeData::BooleanLiteral(right)) => left == right,
-            (TypeData::BigIntLiteral(left), TypeData::BigIntLiteral(right)) => left == right,
-            (TypeData::TemplateLiteral(left), TypeData::TemplateLiteral(right)) => {
+            (TyKind::StringLiteral(left), TyKind::StringLiteral(right)) => left == right,
+            (TyKind::NumberLiteral(left), TyKind::NumberLiteral(right)) => left == right,
+            (TyKind::BooleanLiteral(left), TyKind::BooleanLiteral(right)) => left == right,
+            (TyKind::BigIntLiteral(left), TyKind::BigIntLiteral(right)) => left == right,
+            (TyKind::TemplateLiteral(left), TyKind::TemplateLiteral(right)) => {
                 left.quasis == right.quasis
                     && self.types_are_identical(&left.expressions, &right.expressions)
             }
-            (TypeData::Array(left), TypeData::Array(right)) => {
+            (TyKind::Array(left), TyKind::Array(right)) => {
                 left.readonly == right.readonly
                     && self.compare(left.element_type, right.element_type)
             }
-            (TypeData::Tuple(left), TypeData::Tuple(right)) => {
+            (TyKind::Tuple(left), TyKind::Tuple(right)) => {
                 left.readonly == right.readonly
                     && left.elements.len() == right.elements.len()
                     && left
@@ -1002,30 +1002,30 @@ impl<'a> TypeIdentity<'a> {
                         .zip(&right.elements)
                         .all(|(left, right)| self.tuple_elements_are_identical(left, right))
             }
-            (TypeData::Union(left), TypeData::Union(right)) => {
+            (TyKind::Union(left), TyKind::Union(right)) => {
                 self.types_are_identical(&left.types, &right.types)
             }
-            (TypeData::Intersection(left), TypeData::Intersection(right)) => {
+            (TyKind::Intersection(left), TyKind::Intersection(right)) => {
                 self.types_are_identical(&left.types, &right.types)
             }
-            (TypeData::Keyof(left), TypeData::Keyof(right)) => {
+            (TyKind::Keyof(left), TyKind::Keyof(right)) => {
                 self.compare(left.target, right.target)
             }
-            (TypeData::IndexedAccess(left), TypeData::IndexedAccess(right)) => {
+            (TyKind::IndexedAccess(left), TyKind::IndexedAccess(right)) => {
                 self.compare(left.object_type, right.object_type)
                     && self.compare(left.index_type, right.index_type)
             }
-            (TypeData::Conditional(left), TypeData::Conditional(right)) => {
+            (TyKind::Conditional(left), TyKind::Conditional(right)) => {
                 left.is_distributive == right.is_distributive
                     && self.compare(left.check_type, right.check_type)
                     && self.compare(left.extends_type, right.extends_type)
                     && self.compare(left.true_type, right.true_type)
                     && self.compare(left.false_type, right.false_type)
             }
-            (TypeData::Infer(left), TypeData::Infer(right)) => {
+            (TyKind::Infer(left), TyKind::Infer(right)) => {
                 self.type_parameters_are_identical(&left.type_parameter, &right.type_parameter)
             }
-            (TypeData::Mapped(left), TypeData::Mapped(right)) => {
+            (TyKind::Mapped(left), TyKind::Mapped(right)) => {
                 left.key == right.key
                     && left.optional == right.optional
                     && left.readonly == right.readonly
@@ -1183,7 +1183,7 @@ fn visit_type_at_depth<'a>(
     f(ty);
     let next_depth = depth + 1;
     match arena.type_data(ty) {
-        TypeData::Object(object) => {
+        TyKind::Object(object) => {
             for property in object.properties {
                 visit_type_at_depth(arena, property.ty, f, visited, next_depth);
             }
@@ -1195,12 +1195,12 @@ fn visit_type_at_depth<'a>(
                 visit_type_at_depth(arena, info.value_type, f, visited, next_depth);
             }
         }
-        TypeData::ModuleNamespace(namespace) => {
+        TyKind::ModuleNamespace(namespace) => {
             for property in &namespace.properties {
                 visit_type_at_depth(arena, property.ty, f, visited, next_depth);
             }
         }
-        TypeData::Function(function) => {
+        TyKind::Function(function) => {
             for type_parameter in &function.type_parameters {
                 if let Some(constraint_type) = type_parameter.constraint_type {
                     visit_type_at_depth(arena, constraint_type, f, visited, next_depth);
@@ -1220,52 +1220,52 @@ fn visit_type_at_depth<'a>(
                 visit_type_at_depth(arena, target_type, f, visited, next_depth);
             }
         }
-        TypeData::TypeReference(reference) => {
+        TyKind::TypeReference(reference) => {
             for ty in &reference.type_arguments {
                 visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
-        TypeData::TypeQuery(query) => {
+        TyKind::TypeQuery(query) => {
             visit_type_at_depth(arena, query.resolved, f, visited, next_depth);
             for ty in &query.type_arguments {
                 visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
-        TypeData::TemplateLiteral(template_literal) => {
+        TyKind::TemplateLiteral(template_literal) => {
             for ty in &template_literal.expressions {
                 visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
-        TypeData::Array(array) => {
+        TyKind::Array(array) => {
             visit_type_at_depth(arena, array.element_type, f, visited, next_depth);
         }
-        TypeData::Tuple(tuple) => {
+        TyKind::Tuple(tuple) => {
             for element in &tuple.elements {
                 visit_type_at_depth(arena, element.ty(), f, visited, next_depth);
             }
         }
-        TypeData::Union(union) => {
+        TyKind::Union(union) => {
             for ty in &union.types {
                 visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
-        TypeData::Intersection(intersection) => {
+        TyKind::Intersection(intersection) => {
             for ty in &intersection.types {
                 visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
         }
-        TypeData::Keyof(keyof) => visit_type_at_depth(arena, keyof.target, f, visited, next_depth),
-        TypeData::IndexedAccess(indexed_access) => {
+        TyKind::Keyof(keyof) => visit_type_at_depth(arena, keyof.target, f, visited, next_depth),
+        TyKind::IndexedAccess(indexed_access) => {
             visit_type_at_depth(arena, indexed_access.object_type, f, visited, next_depth);
             visit_type_at_depth(arena, indexed_access.index_type, f, visited, next_depth);
         }
-        TypeData::Conditional(conditional) => {
+        TyKind::Conditional(conditional) => {
             visit_type_at_depth(arena, conditional.check_type, f, visited, next_depth);
             visit_type_at_depth(arena, conditional.extends_type, f, visited, next_depth);
             visit_type_at_depth(arena, conditional.true_type, f, visited, next_depth);
             visit_type_at_depth(arena, conditional.false_type, f, visited, next_depth);
         }
-        TypeData::Infer(infer) => {
+        TyKind::Infer(infer) => {
             if let Some(constraint_type) = infer.type_parameter.constraint_type {
                 visit_type_at_depth(arena, constraint_type, f, visited, next_depth);
             }
@@ -1273,7 +1273,7 @@ fn visit_type_at_depth<'a>(
                 visit_type_at_depth(arena, default_type, f, visited, next_depth);
             }
         }
-        TypeData::Mapped(mapped) => {
+        TyKind::Mapped(mapped) => {
             visit_type_at_depth(arena, mapped.constraint, f, visited, next_depth);
             if let Some(name_type) = mapped.name_type {
                 visit_type_at_depth(arena, name_type, f, visited, next_depth);
@@ -1303,7 +1303,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.numbers.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::NumberLiteral(arena.alloc(TyNumberLiteral {
+        let ty = arena.alloc_type(TyKind::NumberLiteral(arena.alloc(TyNumberLiteral {
             value,
             raw: Some(*arena.alloc(Str::from(raw))),
             base,
@@ -1323,7 +1323,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.numbers.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::NumberLiteral(arena.alloc(TyNumberLiteral {
+        let ty = arena.alloc_type(TyKind::NumberLiteral(arena.alloc(TyNumberLiteral {
             value,
             raw: lit.raw,
             base: lit.base,
@@ -1341,7 +1341,7 @@ impl<'a> Ty<'a> {
     }
 
     pub fn unique_symbol(arena: CheckerArena<'a>, name: Option<&'a str>) -> Self {
-        arena.alloc_type(TypeData::UniqueSymbol(arena.alloc(TyUniqueSymbol { name })))
+        arena.alloc_type(TyKind::UniqueSymbol(arena.alloc(TyUniqueSymbol { name })))
     }
 
     /// General `boolean` type (true or false)
@@ -1381,7 +1381,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.bigints.borrow().get(value) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::BigIntLiteral(arena.alloc(TyBigIntLiteral {
+        let ty = arena.alloc_type(TyKind::BigIntLiteral(arena.alloc(TyBigIntLiteral {
             value,
             raw,
             base,
@@ -1406,7 +1406,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.templates.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::TemplateLiteral(arena.alloc(TyTemplateLiteral {
+        let ty = arena.alloc_type(TyKind::TemplateLiteral(arena.alloc(TyTemplateLiteral {
             quasis: arena.vec_from_iter(quasis),
             expressions: arena.vec_from_iter(expressions),
         })));
@@ -1436,7 +1436,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.errors.borrow().get(&kind) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::Error(kind));
+        let ty = arena.alloc_type(TyKind::Error(kind));
         arena.interned_types.errors.borrow_mut().insert(kind, ty);
         ty
     }
@@ -1633,7 +1633,7 @@ impl<'a> Ty<'a> {
                 index_infos,
             })
         });
-        arena.alloc_type(TypeData::Object(arena.alloc(TyObject {
+        arena.alloc_type(TyKind::Object(arena.alloc(TyObject {
             properties,
             members,
             is_constructor_type,
@@ -1645,7 +1645,7 @@ impl<'a> Ty<'a> {
         name: &'a str,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
     ) -> Self {
-        arena.alloc_type(TypeData::ModuleNamespace(arena.alloc(TyModuleNamespace {
+        arena.alloc_type(TyKind::ModuleNamespace(arena.alloc(TyModuleNamespace {
             name,
             properties: arena.vec_from_iter(properties),
         })))
@@ -1686,7 +1686,7 @@ impl<'a> Ty<'a> {
         type_predicate: Option<TyTypePredicate<'a>>,
         display_type_parameters_as_arguments: bool,
     ) -> Self {
-        arena.alloc_type(TypeData::Function(arena.alloc(TyFunction {
+        arena.alloc_type(TyKind::Function(arena.alloc(TyFunction {
             type_parameters: arena.vec_from_iter(type_parameters),
             display_type_parameters_as_arguments,
             parameters: arena.vec_from_iter(parameters),
@@ -1736,7 +1736,7 @@ impl<'a> Ty<'a> {
         {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::TypeReference(arena.alloc(TyTypeReference {
+        let ty = arena.alloc_type(TyKind::TypeReference(arena.alloc(TyTypeReference {
             name,
             target: None,
             type_arguments: arena.vec_from_iter(type_arguments),
@@ -1775,7 +1775,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.type_references.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::TypeReference(arena.alloc(TyTypeReference {
+        let ty = arena.alloc_type(TyKind::TypeReference(arena.alloc(TyTypeReference {
             name,
             target: Some(target),
             type_arguments: arena.vec_from_iter(type_arguments),
@@ -1798,7 +1798,7 @@ impl<'a> Ty<'a> {
         resolved: Ty<'a>,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
     ) -> Self {
-        arena.alloc_type(TypeData::TypeQuery(arena.alloc(TyTypeQuery {
+        arena.alloc_type(TyKind::TypeQuery(arena.alloc(TyTypeQuery {
             name,
             resolved,
             type_arguments: arena.vec_from_iter(type_arguments),
@@ -1809,7 +1809,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.strings.borrow().get(value) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::StringLiteral(
+        let ty = arena.alloc_type(TyKind::StringLiteral(
             arena.alloc(TyStringLiteral { value }),
         ));
         arena.interned_types.strings.borrow_mut().insert(value, ty);
@@ -1842,7 +1842,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.arrays.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::Array(arena.alloc(TyArray {
+        let ty = arena.alloc_type(TyKind::Array(arena.alloc(TyArray {
             element_type,
             readonly,
             display_as_generic,
@@ -1881,7 +1881,7 @@ impl<'a> Ty<'a> {
         let mut normalized_labels = Vec::with_capacity(labels.len());
         for (element, label) in elements.into_iter().zip(labels) {
             if let TupleElement::Rest(ty) = element
-                && let TypeData::Tuple(tuple) = arena.type_data(ty)
+                && let TyKind::Tuple(tuple) = arena.type_data(ty)
             {
                 if normalized.len() + tuple.elements.len() >= TUPLE_SPREAD_MAX_LENGTH {
                     return Ty::error(arena, TypeErrorKind::TupleSizeExceeded);
@@ -1909,7 +1909,7 @@ impl<'a> Ty<'a> {
             labels,
             readonly,
         });
-        let ty = arena.alloc_type(TypeData::Tuple(tuple));
+        let ty = arena.alloc_type(TyKind::Tuple(tuple));
         arena.interned_types.tuples.borrow_mut().insert(
             TupleTypeKey {
                 elements: &tuple.elements,
@@ -1930,7 +1930,7 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         map: impl FnMut(Ty<'a>) -> Option<Ty<'a>>,
     ) -> Self {
-        let TypeData::Union(union) = arena.type_data(self) else {
+        let TyKind::Union(union) = arena.type_data(self) else {
             return self;
         };
         Ty::union(arena, union.types.iter().copied().filter_map(map))
@@ -1962,7 +1962,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.keyofs.borrow().get(&target.id()) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::Keyof(arena.alloc(TyKeyof { target })));
+        let ty = arena.alloc_type(TyKind::Keyof(arena.alloc(TyKeyof { target })));
         arena
             .interned_types
             .keyofs
@@ -1980,7 +1980,7 @@ impl<'a> Ty<'a> {
         if let Some(ty) = arena.interned_types.indexed_accesses.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TypeData::IndexedAccess(arena.alloc(TyIndexedAccess {
+        let ty = arena.alloc_type(TyKind::IndexedAccess(arena.alloc(TyIndexedAccess {
             object_type,
             index_type,
         })));
@@ -2010,7 +2010,7 @@ impl<'a> Ty<'a> {
     }
 
     pub fn infer(arena: CheckerArena<'a>, type_parameter: TyTypeParameter<'a>) -> Self {
-        arena.alloc_type(TypeData::Infer(arena.alloc(TyInfer { type_parameter })))
+        arena.alloc_type(TyKind::Infer(arena.alloc(TyInfer { type_parameter })))
     }
 
     pub fn mapped(
@@ -2022,7 +2022,7 @@ impl<'a> Ty<'a> {
         optional: MappedModifier,
         readonly: MappedModifier,
     ) -> Self {
-        arena.alloc_type(TypeData::Mapped(arena.alloc(TyMapped {
+        arena.alloc_type(TyKind::Mapped(arena.alloc(TyMapped {
             key,
             constraint,
             name_type,
@@ -2049,12 +2049,12 @@ impl<'a> Ty<'a> {
     }
 
     pub fn is_error(&self, arena: CheckerArena<'a>) -> bool {
-        matches!(arena.type_data(*self), TypeData::Error(_))
+        matches!(arena.type_data(*self), TyKind::Error(_))
     }
 
     pub fn error_kind(&self, arena: CheckerArena<'a>) -> Option<TypeErrorKind> {
         match arena.type_data(*self) {
-            TypeData::Error(kind) => Some(kind),
+            TyKind::Error(kind) => Some(kind),
             _ => None,
         }
     }
@@ -2075,12 +2075,12 @@ impl<'a> Ty<'a> {
 
     /// Returns `true` if the type is a union type.
     pub fn is_union(&self, arena: CheckerArena<'a>) -> bool {
-        matches!(arena.type_data(*self), TypeData::Union(_))
+        matches!(arena.type_data(*self), TyKind::Union(_))
     }
 
     /// Returns `true` if the type is a intersection type.
     pub fn is_intersection(&self, arena: CheckerArena<'a>) -> bool {
-        matches!(arena.type_data(*self), TypeData::Intersection(_))
+        matches!(arena.type_data(*self), TyKind::Intersection(_))
     }
 
     pub(crate) fn is_transparent_type_alias_union_constituent(
@@ -2089,25 +2089,25 @@ impl<'a> Ty<'a> {
     ) -> bool {
         matches!(
             arena.type_data(*self),
-            TypeData::String
-                | TypeData::Number
-                | TypeData::Boolean
-                | TypeData::Bigint
-                | TypeData::Symbol
-                | TypeData::Undefined
-                | TypeData::Null
-                | TypeData::Void
-                | TypeData::Never
-                | TypeData::Any
-                | TypeData::Error(_)
-                | TypeData::Unknown
-                | TypeData::PrimitiveObject
-                | TypeData::StringLiteral(_)
-                | TypeData::NumberLiteral(_)
-                | TypeData::BooleanLiteral(_)
-                | TypeData::BigIntLiteral(_)
-                | TypeData::TemplateLiteral(_)
-                | TypeData::UniqueSymbol(_)
+            TyKind::String
+                | TyKind::Number
+                | TyKind::Boolean
+                | TyKind::Bigint
+                | TyKind::Symbol
+                | TyKind::Undefined
+                | TyKind::Null
+                | TyKind::Void
+                | TyKind::Never
+                | TyKind::Any
+                | TyKind::Error(_)
+                | TyKind::Unknown
+                | TyKind::PrimitiveObject
+                | TyKind::StringLiteral(_)
+                | TyKind::NumberLiteral(_)
+                | TyKind::BooleanLiteral(_)
+                | TyKind::BigIntLiteral(_)
+                | TyKind::TemplateLiteral(_)
+                | TyKind::UniqueSymbol(_)
         )
     }
 
@@ -2115,7 +2115,7 @@ impl<'a> Ty<'a> {
     pub fn is_number_like(&self, arena: CheckerArena<'a>) -> bool {
         matches!(
             arena.type_data(*self),
-            TypeData::Number | TypeData::NumberLiteral(_)
+            TyKind::Number | TyKind::NumberLiteral(_)
         )
     }
 
@@ -2123,53 +2123,53 @@ impl<'a> Ty<'a> {
     pub fn is_bigint_like(&self, arena: CheckerArena<'a>) -> bool {
         matches!(
             arena.type_data(*self),
-            TypeData::Bigint | TypeData::BigIntLiteral(_)
+            TyKind::Bigint | TyKind::BigIntLiteral(_)
         )
     }
 
     /// Returns `true` if the type is directly represented by a `TyFunction`.
     pub fn is_function(&self, arena: CheckerArena<'a>) -> bool {
-        matches!(arena.type_data(*self), TypeData::Function(_))
+        matches!(arena.type_data(*self), TyKind::Function(_))
     }
 
     pub fn enum_variant_name(self, arena: CheckerArena<'a>) -> &'static str {
         match arena.type_data(self) {
-            TypeData::None => "TyNone",
-            TypeData::Number => "TyNumber",
-            TypeData::String => "TyString",
-            TypeData::Boolean => "TyBoolean",
-            TypeData::Bigint => "TyBigint",
-            TypeData::Symbol => "TySymbol",
-            TypeData::UniqueSymbol(_) => "TyUniqueSymbol",
-            TypeData::Undefined => "TyUndefined",
-            TypeData::Null => "TyNull",
-            TypeData::Any => "TyAny",
-            TypeData::Error(_) => "TyError",
-            TypeData::Unknown => "TyUnknown",
-            TypeData::Void => "TyVoid",
-            TypeData::Never => "TyNever",
-            TypeData::Object(_) => "TyObject",
-            TypeData::ModuleNamespace(_) => "TyModuleNamespace",
-            TypeData::PrimitiveObject => "TyPrimitiveObject",
-            TypeData::This => "TyThis",
-            TypeData::GlobalThis => "TyGlobalThis",
-            TypeData::Function(_) => "TyFunction",
-            TypeData::TypeReference(_) => "TyTypeReference",
-            TypeData::TypeQuery(_) => "TyTypeQuery",
-            TypeData::StringLiteral(_) => "TyStringLiteral",
-            TypeData::NumberLiteral(_) => "TyNumberLiteral",
-            TypeData::BooleanLiteral(_) => "TyBooleanLiteral",
-            TypeData::BigIntLiteral(_) => "TyBigIntLiteral",
-            TypeData::TemplateLiteral(_) => "TyTemplateLiteral",
-            TypeData::Array(_) => "TyArray",
-            TypeData::Tuple(_) => "TyTuple",
-            TypeData::Union(_) => "TyUnion",
-            TypeData::Intersection(_) => "TyIntersection",
-            TypeData::Keyof(_) => "TyKeyof",
-            TypeData::IndexedAccess(_) => "TyIndexedAccess",
-            TypeData::Conditional(_) => "TyConditional",
-            TypeData::Infer(_) => "TyInfer",
-            TypeData::Mapped(_) => "TyMapped",
+            TyKind::None => "TyNone",
+            TyKind::Number => "TyNumber",
+            TyKind::String => "TyString",
+            TyKind::Boolean => "TyBoolean",
+            TyKind::Bigint => "TyBigint",
+            TyKind::Symbol => "TySymbol",
+            TyKind::UniqueSymbol(_) => "TyUniqueSymbol",
+            TyKind::Undefined => "TyUndefined",
+            TyKind::Null => "TyNull",
+            TyKind::Any => "TyAny",
+            TyKind::Error(_) => "TyError",
+            TyKind::Unknown => "TyUnknown",
+            TyKind::Void => "TyVoid",
+            TyKind::Never => "TyNever",
+            TyKind::Object(_) => "TyObject",
+            TyKind::ModuleNamespace(_) => "TyModuleNamespace",
+            TyKind::PrimitiveObject => "TyPrimitiveObject",
+            TyKind::This => "TyThis",
+            TyKind::GlobalThis => "TyGlobalThis",
+            TyKind::Function(_) => "TyFunction",
+            TyKind::TypeReference(_) => "TyTypeReference",
+            TyKind::TypeQuery(_) => "TyTypeQuery",
+            TyKind::StringLiteral(_) => "TyStringLiteral",
+            TyKind::NumberLiteral(_) => "TyNumberLiteral",
+            TyKind::BooleanLiteral(_) => "TyBooleanLiteral",
+            TyKind::BigIntLiteral(_) => "TyBigIntLiteral",
+            TyKind::TemplateLiteral(_) => "TyTemplateLiteral",
+            TyKind::Array(_) => "TyArray",
+            TyKind::Tuple(_) => "TyTuple",
+            TyKind::Union(_) => "TyUnion",
+            TyKind::Intersection(_) => "TyIntersection",
+            TyKind::Keyof(_) => "TyKeyof",
+            TyKind::IndexedAccess(_) => "TyIndexedAccess",
+            TyKind::Conditional(_) => "TyConditional",
+            TyKind::Infer(_) => "TyInfer",
+            TyKind::Mapped(_) => "TyMapped",
         }
     }
 
@@ -2232,23 +2232,23 @@ impl<'a> Ty<'a> {
         depth: &Cell<usize>,
     ) -> String {
         match arena.type_data(self) {
-            TypeData::None => "none".to_string(),
-            TypeData::Number => "number".to_string(),
-            TypeData::String => "string".to_string(),
-            TypeData::Boolean => "boolean".to_string(),
-            TypeData::Bigint => "bigint".to_string(),
-            TypeData::Symbol => "symbol".to_string(),
-            TypeData::UniqueSymbol(_) => "unique symbol".to_string(),
-            TypeData::Undefined => "undefined".to_string(),
-            TypeData::Null => "null".to_string(),
-            TypeData::Any => "any".to_string(),
-            TypeData::Error(_) => "any".to_string(),
-            TypeData::Unknown => "unknown".to_string(),
-            TypeData::Void => "void".to_string(),
-            TypeData::Never => "never".to_string(),
-            TypeData::PrimitiveObject => "object".to_string(),
-            TypeData::This => "this".to_string(),
-            TypeData::Object(object) => {
+            TyKind::None => "none".to_string(),
+            TyKind::Number => "number".to_string(),
+            TyKind::String => "string".to_string(),
+            TyKind::Boolean => "boolean".to_string(),
+            TyKind::Bigint => "bigint".to_string(),
+            TyKind::Symbol => "symbol".to_string(),
+            TyKind::UniqueSymbol(_) => "unique symbol".to_string(),
+            TyKind::Undefined => "undefined".to_string(),
+            TyKind::Null => "null".to_string(),
+            TyKind::Any => "any".to_string(),
+            TyKind::Error(_) => "any".to_string(),
+            TyKind::Unknown => "unknown".to_string(),
+            TyKind::Void => "void".to_string(),
+            TyKind::Never => "never".to_string(),
+            TyKind::PrimitiveObject => "object".to_string(),
+            TyKind::This => "this".to_string(),
+            TyKind::Object(object) => {
                 if object.is_constructor_type
                     && let Some(signature) = object.signatures().first()
                 {
@@ -2304,7 +2304,7 @@ impl<'a> Ty<'a> {
                     .chain(object.properties.iter().map(|property| {
                         let readonly = if property.readonly { "readonly " } else { "" };
                         if property.method
-                            && let TypeData::Function(function) = arena.type_data(property.ty)
+                            && let TyKind::Function(function) = arena.type_data(property.ty)
                         {
                             format!(
                                 "{}{}{};",
@@ -2330,11 +2330,11 @@ impl<'a> Ty<'a> {
                     .join(" ");
                 format!("{{ {members} }}")
             }
-            TypeData::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
-            TypeData::Function(function) => {
+            TyKind::ModuleNamespace(namespace) => format!("typeof {}", namespace.name),
+            TyKind::Function(function) => {
                 function_type_to_string(arena, function, &|_| None, flags, depth)
             }
-            TypeData::TypeReference(reference) => {
+            TyKind::TypeReference(reference) => {
                 if let Some(replacement) = replace_type_reference(self)
                     && replacement != self
                 {
@@ -2365,7 +2365,7 @@ impl<'a> Ty<'a> {
                     format!("{}<{type_arguments}>", reference.name)
                 }
             }
-            TypeData::TypeQuery(query) => {
+            TyKind::TypeQuery(query) => {
                 if query.type_arguments.is_empty() {
                     format!("typeof {}", query.name)
                 } else {
@@ -2385,11 +2385,11 @@ impl<'a> Ty<'a> {
                     format!("typeof {}<{type_arguments}>", query.name)
                 }
             }
-            TypeData::GlobalThis => "typeof globalThis".to_string(),
-            TypeData::StringLiteral(string_literal) => {
+            TyKind::GlobalThis => "typeof globalThis".to_string(),
+            TyKind::StringLiteral(string_literal) => {
                 format!("{:?}", string_literal.value)
             }
-            TypeData::NumberLiteral(number_literal) => {
+            TyKind::NumberLiteral(number_literal) => {
                 // Print the base-10 representation of the number
                 if number_literal.value.is_zero() {
                     // Treat +0 and -0 as the same when printing.
@@ -2398,9 +2398,9 @@ impl<'a> Ty<'a> {
                     number_literal.value.to_string()
                 }
             }
-            TypeData::BooleanLiteral(value) => value.to_string(),
-            TypeData::BigIntLiteral(big_int_literal) => format!("{}n", big_int_literal.value),
-            TypeData::TemplateLiteral(template_literal) => {
+            TyKind::BooleanLiteral(value) => value.to_string(),
+            TyKind::BigIntLiteral(big_int_literal) => format!("{}n", big_int_literal.value),
+            TyKind::TemplateLiteral(template_literal) => {
                 let mut repr = String::from("`");
 
                 for (index, quasi) in template_literal.quasis.iter().enumerate() {
@@ -2437,7 +2437,7 @@ impl<'a> Ty<'a> {
                 repr.push('`');
                 repr
             }
-            TypeData::Array(array) => {
+            TyKind::Array(array) => {
                 let element_type = array.element_type.to_type_string_with_flags(
                     arena,
                     replace_type_reference,
@@ -2465,7 +2465,7 @@ impl<'a> Ty<'a> {
                     body
                 }
             }
-            TypeData::Tuple(tuple) => {
+            TyKind::Tuple(tuple) => {
                 let elements = tuple
                     .elements
                     .iter()
@@ -2538,7 +2538,7 @@ impl<'a> Ty<'a> {
                     format!("[{elements}]")
                 }
             }
-            TypeData::Union(union) => union
+            TyKind::Union(union) => union
                 .types
                 .iter()
                 .map(|ty| {
@@ -2552,7 +2552,7 @@ impl<'a> Ty<'a> {
                 })
                 .collect::<Vec<_>>()
                 .join(" | "),
-            TypeData::Intersection(intersection) => intersection
+            TyKind::Intersection(intersection) => intersection
                 .types
                 .iter()
                 .map(|ty| {
@@ -2566,7 +2566,7 @@ impl<'a> Ty<'a> {
                 })
                 .collect::<Vec<_>>()
                 .join(" & "),
-            TypeData::Keyof(keyof) => {
+            TyKind::Keyof(keyof) => {
                 let target = keyof.target.to_type_string_with_flags(
                     arena,
                     replace_type_reference,
@@ -2579,7 +2579,7 @@ impl<'a> Ty<'a> {
                     format!("keyof {target}")
                 }
             }
-            TypeData::IndexedAccess(indexed_access) => {
+            TyKind::IndexedAccess(indexed_access) => {
                 let object_type = indexed_access.object_type.to_type_string_with_flags(
                     arena,
                     replace_type_reference,
@@ -2598,7 +2598,7 @@ impl<'a> Ty<'a> {
                     format!("{object_type}[{index_type}]")
                 }
             }
-            TypeData::Conditional(conditional) => {
+            TyKind::Conditional(conditional) => {
                 let check_type = conditional.check_type.to_type_string_with_flags(
                     arena,
                     replace_type_reference,
@@ -2618,7 +2618,7 @@ impl<'a> Ty<'a> {
                 };
                 let extends_type = if matches!(
                     arena.type_data(conditional.extends_type),
-                    TypeData::Conditional(_)
+                    TyKind::Conditional(_)
                 ) {
                     format!("({extends_type})")
                 } else {
@@ -2640,7 +2640,7 @@ impl<'a> Ty<'a> {
                     )
                 )
             }
-            TypeData::Infer(infer) => format!(
+            TyKind::Infer(infer) => format!(
                 "infer {}",
                 type_parameter_to_type_string(
                     arena,
@@ -2650,7 +2650,7 @@ impl<'a> Ty<'a> {
                     depth,
                 )
             ),
-            TypeData::Mapped(mapped) => {
+            TyKind::Mapped(mapped) => {
                 let mut s = String::from("{ ");
                 let prefix = match mapped.readonly {
                     MappedModifier::None => "",
@@ -2702,12 +2702,12 @@ impl<'a> Ty<'a> {
     fn display_needs_parentheses(&self, arena: CheckerArena<'a>) -> bool {
         matches!(
             arena.type_data(*self),
-            TypeData::Function(_)
-                | TypeData::Union(_)
-                | TypeData::Intersection(_)
-                | TypeData::Conditional(_)
-                | TypeData::Infer(_)
-        ) || matches!(arena.type_data(*self), TypeData::Object(object) if object.is_constructor_type)
+            TyKind::Function(_)
+                | TyKind::Union(_)
+                | TyKind::Intersection(_)
+                | TyKind::Conditional(_)
+                | TyKind::Infer(_)
+        ) || matches!(arena.type_data(*self), TyKind::Object(object) if object.is_constructor_type)
     }
 
     pub(crate) fn with_signatures(
@@ -2715,7 +2715,7 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         signatures: impl IntoIterator<Item = Signature<'a>>,
     ) -> Self {
-        let TypeData::Object(object) = arena.type_data(self) else {
+        let TyKind::Object(object) = arena.type_data(self) else {
             return self;
         };
         Self::object_from_slices(
@@ -2732,7 +2732,7 @@ impl<'a> Ty<'a> {
         arena: CheckerArena<'a>,
         index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
     ) -> Self {
-        let TypeData::Object(object) = arena.type_data(self) else {
+        let TyKind::Object(object) = arena.type_data(self) else {
             return self;
         };
         Self::object_from_slices(
@@ -2745,7 +2745,7 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn with_constructor_type(self, arena: CheckerArena<'a>) -> Self {
-        let TypeData::Object(object) = arena.type_data(self) else {
+        let TyKind::Object(object) = arena.type_data(self) else {
             return self;
         };
         if object.is_constructor_type {
@@ -2762,7 +2762,7 @@ impl<'a> Ty<'a> {
 
     /// Returns `true` if the type is an object with no properties or signatures and has index infos.
     pub fn is_index_signature_object(&self, arena: CheckerArena<'a>) -> bool {
-        let TypeData::Object(object) = arena.type_data(*self) else {
+        let TyKind::Object(object) = arena.type_data(*self) else {
             return false;
         };
         object.signatures().is_empty()
@@ -2772,7 +2772,7 @@ impl<'a> Ty<'a> {
 
     /// Returns the index infos of the type, or `None` if the type is not an object with index infos.
     pub fn index_infos(&self, arena: CheckerArena<'a>) -> Option<&'a [IndexInfo<'a>]> {
-        let TypeData::Object(object) = arena.type_data(*self) else {
+        let TyKind::Object(object) = arena.type_data(*self) else {
             return None;
         };
         if object.index_infos().is_empty() {
@@ -2784,7 +2784,7 @@ impl<'a> Ty<'a> {
 
     /// Returns the element type of an array type, or `None` if the type is not an array.
     pub fn array_element_type(&self, arena: CheckerArena<'a>) -> Option<Self> {
-        let TypeData::Array(array) = arena.type_data(*self) else {
+        let TyKind::Array(array) = arena.type_data(*self) else {
             return None;
         };
         Some(array.element_type)
@@ -2793,7 +2793,7 @@ impl<'a> Ty<'a> {
     /// Returns the string value of the type (if applicable).
     pub fn string_value(&self, arena: CheckerArena<'a>) -> Option<&'a str> {
         match arena.type_data(*self) {
-            TypeData::StringLiteral(string_literal) => Some(string_literal.value),
+            TyKind::StringLiteral(string_literal) => Some(string_literal.value),
             // TODO(completeness): Handle template literals
             _ => None,
         }
@@ -2867,7 +2867,7 @@ impl<'a> Signature<'a> {
     }
 
     pub fn function(self, arena: CheckerArena<'a>) -> &'a TyFunction<'a> {
-        let TypeData::Function(function) = arena.type_data(self.ty) else {
+        let TyKind::Function(function) = arena.type_data(self.ty) else {
             unreachable!("signature type must be a function")
         };
         function
@@ -3073,7 +3073,7 @@ fn function_parameter_to_type_strings<'a>(
     depth: &Cell<usize>,
 ) -> Vec<String> {
     if parameter.rest
-        && let TypeData::Tuple(tuple) = arena.type_data(parameter.ty)
+        && let TyKind::Tuple(tuple) = arena.type_data(parameter.ty)
         && !tuple
             .elements
             .iter()

@@ -3,7 +3,7 @@ use crate::{
     checker::{Checker, CheckerReturn},
     limits::ASSIGNABILITY_MAX_DEPTH,
     type_predicate_kinds_match,
-    types::{Ty, TypeData},
+    types::{Ty, TyKind},
 };
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
@@ -19,7 +19,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return false;
         }
 
-        if matches!(self.arena().type_data(source), TypeData::GlobalThis) {
+        if matches!(self.arena().type_data(source), TyKind::GlobalThis) {
             let property_type = |name| {
                 if name == "globalThis" {
                     Some(Ty::global_this())
@@ -30,8 +30,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             };
             match self.arena().type_data(target) {
-                TypeData::PrimitiveObject => return true,
-                TypeData::Object(object) => {
+                TyKind::PrimitiveObject => return true,
+                TyKind::Object(object) => {
                     return object.properties.iter().all(|property| {
                         property.optional
                             || (!property.computed
@@ -44,7 +44,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                                 }))
                     });
                 }
-                TypeData::Intersection(intersection) => {
+                TyKind::Intersection(intersection) => {
                     return intersection
                         .types
                         .iter()
@@ -54,13 +54,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
 
-        if let TypeData::Keyof(keyof) = self.arena().type_data(target)
-            && matches!(self.arena().type_data(keyof.target), TypeData::GlobalThis)
+        if let TyKind::Keyof(keyof) = self.arena().type_data(target)
+            && matches!(self.arena().type_data(keyof.target), TyKind::GlobalThis)
             && !source.is_any_like(self.arena())
             && !source.is_never()
         {
             return match self.arena().type_data(source) {
-                TypeData::Union(union) => union
+                TyKind::Union(union) => union
                     .types
                     .iter()
                     .all(|source| self.is_assignable_to_at_depth(*source, target, depth + 1)),
@@ -75,7 +75,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let references_match = matches!(
             (self.arena().type_data(source), self.arena().type_data(target)),
-            (TypeData::TypeReference(source), TypeData::TypeReference(target))
+            (TyKind::TypeReference(source), TyKind::TypeReference(target))
                 if source.has_identical_target(target)
                     && source.type_arguments.len() == target.type_arguments.len()
         );
@@ -98,60 +98,58 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena().type_data(target),
         ) {
             // `never` is not assignable to any type
-            (TypeData::Never, _) => true,
+            (TyKind::Never, _) => true,
             // Nothing is assignable to `never`
-            (_, TypeData::Never) => false,
+            (_, TyKind::Never) => false,
             // `any` is assignable to any type and any type is assignable to `any`
-            (_, TypeData::Any | TypeData::Error(_)) | (TypeData::Any | TypeData::Error(_), _) => {
-                true
-            }
+            (_, TyKind::Any | TyKind::Error(_)) | (TyKind::Any | TyKind::Error(_), _) => true,
             // Any type is assignable to `unknown`
-            (_, TypeData::Unknown) => true,
+            (_, TyKind::Unknown) => true,
             // Unlike `any`, `unknown` is not assignable to any type (except for `any`)
-            (TypeData::Unknown, _) => false,
+            (TyKind::Unknown, _) => false,
             // `undefined` is assignable to `void`
-            (TypeData::Undefined, TypeData::Void) => true,
-            (TypeData::Object(source), TypeData::Object(target)) => {
+            (TyKind::Undefined, TyKind::Void) => true,
+            (TyKind::Object(source), TyKind::Object(target)) => {
                 self.properties_assignable_to(source.properties, target.properties, next_depth)
             }
-            (TypeData::PrimitiveObject, TypeData::Object(target)) => {
+            (TyKind::PrimitiveObject, TyKind::Object(target)) => {
                 self.properties_assignable_to(&[], target.properties, next_depth)
             }
-            (TypeData::Object(source), TypeData::PrimitiveObject) => {
+            (TyKind::Object(source), TyKind::PrimitiveObject) => {
                 self.properties_assignable_to(source.properties, &[], next_depth)
             }
             (
-                TypeData::Array(_)
-                | TypeData::Tuple(_)
-                | TypeData::Function(_)
-                | TypeData::Mapped(_)
-                | TypeData::ModuleNamespace(_),
-                TypeData::PrimitiveObject,
+                TyKind::Array(_)
+                | TyKind::Tuple(_)
+                | TyKind::Function(_)
+                | TyKind::Mapped(_)
+                | TyKind::ModuleNamespace(_),
+                TyKind::PrimitiveObject,
             ) => true,
-            (TypeData::ModuleNamespace(source), TypeData::Object(target)) => {
+            (TyKind::ModuleNamespace(source), TyKind::Object(target)) => {
                 self.properties_assignable_to(&source.properties, target.properties, next_depth)
             }
-            (TypeData::Object(source), TypeData::ModuleNamespace(target)) => {
+            (TyKind::Object(source), TyKind::ModuleNamespace(target)) => {
                 self.properties_assignable_to(source.properties, &target.properties, next_depth)
             }
-            (TypeData::ModuleNamespace(source), TypeData::ModuleNamespace(target)) => {
+            (TyKind::ModuleNamespace(source), TyKind::ModuleNamespace(target)) => {
                 self.properties_assignable_to(&source.properties, &target.properties, next_depth)
             }
-            (TypeData::Union(source_union), _) => source_union.types.iter().all(|source_type| {
+            (TyKind::Union(source_union), _) => source_union.types.iter().all(|source_type| {
                 self.is_assignable_to_at_depth(*source_type, target, next_depth)
             }),
-            (_, TypeData::Union(target_union)) => target_union.types.iter().any(|target_type| {
+            (_, TyKind::Union(target_union)) => target_union.types.iter().any(|target_type| {
                 self.is_assignable_to_at_depth(source, *target_type, next_depth)
             }),
-            (TypeData::Intersection(intersection), TypeData::Object(_)) => intersection
+            (TyKind::Intersection(intersection), TyKind::Object(_)) => intersection
                 .types
                 .iter()
                 .all(|ty| self.is_assignable_to_at_depth(target, *ty, next_depth)),
-            (TypeData::Object(_), TypeData::Intersection(intersection)) => intersection
+            (TyKind::Object(_), TyKind::Intersection(intersection)) => intersection
                 .types
                 .iter()
                 .all(|ty| self.is_assignable_to_at_depth(source, *ty, next_depth)),
-            (TypeData::Function(source), TypeData::Function(target)) => {
+            (TyKind::Function(source), TyKind::Function(target)) => {
                 source.parameters.len() == target.parameters.len()
                     && source.parameters.iter().zip(target.parameters.iter()).all(
                         |(source_parameter, target_parameter)| {
@@ -188,7 +186,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         ),
                     }
             }
-            (TypeData::TypeReference(source), TypeData::TypeReference(target)) => {
+            (TyKind::TypeReference(source), TyKind::TypeReference(target)) => {
                 source.has_identical_target(target)
                     && self.type_arguments_assignable_to(
                         &source.type_arguments,
@@ -196,7 +194,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         next_depth,
                     )
             }
-            (TypeData::TypeQuery(source), TypeData::TypeQuery(target)) => {
+            (TyKind::TypeQuery(source), TyKind::TypeQuery(target)) => {
                 source.name == target.name
                     && self.type_arguments_assignable_to(
                         &source.type_arguments,
@@ -205,21 +203,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     )
             }
             // A `typeof X` query is transparently compatible with whatever the queried symbol's type allows.
-            (TypeData::TypeQuery(source), _) => {
+            (TyKind::TypeQuery(source), _) => {
                 self.is_assignable_to_at_depth(source.resolved, target, next_depth)
             }
-            (_, TypeData::TypeQuery(target)) => {
+            (_, TyKind::TypeQuery(target)) => {
                 self.is_assignable_to_at_depth(source, target.resolved, next_depth)
             }
-            (TypeData::Array(source), TypeData::Array(target)) => {
+            (TyKind::Array(source), TyKind::Array(target)) => {
                 self.is_assignable_to_at_depth(source.element_type, target.element_type, next_depth)
             }
-            (TypeData::Tuple(source), TypeData::Array(target)) => {
+            (TyKind::Tuple(source), TyKind::Array(target)) => {
                 source.elements.iter().all(|element| {
                     self.is_assignable_to_at_depth(element.ty(), target.element_type, next_depth)
                 })
             }
-            (TypeData::Tuple(source), TypeData::Tuple(target)) => {
+            (TyKind::Tuple(source), TyKind::Tuple(target)) => {
                 source.elements.len() == target.elements.len()
                     && source.elements.iter().zip(target.elements.iter()).all(
                         |(source_element, target_element)| match (source_element, target_element) {
@@ -232,14 +230,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         },
                     )
             }
-            (TypeData::UniqueSymbol(_), TypeData::Symbol) => true,
-            (TypeData::NumberLiteral(_), TypeData::Number) => true,
-            (TypeData::StringLiteral(_), TypeData::String) => true,
-            (TypeData::StringLiteral(source), TypeData::StringLiteral(target)) => {
+            (TyKind::UniqueSymbol(_), TyKind::Symbol) => true,
+            (TyKind::NumberLiteral(_), TyKind::Number) => true,
+            (TyKind::StringLiteral(_), TyKind::String) => true,
+            (TyKind::StringLiteral(source), TyKind::StringLiteral(target)) => {
                 source.value == target.value
             }
-            (TypeData::BooleanLiteral(_), TypeData::Boolean) => true,
-            (_, TypeData::Keyof(keyof)) => {
+            (TyKind::BooleanLiteral(_), TyKind::Boolean) => true,
+            (_, TyKind::Keyof(keyof)) => {
                 let Some(source_name) = self.property_name_from_key_type(source) else {
                     return false;
                 };
@@ -248,35 +246,35 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             // Base case: if we can't find a more specific rule, we default to false but do so explicitly so that we can
             // catch any missing cases during development.
             (
-                TypeData::Number
-                | TypeData::String
-                | TypeData::Bigint
-                | TypeData::Boolean
-                | TypeData::Null
-                | TypeData::Undefined
-                | TypeData::Void
-                | TypeData::Symbol
-                | TypeData::PrimitiveObject
-                | TypeData::This
-                | TypeData::GlobalThis
-                | TypeData::BigIntLiteral(_)
-                | TypeData::StringLiteral(_)
-                | TypeData::NumberLiteral(_)
-                | TypeData::TemplateLiteral(_)
-                | TypeData::BooleanLiteral(_)
-                | TypeData::Function(_)
-                | TypeData::TypeReference(_)
-                | TypeData::Array(_)
-                | TypeData::Tuple(_)
-                | TypeData::UniqueSymbol(_)
-                | TypeData::Mapped(_)
-                | TypeData::Object(_)
-                | TypeData::Keyof(_)
-                | TypeData::ModuleNamespace(_)
-                | TypeData::Infer(_)
-                | TypeData::Conditional(_)
-                | TypeData::IndexedAccess(_)
-                | TypeData::Intersection(_),
+                TyKind::Number
+                | TyKind::String
+                | TyKind::Bigint
+                | TyKind::Boolean
+                | TyKind::Null
+                | TyKind::Undefined
+                | TyKind::Void
+                | TyKind::Symbol
+                | TyKind::PrimitiveObject
+                | TyKind::This
+                | TyKind::GlobalThis
+                | TyKind::BigIntLiteral(_)
+                | TyKind::StringLiteral(_)
+                | TyKind::NumberLiteral(_)
+                | TyKind::TemplateLiteral(_)
+                | TyKind::BooleanLiteral(_)
+                | TyKind::Function(_)
+                | TyKind::TypeReference(_)
+                | TyKind::Array(_)
+                | TyKind::Tuple(_)
+                | TyKind::UniqueSymbol(_)
+                | TyKind::Mapped(_)
+                | TyKind::Object(_)
+                | TyKind::Keyof(_)
+                | TyKind::ModuleNamespace(_)
+                | TyKind::Infer(_)
+                | TyKind::Conditional(_)
+                | TyKind::IndexedAccess(_)
+                | TyKind::Intersection(_),
                 _,
             ) => {
                 // panic!("I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}")
@@ -284,47 +282,47 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             (
                 _,
-                TypeData::Number
-                | TypeData::String
-                | TypeData::Bigint
-                | TypeData::Boolean
-                | TypeData::Null
-                | TypeData::Undefined
-                | TypeData::Void
-                | TypeData::Symbol
-                | TypeData::PrimitiveObject
-                | TypeData::This
-                | TypeData::GlobalThis
-                | TypeData::BigIntLiteral(_)
-                | TypeData::StringLiteral(_)
-                | TypeData::NumberLiteral(_)
-                | TypeData::TemplateLiteral(_)
-                | TypeData::BooleanLiteral(_)
-                | TypeData::Function(_)
-                | TypeData::TypeReference(_)
-                | TypeData::Array(_)
-                | TypeData::Tuple(_)
-                | TypeData::UniqueSymbol(_)
-                | TypeData::Mapped(_)
-                | TypeData::Object(_)
-                | TypeData::ModuleNamespace(_)
-                | TypeData::Infer(_)
-                | TypeData::Conditional(_)
-                | TypeData::IndexedAccess(_),
+                TyKind::Number
+                | TyKind::String
+                | TyKind::Bigint
+                | TyKind::Boolean
+                | TyKind::Null
+                | TyKind::Undefined
+                | TyKind::Void
+                | TyKind::Symbol
+                | TyKind::PrimitiveObject
+                | TyKind::This
+                | TyKind::GlobalThis
+                | TyKind::BigIntLiteral(_)
+                | TyKind::StringLiteral(_)
+                | TyKind::NumberLiteral(_)
+                | TyKind::TemplateLiteral(_)
+                | TyKind::BooleanLiteral(_)
+                | TyKind::Function(_)
+                | TyKind::TypeReference(_)
+                | TyKind::Array(_)
+                | TyKind::Tuple(_)
+                | TyKind::UniqueSymbol(_)
+                | TyKind::Mapped(_)
+                | TyKind::Object(_)
+                | TyKind::ModuleNamespace(_)
+                | TyKind::Infer(_)
+                | TyKind::Conditional(_)
+                | TyKind::IndexedAccess(_),
             ) => {
                 // panic!("I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}")
                 false
             }
-            (TypeData::None, _) => false,
+            (TyKind::None, _) => false,
         }
     }
 
     fn property_name_from_key_type(&self, ty: Ty<'a>) -> Option<&'a str> {
         match self.arena().type_data(ty) {
-            TypeData::StringLiteral(literal) => Some(literal.value),
-            TypeData::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
-            TypeData::BooleanLiteral(true) => Some("true"),
-            TypeData::BooleanLiteral(false) => Some("false"),
+            TyKind::StringLiteral(literal) => Some(literal.value),
+            TyKind::NumberLiteral(literal) => literal.raw.as_ref().map(oxc_str::Str::as_str),
+            TyKind::BooleanLiteral(true) => Some("true"),
+            TyKind::BooleanLiteral(false) => Some("false"),
             _ => None,
         }
     }
@@ -335,11 +333,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         match self.arena().type_data(target) {
-            TypeData::Object(object) => object
+            TyKind::Object(object) => object
                 .properties
                 .iter()
                 .any(|property| !property.computed && property.name == name),
-            TypeData::Intersection(intersection) => intersection
+            TyKind::Intersection(intersection) => intersection
                 .types
                 .iter()
                 .any(|ty| self.keyof_type_contains_property(*ty, name, depth + 1)),
