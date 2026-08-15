@@ -10,7 +10,7 @@ use oxc_ast::{
         FormalParameters, Function, IdentifierReference, ImportExpression, LogicalExpression,
         MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase,
         ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
-        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, StringLiteral, TSImportType,
+        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportType,
         TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature,
         TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember, TSSignature,
         TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
@@ -1242,7 +1242,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             AstKind::StringLiteral(literal) => {
                 if flags.preserve_literals() {
-                    Ty::string_literal(self.arena(), self.get_string_literal_value(literal))
+                    Ty::string_literal(self.arena(), &literal.value)
                 } else {
                     Ty::string()
                 }
@@ -1573,10 +1573,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return self.get_global_non_nullable_type(program_id, non_nullish);
         }
         non_nullish
-    }
-
-    pub(crate) fn get_string_literal_value(&self, literal: &StringLiteral<'a>) -> &'a str {
-        literal.value.as_str()
     }
 
     fn get_type_of_binary_expression(
@@ -12223,10 +12219,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     Some(node.node_id),
                     ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
                 ),
-            AstKind::Directive(directive) => Ty::string_literal(
-                self.arena(),
-                self.get_string_literal_value(&directive.expression),
-            ),
+            AstKind::Directive(directive) => {
+                Ty::string_literal(self.arena(), &directive.expression.value)
+            }
             AstKind::BindingIdentifier(identifier) => {
                 if let AstKind::TSTypeAliasDeclaration(alias) =
                     self.nodes(node.program_id).parent_kind(node.node_id)
