@@ -10391,7 +10391,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             BindingPattern::BindingIdentifier(identifier)
                 if identifier.symbol_id.get() == Some(symbol_id) =>
             {
-                Some(self.get_apparent_binding_type(program_id, pattern_type))
+                Some(self.get_apparent_type_at_use(program_id, pattern_type, 0))
             }
             BindingPattern::BindingIdentifier(_) => None,
             BindingPattern::ObjectPattern(object) => {
@@ -10469,10 +10469,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_non_undefined_type(pattern_type),
                 ),
         }
-    }
-
-    fn get_apparent_binding_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
-        self.get_apparent_type_at_use(program_id, ty, 0)
     }
 
     fn get_non_undefined_type(&self, ty: Ty<'a>) -> Ty<'a> {
