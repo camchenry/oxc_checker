@@ -1,7 +1,9 @@
 use crate::{
+    TupleElement, TyProperty,
     checker::{Checker, CheckerReturn},
     limits::ASSIGNABILITY_MAX_DEPTH,
-    types::{Ty, TyTypePredicate, TypeData},
+    type_predicate_kinds_match,
+    types::{Ty, TypeData},
 };
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
@@ -160,7 +162,31 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             )
                         },
                     )
-                    && self.function_return_type_assignable_to(source, target, next_depth)
+                    && match target.type_predicate {
+                        Some(target_predicate) => {
+                            source.type_predicate.is_some_and(|source_predicate| {
+                                type_predicate_kinds_match(source_predicate, target_predicate)
+                                    && match (
+                                        source_predicate.target_type,
+                                        target_predicate.target_type,
+                                    ) {
+                                        (Some(source_type), Some(target_type)) => self
+                                            .is_assignable_to_at_depth(
+                                                source_type,
+                                                target_type,
+                                                next_depth,
+                                            ),
+                                        (None, None) => true,
+                                        _ => false,
+                                    }
+                            })
+                        }
+                        None => self.is_assignable_to_at_depth(
+                            source.return_type,
+                            target.return_type,
+                            next_depth,
+                        ),
+                    }
             }
             (TypeData::TypeReference(source), TypeData::TypeReference(target)) => {
                 source.has_identical_target(target)
@@ -196,12 +222,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             (TypeData::Tuple(source), TypeData::Tuple(target)) => {
                 source.elements.len() == target.elements.len()
                     && source.elements.iter().zip(target.elements.iter()).all(
-                        |(source_element, target_element)| {
-                            self.tuple_element_assignable_to(
-                                source_element,
-                                target_element,
-                                next_depth,
-                            )
+                        |(source_element, target_element)| match (source_element, target_element) {
+                            (TupleElement::Regular(source), TupleElement::Regular(target))
+                            | (TupleElement::Rest(source), TupleElement::Rest(target))
+                            | (TupleElement::Optional(source), TupleElement::Optional(target)) => {
+                                self.is_assignable_to_at_depth(*source, *target, next_depth)
+                            }
+                            _ => false,
                         },
                     )
             }
@@ -213,7 +240,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
             (TypeData::BooleanLiteral(_), TypeData::Boolean) => true,
             (_, TypeData::Keyof(keyof)) => {
-                self.is_assignable_to_keyof(source, keyof.target, next_depth)
+                let Some(source_name) = self.property_name_from_key_type(source) else {
+                    return false;
+                };
+                self.keyof_type_contains_property(keyof.target, source_name, next_depth)
             }
             // Base case: if we can't find a more specific rule, we default to false but do so explicitly so that we can
             // catch any missing cases during development.
@@ -289,13 +319,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn is_assignable_to_keyof(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
-        let Some(source_name) = self.property_name_from_key_type(source) else {
-            return false;
-        };
-        self.keyof_type_contains_property(target, source_name, depth)
-    }
-
     fn property_name_from_key_type(&self, ty: Ty<'a>) -> Option<&'a str> {
         match self.arena().type_data(ty) {
             TypeData::StringLiteral(literal) => Some(literal.value),
@@ -338,58 +361,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             )
     }
 
-    fn tuple_element_assignable_to(
-        &self,
-        source: &crate::types::TupleElement<'a>,
-        target: &crate::types::TupleElement<'a>,
-        depth: usize,
-    ) -> bool {
-        use crate::types::TupleElement;
-
-        match (source, target) {
-            (TupleElement::Regular(source), TupleElement::Regular(target))
-            | (TupleElement::Rest(source), TupleElement::Rest(target))
-            | (TupleElement::Optional(source), TupleElement::Optional(target)) => {
-                self.is_assignable_to_at_depth(*source, *target, depth)
-            }
-            _ => false,
-        }
-    }
-
-    fn function_return_type_assignable_to(
-        &self,
-        source: &crate::types::TyFunction<'a>,
-        target: &crate::types::TyFunction<'a>,
-        depth: usize,
-    ) -> bool {
-        match target.type_predicate {
-            Some(target_predicate) => source.type_predicate.is_some_and(|source_predicate| {
-                self.type_predicate_assignable_to(source_predicate, target_predicate, depth)
-            }),
-            None => self.is_assignable_to_at_depth(source.return_type, target.return_type, depth),
-        }
-    }
-
-    fn type_predicate_assignable_to(
-        &self,
-        source: &TyTypePredicate<'a>,
-        target: &TyTypePredicate<'a>,
-        depth: usize,
-    ) -> bool {
-        crate::types::type_predicate_kinds_match(source, target)
-            && match (source.target_type, target.target_type) {
-                (Some(source_type), Some(target_type)) => {
-                    self.is_assignable_to_at_depth(source_type, target_type, depth)
-                }
-                (None, None) => true,
-                _ => false,
-            }
-    }
-
     fn properties_assignable_to(
         &self,
-        source_properties: &[crate::types::TyProperty<'a>],
-        target_properties: &[crate::types::TyProperty<'a>],
+        source_properties: &[TyProperty<'a>],
+        target_properties: &[TyProperty<'a>],
         depth: usize,
     ) -> bool {
         target_properties.iter().all(|target_property| {
