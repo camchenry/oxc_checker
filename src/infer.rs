@@ -1602,6 +1602,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         )
     }
 
+    pub(crate) fn inference_contextual_parameter_type(
+        &self,
+        function: &TyFunction<'a>,
+        parameter_type: Ty<'a>,
+    ) -> Ty<'a> {
+        let TypeData::TypeReference(reference) = self.arena().type_data(parameter_type) else {
+            return parameter_type;
+        };
+        if !reference.is_bare() {
+            return parameter_type;
+        }
+
+        function
+            .type_parameters
+            .iter()
+            .find(|type_parameter| type_parameter.name == reference.name)
+            .and_then(|type_parameter| type_parameter.constraint_type)
+            .unwrap_or(parameter_type)
+    }
+
     fn inference_return_type_for_literal_widening(
         &self,
         program_id: ProgramId,
