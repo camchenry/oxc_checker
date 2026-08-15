@@ -5565,7 +5565,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         continue;
                     };
                     let contextual_type = context.contextual_type.and_then(|contextual_type| {
-                        self.get_contextual_object_property_type(program_id, contextual_type, name)
+                        self.get_contextual_or_destructured_property_type_at_depth(
+                            program_id,
+                            contextual_type,
+                            name,
+                            0,
+                        )
                     });
                     let mut flags = context.flags;
                     if !context.check_mode.const_context()
@@ -8765,7 +8770,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.get_contextual_type_of_object_expression(program_id, node_id, object)
             })?;
 
-        self.get_contextual_object_property_type(program_id, object_context, property_name)
+        self.get_contextual_or_destructured_property_type_at_depth(
+            program_id,
+            object_context,
+            property_name,
+            0,
+        )
     }
 
     fn get_contextual_type_of_object_expression(
@@ -10389,11 +10399,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     let Some(property_name) = property_key_name_str(&property.key) else {
                         continue;
                     };
-                    let Some(property_type) = self.get_destructured_property_type(
-                        program_id,
-                        pattern_type,
-                        property_name,
-                    ) else {
+                    let Some(property_type) = self
+                        .get_contextual_or_destructured_property_type_at_depth(
+                            program_id,
+                            pattern_type,
+                            property_name,
+                            0,
+                        )
+                    else {
                         continue;
                     };
                     if let Some(ty) = self.get_type_of_binding_pattern_symbol(
@@ -10464,34 +10477,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn get_non_undefined_type(&self, ty: Ty<'a>) -> Ty<'a> {
         ty.map_union(self.arena(), |ty| (ty != Ty::Undefined).then_some(ty))
-    }
-
-    fn get_destructured_property_type(
-        &self,
-        program_id: ProgramId,
-        object_type: Ty<'a>,
-        property_name: &str,
-    ) -> Option<Ty<'a>> {
-        self.get_contextual_or_destructured_property_type_at_depth(
-            program_id,
-            object_type,
-            property_name,
-            0,
-        )
-    }
-
-    fn get_contextual_object_property_type(
-        &self,
-        program_id: ProgramId,
-        object_type: Ty<'a>,
-        property_name: &str,
-    ) -> Option<Ty<'a>> {
-        self.get_contextual_or_destructured_property_type_at_depth(
-            program_id,
-            object_type,
-            property_name,
-            0,
-        )
     }
 
     fn get_contextual_or_destructured_property_type_at_depth(
