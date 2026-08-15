@@ -13,7 +13,8 @@ use oxc_cfg::{
     graph::{Direction, visit::EdgeRef},
 };
 use oxc_semantic::{NodeId, ScopeFlags};
-use std::{cell::RefCell, collections::HashSet};
+use rustc_hash::FxHashSet;
+use std::cell::RefCell;
 
 use crate::{
     checker::CheckerReturn,
@@ -1503,7 +1504,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         let mut pending = vec![function_block];
-        let mut visited = HashSet::new();
+        let mut visited = FxHashSet::default();
         while let Some(block_id) = pending.pop() {
             if !visited.insert(block_id) {
                 continue;

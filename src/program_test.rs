@@ -1,18 +1,19 @@
 use super::*;
 use crate::checker::{Checker, CheckerBuilder, SymbolRef};
 use oxc_str::Ident;
+use rustc_hash::FxHashMap;
 
 #[derive(Default)]
 struct InMemoryProgramHost {
     cwd: PathBuf,
-    files: HashMap<PathBuf, String>,
+    files: FxHashMap<PathBuf, String>,
 }
 
 impl InMemoryProgramHost {
     fn new(cwd: impl Into<PathBuf>) -> Self {
         Self {
             cwd: cwd.into(),
-            files: HashMap::new(),
+            files: FxHashMap::default(),
         }
     }
 

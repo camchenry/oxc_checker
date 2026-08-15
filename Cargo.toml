@@ -14,6 +14,7 @@ all = { level = "deny", priority = -1 }
 checked_conversions = "deny"
 cloned_instead_of_copied = "deny"
 dbg_macro = "deny"
+disallowed_types = "deny"
 explicit_iter_loop = "deny"
 filter_map_next = "deny"
 flat_map_option = "deny"

@@ -1,6 +1,5 @@
-use std::collections::HashSet;
-
 use crate::types::{CheckerArena, Ty, TyKind, TyTemplateLiteral, TypeId};
+use rustc_hash::FxHashSet;
 use smallvec::SmallVec;
 
 const UNION_INLINE_TYPE_CAPACITY: usize = 8;
@@ -10,7 +9,7 @@ type UnionTypes<'a> = SmallVec<[Ty<'a>; UNION_INLINE_TYPE_CAPACITY]>;
 
 enum SeenTypeIds {
     Inline(SmallVec<[TypeId; UNION_INLINE_SEEN_ID_CAPACITY]>),
-    Spilled(HashSet<TypeId>),
+    Spilled(FxHashSet<TypeId>),
 }
 
 impl SeenTypeIds {
@@ -29,7 +28,8 @@ impl SeenTypeIds {
                     return true;
                 }
 
-                let mut spilled = HashSet::with_capacity(ids.len() * 2);
+                let mut spilled = FxHashSet::default();
+                spilled.reserve(ids.len() * 2);
                 spilled.extend(ids.iter().copied());
                 let inserted = spilled.insert(id);
                 *self = Self::Spilled(spilled);
@@ -173,7 +173,7 @@ pub(crate) fn reduce_intersection_type<'a>(
     types: impl IntoIterator<Item = Ty<'a>>,
 ) -> Ty<'a> {
     let mut type_set = Vec::new();
-    let mut seen_ids = HashSet::new();
+    let mut seen_ids = FxHashSet::default();
     for ty in types {
         add_type_to_intersection(arena, &mut type_set, &mut seen_ids, ty);
     }
@@ -231,7 +231,7 @@ pub(crate) fn reduce_intersection_type<'a>(
 fn add_type_to_intersection<'a>(
     arena: CheckerArena<'a>,
     type_set: &mut Vec<Ty<'a>>,
-    seen_ids: &mut HashSet<TypeId>,
+    seen_ids: &mut FxHashSet<TypeId>,
     ty: Ty<'a>,
 ) {
     if !seen_ids.insert(ty.id()) {
@@ -407,7 +407,7 @@ fn template_literal_matches_string<'a>(
     if !value.starts_with(first_quasi.value) {
         return false;
     }
-    let mut seen = HashSet::new();
+    let mut seen = FxHashSet::default();
     template_literal_remaining_matches(
         arena,
         template_literal,
@@ -424,7 +424,7 @@ fn template_literal_remaining_matches<'a>(
     expression_index: usize,
     value: &str,
     offset: usize,
-    seen: &mut HashSet<(usize, usize)>,
+    seen: &mut FxHashSet<(usize, usize)>,
 ) -> bool {
     if !seen.insert((expression_index, offset)) {
         return false;

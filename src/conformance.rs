@@ -3,7 +3,7 @@
 use std::{
     any::Any,
     borrow::Cow,
-    collections::{BTreeMap, BTreeSet, HashMap},
+    collections::{BTreeMap, BTreeSet},
     fmt, io,
     path::{Component, Path, PathBuf},
     sync::{
@@ -25,6 +25,7 @@ use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
+use rustc_hash::FxHashMap;
 use terminal_size::{Width, terminal_size};
 
 use crate::{
@@ -410,22 +411,22 @@ fn nanos_duration(nanos: u64) -> Duration {
 }
 
 struct FixtureProgramHost {
-    files: HashMap<PathBuf, String>,
+    files: FxHashMap<PathBuf, String>,
     resolver: ResolverGeneric<FixtureResolverFileSystem>,
-    resolver_paths: HashMap<PathBuf, PathBuf>,
+    resolver_paths: FxHashMap<PathBuf, PathBuf>,
 }
 
 #[derive(Default)]
 struct FixtureResolverFileSystem {
-    files: HashMap<PathBuf, Vec<u8>>,
+    files: FxHashMap<PathBuf, Vec<u8>>,
     directories: BTreeSet<PathBuf>,
 }
 
 impl FixtureProgramHost {
     fn new(files: &[CompilerTestFile], module_files: bool) -> Self {
-        let mut host_files = HashMap::new();
-        let mut resolver_files = HashMap::new();
-        let mut resolver_paths = HashMap::new();
+        let mut host_files = FxHashMap::default();
+        let mut resolver_files = FxHashMap::default();
+        let mut resolver_paths = FxHashMap::default();
         let mut directories = BTreeSet::new();
 
         for file in files {
@@ -567,7 +568,7 @@ impl program::ProgramHost for FixtureProgramHost {
 }
 
 struct CompilerTestCase {
-    settings: HashMap<String, String>,
+    settings: FxHashMap<String, String>,
     files: Vec<CompilerTestFile>,
     has_explicit_files: bool,
 }
@@ -575,7 +576,7 @@ struct CompilerTestCase {
 struct CompilerTestFile {
     name: String,
     source_text: String,
-    settings: HashMap<String, String>,
+    settings: FxHashMap<String, String>,
 }
 
 struct ConformanceError(String);
@@ -1618,10 +1619,10 @@ fn collect_oxc_records_from_source_with_programs<'a>(
 }
 
 fn parse_compiler_test_case(source_text: &str, fixture_path: &str) -> CompilerTestCase {
-    let mut settings = HashMap::new();
+    let mut settings = FxHashMap::default();
     let mut files = Vec::new();
     let mut current_file_name = None;
-    let mut current_file_settings = HashMap::new();
+    let mut current_file_settings = FxHashMap::default();
     let mut current_file_lines = Vec::new();
     let mut has_explicit_files = false;
 
@@ -1694,7 +1695,7 @@ fn push_compiler_test_file(
     files: &mut Vec<CompilerTestFile>,
     name: &str,
     lines: &mut Vec<String>,
-    settings: HashMap<String, String>,
+    settings: FxHashMap<String, String>,
 ) {
     files.push(CompilerTestFile {
         name: normalize_test_file_name(name),
@@ -1850,7 +1851,7 @@ fn parse_single_fixture_program<'a>(
     prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
 ) -> program::ProgramStoreResult<ParsedFixture<'a>> {
     let compiler_case = CompilerTestCase {
-        settings: HashMap::new(),
+        settings: FxHashMap::default(),
         files: vec![CompilerTestFile {
             name: source_file.name.clone(),
             source_text: source_file.source_text.clone(),

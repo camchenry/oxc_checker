@@ -14,8 +14,6 @@ use oxc_index::Idx;
 use oxc_str::Str;
 use oxc_syntax::identifier::is_identifier_name;
 use smallvec::SmallVec;
-#[cfg(test)]
-use std::collections::HashSet;
 use std::{
     cell::{Cell, RefCell},
     marker::PhantomData,

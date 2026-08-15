@@ -1,5 +1,3 @@
-use std::collections::{HashMap, HashSet};
-
 use oxc_ast::AstKind;
 use oxc_cfg::{
     BlockNodeId, EdgeType,
@@ -11,6 +9,7 @@ use oxc_cfg::{
 use oxc_semantic::{NodeId, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::LogicalOperator;
+use rustc_hash::{FxHashMap, FxHashSet};
 use smallvec::SmallVec;
 
 use crate::checker::{CheckerReturn, NodeRef};
@@ -57,10 +56,10 @@ pub(crate) struct AssignmentFlow {
 /// Lazily collected, type-independent flow effects for one program.
 #[derive(Debug, Default)]
 pub(crate) struct ProgramFlowGraph {
-    effects_by_node: HashMap<NodeId, Box<[BranchEffect]>>,
-    writes_by_symbol: HashMap<SymbolId, Box<[WriteEvent]>>,
-    array_mutations_by_symbol: HashMap<SymbolId, Box<[ArrayMutationEvent]>>,
-    dominators_by_entry: HashMap<BlockNodeId, Dominators<BlockNodeId>>,
+    effects_by_node: FxHashMap<NodeId, Box<[BranchEffect]>>,
+    writes_by_symbol: FxHashMap<SymbolId, Box<[WriteEvent]>>,
+    array_mutations_by_symbol: FxHashMap<SymbolId, Box<[ArrayMutationEvent]>>,
+    dominators_by_entry: FxHashMap<BlockNodeId, Dominators<BlockNodeId>>,
 }
 
 impl ProgramFlowGraph {
@@ -334,7 +333,7 @@ fn dominating_blocks(
     checker: &CheckerReturn<'_, '_>,
     program_id: crate::program::ProgramId,
     block: BlockNodeId,
-) -> Option<HashSet<BlockNodeId>> {
+) -> Option<FxHashSet<BlockNodeId>> {
     let cfg = checker.semantic(program_id).cfg()?;
     let entry = flow_container_entry(cfg, block);
     let mut cache = checker.flow_graph_cache.borrow_mut();

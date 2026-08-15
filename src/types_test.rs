@@ -1,7 +1,7 @@
 use super::*;
 use crate::type_set::UnionAccumulator;
 use oxc_allocator::Allocator;
-use std::collections::HashMap;
+use rustc_hash::{FxHashMap, FxHashSet};
 
 fn arena(allocator: &Allocator) -> CheckerArena<'_> {
     CheckerArena::new(allocator)
@@ -63,7 +63,7 @@ fn visit_type_visits_shared_types_once() {
 
     assert_eq!(visited.len(), unique_type_count);
     assert_eq!(
-        visited.iter().copied().collect::<HashSet<_>>().len(),
+        visited.iter().copied().collect::<FxHashSet<_>>().len(),
         visited.len()
     );
 }
@@ -158,7 +158,7 @@ fn type_identity_is_recursive_and_distinct_from_handle_identity() {
     assert!(arena.is_type_identical_to(first, second));
     assert!(!arena.is_type_identical_to(first, different));
 
-    let mut by_id = HashMap::new();
+    let mut by_id = FxHashMap::default();
     by_id.insert(first.id(), "first");
     by_id.insert(second.id(), "second");
     assert_eq!(by_id.len(), 2);

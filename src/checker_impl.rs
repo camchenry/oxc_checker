@@ -28,8 +28,7 @@ use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator},
 };
-use rustc_hash::FxHashMap;
-use std::collections::{HashMap, HashSet};
+use rustc_hash::{FxHashMap, FxHashSet};
 
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
@@ -122,7 +121,7 @@ impl IterationInterfaceResolution {
 
 #[derive(Default)]
 struct IterationResolutionContext {
-    active_interfaces: HashSet<IterationInterfaceResolution>,
+    active_interfaces: FxHashSet<IterationInterfaceResolution>,
 }
 
 #[derive(Clone, Copy, Debug, Default)]
@@ -9653,7 +9652,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let Some(namespace_path) = self.namespace_path_for_node(program_id, declaration_id) else {
             return self.function_declarations_for_symbol(program_id, symbol_id);
         };
-        let mut seen = HashSet::new();
+        let mut seen = FxHashSet::default();
         let declarations = if is_root_function && namespace_path.is_empty() {
             self.store
                 .entries()
@@ -11585,7 +11584,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
     fn resolve_imported_type_alias_symbol(&self, symbol: SymbolRef) -> Option<SymbolRef> {
         let mut current = self.get_imported_symbol(symbol)?;
-        let mut seen = HashSet::new();
+        let mut seen = FxHashSet::default();
         loop {
             if !seen.insert(current) {
                 return None;
@@ -11763,8 +11762,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         ty: Ty<'a>,
         context: TypeStringContext,
-    ) -> HashMap<Ty<'a>, Ty<'a>> {
-        let mut replacements = HashMap::new();
+    ) -> FxHashMap<Ty<'a>, Ty<'a>> {
+        let mut replacements = FxHashMap::default();
         if !context.expand_named_alias_chains {
             return replacements;
         }
@@ -11776,7 +11775,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         ty: Ty<'a>,
         context: TypeStringContext,
-        replacements: &mut HashMap<Ty<'a>, Ty<'a>>,
+        replacements: &mut FxHashMap<Ty<'a>, Ty<'a>>,
     ) {
         if matches!(self.ty_kind(ty), TyKind::TypeReference(_)) {
             self.insert_type_alias_chain_display_replacements(ty, context, replacements);
@@ -11800,10 +11799,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         &self,
         ty: Ty<'a>,
         context: TypeStringContext,
-        replacements: &mut HashMap<Ty<'a>, Ty<'a>>,
+        replacements: &mut FxHashMap<Ty<'a>, Ty<'a>>,
     ) {
         let mut current = ty;
-        let mut seen = HashSet::new();
+        let mut seen = FxHashSet::default();
         while seen.insert(current) {
             let Some(target) = self.type_alias_target_for_display(current, context) else {
                 return;

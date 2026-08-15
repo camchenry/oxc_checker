@@ -1,4 +1,4 @@
-use std::collections::{HashMap, VecDeque};
+use std::collections::VecDeque;
 
 use oxc_ast::{
     AstKind,
@@ -13,6 +13,7 @@ use oxc_cfg::{
 };
 use oxc_span::{GetSpan, Span};
 use oxc_syntax::operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator};
+use rustc_hash::{FxHashMap, FxHashSet};
 
 use crate::{
     checker::{CheckerReturn, NodeRef, SymbolRef},
@@ -139,7 +140,7 @@ fn evolving_array_flow_type<'a>(
     }
 
     let empty_element_type = finalized_empty_element_type(checker, base_type);
-    let mut changes_by_block: HashMap<_, Vec<_>> = HashMap::new();
+    let mut changes_by_block: FxHashMap<_, Vec<_>> = FxHashMap::default();
     for mutation in flow_graph::array_mutations(checker, symbol.program_id, symbol.symbol_id) {
         if let Some(change) = evolving_array_change(checker, symbol.program_id, mutation.kind) {
             changes_by_block
@@ -191,7 +192,7 @@ fn is_evolving_array_operation_target(checker: &CheckerReturn<'_, '_>, node: Nod
 fn evolving_array_element_at_reference<'a>(
     checker: &CheckerReturn<'a, '_>,
     node: NodeRef,
-    changes_by_block: &HashMap<BlockNodeId, Vec<(Span, EvolvingArrayChange<'a>)>>,
+    changes_by_block: &FxHashMap<BlockNodeId, Vec<(Span, EvolvingArrayChange<'a>)>>,
 ) -> Option<Ty<'a>> {
     const MAX_FLOW_UPDATES: usize = 10_000;
 
@@ -200,9 +201,10 @@ fn evolving_array_element_at_reference<'a>(
     let query_block = nodes.cfg_id(node.node_id);
     let entry = flow_graph::flow_container_entry(cfg, query_block);
 
-    let mut outputs = HashMap::new();
+    let mut outputs = FxHashMap::default();
     let mut pending = VecDeque::from([entry]);
-    let mut queued = std::collections::HashSet::from([entry]);
+    let mut queued = FxHashSet::default();
+    queued.insert(entry);
     let mut updates = 0;
     while let Some(block) = pending.pop_front() {
         queued.remove(&block);
@@ -249,7 +251,7 @@ fn evolving_array_block_input<'a>(
     cfg: &oxc_cfg::ControlFlowGraph,
     entry: BlockNodeId,
     block: BlockNodeId,
-    outputs: &HashMap<BlockNodeId, Ty<'a>>,
+    outputs: &FxHashMap<BlockNodeId, Ty<'a>>,
 ) -> Option<Ty<'a>> {
     if block == entry {
         return Some(Ty::never());

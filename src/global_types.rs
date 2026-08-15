@@ -1,8 +1,7 @@
-use std::collections::HashMap;
-
 use oxc_ast::{AstKind, ast::Expression};
 use oxc_semantic::NodeId;
 use oxc_syntax::symbol::SymbolFlags;
+use rustc_hash::FxHashMap;
 
 use crate::{
     TyTypeReference,
@@ -41,13 +40,13 @@ struct GlobalSymbolEntry {
 
 #[derive(Debug, Default)]
 pub struct GlobalSymbolTable {
-    symbols: HashMap<String, GlobalSymbolEntry>,
+    symbols: FxHashMap<String, GlobalSymbolEntry>,
 }
 
 impl GlobalSymbolTable {
     pub(crate) fn new<'a>(store: &program::ProgramStore<'a>) -> Self {
         let mut table = Self {
-            symbols: HashMap::new(),
+            symbols: FxHashMap::default(),
         };
 
         for entry in store.entries() {

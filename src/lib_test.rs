@@ -9,21 +9,19 @@ use oxc_ast::{
     ast::{BigintBase, NumberBase},
 };
 use oxc_str::Ident;
-use std::{
-    collections::HashMap,
-    path::{Path, PathBuf},
-};
+use rustc_hash::FxHashMap;
+use std::path::{Path, PathBuf};
 
 struct TestProgramHost {
     cwd: PathBuf,
-    files: HashMap<PathBuf, String>,
+    files: FxHashMap<PathBuf, String>,
 }
 
 impl TestProgramHost {
     fn new(cwd: impl Into<PathBuf>) -> Self {
         Self {
             cwd: cwd.into(),
-            files: HashMap::new(),
+            files: FxHashMap::default(),
         }
     }
 
@@ -389,7 +387,7 @@ fn checker_enumerates_registered_types_by_id() {
     assert_eq!(checker.types().map(Ty::id).collect::<Vec<_>>(), ids);
     assert_eq!(checker.type_from_id(ty.id()), Some(ty));
 
-    let mut by_id = HashMap::new();
+    let mut by_id = FxHashMap::default();
     by_id.insert(ty.id(), "values");
     assert_eq!(by_id.get(&ty.id()), Some(&"values"));
 }
@@ -3468,7 +3466,7 @@ fn get_type_at_location_checks_direct_expressions() {
                 checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)),
             ))
         })
-        .collect::<HashMap<_, _>>();
+        .collect::<FxHashMap<_, _>>();
 
     assert_eq!(expression_types.len(), 9);
     assert_type_eq(

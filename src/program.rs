@@ -1,5 +1,4 @@
 use std::{
-    collections::HashMap,
     fmt,
     path::{Component, Path, PathBuf},
 };
@@ -15,6 +14,7 @@ use oxc_resolver::{ResolveError, ResolveOptions, Resolver};
 use oxc_semantic::{Semantic, SemanticBuilder};
 use oxc_span::{SourceType, Span};
 use oxc_syntax::module_record::ModuleRecord;
+use rustc_hash::FxHashMap;
 
 use crate::global_types::GlobalSymbolTable;
 
@@ -118,7 +118,7 @@ struct PreparedProgram<'a> {
 /// A path-indexed collection of immutable programs parsed in one allocator.
 pub struct PreparedProgramSet<'a> {
     allocator: &'a Allocator,
-    programs: HashMap<PathBuf, PreparedProgram<'a>>,
+    programs: FxHashMap<PathBuf, PreparedProgram<'a>>,
 }
 
 impl<'a> PreparedProgramSet<'a> {
@@ -126,7 +126,7 @@ impl<'a> PreparedProgramSet<'a> {
     pub fn new(allocator: &'a Allocator) -> Self {
         Self {
             allocator,
-            programs: HashMap::new(),
+            programs: FxHashMap::default(),
         }
     }
 
@@ -506,7 +506,7 @@ fn parse_program<'a>(
 pub struct ProgramStore<'a> {
     allocator: &'a Allocator,
     entries: IndexVec<ProgramId, ProgramEntry<'a>>,
-    paths: HashMap<PathBuf, ProgramId>,
+    paths: FxHashMap<PathBuf, ProgramId>,
     edges: Vec<ModuleEdge>,
     global_symbols: GlobalSymbolTable,
 }
@@ -517,7 +517,7 @@ impl<'a> ProgramStore<'a> {
         Self {
             allocator,
             entries: IndexVec::new(),
-            paths: HashMap::new(),
+            paths: FxHashMap::default(),
             edges: Vec::new(),
             global_symbols: GlobalSymbolTable::default(),
         }
