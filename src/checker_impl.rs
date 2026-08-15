@@ -11251,24 +11251,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     self.get_iteration_types_of_iterator_result(program_id, *ty, depth + 1)
                 }))
             }
-            TyKind::TypeReference(reference)
-                if self.is_global_lib_type_name(program_id, reference.name)
-                    && reference.name == "IteratorYieldResult" =>
-            {
-                IterationTypes {
-                    yield_type: reference.type_arguments.first().copied(),
-                    ..IterationTypes::default()
-                }
-            }
-            TyKind::TypeReference(reference)
-                if self.is_global_lib_type_name(program_id, reference.name)
-                    && reference.name == "IteratorReturnResult" =>
-            {
-                IterationTypes {
-                    return_type: reference.type_arguments.first().copied(),
-                    ..IterationTypes::default()
-                }
-            }
             TyKind::TypeReference(_) => {
                 if let Some((expanded_program_id, expanded)) =
                     self.get_expanded_type_alias_reference_type(program_id, result_type, depth + 1)
