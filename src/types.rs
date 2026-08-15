@@ -2000,8 +2000,7 @@ impl<'a> Ty<'a> {
         false_type: Ty<'a>,
         is_distributive: bool,
     ) -> Self {
-        simplify_conditional_type(
-            arena,
+        arena.intern_conditional(
             check_type,
             extends_type,
             true_type,
@@ -2809,105 +2808,6 @@ impl<'a> Ty<'a> {
             Self::union(arena, [*self, Ty::Undefined])
         }
     }
-}
-
-fn simplify_conditional_type<'a>(
-    arena: CheckerArena<'a>,
-    check_type: Ty<'a>,
-    extends_type: Ty<'a>,
-    true_type: Ty<'a>,
-    false_type: Ty<'a>,
-    is_distributive: bool,
-) -> Ty<'a> {
-    if let Some(is_equal) = simplify_type_equality_function_extends(arena, check_type, extends_type)
-    {
-        return if is_equal { true_type } else { false_type };
-    }
-
-    if contains_unresolved_type_variable(arena, check_type)
-        || contains_unresolved_type_variable(arena, extends_type)
-        || contains_infer(arena, check_type)
-        || contains_infer(arena, extends_type)
-    {
-        return arena.intern_conditional(
-            check_type,
-            extends_type,
-            true_type,
-            false_type,
-            is_distributive,
-        );
-    }
-
-    if crate::relations::is_assignable_to_without_checker(arena, check_type, extends_type) {
-        true_type
-    } else {
-        false_type
-    }
-}
-
-fn simplify_type_equality_function_extends<'a>(
-    arena: CheckerArena<'a>,
-    check_type: Ty<'a>,
-    extends_type: Ty<'a>,
-) -> Option<bool> {
-    let (TypeData::Function(check_function), TypeData::Function(extends_function)) =
-        (arena.type_data(check_type), arena.type_data(extends_type))
-    else {
-        return None;
-    };
-    if !check_function.parameters.is_empty()
-        || !extends_function.parameters.is_empty()
-        || check_function.type_parameters.len() != 1
-        || extends_function.type_parameters.len() != 1
-    {
-        return None;
-    }
-
-    let TypeData::Conditional(check_return) = arena.type_data(check_function.return_type) else {
-        return None;
-    };
-    let TypeData::Conditional(extends_return) = arena.type_data(extends_function.return_type)
-    else {
-        return None;
-    };
-    if contains_unresolved_type_variable(arena, check_return.extends_type)
-        || contains_unresolved_type_variable(arena, extends_return.extends_type)
-    {
-        return None;
-    }
-
-    Some(
-        crate::relations::is_assignable_to_without_checker(
-            arena,
-            check_return.extends_type,
-            extends_return.extends_type,
-        ) && crate::relations::is_assignable_to_without_checker(
-            arena,
-            extends_return.extends_type,
-            check_return.extends_type,
-        ),
-    )
-}
-
-fn contains_unresolved_type_variable<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> bool {
-    let mut contains = false;
-    visit_type(arena, ty, &mut |ty| match arena.type_data(ty) {
-        TypeData::TypeReference(reference) if reference.is_bare() => {
-            contains = true;
-        }
-        TypeData::Function(function) if !function.type_parameters.is_empty() => contains = true,
-        TypeData::Infer(_) => contains = true,
-        _ => {}
-    });
-    contains
-}
-
-fn contains_infer<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> bool {
-    let mut contains = false;
-    visit_type(arena, ty, &mut |ty| {
-        contains |= matches!(arena.type_data(ty), TypeData::Infer(_));
-    });
-    contains
 }
 
 fn element_type_needs_parentheses<'a>(arena: CheckerArena<'a>, element: &TupleElement<'a>) -> bool {

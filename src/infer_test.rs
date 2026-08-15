@@ -1,8 +1,45 @@
 use oxc_allocator::Allocator;
 use oxc_ast::ast::NumberBase;
+use std::path::{Path, PathBuf};
 
 use super::*;
-use crate::types::CheckerArena;
+use crate::{
+    checker::CheckerBuilder,
+    program::{HostModuleResolution, ProgramHost, ProgramStore, ProgramStoreBuilder},
+    types::CheckerArena,
+};
+
+struct TestProgramHost;
+
+impl ProgramHost for TestProgramHost {
+    fn read_source(&self, _path: &Path) -> crate::program::ProgramStoreResult<String> {
+        Ok(String::new())
+    }
+
+    fn canonicalize_path(&self, path: &Path) -> PathBuf {
+        path.to_path_buf()
+    }
+
+    fn resolve_module(&self, _containing_file: &Path, specifier: &str) -> HostModuleResolution {
+        HostModuleResolution::Missing(specifier.to_string())
+    }
+}
+
+fn test_store<'a>(allocator: &'a Allocator) -> ProgramStore<'a> {
+    ProgramStoreBuilder::new(allocator, TestProgramHost)
+        .add_root_file("/test.ts")
+        .without_default_lib()
+        .build()
+        .unwrap()
+}
+
+macro_rules! test_checker {
+    ($allocator:ident, $store:ident, $checker:ident, $arena:ident) => {
+        let $store = test_store(&$allocator);
+        let $checker = CheckerBuilder::new().build(&$store);
+        let $arena = $checker.arena;
+    };
+}
 
 fn assert_optional_type_eq<'a>(
     arena: CheckerArena<'a>,
@@ -20,7 +57,7 @@ fn assert_optional_type_eq<'a>(
 #[test]
 fn resolves_dependent_default_when_only_dependent_parameter_is_read() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter("T", None, Some(Ty::string()));
     let type_parameter_u = Ty::type_parameter(
         "U",
@@ -34,7 +71,7 @@ fn resolves_dependent_default_when_only_dependent_parameter_is_read() {
     );
 
     assert_eq!(
-        context.resolve_type_parameter_by_name("U", arena, InferenceResolutionFlags::NONE,),
+        context.resolve_type_parameter_by_name("U", &checker, InferenceResolutionFlags::NONE,),
         Some(Ty::string()),
     );
     assert!(context.inferences[0].is_fixed);
@@ -44,7 +81,7 @@ fn resolves_dependent_default_when_only_dependent_parameter_is_read() {
 #[test]
 fn resolving_type_parameter_fixes_it_before_dependent_default() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter("T", None, None);
     let type_parameter_u = Ty::type_parameter(
         "U",
@@ -64,12 +101,12 @@ fn resolving_type_parameter_fixes_it_before_dependent_default() {
     );
 
     assert_eq!(
-        context.resolve_type_parameter_by_name("T", arena, InferenceResolutionFlags::NONE,),
+        context.resolve_type_parameter_by_name("T", &checker, InferenceResolutionFlags::NONE,),
         Some(Ty::number()),
     );
     assert!(context.inferences[0].is_fixed);
     assert_eq!(
-        context.resolve_type_parameter_by_name("U", arena, InferenceResolutionFlags::NONE,),
+        context.resolve_type_parameter_by_name("U", &checker, InferenceResolutionFlags::NONE,),
         Some(Ty::number()),
     );
     assert!(context.inferences[1].is_fixed);
@@ -78,7 +115,7 @@ fn resolving_type_parameter_fixes_it_before_dependent_default() {
 #[test]
 fn contextual_mapper_resolves_dependent_default_on_read() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter("T", None, Some(Ty::string()));
     let type_parameter_u = Ty::type_parameter(
         "U",
@@ -90,7 +127,8 @@ fn contextual_mapper_resolves_dependent_default_on_read() {
         &TypeParameterSubstitutions::new(),
         arena,
     );
-    let resolution = context.resolve_with_contextual_mapper(arena, InferenceResolutionFlags::NONE);
+    let resolution =
+        context.resolve_with_contextual_mapper(&checker, InferenceResolutionFlags::NONE);
 
     assert_eq!(
         resolution
@@ -103,7 +141,7 @@ fn contextual_mapper_resolves_dependent_default_on_read() {
 #[test]
 fn indexed_access_inference_simplifies_when_index_candidate_is_known() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter("T", None, None);
     let type_parameter_k = Ty::type_parameter("K", Some(Ty::string_literal(arena, "value")), None);
     let mut context = InferenceContext::with_substitutions(
@@ -119,7 +157,7 @@ fn indexed_access_inference_simplifies_when_index_candidate_is_known() {
         InferenceVariance::Covariant,
     );
 
-    infer_types(
+    checker.infer_types(
         Ty::indexed_access(
             arena,
             Ty::object(
@@ -133,11 +171,10 @@ fn indexed_access_inference_simplifies_when_index_candidate_is_known() {
         ),
         Ty::number(),
         &mut context,
-        arena,
     );
 
     assert_eq!(
-        context.resolve_type_parameter_by_name("T", arena, InferenceResolutionFlags::NONE),
+        context.resolve_type_parameter_by_name("T", &checker, InferenceResolutionFlags::NONE,),
         Some(Ty::number()),
     );
 }
@@ -145,7 +182,7 @@ fn indexed_access_inference_simplifies_when_index_candidate_is_known() {
 #[test]
 fn indexed_access_inference_preserves_unresolved_shape_without_index_candidate() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter("T", None, None);
     let type_parameter_k = Ty::type_parameter("K", Some(Ty::string_literal(arena, "value")), None);
     let mut context = InferenceContext::with_substitutions(
@@ -155,7 +192,7 @@ fn indexed_access_inference_preserves_unresolved_shape_without_index_candidate()
     )
     .with_return_type(Ty::type_reference(arena, "T", std::iter::empty()));
 
-    infer_types(
+    checker.infer_types(
         Ty::indexed_access(
             arena,
             Ty::object(
@@ -169,7 +206,6 @@ fn indexed_access_inference_preserves_unresolved_shape_without_index_candidate()
         ),
         Ty::number(),
         &mut context,
-        arena,
     );
 
     assert_eq!(context.inferences[0].candidates, Vec::<Ty<'_>>::new());
@@ -178,7 +214,7 @@ fn indexed_access_inference_preserves_unresolved_shape_without_index_candidate()
 #[test]
 fn covariant_candidates_use_common_supertype_without_combination_priority() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter = Ty::type_parameter("T", None, None);
     let mut context = InferenceContext::with_substitutions(
         [type_parameter],
@@ -201,7 +237,7 @@ fn covariant_candidates_use_common_supertype_without_combination_priority() {
 
     assert_optional_type_eq(
         arena,
-        context.get_inferred_type(0, arena),
+        context.get_inferred_type(0, &checker),
         Some(Ty::string_literal(arena, "ready")),
     );
 }
@@ -209,7 +245,7 @@ fn covariant_candidates_use_common_supertype_without_combination_priority() {
 #[test]
 fn covariant_candidates_combine_for_naked_type_variable_priority() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter = Ty::type_parameter("T", None, None);
     let mut context = InferenceContext::with_substitutions(
         [type_parameter],
@@ -231,7 +267,7 @@ fn covariant_candidates_combine_for_naked_type_variable_priority() {
 
     assert_optional_type_eq(
         arena,
-        context.get_inferred_type(0, arena),
+        context.get_inferred_type(0, &checker),
         Some(Ty::union(
             arena,
             [
@@ -245,7 +281,7 @@ fn covariant_candidates_combine_for_naked_type_variable_priority() {
 #[test]
 fn top_level_literal_candidates_widen_when_not_top_level_in_return() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter = Ty::type_parameter("T", None, None);
     let mut context = InferenceContext::with_substitutions(
         [type_parameter],
@@ -266,13 +302,13 @@ fn top_level_literal_candidates_widen_when_not_top_level_in_return() {
         InferenceVariance::Covariant,
     );
 
-    assert_eq!(context.get_inferred_type(0, arena), Some(Ty::string()));
+    assert_eq!(context.get_inferred_type(0, &checker), Some(Ty::string()));
 }
 
 #[test]
 fn top_level_literal_candidates_are_preserved_for_top_level_return() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter = Ty::type_parameter("T", None, None);
     let mut context = InferenceContext::with_substitutions(
         [type_parameter],
@@ -289,7 +325,7 @@ fn top_level_literal_candidates_are_preserved_for_top_level_return() {
 
     assert_optional_type_eq(
         arena,
-        context.get_inferred_type(0, arena),
+        context.get_inferred_type(0, &checker),
         Some(Ty::string_literal(arena, "ready")),
     );
 }
@@ -297,7 +333,7 @@ fn top_level_literal_candidates_are_preserved_for_top_level_return() {
 #[test]
 fn forward_default_references_resolve_to_unknown() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter(
         "T",
         None,
@@ -311,7 +347,7 @@ fn forward_default_references_resolve_to_unknown() {
     );
 
     assert_eq!(
-        context.resolve_type_parameter_by_name("T", arena, InferenceResolutionFlags::NONE),
+        context.resolve_type_parameter_by_name("T", &checker, InferenceResolutionFlags::NONE,),
         Some(Ty::unknown()),
     );
     assert!(!context.inferences[1].is_fixed);

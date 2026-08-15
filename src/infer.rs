@@ -22,7 +22,6 @@ use crate::{
     limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
-    relations::is_assignable_to_without_checker,
     types::{
         CheckerArena, MappedModifier, SignatureKind, TupleElement, Ty, TyFunction, TyInfer,
         TyMapped, TyProperty, TyTypeParameter, TypeData, TypeErrorKind,
@@ -135,11 +134,6 @@ struct InferenceContext<'a> {
 pub(crate) struct InferenceResolution<'a> {
     substitutions: TypeParameterSubstitutions<'a>,
     mapper: TypeMapper<'a>,
-}
-
-struct InferenceResolver<'a, 'resolver> {
-    comparer: &'resolver dyn Fn(Ty<'a>, Ty<'a>) -> bool,
-    instantiator: &'resolver dyn Fn(Ty<'a>, &TypeParameterSubstitutions<'a>) -> Ty<'a>,
 }
 
 impl<'a> InferenceResolution<'a> {
@@ -264,31 +258,13 @@ impl<'a> InferenceContext<'a> {
         }
     }
 
-    #[cfg(test)]
-    fn resolve_with_contextual_mapper(
-        self,
-        arena: crate::types::CheckerArena<'a>,
-        flags: InferenceResolutionFlags,
-    ) -> InferenceResolution<'a> {
-        let comparer = |source, target| is_assignable_to_without_checker(arena, source, target);
-        let instantiator = |ty, substitutions: &TypeParameterSubstitutions<'a>| {
-            instantiate_inference_fallback_type(ty, substitutions, arena)
-        };
-        self.resolve_with_contextual_mapper_and_comparer(arena, flags, &comparer, &instantiator)
-    }
-
-    fn resolve_with_contextual_mapper_and_comparer(
+    fn resolve_with_contextual_mapper<'store>(
         mut self,
-        arena: crate::types::CheckerArena<'a>,
+        checker: &CheckerReturn<'a, 'store>,
         flags: InferenceResolutionFlags,
-        comparer: &impl Fn(Ty<'a>, Ty<'a>) -> bool,
-        instantiator: &impl Fn(Ty<'a>, &TypeParameterSubstitutions<'a>) -> Ty<'a>,
     ) -> InferenceResolution<'a> {
-        let resolver = InferenceResolver {
-            comparer,
-            instantiator,
-        };
-        let substitutions = self.resolve_substitutions(arena, flags, &resolver);
+        let arena = checker.arena();
+        let substitutions = self.resolve_substitutions(checker, flags);
         let contextual_pairs = self
             .inferences
             .iter()
@@ -306,60 +282,54 @@ impl<'a> InferenceContext<'a> {
             TypeMapper::from_contextual_inference_pairs(arena, contextual_pairs, move |name| {
                 contextual_context
                     .borrow_mut()
-                    .resolve_type_parameter_by_name(name, arena, flags)
+                    .resolve_type_parameter_by_name_in_mapper(name)
             });
         InferenceResolution::new_with_mapper(substitutions, mapper)
     }
 
-    fn resolve_substitutions(
+    fn resolve_type_parameter_by_name_in_mapper(&mut self, name: &str) -> Option<Ty<'a>> {
+        let index = self.inference_index_by_name(name)?;
+        let inferred_type = self.inferences[index].inferred_type?;
+        self.inferences[index].is_fixed = true;
+        Some(inferred_type)
+    }
+
+    fn resolve_substitutions<'store>(
         &mut self,
-        arena: crate::types::CheckerArena<'a>,
+        checker: &CheckerReturn<'a, 'store>,
         flags: InferenceResolutionFlags,
-        resolver: &InferenceResolver<'a, '_>,
     ) -> TypeParameterSubstitutions<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
         for index in 0..self.inferences.len() {
-            if let Some(inferred_type) = self.resolve_inference_at_index(
-                index,
-                arena,
-                flags,
-                &mut Vec::new(),
-                false,
-                resolver,
-            ) {
+            if let Some(inferred_type) =
+                self.resolve_inference_at_index(index, checker, flags, &mut Vec::new(), false)
+            {
                 substitutions.insert(self.inferences[index].type_parameter, inferred_type);
             }
         }
         substitutions
     }
 
-    fn resolve_type_parameter_by_name(
+    #[cfg(test)]
+    fn resolve_type_parameter_by_name<'store>(
         &mut self,
         name: &str,
-        arena: crate::types::CheckerArena<'a>,
+        checker: &CheckerReturn<'a, 'store>,
         flags: InferenceResolutionFlags,
     ) -> Option<Ty<'a>> {
         let index = self.inference_index_by_name(name)?;
-        let comparer = |source, target| is_assignable_to_without_checker(arena, source, target);
-        let instantiator = |ty, substitutions: &TypeParameterSubstitutions<'a>| {
-            instantiate_inference_fallback_type(ty, substitutions, arena)
-        };
-        let resolver = InferenceResolver {
-            comparer: &comparer,
-            instantiator: &instantiator,
-        };
-        self.resolve_inference_at_index(index, arena, flags, &mut Vec::new(), true, &resolver)
+        self.resolve_inference_at_index(index, checker, flags, &mut Vec::new(), true)
     }
 
-    fn resolve_inference_at_index(
+    fn resolve_inference_at_index<'store>(
         &mut self,
         index: usize,
-        arena: crate::types::CheckerArena<'a>,
+        checker: &CheckerReturn<'a, 'store>,
         flags: InferenceResolutionFlags,
         resolving: &mut Vec<usize>,
         fix: bool,
-        resolver: &InferenceResolver<'a, '_>,
     ) -> Option<Ty<'a>> {
+        let arena = checker.arena();
         if let Some(inferred_type) = self.inferences[index].inferred_type {
             if fix {
                 self.inferences[index].is_fixed = true;
@@ -371,7 +341,7 @@ impl<'a> InferenceContext<'a> {
         }
 
         resolving.push(index);
-        let mut inferred_type = self.get_inferred_type(index, arena);
+        let mut inferred_type = self.get_inferred_type(index, checker);
 
         if inferred_type.is_none()
             && let Some(fallback_type) = self.inferences[index]
@@ -383,16 +353,16 @@ impl<'a> InferenceContext<'a> {
                 if dependency_index < index {
                     self.resolve_inference_at_index(
                         dependency_index,
-                        arena,
+                        checker,
                         flags,
                         resolving,
                         true,
-                        resolver,
                     );
                 }
             }
             let substitutions = self.fallback_substitutions(arena, index, fallback_type);
-            let fallback_type = (resolver.instantiator)(fallback_type, &substitutions);
+            let fallback_type =
+                checker.instantiate_type(fallback_type, &substitutions.to_mapper(arena));
             self.inferences[index].inferred_type = Some(fallback_type);
             inferred_type = Some(fallback_type);
         }
@@ -404,17 +374,17 @@ impl<'a> InferenceContext<'a> {
                 if dependency_index != index {
                     self.resolve_inference_at_index(
                         dependency_index,
-                        arena,
+                        checker,
                         flags,
                         resolving,
                         false,
-                        resolver,
                     );
                 }
             }
             let substitutions = self.resolved_substitutions();
-            let constraint_type = (resolver.instantiator)(constraint_type, &substitutions);
-            if !(resolver.comparer)(current_inferred_type, constraint_type) {
+            let constraint_type =
+                checker.instantiate_type(constraint_type, &substitutions.to_mapper(arena));
+            if !checker.is_assignable_to(current_inferred_type, constraint_type) {
                 self.inferences[index].inferred_type = Some(constraint_type);
                 inferred_type = Some(constraint_type);
             }
@@ -485,48 +455,41 @@ impl<'a> InferenceContext<'a> {
         indices
     }
 
-    fn candidate_substitutions(
+    fn candidate_substitutions<'store>(
         &mut self,
-        arena: crate::types::CheckerArena<'a>,
+        checker: &CheckerReturn<'a, 'store>,
     ) -> TypeParameterSubstitutions<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
         for index in 0..self.inferences.len() {
-            if let Some(inferred_type) = self.get_inferred_type(index, arena) {
+            if let Some(inferred_type) = self.get_inferred_type(index, checker) {
                 substitutions.insert(self.inferences[index].type_parameter, inferred_type);
             }
         }
         substitutions
     }
 
-    fn get_inferred_type(
+    fn get_inferred_type<'store>(
         &mut self,
         index: usize,
-        arena: crate::types::CheckerArena<'a>,
+        checker: &CheckerReturn<'a, 'store>,
     ) -> Option<Ty<'a>> {
         if self.inferences[index].inferred_type.is_none() {
             let inference = &self.inferences[index];
             self.inferences[index].inferred_type =
-                inferred_type_from_candidates(arena, inference, self.return_type);
+                inferred_type_from_candidates(checker, inference, self.return_type);
         }
         self.inferences[index].inferred_type
     }
 }
 
-fn instantiate_inference_fallback_type<'a>(
-    fallback_type: Ty<'a>,
-    substitutions: &TypeParameterSubstitutions<'a>,
-    arena: crate::types::CheckerArena<'a>,
-) -> Ty<'a> {
-    substitute_type(fallback_type, &substitutions.to_mapper(arena), arena)
-}
-
-fn inferred_type_from_candidates<'a>(
-    arena: crate::types::CheckerArena<'a>,
+fn inferred_type_from_candidates<'a, 'store>(
+    checker: &CheckerReturn<'a, 'store>,
     inference: &InferenceInfo<'a>,
     return_type: Option<Ty<'a>>,
 ) -> Option<Ty<'a>> {
-    let covariant = resolve_covariant_candidates(arena, inference, return_type);
-    let contravariant = resolve_contravariant_candidates(arena, inference);
+    let arena = checker.arena();
+    let covariant = resolve_covariant_candidates(checker, inference, return_type);
+    let contravariant = resolve_contravariant_candidates(checker, inference);
 
     match (covariant, contravariant) {
         (Some(covariant), Some(contravariant)) => {
@@ -536,7 +499,7 @@ fn inferred_type_from_candidates<'a>(
             if inference
                 .contra_candidates
                 .iter()
-                .any(|candidate| is_assignable_to_without_checker(arena, covariant, *candidate))
+                .any(|candidate| checker.is_assignable_to(covariant, *candidate))
             {
                 Some(covariant)
             } else {
@@ -549,11 +512,12 @@ fn inferred_type_from_candidates<'a>(
     }
 }
 
-fn resolve_covariant_candidates<'a>(
-    arena: crate::types::CheckerArena<'a>,
+fn resolve_covariant_candidates<'a, 'store>(
+    checker: &CheckerReturn<'a, 'store>,
     inference: &InferenceInfo<'a>,
     return_type: Option<Ty<'a>>,
 ) -> Option<Ty<'a>> {
+    let arena = checker.arena();
     if inference.candidates.is_empty() {
         return None;
     }
@@ -575,14 +539,15 @@ fn resolve_covariant_candidates<'a>(
     if inference_priority_implies_combination(inference.priority) {
         Some(Ty::union(arena, candidates))
     } else {
-        Some(get_common_supertype(arena, &candidates))
+        Some(get_common_supertype(checker, &candidates))
     }
 }
 
-fn resolve_contravariant_candidates<'a>(
-    arena: crate::types::CheckerArena<'a>,
+fn resolve_contravariant_candidates<'a, 'store>(
+    checker: &CheckerReturn<'a, 'store>,
     inference: &InferenceInfo<'a>,
 ) -> Option<Ty<'a>> {
+    let arena = checker.arena();
     if inference.contra_candidates.is_empty() {
         return None;
     }
@@ -593,7 +558,7 @@ fn resolve_contravariant_candidates<'a>(
             inference.contra_candidates.iter().copied(),
         ))
     } else {
-        Some(get_common_subtype(arena, &inference.contra_candidates))
+        Some(get_common_subtype(checker, &inference.contra_candidates))
     }
 }
 
@@ -705,10 +670,11 @@ fn get_widened_literal_type<'a>(arena: crate::types::CheckerArena<'a>, ty: Ty<'a
     }
 }
 
-fn get_common_supertype<'a>(
-    arena: crate::types::CheckerArena<'a>,
+fn get_common_supertype<'a, 'store>(
+    checker: &CheckerReturn<'a, 'store>,
     candidates: &[Ty<'a>],
 ) -> Ty<'a> {
+    let arena = checker.arena();
     if candidates.len() == 1 {
         return candidates[0];
     }
@@ -716,45 +682,43 @@ fn get_common_supertype<'a>(
         return Ty::union(arena, candidates.iter().copied());
     }
 
-    get_single_common_supertype(arena, candidates, |source, target| {
-        is_assignable_to_without_checker(arena, source, target)
-    })
+    get_single_common_supertype(checker, candidates)
 }
 
-fn get_single_common_supertype<'a>(
-    arena: CheckerArena<'a>,
+fn get_single_common_supertype<'a, 'store>(
+    checker: &CheckerReturn<'a, 'store>,
     candidates: &[Ty<'a>],
-    is_subtype_of: impl Fn(Ty<'a>, Ty<'a>) -> bool,
 ) -> Ty<'a> {
-    let candidate = find_leftmost_type(candidates, &is_subtype_of);
-    if candidates
-        .iter()
-        .all(|ty| arena.is_type_identical_to(*ty, candidate) || is_subtype_of(*ty, candidate))
-    {
+    let arena = checker.arena();
+    let candidate = find_leftmost_type(checker, candidates);
+    if candidates.iter().all(|ty| {
+        arena.is_type_identical_to(*ty, candidate) || checker.is_assignable_to(*ty, candidate)
+    }) {
         return candidate;
     }
-    find_leftmost_type(candidates, &|source, target| {
-        is_assignable_to_without_checker(arena, source, target)
-    })
+    find_leftmost_type(checker, candidates)
 }
 
-fn get_common_subtype<'a>(arena: CheckerArena<'a>, candidates: &[Ty<'a>]) -> Ty<'a> {
+fn get_common_subtype<'a, 'store>(
+    checker: &CheckerReturn<'a, 'store>,
+    candidates: &[Ty<'a>],
+) -> Ty<'a> {
     let mut subtype = candidates[0];
     for candidate in candidates.iter().skip(1) {
-        if is_assignable_to_without_checker(arena, *candidate, subtype) {
+        if checker.is_assignable_to(*candidate, subtype) {
             subtype = *candidate;
         }
     }
     subtype
 }
 
-fn find_leftmost_type<'a>(
+fn find_leftmost_type<'a, 'store>(
+    checker: &CheckerReturn<'a, 'store>,
     candidates: &[Ty<'a>],
-    is_left_subtype_of_right: &impl Fn(Ty<'a>, Ty<'a>) -> bool,
 ) -> Ty<'a> {
     let mut candidate = candidates[0];
     for ty in candidates.iter().skip(1) {
-        if is_left_subtype_of_right(candidate, *ty) {
+        if checker.is_assignable_to(candidate, *ty) {
             candidate = *ty;
         }
     }
@@ -871,6 +835,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         false_type: Ty<'a>,
         is_distributive: bool,
     ) -> Ty<'a> {
+        if let Some(is_equal) =
+            self.simplify_type_equality_function_extends(check_type, extends_type)
+        {
+            return if is_equal { true_type } else { false_type };
+        }
+
         if self.contains_infer_type_parameter(check_type)
             || self.contains_infer_type_parameter(extends_type)
         {
@@ -879,14 +849,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 self.infer_conditional_from_types(check_type, extends_type, &mut inferences, 0);
             return match inference_result {
                 ConditionalInferMatchResult::Matched => {
-                    let resolution = inferences.resolve_with_contextual_mapper_and_comparer(
-                        self.arena(),
-                        InferenceResolutionFlags::NONE,
-                        &|source, target| self.is_assignable_to(source, target),
-                        &|ty, substitutions| {
-                            self.instantiate_type(ty, &substitutions.to_mapper(self.arena()))
-                        },
-                    );
+                    let resolution = inferences
+                        .resolve_with_contextual_mapper(self, InferenceResolutionFlags::NONE);
                     self.instantiate_type(true_type, resolution.mapper())
                 }
                 ConditionalInferMatchResult::NoMatch => false_type,
@@ -901,15 +865,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
         }
 
-        let contains_global_this = |ty| {
-            let mut contains = false;
-            visit_type(self.arena(), ty, &mut |ty| {
-                contains |= matches!(self.arena().type_data(ty), TypeData::GlobalThis);
-            });
-            contains
-        };
-        if (contains_global_this(check_type) || contains_global_this(extends_type))
-            && !self.could_contain_type_variables(check_type)
+        if !self.could_contain_type_variables(check_type)
             && !self.could_contain_type_variables(extends_type)
         {
             return if self.is_assignable_to(check_type, extends_type) {
@@ -926,6 +882,49 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             true_type,
             false_type,
             is_distributive,
+        )
+    }
+
+    fn simplify_type_equality_function_extends(
+        &self,
+        check_type: Ty<'a>,
+        extends_type: Ty<'a>,
+    ) -> Option<bool> {
+        let (TypeData::Function(check_function), TypeData::Function(extends_function)) = (
+            self.arena().type_data(check_type),
+            self.arena().type_data(extends_type),
+        ) else {
+            return None;
+        };
+        if !check_function.parameters.is_empty()
+            || !extends_function.parameters.is_empty()
+            || check_function.type_parameters.len() != 1
+            || extends_function.type_parameters.len() != 1
+        {
+            return None;
+        }
+
+        let TypeData::Conditional(check_return) =
+            self.arena().type_data(check_function.return_type)
+        else {
+            return None;
+        };
+        let TypeData::Conditional(extends_return) =
+            self.arena().type_data(extends_function.return_type)
+        else {
+            return None;
+        };
+        if self.could_contain_type_variables(check_return.extends_type)
+            || self.could_contain_type_variables(extends_return.extends_type)
+            || self.contains_infer_type_parameter(check_return.extends_type)
+            || self.contains_infer_type_parameter(extends_return.extends_type)
+        {
+            return None;
+        }
+
+        Some(
+            self.is_assignable_to(check_return.extends_type, extends_return.extends_type)
+                && self.is_assignable_to(extends_return.extends_type, check_return.extends_type),
         )
     }
 
@@ -961,7 +960,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         candidate: Ty<'a>,
     ) -> ConditionalInferMatchResult {
         if let Some(constraint_type) = infer.type_parameter.constraint_type {
-            let substitutions = inferences.candidate_substitutions(self.arena());
+            let substitutions = inferences.candidate_substitutions(self);
             let constraint_type =
                 self.instantiate_type(constraint_type, &substitutions.to_mapper(self.arena()));
             if self.contains_infer_type_parameter(constraint_type)
@@ -1377,7 +1376,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         .with_return_type(
             self.inference_return_type_for_literal_widening(program_id, function.return_type),
         );
-
         for (argument_index, argument_type) in argument_types {
             let Some(parameter_type) =
                 function_parameter_type_at_call_index(self.arena(), function, argument_index)
@@ -1386,15 +1384,10 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             };
             let argument_type =
                 self.get_inference_argument_type(program_id, parameter_type, argument_type);
-            infer_types(parameter_type, argument_type, &mut context, self.arena());
+            self.infer_types(parameter_type, argument_type, &mut context);
         }
 
-        context.resolve_with_contextual_mapper_and_comparer(
-            self.arena(),
-            InferenceResolutionFlags::NONE,
-            &|source, target| self.is_assignable_to(source, target),
-            &|ty, substitutions| self.instantiate_type(ty, &substitutions.to_mapper(self.arena())),
-        )
+        context.resolve_with_contextual_mapper(self, InferenceResolutionFlags::NONE)
     }
 
     pub(crate) fn infer_function_return_type(
@@ -1567,7 +1560,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         .with_return_type(
             self.inference_return_type_for_literal_widening(program_id, function.return_type),
         );
-
         for (argument, parameter) in new_expression
             .arguments
             .iter()
@@ -1591,14 +1583,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             );
             let argument_type =
                 self.get_inference_argument_type(program_id, parameter.ty, argument_type);
-            infer_types(parameter.ty, argument_type, &mut context, self.arena());
+            self.infer_types(parameter.ty, argument_type, &mut context);
         }
 
-        context.resolve_with_contextual_mapper_and_comparer(
-            self.arena(),
+        context.resolve_with_contextual_mapper(
+            self,
             InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
-            &|source, target| self.is_assignable_to(source, target),
-            &|ty, substitutions| self.instantiate_type(ty, &substitutions.to_mapper(self.arena())),
         )
     }
 
@@ -1735,259 +1725,248 @@ fn match_property_type_pairs<'a>(
     Some(pairs)
 }
 
-fn infer_type_pairs_with_variance<'a>(
-    pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    for (parameter_type, argument_type) in pairs {
-        infer_types_with_variance(
+impl<'a, 'store> CheckerReturn<'a, 'store> {
+    fn infer_type_pairs_with_variance(
+        &self,
+        pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        for (parameter_type, argument_type) in pairs {
+            self.infer_types_with_variance(
+                parameter_type,
+                argument_type,
+                context,
+                variance,
+                priority,
+            );
+        }
+    }
+
+    fn infer_types(
+        &self,
+        parameter_type: Ty<'a>,
+        argument_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+    ) {
+        self.infer_types_with_variance(
             parameter_type,
             argument_type,
             context,
-            variance,
-            priority,
-            arena,
+            InferenceVariance::Covariant,
+            InferencePriority::NakedTypeVariable,
         );
     }
-}
 
-fn infer_types<'a>(
-    parameter_type: Ty<'a>,
-    argument_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    infer_types_with_variance(
-        parameter_type,
-        argument_type,
-        context,
-        InferenceVariance::Covariant,
-        InferencePriority::NakedTypeVariable,
-        arena,
-    );
-}
-
-fn infer_types_with_variance<'a>(
-    parameter_type: Ty<'a>,
-    argument_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    match (
-        arena.type_data(parameter_type),
-        arena.type_data(argument_type),
+    fn infer_types_with_variance(
+        &self,
+        parameter_type: Ty<'a>,
+        argument_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
     ) {
-        (TypeData::Union(parameter_union), _) => {
-            infer_type_parameter_from_union(
-                parameter_union.types.iter().copied(),
-                argument_type,
-                context,
-                variance,
-                priority,
-                arena,
-            );
-        }
-        (TypeData::Intersection(parameter_intersection), _) => {
-            infer_type_parameter_from_intersection(
-                parameter_intersection.types.iter().copied(),
-                argument_type,
-                context,
-                variance,
-                priority,
-                arena,
-            );
-        }
-        (TypeData::Array(parameter_array), TypeData::Array(argument_array)) => {
-            infer_types_with_variance(
-                parameter_array.element_type,
-                argument_array.element_type,
-                context,
-                variance,
-                priority.structural(),
-                arena,
-            );
-        }
-        (TypeData::Tuple(parameter_tuple), TypeData::Tuple(argument_tuple)) => {
-            infer_tuple_elements(
-                &parameter_tuple.elements,
-                &argument_tuple.elements,
-                context,
-                variance,
-                priority.structural(),
-                arena,
-            );
-        }
-        (TypeData::Keyof(parameter_keyof), TypeData::Keyof(argument_keyof)) => {
-            infer_types_with_variance(
-                parameter_keyof.target,
-                argument_keyof.target,
-                context,
-                variance,
-                priority.structural(),
-                arena,
-            );
-        }
-        (TypeData::IndexedAccess(parameter_indexed), TypeData::IndexedAccess(argument_indexed)) => {
-            infer_types_with_variance(
-                parameter_indexed.object_type,
-                argument_indexed.object_type,
-                context,
-                variance,
-                priority.structural(),
-                arena,
-            );
-            infer_types_with_variance(
-                parameter_indexed.index_type,
-                argument_indexed.index_type,
-                context,
-                variance,
-                priority.structural(),
-                arena,
-            );
-        }
-        (TypeData::IndexedAccess(parameter_indexed), _) => {
-            if let Some(simplified) = simplify_indexed_access_for_inference(
-                parameter_indexed.object_type,
-                parameter_indexed.index_type,
-                context,
-                arena,
-            ) {
-                infer_types_with_variance(
-                    simplified,
+        let arena = self.arena();
+        match (
+            arena.type_data(parameter_type),
+            arena.type_data(argument_type),
+        ) {
+            (TypeData::Union(parameter_union), _) => {
+                self.infer_type_parameter_from_union(
+                    parameter_union.types.iter().copied(),
                     argument_type,
                     context,
                     variance,
-                    priority.structural(),
-                    arena,
+                    priority,
                 );
             }
-        }
-        (TypeData::Mapped(parameter_mapped), _) => infer_to_mapped_type(
-            parameter_mapped,
-            argument_type,
-            context,
-            variance,
-            priority,
-            arena,
-        ),
-        (_, TypeData::TypeQuery(argument_query)) => infer_types_with_variance(
-            parameter_type,
-            argument_query.resolved,
-            context,
-            variance,
-            priority.structural(),
-            arena,
-        ),
-        (TypeData::TypeReference(reference), _) if reference.is_bare() => {
-            let Some(type_parameter) = context
-                .inference_by_name_mut(reference.name)
-                .map(|inference| inference.type_parameter)
-            else {
-                return;
-            };
-            context.add_candidate(type_parameter, argument_type, priority, variance)
-        }
-        (
-            TypeData::TypeReference(parameter_reference),
-            TypeData::TypeReference(argument_reference),
-        ) if parameter_reference.name == argument_reference.name => {
-            infer_type_pairs_with_variance(
-                parameter_reference
-                    .type_arguments
-                    .iter()
-                    .copied()
-                    .zip(argument_reference.type_arguments.iter().copied()),
-                context,
-                variance,
-                priority.structural(),
-                arena,
-            );
-        }
-        (TypeData::Object(parameter_object), TypeData::Object(argument_object)) => {
-            if let Some(pairs) = match_property_type_pairs(
-                argument_object.properties.iter().copied(),
-                parameter_object.properties.iter().copied(),
-                PropertyMatchMode::ExistingOnly,
-            ) {
-                infer_type_pairs_with_variance(
-                    pairs
-                        .into_iter()
-                        .map(|(argument, parameter)| (parameter, argument)),
+            (TypeData::Intersection(parameter_intersection), _) => {
+                self.infer_type_parameter_from_intersection(
+                    parameter_intersection.types.iter().copied(),
+                    argument_type,
+                    context,
+                    variance,
+                    priority,
+                );
+            }
+            (TypeData::Array(parameter_array), TypeData::Array(argument_array)) => {
+                self.infer_types_with_variance(
+                    parameter_array.element_type,
+                    argument_array.element_type,
                     context,
                     variance,
                     priority.structural(),
-                    arena,
                 );
             }
-            for parameter_index in parameter_object.index_infos() {
-                if let Some(argument_index) =
-                    argument_object.index_infos().iter().find(|argument_index| {
-                        arena
-                            .is_type_identical_to(parameter_index.key_type, argument_index.key_type)
-                    })
-                {
-                    infer_types_with_variance(
-                        parameter_index.value_type,
-                        argument_index.value_type,
+            (TypeData::Tuple(parameter_tuple), TypeData::Tuple(argument_tuple)) => {
+                self.infer_tuple_elements(
+                    &parameter_tuple.elements,
+                    &argument_tuple.elements,
+                    context,
+                    variance,
+                    priority.structural(),
+                );
+            }
+            (TypeData::Keyof(parameter_keyof), TypeData::Keyof(argument_keyof)) => {
+                self.infer_types_with_variance(
+                    parameter_keyof.target,
+                    argument_keyof.target,
+                    context,
+                    variance,
+                    priority.structural(),
+                );
+            }
+            (
+                TypeData::IndexedAccess(parameter_indexed),
+                TypeData::IndexedAccess(argument_indexed),
+            ) => {
+                self.infer_types_with_variance(
+                    parameter_indexed.object_type,
+                    argument_indexed.object_type,
+                    context,
+                    variance,
+                    priority.structural(),
+                );
+                self.infer_types_with_variance(
+                    parameter_indexed.index_type,
+                    argument_indexed.index_type,
+                    context,
+                    variance,
+                    priority.structural(),
+                );
+            }
+            (TypeData::IndexedAccess(parameter_indexed), _) => {
+                if let Some(simplified) = self.simplify_indexed_access_for_inference(
+                    parameter_indexed.object_type,
+                    parameter_indexed.index_type,
+                    context,
+                ) {
+                    self.infer_types_with_variance(
+                        simplified,
+                        argument_type,
                         context,
                         variance,
                         priority.structural(),
-                        arena,
                     );
                 }
             }
-        }
-        (TypeData::Function(parameter_function), TypeData::Function(argument_function)) => {
-            infer_from_signature_types(
-                parameter_function,
-                argument_function,
+            (TypeData::Mapped(parameter_mapped), _) => self.infer_to_mapped_type(
+                parameter_mapped,
+                argument_type,
                 context,
                 variance,
                 priority,
-                arena,
+            ),
+            (_, TypeData::TypeQuery(argument_query)) => self.infer_types_with_variance(
+                parameter_type,
+                argument_query.resolved,
+                context,
+                variance,
+                priority.structural(),
+            ),
+            (TypeData::TypeReference(reference), _) if reference.is_bare() => {
+                let Some(type_parameter) = context
+                    .inference_by_name_mut(reference.name)
+                    .map(|inference| inference.type_parameter)
+                else {
+                    return;
+                };
+                context.add_candidate(type_parameter, argument_type, priority, variance)
+            }
+            (
+                TypeData::TypeReference(parameter_reference),
+                TypeData::TypeReference(argument_reference),
+            ) if parameter_reference.name == argument_reference.name => {
+                self.infer_type_pairs_with_variance(
+                    parameter_reference
+                        .type_arguments
+                        .iter()
+                        .copied()
+                        .zip(argument_reference.type_arguments.iter().copied()),
+                    context,
+                    variance,
+                    priority.structural(),
+                );
+            }
+            (TypeData::Object(parameter_object), TypeData::Object(argument_object)) => {
+                if let Some(pairs) = match_property_type_pairs(
+                    argument_object.properties.iter().copied(),
+                    parameter_object.properties.iter().copied(),
+                    PropertyMatchMode::ExistingOnly,
+                ) {
+                    self.infer_type_pairs_with_variance(
+                        pairs
+                            .into_iter()
+                            .map(|(argument, parameter)| (parameter, argument)),
+                        context,
+                        variance,
+                        priority.structural(),
+                    );
+                }
+                for parameter_index in parameter_object.index_infos() {
+                    if let Some(argument_index) =
+                        argument_object.index_infos().iter().find(|argument_index| {
+                            arena.is_type_identical_to(
+                                parameter_index.key_type,
+                                argument_index.key_type,
+                            )
+                        })
+                    {
+                        self.infer_types_with_variance(
+                            parameter_index.value_type,
+                            argument_index.value_type,
+                            context,
+                            variance,
+                            priority.structural(),
+                        );
+                    }
+                }
+            }
+            (TypeData::Function(parameter_function), TypeData::Function(argument_function)) => {
+                self.infer_from_signature_types(
+                    parameter_function,
+                    argument_function,
+                    context,
+                    variance,
+                    priority,
+                );
+            }
+            _ => {}
+        }
+    }
+
+    fn infer_from_signature_types(
+        &self,
+        parameter_function: &TyFunction<'a>,
+        argument_function: &TyFunction<'a>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        for (parameter, argument) in parameter_function
+            .parameters
+            .iter()
+            .zip(argument_function.parameters.iter())
+        {
+            self.infer_types_with_variance(
+                parameter.ty,
+                argument.ty,
+                context,
+                variance.flip(),
+                priority.structural(),
             );
         }
-        _ => {}
-    }
-}
 
-fn infer_from_signature_types<'a>(
-    parameter_function: &TyFunction<'a>,
-    argument_function: &TyFunction<'a>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    for (parameter, argument) in parameter_function
-        .parameters
-        .iter()
-        .zip(argument_function.parameters.iter())
-    {
-        infer_types_with_variance(
-            parameter.ty,
-            argument.ty,
-            context,
-            variance.flip(),
-            priority.structural(),
-            arena,
-        );
-    }
-
-    if type_contains_inference_variable(arena, parameter_function.return_type, context) {
-        infer_types_with_variance(
-            parameter_function.return_type,
-            argument_function.return_type,
-            context,
-            variance,
-            priority.return_type(),
-            arena,
-        );
+        if type_contains_inference_variable(self.arena(), parameter_function.return_type, context) {
+            self.infer_types_with_variance(
+                parameter_function.return_type,
+                argument_function.return_type,
+                context,
+                variance,
+                priority.return_type(),
+            );
+        }
     }
 }
 
@@ -2008,37 +1987,39 @@ fn type_contains_inference_variable<'a>(
     contains
 }
 
-fn infer_to_mapped_type<'a>(
-    parameter_mapped: &TyMapped<'a>,
-    argument_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    infer_to_mapped_type_with_constraint(
-        parameter_mapped,
-        parameter_mapped.constraint,
-        argument_type,
-        context,
-        variance,
-        priority,
-        arena,
-    );
-}
+impl<'a, 'store> CheckerReturn<'a, 'store> {
+    fn infer_to_mapped_type(
+        &self,
+        parameter_mapped: &TyMapped<'a>,
+        argument_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        self.infer_to_mapped_type_with_constraint(
+            parameter_mapped,
+            parameter_mapped.constraint,
+            argument_type,
+            context,
+            variance,
+            priority,
+        );
+    }
 
-fn simplify_indexed_access_for_inference<'a>(
-    object_type: Ty<'a>,
-    index_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    arena: crate::types::CheckerArena<'a>,
-) -> Option<Ty<'a>> {
-    let substitutions = context.candidate_substitutions(arena);
-    let mapper = substitutions.to_mapper(arena);
-    let object_type = substitute_type(object_type, &mapper, arena);
-    let index_type = substitute_type(index_type, &mapper, arena);
+    fn simplify_indexed_access_for_inference(
+        &self,
+        object_type: Ty<'a>,
+        index_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+    ) -> Option<Ty<'a>> {
+        let arena = self.arena();
+        let substitutions = context.candidate_substitutions(self);
+        let mapper = substitutions.to_mapper(arena);
+        let object_type = substitute_type(object_type, &mapper, arena);
+        let index_type = substitute_type(index_type, &mapper, arena);
 
-    resolve_indexed_access_for_inference(object_type, index_type, arena)
+        resolve_indexed_access_for_inference(object_type, index_type, arena)
+    }
 }
 
 fn resolve_indexed_access_for_inference<'a>(
@@ -2104,249 +2085,245 @@ fn property_type_for_inference_index<'a>(
     }
 }
 
-fn infer_to_mapped_type_with_constraint<'a>(
-    parameter_mapped: &TyMapped<'a>,
-    constraint_type: Ty<'a>,
-    argument_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    // A same-shape mapped type, also called a homomorphic mapped type in
-    // TypeScript terminology, is the common utility-type shape that maps directly
-    // over the keys of a source type, for example:
-    //
-    //     { [P in keyof T]: T[P] }
-    //     Partial<T>  // { [P in keyof T]?: T[P] }
-    //     Readonly<T> // { readonly [P in keyof T]: T[P] }
-    //
-    // The important part is the `keyof T` constraint: the mapped type preserves the
-    // source type's property set, so inference can recover information about `T`
-    // instead of treating the mapped object as unrelated structure.
-    //
-    // If both sides are same-shape mapped types, infer from their `keyof` targets
-    // with `SameShapeMappedType` priority. If the argument is an ordinary object,
-    // reconstruct a same-shaped source candidate for the mapped target. That is the
-    // first reverse-mapped inference case: from `{ value: number }` and
-    // `{ [P in keyof T]: T[P] }`, infer `T` as `{ value: number }`.
-    let Some(parameter_target) = same_shape_mapped_constraint_target(arena, constraint_type) else {
-        return infer_to_non_homomorphic_mapped_type(
-            parameter_mapped,
-            constraint_type,
-            argument_type,
-            context,
-            variance,
-            priority,
-            arena,
-        );
-    };
-
-    match arena.type_data(argument_type) {
-        TypeData::Mapped(argument_mapped) => {
-            if let Some(argument_target) = same_shape_mapped_type_target(arena, argument_mapped) {
-                infer_types_with_variance(
-                    parameter_target,
-                    argument_target,
-                    context,
-                    variance,
-                    InferencePriority::SameShapeMappedType,
-                    arena,
-                );
-            } else {
-                infer_types_with_variance(
-                    parameter_mapped.constraint,
-                    argument_mapped.constraint,
-                    context,
-                    variance,
-                    priority.structural(),
-                    arena,
-                );
-            }
-        }
-        TypeData::Object(argument_object) => {
-            infer_reverse_mapped_source_type(
+impl<'a, 'store> CheckerReturn<'a, 'store> {
+    fn infer_to_mapped_type_with_constraint(
+        &self,
+        parameter_mapped: &TyMapped<'a>,
+        constraint_type: Ty<'a>,
+        argument_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        let arena = self.arena();
+        // A same-shape mapped type, also called a homomorphic mapped type in
+        // TypeScript terminology, is the common utility-type shape that maps directly
+        // over the keys of a source type, for example:
+        //
+        //     { [P in keyof T]: T[P] }
+        //     Partial<T>  // { [P in keyof T]?: T[P] }
+        //     Readonly<T> // { readonly [P in keyof T]: T[P] }
+        //
+        // The important part is the `keyof T` constraint: the mapped type preserves the
+        // source type's property set, so inference can recover information about `T`
+        // instead of treating the mapped object as unrelated structure.
+        //
+        // If both sides are same-shape mapped types, infer from their `keyof` targets
+        // with `SameShapeMappedType` priority. If the argument is an ordinary object,
+        // reconstruct a same-shaped source candidate for the mapped target. That is the
+        // first reverse-mapped inference case: from `{ value: number }` and
+        // `{ [P in keyof T]: T[P] }`, infer `T` as `{ value: number }`.
+        let Some(parameter_target) = same_shape_mapped_constraint_target(arena, constraint_type)
+        else {
+            return self.infer_to_non_homomorphic_mapped_type(
                 parameter_mapped,
-                parameter_target,
-                Ty::object(arena, argument_object.properties.iter().copied()),
-                argument_object.properties.iter().copied(),
-                context,
-                variance,
-                arena,
-            );
-        }
-        TypeData::Array(argument_array) => {
-            let reverse_candidate = if argument_array.readonly {
-                Ty::readonly_array(arena, argument_array.element_type)
-            } else {
-                Ty::array(arena, argument_array.element_type)
-            };
-            infer_reverse_mapped_source_type(
-                parameter_mapped,
-                parameter_target,
-                reverse_candidate,
-                [Ty::property("0", argument_array.element_type)],
-                context,
-                variance,
-                arena,
-            );
-        }
-        TypeData::Tuple(argument_tuple) => {
-            let elements = argument_tuple
-                .elements
-                .iter()
-                .map(|element| reverse_mapped_tuple_element(*element, parameter_mapped, arena))
-                .collect::<Vec<_>>();
-            let reverse_candidate = Ty::tuple_with_labels(
-                arena,
-                elements,
-                argument_tuple.labels.iter().copied().collect(),
-                argument_tuple.readonly,
-            );
-            let properties = argument_tuple
-                .elements
-                .iter()
-                .enumerate()
-                .map(|(index, element)| Ty::property(arena.str(&index.to_string()), element.ty()));
-            infer_reverse_mapped_source_type(
-                parameter_mapped,
-                parameter_target,
-                reverse_candidate,
-                properties,
-                context,
-                variance,
-                arena,
-            );
-        }
-        _ => infer_types_with_variance(
-            constraint_type,
-            argument_type,
-            context,
-            variance,
-            priority.structural(),
-            arena,
-        ),
-    }
-}
-
-fn infer_to_non_homomorphic_mapped_type<'a>(
-    parameter_mapped: &TyMapped<'a>,
-    constraint_type: Ty<'a>,
-    argument_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    match arena.type_data(constraint_type) {
-        TypeData::Union(union) => {
-            for constraint in &union.types {
-                infer_to_mapped_type_with_constraint(
-                    parameter_mapped,
-                    *constraint,
-                    argument_type,
-                    context,
-                    variance,
-                    priority,
-                    arena,
-                );
-            }
-        }
-        TypeData::Intersection(intersection) => {
-            for constraint in &intersection.types {
-                infer_to_mapped_type_with_constraint(
-                    parameter_mapped,
-                    *constraint,
-                    argument_type,
-                    context,
-                    variance,
-                    priority,
-                    arena,
-                );
-            }
-        }
-        TypeData::TypeReference(reference) if reference.is_bare() => {
-            let key_type = Ty::keyof(arena, argument_type);
-            infer_types_with_variance(
                 constraint_type,
-                key_type,
+                argument_type,
                 context,
                 variance,
-                InferencePriority::MappedTypeConstraint,
-                arena,
+                priority,
             );
-            if let Some(extended_constraint) = context
-                .type_parameter_by_name(reference.name)
-                .and_then(|type_parameter| type_parameter.constraint_type)
-            {
-                infer_to_mapped_type_with_constraint(
+        };
+
+        match arena.type_data(argument_type) {
+            TypeData::Mapped(argument_mapped) => {
+                if let Some(argument_target) = same_shape_mapped_type_target(arena, argument_mapped)
+                {
+                    self.infer_types_with_variance(
+                        parameter_target,
+                        argument_target,
+                        context,
+                        variance,
+                        InferencePriority::SameShapeMappedType,
+                    );
+                } else {
+                    self.infer_types_with_variance(
+                        parameter_mapped.constraint,
+                        argument_mapped.constraint,
+                        context,
+                        variance,
+                        priority.structural(),
+                    );
+                }
+            }
+            TypeData::Object(argument_object) => {
+                self.infer_reverse_mapped_source_type(
                     parameter_mapped,
-                    extended_constraint,
-                    argument_type,
+                    parameter_target,
+                    Ty::object(arena, argument_object.properties.iter().copied()),
+                    argument_object.properties.iter().copied(),
                     context,
                     variance,
-                    priority,
-                    arena,
-                );
-            } else if let Some(property_types) = inferable_property_types(arena, argument_type) {
-                infer_types_with_variance(
-                    parameter_mapped.template,
-                    Ty::union(arena, property_types),
-                    context,
-                    variance,
-                    priority.structural(),
-                    arena,
                 );
             }
+            TypeData::Array(argument_array) => {
+                let reverse_candidate = if argument_array.readonly {
+                    Ty::readonly_array(arena, argument_array.element_type)
+                } else {
+                    Ty::array(arena, argument_array.element_type)
+                };
+                self.infer_reverse_mapped_source_type(
+                    parameter_mapped,
+                    parameter_target,
+                    reverse_candidate,
+                    [Ty::property("0", argument_array.element_type)],
+                    context,
+                    variance,
+                );
+            }
+            TypeData::Tuple(argument_tuple) => {
+                let elements = argument_tuple
+                    .elements
+                    .iter()
+                    .map(|element| reverse_mapped_tuple_element(*element, parameter_mapped, arena))
+                    .collect::<Vec<_>>();
+                let reverse_candidate = Ty::tuple_with_labels(
+                    arena,
+                    elements,
+                    argument_tuple.labels.iter().copied().collect(),
+                    argument_tuple.readonly,
+                );
+                let properties =
+                    argument_tuple
+                        .elements
+                        .iter()
+                        .enumerate()
+                        .map(|(index, element)| {
+                            Ty::property(arena.str(&index.to_string()), element.ty())
+                        });
+                self.infer_reverse_mapped_source_type(
+                    parameter_mapped,
+                    parameter_target,
+                    reverse_candidate,
+                    properties,
+                    context,
+                    variance,
+                );
+            }
+            _ => self.infer_types_with_variance(
+                constraint_type,
+                argument_type,
+                context,
+                variance,
+                priority.structural(),
+            ),
         }
-        _ => infer_types_with_variance(
-            constraint_type,
-            argument_type,
-            context,
-            variance,
-            priority.structural(),
-            arena,
-        ),
     }
-}
 
-fn infer_reverse_mapped_source_type<'a>(
-    parameter_mapped: &TyMapped<'a>,
-    parameter_target: Ty<'a>,
-    reverse_candidate: Ty<'a>,
-    argument_properties: impl IntoIterator<Item = TyProperty<'a>>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    let argument_properties = argument_properties.into_iter().collect::<Vec<_>>();
-
-    infer_types_with_variance(
-        parameter_target,
-        reverse_candidate,
-        context,
-        variance,
-        InferencePriority::SameShapeMappedType,
-        arena,
-    );
-
-    for property in argument_properties {
-        if property.computed {
-            continue;
+    fn infer_to_non_homomorphic_mapped_type(
+        &self,
+        parameter_mapped: &TyMapped<'a>,
+        constraint_type: Ty<'a>,
+        argument_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        let arena = self.arena();
+        match arena.type_data(constraint_type) {
+            TypeData::Union(union) => {
+                for constraint in &union.types {
+                    self.infer_to_mapped_type_with_constraint(
+                        parameter_mapped,
+                        *constraint,
+                        argument_type,
+                        context,
+                        variance,
+                        priority,
+                    );
+                }
+            }
+            TypeData::Intersection(intersection) => {
+                for constraint in &intersection.types {
+                    self.infer_to_mapped_type_with_constraint(
+                        parameter_mapped,
+                        *constraint,
+                        argument_type,
+                        context,
+                        variance,
+                        priority,
+                    );
+                }
+            }
+            TypeData::TypeReference(reference) if reference.is_bare() => {
+                let key_type = Ty::keyof(arena, argument_type);
+                self.infer_types_with_variance(
+                    constraint_type,
+                    key_type,
+                    context,
+                    variance,
+                    InferencePriority::MappedTypeConstraint,
+                );
+                if let Some(extended_constraint) = context
+                    .type_parameter_by_name(reference.name)
+                    .and_then(|type_parameter| type_parameter.constraint_type)
+                {
+                    self.infer_to_mapped_type_with_constraint(
+                        parameter_mapped,
+                        extended_constraint,
+                        argument_type,
+                        context,
+                        variance,
+                        priority,
+                    );
+                } else if let Some(property_types) = inferable_property_types(arena, argument_type)
+                {
+                    self.infer_types_with_variance(
+                        parameter_mapped.template,
+                        Ty::union(arena, property_types),
+                        context,
+                        variance,
+                        priority.structural(),
+                    );
+                }
+            }
+            _ => self.infer_types_with_variance(
+                constraint_type,
+                argument_type,
+                context,
+                variance,
+                priority.structural(),
+            ),
         }
-        let key_mapper = TypeMapper::single(
-            Ty::type_reference(arena, parameter_mapped.key, std::iter::empty()),
-            Ty::string_literal(arena, property.name),
-        );
-        let template_at_key = substitute_type(parameter_mapped.template, &key_mapper, arena);
-        infer_types_with_variance(
-            template_at_key,
-            property.ty,
+    }
+
+    fn infer_reverse_mapped_source_type(
+        &self,
+        parameter_mapped: &TyMapped<'a>,
+        parameter_target: Ty<'a>,
+        reverse_candidate: Ty<'a>,
+        argument_properties: impl IntoIterator<Item = TyProperty<'a>>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+    ) {
+        let arena = self.arena();
+        let argument_properties = argument_properties.into_iter().collect::<Vec<_>>();
+
+        self.infer_types_with_variance(
+            parameter_target,
+            reverse_candidate,
             context,
             variance,
             InferencePriority::SameShapeMappedType,
-            arena,
         );
+
+        for property in argument_properties {
+            if property.computed {
+                continue;
+            }
+            let key_mapper = TypeMapper::single(
+                Ty::type_reference(arena, parameter_mapped.key, std::iter::empty()),
+                Ty::string_literal(arena, property.name),
+            );
+            let template_at_key = substitute_type(parameter_mapped.template, &key_mapper, arena);
+            self.infer_types_with_variance(
+                template_at_key,
+                property.ty,
+                context,
+                variance,
+                InferencePriority::SameShapeMappedType,
+            );
+        }
     }
 }
 
@@ -2467,82 +2444,84 @@ fn same_shape_mapped_constraint_target<'a>(
     Some(keyof.target)
 }
 
-fn infer_tuple_elements<'a>(
-    parameter_elements: &[TupleElement<'a>],
-    argument_elements: &[TupleElement<'a>],
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    if let Some((rest_index, TupleElement::Rest(rest_type))) = parameter_elements
-        .iter()
-        .enumerate()
-        .find(|(_, element)| matches!(element, TupleElement::Rest(_)))
-    {
-        if rest_index + 1 != parameter_elements.len() || argument_elements.len() < rest_index {
+impl<'a, 'store> CheckerReturn<'a, 'store> {
+    fn infer_tuple_elements(
+        &self,
+        parameter_elements: &[TupleElement<'a>],
+        argument_elements: &[TupleElement<'a>],
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        let arena = self.arena();
+        if let Some((rest_index, TupleElement::Rest(rest_type))) = parameter_elements
+            .iter()
+            .enumerate()
+            .find(|(_, element)| matches!(element, TupleElement::Rest(_)))
+        {
+            if rest_index + 1 != parameter_elements.len() || argument_elements.len() < rest_index {
+                return;
+            }
+            for (parameter, argument) in parameter_elements
+                .iter()
+                .take(rest_index)
+                .zip(argument_elements.iter())
+            {
+                self.infer_types_with_variance(
+                    parameter.ty(),
+                    argument.ty(),
+                    context,
+                    variance,
+                    priority,
+                );
+            }
+            let rest_tuple = Ty::tuple(
+                arena,
+                argument_elements
+                    .iter()
+                    .skip(rest_index)
+                    .copied()
+                    .collect::<Vec<_>>(),
+            );
+            self.infer_types_with_variance(*rest_type, rest_tuple, context, variance, priority);
             return;
         }
-        for (parameter, argument) in parameter_elements
-            .iter()
-            .take(rest_index)
-            .zip(argument_elements.iter())
-        {
-            infer_types_with_variance(
+
+        if parameter_elements.len() != argument_elements.len() {
+            return;
+        }
+
+        for (parameter, argument) in parameter_elements.iter().zip(argument_elements.iter()) {
+            self.infer_types_with_variance(
                 parameter.ty(),
                 argument.ty(),
                 context,
                 variance,
                 priority,
-                arena,
             );
         }
-        let rest_tuple = Ty::tuple(
-            arena,
-            argument_elements
-                .iter()
-                .skip(rest_index)
-                .copied()
-                .collect::<Vec<_>>(),
-        );
-        infer_types_with_variance(*rest_type, rest_tuple, context, variance, priority, arena);
-        return;
     }
 
-    if parameter_elements.len() != argument_elements.len() {
-        return;
-    }
+    fn infer_type_parameter_from_union(
+        &self,
+        parameter_types: impl IntoIterator<Item = Ty<'a>>,
+        argument_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        let arena = self.arena();
+        let parameter_types = parameter_types
+            .into_iter()
+            .filter(|ty| *ty != Ty::Null && *ty != Ty::Undefined && *ty != Ty::Never)
+            .collect::<Vec<_>>();
 
-    for (parameter, argument) in parameter_elements.iter().zip(argument_elements.iter()) {
-        infer_types_with_variance(
-            parameter.ty(),
-            argument.ty(),
-            context,
-            variance,
-            priority,
-            arena,
-        );
-    }
-}
+        let candidates =
+            select_union_inference_candidates(arena, &parameter_types, argument_type, context);
 
-fn infer_type_parameter_from_union<'a>(
-    parameter_types: impl IntoIterator<Item = Ty<'a>>,
-    argument_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    let parameter_types = parameter_types
-        .into_iter()
-        .filter(|ty| *ty != Ty::Null && *ty != Ty::Undefined && *ty != Ty::Never)
-        .collect::<Vec<_>>();
-
-    let candidates =
-        select_union_inference_candidates(arena, &parameter_types, argument_type, context);
-
-    for candidate in candidates {
-        infer_types_with_variance(candidate, argument_type, context, variance, priority, arena);
+        for candidate in candidates {
+            self.infer_types_with_variance(candidate, argument_type, context, variance, priority);
+        }
     }
 }
 
@@ -2613,39 +2592,41 @@ fn select_naked_type_variable_constituents<'a>(
         .collect()
 }
 
-fn infer_type_parameter_from_intersection<'a>(
-    parameter_types: impl IntoIterator<Item = Ty<'a>>,
-    argument_type: Ty<'a>,
-    context: &mut InferenceContext<'a>,
-    variance: InferenceVariance,
-    priority: InferencePriority,
-    arena: crate::types::CheckerArena<'a>,
-) {
-    let parameter_types = parameter_types.into_iter().collect::<Vec<_>>();
-    let argument_types = match arena.type_data(argument_type) {
-        TypeData::Intersection(intersection) => {
-            intersection.types.iter().copied().collect::<Vec<_>>()
+impl<'a, 'store> CheckerReturn<'a, 'store> {
+    fn infer_type_parameter_from_intersection(
+        &self,
+        parameter_types: impl IntoIterator<Item = Ty<'a>>,
+        argument_type: Ty<'a>,
+        context: &mut InferenceContext<'a>,
+        variance: InferenceVariance,
+        priority: InferencePriority,
+    ) {
+        let arena = self.arena();
+        let parameter_types = parameter_types.into_iter().collect::<Vec<_>>();
+        let argument_types = match arena.type_data(argument_type) {
+            TypeData::Intersection(intersection) => {
+                intersection.types.iter().copied().collect::<Vec<_>>()
+            }
+            _ => vec![argument_type],
+        };
+
+        let (unmatched_arguments, unmatched_parameters, removed_match) =
+            remove_matching_intersection_constituents(arena, argument_types, parameter_types);
+
+        if !removed_match || unmatched_arguments.is_empty() || unmatched_parameters.is_empty() {
+            return;
         }
-        _ => vec![argument_type],
-    };
 
-    let (unmatched_arguments, unmatched_parameters, removed_match) =
-        remove_matching_intersection_constituents(arena, argument_types, parameter_types);
-
-    if !removed_match || unmatched_arguments.is_empty() || unmatched_parameters.is_empty() {
-        return;
+        let argument_remainder = Ty::intersection(arena, unmatched_arguments);
+        let parameter_remainder = Ty::intersection(arena, unmatched_parameters);
+        self.infer_types_with_variance(
+            parameter_remainder,
+            argument_remainder,
+            context,
+            variance,
+            priority.structural(),
+        );
     }
-
-    let argument_remainder = Ty::intersection(arena, unmatched_arguments);
-    let parameter_remainder = Ty::intersection(arena, unmatched_parameters);
-    infer_types_with_variance(
-        parameter_remainder,
-        argument_remainder,
-        context,
-        variance,
-        priority.structural(),
-        arena,
-    );
 }
 
 fn remove_matching_intersection_constituents<'a>(
