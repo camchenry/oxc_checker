@@ -2813,6 +2813,16 @@ impl<'a> Ty<'a> {
             Self::union(arena, [*self, Ty::Undefined])
         }
     }
+
+    pub(crate) fn should_display_implicit_default_type_argument(
+        &self,
+        arena: CheckerArena<'a>,
+    ) -> bool {
+        !matches!(
+            arena.ty_kind(*self),
+            TyKind::Any | TyKind::Error(_) | TyKind::Unknown
+        )
+    }
 }
 
 fn element_type_needs_parentheses<'a>(arena: CheckerArena<'a>, element: &TupleElement<'a>) -> bool {

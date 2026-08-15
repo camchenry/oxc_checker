@@ -60,13 +60,6 @@ use crate::{
     },
 };
 
-fn should_display_implicit_default_type_argument<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> bool {
-    !matches!(
-        arena.ty_kind(ty),
-        TyKind::Any | TyKind::Error(_) | TyKind::Unknown
-    )
-}
-
 fn array_expression_element_span(element: &ArrayExpressionElement<'_>) -> Option<Span> {
     match element {
         ArrayExpressionElement::SpreadElement(spread) => Some(spread.argument.span()),
@@ -5414,7 +5407,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         let display_count = if explicit_count == 0 {
             default_type_arguments
                 .iter()
-                .rposition(|ty| should_display_implicit_default_type_argument(self.arena(), *ty))
+                .rposition(|ty| ty.should_display_implicit_default_type_argument(self.arena()))
                 .map_or(0, |index| index + 1)
         } else {
             default_type_arguments
