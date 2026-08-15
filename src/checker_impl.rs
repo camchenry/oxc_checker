@@ -4433,7 +4433,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         match self.arena().type_data(ty) {
             TypeData::TypeReference(reference)
-                if self.is_lib_type_reference(program_id, reference) =>
+                if self.is_global_lib_type_reference(program_id, reference) =>
             {
                 ty
             }
@@ -4466,20 +4466,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TypeData::IndexedAccess(_) => self.expand_type(program_id, ty, depth + 1),
             _ => ty,
         }
-    }
-
-    fn is_lib_type_reference(
-        &self,
-        program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
-    ) -> bool {
-        self.is_lib_type_name(program_id, reference.name)
-    }
-
-    fn is_lib_type_name(&self, program_id: ProgramId, type_name: &str) -> bool {
-        self.get_type_symbol_for_name(program_id, type_name)
-            .and_then(|symbol| self.store.entry(symbol.program_id))
-            .is_some_and(program::ProgramEntry::is_lib)
     }
 
     fn get_expanded_type_alias_declaration(
@@ -10987,7 +10973,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         };
 
         if global_iterable_reference.name != reference.name
-            || !self.is_lib_type_reference(program_id, reference)
+            || !self.is_global_lib_type_reference(program_id, reference)
         {
             return argument_type;
         }
@@ -11084,7 +11070,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         resolver: IterationResolverKind,
         require_iterable: bool,
     ) -> IterationTypes<'a> {
-        if !self.is_lib_type_name(program_id, reference.name) {
+        if !self.is_global_lib_type_name(program_id, reference.name) {
             return IterationTypes::default();
         }
 
@@ -11300,7 +11286,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }))
             }
             TypeData::TypeReference(reference)
-                if self.is_lib_type_name(program_id, reference.name)
+                if self.is_global_lib_type_name(program_id, reference.name)
                     && reference.name == "IteratorYieldResult" =>
             {
                 IterationTypes {
@@ -11309,7 +11295,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             }
             TypeData::TypeReference(reference)
-                if self.is_lib_type_name(program_id, reference.name)
+                if self.is_global_lib_type_name(program_id, reference.name)
                     && reference.name == "IteratorReturnResult" =>
             {
                 IterationTypes {

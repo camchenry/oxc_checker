@@ -5,6 +5,7 @@ use oxc_semantic::NodeId;
 use oxc_syntax::symbol::SymbolFlags;
 
 use crate::{
+    TyTypeReference,
     checker::{CheckerReturn, SymbolRef},
     checker_impl::UNDEFINED_IDENT,
     program::{self, ProgramId},
@@ -433,5 +434,19 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) -> Ty<'a> {
         self.get_global_type_reference(program_id, name, type_arguments)
             .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType))
+    }
+
+    pub(crate) fn is_global_lib_type_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> bool {
+        self.is_global_lib_type_name(program_id, reference.name)
+    }
+
+    pub(crate) fn is_global_lib_type_name(&self, program_id: ProgramId, type_name: &str) -> bool {
+        self.get_type_symbol_for_name(program_id, type_name)
+            .and_then(|symbol| self.store.entry(symbol.program_id))
+            .is_some_and(program::ProgramEntry::is_lib)
     }
 }
