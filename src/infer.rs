@@ -2365,6 +2365,7 @@ fn reverse_mapped_tuple_element<'a>(
     }
 }
 
+// TODO(cleanup): make this a shared helper and deduplicate
 fn remove_undefined_from_type<'a>(ty: Ty<'a>, arena: crate::types::CheckerArena<'a>) -> Ty<'a> {
     ty.map_union(arena, |ty| (ty != Ty::Undefined).then_some(ty))
 }

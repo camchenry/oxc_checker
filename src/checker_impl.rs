@@ -8425,14 +8425,17 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .map(|parameter| self.get_apparent_type(program_id, parameter.ty, 0))
     }
 
+    // TODO(cleanup): inline this into get_apparent_type?
     fn get_apparent_contextual_parameter_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         self.get_apparent_conditional_type_at_use(program_id, ty, false)
     }
 
+    // TODO(cleanup): inline this into get_apparent_type?
     fn get_apparent_declared_parameter_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         self.get_apparent_conditional_type_at_use(program_id, ty, true)
     }
 
+    // TODO(cleanup): inline this into get_apparent_type?
     fn get_apparent_conditional_type_at_use(
         &self,
         program_id: ProgramId,
