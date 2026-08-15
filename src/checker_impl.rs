@@ -469,9 +469,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         depth: usize,
     ) -> Signature<'a> {
         let ty = self.instantiate_type_at_depth(signature.ty, mapper, depth);
-        let TypeData::Function(_) = self.arena().type_data(ty) else {
-            unreachable!("signature instantiation preserves function type")
-        };
         Signature::new(signature.kind, ty)
     }
 
