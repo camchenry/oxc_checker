@@ -29,7 +29,7 @@ returnsPromise().then(() => {});
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference) (ExpressionStatement)
 
 returnsPromise().then(() => {});
->                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>   (TyFunction) (StaticMemberExpression)
+>                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction) (StaticMemberExpression)
 
 Promise.reject('value').catch();
 >^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
@@ -41,7 +41,7 @@ Promise.reject('value').catch();
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction) (StaticMemberExpression)
 
 Promise.reject('value').catch();
->                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>   (TyFunction) (StaticMemberExpression)
+>                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction) (StaticMemberExpression)
 
 Promise.reject('value').finally();
 >^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
@@ -53,7 +53,7 @@ Promise.reject('value').finally();
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction) (StaticMemberExpression)
 
 Promise.reject('value').finally();
->                       ^^^^^^^: (onfinally?: (() => void) | null | undefined) => Promise<never>   (TyFunction) (StaticMemberExpression)
+>                       ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction) (StaticMemberExpression)
 
 [1, 2, 3].map(async x => x + 1);
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<number>[]   (TyArray) (ExpressionStatement)
@@ -104,7 +104,7 @@ returnsPromise().then(
 >^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference) (ExpressionStatement)
 
 returnsPromise().then(
->                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>   (TyFunction) (StaticMemberExpression)
+>                ^^^^: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>   (TyFunction) (StaticMemberExpression)
 
 Promise.reject('value').catch(() => {});
 >^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
@@ -116,7 +116,7 @@ Promise.reject('value').catch(() => {});
 >       ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction) (StaticMemberExpression)
 
 Promise.reject('value').catch(() => {});
->                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>   (TyFunction) (StaticMemberExpression)
+>                       ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>   (TyFunction) (StaticMemberExpression)
 
 await Promise.reject('value').finally(() => {});
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: never   (TyNever) (ExpressionStatement)
@@ -128,7 +128,7 @@ await Promise.reject('value').finally(() => {});
 >             ^^^^^^: <T = never>(reason?: any) => Promise<T>   (TyFunction) (StaticMemberExpression)
 
 await Promise.reject('value').finally(() => {});
->                             ^^^^^^^: (onfinally?: (() => void) | null | undefined) => Promise<never>   (TyFunction) (StaticMemberExpression)
+>                             ^^^^^^^: (onfinally?: (() => void) | undefined | null) => Promise<never>   (TyFunction) (StaticMemberExpression)
 
 await Promise.all([1, 2, 3].map(async x => x + 1));
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: number[]   (TyArray) (ExpressionStatement)

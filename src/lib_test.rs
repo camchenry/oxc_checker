@@ -4925,9 +4925,17 @@ fn spreads_materialize_interface_members_and_iterable_elements() {
     let spread_promise = get_first_symbol_type(&ret, "spreadPromise").to_type_string(ret.arena);
     assert!(spread_promise.contains("then<TResult1, TResult2>"));
     assert!(spread_promise.contains("[Symbol.toStringTag]: string"));
+    assert!(
+        spread_promise
+            .contains("finally(onfinally?: (() => void) | undefined | null): Promise<number>"),
+        "{spread_promise}"
+    );
+    assert!(spread_promise.find("[Symbol.toStringTag]") < spread_promise.find("finally(onfinally"));
     let spread_map = get_first_symbol_type(&ret, "spreadMap").to_type_string(ret.arena);
     assert!(spread_map.contains("set(key: string, value: number): Map<string, number>"));
     assert!(spread_map.contains("[Symbol.iterator](): MapIterator<[string, number]>"));
+    assert!(spread_map.find("[Symbol.iterator]") < spread_map.find("entries()"));
+    assert!(spread_map.find("values()") < spread_map.find("[Symbol.toStringTag]"));
     assert_eq!(
         get_first_symbol_type(&ret, "mapObject").to_type_string(ret.arena),
         "{ [k: string]: number; }"

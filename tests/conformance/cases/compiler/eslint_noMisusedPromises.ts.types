@@ -203,7 +203,7 @@ Promise.all(
 >                     ^^^^^: number   (TyNumber) (IdentifierReference)
 
 ).catch(handleError);
-> ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void[] | TResult>   (TyFunction) (StaticMemberExpression)
+> ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<void[] | TResult>   (TyFunction) (StaticMemberExpression)
 
 new Promise((resolve, reject) => {
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<unknown>   (TyTypeReference) (ExpressionStatement)
@@ -266,7 +266,7 @@ document.addEventListener('click', () => {
 > ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: Promise<void>   (TyTypeReference) (ExpressionStatement)
 
   handler().catch(handleError);
->           ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void | TResult>   (TyFunction) (StaticMemberExpression)
+>           ^^^^^: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<void | TResult>   (TyFunction) (StaticMemberExpression)
 
 interface MyAsyncInterface {
 >         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)

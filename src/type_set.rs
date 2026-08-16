@@ -73,7 +73,11 @@ impl<'a> UnionAccumulator<'a> {
         (!self.is_empty()).then(|| self.build())
     }
 
-    pub(crate) fn build(mut self) -> Ty<'a> {
+    pub(crate) fn build(self) -> Ty<'a> {
+        self.build_with_nullish_normalization(true)
+    }
+
+    fn build_with_nullish_normalization(mut self, normalize_nullish_order: bool) -> Ty<'a> {
         if let Some(error) = self.types.iter().find(|ty| ty.is_error(self.arena)) {
             return *error;
         }
@@ -91,9 +95,9 @@ impl<'a> UnionAccumulator<'a> {
             self.types.retain(|ty| !ty.is_never());
         }
 
-        // TODO(perf): this is just for nicer display purposes but we
-        // should handle this when printing instead, with flags?
-        normalize_null_undefined_order(&mut self.types);
+        if normalize_nullish_order {
+            normalize_null_undefined_order(&mut self.types);
+        }
 
         if self.types.len() == 1 {
             return self.types[0];
@@ -110,6 +114,21 @@ pub fn reduce_union_type<'a>(
     let mut accumulator = UnionAccumulator::new(arena);
     accumulator.extend(types);
     accumulator.build()
+}
+
+pub(crate) fn reduce_source_union_type<'a>(
+    arena: CheckerArena<'a>,
+    types: impl IntoIterator<Item = Ty<'a>>,
+) -> Ty<'a> {
+    let mut accumulator = UnionAccumulator::new(arena);
+    accumulator.extend(types);
+    let contains_type_parameter = accumulator.types.iter().any(|ty| {
+        matches!(
+            arena.ty_kind(*ty),
+            TyKind::TypeReference(reference) if reference.is_bare() && reference.target.is_none()
+        )
+    });
+    accumulator.build_with_nullish_normalization(contains_type_parameter)
 }
 
 fn add_type_to_union<'a>(

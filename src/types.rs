@@ -1,7 +1,7 @@
 use crate::{
     checker::SymbolRef,
     limits::{TUPLE_SPREAD_MAX_LENGTH, TYPE_STRING_MAX_DEPTH, TYPE_VISIT_MAX_DEPTH},
-    type_set::{reduce_intersection_type, reduce_union_type},
+    type_set::{reduce_intersection_type, reduce_source_union_type, reduce_union_type},
 };
 use bitflags::bitflags;
 use num_traits::Zero;
@@ -1925,6 +1925,13 @@ impl<'a> Ty<'a> {
 
     pub fn r#union(arena: CheckerArena<'a>, types: impl IntoIterator<Item = Ty<'a>>) -> Self {
         reduce_union_type(arena, types)
+    }
+
+    pub(crate) fn source_union(
+        arena: CheckerArena<'a>,
+        types: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Self {
+        reduce_source_union_type(arena, types)
     }
 
     pub(crate) fn map_union(

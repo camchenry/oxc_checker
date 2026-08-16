@@ -10,7 +10,7 @@ interface Promise<T> {
 >                 ^: any   (TyAny) (TSTypeParameter)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->   ^^^^^^^: { (onfinally?: (() => void) | null | undefined): Promise<T>; (onfinally?: (() => void) | null | undefined): Promise<T>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (onfinally?: (() => void) | undefined | null): Promise<T>; (onfinally?: (() => void) | undefined | null): Promise<T>; }   (TyObject) (TSMethodSignature)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
 >           ^^^^^^^^^: (() => void) | null | undefined   (TyUnion) (BindingIdentifier)

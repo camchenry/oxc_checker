@@ -2681,7 +2681,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .iter()
                     .map(|ty| self.get_type_from_ts_type(program_id, ty)),
             ),
-            TSType::TSUnionType(union_type) => Ty::union(
+            TSType::TSUnionType(union_type) => Ty::source_union(
                 self.arena(),
                 union_type
                     .types
@@ -3312,7 +3312,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             TSType::TSTypeReference(reference) => self
                 .get_expanded_type_alias_reference(program_id, reference, depth + 1)
                 .unwrap_or_else(|| self.get_type_from_ts_type_reference(program_id, reference)),
-            TSType::TSUnionType(union_type) => Ty::union(
+            TSType::TSUnionType(union_type) => Ty::source_union(
                 self.arena(),
                 union_type.types.iter().map(|ty| match ty {
                     TSType::TSTypeReference(reference) => self
@@ -5587,54 +5587,50 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         let mut properties = Vec::new();
-        for computed in [false, true] {
-            for &(declaration_program_id, interface) in &declarations {
-                for signature in &interface.body.body {
-                    let (key, is_computed, optional, method, readonly) = match signature {
-                        TSSignature::TSPropertySignature(property) => (
-                            &property.key,
-                            property.computed,
-                            property.optional,
-                            false,
-                            property.readonly,
-                        ),
-                        TSSignature::TSMethodSignature(method) => (
-                            &method.key,
-                            method.computed,
-                            method.optional,
-                            method.kind == TSMethodSignatureKind::Method,
-                            false,
-                        ),
-                        _ => continue,
-                    };
-                    let Some(name) = self.resolved_property_key_name(declaration_program_id, key)
-                    else {
-                        continue;
-                    };
-                    if is_computed != computed
-                        || properties.iter().any(|property: &TyProperty<'_>| {
-                            property.name == name && property.computed == computed
-                        })
-                    {
-                        continue;
-                    }
-                    let Some(ty) = self.get_property_type_of_interface_declarations(
-                        reference,
-                        name,
-                        &declarations,
-                    ) else {
-                        continue;
-                    };
-                    properties.push(TyProperty {
-                        name,
-                        flags: property_name_flags(key),
-                        ty,
-                        computed,
-                        optional,
-                        method,
-                        readonly,
-                    });
+        for &(declaration_program_id, interface) in &declarations {
+            for signature in &interface.body.body {
+                let (key, computed, optional, method, readonly) = match signature {
+                    TSSignature::TSPropertySignature(property) => (
+                        &property.key,
+                        property.computed,
+                        property.optional,
+                        false,
+                        property.readonly,
+                    ),
+                    TSSignature::TSMethodSignature(method) => (
+                        &method.key,
+                        method.computed,
+                        method.optional,
+                        method.kind == TSMethodSignatureKind::Method,
+                        false,
+                    ),
+                    _ => continue,
+                };
+                let Some(name) = self.resolved_property_key_name(declaration_program_id, key)
+                else {
+                    continue;
+                };
+                if properties.iter().any(|property: &TyProperty<'_>| {
+                    property.name == name && property.computed == computed
+                }) {
+                    continue;
                 }
+                let Some(ty) = self.get_property_type_of_interface_declarations(
+                    reference,
+                    name,
+                    &declarations,
+                ) else {
+                    continue;
+                };
+                properties.push(TyProperty {
+                    name,
+                    flags: property_name_flags(key),
+                    ty,
+                    computed,
+                    optional,
+                    method,
+                    readonly,
+                });
             }
         }
 

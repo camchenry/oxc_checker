@@ -92,19 +92,19 @@ const x15 = x **= 2;
 >           ^: any   (TyAny) (IdentifierReference)
 
 let y: string | undefined | null = "test"
->   ^: string | null | undefined   (TyUnion) (BindingIdentifier)
+>   ^: string | undefined | null   (TyUnion) (BindingIdentifier)
 
 const x16 = y ??= "foo"
 >     ^^^: string   (TyString) (BindingIdentifier)
 
 const x16 = y ??= "foo"
->           ^: string | null | undefined   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (TyUnion) (IdentifierReference)
 
 const x17 = y ??= undefined
 >     ^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const x17 = y ??= undefined
->           ^: string | null | undefined   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (TyUnion) (IdentifierReference)
 
 const x17 = y ??= undefined
 >                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
@@ -113,13 +113,13 @@ const x18 = y &&= "foo"
 >     ^^^: "" | null | undefined | "foo"   (TyUnion) (BindingIdentifier)
 
 const x18 = y &&= "foo"
->           ^: string | null | undefined   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (TyUnion) (IdentifierReference)
 
 const x19 = y &&= undefined
 >     ^^^: "" | null | undefined   (TyUnion) (BindingIdentifier)
 
 const x19 = y &&= undefined
->           ^: string | null | undefined   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (TyUnion) (IdentifierReference)
 
 const x19 = y &&= undefined
 >                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
@@ -128,13 +128,13 @@ const x20 = y ||= "foo"
 >     ^^^: string   (TyString) (BindingIdentifier)
 
 const x20 = y ||= "foo"
->           ^: string | null | undefined   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (TyUnion) (IdentifierReference)
 
 const x21 = y ||= undefined
 >     ^^^: string | undefined   (TyUnion) (BindingIdentifier)
 
 const x21 = y ||= undefined
->           ^: string | null | undefined   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (TyUnion) (IdentifierReference)
 
 const x21 = y ||= undefined
 >                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
