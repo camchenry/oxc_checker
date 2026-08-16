@@ -9987,10 +9987,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 Some(assignment.node_id.get()),
                 GetTypeFlags::NONE,
             );
-            let method = ty.is_function(self.arena());
             if let Some(existing) = properties.iter_mut().find(|property| property.name == name) {
                 existing.ty = ty;
-                existing.method = method;
             } else {
                 properties.push(TyProperty {
                     name,
@@ -9998,7 +9996,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     ty,
                     computed: false,
                     optional: false,
-                    method,
+                    method: false,
                     readonly: false,
                 });
             }

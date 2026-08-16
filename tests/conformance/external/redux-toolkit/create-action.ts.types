@@ -1019,7 +1019,7 @@ export function createAction(type: string, prepareAction?: Function): any {
 >                                                          ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
   function actionCreator(...args: any[]) {
->          ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (BindingIdentifier)
+>          ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }   (TyObject) (BindingIdentifier)
                 expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 
   function actionCreator(...args: any[]) {
@@ -1089,7 +1089,7 @@ export function createAction(type: string, prepareAction?: Function): any {
 >                           ^^^^: any[]   (TyArray) (IdentifierReference)
 
   actionCreator.type = type
-> ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (IdentifierReference)
+> ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }   (TyObject) (IdentifierReference)
        expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 
   actionCreator.type = type
@@ -1102,7 +1102,7 @@ export function createAction(type: string, prepareAction?: Function): any {
 >                      ^^^^: string   (TyString) (IdentifierReference)
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
-> ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (IdentifierReference)
+> ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }   (TyObject) (IdentifierReference)
        expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 
   actionCreator.match = (action: unknown): action is PayloadAction =>
@@ -1136,7 +1136,7 @@ export function createAction(type: string, prepareAction?: Function): any {
 >                                       ^^^^: string   (TyString) (IdentifierReference)
 
   return actionCreator
->        ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }   (TyObject) (IdentifierReference)
+>        ^^^^^^^^^^^^^: { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }   (TyObject) (IdentifierReference)
               expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 
 export function isActionCreator(

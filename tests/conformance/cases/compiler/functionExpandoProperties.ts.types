@@ -1,13 +1,11 @@
 function makeActionCreator(type: string) {
->        ^^^^^^^^^^^^^^^^^: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyFunction) (BindingIdentifier)
-                  expected: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>        ^^^^^^^^^^^^^^^^^: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyFunction) (BindingIdentifier)
 
 function makeActionCreator(type: string) {
 >                          ^^^^: string   (TyString) (BindingIdentifier)
 
     function actionCreator(payload: string) {
->            ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (BindingIdentifier)
-                  expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>            ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (BindingIdentifier)
 
     function actionCreator(payload: string) {
 >                          ^^^^^^^: string   (TyString) (BindingIdentifier)
@@ -25,8 +23,7 @@ function makeActionCreator(type: string) {
 >                      ^^^^^^^: string   (TyString) (IdentifierReference)
 
     actionCreator.type = type;
->   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-         expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
     actionCreator.type = type;
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
@@ -38,8 +35,7 @@ function makeActionCreator(type: string) {
 >                        ^^^^: string   (TyString) (IdentifierReference)
 
     actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
->   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-         expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
     actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: (value: unknown) => value is { type: string; }   (TyFunction) (ExpressionStatement)
@@ -69,8 +65,7 @@ function makeActionCreator(type: string) {
 >         ^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
     const creatorType = actionCreator.type;
->                       ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-                             expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>                       ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
     const creatorType = actionCreator.type;
 >                                     ^^^^: string   (TyString) (StaticMemberExpression)
@@ -79,8 +74,7 @@ function makeActionCreator(type: string) {
 >         ^^^^^^^: (value: unknown) => value is { type: string; }   (TyFunction) (BindingIdentifier)
 
     const matcher = actionCreator.match;
->                   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-                         expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>                   ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
     const matcher = actionCreator.match;
 >                                 ^^^^^: (value: unknown) => value is { type: string; }   (TyFunction) (StaticMemberExpression)
@@ -89,27 +83,22 @@ function makeActionCreator(type: string) {
 >         ^^^^^^: { type: string; payload: string; }   (TyObject) (BindingIdentifier)
 
     const result = actionCreator("value");
->                  ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-                        expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>                  ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
     return actionCreator;
->          ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-                expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>          ^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
 const returnedCreator = makeActionCreator("demo");
->     ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (BindingIdentifier)
-             expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>     ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (BindingIdentifier)
 
 const returnedCreator = makeActionCreator("demo");
->                       ^^^^^^^^^^^^^^^^^: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyFunction) (IdentifierReference)
-                                 expected: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>                       ^^^^^^^^^^^^^^^^^: (type: string) => { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyFunction) (IdentifierReference)
 
 const returnedType = returnedCreator.type;
 >     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const returnedType = returnedCreator.type;
->                    ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-                            expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>                    ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
 const returnedType = returnedCreator.type;
 >                                    ^^^^: string   (TyString) (StaticMemberExpression)
@@ -118,8 +107,7 @@ const returnedMatch = returnedCreator.match({ type: "demo" });
 >     ^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
 
 const returnedMatch = returnedCreator.match({ type: "demo" });
->                     ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-                             expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>                     ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
 const returnedMatch = returnedCreator.match({ type: "demo" });
 >                                     ^^^^^: (value: unknown) => value is { type: string; }   (TyFunction) (StaticMemberExpression)
@@ -131,12 +119,10 @@ const returnedResult = returnedCreator("payload");
 >     ^^^^^^^^^^^^^^: { type: string; payload: string; }   (TyObject) (BindingIdentifier)
 
 const returnedResult = returnedCreator("payload");
->                      ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }   (TyObject) (IdentifierReference)
-                              expected: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+>                      ^^^^^^^^^^^^^^^: { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }   (TyObject) (IdentifierReference)
 
 const arrowCreator = (payload: number) => ({ payload });
->     ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject) (BindingIdentifier)
-          expected: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
+>     ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }   (TyObject) (BindingIdentifier)
 
 const arrowCreator = (payload: number) => ({ payload });
 >                     ^^^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -151,8 +137,7 @@ let arrowLabel = "arrow";
 >   ^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 arrowCreator.type = arrowLabel;
->^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject) (IdentifierReference)
-     expected: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
+>^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }   (TyObject) (IdentifierReference)
 
 arrowCreator.type = arrowLabel;
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
@@ -164,8 +149,7 @@ arrowCreator.type = arrowLabel;
 >                   ^^^^^^^^^^: string   (TyString) (IdentifierReference)
 
 arrowCreator.match = (value: unknown): value is { payload: number } => true;
->^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject) (IdentifierReference)
-     expected: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
+>^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }   (TyObject) (IdentifierReference)
 
 arrowCreator.match = (value: unknown): value is { payload: number } => true;
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: (value: unknown) => value is { payload: number; }   (TyFunction) (ExpressionStatement)
@@ -186,8 +170,7 @@ const arrowType = arrowCreator.type;
 >     ^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const arrowType = arrowCreator.type;
->                 ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject) (IdentifierReference)
-                      expected: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
+>                 ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }   (TyObject) (IdentifierReference)
 
 const arrowType = arrowCreator.type;
 >                              ^^^^: string   (TyString) (StaticMemberExpression)
@@ -196,8 +179,7 @@ const arrowMatch = arrowCreator.match;
 >     ^^^^^^^^^^: (value: unknown) => value is { payload: number; }   (TyFunction) (BindingIdentifier)
 
 const arrowMatch = arrowCreator.match;
->                  ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject) (IdentifierReference)
-                       expected: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
+>                  ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }   (TyObject) (IdentifierReference)
 
 const arrowMatch = arrowCreator.match;
 >                               ^^^^^: (value: unknown) => value is { payload: number; }   (TyFunction) (StaticMemberExpression)
@@ -206,5 +188,4 @@ const arrowResult = arrowCreator(1);
 >     ^^^^^^^^^^^: { payload: number; }   (TyObject) (BindingIdentifier)
 
 const arrowResult = arrowCreator(1);
->                   ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }   (TyObject) (IdentifierReference)
-                        expected: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
+>                   ^^^^^^^^^^^^: { (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }   (TyObject) (IdentifierReference)

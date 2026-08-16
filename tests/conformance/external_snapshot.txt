@@ -70,16 +70,16 @@ FAIL tests/conformance/external/redux-toolkit/create-action.ts::packages/toolkit
       actual:   { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
   - tests/conformance/external/redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts:120 `actionCreator` type mismatch
       expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
-      actual:   { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }
+      actual:   { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }
   - tests/conformance/external/redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts:135 `actionCreator` type mismatch
       expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
-      actual:   { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }
+      actual:   { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }
   - tests/conformance/external/redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts:136 `actionCreator` type mismatch
       expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
-      actual:   { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }
+      actual:   { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }
   - tests/conformance/external/redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts:139 `actionCreator` type mismatch
       expected: { (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
-      actual:   { (...args: any[]): any; type: string; match(action: unknown): action is PayloadAction; }
+      actual:   { (...args: any[]): any; type: string; match: (action: unknown) => action is PayloadAction; }
 PASS tests/conformance/external/redux-toolkit/create-action.ts::packages/toolkit/src/reduxImports.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
 PASS tests/conformance/external/redux-toolkit/create-action.ts::packages/toolkit/src/tsHelpers.ts matched_types=109 mismatched_types=0 total_types=109 match_percentage=100.00%
 FAIL tests/conformance/external/redux-toolkit/create-action.ts::tests/create-action-usage.ts matched_types=36 mismatched_types=63 total_types=99 match_percentage=36.36%
