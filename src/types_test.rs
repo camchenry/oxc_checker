@@ -606,6 +606,26 @@ fn object_non_identifier_property_preserves_double_quotes() {
 }
 
 #[test]
+fn object_property_type_preserves_single_quotes() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+    let property = TyProperty {
+        name: "brand",
+        flags: TyPropertyFlags::TYPE_SINGLE_QUOTED,
+        ty: Ty::string_literal(arena, "test-brand"),
+        computed: false,
+        optional: false,
+        method: false,
+        readonly: false,
+    };
+
+    assert_eq!(
+        Ty::object(arena, [property]).to_type_string(arena),
+        "{ brand: 'test-brand'; }"
+    );
+}
+
+#[test]
 fn nested_object_property_uses_default_double_quotes() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);

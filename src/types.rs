@@ -29,6 +29,7 @@ bitflags! {
         const NONE = 0;
         const WRITE_ARRAY_AS_GENERIC_TYPE = 1 << 0;
         const PRESERVE_PROPERTY_NAME_QUOTES = 1 << 1;
+        const USE_SINGLE_QUOTES_FOR_STRING_LITERAL = 1 << 2;
     }
 }
 
@@ -486,6 +487,7 @@ bitflags! {
     pub struct TyPropertyFlags: u8 {
         const NONE = 0;
         const SINGLE_QUOTED = 1 << 0;
+        const TYPE_SINGLE_QUOTED = 1 << 1;
     }
 }
 
@@ -2321,7 +2323,16 @@ impl<'a> Ty<'a> {
                                 property.ty.to_type_string_with_flags(
                                     arena,
                                     replace_type_reference,
-                                    flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
+                                    flags
+                                        | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE
+                                        | if property
+                                            .flags
+                                            .contains(TyPropertyFlags::TYPE_SINGLE_QUOTED)
+                                        {
+                                            TypeFormatFlags::USE_SINGLE_QUOTES_FOR_STRING_LITERAL
+                                        } else {
+                                            TypeFormatFlags::NONE
+                                        },
                                     depth,
                                 )
                             )
@@ -2387,9 +2398,10 @@ impl<'a> Ty<'a> {
                 }
             }
             TyKind::GlobalThis => "typeof globalThis".to_string(),
-            TyKind::StringLiteral(string_literal) => {
-                format!("{:?}", string_literal.value)
-            }
+            TyKind::StringLiteral(string_literal) => quoted_property_name(
+                string_literal.value,
+                flags.contains(TypeFormatFlags::USE_SINGLE_QUOTES_FOR_STRING_LITERAL),
+            ),
             TyKind::NumberLiteral(number_literal) => {
                 // Print the base-10 representation of the number
                 if number_literal.value.is_zero() {

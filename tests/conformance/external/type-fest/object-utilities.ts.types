@@ -490,8 +490,7 @@ type UserPreview = Simplify<
 >                                        ^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
 
 type CreatedEvent = {
->    ^^^^^^^^^^^^: { type: "created"; user: User; }   (TyObject) (TSTypeAliasDeclaration)
-         expected: { type: 'created'; user: User; }
+>    ^^^^^^^^^^^^: { type: 'created'; user: User; }   (TyObject) (TSTypeAliasDeclaration)
 
   type: 'created'
 > ^^^^: "created"   (TyStringLiteral) (TSPropertySignature)
@@ -503,8 +502,7 @@ type CreatedEvent = {
 >       ^^^^: any   (TyAny) (TSTypeReference)
 
 type DeletedEvent = {
->    ^^^^^^^^^^^^: { type: "deleted"; id: string; actor?: string; }   (TyObject) (TSTypeAliasDeclaration)
-         expected: { type: 'deleted'; id: string; actor?: string; }
+>    ^^^^^^^^^^^^: { type: 'deleted'; id: string; actor?: string; }   (TyObject) (TSTypeAliasDeclaration)
 
   type: 'deleted'
 > ^^^^: "deleted"   (TyStringLiteral) (TSPropertySignature)
@@ -525,7 +523,7 @@ type Event = CreatedEvent | DeletedEvent
 >                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type EventKey = KeysOfUnion<Event>
->    ^^^^^^^^: keyof (((({ type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) extends unknown ? (distributedUnion: { type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) => void : never) | ((distributedUnion: Record<keyof { type: "deleted"; id: string; actor?: string; }, never>) => void)) extends (mergedIntersection: infer Intersection) => void ? Intersection & (({ type: "created"; user: User; } extends unknown ? Record<keyof { type: "created"; user: User; }, never> : never) | Record<keyof { type: "deleted"; id: string; actor?: string; }, never>) : never)   (TyKeyof) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: keyof (((({ type: 'created'; user: User; } extends unknown ? Record<keyof { type: 'created'; user: User; }, never> : never) extends unknown ? (distributedUnion: { type: 'created'; user: User; } extends unknown ? Record<keyof { type: 'created'; user: User; }, never> : never) => void : never) | ((distributedUnion: Record<keyof { type: 'deleted'; id: string; actor?: string; }, never>) => void)) extends (mergedIntersection: infer Intersection) => void ? Intersection & (({ type: 'created'; user: User; } extends unknown ? Record<keyof { type: 'created'; user: User; }, never> : never) | Record<keyof { type: 'deleted'; id: string; actor?: string; }, never>) : never)   (TyKeyof) (TSTypeAliasDeclaration)
      expected: "actor" | "id" | "type" | "user"
 
 type EventKey = KeysOfUnion<Event>

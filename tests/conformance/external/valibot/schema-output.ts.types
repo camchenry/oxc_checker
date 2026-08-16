@@ -1,6 +1,5 @@
 export type BaseIssue<Expected extends string = string> = {
->           ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeAliasDeclaration)
-             expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+>           ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeAliasDeclaration)
 
 export type BaseIssue<Expected extends string = string> = {
 >                     ^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -121,8 +120,7 @@ export type InferIssue<TSchema extends GenericSchema> = NonNullable<
 > ^^^^^^^: any   (TyAny) (TSTypeReference)
 
   BaseIssue,
-> ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (BindingIdentifier)
-   expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+> ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (BindingIdentifier)
 
   BaseSchema,
 > ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (BindingIdentifier)
@@ -141,7 +139,7 @@ export type InferIssue<TSchema extends GenericSchema> = NonNullable<
 > ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (BindingIdentifier)
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: { readonly kind: "schema"; readonly expected: "string"; readonly message: string; }; }; readonly '~run': (input: unknown) => string; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; }; readonly '~run': (input: unknown) => string; }   (TyObject) (TSTypeAliasDeclaration)
                 expected: { readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: BaseIssue<"string">; } | undefined; readonly '~run': (input: unknown) => string; }
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
@@ -151,15 +149,13 @@ export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
 >                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
-                                                       expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
-                                                       expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: { readonly kind: "schema"; readonly expected: "number"; readonly message: string; }; }; readonly '~run': (input: unknown) => number; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: { readonly kind: 'schema'; readonly expected: "number"; readonly message: string; }; }; readonly '~run': (input: unknown) => number; }   (TyObject) (TSTypeAliasDeclaration)
                 expected: { readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: BaseIssue<"number">; } | undefined; readonly '~run': (input: unknown) => number; }
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
@@ -169,15 +165,13 @@ export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
 >                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
-                                                       expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->                                                     ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
-                                                       expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: { readonly kind: "schema"; readonly expected: "boolean"; readonly message: string; }; }; readonly '~run': (input: unknown) => boolean; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: { readonly kind: 'schema'; readonly expected: "boolean"; readonly message: string; }; }; readonly '~run': (input: unknown) => boolean; }   (TyObject) (TSTypeAliasDeclaration)
                  expected: { readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: BaseIssue<"boolean">; } | undefined; readonly '~run': (input: unknown) => boolean; }
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
@@ -187,12 +181,10 @@ export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
 >                           ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->                                                        ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
-                                                          expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+>                                                        ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->                                                        ^^^^^^^^^: { readonly kind: "schema"; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
-                                                          expected: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
+>                                                        ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
 >           ^^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: (TWrapped["~types"] & {})["input"] | undefined; readonly output: (TWrapped["~types"] & {})["output"] | TDefault; readonly issue: (TWrapped["~types"] & {})["issue"]; }; readonly '~run': (input: unknown) => (TWrapped["~types"] & {})["output"] | TDefault; }   (TyObject) (TSTypeAliasDeclaration)
@@ -755,7 +747,7 @@ type UserOutput = InferOutput<typeof userSchema>
 >                                    ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
 
 type UserIssue = InferIssue<typeof userSchema>
->    ^^^^^^^^^: { id: { readonly kind: "schema"; readonly expected: "string"; readonly message: string; }; age: { readonly kind: "schema"; readonly expected: "number"; readonly message: string; }; active: { readonly kind: "schema"; readonly expected: "boolean"; readonly message: string; }; tags: { readonly kind: "schema"; readonly expected: "string"; readonly message: string; }; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: { id: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; age: { readonly kind: 'schema'; readonly expected: "number"; readonly message: string; }; active: { readonly kind: 'schema'; readonly expected: "boolean"; readonly message: string; }; tags: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
       expected: BaseIssue<"boolean"> | BaseIssue<"number"> | BaseIssue<"string">
 
 type UserIssue = InferIssue<typeof userSchema>

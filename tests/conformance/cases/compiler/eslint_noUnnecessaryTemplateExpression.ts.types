@@ -35,8 +35,7 @@ type WrappedText = `${Text}`;
 >                     ^^^^: any   (TyAny) (TSTypeReference)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (BindingIdentifier)
-                            expected: string & { _brand: 'test-brand'; }
+>             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (BindingIdentifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >                                                ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
@@ -45,12 +44,10 @@ const wrappedIntersection = `${intersectionWithString}`;
 >     ^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
 
 const wrappedIntersection = `${intersectionWithString}`;
->                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (IdentifierReference)
-                                             expected: string & { _brand: 'test-brand'; }
+>                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (IdentifierReference)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (TSTypeAliasDeclaration)
-                   expected: string & { _brand: 'test-brand'; }
+>    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (TSTypeAliasDeclaration)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >                                        ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
@@ -137,30 +134,25 @@ type WrappedText = Text;
 >                  ^^^^: any   (TyAny) (TSTypeReference)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (BindingIdentifier)
-                            expected: string & { _brand: 'test-brand'; }
+>             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (BindingIdentifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >                                                ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
 
 const wrappedIntersection = intersectionWithString;
->     ^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (BindingIdentifier)
-                 expected: string & { _brand: 'test-brand'; }
+>     ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (BindingIdentifier)
 
 const wrappedIntersection = intersectionWithString;
->                           ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (IdentifierReference)
-                                          expected: string & { _brand: 'test-brand'; }
+>                           ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (IdentifierReference)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (TSTypeAliasDeclaration)
-                   expected: string & { _brand: 'test-brand'; }
+>    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (TSTypeAliasDeclaration)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >                                        ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
 
 type WrappedIntersection = IntersectionWithString;
->    ^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (TSTypeAliasDeclaration)
-                expected: string & { _brand: 'test-brand'; }
+>    ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (TSTypeAliasDeclaration)
 
 type WrappedIntersection = IntersectionWithString;
 >                          ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

@@ -12,8 +12,8 @@ use oxc_ast::{
         ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
         PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportType,
         TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature,
-        TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember, TSSignature,
-        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember, TSPropertySignature,
+        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
         TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
@@ -2469,6 +2469,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn property_signature_flags(property: &TSPropertySignature<'_>) -> TyPropertyFlags {
+        let type_single_quoted = property.type_annotation.as_deref().is_some_and(|annotation| {
+            matches!(
+                &annotation.type_annotation,
+                TSType::TSLiteralType(literal)
+                    if matches!(
+                        &literal.literal,
+                        TSLiteral::StringLiteral(literal)
+                            if literal.raw.as_ref().is_some_and(|raw| raw.as_str().starts_with('\''))
+                    )
+            )
+        });
+        property_name_flags(&property.key)
+            | if type_single_quoted {
+                TyPropertyFlags::TYPE_SINGLE_QUOTED
+            } else {
+                TyPropertyFlags::NONE
+            }
+    }
+
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
         let depth = &self.ts_type_resolution_depth;
@@ -2524,7 +2544,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                             );
                             Some(TyProperty {
                                 name,
-                                flags: property_name_flags(&property.key),
+                                flags: Self::property_signature_flags(property),
                                 ty,
                                 computed: property.computed,
                                 optional: property.optional,
@@ -5108,7 +5128,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         let ty = self.instantiate_type(ty, &mapper);
                         properties.push(TyProperty {
                             name,
-                            flags: property_name_flags(&property.key),
+                            flags: Self::property_signature_flags(property),
                             ty,
                             computed: property.computed,
                             optional: property.optional,
