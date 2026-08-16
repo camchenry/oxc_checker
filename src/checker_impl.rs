@@ -3260,7 +3260,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
 
         let ty = self
             .get_type_from_ts_type_expanding_top_level_aliases(program_id, &alias.type_annotation);
-        self.expand_index_signature_alias_result(program_id, ty, 0)
+        let ty = self.expand_index_signature_alias_result(program_id, ty, 0);
+        self.with_implicit_type_arguments_visible(ty)
     }
 
     fn get_type_from_ts_type_expanding_top_level_aliases(

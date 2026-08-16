@@ -1,6 +1,5 @@
 type ClassMemberDecoratorContext =
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^: ClassMethodDecoratorContext | ClassGetterDecoratorContext | ClassSetterDecoratorContext | ClassFieldDecoratorContext | ClassAccessorDecoratorContext   (TyUnion) (TSTypeAliasDeclaration)
-                        expected: ClassMethodDecoratorContext<unknown, (this: unknown, ...args: any) => any> | ClassGetterDecoratorContext<unknown, unknown> | ClassSetterDecoratorContext<unknown, unknown> | ClassFieldDecoratorContext<unknown, unknown> | ClassAccessorDecoratorContext<unknown, unknown>
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^: ClassMethodDecoratorContext<unknown, (this: unknown, ...args: any) => any> | ClassGetterDecoratorContext<unknown, unknown> | ClassSetterDecoratorContext<unknown, unknown> | ClassFieldDecoratorContext<unknown, unknown> | ClassAccessorDecoratorContext<unknown, unknown>   (TyUnion) (TSTypeAliasDeclaration)
 
     | ClassMethodDecoratorContext
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -33,7 +32,7 @@ type ClassMemberDecoratorContext =
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 type DecoratorContext =
->    ^^^^^^^^^^^^^^^^: ClassDecoratorContext | ClassMemberDecoratorContext   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^: ClassDecoratorContext<new (...args: any) => any> | ClassMemberDecoratorContext   (TyUnion) (TSTypeAliasDeclaration)
              expected: ClassDecoratorContext<abstract new (...args: any) => any> | ClassMemberDecoratorContext
 
     | ClassDecoratorContext

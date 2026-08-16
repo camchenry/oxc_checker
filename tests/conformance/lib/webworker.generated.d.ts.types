@@ -50757,8 +50757,7 @@ type BlobPart = BufferSource | Blob | string;
 >                              ^^^^: { new (blobParts?: BlobPart[], options?: BlobPropertyBag): Blob; prototype: Blob; }   (TyObject) (IdentifierReference)
 
 type BodyInit = ReadableStream | XMLHttpRequestBodyInit;
->    ^^^^^^^^: ReadableStream | XMLHttpRequestBodyInit   (TyUnion) (TSTypeAliasDeclaration)
-     expected: XMLHttpRequestBodyInit | ReadableStream<any>
+>    ^^^^^^^^: ReadableStream<any> | XMLHttpRequestBodyInit   (TyUnion) (TSTypeAliasDeclaration)
 
 type BodyInit = ReadableStream | XMLHttpRequestBodyInit;
 >               ^^^^^^^^^^^^^^: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }   (TyObject) (TSTypeReference)
@@ -51188,8 +51187,7 @@ type ImageBitmapSource = CanvasImageSource | Blob | ImageData;
 >                                                   ^^^^^^^^^: { new (sw: number, sh: number, settings?: ImageDataSettings): ImageData; new (data: ImageDataArray, sw: number, sh?: number, settings?: ImageDataSettings): ImageData; prototype: ImageData; }   (TyObject) (IdentifierReference)
 
 type ImageBufferSource = AllowSharedBufferSource | ReadableStream;
->    ^^^^^^^^^^^^^^^^^: AllowSharedBufferSource | ReadableStream   (TyUnion) (TSTypeAliasDeclaration)
-              expected: AllowSharedBufferSource | ReadableStream<any>
+>    ^^^^^^^^^^^^^^^^^: AllowSharedBufferSource | ReadableStream<any>   (TyUnion) (TSTypeAliasDeclaration)
 
 type ImageBufferSource = AllowSharedBufferSource | ReadableStream;
 >                        ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -51429,8 +51427,7 @@ type TimerHandler = string | Function;
 >                            ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
 type Transferable = OffscreenCanvas | ImageBitmap | MessagePort | MediaSourceHandle | ReadableStream | WritableStream | TransformStream | AudioData | VideoFrame | RTCDataChannel | ArrayBuffer;
->    ^^^^^^^^^^^^: OffscreenCanvas | ImageBitmap | MessagePort | MediaSourceHandle | ReadableStream | WritableStream | TransformStream | AudioData | VideoFrame | RTCDataChannel | ArrayBuffer   (TyUnion) (TSTypeAliasDeclaration)
-         expected: ArrayBuffer | MessagePort | ImageBitmap | VideoFrame | OffscreenCanvas | MediaSourceHandle | AudioData | RTCDataChannel | ReadableStream<any> | WritableStream<any> | TransformStream<any, any>
+>    ^^^^^^^^^^^^: OffscreenCanvas | ImageBitmap | MessagePort | MediaSourceHandle | ReadableStream<any> | WritableStream<any> | TransformStream<any, any> | AudioData | VideoFrame | RTCDataChannel | ArrayBuffer   (TyUnion) (TSTypeAliasDeclaration)
 
 type Transferable = OffscreenCanvas | ImageBitmap | MessagePort | MediaSourceHandle | ReadableStream | WritableStream | TransformStream | AudioData | VideoFrame | RTCDataChannel | ArrayBuffer;
 >                   ^^^^^^^^^^^^^^^: { new (width: number, height: number): OffscreenCanvas; prototype: OffscreenCanvas; }   (TyObject) (TSTypeReference)
