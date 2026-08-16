@@ -733,8 +733,7 @@ declare namespace Temporal {
 >                ^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
         toPlainYearMonth(): PlainYearMonth;
->       ^^^^^^^^^^^^^^^^: () => PlainYearMonth   (TyFunction) (TSMethodSignature)
-                expected: { (): PlainYearMonth; (): PlainYearMonth; }
+>       ^^^^^^^^^^^^^^^^: { (): PlainYearMonth; (): PlainYearMonth; }   (TyObject) (TSMethodSignature)
 
         toPlainYearMonth(): PlainYearMonth;
 >                           ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (TSTypeReference)
@@ -743,8 +742,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (IdentifierReference)
 
         toPlainMonthDay(): PlainMonthDay;
->       ^^^^^^^^^^^^^^^: () => PlainMonthDay   (TyFunction) (TSMethodSignature)
-               expected: { (): PlainMonthDay; (): PlainMonthDay; }
+>       ^^^^^^^^^^^^^^^: { (): PlainMonthDay; (): PlainMonthDay; }   (TyObject) (TSMethodSignature)
 
         toPlainMonthDay(): PlainMonthDay;
 >                          ^^^^^^^^^^^^^: PlainMonthDayConstructor   (TyTypeReference) (TSTypeReference)
@@ -753,8 +751,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^: PlainMonthDayConstructor   (TyTypeReference) (IdentifierReference)
 
         add(duration: DurationLike, options?: OverflowOptions): PlainDate;
->       ^^^: (duration: DurationLike, options?: OverflowOptions) => PlainDate   (TyFunction) (TSMethodSignature)
-   expected: { (duration: DurationLike, options?: OverflowOptions): PlainDate; (duration: DurationLike, options?: OverflowOptions): PlainDate; }
+>       ^^^: { (duration: DurationLike, options?: OverflowOptions): PlainDate; (duration: DurationLike, options?: OverflowOptions): PlainDate; }   (TyObject) (TSMethodSignature)
 
         add(duration: DurationLike, options?: OverflowOptions): PlainDate;
 >           ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -778,8 +775,7 @@ declare namespace Temporal {
 >                                                               ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         subtract(duration: DurationLike, options?: OverflowOptions): PlainDate;
->       ^^^^^^^^: (duration: DurationLike, options?: OverflowOptions) => PlainDate   (TyFunction) (TSMethodSignature)
-        expected: { (duration: DurationLike, options?: OverflowOptions): PlainDate; (duration: DurationLike, options?: OverflowOptions): PlainDate; }
+>       ^^^^^^^^: { (duration: DurationLike, options?: OverflowOptions): PlainDate; (duration: DurationLike, options?: OverflowOptions): PlainDate; }   (TyObject) (TSMethodSignature)
 
         subtract(duration: DurationLike, options?: OverflowOptions): PlainDate;
 >                ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -803,8 +799,7 @@ declare namespace Temporal {
 >                                                                    ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         with(dateLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainDate;
->       ^^^^: (dateLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions) => PlainDate   (TyFunction) (TSMethodSignature)
-    expected: { (dateLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainDate; (dateLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainDate; }
+>       ^^^^: { (dateLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainDate; (dateLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainDate; }   (TyObject) (TSMethodSignature)
 
         with(dateLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainDate;
 >            ^^^^^^^^: PartialTemporalLike<DateLikeObject>   (TyTypeReference) (BindingIdentifier)
@@ -834,8 +829,7 @@ declare namespace Temporal {
 >                                                                                       ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         withCalendar(calendarLike: CalendarLike): PlainDate;
->       ^^^^^^^^^^^^: (calendarLike: CalendarLike) => PlainDate   (TyFunction) (TSMethodSignature)
-            expected: { (calendarLike: CalendarLike): PlainDate; (calendarLike: CalendarLike): PlainDate; }
+>       ^^^^^^^^^^^^: { (calendarLike: CalendarLike): PlainDate; (calendarLike: CalendarLike): PlainDate; }   (TyObject) (TSMethodSignature)
 
         withCalendar(calendarLike: CalendarLike): PlainDate;
 >                    ^^^^^^^^^^^^: CalendarLike   (TyTypeReference) (BindingIdentifier)
@@ -850,8 +844,7 @@ declare namespace Temporal {
 >                                                 ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         until(other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration;
->       ^^^^^: (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; }
+>       ^^^^^: { (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         until(other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration;
 >             ^^^^^: PlainDateLike   (TyTypeReference) (BindingIdentifier)
@@ -878,8 +871,7 @@ declare namespace Temporal {
 >                                                                                        ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         since(other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration;
->       ^^^^^: (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; }
+>       ^^^^^: { (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; (other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         since(other: PlainDateLike, options?: RoundingOptionsWithLargestUnit<DateUnit>): Duration;
 >             ^^^^^: PlainDateLike   (TyTypeReference) (BindingIdentifier)
@@ -906,8 +898,7 @@ declare namespace Temporal {
 >                                                                                        ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         equals(other: PlainDateLike): boolean;
->       ^^^^^^: (other: PlainDateLike) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (other: PlainDateLike): boolean; (other: PlainDateLike): boolean; }
+>       ^^^^^^: { (other: PlainDateLike): boolean; (other: PlainDateLike): boolean; }   (TyObject) (TSMethodSignature)
 
         equals(other: PlainDateLike): boolean;
 >              ^^^^^: PlainDateLike   (TyTypeReference) (BindingIdentifier)
@@ -916,8 +907,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         toPlainDateTime(time?: PlainTimeLike): PlainDateTime;
->       ^^^^^^^^^^^^^^^: (time?: PlainTimeLike) => PlainDateTime   (TyFunction) (TSMethodSignature)
-               expected: { (time?: PlainTimeLike): PlainDateTime; (time?: PlainTimeLike): PlainDateTime; }
+>       ^^^^^^^^^^^^^^^: { (time?: PlainTimeLike): PlainDateTime; (time?: PlainTimeLike): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         toPlainDateTime(time?: PlainTimeLike): PlainDateTime;
 >                       ^^^^: PlainTimeLike | undefined   (TyUnion) (BindingIdentifier)
@@ -932,8 +922,7 @@ declare namespace Temporal {
 >                                              ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         toZonedDateTime(timeZone: TimeZoneLike): ZonedDateTime;
->       ^^^^^^^^^^^^^^^: (timeZone: TimeZoneLike) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-               expected: { (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; }
+>       ^^^^^^^^^^^^^^^: { (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         toZonedDateTime(timeZone: TimeZoneLike): ZonedDateTime;
 >                       ^^^^^^^^: TimeZoneLike   (TyTypeReference) (BindingIdentifier)
@@ -948,8 +937,7 @@ declare namespace Temporal {
 >                                                ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         toZonedDateTime(item: PlainDateToZonedDateTimeOptions): ZonedDateTime;
->       ^^^^^^^^^^^^^^^: (item: PlainDateToZonedDateTimeOptions) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-               expected: { (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; }
+>       ^^^^^^^^^^^^^^^: { (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; (item: PlainDateToZonedDateTimeOptions): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         toZonedDateTime(item: PlainDateToZonedDateTimeOptions): ZonedDateTime;
 >                       ^^^^: PlainDateToZonedDateTimeOptions   (TyTypeReference) (BindingIdentifier)
@@ -967,8 +955,7 @@ declare namespace Temporal {
 >                                                               ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         toString(options?: PlainDateToStringOptions): string;
->       ^^^^^^^^: (options?: PlainDateToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: PlainDateToStringOptions): string; (options?: PlainDateToStringOptions): string; }
+>       ^^^^^^^^: { (options?: PlainDateToStringOptions): string; (options?: PlainDateToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: PlainDateToStringOptions): string;
 >                ^^^^^^^: PlainDateToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -980,8 +967,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -1005,12 +991,10 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         readonly [Symbol.toStringTag]: "Temporal.PlainDate";
 >                 ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1052,8 +1036,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: PlainDateLike, options?: OverflowOptions): PlainDate;
->       ^^^^: (item: PlainDateLike, options?: OverflowOptions) => PlainDate   (TyFunction) (TSMethodSignature)
-    expected: { (item: PlainDateLike, options?: OverflowOptions): PlainDate; (item: PlainDateLike, options?: OverflowOptions): PlainDate; }
+>       ^^^^: { (item: PlainDateLike, options?: OverflowOptions): PlainDate; (item: PlainDateLike, options?: OverflowOptions): PlainDate; }   (TyObject) (TSMethodSignature)
 
         from(item: PlainDateLike, options?: OverflowOptions): PlainDate;
 >            ^^^^: PlainDateLike   (TyTypeReference) (BindingIdentifier)
@@ -1077,8 +1060,7 @@ declare namespace Temporal {
 >                                                             ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         compare(one: PlainDateLike, two: PlainDateLike): number;
->       ^^^^^^^: (one: PlainDateLike, two: PlainDateLike) => number   (TyFunction) (TSMethodSignature)
-       expected: { (one: PlainDateLike, two: PlainDateLike): number; (one: PlainDateLike, two: PlainDateLike): number; }
+>       ^^^^^^^: { (one: PlainDateLike, two: PlainDateLike): number; (one: PlainDateLike, two: PlainDateLike): number; }   (TyObject) (TSMethodSignature)
 
         compare(one: PlainDateLike, two: PlainDateLike): number;
 >               ^^^: PlainDateLike   (TyTypeReference) (BindingIdentifier)
@@ -1149,8 +1131,7 @@ declare namespace Temporal {
 >                ^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
         add(duration: DurationLike): PlainTime;
->       ^^^: (duration: DurationLike) => PlainTime   (TyFunction) (TSMethodSignature)
-   expected: { (duration: DurationLike): PlainTime; (duration: DurationLike): PlainTime; }
+>       ^^^: { (duration: DurationLike): PlainTime; (duration: DurationLike): PlainTime; }   (TyObject) (TSMethodSignature)
 
         add(duration: DurationLike): PlainTime;
 >           ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -1165,8 +1146,7 @@ declare namespace Temporal {
 >                                    ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         subtract(duration: DurationLike): PlainTime;
->       ^^^^^^^^: (duration: DurationLike) => PlainTime   (TyFunction) (TSMethodSignature)
-        expected: { (duration: DurationLike): PlainTime; (duration: DurationLike): PlainTime; }
+>       ^^^^^^^^: { (duration: DurationLike): PlainTime; (duration: DurationLike): PlainTime; }   (TyObject) (TSMethodSignature)
 
         subtract(duration: DurationLike): PlainTime;
 >                ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -1181,8 +1161,7 @@ declare namespace Temporal {
 >                                         ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         with(timeLike: PartialTemporalLike<TimeLikeObject>, options?: OverflowOptions): PlainTime;
->       ^^^^: (timeLike: PartialTemporalLike<TimeLikeObject>, options?: OverflowOptions) => PlainTime   (TyFunction) (TSMethodSignature)
-    expected: { (timeLike: PartialTemporalLike<TimeLikeObject>, options?: OverflowOptions): PlainTime; (timeLike: PartialTemporalLike<TimeLikeObject>, options?: OverflowOptions): PlainTime; }
+>       ^^^^: { (timeLike: PartialTemporalLike<TimeLikeObject>, options?: OverflowOptions): PlainTime; (timeLike: PartialTemporalLike<TimeLikeObject>, options?: OverflowOptions): PlainTime; }   (TyObject) (TSMethodSignature)
 
         with(timeLike: PartialTemporalLike<TimeLikeObject>, options?: OverflowOptions): PlainTime;
 >            ^^^^^^^^: PartialTemporalLike<TimeLikeObject>   (TyTypeReference) (BindingIdentifier)
@@ -1212,8 +1191,7 @@ declare namespace Temporal {
 >                                                                                       ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         until(other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
->       ^^^^^: (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }
+>       ^^^^^: { (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         until(other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
 >             ^^^^^: PlainTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1240,8 +1218,7 @@ declare namespace Temporal {
 >                                                                                        ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         since(other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
->       ^^^^^: (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }
+>       ^^^^^: { (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         since(other: PlainTimeLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
 >             ^^^^^: PlainTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1268,8 +1245,7 @@ declare namespace Temporal {
 >                                                                                        ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         equals(other: PlainTimeLike): boolean;
->       ^^^^^^: (other: PlainTimeLike) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (other: PlainTimeLike): boolean; (other: PlainTimeLike): boolean; }
+>       ^^^^^^: { (other: PlainTimeLike): boolean; (other: PlainTimeLike): boolean; }   (TyObject) (TSMethodSignature)
 
         equals(other: PlainTimeLike): boolean;
 >              ^^^^^: PlainTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1278,8 +1254,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         round(roundTo: PluralizeUnit<TimeUnit>): PlainTime;
->       ^^^^^: (roundTo: PluralizeUnit<TimeUnit>) => PlainTime   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; }
+>       ^^^^^: { (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: PluralizeUnit<TimeUnit>): PlainTime;
 >             ^^^^^^^: PluralizeUnit<TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -1297,8 +1272,7 @@ declare namespace Temporal {
 >                                                ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: RoundingOptions<TimeUnit>): PlainTime;
->       ^^^^^: (roundTo: RoundingOptions<TimeUnit>) => PlainTime   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; }
+>       ^^^^^: { (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; (roundTo: PluralizeUnit<TimeUnit>): PlainTime; (roundTo: RoundingOptions<TimeUnit>): PlainTime; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: RoundingOptions<TimeUnit>): PlainTime;
 >             ^^^^^^^: RoundingOptions<TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -1319,8 +1293,7 @@ declare namespace Temporal {
 >                                                  ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         toString(options?: PlainTimeToStringOptions): string;
->       ^^^^^^^^: (options?: PlainTimeToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: PlainTimeToStringOptions): string; (options?: PlainTimeToStringOptions): string; }
+>       ^^^^^^^^: { (options?: PlainTimeToStringOptions): string; (options?: PlainTimeToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: PlainTimeToStringOptions): string;
 >                ^^^^^^^: PlainTimeToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -1332,8 +1305,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -1357,12 +1329,10 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         readonly [Symbol.toStringTag]: "Temporal.PlainTime";
 >                 ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -1410,8 +1380,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: PlainTimeLike, options?: OverflowOptions): PlainTime;
->       ^^^^: (item: PlainTimeLike, options?: OverflowOptions) => PlainTime   (TyFunction) (TSMethodSignature)
-    expected: { (item: PlainTimeLike, options?: OverflowOptions): PlainTime; (item: PlainTimeLike, options?: OverflowOptions): PlainTime; }
+>       ^^^^: { (item: PlainTimeLike, options?: OverflowOptions): PlainTime; (item: PlainTimeLike, options?: OverflowOptions): PlainTime; }   (TyObject) (TSMethodSignature)
 
         from(item: PlainTimeLike, options?: OverflowOptions): PlainTime;
 >            ^^^^: PlainTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1435,8 +1404,7 @@ declare namespace Temporal {
 >                                                             ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         compare(one: PlainTimeLike, two: PlainTimeLike): number;
->       ^^^^^^^: (one: PlainTimeLike, two: PlainTimeLike) => number   (TyFunction) (TSMethodSignature)
-       expected: { (one: PlainTimeLike, two: PlainTimeLike): number; (one: PlainTimeLike, two: PlainTimeLike): number; }
+>       ^^^^^^^: { (one: PlainTimeLike, two: PlainTimeLike): number; (one: PlainTimeLike, two: PlainTimeLike): number; }   (TyObject) (TSMethodSignature)
 
         compare(one: PlainTimeLike, two: PlainTimeLike): number;
 >               ^^^: PlainTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1552,8 +1520,7 @@ declare namespace Temporal {
 >                ^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
         with(dateTimeLike: PartialTemporalLike<DateTimeLikeObject>, options?: OverflowOptions): PlainDateTime;
->       ^^^^: (dateTimeLike: PartialTemporalLike<DateTimeLikeObject>, options?: OverflowOptions) => PlainDateTime   (TyFunction) (TSMethodSignature)
-    expected: { (dateTimeLike: PartialTemporalLike<DateTimeLikeObject>, options?: OverflowOptions): PlainDateTime; (dateTimeLike: PartialTemporalLike<DateTimeLikeObject>, options?: OverflowOptions): PlainDateTime; }
+>       ^^^^: { (dateTimeLike: PartialTemporalLike<DateTimeLikeObject>, options?: OverflowOptions): PlainDateTime; (dateTimeLike: PartialTemporalLike<DateTimeLikeObject>, options?: OverflowOptions): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         with(dateTimeLike: PartialTemporalLike<DateTimeLikeObject>, options?: OverflowOptions): PlainDateTime;
 >            ^^^^^^^^^^^^: PartialTemporalLike<DateTimeLikeObject>   (TyTypeReference) (BindingIdentifier)
@@ -1583,8 +1550,7 @@ declare namespace Temporal {
 >                                                                                               ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         withPlainTime(plainTime?: PlainTimeLike): PlainDateTime;
->       ^^^^^^^^^^^^^: (plainTime?: PlainTimeLike) => PlainDateTime   (TyFunction) (TSMethodSignature)
-             expected: { (plainTime?: PlainTimeLike): PlainDateTime; (plainTime?: PlainTimeLike): PlainDateTime; }
+>       ^^^^^^^^^^^^^: { (plainTime?: PlainTimeLike): PlainDateTime; (plainTime?: PlainTimeLike): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         withPlainTime(plainTime?: PlainTimeLike): PlainDateTime;
 >                     ^^^^^^^^^: PlainTimeLike | undefined   (TyUnion) (BindingIdentifier)
@@ -1599,8 +1565,7 @@ declare namespace Temporal {
 >                                                 ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         withCalendar(calendar: CalendarLike): PlainDateTime;
->       ^^^^^^^^^^^^: (calendar: CalendarLike) => PlainDateTime   (TyFunction) (TSMethodSignature)
-            expected: { (calendar: CalendarLike): PlainDateTime; (calendar: CalendarLike): PlainDateTime; }
+>       ^^^^^^^^^^^^: { (calendar: CalendarLike): PlainDateTime; (calendar: CalendarLike): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         withCalendar(calendar: CalendarLike): PlainDateTime;
 >                    ^^^^^^^^: CalendarLike   (TyTypeReference) (BindingIdentifier)
@@ -1615,8 +1580,7 @@ declare namespace Temporal {
 >                                             ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         add(duration: DurationLike, options?: OverflowOptions): PlainDateTime;
->       ^^^: (duration: DurationLike, options?: OverflowOptions) => PlainDateTime   (TyFunction) (TSMethodSignature)
-   expected: { (duration: DurationLike, options?: OverflowOptions): PlainDateTime; (duration: DurationLike, options?: OverflowOptions): PlainDateTime; }
+>       ^^^: { (duration: DurationLike, options?: OverflowOptions): PlainDateTime; (duration: DurationLike, options?: OverflowOptions): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         add(duration: DurationLike, options?: OverflowOptions): PlainDateTime;
 >           ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -1640,8 +1604,7 @@ declare namespace Temporal {
 >                                                               ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         subtract(duration: DurationLike, options?: OverflowOptions): PlainDateTime;
->       ^^^^^^^^: (duration: DurationLike, options?: OverflowOptions) => PlainDateTime   (TyFunction) (TSMethodSignature)
-        expected: { (duration: DurationLike, options?: OverflowOptions): PlainDateTime; (duration: DurationLike, options?: OverflowOptions): PlainDateTime; }
+>       ^^^^^^^^: { (duration: DurationLike, options?: OverflowOptions): PlainDateTime; (duration: DurationLike, options?: OverflowOptions): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         subtract(duration: DurationLike, options?: OverflowOptions): PlainDateTime;
 >                ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -1665,8 +1628,7 @@ declare namespace Temporal {
 >                                                                    ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         until(other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
->       ^^^^^: (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }
+>       ^^^^^: { (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         until(other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
 >             ^^^^^: PlainDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1696,8 +1658,7 @@ declare namespace Temporal {
 >                                                                                                       ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         since(other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
->       ^^^^^: (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }
+>       ^^^^^: { (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         since(other: PlainDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
 >             ^^^^^: PlainDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1727,8 +1688,7 @@ declare namespace Temporal {
 >                                                                                                       ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime;
->       ^^^^^: (roundTo: PluralizeUnit<"day" | TimeUnit>) => PlainDateTime   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; }
+>       ^^^^^: { (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime;
 >             ^^^^^^^: PluralizeUnit<"day" | TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -1746,8 +1706,7 @@ declare namespace Temporal {
 >                                                        ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime;
->       ^^^^^: (roundTo: RoundingOptions<"day" | TimeUnit>) => PlainDateTime   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; }
+>       ^^^^^: { (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): PlainDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: RoundingOptions<"day" | TimeUnit>): PlainDateTime;
 >             ^^^^^^^: RoundingOptions<"day" | TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -1768,8 +1727,7 @@ declare namespace Temporal {
 >                                                          ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         equals(other: PlainDateTimeLike): boolean;
->       ^^^^^^: (other: PlainDateTimeLike) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (other: PlainDateTimeLike): boolean; (other: PlainDateTimeLike): boolean; }
+>       ^^^^^^: { (other: PlainDateTimeLike): boolean; (other: PlainDateTimeLike): boolean; }   (TyObject) (TSMethodSignature)
 
         equals(other: PlainDateTimeLike): boolean;
 >              ^^^^^: PlainDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1778,8 +1736,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         toString(options?: PlainDateTimeToStringOptions): string;
->       ^^^^^^^^: (options?: PlainDateTimeToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: PlainDateTimeToStringOptions): string; (options?: PlainDateTimeToStringOptions): string; }
+>       ^^^^^^^^: { (options?: PlainDateTimeToStringOptions): string; (options?: PlainDateTimeToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: PlainDateTimeToStringOptions): string;
 >                ^^^^^^^: PlainDateTimeToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -1791,8 +1748,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -1816,16 +1772,13 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         toZonedDateTime(timeZone: TimeZoneLike, options?: DisambiguationOptions): ZonedDateTime;
->       ^^^^^^^^^^^^^^^: (timeZone: TimeZoneLike, options?: DisambiguationOptions) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-               expected: { (timeZone: TimeZoneLike, options?: DisambiguationOptions): ZonedDateTime; (timeZone: TimeZoneLike, options?: DisambiguationOptions): ZonedDateTime; }
+>       ^^^^^^^^^^^^^^^: { (timeZone: TimeZoneLike, options?: DisambiguationOptions): ZonedDateTime; (timeZone: TimeZoneLike, options?: DisambiguationOptions): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         toZonedDateTime(timeZone: TimeZoneLike, options?: DisambiguationOptions): ZonedDateTime;
 >                       ^^^^^^^^: TimeZoneLike   (TyTypeReference) (BindingIdentifier)
@@ -1849,8 +1802,7 @@ declare namespace Temporal {
 >                                                                                 ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         toPlainDate(): PlainDate;
->       ^^^^^^^^^^^: () => PlainDate   (TyFunction) (TSMethodSignature)
-           expected: { (): PlainDate; (): PlainDate; }
+>       ^^^^^^^^^^^: { (): PlainDate; (): PlainDate; }   (TyObject) (TSMethodSignature)
 
         toPlainDate(): PlainDate;
 >                      ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (TSTypeReference)
@@ -1859,8 +1811,7 @@ declare namespace Temporal {
 >                      ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         toPlainTime(): PlainTime;
->       ^^^^^^^^^^^: () => PlainTime   (TyFunction) (TSMethodSignature)
-           expected: { (): PlainTime; (): PlainTime; }
+>       ^^^^^^^^^^^: { (): PlainTime; (): PlainTime; }   (TyObject) (TSMethodSignature)
 
         toPlainTime(): PlainTime;
 >                      ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (TSTypeReference)
@@ -1926,8 +1877,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: PlainDateTimeLike, options?: OverflowOptions): PlainDateTime;
->       ^^^^: (item: PlainDateTimeLike, options?: OverflowOptions) => PlainDateTime   (TyFunction) (TSMethodSignature)
-    expected: { (item: PlainDateTimeLike, options?: OverflowOptions): PlainDateTime; (item: PlainDateTimeLike, options?: OverflowOptions): PlainDateTime; }
+>       ^^^^: { (item: PlainDateTimeLike, options?: OverflowOptions): PlainDateTime; (item: PlainDateTimeLike, options?: OverflowOptions): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         from(item: PlainDateTimeLike, options?: OverflowOptions): PlainDateTime;
 >            ^^^^: PlainDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -1951,8 +1901,7 @@ declare namespace Temporal {
 >                                                                 ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         compare(one: PlainDateTimeLike, two: PlainDateTimeLike): number;
->       ^^^^^^^: (one: PlainDateTimeLike, two: PlainDateTimeLike) => number   (TyFunction) (TSMethodSignature)
-       expected: { (one: PlainDateTimeLike, two: PlainDateTimeLike): number; (one: PlainDateTimeLike, two: PlainDateTimeLike): number; }
+>       ^^^^^^^: { (one: PlainDateTimeLike, two: PlainDateTimeLike): number; (one: PlainDateTimeLike, two: PlainDateTimeLike): number; }   (TyObject) (TSMethodSignature)
 
         compare(one: PlainDateTimeLike, two: PlainDateTimeLike): number;
 >               ^^^: PlainDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -2107,8 +2056,7 @@ declare namespace Temporal {
 >                ^^^^^^: string   (TyString) (TSPropertySignature)
 
         with(zonedDateTimeLike: PartialTemporalLike<ZonedDateTimeLikeObject>, options?: ZonedDateTimeFromOptions): ZonedDateTime;
->       ^^^^: (zonedDateTimeLike: PartialTemporalLike<ZonedDateTimeLikeObject>, options?: ZonedDateTimeFromOptions) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-    expected: { (zonedDateTimeLike: PartialTemporalLike<ZonedDateTimeLikeObject>, options?: ZonedDateTimeFromOptions): ZonedDateTime; (zonedDateTimeLike: PartialTemporalLike<ZonedDateTimeLikeObject>, options?: ZonedDateTimeFromOptions): ZonedDateTime; }
+>       ^^^^: { (zonedDateTimeLike: PartialTemporalLike<ZonedDateTimeLikeObject>, options?: ZonedDateTimeFromOptions): ZonedDateTime; (zonedDateTimeLike: PartialTemporalLike<ZonedDateTimeLikeObject>, options?: ZonedDateTimeFromOptions): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         with(zonedDateTimeLike: PartialTemporalLike<ZonedDateTimeLikeObject>, options?: ZonedDateTimeFromOptions): ZonedDateTime;
 >            ^^^^^^^^^^^^^^^^^: PartialTemporalLike<ZonedDateTimeLikeObject>   (TyTypeReference) (BindingIdentifier)
@@ -2138,8 +2086,7 @@ declare namespace Temporal {
 >                                                                                                                  ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         withPlainTime(plainTime?: PlainTimeLike): ZonedDateTime;
->       ^^^^^^^^^^^^^: (plainTime?: PlainTimeLike) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-             expected: { (plainTime?: PlainTimeLike): ZonedDateTime; (plainTime?: PlainTimeLike): ZonedDateTime; }
+>       ^^^^^^^^^^^^^: { (plainTime?: PlainTimeLike): ZonedDateTime; (plainTime?: PlainTimeLike): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         withPlainTime(plainTime?: PlainTimeLike): ZonedDateTime;
 >                     ^^^^^^^^^: PlainTimeLike | undefined   (TyUnion) (BindingIdentifier)
@@ -2154,8 +2101,7 @@ declare namespace Temporal {
 >                                                 ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         withTimeZone(timeZone: TimeZoneLike): ZonedDateTime;
->       ^^^^^^^^^^^^: (timeZone: TimeZoneLike) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-            expected: { (timeZone: TimeZoneLike): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; }
+>       ^^^^^^^^^^^^: { (timeZone: TimeZoneLike): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         withTimeZone(timeZone: TimeZoneLike): ZonedDateTime;
 >                    ^^^^^^^^: TimeZoneLike   (TyTypeReference) (BindingIdentifier)
@@ -2170,8 +2116,7 @@ declare namespace Temporal {
 >                                             ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         withCalendar(calendar: CalendarLike): ZonedDateTime;
->       ^^^^^^^^^^^^: (calendar: CalendarLike) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-            expected: { (calendar: CalendarLike): ZonedDateTime; (calendar: CalendarLike): ZonedDateTime; }
+>       ^^^^^^^^^^^^: { (calendar: CalendarLike): ZonedDateTime; (calendar: CalendarLike): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         withCalendar(calendar: CalendarLike): ZonedDateTime;
 >                    ^^^^^^^^: CalendarLike   (TyTypeReference) (BindingIdentifier)
@@ -2186,8 +2131,7 @@ declare namespace Temporal {
 >                                             ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         add(duration: DurationLike, options?: OverflowOptions): ZonedDateTime;
->       ^^^: (duration: DurationLike, options?: OverflowOptions) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-   expected: { (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; }
+>       ^^^: { (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         add(duration: DurationLike, options?: OverflowOptions): ZonedDateTime;
 >           ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -2211,8 +2155,7 @@ declare namespace Temporal {
 >                                                               ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         subtract(duration: DurationLike, options?: OverflowOptions): ZonedDateTime;
->       ^^^^^^^^: (duration: DurationLike, options?: OverflowOptions) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-        expected: { (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; }
+>       ^^^^^^^^: { (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; (duration: DurationLike, options?: OverflowOptions): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         subtract(duration: DurationLike, options?: OverflowOptions): ZonedDateTime;
 >                ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -2236,8 +2179,7 @@ declare namespace Temporal {
 >                                                                    ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         until(other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
->       ^^^^^: (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }
+>       ^^^^^: { (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         until(other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
 >             ^^^^^: ZonedDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -2267,8 +2209,7 @@ declare namespace Temporal {
 >                                                                                                       ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         since(other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
->       ^^^^^: (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }
+>       ^^^^^: { (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; (other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         since(other: ZonedDateTimeLike, options?: RoundingOptionsWithLargestUnit<DateUnit | TimeUnit>): Duration;
 >             ^^^^^: ZonedDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -2298,8 +2239,7 @@ declare namespace Temporal {
 >                                                                                                       ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime;
->       ^^^^^: (roundTo: PluralizeUnit<"day" | TimeUnit>) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; }
+>       ^^^^^: { (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime;
 >             ^^^^^^^: PluralizeUnit<"day" | TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -2317,8 +2257,7 @@ declare namespace Temporal {
 >                                                        ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime;
->       ^^^^^: (roundTo: RoundingOptions<"day" | TimeUnit>) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; }
+>       ^^^^^: { (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; (roundTo: PluralizeUnit<"day" | TimeUnit>): ZonedDateTime; (roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: RoundingOptions<"day" | TimeUnit>): ZonedDateTime;
 >             ^^^^^^^: RoundingOptions<"day" | TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -2339,8 +2278,7 @@ declare namespace Temporal {
 >                                                          ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         equals(other: ZonedDateTimeLike): boolean;
->       ^^^^^^: (other: ZonedDateTimeLike) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (other: ZonedDateTimeLike): boolean; (other: ZonedDateTimeLike): boolean; }
+>       ^^^^^^: { (other: ZonedDateTimeLike): boolean; (other: ZonedDateTimeLike): boolean; }   (TyObject) (TSMethodSignature)
 
         equals(other: ZonedDateTimeLike): boolean;
 >              ^^^^^: ZonedDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -2349,8 +2287,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         toString(options?: ZonedDateTimeToStringOptions): string;
->       ^^^^^^^^: (options?: ZonedDateTimeToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: ZonedDateTimeToStringOptions): string; (options?: ZonedDateTimeToStringOptions): string; }
+>       ^^^^^^^^: { (options?: ZonedDateTimeToStringOptions): string; (options?: ZonedDateTimeToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: ZonedDateTimeToStringOptions): string;
 >                ^^^^^^^: ZonedDateTimeToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -2362,8 +2299,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -2387,16 +2323,13 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         startOfDay(): ZonedDateTime;
->       ^^^^^^^^^^: () => ZonedDateTime   (TyFunction) (TSMethodSignature)
-          expected: { (): ZonedDateTime; (): ZonedDateTime; }
+>       ^^^^^^^^^^: { (): ZonedDateTime; (): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         startOfDay(): ZonedDateTime;
 >                     ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (TSTypeReference)
@@ -2405,8 +2338,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         getTimeZoneTransition(direction: "next" | "previous"): ZonedDateTime | null;
->       ^^^^^^^^^^^^^^^^^^^^^: (direction: "next" | "previous") => ZonedDateTime | null   (TyFunction) (TSMethodSignature)
-                     expected: { (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; }
+>       ^^^^^^^^^^^^^^^^^^^^^: { (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; }   (TyObject) (TSMethodSignature)
 
         getTimeZoneTransition(direction: "next" | "previous"): ZonedDateTime | null;
 >                             ^^^^^^^^^: "next" | "previous"   (TyUnion) (BindingIdentifier)
@@ -2418,8 +2350,7 @@ declare namespace Temporal {
 >                                                              ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         getTimeZoneTransition(direction: TransitionOptions): ZonedDateTime | null;
->       ^^^^^^^^^^^^^^^^^^^^^: (direction: TransitionOptions) => ZonedDateTime | null   (TyFunction) (TSMethodSignature)
-                     expected: { (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; }
+>       ^^^^^^^^^^^^^^^^^^^^^: { (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; (direction: "next" | "previous"): ZonedDateTime | null; (direction: TransitionOptions): ZonedDateTime | null; }   (TyObject) (TSMethodSignature)
 
         getTimeZoneTransition(direction: TransitionOptions): ZonedDateTime | null;
 >                             ^^^^^^^^^: TransitionOptions   (TyTypeReference) (BindingIdentifier)
@@ -2437,8 +2368,7 @@ declare namespace Temporal {
 >                                                            ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         toInstant(): Instant;
->       ^^^^^^^^^: () => Instant   (TyFunction) (TSMethodSignature)
-         expected: { (): Instant; (): Instant; }
+>       ^^^^^^^^^: { (): Instant; (): Instant; }   (TyObject) (TSMethodSignature)
 
         toInstant(): Instant;
 >                    ^^^^^^^: InstantConstructor   (TyTypeReference) (TSTypeReference)
@@ -2447,8 +2377,7 @@ declare namespace Temporal {
 >                    ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         toPlainDate(): PlainDate;
->       ^^^^^^^^^^^: () => PlainDate   (TyFunction) (TSMethodSignature)
-           expected: { (): PlainDate; (): PlainDate; }
+>       ^^^^^^^^^^^: { (): PlainDate; (): PlainDate; }   (TyObject) (TSMethodSignature)
 
         toPlainDate(): PlainDate;
 >                      ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (TSTypeReference)
@@ -2457,8 +2386,7 @@ declare namespace Temporal {
 >                      ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (IdentifierReference)
 
         toPlainTime(): PlainTime;
->       ^^^^^^^^^^^: () => PlainTime   (TyFunction) (TSMethodSignature)
-           expected: { (): PlainTime; (): PlainTime; }
+>       ^^^^^^^^^^^: { (): PlainTime; (): PlainTime; }   (TyObject) (TSMethodSignature)
 
         toPlainTime(): PlainTime;
 >                      ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (TSTypeReference)
@@ -2467,8 +2395,7 @@ declare namespace Temporal {
 >                      ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         toPlainDateTime(): PlainDateTime;
->       ^^^^^^^^^^^^^^^: () => PlainDateTime   (TyFunction) (TSMethodSignature)
-               expected: { (): PlainDateTime; (): PlainDateTime; }
+>       ^^^^^^^^^^^^^^^: { (): PlainDateTime; (): PlainDateTime; }   (TyObject) (TSMethodSignature)
 
         toPlainDateTime(): PlainDateTime;
 >                          ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (TSTypeReference)
@@ -2513,8 +2440,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: ZonedDateTimeLike, options?: ZonedDateTimeFromOptions): ZonedDateTime;
->       ^^^^: (item: ZonedDateTimeLike, options?: ZonedDateTimeFromOptions) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-    expected: { (item: ZonedDateTimeLike, options?: ZonedDateTimeFromOptions): ZonedDateTime; (item: ZonedDateTimeLike, options?: ZonedDateTimeFromOptions): ZonedDateTime; }
+>       ^^^^: { (item: ZonedDateTimeLike, options?: ZonedDateTimeFromOptions): ZonedDateTime; (item: ZonedDateTimeLike, options?: ZonedDateTimeFromOptions): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         from(item: ZonedDateTimeLike, options?: ZonedDateTimeFromOptions): ZonedDateTime;
 >            ^^^^: ZonedDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -2538,8 +2464,7 @@ declare namespace Temporal {
 >                                                                          ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (IdentifierReference)
 
         compare(one: ZonedDateTimeLike, two: ZonedDateTimeLike): number;
->       ^^^^^^^: (one: ZonedDateTimeLike, two: ZonedDateTimeLike) => number   (TyFunction) (TSMethodSignature)
-       expected: { (one: ZonedDateTimeLike, two: ZonedDateTimeLike): number; (one: ZonedDateTimeLike, two: ZonedDateTimeLike): number; }
+>       ^^^^^^^: { (one: ZonedDateTimeLike, two: ZonedDateTimeLike): number; (one: ZonedDateTimeLike, two: ZonedDateTimeLike): number; }   (TyObject) (TSMethodSignature)
 
         compare(one: ZonedDateTimeLike, two: ZonedDateTimeLike): number;
 >               ^^^: ZonedDateTimeLike   (TyTypeReference) (BindingIdentifier)
@@ -2692,8 +2617,7 @@ declare namespace Temporal {
 >                ^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
         with(durationLike: PartialTemporalLike<DurationLikeObject>): Duration;
->       ^^^^: (durationLike: PartialTemporalLike<DurationLikeObject>) => Duration   (TyFunction) (TSMethodSignature)
-    expected: { (durationLike: PartialTemporalLike<DurationLikeObject>): Duration; (durationLike: PartialTemporalLike<DurationLikeObject>): Duration; }
+>       ^^^^: { (durationLike: PartialTemporalLike<DurationLikeObject>): Duration; (durationLike: PartialTemporalLike<DurationLikeObject>): Duration; }   (TyObject) (TSMethodSignature)
 
         with(durationLike: PartialTemporalLike<DurationLikeObject>): Duration;
 >            ^^^^^^^^^^^^: PartialTemporalLike<DurationLikeObject>   (TyTypeReference) (BindingIdentifier)
@@ -2714,8 +2638,7 @@ declare namespace Temporal {
 >                                                                    ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         negated(): Duration;
->       ^^^^^^^: () => Duration   (TyFunction) (TSMethodSignature)
-       expected: { (): Duration; (): Duration; }
+>       ^^^^^^^: { (): Duration; (): Duration; }   (TyObject) (TSMethodSignature)
 
         negated(): Duration;
 >                  ^^^^^^^^: DurationConstructor   (TyTypeReference) (TSTypeReference)
@@ -2724,8 +2647,7 @@ declare namespace Temporal {
 >                  ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         abs(): Duration;
->       ^^^: () => Duration   (TyFunction) (TSMethodSignature)
-   expected: { (): Duration; (): Duration; }
+>       ^^^: { (): Duration; (): Duration; }   (TyObject) (TSMethodSignature)
 
         abs(): Duration;
 >              ^^^^^^^^: DurationConstructor   (TyTypeReference) (TSTypeReference)
@@ -2734,8 +2656,7 @@ declare namespace Temporal {
 >              ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         add(other: DurationLike): Duration;
->       ^^^: (other: DurationLike) => Duration   (TyFunction) (TSMethodSignature)
-   expected: { (other: DurationLike): Duration; (other: DurationLike): Duration; }
+>       ^^^: { (other: DurationLike): Duration; (other: DurationLike): Duration; }   (TyObject) (TSMethodSignature)
 
         add(other: DurationLike): Duration;
 >           ^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -2750,8 +2671,7 @@ declare namespace Temporal {
 >                                 ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         subtract(other: DurationLike): Duration;
->       ^^^^^^^^: (other: DurationLike) => Duration   (TyFunction) (TSMethodSignature)
-        expected: { (other: DurationLike): Duration; (other: DurationLike): Duration; }
+>       ^^^^^^^^: { (other: DurationLike): Duration; (other: DurationLike): Duration; }   (TyObject) (TSMethodSignature)
 
         subtract(other: DurationLike): Duration;
 >                ^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -2766,8 +2686,7 @@ declare namespace Temporal {
 >                                      ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: PluralizeUnit<"day" | TimeUnit>): Duration;
->       ^^^^^: (roundTo: PluralizeUnit<"day" | TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; }
+>       ^^^^^: { (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: PluralizeUnit<"day" | TimeUnit>): Duration;
 >             ^^^^^^^: PluralizeUnit<"day" | TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -2785,8 +2704,7 @@ declare namespace Temporal {
 >                                                        ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: DurationRoundingOptions): Duration;
->       ^^^^^: (roundTo: DurationRoundingOptions) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; }
+>       ^^^^^: { (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; (roundTo: PluralizeUnit<"day" | TimeUnit>): Duration; (roundTo: DurationRoundingOptions): Duration; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: DurationRoundingOptions): Duration;
 >             ^^^^^^^: DurationRoundingOptions   (TyTypeReference) (BindingIdentifier)
@@ -2804,8 +2722,7 @@ declare namespace Temporal {
 >                                                ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         total(totalOf: PluralizeUnit<"day" | TimeUnit>): number;
->       ^^^^^: (totalOf: PluralizeUnit<"day" | TimeUnit>) => number   (TyFunction) (TSMethodSignature)
-     expected: { (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; }
+>       ^^^^^: { (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; }   (TyObject) (TSMethodSignature)
 
         total(totalOf: PluralizeUnit<"day" | TimeUnit>): number;
 >             ^^^^^^^: PluralizeUnit<"day" | TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -2817,8 +2734,7 @@ declare namespace Temporal {
 >                                            ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         total(totalOf: DurationTotalOptions): number;
->       ^^^^^: (totalOf: DurationTotalOptions) => number   (TyFunction) (TSMethodSignature)
-     expected: { (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; }
+>       ^^^^^: { (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; (totalOf: PluralizeUnit<"day" | TimeUnit>): number; (totalOf: DurationTotalOptions): number; }   (TyObject) (TSMethodSignature)
 
         total(totalOf: DurationTotalOptions): number;
 >             ^^^^^^^: DurationTotalOptions   (TyTypeReference) (BindingIdentifier)
@@ -2830,8 +2746,7 @@ declare namespace Temporal {
 >                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toString(options?: DurationToStringOptions): string;
->       ^^^^^^^^: (options?: DurationToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: DurationToStringOptions): string; (options?: DurationToStringOptions): string; }
+>       ^^^^^^^^: { (options?: DurationToStringOptions): string; (options?: DurationToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: DurationToStringOptions): string;
 >                ^^^^^^^: DurationToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -2843,8 +2758,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DurationFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DurationFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DurationFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DurationFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DurationFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DurationFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DurationFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -2868,12 +2782,10 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         readonly [Symbol.toStringTag]: "Temporal.Duration";
 >                 ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
@@ -2933,8 +2845,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: DurationLike): Duration;
->       ^^^^: (item: DurationLike) => Duration   (TyFunction) (TSMethodSignature)
-    expected: { (item: DurationLike): Duration; (item: DurationLike): Duration; }
+>       ^^^^: { (item: DurationLike): Duration; (item: DurationLike): Duration; }   (TyObject) (TSMethodSignature)
 
         from(item: DurationLike): Duration;
 >            ^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -2949,8 +2860,7 @@ declare namespace Temporal {
 >                                 ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         compare(one: DurationLike, two: DurationLike, options?: DurationRelativeToOptions): number;
->       ^^^^^^^: (one: DurationLike, two: DurationLike, options?: DurationRelativeToOptions) => number   (TyFunction) (TSMethodSignature)
-       expected: { (one: DurationLike, two: DurationLike, options?: DurationRelativeToOptions): number; (one: DurationLike, two: DurationLike, options?: DurationRelativeToOptions): number; }
+>       ^^^^^^^: { (one: DurationLike, two: DurationLike, options?: DurationRelativeToOptions): number; (one: DurationLike, two: DurationLike, options?: DurationRelativeToOptions): number; }   (TyObject) (TSMethodSignature)
 
         compare(one: DurationLike, two: DurationLike, options?: DurationRelativeToOptions): number;
 >               ^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -3015,8 +2925,7 @@ declare namespace Temporal {
 >                ^^^^^^^^^^^^^^^^: bigint   (TyBigint) (TSPropertySignature)
 
         add(duration: DurationLike): Instant;
->       ^^^: (duration: DurationLike) => Instant   (TyFunction) (TSMethodSignature)
-   expected: { (duration: DurationLike): Instant; (duration: DurationLike): Instant; }
+>       ^^^: { (duration: DurationLike): Instant; (duration: DurationLike): Instant; }   (TyObject) (TSMethodSignature)
 
         add(duration: DurationLike): Instant;
 >           ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -3031,8 +2940,7 @@ declare namespace Temporal {
 >                                    ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         subtract(duration: DurationLike): Instant;
->       ^^^^^^^^: (duration: DurationLike) => Instant   (TyFunction) (TSMethodSignature)
-        expected: { (duration: DurationLike): Instant; (duration: DurationLike): Instant; }
+>       ^^^^^^^^: { (duration: DurationLike): Instant; (duration: DurationLike): Instant; }   (TyObject) (TSMethodSignature)
 
         subtract(duration: DurationLike): Instant;
 >                ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -3047,8 +2955,7 @@ declare namespace Temporal {
 >                                         ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         until(other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
->       ^^^^^: (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }
+>       ^^^^^: { (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         until(other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
 >             ^^^^^: InstantLike   (TyTypeReference) (BindingIdentifier)
@@ -3075,8 +2982,7 @@ declare namespace Temporal {
 >                                                                                      ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         since(other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
->       ^^^^^: (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }
+>       ^^^^^: { (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; (other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration; }   (TyObject) (TSMethodSignature)
 
         since(other: InstantLike, options?: RoundingOptionsWithLargestUnit<TimeUnit>): Duration;
 >             ^^^^^: InstantLike   (TyTypeReference) (BindingIdentifier)
@@ -3103,8 +3009,7 @@ declare namespace Temporal {
 >                                                                                      ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: PluralizeUnit<TimeUnit>): Instant;
->       ^^^^^: (roundTo: PluralizeUnit<TimeUnit>) => Instant   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; }
+>       ^^^^^: { (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: PluralizeUnit<TimeUnit>): Instant;
 >             ^^^^^^^: PluralizeUnit<TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -3122,8 +3027,7 @@ declare namespace Temporal {
 >                                                ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         round(roundTo: RoundingOptions<TimeUnit>): Instant;
->       ^^^^^: (roundTo: RoundingOptions<TimeUnit>) => Instant   (TyFunction) (TSMethodSignature)
-     expected: { (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; }
+>       ^^^^^: { (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; (roundTo: PluralizeUnit<TimeUnit>): Instant; (roundTo: RoundingOptions<TimeUnit>): Instant; }   (TyObject) (TSMethodSignature)
 
         round(roundTo: RoundingOptions<TimeUnit>): Instant;
 >             ^^^^^^^: RoundingOptions<TimeUnit>   (TyTypeReference) (BindingIdentifier)
@@ -3144,8 +3048,7 @@ declare namespace Temporal {
 >                                                  ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         equals(other: InstantLike): boolean;
->       ^^^^^^: (other: InstantLike) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (other: InstantLike): boolean; (other: InstantLike): boolean; }
+>       ^^^^^^: { (other: InstantLike): boolean; (other: InstantLike): boolean; }   (TyObject) (TSMethodSignature)
 
         equals(other: InstantLike): boolean;
 >              ^^^^^: InstantLike   (TyTypeReference) (BindingIdentifier)
@@ -3154,8 +3057,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         toString(options?: InstantToStringOptions): string;
->       ^^^^^^^^: (options?: InstantToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: InstantToStringOptions): string; (options?: InstantToStringOptions): string; }
+>       ^^^^^^^^: { (options?: InstantToStringOptions): string; (options?: InstantToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: InstantToStringOptions): string;
 >                ^^^^^^^: InstantToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -3167,8 +3069,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -3192,16 +3093,13 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         toZonedDateTimeISO(timeZone: TimeZoneLike): ZonedDateTime;
->       ^^^^^^^^^^^^^^^^^^: (timeZone: TimeZoneLike) => ZonedDateTime   (TyFunction) (TSMethodSignature)
-                  expected: { (timeZone: TimeZoneLike): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; }
+>       ^^^^^^^^^^^^^^^^^^: { (timeZone: TimeZoneLike): ZonedDateTime; (timeZone: TimeZoneLike): ZonedDateTime; }   (TyObject) (TSMethodSignature)
 
         toZonedDateTimeISO(timeZone: TimeZoneLike): ZonedDateTime;
 >                          ^^^^^^^^: TimeZoneLike   (TyTypeReference) (BindingIdentifier)
@@ -3246,8 +3144,7 @@ declare namespace Temporal {
 >                           ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: InstantLike): Instant;
->       ^^^^: (item: InstantLike) => Instant   (TyFunction) (TSMethodSignature)
-    expected: { (item: InstantLike): Instant; (item: InstantLike): Instant; }
+>       ^^^^: { (item: InstantLike): Instant; (item: InstantLike): Instant; }   (TyObject) (TSMethodSignature)
 
         from(item: InstantLike): Instant;
 >            ^^^^: InstantLike   (TyTypeReference) (BindingIdentifier)
@@ -3262,8 +3159,7 @@ declare namespace Temporal {
 >                                ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         fromEpochMilliseconds(epochMilliseconds: number): Instant;
->       ^^^^^^^^^^^^^^^^^^^^^: (epochMilliseconds: number) => Instant   (TyFunction) (TSMethodSignature)
-                     expected: { (epochMilliseconds: number): Instant; (epochMilliseconds: number): Instant; }
+>       ^^^^^^^^^^^^^^^^^^^^^: { (epochMilliseconds: number): Instant; (epochMilliseconds: number): Instant; }   (TyObject) (TSMethodSignature)
 
         fromEpochMilliseconds(epochMilliseconds: number): Instant;
 >                             ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -3275,8 +3171,7 @@ declare namespace Temporal {
 >                                                         ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         fromEpochNanoseconds(epochNanoseconds: bigint): Instant;
->       ^^^^^^^^^^^^^^^^^^^^: (epochNanoseconds: bigint) => Instant   (TyFunction) (TSMethodSignature)
-                    expected: { (epochNanoseconds: bigint): Instant; (epochNanoseconds: bigint): Instant; }
+>       ^^^^^^^^^^^^^^^^^^^^: { (epochNanoseconds: bigint): Instant; (epochNanoseconds: bigint): Instant; }   (TyObject) (TSMethodSignature)
 
         fromEpochNanoseconds(epochNanoseconds: bigint): Instant;
 >                            ^^^^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
@@ -3288,8 +3183,7 @@ declare namespace Temporal {
 >                                                       ^^^^^^^: InstantConstructor   (TyTypeReference) (IdentifierReference)
 
         compare(one: InstantLike, two: InstantLike): number;
->       ^^^^^^^: (one: InstantLike, two: InstantLike) => number   (TyFunction) (TSMethodSignature)
-       expected: { (one: InstantLike, two: InstantLike): number; (one: InstantLike, two: InstantLike): number; }
+>       ^^^^^^^: { (one: InstantLike, two: InstantLike): number; (one: InstantLike, two: InstantLike): number; }   (TyObject) (TSMethodSignature)
 
         compare(one: InstantLike, two: InstantLike): number;
 >               ^^^: InstantLike   (TyTypeReference) (BindingIdentifier)
@@ -3360,8 +3254,7 @@ declare namespace Temporal {
 >                ^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
         with(yearMonthLike: PartialTemporalLike<YearMonthLikeObject>, options?: OverflowOptions): PlainYearMonth;
->       ^^^^: (yearMonthLike: PartialTemporalLike<YearMonthLikeObject>, options?: OverflowOptions) => PlainYearMonth   (TyFunction) (TSMethodSignature)
-    expected: { (yearMonthLike: PartialTemporalLike<YearMonthLikeObject>, options?: OverflowOptions): PlainYearMonth; (yearMonthLike: PartialTemporalLike<YearMonthLikeObject>, options?: OverflowOptions): PlainYearMonth; }
+>       ^^^^: { (yearMonthLike: PartialTemporalLike<YearMonthLikeObject>, options?: OverflowOptions): PlainYearMonth; (yearMonthLike: PartialTemporalLike<YearMonthLikeObject>, options?: OverflowOptions): PlainYearMonth; }   (TyObject) (TSMethodSignature)
 
         with(yearMonthLike: PartialTemporalLike<YearMonthLikeObject>, options?: OverflowOptions): PlainYearMonth;
 >            ^^^^^^^^^^^^^: PartialTemporalLike<YearMonthLikeObject>   (TyTypeReference) (BindingIdentifier)
@@ -3391,8 +3284,7 @@ declare namespace Temporal {
 >                                                                                                 ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (IdentifierReference)
 
         add(duration: DurationLike, options?: OverflowOptions): PlainYearMonth;
->       ^^^: (duration: DurationLike, options?: OverflowOptions) => PlainYearMonth   (TyFunction) (TSMethodSignature)
-   expected: { (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; }
+>       ^^^: { (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; }   (TyObject) (TSMethodSignature)
 
         add(duration: DurationLike, options?: OverflowOptions): PlainYearMonth;
 >           ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -3416,8 +3308,7 @@ declare namespace Temporal {
 >                                                               ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (IdentifierReference)
 
         subtract(duration: DurationLike, options?: OverflowOptions): PlainYearMonth;
->       ^^^^^^^^: (duration: DurationLike, options?: OverflowOptions) => PlainYearMonth   (TyFunction) (TSMethodSignature)
-        expected: { (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; }
+>       ^^^^^^^^: { (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; (duration: DurationLike, options?: OverflowOptions): PlainYearMonth; }   (TyObject) (TSMethodSignature)
 
         subtract(duration: DurationLike, options?: OverflowOptions): PlainYearMonth;
 >                ^^^^^^^^: DurationLike   (TyTypeReference) (BindingIdentifier)
@@ -3441,8 +3332,7 @@ declare namespace Temporal {
 >                                                                    ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (IdentifierReference)
 
         until(other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration;
->       ^^^^^: (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; }
+>       ^^^^^: { (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; }   (TyObject) (TSMethodSignature)
 
         until(other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration;
 >             ^^^^^: PlainYearMonthLike   (TyTypeReference) (BindingIdentifier)
@@ -3466,8 +3356,7 @@ declare namespace Temporal {
 >                                                                                                     ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         since(other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration;
->       ^^^^^: (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">) => Duration   (TyFunction) (TSMethodSignature)
-     expected: { (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; }
+>       ^^^^^: { (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; (other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration; }   (TyObject) (TSMethodSignature)
 
         since(other: PlainYearMonthLike, options?: RoundingOptionsWithLargestUnit<"year" | "month">): Duration;
 >             ^^^^^: PlainYearMonthLike   (TyTypeReference) (BindingIdentifier)
@@ -3491,8 +3380,7 @@ declare namespace Temporal {
 >                                                                                                     ^^^^^^^^: DurationConstructor   (TyTypeReference) (IdentifierReference)
 
         equals(other: PlainYearMonthLike): boolean;
->       ^^^^^^: (other: PlainYearMonthLike) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (other: PlainYearMonthLike): boolean; (other: PlainYearMonthLike): boolean; }
+>       ^^^^^^: { (other: PlainYearMonthLike): boolean; (other: PlainYearMonthLike): boolean; }   (TyObject) (TSMethodSignature)
 
         equals(other: PlainYearMonthLike): boolean;
 >              ^^^^^: PlainYearMonthLike   (TyTypeReference) (BindingIdentifier)
@@ -3501,8 +3389,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         toString(options?: PlainDateToStringOptions): string;
->       ^^^^^^^^: (options?: PlainDateToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: PlainDateToStringOptions): string; (options?: PlainDateToStringOptions): string; }
+>       ^^^^^^^^: { (options?: PlainDateToStringOptions): string; (options?: PlainDateToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: PlainDateToStringOptions): string;
 >                ^^^^^^^: PlainDateToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -3514,8 +3401,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -3539,16 +3425,13 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         toPlainDate(item: PlainYearMonthToPlainDateOptions): PlainDate;
->       ^^^^^^^^^^^: (item: PlainYearMonthToPlainDateOptions) => PlainDate   (TyFunction) (TSMethodSignature)
-           expected: { (item: PlainYearMonthToPlainDateOptions): PlainDate; (item: PlainYearMonthToPlainDateOptions): PlainDate; }
+>       ^^^^^^^^^^^: { (item: PlainYearMonthToPlainDateOptions): PlainDate; (item: PlainYearMonthToPlainDateOptions): PlainDate; }   (TyObject) (TSMethodSignature)
 
         toPlainDate(item: PlainYearMonthToPlainDateOptions): PlainDate;
 >                   ^^^^: PlainYearMonthToPlainDateOptions   (TyTypeReference) (BindingIdentifier)
@@ -3605,8 +3488,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: PlainYearMonthLike, options?: OverflowOptions): PlainYearMonth;
->       ^^^^: (item: PlainYearMonthLike, options?: OverflowOptions) => PlainYearMonth   (TyFunction) (TSMethodSignature)
-    expected: { (item: PlainYearMonthLike, options?: OverflowOptions): PlainYearMonth; (item: PlainYearMonthLike, options?: OverflowOptions): PlainYearMonth; }
+>       ^^^^: { (item: PlainYearMonthLike, options?: OverflowOptions): PlainYearMonth; (item: PlainYearMonthLike, options?: OverflowOptions): PlainYearMonth; }   (TyObject) (TSMethodSignature)
 
         from(item: PlainYearMonthLike, options?: OverflowOptions): PlainYearMonth;
 >            ^^^^: PlainYearMonthLike   (TyTypeReference) (BindingIdentifier)
@@ -3630,8 +3512,7 @@ declare namespace Temporal {
 >                                                                  ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (IdentifierReference)
 
         compare(one: PlainYearMonthLike, two: PlainYearMonthLike): number;
->       ^^^^^^^: (one: PlainYearMonthLike, two: PlainYearMonthLike) => number   (TyFunction) (TSMethodSignature)
-       expected: { (one: PlainYearMonthLike, two: PlainYearMonthLike): number; (one: PlainYearMonthLike, two: PlainYearMonthLike): number; }
+>       ^^^^^^^: { (one: PlainYearMonthLike, two: PlainYearMonthLike): number; (one: PlainYearMonthLike, two: PlainYearMonthLike): number; }   (TyObject) (TSMethodSignature)
 
         compare(one: PlainYearMonthLike, two: PlainYearMonthLike): number;
 >               ^^^: PlainYearMonthLike   (TyTypeReference) (BindingIdentifier)
@@ -3687,8 +3568,7 @@ declare namespace Temporal {
 >                ^^^: number   (TyNumber) (TSPropertySignature)
 
         with(monthDayLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainMonthDay;
->       ^^^^: (monthDayLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions) => PlainMonthDay   (TyFunction) (TSMethodSignature)
-    expected: { (monthDayLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainMonthDay; (monthDayLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainMonthDay; }
+>       ^^^^: { (monthDayLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainMonthDay; (monthDayLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainMonthDay; }   (TyObject) (TSMethodSignature)
 
         with(monthDayLike: PartialTemporalLike<DateLikeObject>, options?: OverflowOptions): PlainMonthDay;
 >            ^^^^^^^^^^^^: PartialTemporalLike<DateLikeObject>   (TyTypeReference) (BindingIdentifier)
@@ -3718,8 +3598,7 @@ declare namespace Temporal {
 >                                                                                           ^^^^^^^^^^^^^: PlainMonthDayConstructor   (TyTypeReference) (IdentifierReference)
 
         equals(other: PlainMonthDayLike): boolean;
->       ^^^^^^: (other: PlainMonthDayLike) => boolean   (TyFunction) (TSMethodSignature)
-      expected: { (other: PlainMonthDayLike): boolean; (other: PlainMonthDayLike): boolean; }
+>       ^^^^^^: { (other: PlainMonthDayLike): boolean; (other: PlainMonthDayLike): boolean; }   (TyObject) (TSMethodSignature)
 
         equals(other: PlainMonthDayLike): boolean;
 >              ^^^^^: PlainMonthDayLike   (TyTypeReference) (BindingIdentifier)
@@ -3728,8 +3607,7 @@ declare namespace Temporal {
 >                     ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         toString(options?: PlainDateToStringOptions): string;
->       ^^^^^^^^: (options?: PlainDateToStringOptions) => string   (TyFunction) (TSMethodSignature)
-        expected: { (options?: PlainDateToStringOptions): string; (options?: PlainDateToStringOptions): string; }
+>       ^^^^^^^^: { (options?: PlainDateToStringOptions): string; (options?: PlainDateToStringOptions): string; }   (TyObject) (TSMethodSignature)
 
         toString(options?: PlainDateToStringOptions): string;
 >                ^^^^^^^: PlainDateToStringOptions | undefined   (TyUnion) (BindingIdentifier)
@@ -3741,8 +3619,7 @@ declare namespace Temporal {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->       ^^^^^^^^^^^^^^: (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) => string   (TyFunction) (TSMethodSignature)
-              expected: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }
+>       ^^^^^^^^^^^^^^: { (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
 
         toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
 >                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
@@ -3766,16 +3643,13 @@ declare namespace Temporal {
                                                                                    expected: any
 
         toJSON(): string;
->       ^^^^^^: () => string   (TyFunction) (TSMethodSignature)
-      expected: { (): string; (): string; }
+>       ^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
 
         valueOf(): never;
->       ^^^^^^^: () => never   (TyFunction) (TSMethodSignature)
-       expected: { (): never; (): never; }
+>       ^^^^^^^: { (): never; (): never; }   (TyObject) (TSMethodSignature)
 
         toPlainDate(item: PlainMonthDayToPlainDateOptions): PlainDate;
->       ^^^^^^^^^^^: (item: PlainMonthDayToPlainDateOptions) => PlainDate   (TyFunction) (TSMethodSignature)
-           expected: { (item: PlainMonthDayToPlainDateOptions): PlainDate; (item: PlainMonthDayToPlainDateOptions): PlainDate; }
+>       ^^^^^^^^^^^: { (item: PlainMonthDayToPlainDateOptions): PlainDate; (item: PlainMonthDayToPlainDateOptions): PlainDate; }   (TyObject) (TSMethodSignature)
 
         toPlainDate(item: PlainMonthDayToPlainDateOptions): PlainDate;
 >                   ^^^^: PlainMonthDayToPlainDateOptions   (TyTypeReference) (BindingIdentifier)
@@ -3832,8 +3706,7 @@ declare namespace Temporal {
 >                           ^^^^^^^^^^^^^: PlainMonthDayConstructor   (TyTypeReference) (IdentifierReference)
 
         from(item: PlainMonthDayLike, options?: OverflowOptions): PlainMonthDay;
->       ^^^^: (item: PlainMonthDayLike, options?: OverflowOptions) => PlainMonthDay   (TyFunction) (TSMethodSignature)
-    expected: { (item: PlainMonthDayLike, options?: OverflowOptions): PlainMonthDay; (item: PlainMonthDayLike, options?: OverflowOptions): PlainMonthDay; }
+>       ^^^^: { (item: PlainMonthDayLike, options?: OverflowOptions): PlainMonthDay; (item: PlainMonthDayLike, options?: OverflowOptions): PlainMonthDay; }   (TyObject) (TSMethodSignature)
 
         from(item: PlainMonthDayLike, options?: OverflowOptions): PlainMonthDay;
 >            ^^^^: PlainMonthDayLike   (TyTypeReference) (BindingIdentifier)

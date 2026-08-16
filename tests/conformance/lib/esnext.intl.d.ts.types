@@ -58,8 +58,7 @@ declare namespace Intl {
                     expected: DateTimeFormatConstructor
 
         format(date?: FormattableTemporalObject | Date | number): string;
->       ^^^^^^: (date?: FormattableTemporalObject | Date | number) => string   (TyFunction) (TSMethodSignature)
-      expected: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: FormattableTemporalObject | Date | number): string; }
+>       ^^^^^^: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: FormattableTemporalObject | Date | number): string; }   (TyObject) (TSMethodSignature)
 
         format(date?: FormattableTemporalObject | Date | number): string;
 >              ^^^^: FormattableTemporalObject | Date | number | undefined   (TyUnion) (BindingIdentifier)
@@ -74,8 +73,7 @@ declare namespace Intl {
 >                                                 ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->       ^^^^^^^^^^^^^: (date?: FormattableTemporalObject | Date | number) => DateTimeFormatPart[]   (TyFunction) (TSMethodSignature)
-             expected: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; }
+>       ^^^^^^^^^^^^^: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; }   (TyObject) (TSMethodSignature)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
 >                     ^^^^: FormattableTemporalObject | Date | number | undefined   (TyUnion) (BindingIdentifier)
@@ -96,8 +94,7 @@ declare namespace Intl {
 >                                                                        ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->       ^^^^^^^^^^^: (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number) => string   (TyFunction) (TSMethodSignature)
-           expected: { (startDate: Date | number | bigint, endDate: Date | number | bigint): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; }
+>       ^^^^^^^^^^^: { (startDate: Date | number | bigint, endDate: Date | number | bigint): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; }   (TyObject) (TSMethodSignature)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
 >                   ^^^^^^^^^: FormattableTemporalObject | Date | number   (TyUnion) (BindingIdentifier)
@@ -124,8 +121,7 @@ declare namespace Intl {
 >                                                                                                              ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->       ^^^^^^^^^^^^^^^^^^: (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number) => DateTimeRangeFormatPart[]   (TyFunction) (TSMethodSignature)
-                  expected: { (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; }
+>       ^^^^^^^^^^^^^^^^^^: { (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; }   (TyObject) (TSMethodSignature)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
 >                          ^^^^^^^^^: FormattableTemporalObject | Date | number   (TyUnion) (BindingIdentifier)
@@ -166,24 +162,19 @@ declare namespace Intl {
             expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         getCalendars(): string[];
->       ^^^^^^^^^^^^: () => string[]   (TyFunction) (TSMethodSignature)
-            expected: { (): string[]; (): string[]; }
+>       ^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
 
         getCollations(): string[];
->       ^^^^^^^^^^^^^: () => string[]   (TyFunction) (TSMethodSignature)
-             expected: { (): string[]; (): string[]; }
+>       ^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
 
         getHourCycles(): string[];
->       ^^^^^^^^^^^^^: () => string[]   (TyFunction) (TSMethodSignature)
-             expected: { (): string[]; (): string[]; }
+>       ^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
 
         getNumberingSystems(): string[];
->       ^^^^^^^^^^^^^^^^^^^: () => string[]   (TyFunction) (TSMethodSignature)
-                   expected: { (): string[]; (): string[]; }
+>       ^^^^^^^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
 
         getTextInfo(): TextInfo;
->       ^^^^^^^^^^^: () => TextInfo   (TyFunction) (TSMethodSignature)
-           expected: { (): TextInfo; (): TextInfo; }
+>       ^^^^^^^^^^^: { (): TextInfo; (): TextInfo; }   (TyObject) (TSMethodSignature)
 
         getTextInfo(): TextInfo;
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -192,12 +183,10 @@ declare namespace Intl {
 >                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         getTimeZones(): string[] | undefined;
->       ^^^^^^^^^^^^: () => string[] | undefined   (TyFunction) (TSMethodSignature)
-            expected: { (): string[] | undefined; (): string[] | undefined; }
+>       ^^^^^^^^^^^^: { (): string[] | undefined; (): string[] | undefined; }   (TyObject) (TSMethodSignature)
 
         getWeekInfo(): WeekInfo;
->       ^^^^^^^^^^^: () => WeekInfo   (TyFunction) (TSMethodSignature)
-           expected: { (): WeekInfo; (): WeekInfo; }
+>       ^^^^^^^^^^^: { (): WeekInfo; (): WeekInfo; }   (TyObject) (TSMethodSignature)
 
         getWeekInfo(): WeekInfo;
 >                      ^^^^^^^^: any   (TyAny) (TSTypeReference)

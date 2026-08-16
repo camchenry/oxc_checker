@@ -2062,8 +2062,7 @@ declare namespace Intl {
                   expected: NumberFormatConstructor
 
         format(value: number | bigint): string;
->       ^^^^^^: (value: number | bigint) => string   (TyFunction) (TSMethodSignature)
-      expected: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number | bigint): string; }
+>       ^^^^^^: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number | bigint): string; }   (TyObject) (TSMethodSignature)
 
         format(value: number | bigint): string;
 >              ^^^^^: number | bigint   (TyUnion) (BindingIdentifier)

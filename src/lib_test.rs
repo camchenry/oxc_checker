@@ -4381,6 +4381,76 @@ fn merged_interface_method_signature_locations_use_overload_object_type() {
 }
 
 #[test]
+fn merged_namespace_interface_method_signatures_across_programs_use_overload_object_type() {
+    let allocator = Allocator::default();
+    let source = r#"
+    declare namespace MergeSpace {
+        interface Exception {
+            getArg(exceptionTag: Tag, index: number): any;
+        }
+        interface Tag {}
+    }
+    "#;
+    let host = TestProgramHost::new("/project")
+        .add_file("/project/a.ts", source)
+        .add_file("/project/b.ts", source);
+    let store = program::ProgramStoreBuilder::new(&allocator, host)
+        .add_root_file("/project/a.ts")
+        .add_root_file("/project/b.ts")
+        .build()
+        .unwrap();
+    let program_id = store.id_for_path(Path::new("/project/a.ts")).unwrap();
+    let arena = CheckerArena::new(store.allocator());
+    let ret = ParseAndCheck {
+        store,
+        program_id,
+        arena,
+    };
+
+    assert_eq!(
+        get_ts_method_signature_types(&ret, "getArg"),
+        vec![
+            "{ (exceptionTag: Tag, index: number): any; (exceptionTag: Tag, index: number): any; }"
+                .to_string(),
+        ]
+    );
+}
+
+#[test]
+fn namespace_interface_method_signatures_do_not_merge_across_external_modules() {
+    let allocator = Allocator::default();
+    let source = r#"
+    export {};
+    declare namespace MergeSpace {
+        interface Exception {
+            getArg(exceptionTag: Tag, index: number): any;
+        }
+        interface Tag {}
+    }
+    "#;
+    let host = TestProgramHost::new("/project")
+        .add_file("/project/a.ts", source)
+        .add_file("/project/b.ts", source);
+    let store = program::ProgramStoreBuilder::new(&allocator, host)
+        .add_root_file("/project/a.ts")
+        .add_root_file("/project/b.ts")
+        .build()
+        .unwrap();
+    let program_id = store.id_for_path(Path::new("/project/a.ts")).unwrap();
+    let arena = CheckerArena::new(store.allocator());
+    let ret = ParseAndCheck {
+        store,
+        program_id,
+        arena,
+    };
+
+    assert_eq!(
+        get_ts_method_signature_types(&ret, "getArg"),
+        vec!["(exceptionTag: Tag, index: number) => any".to_string()]
+    );
+}
+
+#[test]
 fn type_query_alias_instantiation_resolves_intersections() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

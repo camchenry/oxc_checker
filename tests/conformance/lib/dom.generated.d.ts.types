@@ -129242,8 +129242,7 @@ declare namespace WebAssembly {
 >                ^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
 
         getArg(exceptionTag: Tag, index: number): any;
->       ^^^^^^: (exceptionTag: Tag, index: number) => any   (TyFunction) (TSMethodSignature)
-      expected: { (exceptionTag: Tag, index: number): any; (exceptionTag: Tag, index: number): any; }
+>       ^^^^^^: { (exceptionTag: Tag, index: number): any; (exceptionTag: Tag, index: number): any; }   (TyObject) (TSMethodSignature)
 
         getArg(exceptionTag: Tag, index: number): any;
 >              ^^^^^^^^^^^^: Tag   (TyTypeReference) (BindingIdentifier)
@@ -129258,8 +129257,7 @@ declare namespace WebAssembly {
 >                                 ^^^^^: number   (TyNumber) (BindingIdentifier)
 
         is(exceptionTag: Tag): boolean;
->       ^^: (exceptionTag: Tag) => boolean   (TyFunction) (TSMethodSignature)
-  expected: { (exceptionTag: Tag): boolean; (exceptionTag: Tag): boolean; }
+>       ^^: { (exceptionTag: Tag): boolean; (exceptionTag: Tag): boolean; }   (TyObject) (TSMethodSignature)
 
         is(exceptionTag: Tag): boolean;
 >          ^^^^^^^^^^^^: Tag   (TyTypeReference) (BindingIdentifier)
@@ -129339,8 +129337,7 @@ declare namespace WebAssembly {
 >                           ^: any   (TyAny) (TSTypeReference)
 
         valueOf(): ValueTypeMap[T];
->       ^^^^^^^: () => ValueTypeMap[T]   (TyFunction) (TSMethodSignature)
-       expected: { (): ValueTypeMap[T]; (): ValueTypeMap[T]; }
+>       ^^^^^^^: { (): ValueTypeMap[T]; (): ValueTypeMap[T]; }   (TyObject) (TSMethodSignature)
 
         valueOf(): ValueTypeMap[T];
 >                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -129514,8 +129511,7 @@ declare namespace WebAssembly {
 >                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
         grow(delta: AddressValue): AddressValue;
->       ^^^^: (delta: AddressValue) => AddressValue   (TyFunction) (TSMethodSignature)
-    expected: { (delta: AddressValue): AddressValue; (delta: AddressValue): AddressValue; }
+>       ^^^^: { (delta: AddressValue): AddressValue; (delta: AddressValue): AddressValue; }   (TyObject) (TSMethodSignature)
 
         grow(delta: AddressValue): AddressValue;
 >            ^^^^^: AddressValue   (TyTypeReference) (BindingIdentifier)
@@ -129528,8 +129524,7 @@ declare namespace WebAssembly {
 >                                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         toFixedLengthBuffer(): ArrayBuffer;
->       ^^^^^^^^^^^^^^^^^^^: () => ArrayBuffer   (TyFunction) (TSMethodSignature)
-                   expected: { (): ArrayBuffer; (): ArrayBuffer; }
+>       ^^^^^^^^^^^^^^^^^^^: { (): ArrayBuffer; (): ArrayBuffer; }   (TyObject) (TSMethodSignature)
 
         toFixedLengthBuffer(): ArrayBuffer;
 >                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
@@ -129538,8 +129533,7 @@ declare namespace WebAssembly {
 >                              ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
         toResizableBuffer(): ArrayBuffer;
->       ^^^^^^^^^^^^^^^^^: () => ArrayBuffer   (TyFunction) (TSMethodSignature)
-                 expected: { (): ArrayBuffer; (): ArrayBuffer; }
+>       ^^^^^^^^^^^^^^^^^: { (): ArrayBuffer; (): ArrayBuffer; }   (TyObject) (TSMethodSignature)
 
         toResizableBuffer(): ArrayBuffer;
 >                            ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
@@ -129726,8 +129720,7 @@ declare namespace WebAssembly {
 >                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         get(index: AddressValue): any;
->       ^^^: (index: AddressValue) => any   (TyFunction) (TSMethodSignature)
-   expected: { (index: AddressValue): any; (index: AddressValue): any; }
+>       ^^^: { (index: AddressValue): any; (index: AddressValue): any; }   (TyObject) (TSMethodSignature)
 
         get(index: AddressValue): any;
 >           ^^^^^: AddressValue   (TyTypeReference) (BindingIdentifier)
@@ -129737,8 +129730,7 @@ declare namespace WebAssembly {
 >                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         grow(delta: AddressValue, value?: any): AddressValue;
->       ^^^^: (delta: AddressValue, value?: any) => AddressValue   (TyFunction) (TSMethodSignature)
-    expected: { (delta: AddressValue, value?: any): AddressValue; (delta: AddressValue, value?: any): AddressValue; }
+>       ^^^^: { (delta: AddressValue, value?: any): AddressValue; (delta: AddressValue, value?: any): AddressValue; }   (TyObject) (TSMethodSignature)
 
         grow(delta: AddressValue, value?: any): AddressValue;
 >            ^^^^^: AddressValue   (TyTypeReference) (BindingIdentifier)
@@ -129754,8 +129746,7 @@ declare namespace WebAssembly {
 >                                               ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         set(index: AddressValue, value?: any): void;
->       ^^^: (index: AddressValue, value?: any) => void   (TyFunction) (TSMethodSignature)
-   expected: { (index: AddressValue, value?: any): void; (index: AddressValue, value?: any): void; }
+>       ^^^: { (index: AddressValue, value?: any): void; (index: AddressValue, value?: any): void; }   (TyObject) (TSMethodSignature)
 
         set(index: AddressValue, value?: any): void;
 >           ^^^^^: AddressValue   (TyTypeReference) (BindingIdentifier)

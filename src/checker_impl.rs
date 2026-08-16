@@ -5715,6 +5715,61 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn merged_interface_declarations_for_namespace(
+        &self,
+        program_id: ProgramId,
+        namespace_path: &[&str],
+        type_name: &str,
+    ) -> &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)] {
+        let is_global = self
+            .store
+            .entry(program_id)
+            .is_some_and(|entry| entry.is_lib() || !entry.module_record().has_module_syntax);
+        let key = if is_global {
+            format!("namespace:{}.{type_name}", namespace_path.join("."))
+        } else {
+            format!(
+                "module:{}:namespace:{}.{type_name}",
+                program_id.index(),
+                namespace_path.join(".")
+            )
+        };
+        if let Some(declarations) = self.interface_declarations_cache.borrow().get(&key) {
+            return declarations;
+        }
+
+        let declarations = self.arena().vec_from_iter(
+            self.store
+                .entries()
+                .iter()
+                .filter(|entry| {
+                    if is_global {
+                        entry.is_lib() || !entry.module_record().has_module_syntax
+                    } else {
+                        entry.id() == program_id
+                    }
+                })
+                .flat_map(|entry| {
+                    self.nodes(entry.id())
+                        .iter_enumerated()
+                        .filter_map(|(node_id, node)| {
+                            let AstKind::TSInterfaceDeclaration(interface) = node.kind() else {
+                                return None;
+                            };
+                            (interface.id.name.as_str() == type_name
+                                && self.namespace_path_for_node(entry.id(), node_id).as_deref()
+                                    == Some(namespace_path))
+                            .then_some((entry.id(), interface))
+                        })
+                }),
+        );
+        let declarations = self.arena().alloc(declarations.into_boxed_slice());
+        self.interface_declarations_cache
+            .borrow_mut()
+            .insert(key, declarations);
+        declarations
+    }
+
     fn get_type_of_static_member_expression(
         &self,
         program_id: ProgramId,
@@ -7537,15 +7592,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return default_function();
         };
 
-        let Some(current_interface) =
-            self.nodes(program_id)
-                .ancestor_kinds(node_id)
-                .find_map(|kind| match kind {
-                    AstKind::TSInterfaceDeclaration(interface) => Some(interface),
-                    _ => None,
-                })
-        else {
-            return default_function();
+        let mut current_interface_node_id = node_id;
+        let current_interface = loop {
+            match self.nodes(program_id).kind(current_interface_node_id) {
+                AstKind::TSInterfaceDeclaration(interface) => break interface,
+                AstKind::Program(_) => return default_function(),
+                _ => {
+                    current_interface_node_id =
+                        self.nodes(program_id).parent_id(current_interface_node_id);
+                }
+            }
         };
 
         let current_type_arguments = self
@@ -7557,8 +7613,25 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .map(|type_parameter| Ty::type_reference(self.arena(), type_parameter.name, []))
             .collect::<Vec<_>>();
 
-        let method_signatures = self
-            .interface_declarations_for_type_name(program_id, current_interface.id.name.as_str())
+        let declarations = self
+            .namespace_path_for_node(program_id, current_interface_node_id)
+            .filter(|namespace_path| !namespace_path.is_empty())
+            .map(|namespace_path| {
+                self.merged_interface_declarations_for_namespace(
+                    program_id,
+                    &namespace_path,
+                    current_interface.id.name.as_str(),
+                )
+                .to_vec()
+            })
+            .unwrap_or_else(|| {
+                self.interface_declarations_for_type_name(
+                    program_id,
+                    current_interface.id.name.as_str(),
+                )
+            });
+
+        let method_signatures = declarations
             .into_iter()
             .flat_map(|(interface_program_id, interface)| {
                 let substitutions = self.type_parameter_substitutions_for_type_arguments(

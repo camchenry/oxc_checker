@@ -11375,8 +11375,7 @@ declare namespace Intl {
               expected: CollatorConstructor
 
         compare(x: string, y: string): number;
->       ^^^^^^^: (x: string, y: string) => number   (TyFunction) (TSMethodSignature)
-       expected: { (x: string, y: string): number; (x: string, y: string): number; }
+>       ^^^^^^^: { (x: string, y: string): number; (x: string, y: string): number; }   (TyObject) (TSMethodSignature)
 
         compare(x: string, y: string): number;
 >               ^: string   (TyString) (BindingIdentifier)
@@ -11385,8 +11384,7 @@ declare namespace Intl {
 >                          ^: string   (TyString) (BindingIdentifier)
 
         resolvedOptions(): ResolvedCollatorOptions;
->       ^^^^^^^^^^^^^^^: () => ResolvedCollatorOptions   (TyFunction) (TSMethodSignature)
-               expected: { (): ResolvedCollatorOptions; (): ResolvedCollatorOptions; }
+>       ^^^^^^^^^^^^^^^: { (): ResolvedCollatorOptions; (): ResolvedCollatorOptions; }   (TyObject) (TSMethodSignature)
 
         resolvedOptions(): ResolvedCollatorOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -11437,8 +11435,7 @@ declare namespace Intl {
 >                                                                 ^^^^^^^^: CollatorConstructor   (TyTypeReference) (IdentifierReference)
 
         supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: CollatorOptions) => string[]   (TyFunction) (TSMethodSignature)
-                  expected: { (locales: string | string[], options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; (locales: string | string[], options?: CollatorOptions): string[]; }
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; (locales: string | string[], options?: CollatorOptions): string[]; }   (TyObject) (TSMethodSignature)
 
         supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
@@ -11655,15 +11652,13 @@ declare namespace Intl {
                   expected: NumberFormatConstructor
 
         format(value: number): string;
->       ^^^^^^: (value: number) => string   (TyFunction) (TSMethodSignature)
-      expected: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number): string; }
+>       ^^^^^^: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number): string; }   (TyObject) (TSMethodSignature)
 
         format(value: number): string;
 >              ^^^^^: number   (TyNumber) (BindingIdentifier)
 
         resolvedOptions(): ResolvedNumberFormatOptions;
->       ^^^^^^^^^^^^^^^: () => ResolvedNumberFormatOptions   (TyFunction) (TSMethodSignature)
-               expected: { (): ResolvedNumberFormatOptions; (): ResolvedNumberFormatOptions; }
+>       ^^^^^^^^^^^^^^^: { (): ResolvedNumberFormatOptions; (): ResolvedNumberFormatOptions; }   (TyObject) (TSMethodSignature)
 
         resolvedOptions(): ResolvedNumberFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -11714,8 +11709,7 @@ declare namespace Intl {
 >                                                                     ^^^^^^^^^^^^: NumberFormatConstructor   (TyTypeReference) (IdentifierReference)
 
         supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: NumberFormatOptions) => string[]   (TyFunction) (TSMethodSignature)
-                  expected: { (locales: string | string[], options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; (locales: string | string[], options?: NumberFormatOptions): string[]; }
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; (locales: string | string[], options?: NumberFormatOptions): string[]; }   (TyObject) (TSMethodSignature)
 
         supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)
@@ -11849,8 +11843,7 @@ declare namespace Intl {
                     expected: DateTimeFormatConstructor
 
         format(date?: Date | number): string;
->       ^^^^^^: (date?: Date | number) => string   (TyFunction) (TSMethodSignature)
-      expected: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: Date | number): string; }
+>       ^^^^^^: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: Date | number): string; }   (TyObject) (TSMethodSignature)
 
         format(date?: Date | number): string;
 >              ^^^^: Date | number | undefined   (TyUnion) (BindingIdentifier)
@@ -11862,8 +11855,7 @@ declare namespace Intl {
 >                     ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
 
         resolvedOptions(): ResolvedDateTimeFormatOptions;
->       ^^^^^^^^^^^^^^^: () => ResolvedDateTimeFormatOptions   (TyFunction) (TSMethodSignature)
-               expected: { (): ResolvedDateTimeFormatOptions; (): ResolvedDateTimeFormatOptions; }
+>       ^^^^^^^^^^^^^^^: { (): ResolvedDateTimeFormatOptions; (): ResolvedDateTimeFormatOptions; }   (TyObject) (TSMethodSignature)
 
         resolvedOptions(): ResolvedDateTimeFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -11914,8 +11906,7 @@ declare namespace Intl {
 >                                                                       ^^^^^^^^^^^^^^: DateTimeFormatConstructor   (TyTypeReference) (IdentifierReference)
 
         supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: (locales: string | string[], options?: DateTimeFormatOptions) => string[]   (TyFunction) (TSMethodSignature)
-                  expected: { (locales: string | string[], options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; (locales: string | string[], options?: DateTimeFormatOptions): string[]; }
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; (locales: string | string[], options?: DateTimeFormatOptions): string[]; }   (TyObject) (TSMethodSignature)
 
         supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
 >                          ^^^^^^^: string | string[]   (TyUnion) (BindingIdentifier)

@@ -77,8 +77,7 @@ declare namespace Intl {
                     expected: DateTimeFormatConstructor
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
->       ^^^^^^^^^^^^^: (date?: Date | number) => DateTimeFormatPart[]   (TyFunction) (TSMethodSignature)
-             expected: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: Date | number): DateTimeFormatPart[]; }
+>       ^^^^^^^^^^^^^: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: Date | number): DateTimeFormatPart[]; }   (TyObject) (TSMethodSignature)
 
         formatToParts(date?: Date | number): DateTimeFormatPart[];
 >                     ^^^^: Date | number | undefined   (TyUnion) (BindingIdentifier)

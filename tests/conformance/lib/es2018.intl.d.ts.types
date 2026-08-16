@@ -85,7 +85,8 @@ declare namespace Intl {
                  expected: PluralRulesConstructor
 
         resolvedOptions(): ResolvedPluralRulesOptions;
->       ^^^^^^^^^^^^^^^: () => ResolvedPluralRulesOptions   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^: { (): ResolvedPluralRulesOptions; (): ResolvedPluralRulesOptions; }   (TyObject) (TSMethodSignature)
+               expected: () => ResolvedPluralRulesOptions
 
         resolvedOptions(): ResolvedPluralRulesOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -94,7 +95,8 @@ declare namespace Intl {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
         select(n: number): LDMLPluralRule;
->       ^^^^^^: (n: number) => LDMLPluralRule   (TyFunction) (TSMethodSignature)
+>       ^^^^^^: { (n: number): LDMLPluralRule; (n: number): LDMLPluralRule; }   (TyObject) (TSMethodSignature)
+      expected: (n: number) => LDMLPluralRule
 
         select(n: number): LDMLPluralRule;
 >              ^: number   (TyNumber) (BindingIdentifier)
@@ -145,8 +147,7 @@ declare namespace Intl {
 >                                                                             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (IdentifierReference)
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->       ^^^^^^^^^^^^^^^^^^: (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }) => string[]   (TyFunction) (TSMethodSignature)
-                  expected: { (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; }
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; }   (TyObject) (TSMethodSignature)
 
         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
 >                          ^^^^^^^: string | readonly string[]   (TyUnion) (BindingIdentifier)
@@ -242,8 +243,7 @@ declare namespace Intl {
                   expected: NumberFormatConstructor
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
->       ^^^^^^^^^^^^^: (number?: number | bigint) => NumberFormatPart[]   (TyFunction) (TSMethodSignature)
-             expected: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (number?: number | bigint): NumberFormatPart[]; }
+>       ^^^^^^^^^^^^^: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (number?: number | bigint): NumberFormatPart[]; }   (TyObject) (TSMethodSignature)
 
         formatToParts(number?: number | bigint): NumberFormatPart[];
 >                     ^^^^^^: number | bigint | undefined   (TyUnion) (BindingIdentifier)

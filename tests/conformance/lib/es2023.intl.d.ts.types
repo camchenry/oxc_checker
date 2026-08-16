@@ -119,8 +119,7 @@ declare namespace Intl {
                   expected: NumberFormatConstructor
 
         format(value: number | bigint | StringNumericLiteral): string;
->       ^^^^^^: (value: number | bigint | StringNumericLiteral) => string   (TyFunction) (TSMethodSignature)
-      expected: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number | bigint | StringNumericLiteral): string; }
+>       ^^^^^^: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number | bigint | StringNumericLiteral): string; }   (TyObject) (TSMethodSignature)
 
         format(value: number | bigint | StringNumericLiteral): string;
 >              ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
@@ -129,8 +128,7 @@ declare namespace Intl {
 >                                       ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         formatToParts(value: number | bigint | StringNumericLiteral): NumberFormatPart[];
->       ^^^^^^^^^^^^^: (value: number | bigint | StringNumericLiteral) => NumberFormatPart[]   (TyFunction) (TSMethodSignature)
-             expected: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; }
+>       ^^^^^^^^^^^^^: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; }   (TyObject) (TSMethodSignature)
 
         formatToParts(value: number | bigint | StringNumericLiteral): NumberFormatPart[];
 >                     ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
@@ -145,8 +143,7 @@ declare namespace Intl {
 >                                                                     ^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
         formatRange(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string;
->       ^^^^^^^^^^^: (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral) => string   (TyFunction) (TSMethodSignature)
-           expected: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; }
+>       ^^^^^^^^^^^: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; }   (TyObject) (TSMethodSignature)
 
         formatRange(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string;
 >                   ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)
@@ -161,8 +158,7 @@ declare namespace Intl {
 >                                                                                         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
->       ^^^^^^^^^^^^^^^^^^: (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral) => NumberRangeFormatPart[]   (TyFunction) (TSMethodSignature)
-                  expected: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; }
+>       ^^^^^^^^^^^^^^^^^^: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; }   (TyObject) (TSMethodSignature)
 
         formatRangeToParts(start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[];
 >                          ^^^^^: number | bigint | StringNumericLiteral   (TyUnion) (BindingIdentifier)

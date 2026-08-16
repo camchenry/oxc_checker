@@ -180,7 +180,8 @@ declare namespace Intl {
 >             ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->       ^^^^^^: (duration: Partial<Record<DurationFormatUnit, number>>) => string   (TyFunction) (TSMethodSignature)
+>       ^^^^^^: { (duration: Partial<Record<DurationFormatUnit, number>>): string; (duration: Partial<Record<DurationFormatUnit, number>>): string; }   (TyObject) (TSMethodSignature)
+      expected: (duration: Partial<Record<DurationFormatUnit, number>>) => string
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
 >              ^^^^^^^^: Partial<Record<DurationFormatUnit, number>>   (TyTypeReference) (BindingIdentifier)
@@ -201,7 +202,8 @@ declare namespace Intl {
 >                                       ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->       ^^^^^^^^^^^^^: (duration: Partial<Record<DurationFormatUnit, number>>) => DurationFormatPart[]   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^^^^^^^: { (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; }   (TyObject) (TSMethodSignature)
+             expected: (duration: Partial<Record<DurationFormatUnit, number>>) => DurationFormatPart[]
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
 >                     ^^^^^^^^: Partial<Record<DurationFormatUnit, number>>   (TyTypeReference) (BindingIdentifier)
@@ -225,7 +227,8 @@ declare namespace Intl {
 >                                                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
         resolvedOptions(): ResolvedDurationFormatOptions;
->       ^^^^^^^^^^^^^^^: () => ResolvedDurationFormatOptions   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^: { (): ResolvedDurationFormatOptions; (): ResolvedDurationFormatOptions; }   (TyObject) (TSMethodSignature)
+               expected: () => ResolvedDurationFormatOptions
 
         resolvedOptions(): ResolvedDurationFormatOptions;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
