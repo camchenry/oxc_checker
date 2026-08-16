@@ -4467,8 +4467,7 @@ type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) 
 >                                                                                        ^: any   (TyAny) (TSTypeReference)
 
 type ConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never;
->    ^^^^^^^^^^^^^^^^^^^^^: T extends new (...args: infer P) => any ? P : never   (TyConditional) (TSTypeAliasDeclaration)
-                  expected: T extends abstract new (...args: infer P) => any ? P : never
+>    ^^^^^^^^^^^^^^^^^^^^^: T extends abstract new (...args: infer P) => any ? P : never   (TyConditional) (TSTypeAliasDeclaration)
 
 type ConstructorParameters<T extends abstract new (...args: any) => any> = T extends abstract new (...args: infer P) => any ? P : never;
 >                          ^: any   (TyAny) (TSTypeParameter)
@@ -4511,8 +4510,7 @@ type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => i
 >                                                                                        ^: any   (TyAny) (TSTypeReference)
 
 type InstanceType<T extends abstract new (...args: any) => any> = T extends abstract new (...args: any) => infer R ? R : any;
->    ^^^^^^^^^^^^: T extends new (...args: any) => infer R ? R : any   (TyConditional) (TSTypeAliasDeclaration)
-         expected: T extends abstract new (...args: any) => infer R ? R : any
+>    ^^^^^^^^^^^^: T extends abstract new (...args: any) => infer R ? R : any   (TyConditional) (TSTypeAliasDeclaration)
 
 type InstanceType<T extends abstract new (...args: any) => any> = T extends abstract new (...args: any) => infer R ? R : any;
 >                 ^: any   (TyAny) (TSTypeParameter)

@@ -32,8 +32,7 @@ type ClassMemberDecoratorContext =
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 type DecoratorContext =
->    ^^^^^^^^^^^^^^^^: ClassDecoratorContext<new (...args: any) => any> | ClassMemberDecoratorContext   (TyUnion) (TSTypeAliasDeclaration)
-             expected: ClassDecoratorContext<abstract new (...args: any) => any> | ClassMemberDecoratorContext
+>    ^^^^^^^^^^^^^^^^: ClassDecoratorContext<abstract new (...args: any) => any> | ClassMemberDecoratorContext   (TyUnion) (TSTypeAliasDeclaration)
 
     | ClassDecoratorContext
 >     ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

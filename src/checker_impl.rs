@@ -461,7 +461,11 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         depth: usize,
     ) -> Signature<'a> {
         let ty = self.instantiate_type_at_depth(signature.ty, mapper, depth);
-        Signature::new(signature.kind, ty)
+        if signature.is_abstract {
+            Signature::abstract_construct(ty)
+        } else {
+            Signature::new(signature.kind, ty)
+        }
     }
 
     #[inline]
@@ -2881,19 +2885,21 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                         &parameters,
                         Some(&constructor.return_type),
                     );
-                let signature = Signature::new(
-                    SignatureKind::Construct,
-                    Ty::function_with_type_predicate(
-                        self.arena(),
-                        self.type_parameters_from_declaration(
-                            program_id,
-                            constructor.type_parameters.as_deref(),
-                        ),
-                        parameters,
-                        return_type,
-                        type_predicate,
+                let constructor_type = Ty::function_with_type_predicate(
+                    self.arena(),
+                    self.type_parameters_from_declaration(
+                        program_id,
+                        constructor.type_parameters.as_deref(),
                     ),
+                    parameters,
+                    return_type,
+                    type_predicate,
                 );
+                let signature = if constructor.r#abstract {
+                    Signature::abstract_construct(constructor_type)
+                } else {
+                    Signature::new(SignatureKind::Construct, constructor_type)
+                };
                 Ty::constructor_type(self.arena(), signature)
             }
             TSType::TSImportType(import_type) => {

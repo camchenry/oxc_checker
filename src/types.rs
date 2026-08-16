@@ -1062,7 +1062,11 @@ impl<'a> TypeIdentity<'a> {
                 .signatures()
                 .iter()
                 .zip(right.signatures())
-                .all(|(left, right)| left.kind == right.kind && self.compare(left.ty, right.ty))
+                .all(|(left, right)| {
+                    left.kind == right.kind
+                        && left.is_abstract == right.is_abstract
+                        && self.compare(left.ty, right.ty)
+                })
             && left.index_infos().len() == right.index_infos().len()
             && left
                 .index_infos()
@@ -2255,13 +2259,7 @@ impl<'a> Ty<'a> {
                 if object.is_constructor_type
                     && let Some(signature) = object.signatures().first()
                 {
-                    return constructor_type_to_string(
-                        arena,
-                        signature.function(arena),
-                        &|_| None,
-                        flags,
-                        depth,
-                    );
+                    return constructor_type_to_string(arena, *signature, &|_| None, flags, depth);
                 }
                 if object.properties.is_empty()
                     && object.signatures().is_empty()
@@ -2872,11 +2870,24 @@ pub enum SignatureKind {
 pub struct Signature<'a> {
     pub kind: SignatureKind,
     pub ty: Ty<'a>,
+    pub is_abstract: bool,
 }
 
 impl<'a> Signature<'a> {
     pub(crate) fn new(kind: SignatureKind, ty: Ty<'a>) -> Self {
-        Self { kind, ty }
+        Self {
+            kind,
+            ty,
+            is_abstract: false,
+        }
+    }
+
+    pub(crate) fn abstract_construct(ty: Ty<'a>) -> Self {
+        Self {
+            kind: SignatureKind::Construct,
+            ty,
+            is_abstract: true,
+        }
     }
 
     pub fn function(self, arena: CheckerArena<'a>) -> &'a TyFunction<'a> {
@@ -2956,15 +2967,21 @@ fn function_type_to_string<'a>(
 
 fn constructor_type_to_string<'a>(
     arena: CheckerArena<'a>,
-    function: &TyFunction<'a>,
+    signature: Signature<'a>,
     replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
     flags: TypeFormatFlags,
     depth: &Cell<usize>,
 ) -> String {
+    let function = signature.function(arena);
     let (type_parameters, parameters) =
         function_type_head_to_string(arena, function, replace_type_reference, flags, depth);
+    let prefix = if signature.is_abstract {
+        "abstract new"
+    } else {
+        "new"
+    };
     format!(
-        "new {type_parameters}({parameters}) => {}",
+        "{prefix} {type_parameters}({parameters}) => {}",
         function_return_type_to_string(arena, function, replace_type_reference, flags, depth)
     )
 }
