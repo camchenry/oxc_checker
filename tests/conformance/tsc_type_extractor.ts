@@ -78,6 +78,19 @@ const DEFAULT_WORKERS = Math.max(
   Math.min(8, os.availableParallelism ? os.availableParallelism() : os.cpus().length || 1),
 );
 const VIRTUAL_MODULE_MARKER = "\nexport {};";
+// oxc_checker always enables the full strict family, so case directives cannot disable it.
+const STRICT_COMPILER_OPTIONS = {
+  alwaysStrict: true,
+  noImplicitAny: true,
+  noImplicitThis: true,
+  strict: true,
+  strictBindCallApply: true,
+  strictBuiltinIteratorReturn: true,
+  strictFunctionTypes: true,
+  strictNullChecks: true,
+  strictPropertyInitialization: true,
+  useUnknownInCatchVariables: true,
+} satisfies TypeScriptCompilerOptions;
 
 function conformanceTypeFormatFlags(ts: TypeScript): typescript.TypeFormatFlags {
   return ts.TypeFormatFlags.NoTruncation
@@ -338,7 +351,13 @@ function createCompilerOptions(
   }
 
   const converted = ts.convertCompilerOptionsFromJson(jsonOptions, repoRoot);
-  return { ...baseOptions, ...converted.options, noEmit: true, skipLibCheck: true };
+  return {
+    ...baseOptions,
+    ...converted.options,
+    ...STRICT_COMPILER_OPTIONS,
+    noEmit: true,
+    skipLibCheck: true,
+  };
 }
 
 function createCompilerOptionsCache(
