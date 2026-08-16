@@ -36,6 +36,7 @@ const msg2 = `arg = ${arg || 'default'}`;
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
 >     ^^^^^^^^^^^^^^^^^^: string & { _kind?: "MyString"; }   (TyIntersection) (BindingIdentifier)
+                expected: string & { _kind?: 'MyString'; }
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
 >                                    ^^^^^: "MyString" | undefined   (TyUnion) (TSPropertySignature)
@@ -45,6 +46,7 @@ const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 >                                    ^^^^^^^^^^^^^^^^^^: string & { _kind?: "MyString"; }   (TyIntersection) (IdentifierReference)
+                                               expected: string & { _kind?: 'MyString'; }
 
 const arg = 123;
 >     ^^^: 123   (TyNumberLiteral) (BindingIdentifier)

@@ -810,6 +810,7 @@ import { pipe } from '../src/pipe'
 
 type Task = {
 >    ^^^^: { id: string; status: "todo" | "done"; points?: number; }   (TyObject) (TSTypeAliasDeclaration)
+ expected: { id: string; status: 'todo' | 'done'; points?: number; }
 
   id: string
 > ^^: string   (TyString) (TSPropertySignature)
@@ -845,7 +846,7 @@ const tasks: Task[] = [
 
 const doneTasks = filter(
 >     ^^^^^^^^^: Task[]   (TyArray) (BindingIdentifier)
-       expected: (Task & { status: "done"; points: number; })[]
+       expected: (Task & { status: 'done'; points: number; })[]
 
 const doneTasks = filter(
 >                 ^^^^^^: { <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }   (TyObject) (IdentifierReference)
@@ -876,7 +877,7 @@ expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
 >                                                                   ^^^^^^: any   (TyError) (StaticMemberExpression)
-                                                                  expected: "todo" | "done"
+                                                                  expected: "done" | "todo"
 
 const donePoints = map(doneTasks, task => task.points)
 >     ^^^^^^^^^^: U[]   (TyArray) (BindingIdentifier)
@@ -887,15 +888,15 @@ const donePoints = map(doneTasks, task => task.points)
 
 const donePoints = map(doneTasks, task => task.points)
 >                      ^^^^^^^^^: Task[]   (TyArray) (IdentifierReference)
-                        expected: (Task & { status: "done"; points: number; })[]
+                        expected: (Task & { status: 'done'; points: number; })[]
 
 const donePoints = map(doneTasks, task => task.points)
 >                                 ^^^^: T   (TyTypeReference) (BindingIdentifier)
-                              expected: Task & { status: "done"; points: number; }
+                              expected: Task & { status: 'done'; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
 >                                         ^^^^: T   (TyTypeReference) (IdentifierReference)
-                                      expected: Task & { status: "done"; points: number; }
+                                      expected: Task & { status: 'done'; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
 >                                              ^^^^^^: any   (TyError) (StaticMemberExpression)
@@ -903,7 +904,7 @@ const donePoints = map(doneTasks, task => task.points)
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >     ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference) (BindingIdentifier)
-          expected: Partial<Record<"todo" | "done", Task[]>>
+          expected: Partial<Record<"done" | "todo", Task[]>>
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >                    ^^^^^^^: <T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>   (TyFunction) (IdentifierReference)
@@ -921,11 +922,11 @@ const groupedTasks = groupBy(tasks, task => task.status)
 
 const groupedTasks = groupBy(tasks, task => task.status)
 >                                                ^^^^^^: any   (TyError) (StaticMemberExpression)
-                                               expected: "todo" | "done"
+                                               expected: "done" | "todo"
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
 >     ^^^^^^^^^^^: { id: string; status: "todo" | "done"; points: number | undefined; }   (TyObject) (BindingIdentifier)
-         expected: { id: string; points?: number | undefined; }
+         expected: { id: string; points?: number; }
 
 const taskSummary = pick(tasks[1], ['id', 'points'])
 >                   ^^^^: <T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>   (TyFunction) (IdentifierReference)
@@ -942,26 +943,26 @@ const pointTotal = pipe(
 
   doneTasks,
 > ^^^^^^^^^: Task[]   (TyArray) (IdentifierReference)
-   expected: (Task & { status: "done"; points: number; })[]
+   expected: (Task & { status: 'done'; points: number; })[]
 
   items => map(items, item => item.points),
 > ^^^^^: any   (TyAny) (BindingIdentifier)
-expected: (Task & { status: "done"; points: number; })[]
+expected: (Task & { status: 'done'; points: number; })[]
 
   items => map(items, item => item.points),
 >          ^^^: { <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }   (TyObject) (IdentifierReference)
 
   items => map(items, item => item.points),
 >              ^^^^^: any   (TyAny) (IdentifierReference)
-            expected: (Task & { status: "done"; points: number; })[]
+            expected: (Task & { status: 'done'; points: number; })[]
 
   items => map(items, item => item.points),
 >                     ^^^^: T   (TyTypeReference) (BindingIdentifier)
-                  expected: Task & { status: "done"; points: number; }
+                  expected: Task & { status: 'done'; points: number; }
 
   items => map(items, item => item.points),
 >                             ^^^^: T   (TyTypeReference) (IdentifierReference)
-                          expected: Task & { status: "done"; points: number; }
+                          expected: Task & { status: 'done'; points: number; }
 
   items => map(items, item => item.points),
 >                                  ^^^^^^: any   (TyError) (StaticMemberExpression)
@@ -1001,7 +1002,7 @@ const groupedDone = groupedTasks.done
 
 const groupedDone = groupedTasks.done
 >                   ^^^^^^^^^^^^: Partial<Record<any, Task[]>>   (TyTypeReference) (IdentifierReference)
-                        expected: Partial<Record<"todo" | "done", Task[]>>
+                        expected: Partial<Record<"done" | "todo", Task[]>>
 
 const groupedDone = groupedTasks.done
 >                                ^^^^: any   (TyError) (StaticMemberExpression)
@@ -1012,7 +1013,7 @@ const summaryId = taskSummary.id
 
 const summaryId = taskSummary.id
 >                 ^^^^^^^^^^^: { id: string; status: "todo" | "done"; points: number | undefined; }   (TyObject) (IdentifierReference)
-                     expected: { id: string; points?: number | undefined; }
+                     expected: { id: string; points?: number; }
 
 const summaryId = taskSummary.id
 >                             ^^: string   (TyString) (StaticMemberExpression)
@@ -1022,7 +1023,7 @@ const summaryPoints = taskSummary.points
 
 const summaryPoints = taskSummary.points
 >                     ^^^^^^^^^^^: { id: string; status: "todo" | "done"; points: number | undefined; }   (TyObject) (IdentifierReference)
-                         expected: { id: string; points?: number | undefined; }
+                         expected: { id: string; points?: number; }
 
 const summaryPoints = taskSummary.points
 >                                 ^^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)

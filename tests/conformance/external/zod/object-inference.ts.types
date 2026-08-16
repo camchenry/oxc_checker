@@ -668,7 +668,7 @@ expected: ZodArray<ZodNumber>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
 >     ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference) (BindingIdentifier)
-                 expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+                 expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
 >                           ^^^^^^^^^^^^^: ZodObject   (TyTypeReference) (IdentifierReference)
@@ -676,7 +676,7 @@ const publicAccountSchema = accountSchema.pick({ id: true, active: true })
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
 >                                         ^^^^: <Mask extends { [Key in keyof Shape]?: true | undefined; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>   (TyFunction) (StaticMemberExpression)
-                                      expected: <Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("id" | "email" | "scores" | "active")>>
+                                      expected: <Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("active" | "email" | "id" | "scores")>>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
 >                                                ^^: true   (TyBooleanLiteral) (ObjectProperty)
@@ -724,7 +724,7 @@ type PublicAccount = output<typeof publicAccountSchema>
 
 type PublicAccount = output<typeof publicAccountSchema>
 >                                  ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference) (IdentifierReference)
-                                              expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+                                              expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const inputValue: AccountInput = {
 >     ^^^^^^^^^^: AccountInput   (TyTypeReference) (BindingIdentifier)
@@ -777,18 +777,18 @@ const explicitAccount: AccountOutput = parsedAccount
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
 >     ^^^^^^^^^^^^^: PublicAccount   (TyTypeReference) (BindingIdentifier)
-           expected: objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+           expected: objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
 >                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
 >                                    ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TyTypeReference) (IdentifierReference)
-                                                expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+                                                expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
 >                                                        ^^^^^: (data: unknown) => objectOutputType<Shape>   (TyFunction) (StaticMemberExpression)
-                                                      expected: (data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+                                                      expected: (data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
 >                                                              ^^^^^^^^^^^^^: objectOutputType<Shape>   (TyTypeReference) (IdentifierReference)
@@ -812,7 +812,7 @@ const publicActive = publicAccount.active
 
 const publicActive = publicAccount.active
 >                    ^^^^^^^^^^^^^: PublicAccount   (TyTypeReference) (IdentifierReference)
-                          expected: objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+                          expected: objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicActive = publicAccount.active
 >                                  ^^^^^^: any   (TyError) (StaticMemberExpression)

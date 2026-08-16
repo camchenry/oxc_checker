@@ -22,23 +22,23 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	1262	1263	T	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1272	1285	ReadonlyArray	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1292	1293	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1307	1308	V	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	133	141	PathImpl	V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, V | TraversedTypes>}`
-react-hook-form/field-path.ts::src/types/path/eager.ts	1359	1372	ArrayPathImpl	V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, V | TraversedTypes>}`
+react-hook-form/field-path.ts::src/types/path/eager.ts	133	141	PathImpl	V extends BrowserNativeObject | Primitive ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
+react-hook-form/field-path.ts::src/types/path/eager.ts	1359	1372	ArrayPathImpl	V extends BrowserNativeObject | Primitive ? never : V extends readonly (infer U)[] ? U extends BrowserNativeObject | Primitive ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
 react-hook-form/field-path.ts::src/types/path/eager.ts	1373	1374	K	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1400	1401	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1403	1417	TraversedTypes	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	142	143	K	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1421	1422	V	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	1435	1444	Primitive	string | number | bigint | boolean | symbol | null | undefined
-react-hook-form/field-path.ts::src/types/path/eager.ts	1449	1468	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/path/eager.ts	1435	1444	Primitive	string | number | bigint | symbol | boolean | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	1449	1468	BrowserNativeObject	Date | File | FileList
 react-hook-form/field-path.ts::src/types/path/eager.ts	1483	1484	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1493	1506	ReadonlyArray	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1513	1514	U	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1522	1523	U	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	1532	1541	Primitive	string | number | bigint | boolean | symbol | null | undefined
-react-hook-form/field-path.ts::src/types/path/eager.ts	1544	1563	BrowserNativeObject	Date | FileList | File
-react-hook-form/field-path.ts::src/types/path/eager.ts	1599	1609	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
-react-hook-form/field-path.ts::src/types/path/eager.ts	16	26	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	1532	1541	Primitive	string | number | bigint | symbol | boolean | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	1544	1563	BrowserNativeObject	Date | File | FileList
+react-hook-form/field-path.ts::src/types/path/eager.ts	1599	1609	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	16	26	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 react-hook-form/field-path.ts::src/types/path/eager.ts	1610	1624	TraversedTypes	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1626	1627	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1658	1659	K	any
@@ -49,7 +49,7 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	1690	1691	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1693	1707	TraversedTypes	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1710	1711	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	172	186	TraversedTypes	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	1734	1744	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	1734	1744	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 react-hook-form/field-path.ts::src/types/path/eager.ts	1745	1759	TraversedTypes	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1761	1762	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	1789	1790	K	any
@@ -73,7 +73,7 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	2009	2010	K	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2014	2023	TupleKeys	keyof T extends keyof any[] ? never : keyof T
 react-hook-form/field-path.ts::src/types/path/eager.ts	2024	2025	T	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2031	2044	ArrayPathImpl	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	204	213	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	204	213	Primitive	string | number | bigint | symbol | boolean | null | undefined
 react-hook-form/field-path.ts::src/types/path/eager.ts	2045	2046	K	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2057	2058	T	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2059	2060	K	any
@@ -86,7 +86,7 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	2135	2136	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2138	2152	TraversedTypes	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2167	2168	K	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2178	2179	T	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	218	237	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/path/eager.ts	218	237	BrowserNativeObject	Date | File | FileList
 react-hook-form/field-path.ts::src/types/path/eager.ts	2184	2197	ArrayPathImpl	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2198	2199	K	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2210	2211	T	any
@@ -119,7 +119,7 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	2608	2620	TFieldValues	an
 react-hook-form/field-path.ts::src/types/path/eager.ts	2627	2636	PathValue	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2637	2649	TFieldValues	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	2651	2666	TFieldArrayPath	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	266	276	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/path/eager.ts	266	276	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 react-hook-form/field-path.ts::src/types/path/eager.ts	277	291	TraversedTypes	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	293	294	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	30	38	ArrayKey	number
@@ -135,7 +135,7 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	389	390	T	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	392	406	TraversedTypes	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	409	410	T	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	414	415	T	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	42	61	BrowserNativeObject	Date | FileList | File
+react-hook-form/field-path.ts::src/types/path/eager.ts	42	61	BrowserNativeObject	Date | File | FileList
 react-hook-form/field-path.ts::src/types/path/eager.ts	424	437	ReadonlyArray	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	444	445	V	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	451	458	IsTuple	number extends T["length"] ? false : true
@@ -175,7 +175,7 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	812	816	Path	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	817	829	TFieldValues	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	837	846	PathValue	T extends any ? P extends `${infer K}.${infer R}` ? K extends keyof T ? R extends Path<T[K]> ? PathValue<T[K], R> : never : K extends `${number}` ? T extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : P extends keyof T ? T[P] : P extends `${number}` ? T extends readonly (infer V)[] ? V : never : never : never
 react-hook-form/field-path.ts::src/types/path/eager.ts	847	848	T	any
-react-hook-form/field-path.ts::src/types/path/eager.ts	85	94	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/path/eager.ts	85	94	Primitive	string | number | bigint | symbol | boolean | null | undefined
 react-hook-form/field-path.ts::src/types/path/eager.ts	850	851	P	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	860	864	Path	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	865	866	T	any
@@ -192,8 +192,8 @@ react-hook-form/field-path.ts::src/types/path/eager.ts	98	107	TupleKeys	keyof T 
 react-hook-form/field-path.ts::src/types/path/eager.ts	980	984	Path	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	985	986	T	any
 react-hook-form/field-path.ts::src/types/path/eager.ts	987	988	K	any
-react-hook-form/field-path.ts::src/types/utils.ts	100	119	BrowserNativeObject	Date | FileList | File
-react-hook-form/field-path.ts::src/types/utils.ts	12	21	Primitive	string | number | bigint | boolean | symbol | null | undefined
+react-hook-form/field-path.ts::src/types/utils.ts	100	119	BrowserNativeObject	Date | File | FileList
+react-hook-form/field-path.ts::src/types/utils.ts	12	21	Primitive	string | number | bigint | symbol | boolean | null | undefined
 react-hook-form/field-path.ts::src/types/utils.ts	122	126	Date	DateConstructor
 react-hook-form/field-path.ts::src/types/utils.ts	129	137	FileList	{ new (): FileList; prototype: FileList; }
 react-hook-form/field-path.ts::src/types/utils.ts	140	144	File	{ new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }
@@ -210,7 +210,7 @@ react-hook-form/field-path.ts::src/types/utils.ts	332	345	ReadonlyArray	any
 react-hook-form/field-path.ts::src/types/utils.ts	354	361	Exclude	any
 react-hook-form/field-path.ts::src/types/utils.ts	368	369	T	any
 react-hook-form/field-path.ts::src/types/utils.ts	397	405	ArrayKey	number
-react-hook-form/field-path.ts::src/types/utils.ts	428	438	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never
+react-hook-form/field-path.ts::src/types/utils.ts	428	438	AnyIsEqual	T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 react-hook-form/field-path.ts::src/types/utils.ts	439	441	T1	any
 react-hook-form/field-path.ts::src/types/utils.ts	443	445	T2	any
 react-hook-form/field-path.ts::src/types/utils.ts	449	451	T1	any
@@ -221,7 +221,7 @@ react-hook-form/field-path.ts::src/types/utils.ts	487	489	T1	any
 react-hook-form/field-path.ts::src/types/utils.ts	508	509	G	any
 react-hook-form/field-path.ts::src/types/utils.ts	516	517	G	any
 react-hook-form/field-path.ts::src/types/utils.ts	526	528	T2	any
-react-hook-form/field-path.ts::tests/field-path-usage.ts	125	136	ContactForm	{ user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; }
+react-hook-form/field-path.ts::tests/field-path-usage.ts	125	136	ContactForm	{ user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }
 react-hook-form/field-path.ts::tests/field-path-usage.ts	143	147	user	{ name: string; address: { city: string; zip?: number; }; }
 react-hook-form/field-path.ts::tests/field-path-usage.ts	155	159	name	string
 react-hook-form/field-path.ts::tests/field-path-usage.ts	16	30	FieldArrayPath	TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never
@@ -229,16 +229,16 @@ react-hook-form/field-path.ts::tests/field-path-usage.ts	172	179	address	{ city:
 react-hook-form/field-path.ts::tests/field-path-usage.ts	189	193	city	string
 react-hook-form/field-path.ts::tests/field-path-usage.ts	208	211	zip	number | undefined
 react-hook-form/field-path.ts::tests/field-path-usage.ts	233	237	tags	string[]
-react-hook-form/field-path.ts::tests/field-path-usage.ts	250	257	friends	{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	250	257	friends	{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]
 react-hook-form/field-path.ts::tests/field-path-usage.ts	259	264	Array	ArrayConstructor
 react-hook-form/field-path.ts::tests/field-path-usage.ts	271	275	name	string
-react-hook-form/field-path.ts::tests/field-path-usage.ts	288	295	socials	[{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	288	295	socials	[{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]
 react-hook-form/field-path.ts::tests/field-path-usage.ts	300	304	kind	"email"
 react-hook-form/field-path.ts::tests/field-path-usage.ts	315	320	value	string
 react-hook-form/field-path.ts::tests/field-path-usage.ts	334	338	kind	"phone"
 react-hook-form/field-path.ts::tests/field-path-usage.ts	34	53	FieldArrayPathValue	TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
 react-hook-form/field-path.ts::tests/field-path-usage.ts	349	354	value	number
-react-hook-form/field-path.ts::tests/field-path-usage.ts	379	391	ContactField	"user" | "tags" | "friends" | "user.name" | "user.address" | "user.address.city" | "user.address.zip" | `tags.${number}` | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.1` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value`
+react-hook-form/field-path.ts::tests/field-path-usage.ts	379	391	ContactField	"friends" | "tags" | "user" | "user.address" | "user.address.city" | "user.address.zip" | "user.name" | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value` | `tags.${number}`
 react-hook-form/field-path.ts::tests/field-path-usage.ts	394	403	FieldPath	TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
 react-hook-form/field-path.ts::tests/field-path-usage.ts	404	415	ContactForm	any
 react-hook-form/field-path.ts::tests/field-path-usage.ts	422	439	ContactArrayField	"friends" | `friends.${number}.socials`
@@ -247,21 +247,21 @@ react-hook-form/field-path.ts::tests/field-path-usage.ts	457	468	ContactForm	any
 react-hook-form/field-path.ts::tests/field-path-usage.ts	475	484	CityValue	string
 react-hook-form/field-path.ts::tests/field-path-usage.ts	487	501	FieldPathValue	TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
 react-hook-form/field-path.ts::tests/field-path-usage.ts	502	513	ContactForm	any
-react-hook-form/field-path.ts::tests/field-path-usage.ts	541	552	FriendValue	{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	541	552	FriendValue	{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]
 react-hook-form/field-path.ts::tests/field-path-usage.ts	555	574	FieldArrayPathValue	TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
 react-hook-form/field-path.ts::tests/field-path-usage.ts	57	66	FieldPath	TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never
 react-hook-form/field-path.ts::tests/field-path-usage.ts	575	586	ContactForm	any
 react-hook-form/field-path.ts::tests/field-path-usage.ts	604	615	SocialValue	number
 react-hook-form/field-path.ts::tests/field-path-usage.ts	618	632	FieldPathValue	TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
 react-hook-form/field-path.ts::tests/field-path-usage.ts	633	644	ContactForm	any
-react-hook-form/field-path.ts::tests/field-path-usage.ts	682	687	field	"user" | "tags" | "friends" | "user.name" | "user.address" | "user.address.city" | "user.address.zip" | `tags.${number}` | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.1` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value`
+react-hook-form/field-path.ts::tests/field-path-usage.ts	682	687	field	"friends" | "tags" | "user" | "user.address" | "user.address.city" | "user.address.zip" | "user.name" | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value` | `tags.${number}`
 react-hook-form/field-path.ts::tests/field-path-usage.ts	689	701	ContactField	any
 react-hook-form/field-path.ts::tests/field-path-usage.ts	70	84	FieldPathValue	TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never
 react-hook-form/field-path.ts::tests/field-path-usage.ts	738	748	arrayField	"friends" | `friends.${number}.socials`
 react-hook-form/field-path.ts::tests/field-path-usage.ts	750	767	ContactArrayField	any
 react-hook-form/field-path.ts::tests/field-path-usage.ts	796	800	city	string
 react-hook-form/field-path.ts::tests/field-path-usage.ts	802	811	CityValue	any
-react-hook-form/field-path.ts::tests/field-path-usage.ts	828	834	friend	{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+react-hook-form/field-path.ts::tests/field-path-usage.ts	828	834	friend	{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]
 react-hook-form/field-path.ts::tests/field-path-usage.ts	836	847	FriendValue	any
 react-hook-form/field-path.ts::tests/field-path-usage.ts	854	858	name	string
 react-hook-form/field-path.ts::tests/field-path-usage.ts	869	876	socials	({ kind: string; value: string; } | { kind: string; value: number; })[]
@@ -382,7 +382,7 @@ redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2607	2631	A
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	262	263	M	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2632	2633	P	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2635	2636	T	any
-redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2685	2697	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2685	2697	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2698	2699	P	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2708	2709	T	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2738	2742	type	T
@@ -391,7 +391,7 @@ redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	275	276	E	a
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2750	2770	PayloadActionCreator	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2771	2772	P	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2774	2775	T	any
-redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2794	2806	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2794	2806	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2810	2812	PA	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2821	2834	PrepareAction	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2843	2844	T	any
@@ -405,12 +405,12 @@ redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2933	2935	P
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	294	301	payload	P
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2949	2950	T	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2952	2954	PA	any
-redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2973	2985	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2973	2985	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	2986	2990	type	string
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3000	3013	prepareAction	Function | undefined
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3016	3024	Function	FunctionConstructor
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	303	304	P	any
-redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3044	3057	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3044	3057	actionCreator	{ (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3061	3065	args	any[]
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	307	311	type	T
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3084	3097	prepareAction	Function | undefined
@@ -434,11 +434,11 @@ redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3325	3330	e
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3363	3367	type	string
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3369	3376	payload	any
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3378	3382	args	any[]
-redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3395	3408	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3395	3408	actionCreator	{ (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3395	3420	actionCreator.type = type	string
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3409	3413	type	string
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3416	3420	type	string
-redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3423	3436	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3423	3436	actionCreator	{ (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3423	3535	actionCreator.match = (action: unknown): action is PayloadAction =>     isAction(action) && action.type === type	(action: unknown) => action is PayloadAction
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3437	3442	match	(action: unknown) => action is PayloadAction
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3446	3452	action	unknown
@@ -449,7 +449,7 @@ redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3504	3510	a
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3515	3521	action	Action<string>
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3522	3526	type	string
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3531	3535	type	string
-redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3546	3559	actionCreator	{ (...args: any[]): { error?: any; meta?: any; type: string; payload: any; }; type: string; match(action: unknown): action is PayloadAction; }
+redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3546	3559	actionCreator	{ (...args: any[]): { type: string; payload: any; meta?: any; error?: any; }; type: string; match: (action: unknown) => action is PayloadAction; }
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3579	3594	isActionCreator	(action: unknown) => action is BaseActionCreator<unknown, string> & Function
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	359	363	meta	M
 redux-toolkit/create-action.ts::packages/toolkit/src/createAction.ts	3598	3604	action	unknown
@@ -704,30 +704,30 @@ redux-toolkit/create-action.ts::tests/create-action-usage.ts	2368	2383	isActionC
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	2384	2391	addTodo	ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	241	258	ActionFromMatcher	M extends Matcher<infer T> ? T : never
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	316	325	increment	ActionCreatorWithPayload<number, "counter/increment">
-redux-toolkit/create-action.ts::tests/create-action-usage.ts	328	340	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	328	340	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	404	419	incrementAction	{ payload: number; type: "counter/increment"; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	422	431	increment	ActionCreatorWithPayload<number, "counter/increment">
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	448	464	incrementPayload	number
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	467	482	incrementAction	{ payload: number; type: "counter/increment"; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	483	490	payload	number
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	505	510	reset	ActionCreatorWithoutPayload<"counter/reset">
-redux-toolkit/create-action.ts::tests/create-action-usage.ts	513	525	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	513	525	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	556	567	resetAction	{ payload: undefined; type: "counter/reset"; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	570	575	reset	ActionCreatorWithoutPayload<"counter/reset">
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	591	603	resetPayload	undefined
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	606	617	resetAction	{ payload: undefined; type: "counter/reset"; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	618	625	payload	undefined
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	640	647	setName	ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
-redux-toolkit/create-action.ts::tests/create-action-usage.ts	650	662	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	650	662	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	741	758	missingNameAction	{ payload: string | undefined; type: "user/nameChanged"; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	761	768	setName	ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	784	795	namedAction	{ payload: string | undefined; type: "user/nameChanged"; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	798	805	setName	ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	827	834	addTodo	ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
-redux-toolkit/create-action.ts::tests/create-action-usage.ts	837	849	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	837	849	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	869	874	title	string
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	884	892	priority	any
-redux-toolkit/create-action.ts::tests/create-action-usage.ts	9	21	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }
+redux-toolkit/create-action.ts::tests/create-action-usage.ts	9	21	createAction	{ <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	908	915	payload	{ title: string; priority: any; }
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	919	924	title	string
 redux-toolkit/create-action.ts::tests/create-action-usage.ts	926	934	priority	any
@@ -982,9 +982,9 @@ remeda/data-first.ts::src/pipe.ts	93	94	B	any
 remeda/data-first.ts::src/pipe.ts	97	98	B	any
 remeda/data-first.ts::tests/data-first-usage.ts	122	126	pick	<T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>
 remeda/data-first.ts::tests/data-first-usage.ts	157	161	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
-remeda/data-first.ts::tests/data-first-usage.ts	189	193	Task	{ id: string; status: "todo" | "done"; points?: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	189	193	Task	{ id: string; status: 'todo' | 'done'; points?: number; }
 remeda/data-first.ts::tests/data-first-usage.ts	200	202	id	string
-remeda/data-first.ts::tests/data-first-usage.ts	213	219	status	"todo" | "done"
+remeda/data-first.ts::tests/data-first-usage.ts	213	219	status	"done" | "todo"
 remeda/data-first.ts::tests/data-first-usage.ts	239	245	points	number | undefined
 remeda/data-first.ts::tests/data-first-usage.ts	264	269	tasks	Task[]
 remeda/data-first.ts::tests/data-first-usage.ts	271	275	Task	any
@@ -993,7 +993,7 @@ remeda/data-first.ts::tests/data-first-usage.ts	295	301	status	"todo"
 remeda/data-first.ts::tests/data-first-usage.ts	317	319	id	string
 remeda/data-first.ts::tests/data-first-usage.ts	326	332	status	"done"
 remeda/data-first.ts::tests/data-first-usage.ts	342	348	points	number
-remeda/data-first.ts::tests/data-first-usage.ts	364	373	doneTasks	(Task & { status: "done"; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	364	373	doneTasks	(Task & { status: 'done'; points: number; })[]
 remeda/data-first.ts::tests/data-first-usage.ts	376	382	filter	{ <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }
 remeda/data-first.ts::tests/data-first-usage.ts	386	391	tasks	Task[]
 remeda/data-first.ts::tests/data-first-usage.ts	396	400	task	Task
@@ -1002,31 +1002,31 @@ remeda/data-first.ts::tests/data-first-usage.ts	411	415	Task	any
 remeda/data-first.ts::tests/data-first-usage.ts	420	426	status	"done"
 remeda/data-first.ts::tests/data-first-usage.ts	436	442	points	number
 remeda/data-first.ts::tests/data-first-usage.ts	456	460	task	Task
-remeda/data-first.ts::tests/data-first-usage.ts	461	467	status	"todo" | "done"
+remeda/data-first.ts::tests/data-first-usage.ts	461	467	status	"done" | "todo"
 remeda/data-first.ts::tests/data-first-usage.ts	48	55	groupBy	<T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>
 remeda/data-first.ts::tests/data-first-usage.ts	488	498	donePoints	number[]
 remeda/data-first.ts::tests/data-first-usage.ts	501	504	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
-remeda/data-first.ts::tests/data-first-usage.ts	505	514	doneTasks	(Task & { status: "done"; points: number; })[]
-remeda/data-first.ts::tests/data-first-usage.ts	516	520	task	Task & { status: "done"; points: number; }
-remeda/data-first.ts::tests/data-first-usage.ts	524	528	task	Task & { status: "done"; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	505	514	doneTasks	(Task & { status: 'done'; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	516	520	task	Task & { status: 'done'; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	524	528	task	Task & { status: 'done'; points: number; }
 remeda/data-first.ts::tests/data-first-usage.ts	529	535	points	number
-remeda/data-first.ts::tests/data-first-usage.ts	543	555	groupedTasks	Partial<Record<"todo" | "done", Task[]>>
+remeda/data-first.ts::tests/data-first-usage.ts	543	555	groupedTasks	Partial<Record<"done" | "todo", Task[]>>
 remeda/data-first.ts::tests/data-first-usage.ts	558	565	groupBy	<T, Key extends PropertyKey>(data: readonly T[], callbackfn: (value: T, index: number, data: readonly T[]) => Key) => Partial<Record<Key, T[]>>
 remeda/data-first.ts::tests/data-first-usage.ts	566	571	tasks	Task[]
 remeda/data-first.ts::tests/data-first-usage.ts	573	577	task	Task
 remeda/data-first.ts::tests/data-first-usage.ts	581	585	task	Task
-remeda/data-first.ts::tests/data-first-usage.ts	586	592	status	"todo" | "done"
-remeda/data-first.ts::tests/data-first-usage.ts	600	611	taskSummary	{ id: string; points?: number | undefined; }
+remeda/data-first.ts::tests/data-first-usage.ts	586	592	status	"done" | "todo"
+remeda/data-first.ts::tests/data-first-usage.ts	600	611	taskSummary	{ id: string; points?: number; }
 remeda/data-first.ts::tests/data-first-usage.ts	614	618	pick	<T extends object, Keys extends keyof T>(data: T, keys: NonEmptyArray<Keys>) => Merge<Pick<T, Keys>>
 remeda/data-first.ts::tests/data-first-usage.ts	619	624	tasks	Task[]
 remeda/data-first.ts::tests/data-first-usage.ts	653	663	pointTotal	number
 remeda/data-first.ts::tests/data-first-usage.ts	666	670	pipe	{ <A>(value: A): A; <A, B>(value: A, op1: (input: A) => B): B; <A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C; <A, B, C, D>(value: A, op1: (input: A) => B, op2: (input: B) => C, op3: (input: C) => D): D; }
-remeda/data-first.ts::tests/data-first-usage.ts	674	683	doneTasks	(Task & { status: "done"; points: number; })[]
-remeda/data-first.ts::tests/data-first-usage.ts	687	692	items	(Task & { status: "done"; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	674	683	doneTasks	(Task & { status: 'done'; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	687	692	items	(Task & { status: 'done'; points: number; })[]
 remeda/data-first.ts::tests/data-first-usage.ts	696	699	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
-remeda/data-first.ts::tests/data-first-usage.ts	700	705	items	(Task & { status: "done"; points: number; })[]
-remeda/data-first.ts::tests/data-first-usage.ts	707	711	item	Task & { status: "done"; points: number; }
-remeda/data-first.ts::tests/data-first-usage.ts	715	719	item	Task & { status: "done"; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	700	705	items	(Task & { status: 'done'; points: number; })[]
+remeda/data-first.ts::tests/data-first-usage.ts	707	711	item	Task & { status: 'done'; points: number; }
+remeda/data-first.ts::tests/data-first-usage.ts	715	719	item	Task & { status: 'done'; points: number; }
 remeda/data-first.ts::tests/data-first-usage.ts	720	726	points	number
 remeda/data-first.ts::tests/data-first-usage.ts	731	737	points	number[]
 remeda/data-first.ts::tests/data-first-usage.ts	741	747	points	number[]
@@ -1036,13 +1036,13 @@ remeda/data-first.ts::tests/data-first-usage.ts	761	766	point	number
 remeda/data-first.ts::tests/data-first-usage.ts	771	774	sum	number
 remeda/data-first.ts::tests/data-first-usage.ts	777	782	point	number
 remeda/data-first.ts::tests/data-first-usage.ts	797	808	groupedDone	Task[] | undefined
-remeda/data-first.ts::tests/data-first-usage.ts	811	823	groupedTasks	Partial<Record<"todo" | "done", Task[]>>
+remeda/data-first.ts::tests/data-first-usage.ts	811	823	groupedTasks	Partial<Record<"done" | "todo", Task[]>>
 remeda/data-first.ts::tests/data-first-usage.ts	824	828	done	Task[] | undefined
 remeda/data-first.ts::tests/data-first-usage.ts	835	844	summaryId	string
-remeda/data-first.ts::tests/data-first-usage.ts	847	858	taskSummary	{ id: string; points?: number | undefined; }
+remeda/data-first.ts::tests/data-first-usage.ts	847	858	taskSummary	{ id: string; points?: number; }
 remeda/data-first.ts::tests/data-first-usage.ts	859	861	id	string
 remeda/data-first.ts::tests/data-first-usage.ts	868	881	summaryPoints	number | undefined
-remeda/data-first.ts::tests/data-first-usage.ts	884	895	taskSummary	{ id: string; points?: number | undefined; }
+remeda/data-first.ts::tests/data-first-usage.ts	884	895	taskSummary	{ id: string; points?: number; }
 remeda/data-first.ts::tests/data-first-usage.ts	89	92	map	{ <T, U>(data: readonly T[], callbackfn: LazyEvaluator<T, U>): U[]; <T extends object, U>(data: T, callbackfn: LazyEvaluator<EnumerableStringKeyedValueOf<T>, U>): U[]; }
 remeda/data-first.ts::tests/data-first-usage.ts	896	902	points	number | undefined
 remeda/data-first.ts::tests/data-first-usage.ts	9	15	filter	{ <T, S extends T>(data: readonly T[], predicate: (value: T, index: number, data: readonly T[]) => value is S): S[]; <T>(data: readonly T[], predicate: Pred<T>): T[]; }
@@ -1050,14 +1050,14 @@ remeda/data-first.ts::tests/data-first-usage.ts	909	919	firstPoint	number
 remeda/data-first.ts::tests/data-first-usage.ts	922	932	donePoints	number[]
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1001	1013	TQueryFnData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1027	1032	TData	any
-tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	103	126	BaseStreamedQueryParams	{ streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: "append" | "reset" | "replace"; }
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	103	126	BaseStreamedQueryParams	{ streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: 'append' | 'reset' | 'replace'; }
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1035	1040	Array	ArrayConstructor
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1041	1053	TQueryFnData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1058	1067	TQueryKey	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1076	1084	QueryKey	readonly unknown[]
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1087	1095	QueryKey	readonly unknown[]
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1103	1111	streamFn	(context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
-tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1115	1126	refetchMode	"append" | "reset" | "replace"
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1115	1126	refetchMode	"append" | "replace" | "reset"
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1140	1147	reducer	(acc: TData, chunk: TQueryFnData) => TData
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1151	1156	items	TData
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1158	1163	chunk	TQueryFnData
@@ -1108,7 +1108,7 @@ tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQue
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	175	183	streamFn	(context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1755	1760	chunk	Awaited<TQueryFnData>
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1764	1770	stream	AsyncIterable<TQueryFnData>
-tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1784	1795	refetchMode	"append" | "reset" | "replace"
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1784	1795	refetchMode	"append" | "replace" | "reset"
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1821	1827	result	TData
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1821	1852	result = reducer(result, chunk)	TData
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	1830	1837	reducer	(acc: TData, chunk: TQueryFnData) => TData
@@ -1144,7 +1144,7 @@ tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQue
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	278	291	AsyncIterable	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	29	42	QueryFunction	(context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	292	304	TQueryFnData	any
-tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	309	320	refetchMode	"append" | "reset" | "replace" | undefined
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	309	320	refetchMode	"append" | "replace" | "reset" | undefined
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	362	387	SimpleStreamedQueryParams	BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer?: never; initialValue?: never; }
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	391	403	TQueryFnData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	407	416	TQueryKey	any
@@ -1172,7 +1172,7 @@ tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQue
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	731	736	TData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	739	751	initialValue	TData
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	753	758	TData	any
-tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	767	786	StreamedQueryParams	SimpleStreamedQueryParams<TQueryFnData, TQueryKey> | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	767	786	StreamedQueryParams	ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey> | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	790	802	TQueryFnData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	806	811	TData	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/streamedQuery.ts	815	824	TQueryKey	any
@@ -1215,7 +1215,7 @@ tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	14
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1434	1440	Record	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	145	154	TQueryKey	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1462	1468	Record	any
-tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1499	1513	FetchDirection	"forward" | "backward"
+tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1499	1513	FetchDirection	"backward" | "forward"
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1552	1572	QueryFunctionContext	[TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1576	1585	TQueryKey	any
 tanstack-query/query-core-streamed-query.ts::packages/query-core/src/types.ts	1594	1602	QueryKey	any
@@ -1372,7 +1372,7 @@ tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	928	935	q
 tanstack-query/query-core-streamed-query.ts::tests/query-core-usage.ts	936	943	context	{ client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }
 ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	105	106	A	any
 ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	115	117	A1	any
-ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	12	18	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0
+ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	12	18	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0
 ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	19	21	A1	any
 ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	35	37	A2	any
 ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	57	58	A	any
@@ -1382,7 +1382,7 @@ ts-toolbelt/object-optional.ts::sources/Any/Equals.ts	97	98	A	any
 ts-toolbelt/object-optional.ts::sources/Any/Key.ts	12	15	Key	string | number | symbol
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	128	137	PatchFlat	{ [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	14	18	Pick	{ [P in keyof O as P extends K ? P : never]: O[P]; }
-ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	169	175	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	169	175	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	212	224	OptionalFlat	{ [K in keyof O]?: O[K] | undefined; }
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	225	226	O	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	235	236	K	any
@@ -1399,7 +1399,7 @@ ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	330	331	K	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	349	361	OptionalPart	{ flat: OptionalFlat<O>; deep: OptionalDeep<O>; }[depth]
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	362	363	O	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	380	385	depth	any
-ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	394	399	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	394	399	Depth	"deep" | "flat"
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	407	411	flat	{ [K in keyof O]?: O[K] | undefined; }
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	413	425	OptionalFlat	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	426	427	O	any
@@ -1409,12 +1409,12 @@ ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	450	451	O	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	455	460	depth	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	475	483	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	487	488	O	any
-ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	49	54	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	49	54	Depth	"deep" | "flat"
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	507	508	K	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	517	520	Key	string | number | symbol
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	523	526	Key	string | number | symbol
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	530	535	depth	any
-ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	544	549	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	544	549	Depth	"deep" | "flat"
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	571	583	OptionalPart	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	584	585	O	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	587	592	depth	any
@@ -1425,7 +1425,7 @@ ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	627	628	O	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	630	631	K	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	634	639	depth	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	642	643	O	any
-ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	647	653	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0
+ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	647	653	Equals	(<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	654	657	Key	string | number | symbol
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	659	660	K	any
 ts-toolbelt/object-optional.ts::sources/Object/Optional.ts	90	93	Key	string | number | symbol
@@ -1455,7 +1455,7 @@ ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	56	57	O	any
 ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	74	75	K	any
 ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	84	87	Key	string | number | symbol
 ts-toolbelt/object-optional.ts::sources/Object/Pick.ts	96	97	P	any
-ts-toolbelt/object-optional.ts::sources/Object/_Internal.ts	12	17	Depth	"flat" | "deep"
+ts-toolbelt/object-optional.ts::sources/Object/_Internal.ts	12	17	Depth	"deep" | "flat"
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	100	104	User	{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	111	113	id	string
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	124	128	name	string
@@ -1464,14 +1464,14 @@ ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	154	159	email	str
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	16	24	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	172	179	address	{ city: string; }
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	189	193	city	string
-ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	220	232	OptionalName	{ name: string | undefined; id: string; profile: { email: string; address: { city: string; }; }; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	220	232	OptionalName	{ id: string; name: string | undefined; profile: { email: string; address: { city: string; }; }; }
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	235	243	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	244	248	User	any
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	263	281	OptionalEverything	{ id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	28	40	OptionalDeep	{ [K in keyof O]?: OptionalDeep<O[K]> | undefined; }
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	284	292	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	293	297	User	any
-ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	304	323	OptionalProfileDeep	{ profile: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; id: string; name: string; }
+ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	304	323	OptionalProfileDeep	{ id: string; name: string; profile: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; }
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	326	334	Optional	{ 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	335	339	User	any
 ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	365	375	DirectFlat	{ id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
@@ -1506,7 +1506,7 @@ ts-toolbelt/object-optional.ts::tests/object-optional-usage.ts	855	862	address	{
 type-fest/object-utilities.ts::source/except.ts	108	114	Filter	IsEqual<KeyType, ExcludeType> extends true ? never : KeyType extends ExcludeType ? never : KeyType
 type-fest/object-utilities.ts::source/except.ts	115	122	KeyType	any
 type-fest/object-utilities.ts::source/except.ts	124	135	ExcludeType	any
-type-fest/object-utilities.ts::source/except.ts	139	146	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false
+type-fest/object-utilities.ts::source/except.ts	139	146	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false
 type-fest/object-utilities.ts::source/except.ts	14	33	ApplyDefaultOptions	{ [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }
 type-fest/object-utilities.ts::source/except.ts	147	154	KeyType	any
 type-fest/object-utilities.ts::source/except.ts	156	167	ExcludeType	any
@@ -1539,7 +1539,7 @@ type-fest/object-utilities.ts::source/except.ts	676	684	Required	any
 type-fest/object-utilities.ts::source/except.ts	685	698	ExceptOptions	any
 type-fest/object-utilities.ts::source/except.ts	710	717	KeyType	any
 type-fest/object-utilities.ts::source/except.ts	727	737	ObjectType	any
-type-fest/object-utilities.ts::source/except.ts	74	81	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false
+type-fest/object-utilities.ts::source/except.ts	74	81	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false
 type-fest/object-utilities.ts::source/except.ts	741	747	Filter	any
 type-fest/object-utilities.ts::source/except.ts	748	755	KeyType	any
 type-fest/object-utilities.ts::source/except.ts	757	765	KeysType	any
@@ -1574,7 +1574,7 @@ type-fest/object-utilities.ts::source/internal/index.ts	61	69	Defaults	any
 type-fest/object-utilities.ts::source/internal/index.ts	78	86	Required	any
 type-fest/object-utilities.ts::source/internal/index.ts	87	94	Options	any
 type-fest/object-utilities.ts::source/internal/index.ts	99	115	SpecifiedOptions	any
-type-fest/object-utilities.ts::source/is-equal.ts	12	19	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false
+type-fest/object-utilities.ts::source/is-equal.ts	12	19	IsEqual	(<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false
 type-fest/object-utilities.ts::source/is-equal.ts	20	21	A	any
 type-fest/object-utilities.ts::source/is-equal.ts	23	24	B	any
 type-fest/object-utilities.ts::source/is-equal.ts	30	31	G	any
@@ -1621,7 +1621,7 @@ type-fest/object-utilities.ts::source/union-to-intersection.ts	45	50	Union	any
 type-fest/object-utilities.ts::source/union-to-intersection.ts	70	86	distributedUnion	Union
 type-fest/object-utilities.ts::source/union-to-intersection.ts	88	93	Union	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1037	1042	flags	never[]
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1062	1077	contactableUser	{ id: string; profile: { avatarUrl?: string; flags: string[]; }; email: string; name: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1062	1077	contactableUser	{ id: string; name: string; email: string; profile: { avatarUrl?: string; flags: string[]; }; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1079	1094	ContactableUser	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1101	1103	id	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1117	1121	name	string
@@ -1629,13 +1629,13 @@ type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1134	1139	email	s
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1164	1171	profile	{ flags: string[]; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1179	1184	flags	string[]
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	120	131	SetRequired	{ [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1210	1221	userPreview	{ id: string; email: string; name: string; displayName: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1210	1221	userPreview	{ id: string; name: string; email: string; displayName: string; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1223	1234	UserPreview	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1241	1243	id	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1257	1261	name	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1272	1277	email	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1300	1311	displayName	string
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1332	1340	eventKey	"id" | "type" | "user" | "actor"
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1332	1340	eventKey	"actor" | "id" | "type" | "user"
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1342	1350	EventKey	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1367	1379	omittedEmail	undefined
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	1382	1398	strictPublicUser	StrictPublicUser
@@ -1649,37 +1649,37 @@ type-fest/object-utilities.ts::tests/object-utilities-usage.ts	261	266	email	str
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	278	285	profile	{ avatarUrl?: string; flags: string[]; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	293	302	avatarUrl	string | undefined
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	316	321	flags	string[]
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	344	354	PublicUser	{ id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	344	354	PublicUser	{ id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	357	363	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	364	368	User	any
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	384	400	StrictPublicUser	{ id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; } & Partial<Record<"email", never>>
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	384	400	StrictPublicUser	{ id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; } & Partial<Record<"email", never>>
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	403	409	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	410	414	User	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	427	444	requireExactProps	true
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	459	474	ContactableUser	{ id: string; profile: { avatarUrl?: string; flags: string[]; }; email: string; name: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	459	474	ContactableUser	{ id: string; name: string; email: string; profile: { avatarUrl?: string; flags: string[]; }; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	477	488	SetRequired	{ [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	489	493	User	any
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	518	529	UserPreview	{ id: string; email: string; name: string; displayName: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	518	529	UserPreview	{ id: string; name: string; email: string; displayName: string; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	532	540	Simplify	{ [KeyType in keyof T]: T[KeyType]; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	544	550	Except	{ [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	551	566	ContactableUser	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	583	594	displayName	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	61	72	KeysOfUnion	keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	613	625	CreatedEvent	{ type: "created"; user: User; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	613	625	CreatedEvent	{ type: 'created'; user: User; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	632	636	type	"created"
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	650	654	user	User
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	656	660	User	any
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	669	681	DeletedEvent	{ type: "deleted"; id: string; actor?: string; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	669	681	DeletedEvent	{ type: 'deleted'; id: string; actor?: string; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	688	692	type	"deleted"
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	706	708	id	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	719	724	actor	string | undefined
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	742	747	Event	CreatedEvent | DeletedEvent
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	750	762	CreatedEvent	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	765	777	DeletedEvent	any
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	783	791	EventKey	"id" | "type" | "user" | "actor"
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	783	791	EventKey	"actor" | "id" | "type" | "user"
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	794	805	KeysOfUnion	keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	806	811	Event	any
-type-fest/object-utilities.ts::tests/object-utilities-usage.ts	820	830	publicUser	{ id: string; name?: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }
+type-fest/object-utilities.ts::tests/object-utilities-usage.ts	820	830	publicUser	{ id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; }
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	832	842	PublicUser	any
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	849	851	id	string
 type-fest/object-utilities.ts::tests/object-utilities-usage.ts	865	869	name	string
@@ -1728,7 +1728,7 @@ valibot/schema-output.ts::library/schemas.ts	1536	1544	optional	<TWrapped extend
 valibot/schema-output.ts::library/schemas.ts	1545	1553	TWrapped	any
 valibot/schema-output.ts::library/schemas.ts	1562	1575	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 valibot/schema-output.ts::library/schemas.ts	1577	1585	TDefault	any
-valibot/schema-output.ts::library/schemas.ts	16	25	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	16	25	BaseIssue	{ readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
 valibot/schema-output.ts::library/schemas.ts	1602	1609	wrapped	TWrapped
 valibot/schema-output.ts::library/schemas.ts	1611	1619	TWrapped	any
 valibot/schema-output.ts::library/schemas.ts	1623	1631	default_	TDefault
@@ -1739,7 +1739,7 @@ valibot/schema-output.ts::library/schemas.ts	1671	1679	TDefault	any
 valibot/schema-output.ts::library/schemas.ts	1702	1707	input	unknown
 valibot/schema-output.ts::library/schemas.ts	1712	1717	input	unknown
 valibot/schema-output.ts::library/schemas.ts	1722	1731	undefined	undefined
-valibot/schema-output.ts::library/schemas.ts	173	182	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	173	182	BaseIssue	{ readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
 valibot/schema-output.ts::library/schemas.ts	1734	1742	default_	TDefault
 valibot/schema-output.ts::library/schemas.ts	1745	1752	wrapped	TWrapped
 valibot/schema-output.ts::library/schemas.ts	1761	1766	input	{} | null
@@ -1781,11 +1781,11 @@ valibot/schema-output.ts::library/schemas.ts	2250	2253	key	Extract<keyof TEntrie
 valibot/schema-output.ts::library/schemas.ts	2277	2280	out	Record<string, unknown>
 valibot/schema-output.ts::library/schemas.ts	2284	2296	ObjectOutput	any
 valibot/schema-output.ts::library/schemas.ts	2297	2305	TEntries	any
-valibot/schema-output.ts::library/schemas.ts	248	257	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	248	257	BaseIssue	{ readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
 valibot/schema-output.ts::library/schemas.ts	281	294	BooleanSchema	{ readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: BaseIssue<"boolean">; } | undefined; readonly '~run': (input: unknown) => boolean; }
 valibot/schema-output.ts::library/schemas.ts	29	39	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
 valibot/schema-output.ts::library/schemas.ts	297	307	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
-valibot/schema-output.ts::library/schemas.ts	326	335	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/schemas.ts	326	335	BaseIssue	{ readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
 valibot/schema-output.ts::library/schemas.ts	361	375	OptionalSchema	{ readonly '~types'?: { readonly input: InferInput<TWrapped> | undefined; readonly output: TDefault | InferOutput<TWrapped>; readonly issue: InferIssue<TWrapped>; } | undefined; readonly '~run': (input: unknown) => TDefault | InferOutput<TWrapped>; }
 valibot/schema-output.ts::library/schemas.ts	376	384	TWrapped	any
 valibot/schema-output.ts::library/schemas.ts	393	406	GenericSchema	{ readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
@@ -1834,7 +1834,7 @@ valibot/schema-output.ts::library/schemas.ts	963	966	Key	any
 valibot/schema-output.ts::library/schemas.ts	984	995	ObjectIssue	{ [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]
 valibot/schema-output.ts::library/schemas.ts	996	1004	TEntries	any
 valibot/schema-output.ts::library/types.ts	107	115	Expected	any
-valibot/schema-output.ts::library/types.ts	12	21	BaseIssue	{ readonly kind: "schema"; readonly expected: Expected; readonly message: string; }
+valibot/schema-output.ts::library/types.ts	12	21	BaseIssue	{ readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }
 valibot/schema-output.ts::library/types.ts	127	134	message	string
 valibot/schema-output.ts::library/types.ts	158	168	BaseSchema	{ readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }
 valibot/schema-output.ts::library/types.ts	169	174	Input	any
@@ -1894,7 +1894,7 @@ valibot/schema-output.ts::tests/schema-output-usage.ts	33	39	object	<TEntries ex
 valibot/schema-output.ts::tests/schema-output-usage.ts	339	349	UserOutput	{ id: string; age: number; active: boolean; tags: string[]; }
 valibot/schema-output.ts::tests/schema-output-usage.ts	352	363	InferOutput	NonNullable<TSchema["~types"]>["output"]
 valibot/schema-output.ts::tests/schema-output-usage.ts	371	381	userSchema	ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
-valibot/schema-output.ts::tests/schema-output-usage.ts	388	397	UserIssue	BaseIssue<"string"> | BaseIssue<"number"> | BaseIssue<"boolean">
+valibot/schema-output.ts::tests/schema-output-usage.ts	388	397	UserIssue	BaseIssue<"boolean"> | BaseIssue<"number"> | BaseIssue<"string">
 valibot/schema-output.ts::tests/schema-output-usage.ts	400	410	InferIssue	NonNullable<TSchema["~types"]>["issue"]
 valibot/schema-output.ts::tests/schema-output-usage.ts	41	49	optional	<TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>
 valibot/schema-output.ts::tests/schema-output-usage.ts	418	428	userSchema	ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
@@ -2124,9 +2124,9 @@ zod/object-inference.ts::tests/object-inference-usage.ts	197	202	array	() => Zod
 zod/object-inference.ts::tests/object-inference-usage.ts	208	214	active	ZodBoolean
 zod/object-inference.ts::tests/object-inference-usage.ts	216	217	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 zod/object-inference.ts::tests/object-inference-usage.ts	218	225	boolean	() => ZodBoolean
-zod/object-inference.ts::tests/object-inference-usage.ts	239	258	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	239	258	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 zod/object-inference.ts::tests/object-inference-usage.ts	261	274	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
-zod/object-inference.ts::tests/object-inference-usage.ts	275	279	pick	<Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("id" | "email" | "scores" | "active")>>
+zod/object-inference.ts::tests/object-inference-usage.ts	275	279	pick	<Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("active" | "email" | "id" | "scores")>>
 zod/object-inference.ts::tests/object-inference-usage.ts	282	284	id	true
 zod/object-inference.ts::tests/object-inference-usage.ts	292	298	active	true
 zod/object-inference.ts::tests/object-inference-usage.ts	314	326	AccountInput	{ id: string; email: string | undefined; scores: number[]; active: boolean; }
@@ -2137,7 +2137,7 @@ zod/object-inference.ts::tests/object-inference-usage.ts	378	384	output	T["_outp
 zod/object-inference.ts::tests/object-inference-usage.ts	392	405	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 zod/object-inference.ts::tests/object-inference-usage.ts	412	425	PublicAccount	{ id: string; active: boolean; }
 zod/object-inference.ts::tests/object-inference-usage.ts	428	434	output	T["_output"]
-zod/object-inference.ts::tests/object-inference-usage.ts	442	461	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	442	461	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 zod/object-inference.ts::tests/object-inference-usage.ts	470	480	inputValue	objectInputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 zod/object-inference.ts::tests/object-inference-usage.ts	482	494	AccountInput	any
 zod/object-inference.ts::tests/object-inference-usage.ts	501	503	id	string
@@ -2154,16 +2154,16 @@ zod/object-inference.ts::tests/object-inference-usage.ts	617	627	inputValue	obje
 zod/object-inference.ts::tests/object-inference-usage.ts	635	650	explicitAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 zod/object-inference.ts::tests/object-inference-usage.ts	652	665	AccountOutput	any
 zod/object-inference.ts::tests/object-inference-usage.ts	668	681	parsedAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
-zod/object-inference.ts::tests/object-inference-usage.ts	688	701	publicAccount	objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	688	701	publicAccount	objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 zod/object-inference.ts::tests/object-inference-usage.ts	703	716	PublicAccount	any
-zod/object-inference.ts::tests/object-inference-usage.ts	719	738	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
-zod/object-inference.ts::tests/object-inference-usage.ts	739	744	parse	(data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	719	738	publicAccountSchema	ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
+zod/object-inference.ts::tests/object-inference-usage.ts	739	744	parse	(data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 zod/object-inference.ts::tests/object-inference-usage.ts	745	758	parsedAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 zod/object-inference.ts::tests/object-inference-usage.ts	766	771	score	number
 zod/object-inference.ts::tests/object-inference-usage.ts	774	787	parsedAccount	objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
 zod/object-inference.ts::tests/object-inference-usage.ts	788	794	scores	number[]
 zod/object-inference.ts::tests/object-inference-usage.ts	804	816	publicActive	boolean
-zod/object-inference.ts::tests/object-inference-usage.ts	819	832	publicAccount	objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "id" | "active">>
+zod/object-inference.ts::tests/object-inference-usage.ts	819	832	publicAccount	objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 zod/object-inference.ts::tests/object-inference-usage.ts	833	839	active	boolean
 zod/object-inference.ts::tests/object-inference-usage.ts	9	10	z	{ string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
 zod/object-inference.ts::tests/object-inference-usage.ts	99	112	accountSchema	ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
@@ -2400,7 +2400,7 @@ zustand/store-api.ts::src/vanilla.ts	675	677	Mi	any
 zustand/store-api.ts::src/vanilla.ts	68	73	state	T
 zustand/store-api.ts::src/vanilla.ts	680	702	StoreMutatorIdentifier	any
 zustand/store-api.ts::src/vanilla.ts	705	708	Mrs	any
-zustand/store-api.ts::src/vanilla.ts	737	749	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
+zustand/store-api.ts::src/vanilla.ts	737	749	StateCreator	((setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>, getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
 zustand/store-api.ts::src/vanilla.ts	75	76	T	any
 zustand/store-api.ts::src/vanilla.ts	753	754	T	any
 zustand/store-api.ts::src/vanilla.ts	758	761	Mis	any

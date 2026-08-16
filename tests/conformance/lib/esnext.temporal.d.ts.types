@@ -2495,7 +2495,7 @@ declare namespace Temporal {
 
         relativeTo?: ZonedDateTimeLike | PlainDateLike | undefined;
 >       ^^^^^^^^^^: ZonedDateTimeLike | PlainDateLike | undefined   (TyUnion) (TSPropertySignature)
-          expected: string | PlainDate | PlainDateTime | ZonedDateTime | DateLikeObject | ZonedDateTimeLikeObject | undefined
+          expected: string | DateLikeObject | PlainDate | PlainDateTime | ZonedDateTime | ZonedDateTimeLikeObject | undefined
 
         relativeTo?: ZonedDateTimeLike | PlainDateLike | undefined;
 >                    ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

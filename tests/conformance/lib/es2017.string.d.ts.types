@@ -8,6 +8,7 @@ interface String {
 
     padStart(maxLength: number, fillString?: string): string;
 >   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject) (TSMethodSignature)
+    expected: { (targetLength: number, padString?: string): string; (maxLength: number, fillString?: string): string; }
 
     padStart(maxLength: number, fillString?: string): string;
 >            ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -17,6 +18,7 @@ interface String {
 
     padEnd(maxLength: number, fillString?: string): string;
 >   ^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject) (TSMethodSignature)
+  expected: { (targetLength: number, padString?: string): string; (maxLength: number, fillString?: string): string; }
 
     padEnd(maxLength: number, fillString?: string): string;
 >          ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)

@@ -915,7 +915,7 @@ compiler/eslint_noFloatingPromises.ts::a.ts	20	27	Promise	PromiseConstructor
 compiler/eslint_noFloatingPromises.ts::a.ts	200	207	Promise	PromiseConstructor
 compiler/eslint_noFloatingPromises.ts::a.ts	200	234	Promise.reject('value').finally();	Promise<never>
 compiler/eslint_noFloatingPromises.ts::a.ts	208	214	reject	<T = never>(reason?: any) => Promise<T>
-compiler/eslint_noFloatingPromises.ts::a.ts	224	231	finally	(onfinally?: (() => void) | null | undefined) => Promise<never>
+compiler/eslint_noFloatingPromises.ts::a.ts	224	231	finally	(onfinally?: (() => void) | undefined | null) => Promise<never>
 compiler/eslint_noFloatingPromises.ts::a.ts	236	268	[1, 2, 3].map(async x => x + 1);	Promise<number>[]
 compiler/eslint_noFloatingPromises.ts::a.ts	246	249	map	<U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]
 compiler/eslint_noFloatingPromises.ts::a.ts	256	257	x	number
@@ -940,7 +940,7 @@ compiler/eslint_noFloatingPromises.ts::b.ts	238	243	catch	<TResult>(onrejected?:
 compiler/eslint_noFloatingPromises.ts::b.ts	256	304	await Promise.reject('value').finally(() => {});	never
 compiler/eslint_noFloatingPromises.ts::b.ts	262	269	Promise	PromiseConstructor
 compiler/eslint_noFloatingPromises.ts::b.ts	270	276	reject	<T = never>(reason?: any) => Promise<T>
-compiler/eslint_noFloatingPromises.ts::b.ts	286	293	finally	(onfinally?: (() => void) | null | undefined) => Promise<never>
+compiler/eslint_noFloatingPromises.ts::b.ts	286	293	finally	(onfinally?: (() => void) | undefined | null) => Promise<never>
 compiler/eslint_noFloatingPromises.ts::b.ts	29	36	resolve	(value: unknown) => void
 compiler/eslint_noFloatingPromises.ts::b.ts	306	357	await Promise.all([1, 2, 3].map(async x => x + 1));	number[]
 compiler/eslint_noFloatingPromises.ts::b.ts	312	319	Promise	PromiseConstructor
@@ -1119,7 +1119,7 @@ compiler/eslint_noMisusedPromises.ts::d.ts	189	192	map	<U>(callbackfn: (value: n
 compiler/eslint_noMisusedPromises.ts::d.ts	199	204	value	number
 compiler/eslint_noMisusedPromises.ts::d.ts	214	239	await doSomething(value);	any
 compiler/eslint_noMisusedPromises.ts::d.ts	232	237	value	number
-compiler/eslint_noMisusedPromises.ts::d.ts	248	253	catch	<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<void[] | TResult>
+compiler/eslint_noMisusedPromises.ts::d.ts	248	253	catch	<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult | void[]>
 compiler/eslint_noMisusedPromises.ts::d.ts	298	505	new Promise((resolve, reject) => {   // combine with `void` keyword to tell `no-floating-promises` rule to ignore unhandled rejection   void (async () => {     await doSomething();     resolve();   })(); });	Promise<unknown>
 compiler/eslint_noMisusedPromises.ts::d.ts	302	309	Promise	PromiseConstructor
 compiler/eslint_noMisusedPromises.ts::d.ts	311	318	resolve	(value: unknown) => void
@@ -1189,13 +1189,13 @@ compiler/eslint_noMisusedSpread.ts::a.ts	14	21	promise	Promise<number>
 compiler/eslint_noMisusedSpread.ts::a.ts	162	171	getObject	() => Record<string, string>
 compiler/eslint_noMisusedSpread.ts::a.ts	190	193	map	Map<string, number>
 compiler/eslint_noMisusedSpread.ts::a.ts	195	198	Map	MapConstructor
-compiler/eslint_noMisusedSpread.ts::a.ts	222	231	mapSpread	{ clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; [Symbol.iterator](): MapIterator<[string, number]>; [Symbol.toStringTag]: string; }
+compiler/eslint_noMisusedSpread.ts::a.ts	222	231	mapSpread	{ clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; [Symbol.iterator](): MapIterator<[string, number]>; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; [Symbol.toStringTag]: string; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; }
 compiler/eslint_noMisusedSpread.ts::a.ts	23	30	Promise	PromiseConstructor
 compiler/eslint_noMisusedSpread.ts::a.ts	239	242	map	Map<string, number>
 compiler/eslint_noMisusedSpread.ts::a.ts	261	269	userName	string
 compiler/eslint_noMisusedSpread.ts::a.ts	285	295	characters	string[]
 compiler/eslint_noMisusedSpread.ts::a.ts	302	310	userName	string
-compiler/eslint_noMisusedSpread.ts::a.ts	46	59	spreadPromise	{ then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; finally(onfinally?: (() => void) | null | undefined): Promise<number>; [Symbol.toStringTag]: string; }
+compiler/eslint_noMisusedSpread.ts::a.ts	46	59	spreadPromise	{ then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; [Symbol.toStringTag]: string; finally(onfinally?: (() => void) | undefined | null): Promise<number>; }
 compiler/eslint_noMisusedSpread.ts::a.ts	67	74	promise	Promise<number>
 compiler/eslint_noMisusedSpread.ts::a.ts	96	105	getObject	() => Record<string, string>
 compiler/eslint_noMisusedSpread.ts::b.ts	105	119	instanceSpread	{ value: number; }
@@ -1290,11 +1290,11 @@ compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	409	413	text	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	422	426	Text	"A"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	439	450	WrappedText	"A"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	456	460	Text	any
-compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	479	501	intersectionWithString	string & { _brand: "test-brand"; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	479	501	intersectionWithString	string & { _brand: 'test-brand'; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	514	520	_brand	"test-brand"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	544	563	wrappedIntersection	string
-compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	569	591	intersectionWithString	string & { _brand: "test-brand"; }
-compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	600	622	IntersectionWithString	string & { _brand: "test-brand"; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	569	591	intersectionWithString	string & { _brand: 'test-brand'; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	600	622	IntersectionWithString	string & { _brand: 'test-brand'; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	636	642	_brand	"test-brand"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	665	684	WrappedIntersection	`${IntersectionWithString}`
 compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts	690	712	IntersectionWithString	any
@@ -1320,14 +1320,14 @@ compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	608	612	text	"a"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	619	623	Text	"A"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	636	647	WrappedText	"A"
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	650	654	Text	any
-compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	671	693	intersectionWithString	string & { _brand: "test-brand"; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	671	693	intersectionWithString	string & { _brand: 'test-brand'; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	706	712	_brand	"test-brand"
-compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	736	755	wrappedIntersection	string & { _brand: "test-brand"; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	736	755	wrappedIntersection	string & { _brand: 'test-brand'; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	75	78	ab1	"ab"
-compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	758	780	intersectionWithString	string & { _brand: "test-brand"; }
-compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	787	809	IntersectionWithString	string & { _brand: "test-brand"; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	758	780	intersectionWithString	string & { _brand: 'test-brand'; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	787	809	IntersectionWithString	string & { _brand: 'test-brand'; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	823	829	_brand	"test-brand"
-compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	852	871	WrappedIntersection	string & { _brand: "test-brand"; }
+compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	852	871	WrappedIntersection	string & { _brand: 'test-brand'; }
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	874	896	IntersectionWithString	any
 compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts	93	96	ab2	"ab"
 compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts	11	12	T	any
@@ -1605,13 +1605,13 @@ compiler/eslint_restrictTemplateExpressions.ts::a.ts	68	72	name	string
 compiler/eslint_restrictTemplateExpressions.ts::a.ts	89	93	msg2	string
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	128	133	_kind	"MyString" | undefined
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	164	168	msg3	string
-compiler/eslint_restrictTemplateExpressions.ts::b.ts	195	213	stringWithKindProp	string & { _kind?: "MyString"; }
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	195	213	stringWithKindProp	string & { _kind?: 'MyString'; }
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	25	29	msg1	"arg = foo"
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	41	44	arg	"foo"
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	54	58	msg2	string
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	6	9	arg	"foo"
 compiler/eslint_restrictTemplateExpressions.ts::b.ts	70	73	arg	"foo"
-compiler/eslint_restrictTemplateExpressions.ts::b.ts	97	115	stringWithKindProp	string & { _kind?: "MyString"; }
+compiler/eslint_restrictTemplateExpressions.ts::b.ts	97	115	stringWithKindProp	string & { _kind?: 'MyString'; }
 compiler/eslint_restrictTemplateExpressions.ts::c.ts	23	27	msg1	"arg = 123"
 compiler/eslint_restrictTemplateExpressions.ts::c.ts	39	42	arg	123
 compiler/eslint_restrictTemplateExpressions.ts::c.ts	52	56	msg2	string
@@ -1641,7 +1641,7 @@ compiler/eslint_restrictTemplateExpressions.ts::g.ts	6	9	arg	RegExp
 compiler/eslint_restrictTemplateExpressions.ts::h.ts	25	29	msg1	string
 compiler/eslint_restrictTemplateExpressions.ts::h.ts	41	44	arg	RegExp
 compiler/eslint_restrictTemplateExpressions.ts::h.ts	6	9	arg	RegExp
-compiler/eslint_restrictTemplateExpressions.ts::i.ts	31	35	msg1	"something" | "arg = something"
+compiler/eslint_restrictTemplateExpressions.ts::i.ts	31	35	msg1	"arg = something" | "something"
 compiler/eslint_restrictTemplateExpressions.ts::i.ts	45	48	arg	"something"
 compiler/eslint_restrictTemplateExpressions.ts::i.ts	6	9	arg	"something"
 compiler/eslint_restrictTemplateExpressions.ts::i.ts	64	67	arg	"something"
@@ -1732,11 +1732,11 @@ compiler/flowTypes.ts	953	964	maybeAction	object | null
 compiler/flowTypes.ts	987	998	maybeAction	object
 compiler/functionExpandoProperties.ts	106	110	type	string
 compiler/functionExpandoProperties.ts	112	119	payload	string
-compiler/functionExpandoProperties.ts	134	147	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	134	147	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	134	160	actionCreator.type = type;	string
 compiler/functionExpandoProperties.ts	148	152	type	string
 compiler/functionExpandoProperties.ts	155	159	type	string
-compiler/functionExpandoProperties.ts	165	178	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	165	178	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	165	297	actionCreator.match = (value: unknown): value is { type: string } => typeof value === "object" && value !== null && "type" in value;	(value: unknown) => value is { type: string; }
 compiler/functionExpandoProperties.ts	179	184	match	(value: unknown) => value is { type: string; }
 compiler/functionExpandoProperties.ts	188	193	value	unknown
@@ -1747,63 +1747,63 @@ compiler/functionExpandoProperties.ts	263	268	value	object | null
 compiler/functionExpandoProperties.ts	27	31	type	string
 compiler/functionExpandoProperties.ts	291	296	value	object
 compiler/functionExpandoProperties.ts	309	320	creatorType	string
-compiler/functionExpandoProperties.ts	323	336	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	323	336	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	337	341	type	string
 compiler/functionExpandoProperties.ts	353	360	matcher	(value: unknown) => value is { type: string; }
-compiler/functionExpandoProperties.ts	363	376	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	363	376	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	377	382	match	(value: unknown) => value is { type: string; }
 compiler/functionExpandoProperties.ts	394	400	result	{ type: string; payload: string; }
-compiler/functionExpandoProperties.ts	403	416	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
-compiler/functionExpandoProperties.ts	438	451	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
-compiler/functionExpandoProperties.ts	462	477	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
-compiler/functionExpandoProperties.ts	480	497	makeActionCreator	(type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	403	416	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+compiler/functionExpandoProperties.ts	438	451	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+compiler/functionExpandoProperties.ts	462	477	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+compiler/functionExpandoProperties.ts	480	497	makeActionCreator	(type: string) => { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	513	525	returnedType	string
-compiler/functionExpandoProperties.ts	528	543	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	528	543	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	544	548	type	string
 compiler/functionExpandoProperties.ts	556	569	returnedMatch	boolean
-compiler/functionExpandoProperties.ts	56	69	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
-compiler/functionExpandoProperties.ts	572	587	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	56	69	actionCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+compiler/functionExpandoProperties.ts	572	587	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	588	593	match	(value: unknown) => value is { type: string; }
 compiler/functionExpandoProperties.ts	596	600	type	string
 compiler/functionExpandoProperties.ts	619	633	returnedResult	{ type: string; payload: string; }
-compiler/functionExpandoProperties.ts	636	651	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
-compiler/functionExpandoProperties.ts	671	683	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	636	651	returnedCreator	{ (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
+compiler/functionExpandoProperties.ts	671	683	arrowCreator	{ (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
 compiler/functionExpandoProperties.ts	687	694	payload	number
 compiler/functionExpandoProperties.ts	70	77	payload	string
 compiler/functionExpandoProperties.ts	710	717	payload	number
 compiler/functionExpandoProperties.ts	726	736	arrowLabel	string
-compiler/functionExpandoProperties.ts	748	760	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	748	760	arrowCreator	{ (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
 compiler/functionExpandoProperties.ts	748	779	arrowCreator.type = arrowLabel;	string
 compiler/functionExpandoProperties.ts	761	765	type	string
 compiler/functionExpandoProperties.ts	768	778	arrowLabel	string
-compiler/functionExpandoProperties.ts	780	792	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	780	792	arrowCreator	{ (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
 compiler/functionExpandoProperties.ts	780	856	arrowCreator.match = (value: unknown): value is { payload: number } => true;	(value: unknown) => value is { payload: number; }
 compiler/functionExpandoProperties.ts	793	798	match	(value: unknown) => value is { payload: number; }
 compiler/functionExpandoProperties.ts	802	807	value	unknown
 compiler/functionExpandoProperties.ts	819	824	value	unknown
 compiler/functionExpandoProperties.ts	830	837	payload	number
 compiler/functionExpandoProperties.ts	864	873	arrowType	string
-compiler/functionExpandoProperties.ts	876	888	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	876	888	arrowCreator	{ (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
 compiler/functionExpandoProperties.ts	889	893	type	string
-compiler/functionExpandoProperties.ts	9	26	makeActionCreator	(type: string) => { (payload: string): { type: string; payload: string; }; type: string; match(value: unknown): value is { type: string; }; }
+compiler/functionExpandoProperties.ts	9	26	makeActionCreator	(type: string) => { (payload: string): { type: string; payload: string; }; type: string; match: (value: unknown) => value is { type: string; }; }
 compiler/functionExpandoProperties.ts	901	911	arrowMatch	(value: unknown) => value is { payload: number; }
-compiler/functionExpandoProperties.ts	914	926	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	914	926	arrowCreator	{ (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
 compiler/functionExpandoProperties.ts	927	932	match	(value: unknown) => value is { payload: number; }
 compiler/functionExpandoProperties.ts	940	951	arrowResult	{ payload: number; }
-compiler/functionExpandoProperties.ts	954	966	arrowCreator	{ (payload: number): { payload: number; }; type: string; match(value: unknown): value is { payload: number; }; }
+compiler/functionExpandoProperties.ts	954	966	arrowCreator	{ (payload: number): { payload: number; }; type: string; match: (value: unknown) => value is { payload: number; }; }
 compiler/functionReturnTypes.ts	10	15	empty	() => void
 compiler/functionReturnTypes.ts	115	125	returnsBig	() => bigint
 compiler/functionReturnTypes.ts	154	165	returnsBig2	() => 1n | 0n
 compiler/functionReturnTypes.ts	33	42	emptyVoid	() => void
 compiler/functionReturnTypes.ts	65	76	EmptyGetter	typeof EmptyGetter
 compiler/functionReturnTypes.ts	92	93	x	void
-compiler/generators.ts	10	12	g1	() => Generator<1 | "foo", void, unknown>
+compiler/generators.ts	10	12	g1	() => Generator<"foo" | 1, void, unknown>
 compiler/generators.ts	129	131	g4	() => AsyncGenerator<string, "bar" | undefined, unknown>
 compiler/generators.ts	142	146	Math	Math
 compiler/generators.ts	147	153	random	() => number
 compiler/generators.ts	188	199	yield "foo"	any
 compiler/generators.ts	19	26	yield 1	any
-compiler/generators.ts	219	221	g5	() => AsyncGenerator<1 | "foo" | 3, string, unknown>
+compiler/generators.ts	219	221	g5	() => AsyncGenerator<"foo" | 1 | 3, string, unknown>
 compiler/generators.ts	228	239	yield "foo"	any
 compiler/generators.ts	242	297	await new Promise(resolve => setTimeout(resolve, 1000))	unknown
 compiler/generators.ts	252	259	Promise	PromiseConstructor
@@ -1818,7 +1818,7 @@ compiler/generators.ts	328	335	resolve	(value: unknown) => void
 compiler/generators.ts	339	349	setTimeout	(handler: TimerHandler, timeout?: number, ...arguments: any[]) => number
 compiler/generators.ts	350	357	resolve	(value: unknown) => void
 compiler/generators.ts	368	375	yield 3	any
-compiler/generators.ts	411	413	g6	() => AsyncGenerator<1 | "foo" | 3 | 2, "bar" | "err", unknown>
+compiler/generators.ts	411	413	g6	() => AsyncGenerator<"foo" | 1 | 2 | 3, "bar" | "err", unknown>
 compiler/generators.ts	420	431	yield "foo"	any
 compiler/generators.ts	434	489	await new Promise(resolve => setTimeout(resolve, 1000))	unknown
 compiler/generators.ts	444	451	Promise	PromiseConstructor
@@ -1867,43 +1867,43 @@ compiler/importType.ts::module.ts	55	56	T	any
 compiler/importType.ts::module.ts	62	67	value	T
 compiler/importType.ts::module.ts	69	70	T	any
 compiler/importType.ts::module.ts	92	98	Nested	typeof Nested
-compiler/importTypes.ts::a.ts	105	112	process	<T>(x: T) => T | 1
-compiler/importTypes.ts::a.ts	131	134	mod	{ process: <T>(x: T) => T | 1; }
+compiler/importTypes.ts::a.ts	105	112	process	<T>(x: T) => 1 | T
+compiler/importTypes.ts::a.ts	131	134	mod	{ process: <T>(x: T) => 1 | T; }
 compiler/importTypes.ts::a.ts	17	18	T	any
 compiler/importTypes.ts::a.ts	20	21	x	T
 compiler/importTypes.ts::a.ts	23	24	T	any
 compiler/importTypes.ts::a.ts	34	35	x	T
 compiler/importTypes.ts::a.ts	66	67	x	T
-compiler/importTypes.ts::a.ts	77	80	mod	{ process: <T>(x: T) => T | 1; }
-compiler/importTypes.ts::a.ts	85	92	process	<T>(x: T) => T | 1
-compiler/importTypes.ts::a.ts	9	16	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::a.ts	77	80	mod	{ process: <T>(x: T) => 1 | T; }
+compiler/importTypes.ts::a.ts	85	92	process	<T>(x: T) => 1 | T
+compiler/importTypes.ts::a.ts	9	16	process	<T>(x: T) => 1 | T
 compiler/importTypes.ts::index.ts	106	109	num	number
 compiler/importTypes.ts::index.ts	117	123	i1_str	string | 1
-compiler/importTypes.ts::index.ts	126	133	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	126	133	process	<T>(x: T) => 1 | T
 compiler/importTypes.ts::index.ts	134	137	str	string
-compiler/importTypes.ts::index.ts	147	157	modDefault	{ process: <T>(x: T) => T | 1; }
+compiler/importTypes.ts::index.ts	147	157	modDefault	{ process: <T>(x: T) => 1 | T; }
 compiler/importTypes.ts::index.ts	179	185	i2_num	number
-compiler/importTypes.ts::index.ts	188	198	modDefault	{ process: <T>(x: T) => T | 1; }
-compiler/importTypes.ts::index.ts	199	206	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	188	198	modDefault	{ process: <T>(x: T) => 1 | T; }
+compiler/importTypes.ts::index.ts	199	206	process	<T>(x: T) => 1 | T
 compiler/importTypes.ts::index.ts	207	210	num	number
 compiler/importTypes.ts::index.ts	218	224	i2_str	string | 1
-compiler/importTypes.ts::index.ts	227	237	modDefault	{ process: <T>(x: T) => T | 1; }
-compiler/importTypes.ts::index.ts	238	245	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	227	237	modDefault	{ process: <T>(x: T) => 1 | T; }
+compiler/importTypes.ts::index.ts	238	245	process	<T>(x: T) => 1 | T
 compiler/importTypes.ts::index.ts	246	249	str	string
 compiler/importTypes.ts::index.ts	264	276	modNamespace	typeof modNamespace
 compiler/importTypes.ts::index.ts	298	304	i3_num	number
 compiler/importTypes.ts::index.ts	307	319	modNamespace	typeof modNamespace
-compiler/importTypes.ts::index.ts	320	327	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	320	327	process	<T>(x: T) => 1 | T
 compiler/importTypes.ts::index.ts	328	331	num	number
 compiler/importTypes.ts::index.ts	339	345	i3_str	string | 1
 compiler/importTypes.ts::index.ts	348	360	modNamespace	typeof modNamespace
-compiler/importTypes.ts::index.ts	361	368	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	361	368	process	<T>(x: T) => 1 | T
 compiler/importTypes.ts::index.ts	369	372	str	string
 compiler/importTypes.ts::index.ts	40	43	num	number
 compiler/importTypes.ts::index.ts	62	65	str	string
 compiler/importTypes.ts::index.ts	89	95	i1_num	number
-compiler/importTypes.ts::index.ts	9	16	process	<T>(x: T) => T | 1
-compiler/importTypes.ts::index.ts	98	105	process	<T>(x: T) => T | 1
+compiler/importTypes.ts::index.ts	9	16	process	<T>(x: T) => 1 | T
+compiler/importTypes.ts::index.ts	98	105	process	<T>(x: T) => 1 | T
 compiler/indexedAccessInference.ts	131	135	name	string
 compiler/indexedAccessInference.ts	138	141	get	<T, K extends keyof T>(obj: T, key: K) => T[K]
 compiler/indexedAccessInference.ts	144	149	value	number
@@ -1989,7 +1989,7 @@ compiler/memberExpression.ts	1038	1048	literalKey	"name"
 compiler/memberExpression.ts	105	109	city	string
 compiler/memberExpression.ts	1057	1070	unionKeyValue	string
 compiler/memberExpression.ts	1073	1077	user	User
-compiler/memberExpression.ts	1078	1086	unionKey	"name" | "id"
+compiler/memberExpression.ts	1078	1086	unionKey	"id" | "name"
 compiler/memberExpression.ts	1095	1116	dynamicStringKeyValue	any
 compiler/memberExpression.ts	1119	1123	user	User
 compiler/memberExpression.ts	1124	1140	dynamicStringKey	string
@@ -2013,7 +2013,7 @@ compiler/memberExpression.ts	143	148	greet	(message: string) => string
 compiler/memberExpression.ts	1430	1447	dictionaryDynamic	number
 compiler/memberExpression.ts	1450	1460	dictionary	StringDictionary
 compiler/memberExpression.ts	1461	1477	dynamicStringKey	string
-compiler/memberExpression.ts	1486	1503	NumericDictionary	{ [index: number]: "zero" | "one" | "many" | undefined; 0: "zero"; 1?: "one"; }
+compiler/memberExpression.ts	1486	1503	NumericDictionary	{ [index: number]: "many" | "one" | "zero" | undefined; 0: "zero"; 1?: "one"; }
 compiler/memberExpression.ts	149	156	message	string
 compiler/memberExpression.ts	1537	1542	index	number
 compiler/memberExpression.ts	1599	1616	numericDictionary	NumericDictionary
@@ -2023,27 +2023,27 @@ compiler/memberExpression.ts	1676	1690	numericZeroDot	"zero"
 compiler/memberExpression.ts	1693	1710	numericDictionary	NumericDictionary
 compiler/memberExpression.ts	1721	1738	numericOneBracket	"one" | undefined
 compiler/memberExpression.ts	1741	1758	numericDictionary	NumericDictionary
-compiler/memberExpression.ts	1769	1783	numericDynamic	"zero" | "one" | "many" | undefined
+compiler/memberExpression.ts	1769	1783	numericDynamic	"many" | "one" | "zero" | undefined
 compiler/memberExpression.ts	177	188	preferences	{ theme: "light" | "dark"; notifications?: boolean; }
 compiler/memberExpression.ts	1786	1803	numericDictionary	NumericDictionary
-compiler/memberExpression.ts	1816	1821	users	readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+compiler/memberExpression.ts	1816	1821	users	readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
 compiler/memberExpression.ts	1825	1829	user	User
 compiler/memberExpression.ts	1836	1840	user	User
 compiler/memberExpression.ts	1842	1846	name	"Bob"
 compiler/memberExpression.ts	1855	1857	id	"user_Bob"
 compiler/memberExpression.ts	1876	1881	const	any
 compiler/memberExpression.ts	1889	1898	firstUser	User
-compiler/memberExpression.ts	1901	1906	users	readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+compiler/memberExpression.ts	1901	1906	users	readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
 compiler/memberExpression.ts	1917	1930	firstUserName	string
-compiler/memberExpression.ts	1933	1938	users	readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+compiler/memberExpression.ts	1933	1938	users	readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
 compiler/memberExpression.ts	1942	1946	name	string
 compiler/memberExpression.ts	1954	1965	usersLength	2
-compiler/memberExpression.ts	196	201	theme	"light" | "dark"
-compiler/memberExpression.ts	1968	1973	users	readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
+compiler/memberExpression.ts	196	201	theme	"dark" | "light"
+compiler/memberExpression.ts	1968	1973	users	readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
 compiler/memberExpression.ts	1974	1980	length	2
-compiler/memberExpression.ts	1988	2002	arrayMapMethod	<U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
-compiler/memberExpression.ts	2005	2010	users	readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]
-compiler/memberExpression.ts	2011	2014	map	<U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]
+compiler/memberExpression.ts	1988	2002	arrayMapMethod	<U>(callbackfn: (value: User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }, index: number, array: readonly (User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; })[]) => U, thisArg?: any) => U[]
+compiler/memberExpression.ts	2005	2010	users	readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
+compiler/memberExpression.ts	2011	2014	map	<U>(callbackfn: (value: User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }, index: number, array: readonly (User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; })[]) => U, thisArg?: any) => U[]
 compiler/memberExpression.ts	2023	2028	tuple	readonly ["ready", 200, { readonly ok: true; }]
 compiler/memberExpression.ts	2048	2050	ok	true
 compiler/memberExpression.ts	2063	2068	const	any
@@ -2145,7 +2145,7 @@ compiler/memberExpression.ts	3766	3784	readSuperIncrement	() => number
 compiler/memberExpression.ts	3795	3804	uniqueKey	unique symbol
 compiler/memberExpression.ts	382	387	greet	(message: string) => string
 compiler/memberExpression.ts	3822	3828	Symbol	SymbolConstructor
-compiler/memberExpression.ts	3848	3860	SymbolObject	{ regular: string; [uniqueKey]: number; }
+compiler/memberExpression.ts	3848	3860	SymbolObject	{ [uniqueKey]: number; regular: string; }
 compiler/memberExpression.ts	3868	3877	uniqueKey	unique symbol
 compiler/memberExpression.ts	388	395	message	string
 compiler/memberExpression.ts	3890	3897	regular	string
@@ -2177,9 +2177,9 @@ compiler/memberExpression.ts	4402	4407	value	number
 compiler/memberExpression.ts	4417	4423	common	boolean
 compiler/memberExpression.ts	4450	4461	unionMember	UnionMember
 compiler/memberExpression.ts	4463	4474	UnionMember	any
-compiler/memberExpression.ts	4482	4491	unionKind	"text" | "count"
+compiler/memberExpression.ts	4482	4491	unionKind	"count" | "text"
 compiler/memberExpression.ts	4494	4505	unionMember	UnionMember
-compiler/memberExpression.ts	4506	4510	kind	"text" | "count"
+compiler/memberExpression.ts	4506	4510	kind	"count" | "text"
 compiler/memberExpression.ts	4518	4528	unionValue	string | number
 compiler/memberExpression.ts	453	464	preferences	{ theme: "dark"; }
 compiler/memberExpression.ts	4531	4542	unionMember	UnionMember
@@ -2238,10 +2238,10 @@ compiler/memberExpression.ts	705	710	greet	(message: string) => string
 compiler/memberExpression.ts	727	742	userGreetMethod	(message: string) => string
 compiler/memberExpression.ts	745	749	user	User
 compiler/memberExpression.ts	750	755	greet	(message: string) => string
-compiler/memberExpression.ts	763	772	userTheme	"light" | "dark"
+compiler/memberExpression.ts	763	772	userTheme	"dark" | "light"
 compiler/memberExpression.ts	775	779	user	User
 compiler/memberExpression.ts	780	791	preferences	{ theme: "light" | "dark"; notifications?: boolean; }
-compiler/memberExpression.ts	792	797	theme	"light" | "dark"
+compiler/memberExpression.ts	792	797	theme	"dark" | "light"
 compiler/memberExpression.ts	805	822	userNotifications	boolean | undefined
 compiler/memberExpression.ts	825	829	user	User
 compiler/memberExpression.ts	830	841	preferences	{ theme: "light" | "dark"; notifications?: boolean; }
@@ -2249,7 +2249,7 @@ compiler/memberExpression.ts	842	855	notifications	boolean | undefined
 compiler/memberExpression.ts	864	874	literalKey	"name"
 compiler/memberExpression.ts	887	892	const	any
 compiler/memberExpression.ts	90	97	address	{ city: string; zip: number; }
-compiler/memberExpression.ts	900	908	unionKey	"name" | "id"
+compiler/memberExpression.ts	900	908	unionKey	"id" | "name"
 compiler/memberExpression.ts	926	930	Math	Math
 compiler/memberExpression.ts	931	937	random	() => number
 compiler/memberExpression.ts	969	985	dynamicStringKey	string
@@ -2284,7 +2284,7 @@ compiler/namedTuples.ts	419	431	MessageTuple	[kind: "message", payload: string]
 compiler/namedTuples.ts	44	49	point	Point
 compiler/namedTuples.ts	475	485	ErrorTuple	[kind: "error", message: string]
 compiler/namedTuples.ts	51	56	Point	any
-compiler/namedTuples.ts	527	537	TupleEvent	MessageTuple | ErrorTuple
+compiler/namedTuples.ts	527	537	TupleEvent	ErrorTuple | MessageTuple
 compiler/namedTuples.ts	540	552	MessageTuple	any
 compiler/namedTuples.ts	555	565	ErrorTuple	any
 compiler/namedTuples.ts	581	593	messageEvent	TupleEvent
@@ -2445,7 +2445,7 @@ compiler/satisfiesExpression.ts	1572	1587	constructorLike	{ new (): { value: num
 compiler/satisfiesExpression.ts	1599	1604	value	number
 compiler/satisfiesExpression.ts	1633	1638	value	number
 compiler/satisfiesExpression.ts	1656	1669	parenthesized	number
-compiler/satisfiesExpression.ts	1703	1714	conditional	"yes" | "no"
+compiler/satisfiesExpression.ts	1703	1714	conditional	"no" | "yes"
 compiler/satisfiesExpression.ts	171	176	Named	{ name: string; }
 compiler/satisfiesExpression.ts	1718	1732	literalBoolean	true
 compiler/satisfiesExpression.ts	1778	1785	nullish	"fallback"
@@ -2490,7 +2490,7 @@ compiler/satisfiesExpression.ts	2274	2275	z	number
 compiler/satisfiesExpression.ts	228	229	T	any
 compiler/satisfiesExpression.ts	2291	2296	Point	any
 compiler/satisfiesExpression.ts	2303	2313	wrongTuple	[number, number]
-compiler/satisfiesExpression.ts	235	241	Status	"idle" | "loading" | "done"
+compiler/satisfiesExpression.ts	235	241	Status	"done" | "idle" | "loading"
 compiler/satisfiesExpression.ts	2356	2369	wrongFunction	(value: string) => string
 compiler/satisfiesExpression.ts	2374	2379	value	string
 compiler/satisfiesExpression.ts	2392	2397	value	string
@@ -2740,7 +2740,7 @@ compiler/unaryExpressions.ts	757	769	unaryParen_2	number
 compiler/unaryExpressions.ts	784	796	unaryParen_3	number
 compiler/unaryExpressions.ts	811	821	unaryHex_1	1
 compiler/unaryExpressions.ts	836	846	unaryHex_2	-1
-compiler/unaryExpressions.ts	84	86	x6	"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"
+compiler/unaryExpressions.ts	84	86	x6	"bigint" | "boolean" | "function" | "number" | "object" | "string" | "symbol" | "undefined"
 compiler/unaryExpressions.ts	861	871	unaryHex_3	number
 compiler/unaryExpressions.ts	886	899	unaryBinary_1	0
 compiler/unaryExpressions.ts	915	928	unaryBinary_2	0
@@ -2798,12 +2798,12 @@ compiler/unionTypes.ts	176	181	value	string
 compiler/unionTypes.ts	189	203	indentedString	string
 compiler/unionTypes.ts	20	21	x	string | number | boolean
 compiler/unionTypes.ts	206	213	padLeft	(value: string, padding: string | number) => string
-compiler/unionTypes.ts	249	259	Expression	BooleanLogicExpression | "true" | "false"
+compiler/unionTypes.ts	249	259	Expression	"false" | "true" | BooleanLogicExpression
 compiler/unionTypes.ts	262	284	BooleanLogicExpression	any
-compiler/unionTypes.ts	317	339	BooleanLogicExpression	["and", ...Expression[]] | ["not", Expression]
+compiler/unionTypes.ts	317	339	BooleanLogicExpression	["not", Expression] | ["and", ...Expression[]]
 compiler/unionTypes.ts	353	363	Expression	any
 compiler/unionTypes.ts	377	387	Expression	any
-compiler/unionTypes.ts	397	408	AllLiterals	false | "string" | 123 | 123n | `test${string}`
+compiler/unionTypes.ts	397	408	AllLiterals	"string" | 123 | 123n | false | `test${string}`
 compiler/unionTypes.ts	61	62	x	string | number | boolean
 compiler/unionTypes.ts	72	83	unionReturn	string | number | boolean
 compiler/unionTypes.ts	86	95	unionized	(x: string | number | boolean) => string | number | boolean

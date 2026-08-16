@@ -36,6 +36,7 @@ type WrappedText = `${Text}`;
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (BindingIdentifier)
+                            expected: string & { _brand: 'test-brand'; }
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >                                                ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
@@ -45,9 +46,11 @@ const wrappedIntersection = `${intersectionWithString}`;
 
 const wrappedIntersection = `${intersectionWithString}`;
 >                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (IdentifierReference)
+                                             expected: string & { _brand: 'test-brand'; }
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (TSTypeAliasDeclaration)
+                   expected: string & { _brand: 'test-brand'; }
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >                                        ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
@@ -135,24 +138,29 @@ type WrappedText = Text;
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (BindingIdentifier)
+                            expected: string & { _brand: 'test-brand'; }
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >                                                ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
 
 const wrappedIntersection = intersectionWithString;
 >     ^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (BindingIdentifier)
+                 expected: string & { _brand: 'test-brand'; }
 
 const wrappedIntersection = intersectionWithString;
 >                           ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (IdentifierReference)
+                                          expected: string & { _brand: 'test-brand'; }
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (TSTypeAliasDeclaration)
+                   expected: string & { _brand: 'test-brand'; }
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >                                        ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
 
 type WrappedIntersection = IntersectionWithString;
 >    ^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (TyIntersection) (TSTypeAliasDeclaration)
+                expected: string & { _brand: 'test-brand'; }
 
 type WrappedIntersection = IntersectionWithString;
 >                          ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

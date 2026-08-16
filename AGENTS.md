@@ -9,7 +9,7 @@
 
 ## TypeScript conformance tests
 
-This repository includes a minimal, opt-in conformance harness that compares TypeScript compiler API type records against `oxc_checker` type records for upstream TypeScript compiler cases. The upstream suite is tracked as a git submodule at `vendor/TypeScript`. There are also additional tests under `tests/conformance/cases` and checked-in trimmed external library fixtures under `tests/conformance/external`.
+This repository includes a minimal, opt-in conformance harness that compares TypeScript nightly API type records against `oxc_checker` type records for upstream TypeScript compiler cases. The upstream suite is tracked as a git submodule at `vendor/TypeScript`. There are also additional tests under `tests/conformance/cases` and checked-in trimmed external library fixtures under `tests/conformance/external`.
 
 Initialize the submodule before running the conformance test:
 
@@ -23,19 +23,19 @@ The normal test suite does not run the TypeScript conformance harness:
 cargo test
 ```
 
-The conformance extractor needs the TypeScript compiler API. Install the checked-in conformance npm dev dependencies, build the TypeScript submodule so `vendor/TypeScript/built/local/typescript.js` exists, or set `TYPESCRIPT_MODULE=/path/to/typescript.js`.
+The conformance extractor uses the unstable synchronous API from the exact TypeScript nightly pinned in `tests/conformance/package.json`. Install the checked-in conformance npm dev dependencies before refreshing records:
 
 ```sh
 npm --prefix tests/conformance install
 ```
 
-Run the default type record comparison with the checked-in TypeScript compiler API record cache:
+Run the default type record comparison with the checked-in TypeScript nightly API record cache:
 
 ```sh
 cargo conformance
 ```
 
-Regenerate the checked-in TypeScript compiler API record cache and then run the selected comparison with:
+Regenerate the checked-in TypeScript nightly API record cache and then run the selected comparison with:
 
 ```sh
 cargo conformance-refresh

@@ -72,6 +72,7 @@ export type ArrayKey = number
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
 >           ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeAliasDeclaration)
+              expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
 >                      ^^: any   (TyAny) (TSTypeParameter)
@@ -105,6 +106,7 @@ export type AnyIsEqual<T1, T2> = T1 extends T2
 
   AnyIsEqual,
 > ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (BindingIdentifier)
+    expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
   ArrayKey,
 > ^^^^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -126,6 +128,7 @@ export type AnyIsEqual<T1, T2> = T1 extends T2
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
 >    ^^^^^^^^: V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`   (TyConditional) (TSTypeAliasDeclaration)
+     expected: V extends BrowserNativeObject | Primitive ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
 >             ^: any   (TyAny) (TSTypeParameter)
@@ -156,9 +159,11 @@ type PathImpl<K extends string | number, V, TraversedTypes> = V extends
 
   : true extends AnyIsEqual<TraversedTypes, V>
 >                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeReference)
+                   expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
   : true extends AnyIsEqual<TraversedTypes, V>
 >                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (IdentifierReference)
+                   expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
   : true extends AnyIsEqual<TraversedTypes, V>
 >                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -459,6 +464,7 @@ type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 >    ^^^^^^^^^^^^^: V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`   (TyConditional) (TSTypeAliasDeclaration)
+          expected: V extends BrowserNativeObject | Primitive ? never : V extends readonly (infer U)[] ? U extends BrowserNativeObject | Primitive ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 >                  ^: any   (TyAny) (TSTypeParameter)
@@ -513,9 +519,11 @@ type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 
       : true extends AnyIsEqual<TraversedTypes, V>
 >                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeReference)
+                       expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
       : true extends AnyIsEqual<TraversedTypes, V>
 >                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (IdentifierReference)
+                       expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
       : true extends AnyIsEqual<TraversedTypes, V>
 >                               ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -543,9 +551,11 @@ type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 
     : true extends AnyIsEqual<TraversedTypes, V>
 >                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeReference)
+                     expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
     : true extends AnyIsEqual<TraversedTypes, V>
 >                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (IdentifierReference)
+                     expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
 
     : true extends AnyIsEqual<TraversedTypes, V>
 >                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -774,6 +784,7 @@ export type FieldArrayPathValue<
 
 type ContactForm = {
 >    ^^^^^^^^^^^: { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; }   (TyObject) (TSTypeAliasDeclaration)
+        expected: { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }
 
   user: {
 > ^^^^: { name: string; address: { city: string; zip?: number; }; }   (TyObject) (TSPropertySignature)
@@ -795,6 +806,7 @@ type ContactForm = {
 
   friends: Array<{
 > ^^^^^^^: { name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]   (TyArray) (TSPropertySignature)
+ expected: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]
 
   friends: Array<{
 >          ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
@@ -807,6 +819,7 @@ type ContactForm = {
 
     socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
 >   ^^^^^^^: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]   (TyTuple) (TSPropertySignature)
+   expected: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]
 
     socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
 >               ^^^^: "email"   (TyStringLiteral) (TSPropertySignature)
@@ -822,7 +835,7 @@ type ContactForm = {
 
 type ContactField = FieldPath<ContactForm>
 >    ^^^^^^^^^^^^: { user: { name: string; address: { city: string; zip?: number; }; } extends null | undefined | string | number | boolean | symbol | bigint | Date | FileList | File ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; tags: string[] extends null | undefined | string | number | boolean | symbol | bigint | Date | FileList | File ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }> extends null | undefined | string | number | boolean | symbol | bigint | Date | FileList | File ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
-         expected: "user" | "tags" | "friends" | "user.name" | "user.address" | "user.address.city" | "user.address.zip" | `tags.${number}` | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.1` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value`
+         expected: "friends" | "tags" | "user" | "user.address" | "user.address.city" | "user.address.zip" | "user.name" | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value` | `tags.${number}`
 
 type ContactField = FieldPath<ContactForm>
 >                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeReference)
@@ -861,7 +874,7 @@ type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
 
 type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
 >    ^^^^^^^^^^^: "friends" extends `${infer K}.${infer R}` ? K extends keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; } ? R extends Path<{ user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; }[K]> ? PathValue<{ user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; }[K], R> : never : K extends `${number}` ? never : never : { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }>; }["friends"]   (TyConditional) (TSTypeAliasDeclaration)
-        expected: { name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+        expected: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]
 
 type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
 >                  ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (TSTypeReference)
@@ -887,7 +900,7 @@ type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
 
 const field: ContactField = 'friends.0.socials.1.value'
 >     ^^^^^: ContactField   (TyTypeReference) (BindingIdentifier)
-   expected: "user" | "tags" | "friends" | "user.name" | "user.address" | "user.address.city" | "user.address.zip" | `tags.${number}` | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.1` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value`
+   expected: "friends" | "tags" | "user" | "user.address" | "user.address.city" | "user.address.zip" | "user.name" | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value` | `tags.${number}`
 
 const field: ContactField = 'friends.0.socials.1.value'
 >            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -908,7 +921,7 @@ const city: CityValue = 'Paris'
 
 const friend: FriendValue = {
 >     ^^^^^^: FriendValue   (TyTypeReference) (BindingIdentifier)
-    expected: { name: string; socials: [{ kind: "email"; value: string; }, { kind: "phone"; value: number; }]; }[]
+    expected: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]
 
 const friend: FriendValue = {
 >             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

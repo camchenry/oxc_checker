@@ -11512,7 +11512,7 @@ declare namespace Intl {
 
     type NumberFormatOptionsUseGrouping = {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false" | boolean;
 >        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false" | boolean   (TyConditional) (TSTypeAliasDeclaration)
-                               expected: boolean | "false" | keyof NumberFormatOptionsUseGroupingRegistry | "true"
+                               expected: "false" | "true" | boolean | keyof NumberFormatOptionsUseGroupingRegistry
 
     type NumberFormatOptionsUseGrouping = {} extends NumberFormatOptionsUseGroupingRegistry ? boolean : keyof NumberFormatOptionsUseGroupingRegistry | "true" | "false" | boolean;
 >                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -11570,7 +11570,7 @@ declare namespace Intl {
 
         useGrouping?: NumberFormatOptionsUseGrouping | undefined;
 >       ^^^^^^^^^^^: NumberFormatOptionsUseGrouping | undefined   (TyUnion) (TSPropertySignature)
-           expected: boolean | "false" | keyof NumberFormatOptionsUseGroupingRegistry | "true" | undefined
+           expected: "false" | "true" | boolean | keyof NumberFormatOptionsUseGroupingRegistry | undefined
 
         useGrouping?: NumberFormatOptionsUseGrouping | undefined;
 >                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

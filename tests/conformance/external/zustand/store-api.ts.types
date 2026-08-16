@@ -201,6 +201,7 @@ export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
 
 export type StateCreator<
 >           ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (TSTypeAliasDeclaration)
+                expected: ((setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>, getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
 
   T,
 > ^: any   (TyAny) (TSTypeParameter)

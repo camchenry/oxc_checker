@@ -36,7 +36,7 @@ declare namespace Intl {
 
             type: Exclude<NumberFormatPartTypes, "literal">;
 >           ^^^^: Exclude<NumberFormatPartTypes, "literal">   (TyTypeReference) (TSPropertySignature)
-        expected: "nan" | "infinity" | "percent" | "integer" | "group" | "decimal" | "fraction" | "plusSign" | "minusSign" | "percentSign" | "currency" | "compact" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "unit" | "unknown"
+        expected: "compact" | "currency" | "decimal" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "fraction" | "group" | "infinity" | "integer" | "minusSign" | "nan" | "percent" | "percentSign" | "plusSign" | "unit" | "unknown"
 
             type: Exclude<NumberFormatPartTypes, "literal">;
 >                 ^^^^^^^: any   (TyAny) (TSTypeReference)

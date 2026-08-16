@@ -49057,7 +49057,7 @@ declare namespace WebAssembly {
 
     type ExportValue = Function | Global | Memory | Table;
 >        ^^^^^^^^^^^: Function | Global | Memory | Table   (TyUnion) (TSTypeAliasDeclaration)
-            expected: Function | Memory | Table | Global<keyof ValueTypeMap>
+            expected: Function | Global<keyof ValueTypeMap> | Memory | Table
 
     type ExportValue = Function | Global | Memory | Table;
 >                      ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSTypeReference)

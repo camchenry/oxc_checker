@@ -9,6 +9,7 @@ declare const promise: Promise<number>;
 
 const spreadPromise = { ...promise };
 >     ^^^^^^^^^^^^^: { then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; finally(onfinally?: (() => void) | null | undefined): Promise<number>; [Symbol.toStringTag]: string; }   (TyObject) (BindingIdentifier)
+           expected: { then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; [Symbol.toStringTag]: string; finally(onfinally?: (() => void) | undefined | null): Promise<number>; }
 
 const spreadPromise = { ...promise };
 >                          ^^^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
@@ -39,6 +40,7 @@ declare const map: Map<string, number>;
 
 const mapSpread = { ...map };
 >     ^^^^^^^^^: { clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; [Symbol.iterator](): MapIterator<[string, number]>; [Symbol.toStringTag]: string; }   (TyObject) (BindingIdentifier)
+       expected: { clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; [Symbol.iterator](): MapIterator<[string, number]>; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; [Symbol.toStringTag]: string; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; }
 
 const mapSpread = { ...map };
 >                      ^^^: Map<string, number>   (TyTypeReference) (IdentifierReference)
