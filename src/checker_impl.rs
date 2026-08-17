@@ -9519,11 +9519,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             self.arena(),
             qualified_name,
             namespace.properties.iter().map(|property| TyProperty {
-                ty: self.qualify_namespace_member_type(
-                    qualified_name,
-                    property.name,
-                    property.ty,
-                ),
+                ty: self.qualify_namespace_member_type(qualified_name, property.name, property.ty),
                 ..*property
             }),
         );
