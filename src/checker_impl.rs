@@ -1516,7 +1516,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 AstKind::TSInterfaceDeclaration(interface)
                     if interface.id.name.as_str() == type_name =>
                 {
-                    Some(Ty::error(self.arena(), TypeErrorKind::UnsupportedType))
+                    Some(Ty::any())
                 }
                 AstKind::TSTypeAliasDeclaration(alias) if alias.id.name.as_str() == type_name => {
                     let ty = self.get_type_of_type_alias_declaration(program_id, alias);
@@ -7996,6 +7996,58 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Some(type_parameters)
     }
 
+    fn get_declared_type_of_interface(
+        &self,
+        program_id: ProgramId,
+        interface: &'a TSInterfaceDeclaration<'a>,
+    ) -> Ty<'a> {
+        let type_arguments = self
+            .type_parameters_from_declaration(program_id, interface.type_parameters.as_deref())
+            .into_iter()
+            .map(|parameter| Ty::type_reference(self.arena(), parameter.name, []))
+            .collect::<Vec<_>>();
+        self.type_reference_with_display_type_argument_count(
+            program_id,
+            interface.id.name.as_str(),
+            type_arguments.iter().copied(),
+            type_arguments.len(),
+        )
+    }
+
+    fn get_type_at_interface_declaration(
+        &self,
+        program_id: ProgramId,
+        interface: &'a TSInterfaceDeclaration<'a>,
+    ) -> Ty<'a> {
+        interface
+            .id
+            .symbol_id
+            .get()
+            .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
+            .or_else(|| self.get_value_symbol_for_name(program_id, interface.id.name.as_str()))
+            .filter(|symbol| {
+                // TODO(correctness): OXC currently merges some export-incompatible
+                // interface/namespace declarations that tsgo binds separately.
+                self.symbol_has_non_namespace_value_meaning(*symbol)
+                    || self.primary_symbol_declaration_is_namespace(*symbol)
+            })
+            .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol))
+    }
+
+    fn primary_symbol_declaration_is_namespace(&self, symbol: SymbolRef) -> bool {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        matches!(
+            self.nodes(symbol.program_id).kind(declaration),
+            AstKind::TSModuleDeclaration(_)
+        ) || matches!(
+            self.nodes(symbol.program_id).parent_kind(declaration),
+            AstKind::TSModuleDeclaration(_)
+        )
+    }
+
     fn get_class_for_symbol(&self, symbol: SymbolRef) -> Option<(NodeId, &'a Class<'a>)> {
         self.semantic(symbol.program_id)
             .scoping()
@@ -10014,6 +10066,51 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             SymbolRef::new(program_id, symbol_id),
             ty,
         )
+    }
+
+    /// Resolve an interface-merged symbol's value side using tsgo's `getTypeOfSymbol` flag order.
+    fn get_type_of_merged_interface_value_symbol(&self, symbol: SymbolRef) -> Option<Ty<'a>> {
+        let flags = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_flags(symbol.symbol_id);
+
+        if flags.intersects(SymbolFlags::Variable)
+            && let Some((declaration, declarator)) = self.variable_declarator_for_symbol(symbol)
+        {
+            return Some(
+                self.get_type_of_binding_pattern(
+                    symbol.program_id,
+                    declaration,
+                    BindingPatternKind::VariableDeclarator(declarator),
+                    symbol.symbol_id,
+                )
+                .unwrap_or_else(|| {
+                    self.get_type_of_variable_declarator(symbol.program_id, declaration, declarator)
+                }),
+            );
+        }
+
+        if flags.intersects(SymbolFlags::Function)
+            && let Some((_, declaration, function)) = self
+                .function_declarations_for_symbol(symbol.program_id, symbol.symbol_id)
+                .into_iter()
+                .next()
+        {
+            return Some(self.get_type_of_function_declaration_group(
+                symbol.program_id,
+                function,
+                declaration,
+            ));
+        }
+
+        if flags.intersects(SymbolFlags::Class)
+            && let Some((_, class)) = self.get_class_for_symbol(symbol)
+        {
+            return Some(self.get_type_of_class_declaration(symbol.program_id, class));
+        }
+
+        None
     }
 
     fn has_class_declaration_named(&self, program_id: ProgramId, name: &str) -> bool {
@@ -12399,6 +12496,10 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     self.nodes(node.program_id).parent_kind(node.node_id)
                 {
                     self.get_type_of_type_alias_declaration(node.program_id, alias)
+                } else if let AstKind::TSInterfaceDeclaration(interface) =
+                    self.nodes(node.program_id).parent_kind(node.node_id)
+                {
+                    self.get_type_at_interface_declaration(node.program_id, interface)
                 } else if let AstKind::Class(class) =
                     self.nodes(node.program_id).parent_kind(node.node_id)
                     && self.is_later_duplicate_class_declaration(node.program_id, class)
@@ -12629,15 +12730,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             AstKind::TSImportEqualsDeclaration(declaration) => {
                 self.get_type_of_ts_import_equals_declaration(node.program_id, declaration)
             }
-            AstKind::TSInterfaceDeclaration(interface) => interface
-                .id
-                .symbol_id
-                .get()
-                .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
-                .or_else(|| {
-                    self.get_value_symbol_for_name(node.program_id, interface.id.name.as_str())
-                })
-                .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol)),
+            AstKind::TSInterfaceDeclaration(interface) => {
+                self.get_type_at_interface_declaration(node.program_id, interface)
+            }
             AstKind::ExportSpecifier(specifier) => {
                 self.get_type_of_export_specifier_local(node.program_id, specifier)
             }
@@ -12824,7 +12919,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     }
 
                     match self.nodes(sym.program_id).parent_kind(declaration) {
-                        AstKind::TSInterfaceDeclaration(_) => Ty::any(),
+                        AstKind::TSInterfaceDeclaration(interface) => {
+                            self.get_declared_type_of_interface(sym.program_id, interface)
+                        }
                         AstKind::Class(class) => {
                             self.get_type_of_class_declaration(sym.program_id, class)
                         }
@@ -12869,7 +12966,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     }
                 }
                 AstKind::Class(class) => self.get_type_of_class_declaration(sym.program_id, class),
-                AstKind::TSInterfaceDeclaration(_) => Ty::any(),
+                AstKind::TSInterfaceDeclaration(interface) => {
+                    self.get_declared_type_of_interface(sym.program_id, interface)
+                }
                 AstKind::TSImportEqualsDeclaration(declaration) => {
                     self.get_type_of_ts_import_equals_declaration(sym.program_id, declaration)
                 }
@@ -12946,6 +13045,18 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             declarator,
                         )
                     })
+                }
+                AstKind::TSInterfaceDeclaration(_) => self
+                    .get_type_of_merged_interface_value_symbol(sym)
+                    .unwrap_or_else(Ty::any),
+                AstKind::BindingIdentifier(identifier)
+                    if matches!(
+                        self.nodes(sym.program_id).parent_kind(identifier.node_id()),
+                        AstKind::TSInterfaceDeclaration(_)
+                    ) =>
+                {
+                    self.get_type_of_merged_interface_value_symbol(sym)
+                        .unwrap_or_else(Ty::any)
                 }
                 _ => self.get_declared_type_of_symbol(sym),
             }

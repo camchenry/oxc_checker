@@ -220,26 +220,46 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
-    fn symbol_has_value_meaning(&self, symbol: SymbolRef) -> bool {
-        let declaration = self
-            .semantic(symbol.program_id)
+    pub(crate) fn symbol_has_value_meaning(&self, symbol: SymbolRef) -> bool {
+        self.symbol_has_value_meaning_with_namespaces(symbol, true)
+    }
+
+    pub(crate) fn symbol_has_non_namespace_value_meaning(&self, symbol: SymbolRef) -> bool {
+        self.symbol_has_value_meaning_with_namespaces(symbol, false)
+    }
+
+    fn symbol_has_value_meaning_with_namespaces(
+        &self,
+        symbol: SymbolRef,
+        include_namespaces: bool,
+    ) -> bool {
+        self.semantic(symbol.program_id)
             .scoping()
-            .symbol_declaration(symbol.symbol_id);
-        match self.nodes(symbol.program_id).kind(declaration) {
-            AstKind::VariableDeclarator(_) | AstKind::Function(_) | AstKind::Class(_) => true,
-            AstKind::TSModuleDeclaration(_) => true,
-            AstKind::BindingIdentifier(_) => matches!(
-                self.nodes(symbol.program_id).parent_kind(declaration),
-                AstKind::VariableDeclarator(_)
+            .symbol_declarations(symbol.symbol_id)
+            .any(
+                |declaration| match self.nodes(symbol.program_id).kind(declaration) {
+                    AstKind::VariableDeclarator(_)
                     | AstKind::Function(_)
                     | AstKind::Class(_)
-                    | AstKind::TSModuleDeclaration(_)
-            ),
-            AstKind::ImportSpecifier(_)
-            | AstKind::ImportDefaultSpecifier(_)
-            | AstKind::ImportNamespaceSpecifier(_) => true,
-            _ => false,
-        }
+                    | AstKind::ImportSpecifier(_)
+                    | AstKind::ImportDefaultSpecifier(_)
+                    | AstKind::ImportNamespaceSpecifier(_) => true,
+                    AstKind::TSModuleDeclaration(_) => include_namespaces,
+                    AstKind::BindingIdentifier(_) => {
+                        matches!(
+                            self.nodes(symbol.program_id).parent_kind(declaration),
+                            AstKind::VariableDeclarator(_)
+                                | AstKind::Function(_)
+                                | AstKind::Class(_)
+                        ) || (include_namespaces
+                            && matches!(
+                                self.nodes(symbol.program_id).parent_kind(declaration),
+                                AstKind::TSModuleDeclaration(_)
+                            ))
+                    }
+                    _ => false,
+                },
+            )
     }
 
     pub(crate) fn get_global_array_type_reference_type(

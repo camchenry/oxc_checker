@@ -461,6 +461,54 @@ fn merged_interface_declaration_location_uses_value_type() {
 }
 
 #[test]
+fn interface_symbol_has_named_declared_type() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+        interface Box<T = number> { value: T }
+        ",
+    );
+    let checker = checker(&ret);
+    let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+    let interface_node_id = semantic
+        .nodes()
+        .iter_enumerated()
+        .find_map(|(node_id, node)| {
+            matches!(node.kind(), AstKind::TSInterfaceDeclaration(_)).then_some(node_id)
+        })
+        .unwrap();
+    let identifier_node_id = semantic
+        .nodes()
+        .iter_enumerated()
+        .find_map(|(node_id, node)| match node.kind() {
+            AstKind::BindingIdentifier(identifier)
+                if identifier.name == Ident::from("Box")
+                    && matches!(
+                        semantic.nodes().parent_kind(node_id),
+                        AstKind::TSInterfaceDeclaration(_)
+                    ) =>
+            {
+                Some(node_id)
+            }
+            _ => None,
+        })
+        .unwrap();
+    let interface_node = NodeRef::new(ret.program_id, interface_node_id);
+    let identifier_node = NodeRef::new(ret.program_id, identifier_node_id);
+    let symbol = checker.get_symbol_at_location(identifier_node).unwrap();
+
+    assert_eq!(checker.get_type_at_location(interface_node), Ty::any());
+    assert_eq!(checker.get_type_at_location(identifier_node), Ty::any());
+    assert_eq!(
+        checker
+            .get_declared_type_of_symbol(symbol)
+            .to_type_string(checker.arena),
+        "Box<T>"
+    );
+}
+
+#[test]
 #[expect(clippy::expect_used)]
 fn type_alias_binding_location_uses_type_meaning_for_merged_symbol() {
     let allocator = Allocator::default();
