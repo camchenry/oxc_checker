@@ -454,10 +454,14 @@ function recordForNode(
   node: TypeScriptNode,
   byteOffsets: Uint32Array,
 ): string | undefined {
+  const start = byteOffsets[node.getStart(sourceFile, false)];
+  const end = byteOffsets[node.getEnd()];
+  if (start === undefined || end === undefined) {
+    return undefined;
+  }
+
   if (isExpressionStatement(node)) {
     const typeText = typeToString(checker, checker.getTypeAtLocation(node.expression), node);
-    const start = byteOffsets[node.getStart(sourceFile, false)];
-    const end = byteOffsets[node.getEnd()];
     const text = sanitize(node.getText(sourceFile));
     return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
   }
@@ -472,8 +476,6 @@ function recordForNode(
     return undefined;
   }
 
-  const start = byteOffsets[node.getStart(sourceFile, false)];
-  const end = byteOffsets[node.getEnd()];
   const text = sanitize(node.getText(sourceFile));
   return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
 }
