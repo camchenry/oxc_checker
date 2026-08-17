@@ -10,14 +10,15 @@ use oxc_ast::{
         FormalParameters, Function, IdentifierReference, ImportExpression, LogicalExpression,
         MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase,
         ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
-        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportType,
-        TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature,
-        TSMethodSignatureKind, TSModuleDeclaration, TSModuleDeclarationName, TSNamedTupleMember,
-        TSPropertySignature, TSSignature, TSThisParameter, TSTupleElement, TSType,
-        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
-        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
-        VariableDeclarator, YieldExpression,
+        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportEqualsDeclaration,
+        TSImportType, TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType,
+        TSMethodSignature, TSMethodSignatureKind, TSModuleDeclaration, TSModuleDeclarationName,
+        TSModuleReference, TSNamedTupleMember, TSPropertySignature, TSQualifiedName, TSSignature,
+        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        YieldExpression,
     },
 };
 use oxc_index::IndexVec;
@@ -9308,6 +9309,83 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         self.get_local_exported_symbol(imported_program_id, &imported_name)
     }
 
+    fn get_type_of_ts_import_equals_declaration(
+        &self,
+        program_id: ProgramId,
+        declaration: &'a TSImportEqualsDeclaration<'a>,
+    ) -> Ty<'a> {
+        match &declaration.module_reference {
+            TSModuleReference::ExternalModuleReference(reference) => {
+                let source = reference.expression.value.as_str();
+                let Some(imported_program_id) = self.store.resolved_module(program_id, source)
+                else {
+                    return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
+                };
+                self.get_type_of_export_assignment(imported_program_id)
+                    .unwrap_or_else(|| {
+                        self.get_module_namespace_type(
+                            imported_program_id,
+                            declaration.id.name.as_str(),
+                        )
+                    })
+            }
+            TSModuleReference::IdentifierReference(identifier) => self
+                .symbol_for_identifier_reference(program_id, identifier)
+                .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))
+                .map_or_else(
+                    || Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
+                    |symbol| self.get_type_of_symbol(symbol),
+                ),
+            TSModuleReference::QualifiedName(qualified) => {
+                self.get_type_of_ts_import_equals_qualified_name(program_id, qualified)
+            }
+        }
+    }
+
+    fn get_type_of_ts_import_equals_qualified_name(
+        &self,
+        program_id: ProgramId,
+        qualified: &'a TSQualifiedName<'a>,
+    ) -> Ty<'a> {
+        let object_type = match &qualified.left {
+            TSTypeName::IdentifierReference(identifier) => self
+                .symbol_for_identifier_reference(program_id, identifier)
+                .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))
+                .map_or_else(
+                    || Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
+                    |symbol| self.get_type_of_symbol(symbol),
+                ),
+            TSTypeName::QualifiedName(left) => {
+                self.get_type_of_ts_import_equals_qualified_name(program_id, left)
+            }
+            TSTypeName::ThisExpression(_) => {
+                return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+            }
+        };
+        self.get_property_type_of_static_member_type(
+            program_id,
+            object_type,
+            qualified.right.name.as_str(),
+        )
+        .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember))
+    }
+
+    fn get_type_of_export_assignment(&self, program_id: ProgramId) -> Option<Ty<'a>> {
+        self.nodes(program_id)
+            .iter_enumerated()
+            .find_map(|(node_id, node)| {
+                let AstKind::TSExportAssignment(assignment) = node.kind() else {
+                    return None;
+                };
+                Some(self.get_type_of_expression_with_node(
+                    program_id,
+                    &assignment.expression,
+                    Some(node_id),
+                    GetTypeFlags::PRESERVE_LITERALS,
+                ))
+            })
+    }
+
     fn get_local_exported_symbol(
         &self,
         program_id: ProgramId,
@@ -12385,6 +12463,22 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     identifier.name.as_str(),
                 )
             }
+            AstKind::IdentifierName(_)
+                if matches!(
+                    self.nodes(node.program_id).parent_kind(node.node_id),
+                    AstKind::TSQualifiedName(_)
+                ) && self
+                    .nodes(node.program_id)
+                    .ancestor_kinds(node.node_id)
+                    .any(|kind| matches!(kind, AstKind::TSImportEqualsDeclaration(_))) =>
+            {
+                let AstKind::TSQualifiedName(qualified) =
+                    self.nodes(node.program_id).parent_kind(node.node_id)
+                else {
+                    return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+                };
+                self.get_type_of_ts_import_equals_qualified_name(node.program_id, qualified)
+            }
             AstKind::ObjectProperty(property) => {
                 let in_const_context = self.is_in_const_context(node.program_id, node.node_id);
                 let contextual_type = self.get_contextual_type_of_object_property_value(
@@ -12445,7 +12539,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 self.get_type_of_enum_declaration(node.program_id, declaration)
             }
             AstKind::TSEnumMember(member) => self.get_type_of_enum_member(node.program_id, member),
-            AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
+            AstKind::TSImportEqualsDeclaration(declaration) => {
+                self.get_type_of_ts_import_equals_declaration(node.program_id, declaration)
+            }
             AstKind::TSInterfaceDeclaration(interface) => interface
                 .id
                 .symbol_id
@@ -12685,6 +12781,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             }
                             TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
                         },
+                        AstKind::TSImportEqualsDeclaration(import_equals) => self
+                            .get_type_of_ts_import_equals_declaration(
+                                sym.program_id,
+                                import_equals,
+                            ),
                         _ => Ty::none(),
                     }
                 }
@@ -12699,11 +12800,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     )
                 }),
                 AstKind::TSInterfaceDeclaration(_) => Ty::any(),
+                AstKind::TSImportEqualsDeclaration(declaration) => {
+                    self.get_type_of_ts_import_equals_declaration(sym.program_id, declaration)
+                }
                 // TODO
                 AstKind::ImportSpecifier(_)
                 | AstKind::ImportDefaultSpecifier(_)
                 | AstKind::ImportNamespaceSpecifier(_) => Ty::any(),
-                AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
                 _ => Ty::none(),
             }
         };

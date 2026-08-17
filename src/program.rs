@@ -622,6 +622,19 @@ impl<'a> ProgramStore<'a> {
                         is_import: true,
                     });
                 }
+                AstKind::TSImportEqualsDeclaration(import_equals) => {
+                    let oxc_ast::ast::TSModuleReference::ExternalModuleReference(reference) =
+                        &import_equals.module_reference
+                    else {
+                        continue;
+                    };
+                    requests.push(PendingModuleRequest {
+                        specifier: reference.expression.value.as_str().to_string(),
+                        span: import_equals.span,
+                        is_type: false,
+                        is_import: true,
+                    });
+                }
                 _ => {}
             }
         }

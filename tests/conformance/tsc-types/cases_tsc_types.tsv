@@ -1841,6 +1841,31 @@ compiler/genericInference1.ts	16	19	map	<U>(callbackfn: (value: string, index: n
 compiler/genericInference1.ts	20	21	x	string
 compiler/genericInference1.ts	25	26	x	string
 compiler/genericInference1.ts	27	33	length	number
+compiler/importEquals.ts::assigned.ts	18	23	value	"assigned"
+compiler/importEquals.ts::assigned.ts	42	47	value	"assigned"
+compiler/importEquals.ts::assigned.ts	6	14	assigned	{ value: "assigned"; }
+compiler/importEquals.ts::assigned.ts	72	80	assigned	{ value: "assigned"; }
+compiler/importEquals.ts::main.ts	10	15	Local	typeof Local
+compiler/importEquals.ts::main.ts	109	114	Local	typeof Local
+compiler/importEquals.ts::main.ts	115	120	value	"local"
+compiler/importEquals.ts::main.ts	129	134	named	typeof named
+compiler/importEquals.ts::main.ts	167	175	assigned	{ value: "assigned"; }
+compiler/importEquals.ts::main.ts	211	216	local	"local"
+compiler/importEquals.ts::main.ts	219	229	LocalAlias	typeof Local
+compiler/importEquals.ts::main.ts	230	235	value	"local"
+compiler/importEquals.ts::main.ts	243	248	value	"local"
+compiler/importEquals.ts::main.ts	251	261	ValueAlias	"local"
+compiler/importEquals.ts::main.ts	269	275	answer	42
+compiler/importEquals.ts::main.ts	278	283	named	typeof named
+compiler/importEquals.ts::main.ts	284	290	answer	42
+compiler/importEquals.ts::main.ts	298	311	assignedValue	"assigned"
+compiler/importEquals.ts::main.ts	314	322	assigned	{ value: "assigned"; }
+compiler/importEquals.ts::main.ts	323	328	value	"assigned"
+compiler/importEquals.ts::main.ts	33	38	value	"local"
+compiler/importEquals.ts::main.ts	69	79	LocalAlias	typeof Local
+compiler/importEquals.ts::main.ts	82	87	Local	typeof Local
+compiler/importEquals.ts::main.ts	96	106	ValueAlias	"local"
+compiler/importEquals.ts::named.ts	13	19	answer	42
 compiler/importExpression.ts::main.ts	113	128	moduleNamespace	typeof import("./module.ts")
 compiler/importExpression.ts::main.ts	129	135	answer	42
 compiler/importExpression.ts::main.ts	143	158	importedDefault	"default"
