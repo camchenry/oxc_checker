@@ -2307,6 +2307,36 @@ compiler/namedTuples.ts	810	822	messageEvent	TupleEvent
 compiler/namedTuples.ts	825	829	emit	(...event: TupleEvent) => void
 compiler/namedTuples.ts	825	845	emit(...errorEvent);	void
 compiler/namedTuples.ts	833	843	errorEvent	TupleEvent
+compiler/namespaceValueSide.ts	10	16	Values	typeof Values
+compiler/namespaceValueSide.ts	134	138	make	() => number
+compiler/namespaceValueSide.ts	162	168	hidden	1
+compiler/namespaceValueSide.ts	194	200	Nested	typeof Nested
+compiler/namespaceValueSide.ts	220	224	flag	true
+compiler/namespaceValueSide.ts	261	265	Deep	typeof Deep
+compiler/namespaceValueSide.ts	287	292	count	2
+compiler/namespaceValueSide.ts	324	330	Values	typeof Values
+compiler/namespaceValueSide.ts	34	41	literal	"value"
+compiler/namespaceValueSide.ts	348	354	merged	42
+compiler/namespaceValueSide.ts	374	381	literal	"value"
+compiler/namespaceValueSide.ts	384	390	Values	typeof Values
+compiler/namespaceValueSide.ts	391	398	literal	"value"
+compiler/namespaceValueSide.ts	406	410	made	number
+compiler/namespaceValueSide.ts	413	419	Values	typeof Values
+compiler/namespaceValueSide.ts	420	424	make	() => number
+compiler/namespaceValueSide.ts	434	438	flag	true
+compiler/namespaceValueSide.ts	441	447	Values	typeof Values
+compiler/namespaceValueSide.ts	448	454	Nested	typeof Values.Nested
+compiler/namespaceValueSide.ts	455	459	flag	true
+compiler/namespaceValueSide.ts	467	472	count	2
+compiler/namespaceValueSide.ts	475	481	Values	typeof Values
+compiler/namespaceValueSide.ts	482	488	Nested	typeof Values.Nested
+compiler/namespaceValueSide.ts	489	493	Deep	typeof Values.Nested.Deep
+compiler/namespaceValueSide.ts	494	499	count	2
+compiler/namespaceValueSide.ts	507	513	merged	42
+compiler/namespaceValueSide.ts	516	522	Values	typeof Values
+compiler/namespaceValueSide.ts	523	529	merged	42
+compiler/namespaceValueSide.ts	70	76	hidden	1
+compiler/namespaceValueSide.ts	96	104	TypeOnly	string
 compiler/newable.ts	110	113	x13	{ (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }
 compiler/newable.ts	12	13	T	any
 compiler/newable.ts	135	136	n	number

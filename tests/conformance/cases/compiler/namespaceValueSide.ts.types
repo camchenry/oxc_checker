@@ -1,0 +1,101 @@
+namespace Values {
+>         ^^^^^^: typeof Values   (TyTypeQuery) (TSModuleDeclaration)
+
+namespace Values {
+>         ^^^^^^: typeof Values   (TyTypeQuery) (BindingIdentifier)
+
+  export const literal: "value" = "value";
+>              ^^^^^^^: "value"   (TyStringLiteral) (BindingIdentifier)
+
+  const hidden = 1;
+>       ^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+
+  export type TypeOnly = string;
+>             ^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+
+  export function make(): number {
+>                 ^^^^: () => number   (TyFunction) (BindingIdentifier)
+
+    return hidden;
+>          ^^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+
+  export namespace Nested {
+>                  ^^^^^^: typeof Nested   (TyTypeQuery) (TSModuleDeclaration)
+
+  export namespace Nested {
+>                  ^^^^^^: typeof Nested   (TyTypeQuery) (BindingIdentifier)
+
+    export const flag: true = true;
+>                ^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+
+    export namespace Deep {
+>                    ^^^^: typeof Deep   (TyTypeQuery) (TSModuleDeclaration)
+
+    export namespace Deep {
+>                    ^^^^: typeof Deep   (TyTypeQuery) (BindingIdentifier)
+
+      export const count: 2 = 2;
+>                  ^^^^^: 2   (TyNumberLiteral) (BindingIdentifier)
+
+namespace Values {
+>         ^^^^^^: typeof Values   (TyTypeQuery) (TSModuleDeclaration)
+
+namespace Values {
+>         ^^^^^^: typeof Values   (TyTypeQuery) (BindingIdentifier)
+
+  export const merged: 42 = 42;
+>              ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+
+const literal = Values.literal;
+>     ^^^^^^^: "value"   (TyStringLiteral) (BindingIdentifier)
+
+const literal = Values.literal;
+>               ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+
+const literal = Values.literal;
+>                      ^^^^^^^: "value"   (TyStringLiteral) (StaticMemberExpression)
+
+const made = Values.make();
+>     ^^^^: number   (TyNumber) (BindingIdentifier)
+
+const made = Values.make();
+>            ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+
+const made = Values.make();
+>                   ^^^^: () => number   (TyFunction) (StaticMemberExpression)
+
+const flag = Values.Nested.flag;
+>     ^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+
+const flag = Values.Nested.flag;
+>            ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+
+const flag = Values.Nested.flag;
+>                   ^^^^^^: typeof Values.Nested   (TyTypeQuery) (StaticMemberExpression)
+
+const flag = Values.Nested.flag;
+>                          ^^^^: true   (TyBooleanLiteral) (StaticMemberExpression)
+
+const count = Values.Nested.Deep.count;
+>     ^^^^^: 2   (TyNumberLiteral) (BindingIdentifier)
+
+const count = Values.Nested.Deep.count;
+>             ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+
+const count = Values.Nested.Deep.count;
+>                    ^^^^^^: typeof Values.Nested   (TyTypeQuery) (StaticMemberExpression)
+
+const count = Values.Nested.Deep.count;
+>                           ^^^^: typeof Values.Nested.Deep   (TyTypeQuery) (StaticMemberExpression)
+
+const count = Values.Nested.Deep.count;
+>                                ^^^^^: 2   (TyNumberLiteral) (StaticMemberExpression)
+
+const merged = Values.merged;
+>     ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+
+const merged = Values.merged;
+>              ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+
+const merged = Values.merged;
+>                     ^^^^^^: 42   (TyNumberLiteral) (StaticMemberExpression)

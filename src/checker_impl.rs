@@ -12,12 +12,12 @@ use oxc_ast::{
         ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
         PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportType,
         TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature,
-        TSMethodSignatureKind, TSModuleDeclarationName, TSNamedTupleMember, TSPropertySignature,
-        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
-        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
-        YieldExpression,
+        TSMethodSignatureKind, TSModuleDeclaration, TSModuleDeclarationName, TSNamedTupleMember,
+        TSPropertySignature, TSSignature, TSThisParameter, TSTupleElement, TSType,
+        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
+        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
+        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
+        VariableDeclarator, YieldExpression,
     },
 };
 use oxc_index::IndexVec;
@@ -27,6 +27,7 @@ use oxc_str::{Ident, static_ident};
 use oxc_syntax::{
     module_record::{ExportExportName, ExportLocalName},
     operator::{AssignmentOperator, BinaryOperator, LogicalOperator, UnaryOperator},
+    symbol::SymbolFlags,
 };
 use rustc_hash::{FxHashMap, FxHashSet};
 
@@ -9433,6 +9434,145 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         Ty::module_namespace(self.arena(), namespace_name, properties)
     }
 
+    fn get_type_of_namespace_declaration(
+        &self,
+        program_id: ProgramId,
+        module: &'a TSModuleDeclaration<'a>,
+    ) -> Ty<'a> {
+        let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
+            return Ty::none();
+        };
+        let namespace_type = identifier.symbol_id.get().map_or_else(
+            || Ty::module_namespace(self.arena(), identifier.name.as_str(), []),
+            |symbol_id| {
+                self.get_namespace_symbol_type(
+                    SymbolRef::new(program_id, symbol_id),
+                    identifier.name.as_str(),
+                )
+            },
+        );
+        Ty::type_query(
+            self.arena(),
+            identifier.name.as_str(),
+            namespace_type,
+            std::iter::empty(),
+        )
+    }
+
+    fn get_namespace_symbol_type(&self, symbol: SymbolRef, namespace_name: &'a str) -> Ty<'a> {
+        let mut properties: Vec<TyProperty<'a>> = Vec::new();
+        for declaration in self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declarations(symbol.symbol_id)
+        {
+            let Some(module) = self.namespace_declaration_at(symbol.program_id, declaration) else {
+                continue;
+            };
+            let Some(scope_id) = module.scope_id.get() else {
+                continue;
+            };
+            let scoping = self.semantic(symbol.program_id).scoping();
+            for (name, &member_symbol_id) in scoping.get_bindings(scope_id) {
+                let flags = scoping.symbol_flags(member_symbol_id);
+                if !flags.intersects(SymbolFlags::Value | SymbolFlags::Namespace)
+                    || !self.is_exported_namespace_member(
+                        symbol.program_id,
+                        module.node_id.get(),
+                        member_symbol_id,
+                    )
+                {
+                    continue;
+                }
+                let member_type =
+                    self.get_type_of_symbol(SymbolRef::new(symbol.program_id, member_symbol_id));
+                let member_type =
+                    self.qualify_namespace_member_type(namespace_name, name.as_str(), member_type);
+                let property = Ty::property(self.arena().str(name.as_str()), member_type);
+                if let Some(existing) = properties
+                    .iter_mut()
+                    .find(|existing| existing.name == property.name)
+                {
+                    *existing = property;
+                } else {
+                    properties.push(property);
+                }
+            }
+        }
+        Ty::module_namespace(self.arena(), namespace_name, properties)
+    }
+
+    fn qualify_namespace_member_type(
+        &self,
+        namespace_name: &str,
+        member_name: &str,
+        member_type: Ty<'a>,
+    ) -> Ty<'a> {
+        let TyKind::TypeQuery(query) = self.ty_kind(member_type) else {
+            return member_type;
+        };
+        let TyKind::ModuleNamespace(namespace) = self.ty_kind(query.resolved) else {
+            return member_type;
+        };
+        let qualified_name = self.arena().str(&format!("{namespace_name}.{member_name}"));
+        let resolved = Ty::module_namespace(
+            self.arena(),
+            qualified_name,
+            namespace.properties.iter().map(|property| TyProperty {
+                ty: self.qualify_namespace_member_type(
+                    qualified_name,
+                    property.name,
+                    property.ty,
+                ),
+                ..*property
+            }),
+        );
+        Ty::type_query(
+            self.arena(),
+            qualified_name,
+            resolved,
+            query.type_arguments.iter().copied(),
+        )
+    }
+
+    fn namespace_declaration_at(
+        &self,
+        program_id: ProgramId,
+        declaration: NodeId,
+    ) -> Option<&'a TSModuleDeclaration<'a>> {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSModuleDeclaration(module) => Some(module),
+            AstKind::BindingIdentifier(_) | AstKind::ExportNamedDeclaration(_) => self
+                .namespace_declaration_at(
+                    program_id,
+                    self.nodes(program_id).parent_id(declaration),
+                ),
+            _ => None,
+        }
+    }
+
+    fn is_exported_namespace_member(
+        &self,
+        program_id: ProgramId,
+        module_declaration: NodeId,
+        member_symbol_id: SymbolId,
+    ) -> bool {
+        self.semantic(program_id)
+            .scoping()
+            .symbol_declarations(member_symbol_id)
+            .any(|declaration| {
+                let mut exported = false;
+                for (ancestor_id, node) in self.nodes(program_id).ancestors_enumerated(declaration)
+                {
+                    if ancestor_id == module_declaration {
+                        return exported;
+                    }
+                    exported |= matches!(node.kind(), AstKind::ExportNamedDeclaration(_));
+                }
+                false
+            })
+    }
+
     fn get_type_of_array_expression(
         &self,
         program_id: ProgramId,
@@ -12323,18 +12463,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                 self.get_type_of_export_specifier_local(node.program_id, specifier)
             }
             AstKind::TSModuleDeclaration(module) => {
-                let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
-                    return Ty::none();
-                };
-                // TODO(correctness): model namespace value-side as a real module namespace
-                // type instead of an `any` stub. The `TypeQuery` wrapper preserves the
-                // `typeof Module` display used by TypeScript for namespace declarations.
-                Ty::type_query(
-                    self.arena(),
-                    identifier.name.as_str(),
-                    Ty::any(),
-                    std::iter::empty(),
-                )
+                self.get_type_of_namespace_declaration(node.program_id, module)
             }
             AstKind::TSTypeParameter(_) => Ty::any(),
             AstKind::TSMappedType(_) => Ty::any(),
@@ -12501,12 +12630,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     self.get_type_of_enum_declaration(sym.program_id, declaration)
                 }
                 AstKind::TSModuleDeclaration(module) => match &module.id {
-                    TSModuleDeclarationName::Identifier(identifier) => Ty::type_query(
-                        self.arena(),
-                        identifier.name.as_str(),
-                        Ty::any(),
-                        std::iter::empty(),
-                    ),
+                    TSModuleDeclarationName::Identifier(_) => {
+                        self.get_type_of_namespace_declaration(sym.program_id, module)
+                    }
                     TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
                 },
                 AstKind::BindingIdentifier(identifier) => {
@@ -12558,12 +12684,9 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                             self.get_type_of_enum_declaration(sym.program_id, declaration)
                         }
                         AstKind::TSModuleDeclaration(module) => match &module.id {
-                            TSModuleDeclarationName::Identifier(module_name) => Ty::type_query(
-                                self.arena(),
-                                module_name.name.as_str(),
-                                Ty::any(),
-                                std::iter::empty(),
-                            ),
+                            TSModuleDeclarationName::Identifier(_) => {
+                                self.get_type_of_namespace_declaration(sym.program_id, module)
+                            }
                             TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
                         },
                         _ => Ty::none(),
