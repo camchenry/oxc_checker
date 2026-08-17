@@ -41,12 +41,10 @@ interface AsyncDisposable {
 >                            ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
 
 interface SuppressedError extends Error {
->         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (BindingIdentifier)
-                 expected: SuppressedErrorConstructor
+>         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface SuppressedError extends Error {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                 expected: SuppressedErrorConstructor
+>         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface SuppressedError extends Error {
 >                                 ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -115,12 +113,10 @@ declare var SuppressedError: SuppressedErrorConstructor;
 >                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface DisposableStack {
->         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
-                 expected: DisposableStackConstructor
+>         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface DisposableStack {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                 expected: DisposableStackConstructor
+>         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
 
     readonly disposed: boolean;
 >            ^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
@@ -231,12 +227,10 @@ declare var DisposableStack: DisposableStackConstructor;
 >                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface AsyncDisposableStack {
->         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
-                      expected: AsyncDisposableStackConstructor
+>         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface AsyncDisposableStack {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                      expected: AsyncDisposableStackConstructor
+>         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
 
     readonly disposed: boolean;
 >            ^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)

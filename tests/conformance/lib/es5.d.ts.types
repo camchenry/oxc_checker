@@ -147,12 +147,10 @@ interface PropertyDescriptorMap {
 >                       ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Object {
->         ^^^^^^: ObjectConstructor   (TyTypeReference) (BindingIdentifier)
-        expected: ObjectConstructor
+>         ^^^^^^: ObjectConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Object {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-        expected: ObjectConstructor
+>         ^^^^^^: ObjectConstructor   (TyTypeReference) (BindingIdentifier)
 
     constructor: Function;
 >   ^^^^^^^^^^^: Function   (TyTypeReference) (TSPropertySignature)
@@ -488,12 +486,10 @@ declare var Object: ObjectConstructor;
 >                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Function {
->         ^^^^^^^^: FunctionConstructor   (TyTypeReference) (BindingIdentifier)
-          expected: FunctionConstructor
+>         ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Function {
->         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-          expected: FunctionConstructor
+>         ^^^^^^^^: FunctionConstructor   (TyTypeReference) (BindingIdentifier)
 
     apply(this: Function, thisArg: any, argArray?: any): any;
 >   ^^^^^: { (this: Function, thisArg: any, argArray?: any): any; (this: Function, thisArg: any, argArray?: any): any; }   (TyObject) (TSMethodSignature)
@@ -1071,12 +1067,10 @@ interface IArguments {
 >           ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
 
 interface String {
->         ^^^^^^: StringConstructor   (TyTypeReference) (BindingIdentifier)
-        expected: StringConstructor
+>         ^^^^^^: StringConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface String {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-        expected: StringConstructor
+>         ^^^^^^: StringConstructor   (TyTypeReference) (BindingIdentifier)
 
     toString(): string;
 >   ^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
@@ -1304,12 +1298,10 @@ declare var String: StringConstructor;
 >                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Boolean {
->         ^^^^^^^: BooleanConstructor   (TyTypeReference) (BindingIdentifier)
-         expected: BooleanConstructor
+>         ^^^^^^^: BooleanConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Boolean {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-         expected: BooleanConstructor
+>         ^^^^^^^: BooleanConstructor   (TyTypeReference) (BindingIdentifier)
 
     valueOf(): boolean;
 >   ^^^^^^^: { (): boolean; (): boolean; }   (TyObject) (TSMethodSignature)
@@ -1357,12 +1349,10 @@ declare var Boolean: BooleanConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Number {
->         ^^^^^^: NumberConstructor   (TyTypeReference) (BindingIdentifier)
-        expected: NumberConstructor
+>         ^^^^^^: NumberConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Number {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-        expected: NumberConstructor
+>         ^^^^^^: NumberConstructor   (TyTypeReference) (BindingIdentifier)
 
     toString(radix?: number): string;
 >   ^^^^^^^^: { (radix?: number): string; (radix?: number): string; }   (TyObject) (TSMethodSignature)
@@ -1506,12 +1496,10 @@ interface ImportAttributes {
 >    ^^^: string   (TyString) (TSIndexSignatureName)
 
 interface Math {
->         ^^^^: Math   (TyTypeReference) (BindingIdentifier)
-      expected: Math
+>         ^^^^: Math   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Math {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
-      expected: Math
+>         ^^^^: Math   (TyTypeReference) (BindingIdentifier)
 
     readonly E: number;
 >            ^: number   (TyNumber) (TSPropertySignature)
@@ -1658,12 +1646,10 @@ declare var Math: Math;
 >                 ^^^^: Math   (TyTypeReference) (IdentifierReference)
 
 interface Date {
->         ^^^^: DateConstructor   (TyTypeReference) (BindingIdentifier)
-      expected: DateConstructor
+>         ^^^^: DateConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Date {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
-      expected: DateConstructor
+>         ^^^^: DateConstructor   (TyTypeReference) (BindingIdentifier)
 
     toString(): string;
 >   ^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
@@ -2032,12 +2018,10 @@ interface RegExpExecArray extends Array<string> {
 >   ^^^^^: string   (TyString) (TSPropertySignature)
 
 interface RegExp {
->         ^^^^^^: RegExpConstructor   (TyTypeReference) (BindingIdentifier)
-        expected: RegExpConstructor
+>         ^^^^^^: RegExpConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-        expected: RegExpConstructor
+>         ^^^^^^: RegExpConstructor   (TyTypeReference) (BindingIdentifier)
 
     exec(string: string): RegExpExecArray | null;
 >   ^^^^: { (string: string): RegExpExecArray | null; (string: string): RegExpExecArray | null; }   (TyObject) (TSMethodSignature)
@@ -2157,12 +2141,10 @@ declare var RegExp: RegExpConstructor;
 >                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Error {
->         ^^^^^: ErrorConstructor   (TyTypeReference) (BindingIdentifier)
-       expected: ErrorConstructor
+>         ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Error {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-       expected: ErrorConstructor
+>         ^^^^^: ErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
     name: string;
 >   ^^^^: string   (TyString) (TSPropertySignature)
@@ -2216,12 +2198,10 @@ declare var Error: ErrorConstructor;
 >                  ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface EvalError extends Error {
->         ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (BindingIdentifier)
-           expected: EvalErrorConstructor
+>         ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface EvalError extends Error {
->         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-           expected: EvalErrorConstructor
+>         ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface EvalError extends Error {
 >                           ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -2278,12 +2258,10 @@ declare var EvalError: EvalErrorConstructor;
 >                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface RangeError extends Error {
->         ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (BindingIdentifier)
-            expected: RangeErrorConstructor
+>         ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface RangeError extends Error {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-            expected: RangeErrorConstructor
+>         ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface RangeError extends Error {
 >                            ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -2340,12 +2318,10 @@ declare var RangeError: RangeErrorConstructor;
 >                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface ReferenceError extends Error {
->         ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (BindingIdentifier)
-                expected: ReferenceErrorConstructor
+>         ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface ReferenceError extends Error {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                expected: ReferenceErrorConstructor
+>         ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface ReferenceError extends Error {
 >                                ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -2402,12 +2378,10 @@ declare var ReferenceError: ReferenceErrorConstructor;
 >                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface SyntaxError extends Error {
->         ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (BindingIdentifier)
-             expected: SyntaxErrorConstructor
+>         ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface SyntaxError extends Error {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-             expected: SyntaxErrorConstructor
+>         ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface SyntaxError extends Error {
 >                             ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -2464,12 +2438,10 @@ declare var SyntaxError: SyntaxErrorConstructor;
 >                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface TypeError extends Error {
->         ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (BindingIdentifier)
-           expected: TypeErrorConstructor
+>         ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface TypeError extends Error {
->         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-           expected: TypeErrorConstructor
+>         ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface TypeError extends Error {
 >                           ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -2526,12 +2498,10 @@ declare var TypeError: TypeErrorConstructor;
 >                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface URIError extends Error {
->         ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (BindingIdentifier)
-          expected: URIErrorConstructor
+>         ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface URIError extends Error {
->         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-          expected: URIErrorConstructor
+>         ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface URIError extends Error {
 >                          ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
@@ -2588,12 +2558,10 @@ declare var URIError: URIErrorConstructor;
 >                     ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface JSON {
->         ^^^^: JSON   (TyTypeReference) (BindingIdentifier)
-      expected: JSON
+>         ^^^^: JSON   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface JSON {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
-      expected: JSON
+>         ^^^^: JSON   (TyTypeReference) (BindingIdentifier)
 
     parse(text: string, reviver?: (this: any, key: string, value: any) => any): any;
 >   ^^^^^: { (text: string, reviver?: (this: any, key: string, value: any) => any): any; (text: string, reviver?: (this: any, key: string, value: any) => any): any; }   (TyObject) (TSMethodSignature)
@@ -3235,12 +3203,10 @@ interface ConcatArray<T> {
 >                                        ^: any   (TyAny) (TSTypeReference)
 
 interface Array<T> {
->         ^^^^^: ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-       expected: ArrayConstructor
+>         ^^^^^: ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Array<T> {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-       expected: ArrayConstructor
+>         ^^^^^: ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Array<T> {
 >               ^: any   (TyAny) (TSTypeParameter)
@@ -4595,12 +4561,10 @@ type WeakKey = WeakKeyTypes[keyof WeakKeyTypes];
 >                                 ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface ArrayBuffer {
->         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (BindingIdentifier)
-             expected: ArrayBufferConstructor
+>         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface ArrayBuffer {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-             expected: ArrayBufferConstructor
+>         ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (BindingIdentifier)
 
     readonly byteLength: number;
 >            ^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -4727,12 +4691,10 @@ interface ArrayBufferView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike
 >            ^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^: DataViewConstructor   (TyTypeReference) (BindingIdentifier)
-          expected: DataViewConstructor
+>         ^^^^^^^^: DataViewConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-          expected: DataViewConstructor
+>         ^^^^^^^^: DataViewConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -4969,12 +4931,10 @@ declare var DataView: DataViewConstructor;
 >                     ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-           expected: Int8ArrayConstructor
+>         ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-           expected: Int8ArrayConstructor
+>         ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -5673,12 +5633,10 @@ declare var Int8Array: Int8ArrayConstructor;
 >                      ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-            expected: Uint8ArrayConstructor
+>         ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-            expected: Uint8ArrayConstructor
+>         ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -6377,12 +6335,10 @@ declare var Uint8Array: Uint8ArrayConstructor;
 >                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference) (BindingIdentifier)
-                   expected: Uint8ClampedArrayConstructor
+>         ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                   expected: Uint8ClampedArrayConstructor
+>         ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -7081,12 +7037,10 @@ declare var Uint8ClampedArray: Uint8ClampedArrayConstructor;
 >                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-            expected: Int16ArrayConstructor
+>         ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-            expected: Int16ArrayConstructor
+>         ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -7785,12 +7739,10 @@ declare var Int16Array: Int16ArrayConstructor;
 >                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-             expected: Uint16ArrayConstructor
+>         ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-             expected: Uint16ArrayConstructor
+>         ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -8489,12 +8441,10 @@ declare var Uint16Array: Uint16ArrayConstructor;
 >                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-            expected: Int32ArrayConstructor
+>         ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-            expected: Int32ArrayConstructor
+>         ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -9193,12 +9143,10 @@ declare var Int32Array: Int32ArrayConstructor;
 >                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-             expected: Uint32ArrayConstructor
+>         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-             expected: Uint32ArrayConstructor
+>         ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -9897,12 +9845,10 @@ declare var Uint32Array: Uint32ArrayConstructor;
 >                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-              expected: Float32ArrayConstructor
+>         ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-              expected: Float32ArrayConstructor
+>         ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -10601,12 +10547,10 @@ declare var Float32Array: Float32ArrayConstructor;
 >                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-              expected: Float64ArrayConstructor
+>         ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-              expected: Float64ArrayConstructor
+>         ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -11365,12 +11309,10 @@ declare namespace Intl {
 >       ^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
 
     interface Collator {
->             ^^^^^^^^: CollatorConstructor   (TyTypeReference) (BindingIdentifier)
-              expected: CollatorConstructor
+>             ^^^^^^^^: CollatorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface Collator {
->             ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-              expected: CollatorConstructor
+>             ^^^^^^^^: CollatorConstructor   (TyTypeReference) (BindingIdentifier)
 
         compare(x: string, y: string): number;
 >       ^^^^^^^: { (x: string, y: string): number; (x: string, y: string): number; }   (TyObject) (TSMethodSignature)
@@ -11642,12 +11584,10 @@ declare namespace Intl {
 >                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface NumberFormat {
->             ^^^^^^^^^^^^: NumberFormatConstructor   (TyTypeReference) (BindingIdentifier)
-                  expected: NumberFormatConstructor
+>             ^^^^^^^^^^^^: NumberFormatConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface NumberFormat {
->             ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                  expected: NumberFormatConstructor
+>             ^^^^^^^^^^^^: NumberFormatConstructor   (TyTypeReference) (BindingIdentifier)
 
         format(value: number): string;
 >       ^^^^^^: { (value: number): string; (value: number | bigint): string; (value: number | bigint | StringNumericLiteral): string; (value: number): string; }   (TyObject) (TSMethodSignature)
@@ -11833,12 +11773,10 @@ declare namespace Intl {
 >       ^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
 
     interface DateTimeFormat {
->             ^^^^^^^^^^^^^^: DateTimeFormatConstructor   (TyTypeReference) (BindingIdentifier)
-                    expected: DateTimeFormatConstructor
+>             ^^^^^^^^^^^^^^: DateTimeFormatConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface DateTimeFormat {
->             ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                    expected: DateTimeFormatConstructor
+>             ^^^^^^^^^^^^^^: DateTimeFormatConstructor   (TyTypeReference) (BindingIdentifier)
 
         format(date?: Date | number): string;
 >       ^^^^^^: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: Date | number): string; }   (TyObject) (TSMethodSignature)
@@ -11937,12 +11875,10 @@ declare namespace Intl {
 >                       ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface String {
->         ^^^^^^: StringConstructor   (TyTypeReference) (BindingIdentifier)
-        expected: StringConstructor
+>         ^^^^^^: StringConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface String {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-        expected: StringConstructor
+>         ^^^^^^: StringConstructor   (TyTypeReference) (BindingIdentifier)
 
     localeCompare(that: string, locales?: string | string[], options?: Intl.CollatorOptions): number;
 >   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; }   (TyObject) (TSMethodSignature)
@@ -11964,12 +11900,10 @@ interface String {
                                                                                    expected: any
 
 interface Number {
->         ^^^^^^: NumberConstructor   (TyTypeReference) (BindingIdentifier)
-        expected: NumberConstructor
+>         ^^^^^^: NumberConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Number {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-        expected: NumberConstructor
+>         ^^^^^^: NumberConstructor   (TyTypeReference) (BindingIdentifier)
 
     toLocaleString(locales?: string | string[], options?: Intl.NumberFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
@@ -11988,12 +11922,10 @@ interface Number {
                                                                           expected: any
 
 interface Date {
->         ^^^^: DateConstructor   (TyTypeReference) (BindingIdentifier)
-      expected: DateConstructor
+>         ^^^^: DateConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Date {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
-      expected: DateConstructor
+>         ^^^^: DateConstructor   (TyTypeReference) (BindingIdentifier)
 
     toLocaleString(locales?: string | string[], options?: Intl.DateTimeFormatOptions): string;
 >   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)

@@ -1,10 +1,8 @@
 interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-              expected: Float16ArrayConstructor
+>         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-              expected: Float16ArrayConstructor
+>         ^^^^^^^^^^^^: Float16ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)

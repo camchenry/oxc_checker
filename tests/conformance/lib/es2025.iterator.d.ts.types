@@ -32,7 +32,7 @@ declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // es
 >                                                   ^^^^^^^: any   (TyAny) (TSTypeReference)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^: typeof Iterator   (TyTypeQuery) (TSInterfaceDeclaration)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
 >         ^^^^^^^^: typeof Iterator   (TyTypeQuery) (BindingIdentifier)

@@ -1,10 +1,8 @@
 interface AggregateError extends Error {
->         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (BindingIdentifier)
-                expected: AggregateErrorConstructor
+>         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface AggregateError extends Error {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                expected: AggregateErrorConstructor
+>         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface AggregateError extends Error {
 >                                ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)

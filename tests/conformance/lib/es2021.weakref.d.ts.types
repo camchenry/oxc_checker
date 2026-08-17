@@ -1,10 +1,8 @@
 interface WeakRef<T extends WeakKey> {
->         ^^^^^^^: WeakRefConstructor   (TyTypeReference) (BindingIdentifier)
-         expected: WeakRefConstructor
+>         ^^^^^^^: WeakRefConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface WeakRef<T extends WeakKey> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-         expected: WeakRefConstructor
+>         ^^^^^^^: WeakRefConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface WeakRef<T extends WeakKey> {
 >                 ^: any   (TyAny) (TSTypeParameter)
@@ -76,12 +74,10 @@ declare var WeakRef: WeakRefConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface FinalizationRegistry<T> {
->         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (BindingIdentifier)
-                      expected: FinalizationRegistryConstructor
+>         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface FinalizationRegistry<T> {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                      expected: FinalizationRegistryConstructor
+>         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface FinalizationRegistry<T> {
 >                              ^: any   (TyAny) (TSTypeParameter)

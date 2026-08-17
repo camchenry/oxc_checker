@@ -12310,7 +12310,15 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
             AstKind::TSEnumMember(member) => self.get_type_of_enum_member(node.program_id, member),
             AstKind::TSImportEqualsDeclaration(_) => Ty::any(),
-            AstKind::TSInterfaceDeclaration(_) => Ty::any(),
+            AstKind::TSInterfaceDeclaration(interface) => interface
+                .id
+                .symbol_id
+                .get()
+                .map(|symbol_id| SymbolRef::new(node.program_id, symbol_id))
+                .or_else(|| {
+                    self.get_value_symbol_for_name(node.program_id, interface.id.name.as_str())
+                })
+                .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol)),
             AstKind::ExportSpecifier(specifier) => {
                 self.get_type_of_export_specifier_local(node.program_id, specifier)
             }

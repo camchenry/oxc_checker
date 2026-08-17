@@ -17,7 +17,7 @@ declare namespace Intl {
 >       ^^^^^^^^^^^: "grapheme" | "word" | "sentence" | undefined   (TyUnion) (TSPropertySignature)
 
     interface Segmenter {
->             ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSInterfaceDeclaration)
 
     interface Segmenter {
 >             ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)

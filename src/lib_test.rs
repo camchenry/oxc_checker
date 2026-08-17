@@ -425,6 +425,42 @@ fn default_lib_provides_global_type_symbols() {
 }
 
 #[test]
+fn merged_interface_declaration_location_uses_value_type() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+        interface Widget {}
+        interface WidgetConstructor { new (): Widget }
+        declare var Widget: WidgetConstructor;
+        ",
+    );
+    let checker = checker(&ret);
+    let interface_node_id = ret
+        .store
+        .entry(ret.program_id)
+        .unwrap()
+        .semantic()
+        .nodes()
+        .iter_enumerated()
+        .find_map(|(node_id, node)| {
+            matches!(
+                node.kind(),
+                AstKind::TSInterfaceDeclaration(interface)
+                    if interface.id.name == Ident::from("Widget")
+            )
+            .then_some(node_id)
+        })
+        .unwrap();
+    let node = NodeRef::new(ret.program_id, interface_node_id);
+
+    assert_eq!(
+        checker.type_to_string(checker.get_type_at_location(node), node),
+        "WidgetConstructor"
+    );
+}
+
+#[test]
 #[expect(clippy::expect_used)]
 fn type_alias_binding_location_uses_type_meaning_for_merged_symbol() {
     let allocator = Allocator::default();

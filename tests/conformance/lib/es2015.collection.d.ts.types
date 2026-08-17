@@ -1,10 +1,8 @@
 interface Map<K, V> {
->         ^^^: MapConstructor   (TyTypeReference) (BindingIdentifier)
-     expected: MapConstructor
+>         ^^^: MapConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Map<K, V> {
->         ^^^: any   (TyAny) (TSInterfaceDeclaration)
-     expected: MapConstructor
+>         ^^^: MapConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Map<K, V> {
 >             ^: any   (TyAny) (TSTypeParameter)
@@ -230,12 +228,10 @@ interface ReadonlyMap<K, V> {
 >            ^^^^: number   (TyNumber) (TSPropertySignature)
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: WeakMapConstructor   (TyTypeReference) (BindingIdentifier)
-         expected: WeakMapConstructor
+>         ^^^^^^^: WeakMapConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-         expected: WeakMapConstructor
+>         ^^^^^^^: WeakMapConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface WeakMap<K extends WeakKey, V> {
 >                 ^: any   (TyAny) (TSTypeParameter)
@@ -365,12 +361,10 @@ declare var WeakMap: WeakMapConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface Set<T> {
->         ^^^: SetConstructor   (TyTypeReference) (BindingIdentifier)
-     expected: SetConstructor
+>         ^^^: SetConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Set<T> {
->         ^^^: any   (TyAny) (TSInterfaceDeclaration)
-     expected: SetConstructor
+>         ^^^: SetConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface Set<T> {
 >             ^: any   (TyAny) (TSTypeParameter)
@@ -538,12 +532,10 @@ interface ReadonlySet<T> {
 >            ^^^^: number   (TyNumber) (TSPropertySignature)
 
 interface WeakSet<T extends WeakKey> {
->         ^^^^^^^: WeakSetConstructor   (TyTypeReference) (BindingIdentifier)
-         expected: WeakSetConstructor
+>         ^^^^^^^: WeakSetConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface WeakSet<T extends WeakKey> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-         expected: WeakSetConstructor
+>         ^^^^^^^: WeakSetConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface WeakSet<T extends WeakKey> {
 >                 ^: any   (TyAny) (TSTypeParameter)

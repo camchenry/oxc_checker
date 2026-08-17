@@ -1,10 +1,8 @@
 interface SharedArrayBuffer {
->         ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (BindingIdentifier)
-                   expected: SharedArrayBufferConstructor
+>         ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface SharedArrayBuffer {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                   expected: SharedArrayBufferConstructor
+>         ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (BindingIdentifier)
 
     readonly byteLength: number;
 >            ^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -91,12 +89,10 @@ interface ArrayBufferTypes {
 >                      ^^^^^^^^^^^^^^^^^: SharedArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
 
 interface Atomics {
->         ^^^^^^^: Atomics   (TyTypeReference) (BindingIdentifier)
-         expected: Atomics
+>         ^^^^^^^: Atomics   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface Atomics {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-         expected: Atomics
+>         ^^^^^^^: Atomics   (TyTypeReference) (BindingIdentifier)
 
     add(typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number;
 >   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; }   (TyObject) (TSMethodSignature)

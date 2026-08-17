@@ -677,12 +677,10 @@ declare namespace Temporal {
 >                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface PlainDate {
->             ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (BindingIdentifier)
-               expected: PlainDateConstructor
+>             ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface PlainDate {
->             ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-               expected: PlainDateConstructor
+>             ^^^^^^^^^: PlainDateConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly calendarId: string;
 >                ^^^^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -1105,12 +1103,10 @@ declare namespace Temporal {
 >                                                                                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface PlainTime {
->             ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (BindingIdentifier)
-               expected: PlainTimeConstructor
+>             ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface PlainTime {
->             ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-               expected: PlainTimeConstructor
+>             ^^^^^^^^^: PlainTimeConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly hour: number;
 >                ^^^^: number   (TyNumber) (TSPropertySignature)
@@ -1446,12 +1442,10 @@ declare namespace Temporal {
 >                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     interface PlainDateTime {
->             ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (BindingIdentifier)
-                   expected: PlainDateTimeConstructor
+>             ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface PlainDateTime {
->             ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                   expected: PlainDateTimeConstructor
+>             ^^^^^^^^^^^^^: PlainDateTimeConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly calendarId: string;
 >                ^^^^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -1964,12 +1958,10 @@ declare namespace Temporal {
 >       ^^^^^^: "use" | "ignore" | "prefer" | "reject" | undefined   (TyUnion) (TSPropertySignature)
 
     interface ZonedDateTime {
->             ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (BindingIdentifier)
-                   expected: ZonedDateTimeConstructor
+>             ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface ZonedDateTime {
->             ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                   expected: ZonedDateTimeConstructor
+>             ^^^^^^^^^^^^^: ZonedDateTimeConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly calendarId: string;
 >                ^^^^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -2573,12 +2565,10 @@ declare namespace Temporal {
 >                                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface Duration {
->             ^^^^^^^^: DurationConstructor   (TyTypeReference) (BindingIdentifier)
-              expected: DurationConstructor
+>             ^^^^^^^^: DurationConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface Duration {
->             ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-              expected: DurationConstructor
+>             ^^^^^^^^: DurationConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly years: number;
 >                ^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -2911,12 +2901,10 @@ declare namespace Temporal {
 >                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     interface Instant {
->             ^^^^^^^: InstantConstructor   (TyTypeReference) (BindingIdentifier)
-             expected: InstantConstructor
+>             ^^^^^^^: InstantConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface Instant {
->             ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-             expected: InstantConstructor
+>             ^^^^^^^: InstantConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly epochMilliseconds: number;
 >                ^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
@@ -3216,12 +3204,10 @@ declare namespace Temporal {
 >       ^^^: number   (TyNumber) (TSPropertySignature)
 
     interface PlainYearMonth {
->             ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (BindingIdentifier)
-                    expected: PlainYearMonthConstructor
+>             ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface PlainYearMonth {
->             ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                    expected: PlainYearMonthConstructor
+>             ^^^^^^^^^^^^^^: PlainYearMonthConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly calendarId: string;
 >                ^^^^^^^^^^: string   (TyString) (TSPropertySignature)
@@ -3551,12 +3537,10 @@ declare namespace Temporal {
 >       ^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
     interface PlainMonthDay {
->             ^^^^^^^^^^^^^: PlainMonthDayConstructor   (TyTypeReference) (BindingIdentifier)
-                   expected: PlainMonthDayConstructor
+>             ^^^^^^^^^^^^^: PlainMonthDayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface PlainMonthDay {
->             ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                   expected: PlainMonthDayConstructor
+>             ^^^^^^^^^^^^^: PlainMonthDayConstructor   (TyTypeReference) (BindingIdentifier)
 
         readonly calendarId: string;
 >                ^^^^^^^^^^: string   (TyString) (TSPropertySignature)

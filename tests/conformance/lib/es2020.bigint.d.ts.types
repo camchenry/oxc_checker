@@ -50,12 +50,10 @@ interface BigIntToLocaleStringOptions {
 >   ^^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
 
 interface BigInt {
->         ^^^^^^: BigIntConstructor   (TyTypeReference) (BindingIdentifier)
-        expected: BigIntConstructor
+>         ^^^^^^: BigIntConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface BigInt {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-        expected: BigIntConstructor
+>         ^^^^^^: BigIntConstructor   (TyTypeReference) (BindingIdentifier)
 
     toString(radix?: number): string;
 >   ^^^^^^^^: { (radix?: number): string; (radix?: number): string; }   (TyObject) (TSMethodSignature)
@@ -141,12 +139,10 @@ declare var BigInt: BigIntConstructor;
 >                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-               expected: BigInt64ArrayConstructor
+>         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-               expected: BigInt64ArrayConstructor
+>         ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
@@ -1065,12 +1061,10 @@ declare var BigInt64Array: BigInt64ArrayConstructor;
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
-                expected: BigUint64ArrayConstructor
+>         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                expected: BigUint64ArrayConstructor
+>         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (BindingIdentifier)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)

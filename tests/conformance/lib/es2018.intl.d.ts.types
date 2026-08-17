@@ -77,12 +77,10 @@ declare namespace Intl {
 >       ^^^^^^^^^^^^^^^^^^^^^^^^: number | undefined   (TyUnion) (TSPropertySignature)
 
     interface PluralRules {
->             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (BindingIdentifier)
-                 expected: PluralRulesConstructor
+>             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (TSInterfaceDeclaration)
 
     interface PluralRules {
->             ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
-                 expected: PluralRulesConstructor
+>             ^^^^^^^^^^^: PluralRulesConstructor   (TyTypeReference) (BindingIdentifier)
 
         resolvedOptions(): ResolvedPluralRulesOptions;
 >       ^^^^^^^^^^^^^^^: { (): ResolvedPluralRulesOptions; (): ResolvedPluralRulesOptions; }   (TyObject) (TSMethodSignature)
