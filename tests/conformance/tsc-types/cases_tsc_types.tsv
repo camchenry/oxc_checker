@@ -2601,6 +2601,57 @@ compiler/sequenceExpressions.ts	164	176	nestedResult	"nested"
 compiler/sequenceExpressions.ts	37	49	stringResult	"result"
 compiler/sequenceExpressions.ts	7	19	numberResult	42
 compiler/sequenceExpressions.ts	73	86	booleanResult	true
+compiler/stringInference.ts	107	108	T	any
+compiler/stringInference.ts	127	128	T	any
+compiler/stringInference.ts	146	147	K	any
+compiler/stringInference.ts	157	158	R	any
+compiler/stringInference.ts	16	20	name	string
+compiler/stringInference.ts	164	165	K	any
+compiler/stringInference.ts	170	178	Tupleify	any
+compiler/stringInference.ts	179	180	R	any
+compiler/stringInference.ts	186	187	T	any
+compiler/stringInference.ts	195	201	Tuple1	["test"]
+compiler/stringInference.ts	204	212	Tupleify	any
+compiler/stringInference.ts	226	232	Tuple2	["test", "property"]
+compiler/stringInference.ts	235	243	Tupleify	any
+compiler/stringInference.ts	266	272	Tuple3	["test", "property", "another"]
+compiler/stringInference.ts	275	283	Tupleify	any
+compiler/stringInference.ts	31	38	address	{ city: string; }
+compiler/stringInference.ts	314	320	Tuple4	["", "property", "another"]
+compiler/stringInference.ts	323	331	Tupleify	any
+compiler/stringInference.ts	359	361	T0	"user"
+compiler/stringInference.ts	388	389	K	any
+compiler/stringInference.ts	394	395	K	any
+compiler/stringInference.ts	409	411	T1	true
+compiler/stringInference.ts	443	444	K	any
+compiler/stringInference.ts	454	455	R	any
+compiler/stringInference.ts	46	50	city	string
+compiler/stringInference.ts	478	480	T2	{ name: string; }
+compiler/stringInference.ts	5	9	User	{ name: string; address: { city: string; }; }
+compiler/stringInference.ts	512	513	K	any
+compiler/stringInference.ts	523	524	R	any
+compiler/stringInference.ts	529	530	R	any
+compiler/stringInference.ts	539	547	UserKeys	any
+compiler/stringInference.ts	550	554	Pick	any
+compiler/stringInference.ts	555	559	User	any
+compiler/stringInference.ts	561	562	R	any
+compiler/stringInference.ts	585	587	T3	{ city: string; }
+compiler/stringInference.ts	590	598	Tupleify	any
+compiler/stringInference.ts	635	637	P1	any
+compiler/stringInference.ts	645	647	P2	any
+compiler/stringInference.ts	655	657	P3	any
+compiler/stringInference.ts	663	665	P2	any
+compiler/stringInference.ts	674	682	UserKeys	any
+compiler/stringInference.ts	689	691	P3	any
+compiler/stringInference.ts	70	78	UserKeys	keyof User
+compiler/stringInference.ts	706	710	User	any
+compiler/stringInference.ts	711	713	P2	any
+compiler/stringInference.ts	723	727	Pick	any
+compiler/stringInference.ts	728	732	User	any
+compiler/stringInference.ts	733	735	P2	any
+compiler/stringInference.ts	738	740	P3	any
+compiler/stringInference.ts	87	91	User	any
+compiler/stringInference.ts	98	106	Tupleify	T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
 compiler/structuralMappedProperties.ts	104	116	optionalName	string | undefined
 compiler/structuralMappedProperties.ts	119	131	optionalCopy	Partial<Source>
 compiler/structuralMappedProperties.ts	132	136	name	string | undefined
