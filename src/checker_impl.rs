@@ -5822,6 +5822,16 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             }
         }
         .or_else(|| {
+            let Expression::Identifier(identifier) = &member.object else {
+                return None;
+            };
+            let symbol = self
+                .symbol_for_identifier_reference(program_id, identifier)
+                .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))?;
+            let (class_node_id, class) = self.get_class_for_symbol(symbol)?;
+            self.get_class_member_type(symbol.program_id, class_node_id, class, property_name, true)
+        })
+        .or_else(|| {
             if matches!(member.object, Expression::ThisExpression(_)) {
                 node_id
                     .and_then(|node_id| self.get_enclosing_class_instance_type(program_id, node_id))
@@ -8017,7 +8027,26 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             class,
             self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
             false,
+            false,
         )
+    }
+
+    fn get_type_of_class_declaration(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
+        class.id.as_ref().map_or_else(Ty::any, |identifier| {
+            let resolved = self.get_type_of_class_constructor(
+                program_id,
+                class,
+                self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
+                false,
+                true,
+            );
+            Ty::type_query(
+                self.arena(),
+                identifier.name.as_str(),
+                resolved,
+                std::iter::empty(),
+            )
+        })
     }
 
     fn get_type_of_duplicate_class_declaration(
@@ -8034,7 +8063,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     .str(&type_argument.to_type_string(self.arena()));
                 Ty::type_parameter_with_display_default(name, None, None, true)
             });
-        self.get_type_of_class_constructor(program_id, class, type_parameters, true)
+        self.get_type_of_class_constructor(program_id, class, type_parameters, true, false)
     }
 
     fn get_type_of_class_constructor(
@@ -8043,6 +8072,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         class: &'a Class<'a>,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         display_type_parameters_as_arguments: bool,
+        include_value_properties: bool,
     ) -> Ty<'a> {
         let class_node_id = class.node_id.get();
         let instance_type = Ty::object(
@@ -8096,12 +8126,68 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             None,
             display_type_parameters_as_arguments,
         );
+        let prototype_type = class.id.as_ref().map_or(instance_type, |identifier| {
+            Ty::type_reference(
+                self.arena(),
+                identifier.name.as_str(),
+                class
+                    .type_parameters
+                    .as_ref()
+                    .into_iter()
+                    .flat_map(|parameters| parameters.params.iter().map(|_| Ty::any())),
+            )
+        });
+        let properties = if include_value_properties {
+            self.arena().alloc_slice_from_iter(
+                std::iter::once(Ty::property("prototype", prototype_type)).chain(
+                    class.body.body.iter().filter_map(|element| match element {
+                        ClassElement::MethodDefinition(method)
+                            if method.r#static
+                                && method.kind != MethodDefinitionKind::Constructor =>
+                        {
+                            let name = property_key_name_str(&method.key)?;
+                            Some(TyProperty {
+                                name,
+                                flags: property_name_flags(&method.key),
+                                computed: false,
+                                optional: false,
+                                method: true,
+                                readonly: false,
+                                ty: self.get_type_of_method_definition(
+                                    program_id,
+                                    method,
+                                    class_node_id,
+                                ),
+                            })
+                        }
+                        ClassElement::PropertyDefinition(property) if property.r#static => {
+                            let name = property_key_name_str(&property.key)?;
+                            Some(TyProperty {
+                                name,
+                                flags: property_name_flags(&property.key),
+                                computed: false,
+                                optional: property.optional,
+                                method: false,
+                                readonly: property.readonly,
+                                ty: self.get_type_of_property_definition(
+                                    program_id,
+                                    property,
+                                    Some(class_node_id),
+                                ),
+                            })
+                        }
+                        _ => None,
+                    }),
+                ),
+            )
+        } else {
+            &[]
+        };
+        let signatures = self
+            .arena()
+            .alloc_slice_from_iter([Signature::new(SignatureKind::Construct, constructor_type)]);
 
-        Ty::object_with_signatures(
-            self.arena(),
-            [],
-            [Signature::new(SignatureKind::Construct, constructor_type)],
-        )
+        Ty::object_from_slices(self.arena(), properties, signatures, &[], false)
     }
 
     fn class_base_type_arguments(
@@ -8172,7 +8258,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .iter()
             .find_map(|element| match element {
                 ClassElement::MethodDefinition(method)
-                    if property_key_name_str(&method.key) == Some(property_name) =>
+                    if method.r#static == is_static
+                        && property_key_name_str(&method.key) == Some(property_name) =>
                 {
                     Some(self.get_type_of_method_definition(program_id, method, class_node_id))
                 }
@@ -12727,7 +12814,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                     }
                     TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
                 },
-                AstKind::BindingIdentifier(identifier) => {
+                AstKind::BindingIdentifier(_) => {
                     if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
                         sym.program_id,
                         declaration,
@@ -12738,16 +12825,8 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
 
                     match self.nodes(sym.program_id).parent_kind(declaration) {
                         AstKind::TSInterfaceDeclaration(_) => Ty::any(),
-                        AstKind::Class(_) => {
-                            // TODO(correctness): model the class value-side as a real constructor
-                            // object type instead of a `Ty::any` stub. Today the `Ty::TypeQuery`
-                            // name field is what downstream class-static lookups key off.
-                            Ty::type_query(
-                                self.arena(),
-                                identifier.name.as_str(),
-                                Ty::any(),
-                                std::iter::empty(),
-                            )
+                        AstKind::Class(class) => {
+                            self.get_type_of_class_declaration(sym.program_id, class)
                         }
                         AstKind::Function(function) => self.get_type_of_function_declaration_group(
                             sym.program_id,
@@ -12789,16 +12868,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
                         _ => Ty::none(),
                     }
                 }
-                AstKind::Class(class) => class.id.as_ref().map_or_else(Ty::any, |identifier| {
-                    // TODO(correctness): same as above—replace `Ty::any` stub with a real
-                    // constructor object type for the class.
-                    Ty::type_query(
-                        self.arena(),
-                        identifier.name.as_str(),
-                        Ty::any(),
-                        std::iter::empty(),
-                    )
-                }),
+                AstKind::Class(class) => self.get_type_of_class_declaration(sym.program_id, class),
                 AstKind::TSInterfaceDeclaration(_) => Ty::any(),
                 AstKind::TSImportEqualsDeclaration(declaration) => {
                     self.get_type_of_ts_import_equals_declaration(sym.program_id, declaration)

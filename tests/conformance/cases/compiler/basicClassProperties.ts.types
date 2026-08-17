@@ -138,3 +138,45 @@ const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
 >                                                            ^^^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)
+
+const _classPropertyPrototype = ClassPropertyExample.prototype;
+>     ^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (BindingIdentifier)
+
+const _classPropertyPrototype = ClassPropertyExample.prototype;
+>                               ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+
+const _classPropertyPrototype = ClassPropertyExample.prototype;
+>                                                    ^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (StaticMemberExpression)
+
+const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
+>                                    ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+
+const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
+>                                                         ^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (StaticMemberExpression)
+
+const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
+>                                                                   ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+
+const _ClassPropertyConstructor = ClassPropertyExample;
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (BindingIdentifier)
+
+const _ClassPropertyConstructor = ClassPropertyExample;
+>                                 ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+
+const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
+>                                    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+
+const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
+>                                                              ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+
+const _classPropertyAliasedInstance = new _ClassPropertyConstructor();
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (BindingIdentifier)
+
+const _classPropertyAliasedInstance = new _ClassPropertyConstructor();
+>                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)

@@ -60,9 +60,23 @@ compiler/assignmentExpressions.ts	59	61	x3	string
 compiler/assignmentExpressions.ts	64	65	x	any
 compiler/assignmentExpressions.ts	83	85	x4	number
 compiler/assignmentExpressions.ts	88	89	x	any
+compiler/basicClassProperties.ts	1014	1037	_classPropertyPrototype	ClassPropertyExample
+compiler/basicClassProperties.ts	1040	1060	ClassPropertyExample	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	1061	1070	prototype	ClassPropertyExample
+compiler/basicClassProperties.ts	1078	1106	_classPropertyPrototypeReady	boolean
+compiler/basicClassProperties.ts	1109	1129	ClassPropertyExample	typeof ClassPropertyExample
 compiler/basicClassProperties.ts	111	116	count	number
+compiler/basicClassProperties.ts	1130	1139	prototype	ClassPropertyExample
+compiler/basicClassProperties.ts	1140	1145	ready	boolean
+compiler/basicClassProperties.ts	1153	1178	_ClassPropertyConstructor	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	1181	1201	ClassPropertyExample	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	1209	1237	_classPropertyAliasedEnabled	boolean
 compiler/basicClassProperties.ts	124	128	item	ClassPropertyItem
+compiler/basicClassProperties.ts	1240	1265	_ClassPropertyConstructor	typeof ClassPropertyExample
+compiler/basicClassProperties.ts	1266	1273	enabled	boolean
+compiler/basicClassProperties.ts	1281	1310	_classPropertyAliasedInstance	ClassPropertyExample
 compiler/basicClassProperties.ts	130	147	ClassPropertyItem	typeof ClassPropertyItem
+compiler/basicClassProperties.ts	1317	1342	_ClassPropertyConstructor	typeof ClassPropertyExample
 compiler/basicClassProperties.ts	154	171	ClassPropertyItem	typeof ClassPropertyItem
 compiler/basicClassProperties.ts	184	191	enabled	boolean
 compiler/basicClassProperties.ts	212	220	getReady	() => boolean
