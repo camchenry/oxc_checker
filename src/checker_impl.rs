@@ -21,7 +21,6 @@ use oxc_ast::{
         YieldExpression,
     },
 };
-use oxc_index::IndexVec;
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
@@ -48,8 +47,7 @@ use crate::{
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self, ProgramId},
-    property_key_name_str, push_type_parameter_names, ts_type_name_to_str,
-    ts_type_query_expr_name_to_str, type_facts,
+    property_key_name_str, ts_type_name_to_str, ts_type_query_expr_name_to_str, type_facts,
     type_set::UnionAccumulator,
     types::{
         CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
@@ -210,6 +208,32 @@ impl<'a> CallKind<'a> {
         match self {
             CallKind::Call(call_expression) => call_expression.type_arguments.as_deref(),
             CallKind::New(new_expression) => new_expression.type_arguments.as_deref(),
+        }
+    }
+
+    fn callee(self) -> &'a Expression<'a> {
+        match self {
+            CallKind::Call(call_expression) => &call_expression.callee,
+            CallKind::New(new_expression) => &new_expression.callee,
+        }
+    }
+
+    fn argument_index(self, span: Span) -> Option<usize> {
+        let arguments = match self {
+            CallKind::Call(call_expression) => &call_expression.arguments,
+            CallKind::New(new_expression) => &new_expression.arguments,
+        };
+        arguments.iter().position(|argument| {
+            argument
+                .as_expression()
+                .is_some_and(|expression| expression.span() == span)
+        })
+    }
+
+    const fn signature_kind(self) -> SignatureKind {
+        match self {
+            CallKind::Call(_) => SignatureKind::Call,
+            CallKind::New(_) => SignatureKind::Construct,
         }
     }
 }
@@ -8689,33 +8713,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     AstKind::CallExpression(call_expression) => Some(call_expression),
                     _ => None,
                 })?;
-        let argument_index = call_expression.arguments.iter().position(|argument| {
-            argument
-                .as_expression()
-                .is_some_and(|expression| expression.span() == function_span)
-        })?;
-
-        let callee_type = self.get_type_of_expression_with_node(
+        self.get_contextual_type_of_call_kind_argument(
             program_id,
-            &call_expression.callee,
-            Some(node_id),
-            GetTypeFlags::NONE,
-        );
-        let callee_signature = self
-            .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
-            .into_iter()
-            .next()?;
-        let callee_function = callee_signature.function(self.arena());
-        let parameter_type = self.get_call_parameter_type_at(callee_function, argument_index)?;
-        let parameter_type =
-            self.inference_contextual_parameter_type(callee_function, parameter_type);
-        let substitutions = self.explicit_call_type_parameter_substitutions(
-            program_id,
-            callee_function,
+            node_id,
+            function_span,
             CallKind::Call(call_expression),
-        );
-        let mapper = substitutions.to_mapper(self.arena());
-        Some(self.instantiate_type(parameter_type, &mapper))
+        )
     }
 
     fn get_contextual_type_of_construct_argument(
@@ -8731,31 +8734,37 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                     AstKind::NewExpression(new_expression) => Some(new_expression),
                     _ => None,
                 })?;
-        let argument_index = new_expression.arguments.iter().position(|argument| {
-            argument
-                .as_expression()
-                .is_some_and(|expression| expression.span() == function_span)
-        })?;
+        self.get_contextual_type_of_call_kind_argument(
+            program_id,
+            node_id,
+            function_span,
+            CallKind::New(new_expression),
+        )
+    }
 
+    fn get_contextual_type_of_call_kind_argument(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+        argument_span: Span,
+        call_kind: CallKind<'a>,
+    ) -> Option<Ty<'a>> {
+        let argument_index = call_kind.argument_index(argument_span)?;
         let callee_type = self.get_type_of_expression_with_node(
             program_id,
-            &new_expression.callee,
+            call_kind.callee(),
             Some(node_id),
             GetTypeFlags::NONE,
         );
-        let construct_signature = self
-            .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Construct)
+        let signature = self
+            .get_signatures_of_type_in_program(program_id, callee_type, call_kind.signature_kind())
             .into_iter()
             .next()?;
-        let construct_function = construct_signature.function(self.arena());
-        let parameter_type = self.get_call_parameter_type_at(construct_function, argument_index)?;
-        let parameter_type =
-            self.inference_contextual_parameter_type(construct_function, parameter_type);
-        let substitutions = self.explicit_call_type_parameter_substitutions(
-            program_id,
-            construct_function,
-            CallKind::New(new_expression),
-        );
+        let function = signature.function(self.arena());
+        let parameter_type = self.get_call_parameter_type_at(function, argument_index)?;
+        let parameter_type = self.inference_contextual_parameter_type(function, parameter_type);
+        let substitutions =
+            self.explicit_call_type_parameter_substitutions(program_id, function, call_kind);
         let mapper = substitutions.to_mapper(self.arena());
         Some(self.instantiate_type(parameter_type, &mapper))
     }
@@ -8881,77 +8890,18 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         object: &'a ObjectExpression<'a>,
         current_value_span: Span,
     ) -> Option<Ty<'a>> {
-        let call_expression = self.nodes(program_id).ancestors(node_id).find_map(|node| {
-            let AstKind::CallExpression(call_expression) = node.kind() else {
-                return None;
-            };
-            call_expression
-                .arguments
-                .iter()
-                .any(|argument| {
-                    argument
-                        .as_expression()
-                        .is_some_and(|expression| expression.span() == object.span)
-                })
-                .then_some(call_expression)
-        })?;
-        let argument_index = call_expression.arguments.iter().position(|argument| {
-            argument
-                .as_expression()
-                .is_some_and(|expression| expression.span() == object.span)
-        })?;
-
-        let callee_type = self.get_type_of_expression_with_node(
+        self.get_contextual_type_of_call_argument_from_intra_expression(
             program_id,
-            &call_expression.callee,
-            Some(node_id),
-            GetTypeFlags::NONE,
-        );
-        let callee_signature = self
-            .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
-            .into_iter()
-            .next()?;
-        let callee_function = callee_signature.function(self.arena());
-        let parameter_type = self.get_call_parameter_type_at(callee_function, argument_index)?;
-
-        let argument_types = call_expression
-            .arguments
-            .iter()
-            .enumerate()
-            .filter_map(|(index, argument)| {
-                let argument = argument.as_expression()?;
-                let argument_type = if argument.span() == object.span {
-                    self.get_type_of_object_expression_excluding_property_value(
-                        program_id,
-                        object,
-                        current_value_span,
-                    )
-                } else {
-                    let parameter_type = self.get_call_parameter_type_at(callee_function, index);
-                    let flags =
-                        if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
-                            GetTypeFlags::PRESERVE_LITERALS
-                        } else {
-                            GetTypeFlags::NONE
-                        };
-                    self.get_type_of_expression_with_node(
-                        program_id,
-                        argument,
-                        Some(node_id),
-                        flags,
-                    )
-                };
-                Some((index, argument_type))
-            })
-            .collect::<Vec<_>>();
-
-        let inference = self.infer_call_type_parameter_resolution_from_argument_types(
-            program_id,
-            callee_function,
-            call_expression.type_arguments.as_deref(),
-            argument_types,
-        );
-        Some(self.instantiate_type(parameter_type, inference.mapper()))
+            node_id,
+            object.span,
+            || {
+                self.get_type_of_object_expression_excluding_property_value(
+                    program_id,
+                    object,
+                    current_value_span,
+                )
+            },
+        )
     }
 
     fn get_type_of_object_expression_excluding_property_value(
@@ -9030,6 +8980,32 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         array: &'a ArrayExpression<'a>,
         element_index: usize,
     ) -> Option<Ty<'a>> {
+        let array_context = self.get_contextual_type_of_call_argument_from_intra_expression(
+            program_id,
+            node_id,
+            array.span,
+            || {
+                self.get_type_of_array_expression(
+                    program_id,
+                    array,
+                    None,
+                    ExpressionCheckContext::new_in_check_mode(
+                        GetTypeFlags::NONE,
+                        CheckMode::FORCE_TUPLE,
+                    ),
+                )
+            },
+        )?;
+        self.get_contextual_type_of_array_element_at(program_id, array_context, element_index)
+    }
+
+    fn get_contextual_type_of_call_argument_from_intra_expression(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+        contextual_argument_span: Span,
+        contextual_argument_type: impl Fn() -> Ty<'a>,
+    ) -> Option<Ty<'a>> {
         let call_expression = self.nodes(program_id).ancestors(node_id).find_map(|node| {
             let AstKind::CallExpression(call_expression) = node.kind() else {
                 return None;
@@ -9040,14 +9016,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 .any(|argument| {
                     argument
                         .as_expression()
-                        .is_some_and(|expression| expression.span() == array.span)
+                        .is_some_and(|expression| expression.span() == contextual_argument_span)
                 })
                 .then_some(call_expression)
         })?;
         let argument_index = call_expression.arguments.iter().position(|argument| {
             argument
                 .as_expression()
-                .is_some_and(|expression| expression.span() == array.span)
+                .is_some_and(|expression| expression.span() == contextual_argument_span)
         })?;
 
         let callee_type = self.get_type_of_expression_with_node(
@@ -9069,16 +9045,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             .enumerate()
             .filter_map(|(index, argument)| {
                 let argument = argument.as_expression()?;
-                let argument_type = if argument.span() == array.span {
-                    self.get_type_of_array_expression(
-                        program_id,
-                        array,
-                        None,
-                        ExpressionCheckContext::new_in_check_mode(
-                            GetTypeFlags::NONE,
-                            CheckMode::FORCE_TUPLE,
-                        ),
-                    )
+                let argument_type = if argument.span() == contextual_argument_span {
+                    contextual_argument_type()
                 } else {
                     let parameter_type = self.get_call_parameter_type_at(callee_function, index);
                     let flags =
@@ -9103,8 +9071,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             call_expression.type_arguments.as_deref(),
             argument_types,
         );
-        let array_context = self.instantiate_type(parameter_type, inference.mapper());
-        self.get_contextual_type_of_array_element_at(program_id, array_context, element_index)
+        Some(self.instantiate_type(parameter_type, inference.mapper()))
     }
 
     pub(crate) fn get_type_of_call_argument_for_parameter(
@@ -11954,41 +11921,12 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return None;
         }
 
-        let current_type_parameters = match self.nodes(program_id).kind(node_id) {
-            AstKind::Function(function) => function.type_parameters.as_deref(),
-            AstKind::ArrowFunctionExpression(function) => function.type_parameters.as_deref(),
-            AstKind::Class(class) => class.type_parameters.as_deref(),
-            AstKind::TSInterfaceDeclaration(interface) => interface.type_parameters.as_deref(),
-            AstKind::TSTypeAliasDeclaration(alias) => alias.type_parameters.as_deref(),
-            _ => None,
-        };
-        if let Some(parameter) = current_type_parameters.and_then(|parameters| {
-            parameters
+        for type_parameters in self.type_parameters_in_scope(program_id, node_id) {
+            let Some(parameter) = type_parameters
                 .params
                 .iter()
                 .find(|parameter| parameter.name.name == reference.name)
-        }) {
-            return parameter
-                .constraint
-                .as_ref()
-                .map(|constraint| self.get_type_from_ts_type(program_id, constraint));
-        }
-
-        for ancestor in self.nodes(program_id).ancestors(node_id) {
-            let type_parameters = match ancestor.kind() {
-                AstKind::Function(function) => function.type_parameters.as_deref(),
-                AstKind::ArrowFunctionExpression(function) => function.type_parameters.as_deref(),
-                AstKind::Class(class) => class.type_parameters.as_deref(),
-                AstKind::TSInterfaceDeclaration(interface) => interface.type_parameters.as_deref(),
-                AstKind::TSTypeAliasDeclaration(alias) => alias.type_parameters.as_deref(),
-                _ => continue,
-            };
-            let Some(parameter) = type_parameters.and_then(|parameters| {
-                parameters
-                    .params
-                    .iter()
-                    .find(|parameter| parameter.name.name == reference.name)
-            }) else {
+            else {
                 continue;
             };
             return parameter
@@ -11998,6 +11936,23 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
 
         None
+    }
+
+    fn type_parameters_in_scope(
+        &self,
+        program_id: ProgramId,
+        node_id: NodeId,
+    ) -> impl Iterator<Item = &'a TSTypeParameterDeclaration<'a>> {
+        std::iter::once(self.nodes(program_id).kind(node_id))
+            .chain(self.nodes(program_id).ancestor_kinds(node_id))
+            .filter_map(|kind| match kind {
+                AstKind::Function(function) => function.type_parameters.as_deref(),
+                AstKind::ArrowFunctionExpression(function) => function.type_parameters.as_deref(),
+                AstKind::Class(class) => class.type_parameters.as_deref(),
+                AstKind::TSInterfaceDeclaration(interface) => interface.type_parameters.as_deref(),
+                AstKind::TSTypeAliasDeclaration(alias) => alias.type_parameters.as_deref(),
+                _ => None,
+            })
     }
 
     pub(crate) fn is_scoped_type_parameter_reference(
@@ -12012,55 +11967,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         if !reference.is_bare() {
             return false;
         }
-        self.type_parameter_names_in_scope(program_id, node_id)
-            .contains(&reference.name)
-    }
-
-    fn type_parameter_names_in_scope(
-        &self,
-        program_id: ProgramId,
-        node_id: NodeId,
-    ) -> Vec<&'a str> {
-        let mut names = Vec::new();
-        match self.nodes(program_id).kind(node_id) {
-            AstKind::Function(function) => {
-                push_type_parameter_names(&mut names, function.type_parameters.as_deref());
-            }
-            AstKind::ArrowFunctionExpression(function) => {
-                push_type_parameter_names(&mut names, function.type_parameters.as_deref());
-            }
-            AstKind::Class(class) => {
-                push_type_parameter_names(&mut names, class.type_parameters.as_deref());
-            }
-            AstKind::TSInterfaceDeclaration(interface) => {
-                push_type_parameter_names(&mut names, interface.type_parameters.as_deref());
-            }
-            AstKind::TSTypeAliasDeclaration(alias) => {
-                push_type_parameter_names(&mut names, alias.type_parameters.as_deref());
-            }
-            _ => {}
-        }
-        for ancestor in self.nodes(program_id).ancestors(node_id) {
-            match ancestor.kind() {
-                AstKind::Function(function) => {
-                    push_type_parameter_names(&mut names, function.type_parameters.as_deref());
-                }
-                AstKind::ArrowFunctionExpression(function) => {
-                    push_type_parameter_names(&mut names, function.type_parameters.as_deref());
-                }
-                AstKind::Class(class) => {
-                    push_type_parameter_names(&mut names, class.type_parameters.as_deref());
-                }
-                AstKind::TSInterfaceDeclaration(interface) => {
-                    push_type_parameter_names(&mut names, interface.type_parameters.as_deref());
-                }
-                AstKind::TSTypeAliasDeclaration(alias) => {
-                    push_type_parameter_names(&mut names, alias.type_parameters.as_deref());
-                }
-                _ => {}
-            }
-        }
-        names
+        self.type_parameters_in_scope(program_id, node_id)
+            .any(|type_parameters| {
+                type_parameters
+                    .params
+                    .iter()
+                    .any(|parameter| parameter.name.name == reference.name)
+            })
     }
 
     fn is_in_chain_expression(&self, program_id: ProgramId, node_id: Option<NodeId>) -> bool {
@@ -12783,15 +12696,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
-        if let Some(ty) = self
-            .declared_type_cache
-            .borrow()
-            .get(sym.program_id.index())
-            .and_then(Option::as_ref)
-            .and_then(|cache| cache.get(sym.symbol_id))
-            .copied()
-            .flatten()
-        {
+        if let Some(ty) = self.cached_symbol_type(&self.declared_type_cache, sym) {
             return ty;
         }
 
@@ -12980,34 +12885,12 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
             }
         };
 
-        if let Some(program_cache) = self
-            .declared_type_cache
-            .borrow_mut()
-            .get_mut(sym.program_id.index())
-        {
-            let cache = program_cache.get_or_insert_with(|| {
-                IndexVec::from_vec(vec![
-                    None;
-                    self.semantic(sym.program_id).scoping().symbols_len()
-                ])
-            });
-            if let Some(slot) = cache.get_mut(sym.symbol_id) {
-                *slot = Some(ty);
-            }
-        }
+        self.cache_symbol_type(&self.declared_type_cache, sym, ty);
         ty
     }
 
     fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
-        if let Some(ty) = self
-            .value_type_cache
-            .borrow()
-            .get(sym.program_id.index())
-            .and_then(Option::as_ref)
-            .and_then(|cache| cache.get(sym.symbol_id))
-            .copied()
-            .flatten()
-        {
+        if let Some(ty) = self.cached_symbol_type(&self.value_type_cache, sym) {
             return ty;
         }
 
@@ -13063,21 +12946,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         };
 
         self.resolving_symbols.borrow_mut().pop();
-        if let Some(program_cache) = self
-            .value_type_cache
-            .borrow_mut()
-            .get_mut(sym.program_id.index())
-        {
-            let cache = program_cache.get_or_insert_with(|| {
-                IndexVec::from_vec(vec![
-                    None;
-                    self.semantic(sym.program_id).scoping().symbols_len()
-                ])
-            });
-            if let Some(slot) = cache.get_mut(sym.symbol_id) {
-                *slot = Some(ty);
-            }
-        }
+        self.cache_symbol_type(&self.value_type_cache, sym, ty);
         ty
     }
 

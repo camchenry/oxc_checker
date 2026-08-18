@@ -139,20 +139,6 @@ fn for_statement_left_contains_declarator(
     }
 }
 
-fn push_type_parameter_names<'a>(
-    names: &mut Vec<&'a str>,
-    type_parameters: Option<&oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
-) {
-    if let Some(type_parameters) = type_parameters {
-        names.extend(
-            type_parameters
-                .params
-                .iter()
-                .map(|parameter| parameter.name.name.as_str()),
-        );
-    }
-}
-
 fn index_signature_key_types<'a>(
     arena: CheckerArena<'a>,
     constraint: Ty<'a>,

@@ -100,6 +100,41 @@ impl<'a> CheckerReturn<'a, '_> {
         self.arena.type_count()
     }
 
+    pub(crate) fn cached_symbol_type(
+        &self,
+        cache: &RefCell<SymbolTypeCache<'a>>,
+        symbol: SymbolRef,
+    ) -> Option<Ty<'a>> {
+        cache
+            .borrow()
+            .get(symbol.program_id.index())
+            .and_then(Option::as_ref)
+            .and_then(|cache| cache.get(symbol.symbol_id))
+            .copied()
+            .flatten()
+    }
+
+    pub(crate) fn cache_symbol_type(
+        &self,
+        cache: &RefCell<SymbolTypeCache<'a>>,
+        symbol: SymbolRef,
+        ty: Ty<'a>,
+    ) {
+        let mut cache = cache.borrow_mut();
+        let Some(program_cache) = cache.get_mut(symbol.program_id.index()) else {
+            return;
+        };
+        let program_cache = program_cache.get_or_insert_with(|| {
+            IndexVec::from_vec(vec![
+                None;
+                self.semantic(symbol.program_id).scoping().symbols_len()
+            ])
+        });
+        if let Some(slot) = program_cache.get_mut(symbol.symbol_id) {
+            *slot = Some(ty);
+        }
+    }
+
     pub fn types(&self) -> impl ExactSizeIterator<Item = Ty<'a>> {
         self.arena.types()
     }
