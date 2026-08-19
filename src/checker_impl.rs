@@ -5608,9 +5608,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             return Vec::new();
         }
         let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
-        if declarations.is_empty() {
-            return Vec::new();
-        }
 
         let mut properties = Vec::new();
         for &(declaration_program_id, interface) in &declarations {
@@ -7472,10 +7469,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         property_name: &str,
         declarations: &[(ProgramId, &'a TSInterfaceDeclaration<'a>)],
     ) -> Option<Ty<'a>> {
-        if declarations.is_empty() {
-            return None;
-        }
-
         for &(program_id, interface) in declarations {
             let substitutions = self.type_parameter_substitutions_for_reference(
                 program_id,
@@ -7509,15 +7502,7 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 )
             })
             .collect::<Vec<_>>();
-        match method_signatures.as_slice() {
-            [] => None,
-            [signature] => Some(signature.ty),
-            _ => Some(Ty::object_with_signatures(
-                self.arena(),
-                [],
-                method_signatures,
-            )),
-        }
+        self.type_from_method_signatures(method_signatures)
     }
 
     fn get_interface_property_or_accessor_type(
@@ -7585,6 +7570,14 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 })
             })
             .collect()
+    }
+
+    fn type_from_method_signatures(&self, signatures: Vec<Signature<'a>>) -> Option<Ty<'a>> {
+        match signatures.as_slice() {
+            [] => None,
+            [signature] => Some(signature.ty),
+            _ => Some(Ty::object_with_signatures(self.arena(), [], signatures)),
+        }
     }
 
     fn get_property_type_of_interface_declaration(
@@ -7717,15 +7710,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 })
             })
             .collect::<Vec<_>>();
-
-        match method_signatures.as_slice() {
-            [] => {
-                self.signature_from_ts_method_signature(program_id, method)
-                    .ty
-            }
-            [signature] => signature.ty,
-            _ => Ty::object_with_signatures(self.arena(), [], method_signatures),
-        }
+        self.type_from_method_signatures(method_signatures)
+            .unwrap_or_else(default_function)
     }
 
     fn type_parameter_substitutions_for_reference(
@@ -11900,11 +11886,8 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
                 }
             }
         }
-        if !method_signatures.is_empty() {
-            return Some(match method_signatures.as_slice() {
-                [signature] => signature.ty,
-                _ => Ty::object_with_signatures(self.arena(), [], method_signatures),
-            });
+        if let Some(method_type) = self.type_from_method_signatures(method_signatures) {
+            return Some(method_type);
         }
 
         for (heritage_program_id, heritage_type) in
