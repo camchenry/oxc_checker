@@ -525,11 +525,11 @@ fn string_from_utf8_bytes_simd(bytes: Vec<u8>) -> io::Result<String> {
 }
 
 impl program::ProgramHost for FixtureProgramHost {
-    fn read_source(&self, path: &Path) -> program::ProgramStoreResult<String> {
+    fn read_source(&self, path: &Path) -> program::ProgramStoreResult<Cow<'_, str>> {
         let path = self.canonicalize_path(path);
         self.files
             .get(&path)
-            .cloned()
+            .map(|source_text| Cow::Borrowed(source_text.as_str()))
             .ok_or_else(|| program::ProgramStoreError::ReadSource {
                 path,
                 message: "file not found".to_string(),

@@ -1,4 +1,5 @@
 use std::{
+    borrow::Cow,
     fmt,
     path::{Component, Path, PathBuf},
 };
@@ -218,7 +219,8 @@ pub enum HostModuleResolution {
 }
 
 pub trait ProgramHost {
-    fn read_source(&self, path: &Path) -> ProgramStoreResult<String>;
+    /// Read source text, borrowing it from the host when possible.
+    fn read_source(&self, path: &Path) -> ProgramStoreResult<Cow<'_, str>>;
 
     fn canonicalize_path(&self, path: &Path) -> PathBuf {
         normalize_path(path)
@@ -252,11 +254,13 @@ impl Default for FsProgramHost {
 }
 
 impl ProgramHost for FsProgramHost {
-    fn read_source(&self, path: &Path) -> ProgramStoreResult<String> {
-        std::fs::read_to_string(path).map_err(|error| ProgramStoreError::ReadSource {
-            path: path.to_path_buf(),
-            message: error.to_string(),
-        })
+    fn read_source(&self, path: &Path) -> ProgramStoreResult<Cow<'_, str>> {
+        std::fs::read_to_string(path)
+            .map(Cow::Owned)
+            .map_err(|error| ProgramStoreError::ReadSource {
+                path: path.to_path_buf(),
+                message: error.to_string(),
+            })
     }
 
     fn canonicalize_path(&self, path: &Path) -> PathBuf {
@@ -390,7 +394,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         }
 
         let source_text = self.host.read_source(&path)?;
-        let source_text = self.allocator.alloc_str(&source_text);
+        let source_text = self.allocator.alloc_str(source_text.as_ref());
         let source_type = SourceType::from_path(&path).unwrap_or_else(|_| SourceType::ts());
         self.build_entry_from_source(store, &path, source_text, source_type, false)
     }

@@ -10,7 +10,10 @@ use oxc_ast::{
 };
 use oxc_str::Ident;
 use rustc_hash::FxHashMap;
-use std::path::{Path, PathBuf};
+use std::{
+    borrow::Cow,
+    path::{Path, PathBuf},
+};
 
 struct TestProgramHost {
     cwd: PathBuf,
@@ -33,10 +36,10 @@ impl TestProgramHost {
 }
 
 impl program::ProgramHost for TestProgramHost {
-    fn read_source(&self, path: &Path) -> program::ProgramStoreResult<String> {
+    fn read_source(&self, path: &Path) -> program::ProgramStoreResult<Cow<'_, str>> {
         self.files
             .get(&self.canonicalize_path(path))
-            .cloned()
+            .map(|source_text| Cow::Borrowed(source_text.as_str()))
             .ok_or_else(|| program::ProgramStoreError::ReadSource {
                 path: path.to_path_buf(),
                 message: "file not found".to_string(),

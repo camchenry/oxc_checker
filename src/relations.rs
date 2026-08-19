@@ -391,7 +391,10 @@ impl<'a, 'store> Checker<'a, 'store> {
 #[cfg(test)]
 mod tests {
     use oxc_allocator::Allocator;
-    use std::path::{Path, PathBuf};
+    use std::{
+        borrow::Cow,
+        path::{Path, PathBuf},
+    };
 
     use crate::{
         TypeBuilder,
@@ -404,8 +407,8 @@ mod tests {
     struct TestProgramHost;
 
     impl ProgramHost for TestProgramHost {
-        fn read_source(&self, _path: &Path) -> crate::program::ProgramStoreResult<String> {
-            Ok(String::new())
+        fn read_source(&self, _path: &Path) -> crate::program::ProgramStoreResult<Cow<'_, str>> {
+            Ok(Cow::Borrowed(""))
         }
 
         fn canonicalize_path(&self, path: &Path) -> PathBuf {

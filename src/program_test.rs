@@ -55,10 +55,10 @@ impl InMemoryProgramHost {
 }
 
 impl ProgramHost for InMemoryProgramHost {
-    fn read_source(&self, path: &Path) -> ProgramStoreResult<String> {
+    fn read_source(&self, path: &Path) -> ProgramStoreResult<Cow<'_, str>> {
         self.files
             .get(&self.canonicalize_path(path))
-            .cloned()
+            .map(|source_text| Cow::Borrowed(source_text.as_str()))
             .ok_or_else(|| ProgramStoreError::ReadSource {
                 path: path.to_path_buf(),
                 message: "file not found".to_string(),
@@ -76,6 +76,17 @@ impl ProgramHost for InMemoryProgramHost {
     fn resolve_module(&self, containing_file: &Path, specifier: &str) -> HostModuleResolution {
         self.resolve_relative(containing_file, specifier)
     }
+}
+
+#[test]
+fn in_memory_host_borrows_source_text() {
+    let host = InMemoryProgramHost::new("/project")
+        .add_file("/project/a.ts", "export const a: number = 1;");
+
+    assert!(matches!(
+        host.read_source(Path::new("/project/a.ts")).unwrap(),
+        Cow::Borrowed("export const a: number = 1;")
+    ));
 }
 
 #[test]
