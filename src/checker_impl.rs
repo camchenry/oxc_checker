@@ -1868,7 +1868,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return None;
         };
         if let Some((symbol, declaration)) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
         {
             return self.get_enum_literal_union_from_declaration(symbol.program_id, declaration);
         }
@@ -3541,7 +3541,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return None;
         }
         let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+            self.get_type_reference_symbol_and_declaration(program_id, reference)?;
         let AstKind::TSTypeAliasDeclaration(alias) =
             self.nodes(symbol.program_id).kind(declaration)
         else {
@@ -4827,7 +4827,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return false;
         };
         let Some((symbol, declaration)) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
         else {
             return false;
         };
@@ -4847,7 +4847,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return;
         };
         let Some((alias_symbol, declaration)) =
-            self.get_type_symbol_and_declaration_for_name(reference_program_id, reference.name)
+            self.get_type_reference_symbol_and_declaration(reference_program_id, reference)
         else {
             return;
         };
@@ -5034,7 +5034,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         depth: usize,
     ) -> Option<Ty<'a>> {
         let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+            self.get_type_reference_symbol_and_declaration(program_id, reference)?;
         let symbol_has_interface_declaration = self
             .semantic(symbol.program_id)
             .scoping()
@@ -5108,7 +5108,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         reference: &TyTypeReference<'a>,
     ) -> Option<Ty<'a>> {
-        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
+        let declarations = self.interface_declarations_for_type_reference(program_id, reference);
         if declarations.is_empty() {
             return None;
         }
@@ -5588,7 +5588,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return Vec::new();
         }
-        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
+        let declarations = self.interface_declarations_for_type_reference(program_id, reference);
 
         let mut properties = Vec::new();
         for &(declaration_program_id, interface) in &declarations {
@@ -5716,9 +5716,32 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         type_name: &str,
     ) -> Vec<(ProgramId, &'a TSInterfaceDeclaration<'a>)> {
-        let Some((symbol, _)) =
+        self.interface_declarations_for_type_name_and_target(program_id, type_name, None)
+    }
+
+    fn interface_declarations_for_type_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> Vec<(ProgramId, &'a TSInterfaceDeclaration<'a>)> {
+        self.interface_declarations_for_type_name_and_target(
+            program_id,
+            reference.name,
+            reference.target,
+        )
+    }
+
+    fn interface_declarations_for_type_name_and_target(
+        &self,
+        program_id: ProgramId,
+        type_name: &str,
+        target: Option<SymbolRef>,
+    ) -> Vec<(ProgramId, &'a TSInterfaceDeclaration<'a>)> {
+        let symbol = target.or_else(|| {
             self.get_type_symbol_and_declaration_for_name(program_id, type_name)
-        else {
+                .map(|(symbol, _)| symbol)
+        });
+        let Some(symbol) = symbol else {
             return Vec::new();
         };
         let Some(symbol_program) = self.store.entry(symbol.program_id) else {
@@ -5739,6 +5762,22 @@ impl<'a, 'store> Checker<'a, 'store> {
                     })
                 })
                 .collect()
+        }
+    }
+
+    fn get_type_reference_symbol_and_declaration(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> Option<(SymbolRef, NodeId)> {
+        if let Some(symbol) = reference.target {
+            let declaration = self
+                .semantic(symbol.program_id)
+                .scoping()
+                .symbol_declaration(symbol.symbol_id);
+            Some((symbol, declaration))
+        } else {
+            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
         }
     }
 
@@ -6739,7 +6778,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         kind: SignatureKind,
     ) -> Vec<Signature<'a>> {
         let interface_signatures = self
-            .interface_declarations_for_type_name(program_id, reference.name)
+            .interface_declarations_for_type_reference(program_id, reference)
             .into_iter()
             .flat_map(|(program_id, interface)| {
                 self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
@@ -6750,7 +6789,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         let Some((symbol, declaration)) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
         else {
             return Vec::new();
         };
@@ -7416,12 +7455,12 @@ impl<'a, 'store> Checker<'a, 'store> {
             return Some(self.ty.error(TypeErrorKind::UnresolvedMember));
         }
 
-        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
+        let declarations = self.interface_declarations_for_type_reference(program_id, reference);
         let result = self
             .get_property_type_of_interface_declarations(reference, property_name, &declarations)
             .or_else(|| {
                 let (symbol, declaration) =
-                    self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+                    self.get_type_reference_symbol_and_declaration(program_id, reference)?;
                 self.get_property_type_of_interface_declaration(
                     symbol.program_id,
                     declaration,
@@ -8493,7 +8532,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         reference: &TyTypeReference<'a>,
     ) -> Option<(ProgramId, Ty<'a>)> {
         let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+            self.get_type_reference_symbol_and_declaration(program_id, reference)?;
         self.get_conditional_type_alias_reference_type_with_arguments(
             &reference.type_arguments,
             symbol,
@@ -8518,7 +8557,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return None;
         }
         let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+            self.get_type_reference_symbol_and_declaration(program_id, reference)?;
         self.get_conditional_type_alias_reference_type_with_arguments(
             &expanded_type_arguments,
             symbol,
@@ -8612,7 +8651,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         reference: &TyTypeReference<'a>,
     ) -> bool {
         let Some((symbol, declaration)) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
         else {
             return false;
         };
@@ -10914,7 +10953,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 )
             } else {
                 let (alias_symbol, declaration) =
-                    self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+                    self.get_type_reference_symbol_and_declaration(program_id, reference)?;
                 (
                     program_id,
                     alias_symbol,
@@ -10976,7 +11015,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             metadata.declaration
         } else {
             let (alias_symbol, declaration) =
-                self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+                self.get_type_reference_symbol_and_declaration(program_id, reference)?;
             NodeRef::new(alias_symbol.program_id, declaration)
         };
         self.get_expanded_type_alias_declaration(
@@ -11515,7 +11554,7 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let active_interface = if let TyKind::TypeReference(reference) = self.ty_kind(iterator_type)
         {
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
                 .map(|(symbol, _)| {
                     IterationInterfaceResolution::new(
                         IterationInterfaceResolutionKind::Iterator,
@@ -11796,8 +11835,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return None;
         }
-        let (symbol, _) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)?;
+        let (symbol, _) = self.get_type_reference_symbol_and_declaration(program_id, reference)?;
         let active_interface = IterationInterfaceResolution::new(
             IterationInterfaceResolutionKind::IterableProperty,
             resolver,
@@ -11822,7 +11860,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         depth: usize,
         context: &mut IterationResolutionContext,
     ) -> Option<Ty<'a>> {
-        let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
+        let declarations = self.interface_declarations_for_type_reference(program_id, reference);
 
         let mut method_signatures = Vec::new();
         for &(interface_program_id, interface) in &declarations {
@@ -11890,7 +11928,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         reference: &TyTypeReference<'a>,
     ) -> Vec<(ProgramId, Ty<'a>)> {
         let Some((symbol, _)) =
-            self.get_type_symbol_and_declaration_for_name(program_id, reference.name)
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
         else {
             return Vec::new();
         };

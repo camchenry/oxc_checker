@@ -50,6 +50,9 @@ impl GlobalSymbolTable {
         };
 
         for entry in store.entries() {
+            if !entry.is_lib() && entry.module_record().has_module_syntax {
+                continue;
+            }
             let scoping = entry.semantic().scoping();
             for (_, &symbol_id) in scoping.get_bindings(scoping.root_scope_id()) {
                 let flags = scoping.symbol_flags(symbol_id);
@@ -60,10 +63,7 @@ impl GlobalSymbolTable {
                 if is_value || flags.intersects(SymbolFlags::Import) {
                     table.insert_value(name, symbol);
                 }
-                if (entry.is_lib() || !entry.module_record().has_module_syntax)
-                    && is_value
-                    && !flags.intersects(SymbolFlags::BlockScoped)
-                {
+                if is_value && !flags.intersects(SymbolFlags::BlockScoped) {
                     table.insert_global_this_value(name, symbol);
                 }
                 if flags

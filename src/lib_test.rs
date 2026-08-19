@@ -5719,6 +5719,53 @@ fn global_script_function_declarations_merge_across_programs() {
 }
 
 #[test]
+fn module_scoped_namespace_has_no_symbol_in_sibling_program() {
+    let allocator = Allocator::default();
+    let host = TestProgramHost::new("/project")
+        .add_file(
+            "/project/a.ts",
+            "export {}; namespace moduleScoped { export const value = 1; }",
+        )
+        .add_file(
+            "/project/b.ts",
+            "export {}; const result = moduleScoped.value;",
+        );
+    let store = program::ProgramStoreBuilder::new(&allocator, host)
+        .add_root_file("/project/a.ts")
+        .add_root_file("/project/b.ts")
+        .build()
+        .unwrap();
+    let program_id = store.id_for_path(Path::new("/project/b.ts")).unwrap();
+    let arena = CheckerArena::new(store.allocator());
+    let ret = ParseAndCheck {
+        store,
+        program_id,
+        arena,
+    };
+    let checker = checker(&ret);
+    let semantic = ret.store.entry(program_id).unwrap().semantic();
+    let node_id = semantic
+        .nodes()
+        .iter_enumerated()
+        .find_map(|(node_id, node)| {
+            matches!(
+                node.kind(),
+                AstKind::IdentifierReference(identifier)
+                    if identifier.name == Ident::from("moduleScoped")
+            )
+            .then_some(node_id)
+        })
+        .unwrap();
+    let node = NodeRef::new(program_id, node_id);
+
+    assert!(checker.get_symbol_at_location(node).is_none());
+    assert_eq!(
+        checker.get_type_at_location(node).error_kind(ret.arena),
+        Some(TypeErrorKind::UnresolvedSymbol)
+    );
+}
+
+#[test]
 fn generic_function_uses_explicit_type_arguments() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
