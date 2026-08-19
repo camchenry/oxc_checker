@@ -1039,7 +1039,7 @@ fn local_value_symbols_shadow_default_lib_globals() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "value"),
-        &Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
+        &arena.number_literal(1.0, "1", NumberBase::Decimal),
     );
 }
 
@@ -1058,12 +1058,12 @@ fn local_undefined_binding_wins_before_global_undefined_fallback() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "value"),
-        &Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
+        &arena.number_literal(1.0, "1", NumberBase::Decimal),
     );
     assert_type_eq(
         arena,
         &get_identifier_reference_types(&ret, "undefined"),
-        &vec![Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal)],
+        &vec![arena.number_literal(1.0, "1", NumberBase::Decimal)],
     );
 }
 
@@ -1111,32 +1111,32 @@ fn value_position_global_identifiers_resolve_to_constructor_types() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "arrayCtor"),
-        &Ty::type_reference(arena, "ArrayConstructor", []),
+        &arena.type_reference("ArrayConstructor", []),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "promiseCtor"),
-        &Ty::type_reference(arena, "PromiseConstructor", []),
+        &arena.type_reference("PromiseConstructor", []),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "mapCtor"),
-        &Ty::type_reference(arena, "MapConstructor", []),
+        &arena.type_reference("MapConstructor", []),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "setCtor"),
-        &Ty::type_reference(arena, "SetConstructor", []),
+        &arena.type_reference("SetConstructor", []),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "symbolCtor"),
-        &Ty::type_reference(arena, "SymbolConstructor", []),
+        &arena.type_reference("SymbolConstructor", []),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "objectCtor"),
-        &Ty::type_reference(arena, "ObjectConstructor", []),
+        &arena.type_reference("ObjectConstructor", []),
     );
 }
 
@@ -1155,12 +1155,12 @@ fn value_position_global_constructors_expose_members_and_construct_signatures() 
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "keys"),
-        &Ty::array(arena, Ty::string()),
+        &arena.array(Ty::string()),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "values"),
-        &Ty::array(arena, Ty::number()),
+        &arena.array(Ty::number()),
     );
 }
 
@@ -1261,17 +1261,11 @@ fn global_this_exposes_script_var_but_not_lexical_bindings() {
     let checker = checker(&ret);
     assert!(checker.is_assignable_to(
         global_this,
-        Ty::object(
-            arena,
-            [Ty::property(arena.str("objectProperty"), Ty::number())],
-        ),
+        arena.object([Ty::property(arena.str("objectProperty"), Ty::number())],),
     ));
     assert!(!checker.is_assignable_to(
         global_this,
-        Ty::object(
-            arena,
-            [Ty::property(arena.str("lexicalBinding"), Ty::string())],
-        ),
+        arena.object([Ty::property(arena.str("lexicalBinding"), Ty::string())],),
     ));
 }
 
@@ -1508,13 +1502,13 @@ fn flow_narrows_truthy_if_branch() {
     assert_type_eq(
         ret.arena,
         &reference_types[0],
-        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+        &arena(&ret).union([Ty::string(), Ty::undefined()]),
     );
     assert_eq!(reference_types[1], Ty::string());
     assert_type_eq(
         ret.arena,
         &reference_types[2],
-        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+        &arena(&ret).union([Ty::string(), Ty::undefined()]),
     );
 }
 
@@ -1538,13 +1532,13 @@ fn flow_narrows_typeof_if_branches() {
     assert_type_eq(
         ret.arena,
         &reference_types[0],
-        &Ty::union(arena(&ret), [Ty::string(), Ty::number(), Ty::boolean()]),
+        &arena(&ret).union([Ty::string(), Ty::number(), Ty::boolean()]),
     );
     assert_eq!(reference_types[1], Ty::string());
     assert_type_eq(
         ret.arena,
         &reference_types[2],
-        &Ty::union(arena(&ret), [Ty::number(), Ty::boolean()]),
+        &arena(&ret).union([Ty::number(), Ty::boolean()]),
     );
 }
 
@@ -1622,13 +1616,13 @@ fn flow_narrows_typeof_conditional_expression_arms() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "z"),
-        &Ty::union(arena, [Ty::string(), Ty::undefined()]),
+        &arena.union([Ty::string(), Ty::undefined()]),
     );
     assert_type_eq(
         arena,
         &get_identifier_reference_types(&ret, "y"),
         &vec![
-            Ty::union(arena, [Ty::string(), Ty::number(), Ty::boolean()]),
+            arena.union([Ty::string(), Ty::number(), Ty::boolean()]),
             Ty::string(),
         ],
     );
@@ -1724,9 +1718,9 @@ fn flow_narrows_reversed_null_equality_conditional_expression_arms() {
         arena,
         &get_identifier_reference_types(&ret, "value"),
         &vec![
-            Ty::union(arena, [Ty::string(), Ty::null()]),
+            arena.union([Ty::string(), Ty::null()]),
             Ty::null(),
-            Ty::union(arena, [Ty::string(), Ty::null()]),
+            arena.union([Ty::string(), Ty::null()]),
             Ty::string(),
         ],
     );
@@ -1751,7 +1745,7 @@ fn flow_write_invalidates_previous_narrowing() {
     assert_type_eq(
         ret.arena,
         &reference_types[0],
-        &Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
+        &arena(&ret).union([Ty::string(), Ty::number()]),
     );
     assert_eq!(reference_types[1], Ty::string());
     assert_eq!(reference_types[2], Ty::number());
@@ -1794,7 +1788,7 @@ fn flow_direct_assignment_updates_current_type() {
     assert_type_eq(
         ret.arena,
         &reference_types[0],
-        &Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
+        &arena(&ret).union([Ty::string(), Ty::number()]),
     );
     assert_eq!(reference_types[1], Ty::number());
 }
@@ -1816,7 +1810,7 @@ fn flow_self_referential_assignment_reads_pre_write_type() {
     assert_type_eq(
         ret.arena,
         &reference_types[1],
-        &Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
+        &arena(&ret).union([Ty::number(), Ty::undefined()]),
     );
     assert_eq!(reference_types[2], Ty::number());
 }
@@ -1945,7 +1939,7 @@ fn flow_applies_nested_branch_effects_in_order() {
     assert_type_eq(
         ret.arena,
         &reference_types[1],
-        &Ty::union(arena(&ret), [Ty::string(), Ty::number()]),
+        &arena(&ret).union([Ty::string(), Ty::number()]),
     );
     assert_eq!(reference_types[2], Ty::string());
 }
@@ -1966,7 +1960,7 @@ fn flow_narrows_logical_expression_rhs() {
     assert_type_eq(
         ret.arena,
         &reference_types[0],
-        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+        &arena(&ret).union([Ty::string(), Ty::undefined()]),
     );
     assert_eq!(reference_types[1], Ty::string());
 }
@@ -1990,7 +1984,7 @@ fn flow_does_not_cross_deferred_closure_boundary() {
         assert_type_eq(
             ret.arena,
             &ty,
-            &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+            &arena(&ret).union([Ty::string(), Ty::undefined()]),
         );
     }
 }
@@ -2036,7 +2030,7 @@ fn flow_conservatively_invalidates_narrow_after_nested_write() {
     assert_type_eq(
         ret.arena,
         reference_types.last().unwrap(),
-        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+        &arena(&ret).union([Ty::string(), Ty::undefined()]),
     );
 }
 
@@ -2079,22 +2073,22 @@ fn flow_evolves_empty_array_locals_from_mutations() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "before"),
-        &Ty::array(arena, Ty::any()),
+        &arena.array(Ty::any()),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "afterPush"),
-        &Ty::array(arena, Ty::number()),
+        &arena.array(Ty::number()),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "afterWrite"),
-        &Ty::array(arena, Ty::union(arena, [Ty::number(), Ty::string()])),
+        &arena.array(arena.union([Ty::number(), Ty::string()])),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "afterReset"),
-        &Ty::array(arena, Ty::boolean()),
+        &arena.array(Ty::boolean()),
     );
 }
 
@@ -2114,12 +2108,12 @@ fn flow_evolving_array_mutation_target_stays_auto_array() {
     let reference_types = get_identifier_reference_types(&ret, "values");
 
     assert_eq!(reference_types.len(), 3);
-    assert_type_eq(arena, &reference_types[0], &Ty::array(arena, Ty::any()));
-    assert_type_eq(arena, &reference_types[1], &Ty::array(arena, Ty::any()));
+    assert_type_eq(arena, &reference_types[0], &arena.array(Ty::any()));
+    assert_type_eq(arena, &reference_types[1], &arena.array(Ty::any()));
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "result"),
-        &Ty::array(arena, Ty::union(arena, [Ty::number(), Ty::string()])),
+        &arena.array(arena.union([Ty::number(), Ty::string()])),
     );
 }
 
@@ -2142,7 +2136,7 @@ fn flow_evolving_array_ignores_mutation_in_sibling_branch() {
     assert_type_eq(
         ret.arena,
         &get_first_symbol_type(&ret, "untouched"),
-        &Ty::array(arena(&ret), Ty::any()),
+        &arena(&ret).array(Ty::any()),
     );
 }
 
@@ -2157,7 +2151,7 @@ fn error_types_are_distinct_but_any_like() {
     let ret = parse_and_check_source(&allocator, "");
     let arena = arena(&ret);
     let checker = checker(&ret);
-    let error = Ty::error(arena, TypeErrorKind::UnresolvedType);
+    let error = arena.error(TypeErrorKind::UnresolvedType);
 
     assert!(error.is_error(arena));
     assert_eq!(error.error_kind(arena), Some(TypeErrorKind::UnresolvedType));
@@ -2168,8 +2162,8 @@ fn error_types_are_distinct_but_any_like() {
     assert!(checker.is_assignable_to(Ty::number(), error));
     assert!(checker.is_assignable_to(error, Ty::unknown()));
     assert!(!checker.is_assignable_to(error, Ty::never()));
-    assert_eq!(Ty::union(arena, [error, Ty::string()]), error);
-    assert_eq!(Ty::intersection(arena, [error, Ty::string()]), error);
+    assert_eq!(arena.union([error, Ty::string()]), error);
+    assert_eq!(arena.intersection([error, Ty::string()]), error);
 }
 
 #[test]
@@ -2191,10 +2185,10 @@ fn intersection_with_any_reduces_to_any() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(&allocator, "");
     let arena = arena(&ret);
-    let literal = Ty::string_literal(arena, "foo");
+    let literal = arena.string_literal("foo");
 
-    assert_eq!(Ty::intersection(arena, [Ty::any(), literal]), Ty::any());
-    assert_eq!(Ty::intersection(arena, [literal, Ty::any()]), Ty::any());
+    assert_eq!(arena.intersection([Ty::any(), literal]), Ty::any());
+    assert_eq!(arena.intersection([literal, Ty::any()]), Ty::any());
 }
 
 #[test]
@@ -2209,22 +2203,16 @@ fn assignability_handles_basic_and_structural_types() {
     assert!(checker.is_assignable_to(Ty::string(), Ty::unknown()));
     assert!(!checker.is_assignable_to(Ty::number(), Ty::string()));
     assert!(checker.is_assignable_to(
-        Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
+        arena.number_literal(1.0, "1", NumberBase::Decimal),
         Ty::number()
     ));
-    assert!(checker.is_assignable_to(
-        Ty::array(arena, Ty::number()),
-        Ty::array(arena, Ty::number())
-    ));
+    assert!(checker.is_assignable_to(arena.array(Ty::number()), arena.array(Ty::number())));
 
-    let source = Ty::object(
-        arena,
-        [
-            Ty::property("x", Ty::number()),
-            Ty::property("y", Ty::string()),
-        ],
-    );
-    let target = Ty::object(arena, [Ty::property("x", Ty::number())]);
+    let source = arena.object([
+        Ty::property("x", Ty::number()),
+        Ty::property("y", Ty::string()),
+    ]);
+    let target = arena.object([Ty::property("x", Ty::number())]);
 
     assert!(checker.is_assignable_to(source, target));
     assert!(!checker.is_assignable_to(target, source));
@@ -2239,19 +2227,16 @@ fn assignability_handles_complex_types() {
 
     // Test that a function type is assignable to a more general function type
     assert!(checker.is_assignable_to(
-        Ty::function(arena, vec![], vec![], Ty::string()),
-        Ty::function(arena, vec![], vec![], Ty::any())
+        arena.function(vec![], vec![], Ty::string()),
+        arena.function(vec![], vec![], Ty::any())
     ));
 
     // Regression test: Check that thenable is assignable to an intersection type
-    let thenable = Ty::object(
-        arena,
-        [Ty::property(
-            "then",
-            Ty::function(arena, vec![], vec![], Ty::any()),
-        )],
-    );
-    let intersection = Ty::intersection(arena, [Ty::primitive_object(), thenable]);
+    let thenable = arena.object([Ty::property(
+        "then",
+        arena.function(vec![], vec![], Ty::any()),
+    )]);
+    let intersection = arena.intersection([Ty::primitive_object(), thenable]);
     assert!(checker.is_assignable_to(thenable, intersection));
 }
 
@@ -2341,12 +2326,12 @@ fn destructured_parameters_preserve_pattern_and_property_types() {
     assert_type_eq(
         ret.arena,
         &get_first_symbol_type(&ret, "items"),
-        &Ty::type_reference(arena(&ret), "TData", std::iter::empty()),
+        &arena(&ret).type_reference("TData", std::iter::empty()),
     );
     assert_type_eq(
         ret.arena,
         &get_first_symbol_type(&ret, "chunk"),
-        &Ty::type_reference(arena(&ret), "TQueryFnData", std::iter::empty()),
+        &arena(&ret).type_reference("TQueryFnData", std::iter::empty()),
     );
 }
 
@@ -2401,8 +2386,8 @@ fn object_literal_call_argument_contextually_types_callback_property_parameters(
             ",
     );
     let arena = arena(&ret);
-    let todo_type = Ty::type_reference(arena, "Todo", std::iter::empty());
-    let infinite_data_type = Ty::type_reference(arena, "InfiniteData", [todo_type, Ty::number()]);
+    let todo_type = arena.type_reference("Todo", std::iter::empty());
+    let infinite_data_type = arena.type_reference("InfiniteData", [todo_type, Ty::number()]);
 
     assert_type_eq(
         arena,
@@ -2417,17 +2402,17 @@ fn object_literal_call_argument_contextually_types_callback_property_parameters(
     assert!(contains_type(
         arena,
         &get_object_property_types(&ret, "pages"),
-        Ty::array(arena, todo_type),
+        arena.array(todo_type),
     ));
     assert!(contains_type(
         arena,
         &get_object_property_types(&ret, "pages"),
-        Ty::array(arena, Ty::never()),
+        arena.array(Ty::never()),
     ));
     assert!(contains_type(
         arena,
         &get_object_property_types(&ret, "pageParams"),
-        Ty::array(arena, Ty::never()),
+        arena.array(Ty::never()),
     ));
 }
 
@@ -2692,7 +2677,7 @@ fn declared_array_types_use_array_variant() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "values"),
-        &Ty::array(arena(&ret), Ty::number()),
+        &arena(&ret).array(Ty::number()),
     );
 }
 
@@ -2710,12 +2695,12 @@ fn global_array_type_references_use_array_variant() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "values"),
-        &Ty::array(arena(&ret), Ty::number()),
+        &arena(&ret).array(Ty::number()),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "readonlyValues"),
-        &Ty::readonly_array(arena(&ret), Ty::string()),
+        &arena(&ret).readonly_array(Ty::string()),
     );
 }
 
@@ -2744,7 +2729,7 @@ fn array_type_references_without_default_lib_stay_type_references() {
     assert_type_eq(
         checker.arena,
         &checker.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)),
-        &Ty::type_reference(checker.arena, "Array", [Ty::number()]),
+        &checker.arena.type_reference("Array", [Ty::number()]),
     );
 }
 
@@ -2828,21 +2813,20 @@ fn tuple_spreads_are_limited_to_ten_thousand_elements() {
         assert_eq!(ty.to_type_string(ret.arena), "any");
     }
 
-    let tuple_9999 = Ty::tuple(ret.arena, vec![TupleElement::Regular(Ty::any()); 9999]);
+    let tuple_9999 = ret
+        .arena
+        .tuple(vec![TupleElement::Regular(Ty::any()); 9999]);
     let TyKind::Tuple(tuple) = ret
         .arena
-        .ty_kind(Ty::tuple(ret.arena, vec![TupleElement::Rest(tuple_9999)]))
+        .ty_kind(ret.arena.tuple(vec![TupleElement::Rest(tuple_9999)]))
     else {
         panic!("expected a 9,999-element spread to remain a tuple");
     };
     assert_eq!(tuple.elements.len(), 9999);
-    let oversized = Ty::tuple(
-        ret.arena,
-        vec![
-            TupleElement::Regular(Ty::any()),
-            TupleElement::Rest(tuple_9999),
-        ],
-    );
+    let oversized = ret.arena.tuple(vec![
+        TupleElement::Regular(Ty::any()),
+        TupleElement::Rest(tuple_9999),
+    ]);
     assert_eq!(
         oversized.error_kind(ret.arena),
         Some(TypeErrorKind::TupleSizeExceeded)
@@ -3077,16 +3061,15 @@ fn conditional_infer_shadows_outer_type_parameter_substitution() {
     let ret = parse_and_check_source(&allocator, "const x = 1;");
     let checker = checker(&ret);
     let arena = arena(&ret);
-    let outer_array = Ty::array(arena, Ty::string());
-    let conditional = Ty::conditional(
-        arena,
-        Ty::type_reference(arena, "T", []),
-        Ty::array(arena, Ty::infer(arena, Ty::type_parameter("T", None, None))),
-        Ty::type_reference(arena, "T", []),
+    let outer_array = arena.array(Ty::string());
+    let conditional = arena.conditional(
+        arena.type_reference("T", []),
+        arena.array(arena.infer(Ty::type_parameter("T", None, None))),
+        arena.type_reference("T", []),
         Ty::never(),
         false,
     );
-    let mapper = TypeMapper::single(Ty::type_reference(arena, "T", []), outer_array);
+    let mapper = TypeMapper::single(arena.type_reference("T", []), outer_array);
 
     assert_eq!(checker.instantiate_type(conditional, &mapper), Ty::string());
 }
@@ -3097,12 +3080,9 @@ fn generic_instantiations_are_cached_by_target_and_mapper() {
     let ret = parse_and_check_source(&allocator, "const x = 1;");
     let checker = checker(&ret);
     let arena = arena(&ret);
-    let target = Ty::object(
-        arena,
-        [Ty::property("value", Ty::type_reference(arena, "T", []))],
-    );
-    let first_mapper = TypeMapper::single(Ty::type_reference(arena, "T", []), Ty::string());
-    let second_mapper = TypeMapper::single(Ty::type_reference(arena, "T", []), Ty::string());
+    let target = arena.object([Ty::property("value", arena.type_reference("T", []))]);
+    let first_mapper = TypeMapper::single(arena.type_reference("T", []), Ty::string());
+    let second_mapper = TypeMapper::single(arena.type_reference("T", []), Ty::string());
 
     assert_eq!(
         checker.instantiate_type(target, &first_mapper),
@@ -3452,7 +3432,7 @@ fn naked_type_parameter_conditionals_distribute_over_substituted_unions() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "value"),
-        &Ty::union(arena(&ret), [Ty::boolean(), Ty::number()]),
+        &arena(&ret).union([Ty::boolean(), Ty::number()]),
     );
 }
 
@@ -3531,17 +3511,17 @@ fn const_initializers_use_literal_types() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "count"),
-        &Ty::number_literal(arena(&ret), 1.0, "1", NumberBase::Decimal),
+        &arena(&ret).number_literal(1.0, "1", NumberBase::Decimal),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "label"),
-        &Ty::string_literal(arena(&ret), "ready"),
+        &arena(&ret).string_literal("ready"),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "quoted"),
-        &Ty::string_literal(arena(&ret), "\"ready\""),
+        &arena(&ret).string_literal("\"ready\""),
     );
     assert_eq!(
         get_global_symbol_type(&ret, "quoteOnlyNot"),
@@ -3603,12 +3583,12 @@ fn get_type_at_location_checks_direct_expressions() {
     assert_type_eq(
         ret.arena,
         &expression_types["numeric"],
-        &Ty::number_literal(arena(&ret), 42.0, "42", NumberBase::Decimal),
+        &arena(&ret).number_literal(42.0, "42", NumberBase::Decimal),
     );
     assert_eq!(expression_types["bigint"].to_type_string(ret.arena), "1n");
     assert_eq!(
         expression_types["string"],
-        Ty::string_literal(arena(&ret), "hello")
+        arena(&ret).string_literal("hello")
     );
     assert_eq!(expression_types["boolean"], Ty::boolean_true());
     assert_eq!(expression_types["call"], Ty::number());
@@ -3670,7 +3650,9 @@ fn type_strings_render_string_literals_with_double_quotes() {
     let arena = CheckerArena::new(&allocator);
 
     assert_eq!(
-        Ty::string_literal(arena, "expects a string literal").to_type_string(arena),
+        arena
+            .string_literal("expects a string literal")
+            .to_type_string(arena),
         "\"expects a string literal\""
     );
 }
@@ -3764,7 +3746,7 @@ fn angle_bracket_type_assertions_use_asserted_type() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "boxed"),
-        &Ty::type_reference(arena(&ret), "Box", [Ty::number()]),
+        &arena(&ret).type_reference("Box", [Ty::number()]),
     );
     assert_eq!(
         get_global_symbol_type(&ret, "boxed").to_type_string(ret.arena),
@@ -3836,12 +3818,12 @@ fn generic_function_infers_type_parameters_from_arguments() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "x"),
-        &Ty::number_literal(arena, 123.0, "123", NumberBase::Decimal),
+        &arena.number_literal(123.0, "123", NumberBase::Decimal),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "y"),
-        &Ty::string_literal(arena, "test"),
+        &arena.string_literal("test"),
     );
     assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean_true());
 }
@@ -3930,7 +3912,7 @@ fn generic_function_merges_repeated_inference_candidates() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "value"),
-        &Ty::string_literal(arena(&ret), "ready"),
+        &arena(&ret).string_literal("ready"),
     );
 }
 
@@ -3952,7 +3934,7 @@ fn generic_function_prefers_naked_type_variable_inference_candidate() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "result"),
-        &Ty::string_literal(arena(&ret), "ready"),
+        &arena(&ret).string_literal("ready"),
     );
 }
 
@@ -4308,7 +4290,7 @@ fn generic_overloads_use_candidate_inference_for_applicability() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "value"),
-        &Ty::string_literal(arena(&ret), "ready"),
+        &arena(&ret).string_literal("ready"),
     );
 }
 
@@ -4583,25 +4565,13 @@ fn type_query_alias_instantiation_resolves_intersections() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "e"),
-        &Ty::intersection(
-            arena,
-            [
-                Ty::object(
-                    arena,
-                    [
-                        Ty::property(
-                            "new ()",
-                            Ty::type_reference(arena, "ErrImpl", [Ty::number()]),
-                        ),
-                        Ty::property(
-                            "prototype",
-                            Ty::type_reference(arena, "ErrImpl", [Ty::any()]),
-                        ),
-                    ],
-                ),
-                Ty::function(arena, [], [], Ty::number()),
-            ],
-        ),
+        &arena.intersection([
+            arena.object([
+                Ty::property("new ()", arena.type_reference("ErrImpl", [Ty::number()])),
+                Ty::property("prototype", arena.type_reference("ErrImpl", [Ty::any()])),
+            ]),
+            arena.function([], [], Ty::number()),
+        ]),
     );
 }
 
@@ -4667,13 +4637,10 @@ fn function_return_inference_visits_body_statements() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "literalUnionResult"),
-        &Ty::union(
-            arena,
-            [
-                Ty::number_literal(arena, 2.0, "2", NumberBase::Decimal),
-                Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
-            ],
-        ),
+        &arena.union([
+            arena.number_literal(2.0, "2", NumberBase::Decimal),
+            arena.number_literal(1.0, "1", NumberBase::Decimal),
+        ]),
     );
     assert_eq!(
         get_global_symbol_type(&ret, "nestedFunctionResult"),
@@ -4729,12 +4696,12 @@ fn async_function_inference_wraps_return_type_in_promise() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "stringResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::string()]),
+        &arena.type_reference("Promise", [Ty::string()]),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "emptyResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::void()]),
+        &arena.type_reference("Promise", [Ty::void()]),
     );
     assert_eq!(
         get_global_symbol_type(&ret, "unwrapPromise").to_type_string(ret.arena),
@@ -4747,17 +4714,17 @@ fn async_function_inference_wraps_return_type_in_promise() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "unwrappedResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::number()]),
+        &arena.type_reference("Promise", [Ty::number()]),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "genericResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::string()]),
+        &arena.type_reference("Promise", [Ty::string()]),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "numberResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::number()]),
+        &arena.type_reference("Promise", [Ty::number()]),
     );
 }
 
@@ -5207,7 +5174,7 @@ fn promise_constructor_contextually_types_executor_parameters() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "promise"),
-        &Ty::type_reference(arena, "Promise", [Ty::unknown()]),
+        &arena.type_reference("Promise", [Ty::unknown()]),
     );
     assert_eq!(
         get_first_symbol_type(&ret, "resolve").to_type_string(ret.arena),
@@ -5230,7 +5197,7 @@ fn promise_finally_returns_original_promise_type() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "rejected"),
-        &Ty::type_reference(arena(&ret), "Promise", [Ty::never()]),
+        &arena(&ret).type_reference("Promise", [Ty::never()]),
     );
 }
 
@@ -5257,12 +5224,12 @@ fn promise_then_and_catch_infer_callback_returns_through_nullable_callback_types
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "thenResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::void()]),
+        &arena.type_reference("Promise", [Ty::void()]),
     );
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "defaultThenResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::string()]),
+        &arena.type_reference("Promise", [Ty::string()]),
     );
     assert_eq!(
         get_global_symbol_type(&ret, "catchMethod").to_type_string(ret.arena),
@@ -5271,7 +5238,7 @@ fn promise_then_and_catch_infer_callback_returns_through_nullable_callback_types
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "catchResult"),
-        &Ty::type_reference(arena, "Promise", [Ty::void()]),
+        &arena.type_reference("Promise", [Ty::void()]),
     );
 }
 
@@ -5688,7 +5655,7 @@ fn generic_function_substitutes_object_return_type() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "x"),
-        &Ty::object(arena(&ret), [Ty::property("value", Ty::number())]),
+        &arena(&ret).object([Ty::property("value", Ty::number())]),
     );
 }
 
@@ -5713,17 +5680,17 @@ fn generic_type_references_preserve_type_arguments() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "explicit"),
-        &Ty::type_reference(arena(&ret), "Box", [Ty::string()]),
+        &arena(&ret).type_reference("Box", [Ty::string()]),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "inferred"),
-        &Ty::type_reference(arena(&ret), "Box", [Ty::number()]),
+        &arena(&ret).type_reference("Box", [Ty::number()]),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "fromExplicitCall"),
-        &Ty::type_reference(arena(&ret), "Box", [Ty::string()]),
+        &arena(&ret).type_reference("Box", [Ty::string()]),
     );
 }
 
@@ -5758,12 +5725,12 @@ fn generic_function_defaults_render_and_apply_when_not_inferred() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "fromDefault"),
-        &Ty::type_reference(arena(&ret), "A", std::iter::empty()),
+        &arena(&ret).type_reference("A", std::iter::empty()),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "fromInference"),
-        &Ty::type_reference(arena(&ret), "A", std::iter::empty()),
+        &arena(&ret).type_reference("A", std::iter::empty()),
     );
     assert_eq!(
         get_global_symbol_type(&ret, "fromDependentDefault"),
@@ -5772,7 +5739,7 @@ fn generic_function_defaults_render_and_apply_when_not_inferred() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "unresolvedValue"),
-        &Ty::type_reference(arena(&ret), "T", std::iter::empty()),
+        &arena(&ret).type_reference("T", std::iter::empty()),
     );
 }
 
@@ -5855,12 +5822,12 @@ fn new_expression_infers_class_instance_type() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "c"),
-        &Ty::type_reference(arena(&ret), "Foo", std::iter::empty()),
+        &arena(&ret).type_reference("Foo", std::iter::empty()),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "x"),
-        &Ty::object(arena(&ret), [Ty::property("b", Ty::number())]),
+        &arena(&ret).object([Ty::property("b", Ty::number())]),
     );
 }
 
@@ -5965,7 +5932,7 @@ fn array_every_contextually_types_callback_parameters() {
     assert_type_eq(
         ret.arena,
         &get_first_symbol_type(&ret, "val"),
-        &Ty::type_reference(arena(&ret), "Ship", std::iter::empty()),
+        &arena(&ret).type_reference("Ship", std::iter::empty()),
     );
     assert_eq!(get_global_symbol_type(&ret, "sunk"), Ty::boolean());
 }
@@ -5984,7 +5951,7 @@ fn array_map_infers_async_callback_return_type() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "mapped"),
-        &Ty::array(arena, Ty::type_reference(arena, "Promise", [Ty::number()])),
+        &arena.array(arena.type_reference("Promise", [Ty::number()])),
     );
     assert_eq!(get_first_symbol_type(&ret, "x"), Ty::number());
 }
@@ -6008,7 +5975,7 @@ fn array_map_string_callback_member_uses_global_string_interface() {
     assert_type_eq(
         arena,
         &get_global_symbol_type(&ret, "lengths"),
-        &Ty::array(arena, Ty::number()),
+        &arena.array(Ty::number()),
     );
 }
 
@@ -6125,27 +6092,29 @@ fn chain_expression_types() {
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "userId"),
-        &Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
+        &arena(&ret).union([Ty::number(), Ty::undefined()]),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "userName"),
-        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+        &arena(&ret).union([Ty::string(), Ty::undefined()]),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "userId2"),
-        &Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
+        &arena(&ret).union([Ty::number(), Ty::undefined()]),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "userName2"),
-        &Ty::union(arena(&ret), [Ty::string(), Ty::undefined()]),
+        &arena(&ret).union([Ty::string(), Ty::undefined()]),
     );
     assert_type_eq(
         ret.arena,
         &get_global_symbol_type(&ret, "optionalNestedArray"),
-        &Ty::object(arena(&ret), [Ty::property("label", Ty::string())]).or_undefined(arena(&ret)),
+        &arena(&ret)
+            .object([Ty::property("label", Ty::string())])
+            .or_undefined(arena(&ret)),
     );
 }
 
@@ -6174,7 +6143,7 @@ fn optional_function_parameters_render_optional_in_signatures() {
     assert_type_eq(
         ret.arena,
         &get_symbol_type_in_function(&ret, "foo", "a"),
-        &Ty::union(arena(&ret), [Ty::number(), Ty::undefined()]),
+        &arena(&ret).union([Ty::number(), Ty::undefined()]),
     );
 }
 
@@ -6211,14 +6180,13 @@ fn function_type_annotations_resolve_to_function_types() {
     assert_type_eq(
         arena,
         &get_first_symbol_type(&ret, "ab"),
-        &Ty::function(
-            arena,
+        &arena.function(
             [],
             [Ty::rest_parameter(
                 arena.str("args"),
-                Ty::type_reference(arena, arena.str("A"), []),
+                arena.type_reference(arena.str("A"), []),
             )],
-            Ty::type_reference(arena, arena.str("B"), []),
+            arena.type_reference(arena.str("B"), []),
         ),
     );
 }
@@ -6276,15 +6244,11 @@ fn test_get_global_type() {
     assert_type_eq(
         ret.arena,
         &get_global_type(&ret, ret.program_id, "Promise"),
-        &Some(Ty::type_reference(
-            arena(&ret),
-            "Promise",
-            std::iter::empty(),
-        )),
+        &Some(arena(&ret).type_reference("Promise", std::iter::empty())),
     );
     assert_type_eq(
         ret.arena,
         &checker.get_global_promise_type(ret.program_id),
-        &Ty::type_reference(arena(&ret), "Promise", std::iter::empty()),
+        &arena(&ret).type_reference("Promise", std::iter::empty()),
     );
 }

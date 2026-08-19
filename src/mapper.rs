@@ -61,7 +61,7 @@ impl<'a> TypeParameterSubstitutions<'a> {
                 .iter()
                 .map(|(type_parameter, ty)| {
                     (
-                        Ty::type_reference(arena, type_parameter.name, std::iter::empty()),
+                        arena.type_reference(type_parameter.name, std::iter::empty()),
                         *ty,
                     )
                 })
@@ -104,7 +104,7 @@ impl<'a> TypeMapper<'a> {
             .zip(type_arguments)
             .map(|(type_parameter, type_argument)| {
                 (
-                    Ty::type_reference(arena, type_parameter.name, std::iter::empty()),
+                    arena.type_reference(type_parameter.name, std::iter::empty()),
                     type_argument,
                 )
             })
@@ -324,7 +324,7 @@ mod tests {
     fn contextual_inference_mapper_resolves_type_parameter_when_read() {
         let allocator = Allocator::default();
         let arena = CheckerArena::new(&allocator);
-        let source = Ty::type_reference(arena, "T", std::iter::empty());
+        let source = arena.type_reference("T", std::iter::empty());
         let resolved_names = Rc::new(RefCell::new(Vec::new()));
         let resolved_names_for_mapper = Rc::clone(&resolved_names);
 

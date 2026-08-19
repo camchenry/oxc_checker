@@ -69,10 +69,10 @@ fn bench_type_set(criterion: &mut Criterion) {
         b.iter_batched(
             || {
                 vec![
-                    Ty::object(arena, vec![Ty::property("a", ty_number)]),
-                    Ty::object(arena, vec![Ty::property("b", ty_string)]),
-                    Ty::object(arena, vec![Ty::property("c", ty_boolean)]),
-                    Ty::object(arena, vec![Ty::property("d", ty_bigint)]),
+                    arena.object(vec![Ty::property("a", ty_number)]),
+                    arena.object(vec![Ty::property("b", ty_string)]),
+                    arena.object(vec![Ty::property("c", ty_boolean)]),
+                    arena.object(vec![Ty::property("d", ty_bigint)]),
                 ]
             },
             |ty| reduce_union_type(arena, ty),
@@ -81,7 +81,7 @@ fn bench_type_set(criterion: &mut Criterion) {
     });
 
     let distinct_types = (0..256)
-        .map(|index| Ty::number_literal(arena, index as f64, "0", NumberBase::Decimal))
+        .map(|index| arena.number_literal(index as f64, "0", NumberBase::Decimal))
         .collect::<Vec<_>>();
     let mut distinct_group = criterion.benchmark_group("reduce_union_type/distinct");
     for size in [2, 4, 8, 16, 64, 256] {
@@ -108,7 +108,7 @@ fn bench_type_set(criterion: &mut Criterion) {
     let nested = distinct_types
         .chunks_exact(4)
         .take(16)
-        .map(|types| Ty::union(arena, types.iter().copied()))
+        .map(|types| arena.union(types.iter().copied()))
         .collect::<Vec<_>>();
     let mut nested_group = criterion.benchmark_group("reduce_union_type/nested");
     for size in [2, 4, 8, 16] {

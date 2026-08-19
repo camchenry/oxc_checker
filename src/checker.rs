@@ -12,7 +12,7 @@ use crate::{
     global_types::GlobalSymbolTable,
     mapper::MapperCacheEntry,
     program::{ProgramId, ProgramStore},
-    types::{CheckerArena, Ty, TyTypeParameter, TypeId},
+    types::{CheckerArena, Ty, TyTypeParameter, TypeBuilder, TypeId},
 };
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -67,6 +67,7 @@ pub(crate) type SymbolTypeCache<'a> = Vec<Option<IndexVec<SymbolId, Option<Ty<'a
 pub struct Checker<'a, 'store> {
     pub(crate) store: &'store ProgramStore<'a>,
     pub(crate) arena: CheckerArena<'a>,
+    pub(crate) ty: TypeBuilder<'a>,
     pub(crate) global_symbols: &'store GlobalSymbolTable,
     pub(crate) declared_type_cache: RefCell<SymbolTypeCache<'a>>,
     pub(crate) value_type_cache: RefCell<SymbolTypeCache<'a>>,
@@ -123,6 +124,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         Self {
             store,
             arena,
+            ty: TypeBuilder::new(arena),
             global_symbols: store.global_symbols(),
             declared_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),
             value_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),

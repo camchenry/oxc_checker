@@ -145,9 +145,9 @@ fn index_signature_key_types<'a>(
     constraint: Ty<'a>,
 ) -> Option<Vec<Ty<'a>>> {
     match arena.ty_kind(constraint) {
-        types::TyKind::String => Some(vec![Ty::string()]),
-        types::TyKind::Number => Some(vec![Ty::number()]),
-        types::TyKind::Symbol => Some(vec![Ty::symbol()]),
+        types::TyKind::String => Some(vec![Ty::String]),
+        types::TyKind::Number => Some(vec![Ty::Number]),
+        types::TyKind::Symbol => Some(vec![Ty::Symbol]),
         types::TyKind::Union(union) => {
             let mut key_types = Vec::new();
             for ty in &union.types {

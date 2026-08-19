@@ -22,7 +22,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         if matches!(self.ty_kind(source), TyKind::GlobalThis) {
             let property_type = |name| {
                 if name == "globalThis" {
-                    Some(Ty::global_this())
+                    Some(self.ty.global_this())
                 } else {
                     self.global_symbols
                         .global_this_value_symbol(name)
@@ -378,7 +378,7 @@ impl<'a, 'store> Checker<'a, 'store> {
 
             if source_property.optional
                 && !target_property.optional
-                && !self.is_assignable_to_at_depth(Ty::undefined(), target_property.ty, depth)
+                && !self.is_assignable_to_at_depth(Ty::Undefined, target_property.ty, depth)
             {
                 return false;
             }
@@ -394,6 +394,7 @@ mod tests {
     use std::path::{Path, PathBuf};
 
     use crate::{
+        TypeBuilder,
         checker::Checker,
         program::{HostModuleResolution, ProgramHost, ProgramStore, ProgramStoreBuilder},
     };
@@ -432,65 +433,62 @@ mod tests {
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
         // All types are assignable to themselves.
-        assert!(is_assignable_to(Ty::any(), Ty::any()));
-        assert!(is_assignable_to(Ty::unknown(), Ty::unknown()));
-        assert!(is_assignable_to(
-            Ty::primitive_object(),
-            Ty::primitive_object()
-        ));
-        assert!(is_assignable_to(Ty::void(), Ty::void()));
-        assert!(is_assignable_to(Ty::undefined(), Ty::undefined()));
-        assert!(is_assignable_to(Ty::null(), Ty::null()));
-        assert!(is_assignable_to(Ty::never(), Ty::never()));
+        assert!(is_assignable_to(Ty::Any, Ty::Any));
+        assert!(is_assignable_to(Ty::Unknown, Ty::Unknown));
+        assert!(is_assignable_to(Ty::PrimitiveObject, Ty::PrimitiveObject));
+        assert!(is_assignable_to(Ty::Void, Ty::Void));
+        assert!(is_assignable_to(Ty::Undefined, Ty::Undefined));
+        assert!(is_assignable_to(Ty::Null, Ty::Null));
+        assert!(is_assignable_to(Ty::Never, Ty::Never));
         // `any` is assignable to all types, except for `never`
-        assert!(is_assignable_to(Ty::any(), Ty::unknown()));
-        assert!(is_assignable_to(Ty::any(), Ty::primitive_object()));
-        assert!(is_assignable_to(Ty::any(), Ty::void()));
-        assert!(is_assignable_to(Ty::any(), Ty::undefined()));
-        assert!(is_assignable_to(Ty::any(), Ty::null()));
-        assert!(!is_assignable_to(Ty::any(), Ty::never()));
+        assert!(is_assignable_to(Ty::Any, Ty::Unknown));
+        assert!(is_assignable_to(Ty::Any, Ty::PrimitiveObject));
+        assert!(is_assignable_to(Ty::Any, Ty::Void));
+        assert!(is_assignable_to(Ty::Any, Ty::Undefined));
+        assert!(is_assignable_to(Ty::Any, Ty::Null));
+        assert!(!is_assignable_to(Ty::Any, Ty::Never));
         // `unknown` is basically the same as `any`, but doesn't allow for any type to be assigned to it
-        assert!(is_assignable_to(Ty::unknown(), Ty::any()));
-        assert!(!is_assignable_to(Ty::unknown(), Ty::primitive_object()));
-        assert!(!is_assignable_to(Ty::unknown(), Ty::void()));
-        assert!(!is_assignable_to(Ty::unknown(), Ty::undefined()));
-        assert!(!is_assignable_to(Ty::unknown(), Ty::null()));
-        assert!(!is_assignable_to(Ty::unknown(), Ty::never()));
+        assert!(is_assignable_to(Ty::Unknown, Ty::Any));
+        assert!(!is_assignable_to(Ty::Unknown, Ty::PrimitiveObject));
+        assert!(!is_assignable_to(Ty::Unknown, Ty::Void));
+        assert!(!is_assignable_to(Ty::Unknown, Ty::Undefined));
+        assert!(!is_assignable_to(Ty::Unknown, Ty::Null));
+        assert!(!is_assignable_to(Ty::Unknown, Ty::Never));
         // `object` is assignable to `any`, `unknown`, and itself, but not to `void`, `undefined`, `null`, or `never`
-        assert!(is_assignable_to(Ty::primitive_object(), Ty::any()));
-        assert!(is_assignable_to(Ty::primitive_object(), Ty::unknown()));
-        assert!(!is_assignable_to(Ty::primitive_object(), Ty::void()));
-        assert!(!is_assignable_to(Ty::primitive_object(), Ty::undefined()));
-        assert!(!is_assignable_to(Ty::primitive_object(), Ty::null()));
-        assert!(!is_assignable_to(Ty::primitive_object(), Ty::never()));
+        assert!(is_assignable_to(Ty::PrimitiveObject, Ty::Any));
+        assert!(is_assignable_to(Ty::PrimitiveObject, Ty::Unknown));
+        assert!(!is_assignable_to(Ty::PrimitiveObject, Ty::Void));
+        assert!(!is_assignable_to(Ty::PrimitiveObject, Ty::Undefined));
+        assert!(!is_assignable_to(Ty::PrimitiveObject, Ty::Null));
+        assert!(!is_assignable_to(Ty::PrimitiveObject, Ty::Never));
         // `void` is not assignable to anything, except for `any` and `unknown`
-        assert!(is_assignable_to(Ty::void(), Ty::any()));
-        assert!(is_assignable_to(Ty::void(), Ty::unknown()));
-        assert!(!is_assignable_to(Ty::void(), Ty::primitive_object()));
-        assert!(!is_assignable_to(Ty::void(), Ty::undefined()));
-        assert!(!is_assignable_to(Ty::void(), Ty::null()));
-        assert!(!is_assignable_to(Ty::void(), Ty::never()));
+        assert!(is_assignable_to(Ty::Void, Ty::Any));
+        assert!(is_assignable_to(Ty::Void, Ty::Unknown));
+        assert!(!is_assignable_to(Ty::Void, Ty::PrimitiveObject));
+        assert!(!is_assignable_to(Ty::Void, Ty::Undefined));
+        assert!(!is_assignable_to(Ty::Void, Ty::Null));
+        assert!(!is_assignable_to(Ty::Void, Ty::Never));
         // `undefined` is not assignable to anything, except for `any`, `unknown`, and `void`
-        assert!(is_assignable_to(Ty::undefined(), Ty::any()));
-        assert!(is_assignable_to(Ty::undefined(), Ty::unknown()));
-        assert!(is_assignable_to(Ty::undefined(), Ty::void()));
-        assert!(!is_assignable_to(Ty::undefined(), Ty::primitive_object()));
-        assert!(!is_assignable_to(Ty::undefined(), Ty::null()));
-        assert!(!is_assignable_to(Ty::undefined(), Ty::never()));
+        assert!(is_assignable_to(Ty::Undefined, Ty::Any));
+        assert!(is_assignable_to(Ty::Undefined, Ty::Unknown));
+        assert!(is_assignable_to(Ty::Undefined, Ty::Void));
+        assert!(!is_assignable_to(Ty::Undefined, Ty::PrimitiveObject));
+        assert!(!is_assignable_to(Ty::Undefined, Ty::Null));
+        assert!(!is_assignable_to(Ty::Undefined, Ty::Never));
         // `null` is not assignable to anything, except for `any` and `unknown`
-        assert!(is_assignable_to(Ty::null(), Ty::any()));
-        assert!(is_assignable_to(Ty::null(), Ty::unknown()));
-        assert!(!is_assignable_to(Ty::null(), Ty::primitive_object()));
-        assert!(!is_assignable_to(Ty::null(), Ty::void()));
-        assert!(!is_assignable_to(Ty::null(), Ty::undefined()));
-        assert!(!is_assignable_to(Ty::null(), Ty::never()));
+        assert!(is_assignable_to(Ty::Null, Ty::Any));
+        assert!(is_assignable_to(Ty::Null, Ty::Unknown));
+        assert!(!is_assignable_to(Ty::Null, Ty::PrimitiveObject));
+        assert!(!is_assignable_to(Ty::Null, Ty::Void));
+        assert!(!is_assignable_to(Ty::Null, Ty::Undefined));
+        assert!(!is_assignable_to(Ty::Null, Ty::Never));
         // `never` is assignable to everything
-        assert!(is_assignable_to(Ty::never(), Ty::any()));
-        assert!(is_assignable_to(Ty::never(), Ty::unknown()));
-        assert!(is_assignable_to(Ty::never(), Ty::primitive_object()));
-        assert!(is_assignable_to(Ty::never(), Ty::void()));
-        assert!(is_assignable_to(Ty::never(), Ty::undefined()));
-        assert!(is_assignable_to(Ty::never(), Ty::null()));
+        assert!(is_assignable_to(Ty::Never, Ty::Any));
+        assert!(is_assignable_to(Ty::Never, Ty::Unknown));
+        assert!(is_assignable_to(Ty::Never, Ty::PrimitiveObject));
+        assert!(is_assignable_to(Ty::Never, Ty::Void));
+        assert!(is_assignable_to(Ty::Never, Ty::Undefined));
+        assert!(is_assignable_to(Ty::Never, Ty::Null));
     }
 
     #[test]
@@ -501,46 +499,34 @@ mod tests {
         let arena = checker.arena;
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
-        let number_and_string = Ty::intersection(
-            arena,
-            [
-                Ty::object(arena, [Ty::property("a", Ty::number())]),
-                Ty::object(arena, [Ty::property("b", Ty::string())]),
-            ],
-        );
+        let number_and_string = arena.intersection([
+            arena.object([TypeBuilder::new(arena).property("a", Ty::Number)]),
+            arena.object([TypeBuilder::new(arena).property("b", Ty::String)]),
+        ]);
 
         // { a: number, b: string } -> { a: number } & { b: string }
         assert!(is_assignable_to(
-            Ty::object(
-                arena,
-                [
-                    Ty::property("a", Ty::number()),
-                    Ty::property("b", Ty::string())
-                ]
-            ),
+            arena.object([
+                TypeBuilder::new(arena).property("a", Ty::Number),
+                TypeBuilder::new(arena).property("b", Ty::String)
+            ]),
             number_and_string
         ));
         // { a: number } -!> { a: number, b: string }
         assert!(!is_assignable_to(
-            Ty::object(arena, [Ty::property("a", Ty::number())]),
-            Ty::object(
-                arena,
-                [
-                    Ty::property("a", Ty::number()),
-                    Ty::property("b", Ty::string())
-                ]
-            ),
+            arena.object([TypeBuilder::new(arena).property("a", Ty::Number)]),
+            arena.object([
+                TypeBuilder::new(arena).property("a", Ty::Number),
+                TypeBuilder::new(arena).property("b", Ty::String)
+            ]),
         ));
         // { a: number } & { b: string } -> { a: number, b: string }
         assert!(is_assignable_to(
             number_and_string,
-            Ty::object(
-                arena,
-                [
-                    Ty::property("a", Ty::number()),
-                    Ty::property("b", Ty::string())
-                ]
-            ),
+            arena.object([
+                TypeBuilder::new(arena).property("a", Ty::Number),
+                TypeBuilder::new(arena).property("b", Ty::String)
+            ]),
         ));
     }
 
@@ -554,38 +540,29 @@ mod tests {
 
         // { a: number, b: string } is assignable to { a: number }
         assert!(is_assignable_to(
-            Ty::object(
-                arena,
-                [
-                    Ty::property("a", Ty::number()),
-                    Ty::property("b", Ty::string())
-                ]
-            ),
-            Ty::object(arena, [Ty::property("a", Ty::number())])
+            arena.object([
+                TypeBuilder::new(arena).property("a", Ty::Number),
+                TypeBuilder::new(arena).property("b", Ty::String)
+            ]),
+            arena.object([TypeBuilder::new(arena).property("a", Ty::Number)])
         ));
 
         // { a: number } is not assignable to { a: number, b: string }
         assert!(!is_assignable_to(
-            Ty::object(arena, [Ty::property("a", Ty::number())]),
-            Ty::object(
-                arena,
-                [
-                    Ty::property("a", Ty::number()),
-                    Ty::property("b", Ty::string())
-                ]
-            ),
+            arena.object([TypeBuilder::new(arena).property("a", Ty::Number)]),
+            arena.object([
+                TypeBuilder::new(arena).property("a", Ty::Number),
+                TypeBuilder::new(arena).property("b", Ty::String)
+            ]),
         ));
 
         // { a: number, b: string } is assignable to {}
         assert!(is_assignable_to(
-            Ty::object(
-                arena,
-                [
-                    Ty::property("a", Ty::number()),
-                    Ty::property("b", Ty::string())
-                ]
-            ),
-            Ty::object(arena, [])
+            arena.object([
+                TypeBuilder::new(arena).property("a", Ty::Number),
+                TypeBuilder::new(arena).property("b", Ty::String)
+            ]),
+            arena.object([])
         ));
     }
 
@@ -598,22 +575,13 @@ mod tests {
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
         // primitive object is assignable to itself
-        assert!(is_assignable_to(
-            Ty::primitive_object(),
-            Ty::primitive_object()
-        ));
+        assert!(is_assignable_to(Ty::PrimitiveObject, Ty::PrimitiveObject));
         // `object` is assignable to {}
-        assert!(is_assignable_to(
-            Ty::primitive_object(),
-            Ty::object(arena, [])
-        ));
+        assert!(is_assignable_to(Ty::PrimitiveObject, arena.object([])));
         // `{}` is assignable to `object`
-        assert!(is_assignable_to(
-            Ty::object(arena, []),
-            Ty::primitive_object()
-        ));
+        assert!(is_assignable_to(arena.object([]), Ty::PrimitiveObject));
         // `{}` is not assignable to undefined, null
-        assert!(!is_assignable_to(Ty::object(arena, []), Ty::undefined()));
-        assert!(!is_assignable_to(Ty::object(arena, []), Ty::null()));
+        assert!(!is_assignable_to(arena.object([]), Ty::Undefined));
+        assert!(!is_assignable_to(arena.object([]), Ty::Null));
     }
 }

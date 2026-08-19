@@ -82,10 +82,10 @@ impl<'a> UnionAccumulator<'a> {
             return *error;
         }
         if self.types.contains(&Ty::Any) {
-            return Ty::any();
+            return Ty::Any;
         }
         if self.types.contains(&Ty::Unknown) {
-            return Ty::unknown();
+            return Ty::Unknown;
         }
 
         remove_redundant_literal_types(self.arena, &mut self.types);
@@ -201,7 +201,7 @@ pub(crate) fn reduce_intersection_type<'a>(
         return *error;
     }
     if type_set.contains(&Ty::Any) {
-        return Ty::any();
+        return Ty::Any;
     }
 
     let empty_object = type_set
@@ -217,11 +217,11 @@ pub(crate) fn reduce_intersection_type<'a>(
             .iter()
             .any(|ty| matches!(arena.ty_kind(*ty), TyKind::Null | TyKind::Undefined))
         {
-            return Ty::never();
+            return Ty::Never;
         }
     }
     if type_set.contains(&Ty::Never) {
-        return Ty::never();
+        return Ty::Never;
     }
 
     if type_set.len() > 1 {
@@ -241,7 +241,7 @@ pub(crate) fn reduce_intersection_type<'a>(
     }
 
     match type_set.as_slice() {
-        [] => Ty::object(arena, []),
+        [] => arena.object([]),
         [ty] => *ty,
         _ => arena.intern_intersection(type_set),
     }
@@ -271,17 +271,16 @@ fn intersect_with_empty_object<'a>(
     empty_object: Ty<'a>,
 ) -> Ty<'a> {
     match arena.ty_kind(ty) {
-        TyKind::Union(union) => Ty::union(
-            arena,
+        TyKind::Union(union) => arena.union(
             union
                 .types
                 .iter()
                 .map(|ty| intersect_with_empty_object(arena, *ty, empty_object)),
         ),
-        TyKind::Null | TyKind::Undefined => Ty::never(),
+        TyKind::Null | TyKind::Undefined => Ty::Never,
         TyKind::Unknown => empty_object,
         TyKind::Object(object) if object.is_empty() => ty,
-        _ => Ty::intersection(arena, [ty, empty_object]),
+        _ => arena.intersection([ty, empty_object]),
     }
 }
 

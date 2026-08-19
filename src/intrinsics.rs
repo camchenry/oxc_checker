@@ -28,7 +28,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         depth: usize,
     ) -> Ty<'a> {
         let Some(type_argument) = type_arguments.first().copied() else {
-            return Ty::type_reference(self.arena(), "intrinsic", std::iter::empty());
+            return self.ty.type_reference("intrinsic", std::iter::empty());
         };
 
         match name {
@@ -36,8 +36,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.apply_intrinsic_string_mapping(program_id, name, type_argument, depth + 1)
             }
             "NoInfer" => type_argument,
-            "BuiltinIteratorReturn" => Ty::any(),
-            _ => Ty::type_reference(self.arena(), "intrinsic", std::iter::empty()),
+            "BuiltinIteratorReturn" => self.ty.any(),
+            _ => self.ty.type_reference("intrinsic", std::iter::empty()),
         }
     }
 
@@ -53,20 +53,19 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         match self.ty_kind(ty) {
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
-                union.types.iter().map(|ty| {
+            TyKind::Union(union) => {
+                self.ty.union(union.types.iter().map(|ty| {
                     self.apply_intrinsic_string_mapping(program_id, name, *ty, depth + 1)
-                }),
-            ),
-            TyKind::StringLiteral(literal) => Ty::string_literal(
-                self.arena(),
-                self.apply_intrinsic_string_mapping_to_string(
-                    name,
-                    literal.value,
-                    matches!(name, "Capitalize" | "Uncapitalize"),
-                ),
-            ),
+                }))
+            }
+            TyKind::StringLiteral(literal) => {
+                self.arena()
+                    .string_literal(self.apply_intrinsic_string_mapping_to_string(
+                        name,
+                        literal.value,
+                        matches!(name, "Capitalize" | "Uncapitalize"),
+                    ))
+            }
             TyKind::TemplateLiteral(template) => {
                 let mut quasis = template
                     .quasis
@@ -122,11 +121,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if expanded != ty {
                     self.apply_intrinsic_string_mapping(program_id, name, expanded, depth + 1)
                 } else {
-                    Ty::type_reference(self.arena(), name, [ty])
+                    self.ty.type_reference(name, [ty])
                 }
             }
             TyKind::String | TyKind::Any | TyKind::Error(_) | TyKind::Unknown => {
-                Ty::type_reference(self.arena(), name, [ty])
+                self.ty.type_reference(name, [ty])
             }
             _ => ty,
         }

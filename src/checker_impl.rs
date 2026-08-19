@@ -429,7 +429,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         let current = depth.get();
         if current >= TYPE_INSTANTIATION_MAX_DEPTH {
             self.mark_type_instantiation_overflow();
-            return Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded);
+            return self
+                .arena()
+                .error(TypeErrorKind::TypeInstantiationDepthExceeded);
         }
 
         depth.set(current + 1);
@@ -463,7 +465,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         depth: usize,
     ) -> Ty<'a> {
         if depth >= TYPE_INSTANTIATION_MAX_DEPTH {
-            return Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded);
+            return self
+                .arena()
+                .error(TypeErrorKind::TypeInstantiationDepthExceeded);
         }
         if mapper.is_empty() || !self.could_contain_type_variables(ty) {
             return ty;
@@ -572,7 +576,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if !was_semantically_instantiated {
                     return ty;
                 }
-                let instantiated = Ty::object(self.arena(), properties)
+                let instantiated = self
+                    .arena()
+                    .object(properties)
                     .with_index_infos(self.arena(), index_infos)
                     .with_signatures(self.arena(), signatures);
                 if object.is_constructor_type {
@@ -581,8 +587,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     instantiated
                 }
             }
-            TyKind::ModuleNamespace(namespace) => Ty::module_namespace(
-                self.arena(),
+            TyKind::ModuleNamespace(namespace) => self.ty.module_namespace(
                 namespace.name,
                 namespace.properties.iter().map(|property| TyProperty {
                     name: property.name,
@@ -632,7 +637,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                                     !self.arena().is_type_identical_to(original, instantiated)
                                 },
                             );
-                        Ty::type_parameter_with_display_default(
+                        self.ty.type_parameter_with_display_default(
                             type_parameter.name,
                             constraint_type,
                             default_type,
@@ -648,11 +653,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                         was_semantically_instantiated |=
                             !self.arena().is_type_identical_to(parameter.ty, ty);
                         if parameter.rest {
-                            Ty::rest_parameter(parameter.name, ty)
+                            self.ty.rest_parameter(parameter.name, ty)
                         } else if parameter.optional {
-                            Ty::optional_parameter(parameter.name, ty)
+                            self.ty.optional_parameter(parameter.name, ty)
                         } else {
-                            Ty::parameter(parameter.name, ty)
+                            self.ty.parameter(parameter.name, ty)
                         }
                     })
                     .collect::<Vec<_>>();
@@ -677,8 +682,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     return ty;
                 }
 
-                Ty::function_with_type_predicate_and_display(
-                    self.arena(),
+                self.ty.function_with_type_predicate_and_display(
                     type_parameters,
                     parameters,
                     return_type,
@@ -723,8 +727,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                 }
             }
-            TyKind::TypeQuery(query) => Ty::type_query(
-                self.arena(),
+            TyKind::TypeQuery(query) => self.ty.type_query(
                 query.name,
                 self.instantiate_type_at_depth(query.resolved, mapper, depth + 1),
                 query
@@ -736,38 +739,35 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let element_type =
                     self.instantiate_type_at_depth(array.element_type, mapper, depth + 1);
                 if array.display_as_generic {
-                    Ty::generic_array(self.arena(), element_type, array.readonly)
+                    self.ty.generic_array(element_type, array.readonly)
                 } else if array.readonly {
-                    Ty::readonly_array(self.arena(), element_type)
+                    self.ty.readonly_array(element_type)
                 } else {
-                    Ty::array(self.arena(), element_type)
+                    self.ty.array(element_type)
                 }
             }
-            TyKind::Tuple(tuple) => Ty::tuple_with_labels(
-                self.arena(),
+            TyKind::Tuple(tuple) => self.ty.tuple_with_labels(
                 tuple.labeled_elements().map(|element| {
                     element.map_ty(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1))
                 }),
                 TupleReadonly::from_readonly(tuple.readonly),
             ),
-            TyKind::Union(union) => Ty::r#union(
-                self.arena(),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
                     .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
             ),
-            TyKind::Intersection(intersection) => Ty::intersection(
-                self.arena(),
+            TyKind::Intersection(intersection) => self.ty.intersection(
                 intersection
                     .types
                     .iter()
                     .map(|ty| self.instantiate_type_at_depth(*ty, mapper, depth + 1)),
             ),
-            TyKind::Keyof(keyof) => Ty::keyof(
-                self.arena(),
-                self.instantiate_type_at_depth(keyof.target, mapper, depth + 1),
-            ),
+            TyKind::Keyof(keyof) => {
+                self.arena()
+                    .keyof(self.instantiate_type_at_depth(keyof.target, mapper, depth + 1))
+            }
             TyKind::IndexedAccess(indexed_access) => {
                 let object_type =
                     self.instantiate_type_at_depth(indexed_access.object_type, mapper, depth + 1);
@@ -778,11 +778,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     && property.value == "length"
                 {
                     self.get_property_type_of_tuple(tuple, property.value)
-                        .unwrap_or_else(|| {
-                            Ty::indexed_access(self.arena(), object_type, index_type)
-                        })
+                        .unwrap_or_else(|| self.ty.indexed_access(object_type, index_type))
                 } else {
-                    Ty::indexed_access(self.arena(), object_type, index_type)
+                    self.ty.indexed_access(object_type, index_type)
                 }
             }
             TyKind::Conditional(conditional) => {
@@ -797,39 +795,33 @@ impl<'a, 'store> Checker<'a, 'store> {
                     && let TyKind::Union(union) =
                         self.ty_kind(mapper.map(self.arena(), conditional.check_type))
                 {
-                    return Ty::r#union(
-                        self.arena(),
-                        union.types.iter().map(|ty| {
-                            let member_mapper = mapper.with_prepend_mapping(
-                                self.arena(),
-                                conditional.check_type,
-                                *ty,
-                            );
-                            let infer_member_mapper = member_mapper.without_type_parameter_names(
-                                self.arena(),
-                                infer_type_parameters.iter().copied(),
-                            );
-                            self.conditional_type(
-                                *ty,
-                                self.instantiate_type_at_depth(
-                                    conditional.extends_type,
-                                    &infer_member_mapper,
-                                    depth + 1,
-                                ),
-                                self.instantiate_type_at_depth(
-                                    conditional.true_type,
-                                    &infer_member_mapper,
-                                    depth + 1,
-                                ),
-                                self.instantiate_type_at_depth(
-                                    conditional.false_type,
-                                    &member_mapper,
-                                    depth + 1,
-                                ),
-                                false,
-                            )
-                        }),
-                    );
+                    return self.ty.union(union.types.iter().map(|ty| {
+                        let member_mapper =
+                            mapper.with_prepend_mapping(self.arena(), conditional.check_type, *ty);
+                        let infer_member_mapper = member_mapper.without_type_parameter_names(
+                            self.arena(),
+                            infer_type_parameters.iter().copied(),
+                        );
+                        self.conditional_type(
+                            *ty,
+                            self.instantiate_type_at_depth(
+                                conditional.extends_type,
+                                &infer_member_mapper,
+                                depth + 1,
+                            ),
+                            self.instantiate_type_at_depth(
+                                conditional.true_type,
+                                &infer_member_mapper,
+                                depth + 1,
+                            ),
+                            self.instantiate_type_at_depth(
+                                conditional.false_type,
+                                &member_mapper,
+                                depth + 1,
+                            ),
+                            false,
+                        )
+                    }));
                 }
 
                 let check_type =
@@ -864,9 +856,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.arena(),
                     std::iter::once(infer.type_parameter.name),
                 );
-                Ty::infer(
-                    self.arena(),
-                    Ty::type_parameter_with_display_default(
+                self.ty.infer(
+                    self.ty.type_parameter_with_display_default(
                         infer.type_parameter.name,
                         infer
                             .type_parameter
@@ -883,8 +874,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::Mapped(mapped) => {
                 let mapper =
                     mapper.without_type_parameter_names(self.arena(), std::iter::once(mapped.key));
-                Ty::mapped(
-                    self.arena(),
+                self.ty.mapped(
                     mapped.key,
                     self.instantiate_type_at_depth(mapped.constraint, &mapper, depth + 1),
                     mapped
@@ -1024,12 +1014,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                 }
                 if identifier.name == UNDEFINED_IDENT {
-                    return Ty::undefined();
+                    return self.ty.undefined();
                 }
                 if identifier.name == GLOBAL_THIS_IDENT {
-                    return Ty::global_this();
+                    return self.ty.global_this();
                 }
-                Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol)
+                self.ty.error(TypeErrorKind::UnresolvedSymbol)
             }
             AstKind::ObjectExpression(object) => {
                 self.get_type_of_object_expression(program_id, object, node_id, context)
@@ -1051,16 +1041,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                 UnaryOperator::UnaryNegation | UnaryOperator::UnaryPlus => {
                     match &unary_expression.argument {
                         Expression::NumericLiteral(literal) if flags.preserve_literals() => {
-                            Ty::number_literal_from_ast(
-                                self.arena(),
+                            self.ty.number_literal_from_ast(
                                 literal,
                                 unary_expression.operator == UnaryOperator::UnaryNegation,
                             )
                         }
-                        _ => Ty::number(),
+                        _ => self.ty.number(),
                     }
                 }
-                UnaryOperator::BitwiseNot => Ty::number(),
+                UnaryOperator::BitwiseNot => self.ty.number(),
                 UnaryOperator::LogicalNot => {
                     let argument_type = self.get_type_of_expression_with_node(
                         program_id,
@@ -1070,9 +1059,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                     type_facts::get_logical_not_type(self.arena(), argument_type)
                 }
-                UnaryOperator::Typeof => Ty::typeof_string_values(self.arena()),
-                UnaryOperator::Void => Ty::undefined(),
-                UnaryOperator::Delete => Ty::boolean(),
+                UnaryOperator::Typeof => self.ty.typeof_string_values(),
+                UnaryOperator::Void => self.ty.undefined(),
+                UnaryOperator::Delete => self.ty.boolean(),
             },
             AstKind::TSNonNullExpression(non_null_expr) => {
                 let ty = self.get_type_of_expression_with_node(
@@ -1177,7 +1166,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.get_contextual_this_type_of_object_literal_method(program_id, node_id)
                     })
                 })
-                .unwrap_or_else(Ty::any),
+                .unwrap_or_else(|| self.ty.any()),
             AstKind::Function(function) if function.is_expression() => self
                 .get_type_of_function_signature_with_node(
                     program_id,
@@ -1218,38 +1207,34 @@ impl<'a, 'store> Checker<'a, 'store> {
             AstKind::PrivateFieldExpression(member) => {
                 self.get_type_of_private_field_expression(program_id, member, node_id, flags)
             }
-            AstKind::NullLiteral(_) => Ty::null(),
+            AstKind::NullLiteral(_) => self.ty.null(),
             AstKind::NumericLiteral(literal) => {
                 if flags.preserve_literals() {
-                    Ty::number_literal_from_ast(self.arena(), literal, false)
+                    self.ty.number_literal_from_ast(literal, false)
                 } else {
-                    Ty::number()
+                    self.ty.number()
                 }
             }
             AstKind::StringLiteral(literal) => {
                 if flags.preserve_literals() {
-                    Ty::string_literal(self.arena(), &literal.value)
+                    self.ty.string_literal(&literal.value)
                 } else {
-                    Ty::string()
+                    self.ty.string()
                 }
             }
             AstKind::BooleanLiteral(literal) => {
                 if flags.preserve_literals() {
-                    Ty::boolean_literal(literal.value)
+                    self.ty.boolean_literal(literal.value)
                 } else {
-                    Ty::boolean()
+                    self.ty.boolean()
                 }
             }
             AstKind::BigIntLiteral(literal) => {
                 if flags.preserve_literals() {
-                    Ty::bigint_literal(
-                        self.arena(),
-                        literal.value.as_str(),
-                        literal.raw,
-                        literal.base,
-                    )
+                    self.arena()
+                        .bigint_literal(literal.value.as_str(), literal.raw, literal.base)
                 } else {
-                    Ty::bigint()
+                    self.ty.bigint()
                 }
             }
             AstKind::TemplateLiteral(literal) => {
@@ -1257,10 +1242,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     if let Some(value) =
                         self.get_template_literal_static_value(program_id, literal, node_id)
                     {
-                        Ty::string_literal(self.arena(), value)
+                        self.ty.string_literal(value)
                     } else if literal.expressions.is_empty() {
-                        Ty::template_literal(
-                            self.arena(),
+                        self.ty.template_literal(
                             literal.quasis.iter().map(|q| TemplateLiteralElement {
                                 value: q.value.raw.as_str(),
                             }),
@@ -1274,10 +1258,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                             }),
                         )
                     } else {
-                        Ty::string()
+                        self.ty.string()
                     }
                 } else {
-                    Ty::string()
+                    self.ty.string()
                 }
             }
             AstKind::RegExpLiteral(_) => self.get_global_regexp_type(program_id),
@@ -1285,7 +1269,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .and_then(|node_id| {
                     self.get_enclosing_base_class_instance_type(program_id, node_id)
                 })
-                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType)),
+                .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedType)),
             AstKind::Class(class) if class.is_expression() => {
                 self.get_type_of_class_expression(program_id, class)
             }
@@ -1297,7 +1281,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             ),
             AstKind::NewTarget(_) => node_id
                 .and_then(|node_id| self.get_type_of_new_target(program_id, node_id))
-                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType)),
+                .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedType)),
             AstKind::ImportExpression(import_expression) => {
                 self.get_type_of_import_expression(program_id, import_expression)
             }
@@ -1308,7 +1292,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.get_type_of_expression_with_node(program_id, expression, node_id, flags)
                 })
                 .last()
-                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType)),
+                .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedType)),
             AstKind::TaggedTemplateExpression(tagged_template) => {
                 self.get_type_of_tagged_template_expression(program_id, tagged_template, node_id)
             }
@@ -1321,24 +1305,20 @@ impl<'a, 'store> Checker<'a, 'store> {
                 );
                 let target_type = self.expand_type(program_id, target_type, 0);
                 match self.ty_kind(target_type) {
-                    TyKind::Bigint | TyKind::BigIntLiteral(_) => Ty::bigint(),
-                    _ => Ty::number(),
+                    TyKind::Bigint | TyKind::BigIntLiteral(_) => self.ty.bigint(),
+                    _ => self.ty.number(),
                 }
             }
             AstKind::YieldExpression(yield_expression) => {
                 self.get_type_of_yield_expression(program_id, yield_expression)
             }
-            AstKind::PrivateInExpression(_) => Ty::boolean(),
+            AstKind::PrivateInExpression(_) => self.ty.boolean(),
             // TODO(correctness): Handle all of these cases.
-            AstKind::JSXElement(_) => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
-            AstKind::JSXFragment(_) => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
-            AstKind::TSInstantiationExpression(_) => {
-                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
-            }
-            AstKind::V8IntrinsicExpression(_) => {
-                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
-            }
-            _ => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
+            AstKind::JSXElement(_) => self.ty.error(TypeErrorKind::UnsupportedType),
+            AstKind::JSXFragment(_) => self.ty.error(TypeErrorKind::UnsupportedType),
+            AstKind::TSInstantiationExpression(_) => self.ty.error(TypeErrorKind::UnsupportedType),
+            AstKind::V8IntrinsicExpression(_) => self.ty.error(TypeErrorKind::UnsupportedType),
+            _ => self.ty.error(TypeErrorKind::UnsupportedType),
         }
     }
 
@@ -1352,24 +1332,25 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .store
                 .resolved_module(program_id, source.value.as_str())
                 .map_or_else(
-                    || Ty::error(self.arena(), TypeErrorKind::UnresolvedImport),
+                    || self.ty.error(TypeErrorKind::UnresolvedImport),
                     |imported_program_id| {
                         let module_type = self
                             .get_module_namespace_type(imported_program_id, source.value.as_str());
                         let name = self
                             .arena()
                             .str(&format!("import(\"{}\")", source.value.as_str()));
-                        Ty::type_query(self.arena(), name, module_type, std::iter::empty())
+                        self.arena()
+                            .type_query(name, module_type, std::iter::empty())
                     },
                 ),
-            _ => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
+            _ => self.ty.error(TypeErrorKind::UnsupportedType),
         };
 
         let promise_type = self.get_global_promise_type(program_id);
         let TyKind::TypeReference(reference) = self.ty_kind(promise_type) else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
+            return self.ty.error(TypeErrorKind::UnresolvedType);
         };
-        Ty::type_reference(self.arena(), reference.name, [imported_type])
+        self.ty.type_reference(reference.name, [imported_type])
     }
 
     fn get_type_of_new_target(&self, program_id: ProgramId, node_id: NodeId) -> Option<Ty<'a>> {
@@ -1392,12 +1373,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                                 _ => None,
                             });
                         return class_name.map_or_else(
-                            || Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol)),
+                            || Some(self.ty.error(TypeErrorKind::UnresolvedSymbol)),
                             |class_name| {
-                                Some(Ty::type_query(
-                                    self.arena(),
+                                Some(self.ty.type_query(
                                     class_name,
-                                    Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
+                                    self.ty.error(TypeErrorKind::UnresolvedSymbol),
                                     std::iter::empty(),
                                 ))
                             },
@@ -1408,7 +1388,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.nodes(program_id).parent_kind(function.node_id()),
                         AstKind::MethodDefinition(_)
                     ) {
-                        return Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedType));
+                        return Some(self.ty.error(TypeErrorKind::UnresolvedType));
                     }
 
                     if let Some(symbol_id) = function
@@ -1445,11 +1425,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                     let parameters =
                         self.function_signature_parameters(program_id, &function.params);
-                    return Some(Ty::function_with_type_predicate(
-                        self.arena(),
+                    return Some(self.ty.function_with_type_predicate(
                         type_parameters,
                         parameters,
-                        Ty::any(),
+                        self.ty.any(),
                         None,
                     ));
                 }
@@ -1495,7 +1474,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         specifier: &ExportSpecifier<'a>,
     ) -> Ty<'a> {
         let Some(local_name) = specifier.local.identifier_name() else {
-            return Ty::none();
+            return self.ty.none();
         };
         let local_name = local_name.as_str();
 
@@ -1505,7 +1484,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if ty.is_none() { None } else { Some(ty) }
             })
             .or_else(|| self.get_type_of_local_type_declaration_by_name(program_id, local_name))
-            .unwrap_or_else(Ty::none)
+            .unwrap_or_else(|| self.ty.none())
     }
 
     fn get_type_of_local_type_declaration_by_name(
@@ -1520,12 +1499,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                 AstKind::TSInterfaceDeclaration(interface)
                     if interface.id.name.as_str() == type_name =>
                 {
-                    Some(Ty::any())
+                    Some(self.ty.any())
                 }
                 AstKind::TSTypeAliasDeclaration(alias) if alias.id.name.as_str() == type_name => {
                     let ty = self.get_type_of_type_alias_declaration(program_id, alias);
                     Some(if ty.is_none() {
-                        Ty::error(self.arena(), TypeErrorKind::UnresolvedType)
+                        self.ty.error(TypeErrorKind::UnresolvedType)
                     } else {
                         ty
                     })
@@ -1537,7 +1516,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     /// Removes `null` and `undefined` from the type, like when using `!` or `NonNullable<T>`.
     pub(crate) fn remove_null_or_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
         match ty {
-            Ty::Null | Ty::Undefined => Ty::never(),
+            Ty::Null | Ty::Undefined => self.ty.never(),
             _ => ty.map_union(self.arena(), |ty| match ty {
                 Ty::Null | Ty::Undefined => None,
                 _ => Some(ty),
@@ -1549,7 +1528,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     /// is a union, removes `undefined` from the union.
     pub(crate) fn remove_undefined(&self, ty: Ty<'a>) -> Ty<'a> {
         if ty == Ty::Undefined {
-            Ty::never()
+            self.ty.never()
         } else {
             ty.map_union(self.arena(), |ty| (ty != Ty::Undefined).then_some(ty))
         }
@@ -1584,33 +1563,33 @@ impl<'a, 'store> Checker<'a, 'store> {
         );
 
         match binary_expression.operator {
-            BinaryOperator::Equality => Ty::boolean(),
-            BinaryOperator::Inequality => Ty::boolean(),
-            BinaryOperator::StrictEquality => Ty::boolean(),
-            BinaryOperator::StrictInequality => Ty::boolean(),
-            BinaryOperator::LessThan => Ty::boolean(),
-            BinaryOperator::LessEqualThan => Ty::boolean(),
-            BinaryOperator::GreaterThan => Ty::boolean(),
-            BinaryOperator::GreaterEqualThan => Ty::boolean(),
+            BinaryOperator::Equality => self.ty.boolean(),
+            BinaryOperator::Inequality => self.ty.boolean(),
+            BinaryOperator::StrictEquality => self.ty.boolean(),
+            BinaryOperator::StrictInequality => self.ty.boolean(),
+            BinaryOperator::LessThan => self.ty.boolean(),
+            BinaryOperator::LessEqualThan => self.ty.boolean(),
+            BinaryOperator::GreaterThan => self.ty.boolean(),
+            BinaryOperator::GreaterEqualThan => self.ty.boolean(),
             BinaryOperator::Addition
                 if left.is_string_like(self.arena()) || right.is_string_like(self.arena()) =>
             {
-                Ty::string()
+                self.ty.string()
             }
-            BinaryOperator::Addition => Ty::number(),
-            BinaryOperator::Subtraction => Ty::number(),
-            BinaryOperator::Multiplication => Ty::number(),
-            BinaryOperator::Division => Ty::number(),
-            BinaryOperator::Remainder => Ty::number(),
-            BinaryOperator::Exponential => Ty::number(),
-            BinaryOperator::ShiftLeft => Ty::number(),
-            BinaryOperator::ShiftRight => Ty::number(),
-            BinaryOperator::ShiftRightZeroFill => Ty::number(),
-            BinaryOperator::BitwiseOR => Ty::number(),
-            BinaryOperator::BitwiseXOR => Ty::number(),
-            BinaryOperator::BitwiseAnd => Ty::number(),
-            BinaryOperator::In => Ty::boolean(),
-            BinaryOperator::Instanceof => Ty::boolean(),
+            BinaryOperator::Addition => self.ty.number(),
+            BinaryOperator::Subtraction => self.ty.number(),
+            BinaryOperator::Multiplication => self.ty.number(),
+            BinaryOperator::Division => self.ty.number(),
+            BinaryOperator::Remainder => self.ty.number(),
+            BinaryOperator::Exponential => self.ty.number(),
+            BinaryOperator::ShiftLeft => self.ty.number(),
+            BinaryOperator::ShiftRight => self.ty.number(),
+            BinaryOperator::ShiftRightZeroFill => self.ty.number(),
+            BinaryOperator::BitwiseOR => self.ty.number(),
+            BinaryOperator::BitwiseXOR => self.ty.number(),
+            BinaryOperator::BitwiseAnd => self.ty.number(),
+            BinaryOperator::In => self.ty.boolean(),
+            BinaryOperator::Instanceof => self.ty.boolean(),
         }
     }
 
@@ -1637,33 +1616,29 @@ impl<'a, 'store> Checker<'a, 'store> {
             AssignmentOperator::Assign => right,
             AssignmentOperator::Addition => {
                 if left.is_string_like(self.arena()) || right.is_string_like(self.arena()) {
-                    Ty::string()
+                    self.ty.string()
                 } else if left.is_any_like(self.arena()) {
                     left
                 } else {
-                    Ty::number()
+                    self.ty.number()
                 }
             }
             AssignmentOperator::Subtraction
             | AssignmentOperator::Multiplication
             | AssignmentOperator::Division
             | AssignmentOperator::Remainder
-            | AssignmentOperator::Exponential => Ty::number(),
-            AssignmentOperator::ShiftLeft => Ty::number(),
-            AssignmentOperator::ShiftRight => Ty::number(),
-            AssignmentOperator::ShiftRightZeroFill => Ty::number(),
-            AssignmentOperator::BitwiseOR => Ty::number(),
-            AssignmentOperator::BitwiseXOR => Ty::number(),
-            AssignmentOperator::BitwiseAnd => Ty::number(),
-            AssignmentOperator::LogicalOr => {
-                Ty::union(self.arena(), [self.get_truthy_type(left), right])
-            }
-            AssignmentOperator::LogicalAnd => {
-                Ty::union(self.arena(), [self.get_falsy_type(left), right])
-            }
-            AssignmentOperator::LogicalNullish => {
-                Ty::union(self.arena(), [self.remove_null_or_undefined(left), right])
-            }
+            | AssignmentOperator::Exponential => self.ty.number(),
+            AssignmentOperator::ShiftLeft => self.ty.number(),
+            AssignmentOperator::ShiftRight => self.ty.number(),
+            AssignmentOperator::ShiftRightZeroFill => self.ty.number(),
+            AssignmentOperator::BitwiseOR => self.ty.number(),
+            AssignmentOperator::BitwiseXOR => self.ty.number(),
+            AssignmentOperator::BitwiseAnd => self.ty.number(),
+            AssignmentOperator::LogicalOr => self.ty.union([self.get_truthy_type(left), right]),
+            AssignmentOperator::LogicalAnd => self.ty.union([self.get_falsy_type(left), right]),
+            AssignmentOperator::LogicalNullish => self
+                .arena()
+                .union([self.remove_null_or_undefined(left), right]),
         }
     }
 
@@ -1678,11 +1653,11 @@ impl<'a, 'store> Checker<'a, 'store> {
         let right =
             self.get_type_of_expression_with_node(program_id, &logical.right, node_id, flags);
         match logical.operator {
-            LogicalOperator::Or => Ty::union(self.arena(), [self.get_truthy_type(left), right]),
-            LogicalOperator::And => Ty::union(self.arena(), [self.get_falsy_type(left), right]),
-            LogicalOperator::Coalesce => {
-                Ty::union(self.arena(), [self.remove_null_or_undefined(left), right])
-            }
+            LogicalOperator::Or => self.ty.union([self.get_truthy_type(left), right]),
+            LogicalOperator::And => self.ty.union([self.get_falsy_type(left), right]),
+            LogicalOperator::Coalesce => self
+                .arena()
+                .union([self.remove_null_or_undefined(left), right]),
         }
     }
 
@@ -1696,7 +1671,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         if let Some(target) = target.as_simple_assignment_target() {
             return self.get_type_of_simple_assignment_target(program_id, target, node_id, flags);
         }
-        Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+        self.ty.error(TypeErrorKind::UnsupportedType)
     }
 
     fn get_type_of_simple_assignment_target(
@@ -1717,9 +1692,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     return self.get_type_of_symbol(symbol);
                 }
                 if identifier.name == UNDEFINED_IDENT {
-                    return Ty::undefined();
+                    return self.ty.undefined();
                 }
-                Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol)
+                self.ty.error(TypeErrorKind::UnresolvedSymbol)
             }
             SimpleAssignmentTarget::ComputedMemberExpression(member) => {
                 self.get_type_of_computed_member_expression(program_id, member, node_id, flags)
@@ -1758,46 +1733,44 @@ impl<'a, 'store> Checker<'a, 'store> {
                     flags,
                 ),
             SimpleAssignmentTarget::PrivateFieldExpression(_) => {
-                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                self.ty.error(TypeErrorKind::UnsupportedType)
             }
         }
     }
 
     fn get_truthy_type(&self, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
-                union.types.iter().map(|ty| self.get_truthy_type(*ty)),
-            ),
-            TyKind::Boolean => Ty::boolean_true(),
+            TyKind::Union(union) => self
+                .arena()
+                .union(union.types.iter().map(|ty| self.get_truthy_type(*ty))),
+            TyKind::Boolean => self.ty.boolean_true(),
             TyKind::BooleanLiteral(false) | TyKind::StringLiteral(_)
                 if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::TRUTHY)
                     .is_empty() =>
             {
-                Ty::never()
+                self.ty.never()
             }
-            TyKind::NumberLiteral(literal) if literal.value == 0.0 => Ty::never(),
+            TyKind::NumberLiteral(literal) if literal.value == 0.0 => self.ty.never(),
             TyKind::BigIntLiteral(_)
                 if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::TRUTHY)
                     .is_empty() =>
             {
-                Ty::never()
+                self.ty.never()
             }
-            TyKind::Null | TyKind::Undefined | TyKind::Void => Ty::never(),
+            TyKind::Null | TyKind::Undefined | TyKind::Void => self.ty.never(),
             _ => ty,
         }
     }
 
     fn get_falsy_type(&self, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
-                union.types.iter().map(|ty| self.get_falsy_type(*ty)),
-            ),
-            TyKind::String => Ty::string_literal(self.arena(), ""),
-            TyKind::Number => Ty::number_literal(self.arena(), 0.0, "0", NumberBase::Decimal),
-            TyKind::Bigint => Ty::bigint_literal(self.arena(), "0", None, BigintBase::Decimal),
-            TyKind::Boolean => Ty::boolean_false(),
+            TyKind::Union(union) => self
+                .arena()
+                .union(union.types.iter().map(|ty| self.get_falsy_type(*ty))),
+            TyKind::String => self.ty.string_literal(""),
+            TyKind::Number => self.ty.number_literal(0.0, "0", NumberBase::Decimal),
+            TyKind::Bigint => self.ty.bigint_literal("0", None, BigintBase::Decimal),
+            TyKind::Boolean => self.ty.boolean_false(),
             TyKind::StringLiteral(_)
             | TyKind::NumberLiteral(_)
             | TyKind::BooleanLiteral(_)
@@ -1808,12 +1781,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::FALSY)
                     .is_empty() =>
             {
-                Ty::never()
+                self.ty.never()
             }
             _ if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::FALSY)
                 .is_empty() =>
             {
-                Ty::never()
+                self.ty.never()
             }
             _ => ty,
         }
@@ -1980,23 +1953,24 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> Option<Ty<'a>> {
         match self.nodes(program_id).kind(declaration) {
             // TODO(correctness): Evaluate implicit and computed enum member values.
-            AstKind::TSEnumDeclaration(enum_declaration) => Some(Ty::union(
-                self.arena(),
-                enum_declaration
-                    .body
-                    .members
-                    .iter()
-                    .map(|member| {
-                        self.get_type_of_expression_with_node(
-                            program_id,
-                            member.initializer.as_ref()?,
-                            None,
-                            GetTypeFlags::PRESERVE_LITERALS,
-                        )
-                        .into()
-                    })
-                    .collect::<Option<Vec<_>>>()?,
-            )),
+            AstKind::TSEnumDeclaration(enum_declaration) => Some(
+                self.ty.union(
+                    enum_declaration
+                        .body
+                        .members
+                        .iter()
+                        .map(|member| {
+                            self.get_type_of_expression_with_node(
+                                program_id,
+                                member.initializer.as_ref()?,
+                                None,
+                                GetTypeFlags::PRESERVE_LITERALS,
+                            )
+                            .into()
+                        })
+                        .collect::<Option<Vec<_>>>()?,
+                ),
+            ),
             AstKind::TSEnumMember(member) => Some(self.get_type_of_expression_with_node(
                 program_id,
                 member.initializer.as_ref()?,
@@ -2023,9 +1997,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             .iter()
             .map(|member| self.get_type_of_enum_member_reference(program_id, declaration, member))
             .collect::<Vec<_>>();
-        let object_type =
-            Ty::object(
-                self.arena(),
+        let object_type = self
+            .arena()
+            .object(
                 declaration
                     .body
                     .members
@@ -2048,15 +2022,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.arena(),
                 [IndexInfo::new(
                     "x",
-                    Ty::string(),
+                    self.ty.string(),
                     if declaration.body.members.iter().all(|member| {
                         matches!(member.initializer, Some(Expression::StringLiteral(_)))
                     }) {
-                        Ty::type_reference(self.arena(), enum_name, [])
+                        self.ty.type_reference(enum_name, [])
                     } else {
-                        Ty::union(
-                            self.arena(),
-                            std::iter::once(Ty::string()).chain(
+                        self.ty.union(
+                            std::iter::once(self.ty.string()).chain(
                                 declaration
                                     .body
                                     .members
@@ -2075,7 +2048,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     true,
                 )],
             );
-        Ty::type_query(self.arena(), enum_name, object_type, [])
+        self.ty.type_query(enum_name, object_type, [])
     }
 
     fn get_type_of_enum_member_reference(
@@ -2095,8 +2068,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
         });
         target.map_or_else(
-            || Ty::type_reference(self.arena(), name, []),
-            |target| Ty::type_reference_for_symbol(self.arena(), name, target, [], 0),
+            || self.ty.type_reference(name, []),
+            |target| self.arena().type_reference_for_symbol(name, target, [], 0),
         )
     }
 
@@ -2112,9 +2085,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                 AstKind::TSEnumDeclaration(declaration) => Some(declaration),
                 _ => None,
             });
-        declaration.map_or_else(Ty::none, |declaration| {
-            self.get_type_of_enum_member_reference(program_id, declaration, member)
-        })
+        declaration.map_or_else(
+            || self.ty.none(),
+            |declaration| self.get_type_of_enum_member_reference(program_id, declaration, member),
+        )
     }
 
     fn get_common_enum_parent_type(&self, types: &[Ty<'a>]) -> Option<Ty<'a>> {
@@ -2144,13 +2118,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         let (symbol, name) = parent?;
-        Some(Ty::type_reference_for_symbol(
-            self.arena(),
-            name,
-            symbol,
-            [],
-            0,
-        ))
+        Some(self.arena().type_reference_for_symbol(name, symbol, [], 0))
     }
 
     pub(super) fn get_template_literal_type(
@@ -2185,16 +2153,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .collect();
             }
             if is_static {
-                return Ty::union(
-                    self.arena(),
+                return self.ty.union(
                     values
                         .iter()
-                        .map(|value| Ty::string_literal(self.arena(), self.arena().str(value))),
+                        .map(|value| self.ty.string_literal(self.arena().str(value))),
                 );
             }
         }
 
-        Ty::template_literal(self.arena(), quasis, expressions)
+        self.ty.template_literal(quasis, expressions)
     }
 
     fn get_type_of_conditional_expression(
@@ -2216,7 +2183,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             GetTypeFlags::PRESERVE_LITERALS,
         );
 
-        Ty::union(self.arena(), [consequent, alternate])
+        self.ty.union([consequent, alternate])
     }
 
     /// Resolve a TypeScript type annotation, if any.
@@ -2225,14 +2192,17 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         type_annotation: Option<&'a TSTypeAnnotation<'a>>,
     ) -> Ty<'a> {
-        type_annotation.map_or_else(Ty::any, |type_annotation| {
-            let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
-            if self.hide_implicit_type_argument_display.get() {
-                ty
-            } else {
-                self.with_implicit_type_arguments_visible(ty)
-            }
-        })
+        type_annotation.map_or_else(
+            || self.ty.any(),
+            |type_annotation| {
+                let ty = self.get_type_from_ts_type(program_id, &type_annotation.type_annotation);
+                if self.hide_implicit_type_argument_display.get() {
+                    ty
+                } else {
+                    self.with_implicit_type_arguments_visible(ty)
+                }
+            },
+        )
     }
 
     pub(crate) fn with_implicit_type_arguments_visible(&self, ty: Ty<'a>) -> Ty<'a> {
@@ -2252,15 +2222,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     display_type_argument_count,
                 )
             }
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
                     .map(|ty| self.with_implicit_type_arguments_visible(*ty)),
             ),
-            TyKind::Intersection(intersection) => Ty::intersection(
-                self.arena(),
+            TyKind::Intersection(intersection) => self.ty.intersection(
                 intersection
                     .types
                     .iter()
@@ -2269,15 +2237,14 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::Array(array) => {
                 let element_type = self.with_implicit_type_arguments_visible(array.element_type);
                 if array.display_as_generic {
-                    Ty::generic_array(self.arena(), element_type, array.readonly)
+                    self.ty.generic_array(element_type, array.readonly)
                 } else if array.readonly {
-                    Ty::readonly_array(self.arena(), element_type)
+                    self.ty.readonly_array(element_type)
                 } else {
-                    Ty::array(self.arena(), element_type)
+                    self.ty.array(element_type)
                 }
             }
-            TyKind::Tuple(tuple) => Ty::tuple_with_labels(
-                self.arena(),
+            TyKind::Tuple(tuple) => self.ty.tuple_with_labels(
                 tuple.labeled_elements().map(|element| {
                     element.map_ty(|ty| self.with_implicit_type_arguments_visible(ty))
                 }),
@@ -2297,20 +2264,19 @@ impl<'a, 'store> Checker<'a, 'store> {
             return source;
         };
         let rebuilt = if let Some(target) = reference.target {
-            Ty::type_reference_for_symbol(
-                self.arena(),
+            self.arena().type_reference_for_symbol(
                 reference.name,
                 target,
                 type_arguments,
                 display_type_argument_count,
             )
         } else {
-            Ty::type_reference_with_display_type_argument_count(
-                self.arena(),
-                reference.name,
-                type_arguments,
-                display_type_argument_count,
-            )
+            self.arena()
+                .type_reference_with_display_type_argument_count(
+                    reference.name,
+                    type_arguments,
+                    display_type_argument_count,
+                )
         };
         self.copy_type_alias_metadata(source, rebuilt);
         rebuilt
@@ -2370,12 +2336,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     })
                     .unwrap_or(ty)
             }
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
-                union.types.iter().map(|ty| {
+            TyKind::Union(union) => {
+                self.ty.union(union.types.iter().map(|ty| {
                     self.get_apparent_property_signature_type(program_id, *ty, depth + 1)
-                }),
-            ),
+                }))
+            }
             _ => ty,
         }
     }
@@ -2421,7 +2386,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
             _ => TupleElement::Regular(match element.as_ts_type() {
                 Some(ts_type) => self.get_type_from_ts_type(program_id, ts_type),
-                None => Ty::none(),
+                None => self.ty.none(),
             }),
         }
     }
@@ -2492,7 +2457,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         let depth = &self.ts_type_resolution_depth;
         let current = depth.get();
         if current >= TS_TYPE_RESOLUTION_MAX_DEPTH {
-            return Ty::error(self.arena(), TypeErrorKind::TypeResolutionDepthExceeded);
+            return self
+                .arena()
+                .error(TypeErrorKind::TypeResolutionDepthExceeded);
         }
 
         depth.set(current + 1);
@@ -2503,21 +2470,20 @@ impl<'a, 'store> Checker<'a, 'store> {
 
     fn get_type_from_ts_type_inner(&self, program_id: ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
         match ty {
-            TSType::TSNumberKeyword(_) => Ty::number(),
-            TSType::TSStringKeyword(_) => Ty::string(),
-            TSType::TSBooleanKeyword(_) => Ty::boolean(),
-            TSType::TSBigIntKeyword(_) => Ty::bigint(),
-            TSType::TSSymbolKeyword(_) => Ty::symbol(),
-            TSType::TSUndefinedKeyword(_) => Ty::undefined(),
-            TSType::TSNullKeyword(_) => Ty::null(),
-            TSType::TSAnyKeyword(_) => Ty::any(),
-            TSType::TSUnknownKeyword(_) => Ty::unknown(),
-            TSType::TSVoidKeyword(_) => Ty::void(),
-            TSType::TSNeverKeyword(_) => Ty::never(),
-            TSType::TSObjectKeyword(_) => Ty::primitive_object(),
-            TSType::TSThisType(_) => Ty::this(),
-            TSType::TSTypeLiteral(type_literal) => Ty::object_with_signatures_and_index_infos(
-                self.arena(),
+            TSType::TSNumberKeyword(_) => self.ty.number(),
+            TSType::TSStringKeyword(_) => self.ty.string(),
+            TSType::TSBooleanKeyword(_) => self.ty.boolean(),
+            TSType::TSBigIntKeyword(_) => self.ty.bigint(),
+            TSType::TSSymbolKeyword(_) => self.ty.symbol(),
+            TSType::TSUndefinedKeyword(_) => self.ty.undefined(),
+            TSType::TSNullKeyword(_) => self.ty.null(),
+            TSType::TSAnyKeyword(_) => self.ty.any(),
+            TSType::TSUnknownKeyword(_) => self.ty.unknown(),
+            TSType::TSVoidKeyword(_) => self.ty.void(),
+            TSType::TSNeverKeyword(_) => self.ty.never(),
+            TSType::TSObjectKeyword(_) => self.ty.primitive_object(),
+            TSType::TSThisType(_) => self.ty.this(),
+            TSType::TSTypeLiteral(type_literal) => self.ty.object_with_signatures_and_index_infos(
                 type_literal
                     .members
                     .iter()
@@ -2532,7 +2498,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         TSSignature::TSPropertySignature(property) => {
                             let name = self.resolved_property_key_name(program_id, &property.key)?;
                             let ty = property.type_annotation.as_deref().map_or_else(
-                                Ty::any,
+                                || self.ty.any(),
                                 |annotation| {
                                     self.get_type_from_ts_type(
                                         program_id,
@@ -2596,8 +2562,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                                     &parameters,
                                     method.return_type.as_deref(),
                                 );
-                            let ty = Ty::function_with_type_predicate(
-                                self.arena(),
+                            let ty = self.ty.function_with_type_predicate(
                                 self.type_parameters_from_declaration(
                                     program_id,
                                     method.type_parameters.as_deref(),
@@ -2648,8 +2613,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     })
                     .flatten(),
             ),
-            TSType::TSArrayType(array) => Ty::array(
-                self.arena(),
+            TSType::TSArrayType(array) => self.ty.array(
                 self.get_type_from_ts_type(program_id, &array.element_type),
             ),
             TSType::TSTypeReference(reference) => {
@@ -2672,15 +2636,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .iter()
                     .map(|ty| self.get_type_from_ts_type(program_id, ty)),
             ),
-            TSType::TSIntersectionType(intersection_type) => Ty::intersection(
-                self.arena(),
+            TSType::TSIntersectionType(intersection_type) => self.ty.intersection(
                 intersection_type
                     .types
                     .iter()
                     .map(|ty| self.get_type_from_ts_type(program_id, ty)),
             ),
-            TSType::TSUnionType(union_type) => Ty::source_union(
-                self.arena(),
+            TSType::TSUnionType(union_type) => self.ty.source_union(
                 union_type
                     .types
                     .iter()
@@ -2702,8 +2664,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                  self.hide_implicit_type_argument_display
                     .set(previous_hide_implicit_type_argument_display);
-                Ty::function_with_type_predicate(
-                    self.arena(),
+                self.ty.function_with_type_predicate(
                     self.type_parameters_from_declaration(
                         program_id,
                         function.type_parameters.as_deref(),
@@ -2715,17 +2676,16 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
             TSType::TSLiteralType(literal) => match &literal.literal {
                 TSLiteral::BooleanLiteral(boolean_literal) => {
-                    Ty::boolean_literal(boolean_literal.value)
+                    self.ty.boolean_literal(boolean_literal.value)
                 }
                 TSLiteral::NumericLiteral(numeric_literal) => {
-                    Ty::number_literal_from_ast(self.arena(), numeric_literal, false)
+                    self.ty.number_literal_from_ast(numeric_literal, false)
                 }
                 TSLiteral::StringLiteral(string_literal) => {
-                    Ty::string_literal(self.arena(), string_literal.value.as_str())
+                    self.ty.string_literal( string_literal.value.as_str())
                 }
                 TSLiteral::BigIntLiteral(bigint_literal) => {
-                    Ty::bigint_literal(
-                        self.arena(),
+                    self.ty.bigint_literal(
                         bigint_literal.value.as_str(),
                         bigint_literal.raw,
                         bigint_literal.base,
@@ -2751,25 +2711,20 @@ impl<'a, 'store> Checker<'a, 'store> {
                 TSLiteral::UnaryExpression(unary_expression) => {
                     let Expression::NumericLiteral(numeric_literal) = &unary_expression.argument
                     else {
-                        return Ty::none();
+                        return self.ty.none();
                     };
                     match unary_expression.operator {
-                        UnaryOperator::UnaryNegation => Ty::number_literal_from_ast(
-                            self.arena(),
-                            numeric_literal,
-                            true,
-                        ),
-                        UnaryOperator::UnaryPlus => Ty::number_literal_from_ast(
-                            self.arena(),
-                            numeric_literal,
-                            false,
-                        ),
-                        _ => Ty::none(),
+                        UnaryOperator::UnaryNegation => self
+                            .arena()
+                            .number_literal_from_ast(numeric_literal, true),
+                        UnaryOperator::UnaryPlus => self
+                            .arena()
+                            .number_literal_from_ast(numeric_literal, false),
+                        _ => self.ty.none(),
                     }
                 }
             },
-            TSType::TSTupleType(tuple_type) => Ty::tuple_with_labels(
-                self.arena(),
+            TSType::TSTupleType(tuple_type) => self.ty.tuple_with_labels(
                 tuple_type
                     .element_types
                     .iter()
@@ -2782,30 +2737,28 @@ impl<'a, 'store> Checker<'a, 'store> {
                 TupleReadonly::Mutable,
             ),
             TSType::TSTypeOperatorType(operator) => match operator.operator {
-                TSTypeOperatorOperator::Keyof => Ty::keyof(
-                    self.arena(),
+                TSTypeOperatorOperator::Keyof => self.ty.keyof(
                     self.get_type_from_ts_type(program_id, &operator.type_annotation),
                 ),
                 TSTypeOperatorOperator::Unique
                     if matches!(operator.type_annotation, TSType::TSSymbolKeyword(_)) =>
                 {
-                    Ty::unique_symbol(self.arena(), None)
+                    self.ty.unique_symbol( None)
                 }
                 TSTypeOperatorOperator::Readonly => {
                     let inner = self.get_type_from_ts_type(program_id, &operator.type_annotation);
                     match self.ty_kind(inner) {
                         TyKind::Array(array) => {
-                            Ty::readonly_array(self.arena(), array.element_type)
+                            self.ty.readonly_array( array.element_type)
                         }
-                        TyKind::Tuple(tuple) => Ty::tuple_with_labels(
-                            self.arena(),
+                        TyKind::Tuple(tuple) => self.ty.tuple_with_labels(
                             tuple.labeled_elements(),
                             TupleReadonly::Readonly,
                         ),
                         _ => inner,
                     }
                 }
-                TSTypeOperatorOperator::Unique => Ty::none(),
+                TSTypeOperatorOperator::Unique => self.ty.none(),
             },
             TSType::TSIndexedAccessType(indexed_access) => {
                 let object_type =
@@ -2823,7 +2776,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 ) {
                     IndexedAccessResolution::Resolved(ty) => ty,
                     IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
-                        Ty::indexed_access(self.arena(), object_type, index_type)
+                        self.ty.indexed_access( object_type, index_type)
                     }
                 }
             }
@@ -2878,14 +2831,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                     ty
                 }
             }
-            TSType::TSInferType(infer) => Ty::infer(
-                self.arena(),
+            TSType::TSInferType(infer) => self.ty.infer(
                 self.type_parameter_from_ts_type_parameter(program_id, &infer.type_parameter),
             ),
             TSType::TSMappedType(mapped) => self.get_type_from_ts_mapped_type(program_id, mapped),
             TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
-            TSType::TSIntrinsicKeyword(_) => Ty::type_reference(
-                self.arena(),
+            TSType::TSIntrinsicKeyword(_) => self.ty.type_reference(
                 "intrinsic",
                 std::iter::empty(),
             ),
@@ -2901,8 +2852,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         &parameters,
                         Some(&constructor.return_type),
                     );
-                let constructor_type = Ty::function_with_type_predicate(
-                    self.arena(),
+                let constructor_type = self.ty.function_with_type_predicate(
                     self.type_parameters_from_declaration(
                         program_id,
                         constructor.type_parameters.as_deref(),
@@ -2916,7 +2866,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 } else {
                     Signature::new(SignatureKind::Construct, constructor_type)
                 };
-                Ty::constructor_type(self.arena(), signature)
+                self.ty.constructor_type( signature)
             }
             TSType::TSImportType(import_type) => {
                 self.get_type_from_ts_import_type(program_id, import_type)
@@ -2928,7 +2878,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             | TSType::JSDocNonNullableType(_)
             | TSType::JSDocUnknownType(_) => {
                 // TODO(completeness): We are not currently handling JSDoc.
-                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                self.ty.error( TypeErrorKind::UnsupportedType)
             }
         }
     }
@@ -2940,7 +2890,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> Ty<'a> {
         let source = import_type.source.value.as_str();
         let Some(imported_program_id) = self.store.resolved_module(program_id, source) else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
+            return self.ty.error(TypeErrorKind::UnresolvedImport);
         };
 
         let module_type = self.get_module_namespace_type(imported_program_id, source);
@@ -2954,7 +2904,7 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let Some(qualifier) = import_type.qualifier.as_ref() else {
             let name = self.arena().str(&format!("import(\"{source}\")"));
-            return Ty::type_query(self.arena(), name, module_type, type_arguments);
+            return self.ty.type_query(name, module_type, type_arguments);
         };
 
         let ty = self.get_type_from_ts_import_type_qualifier(
@@ -2984,19 +2934,19 @@ impl<'a, 'store> Checker<'a, 'store> {
                 _ => None,
             })
         else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
+            return self.ty.error(TypeErrorKind::UnresolvedImport);
         };
         let Some(imported_program_id) = self
             .store
             .resolved_module(program_id, import_type.source.value.as_str())
         else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
+            return self.ty.error(TypeErrorKind::UnresolvedImport);
         };
         let Some(symbol) = self.get_root_symbol(imported_program_id, name) else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol);
+            return self.ty.error(TypeErrorKind::UnresolvedSymbol);
         };
         self.get_type_of_ts_import_type_symbol(symbol, &[])
-            .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedType))
+            .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedType))
     }
 
     fn get_type_from_ts_import_type_qualifier(
@@ -3014,7 +2964,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     identifier.name.as_str(),
                     type_arguments,
                 )
-                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember)),
+                .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedMember)),
             TSImportTypeQualifier::QualifiedName(qualified) => {
                 let object_type = self.get_type_from_ts_import_type_qualifier(
                     program_id,
@@ -3028,7 +2978,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     qualified.right.name.as_str(),
                     type_arguments,
                 )
-                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember))
+                .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedMember))
             }
         }
     }
@@ -3138,8 +3088,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let mut type_arguments = type_arguments.to_vec();
                 self.fill_default_type_arguments(symbol.program_id, name, &mut type_arguments);
                 let display_type_argument_count = type_arguments.len();
-                Some(Ty::type_reference_for_symbol(
-                    self.arena(),
+                Some(self.arena().type_reference_for_symbol(
                     name,
                     symbol,
                     type_arguments,
@@ -3150,10 +3099,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
                     return None;
                 };
-                Some(Ty::type_query(
-                    self.arena(),
+                Some(self.ty.type_query(
                     identifier.name.as_str(),
-                    Ty::any(),
+                    self.ty.any(),
                     std::iter::empty(),
                 ))
             }
@@ -3172,18 +3120,17 @@ impl<'a, 'store> Checker<'a, 'store> {
             .as_ref()
             .map(|name_ty| self.get_type_from_ts_type(program_id, name_ty));
         let optional = MappedModifier::from_ast(mapped.optional);
-        let template = mapped
-            .type_annotation
-            .as_ref()
-            .map_or_else(Ty::any, |ty| self.get_type_from_ts_type(program_id, ty));
+        let template = mapped.type_annotation.as_ref().map_or_else(
+            || self.ty.any(),
+            |ty| self.get_type_from_ts_type(program_id, ty),
+        );
         let template = if matches!(optional, MappedModifier::True | MappedModifier::Plus) {
             template.or_undefined(self.arena())
         } else {
             template
         };
 
-        Ty::mapped(
-            self.arena(),
+        self.ty.mapped(
             self.arena().str(&mapped.key.name),
             constraint,
             name_type,
@@ -3205,7 +3152,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         query: &'a TSTypeQuery<'a>,
     ) -> Ty<'a> {
         let Some(name) = ts_type_query_expr_name_to_str(self.arena(), &query.expr_name) else {
-            return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+            return self.ty.error(TypeErrorKind::UnsupportedType);
         };
 
         let resolved = match &query.expr_name {
@@ -3215,13 +3162,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .or_else(|| self.get_value_symbol_for_name(program_id, name));
                 match symbol {
                     Some(symbol) => self.get_type_of_symbol(symbol),
-                    None if identifier.name == GLOBAL_THIS_IDENT => return Ty::global_this(),
-                    None => Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
+                    None if identifier.name == GLOBAL_THIS_IDENT => return self.ty.global_this(),
+                    None => self.ty.error(TypeErrorKind::UnresolvedSymbol),
                 }
             }
             // TODO(correctness): resolve qualified-name and `this` typeof targets to a
-            // real symbol so `resolved` is meaningful instead of `Ty::any`.
-            _ => Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
+            // real symbol so `resolved` is meaningful instead of `|| self.ty.any()`.
+            _ => self.ty.error(TypeErrorKind::UnsupportedType),
         };
 
         let type_arguments = query
@@ -3237,7 +3184,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .collect::<Vec<_>>();
 
         if type_arguments.is_empty() {
-            Ty::type_query(self.arena(), name, resolved, std::iter::empty())
+            self.ty.type_query(name, resolved, std::iter::empty())
         } else {
             self.instantiate_type_query_type(program_id, resolved, &type_arguments)
         }
@@ -3275,9 +3222,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             let resolved = match self.ty_kind(query_type) {
                 TyKind::TypeQuery(query) if query.resolved.is_error(self.arena()) => query.resolved,
                 TyKind::Error(_) => query_type,
-                _ => Ty::any(),
+                _ => self.ty.any(),
             };
-            return Ty::type_query(self.arena(), name, resolved, type_arguments);
+            return self.ty.type_query(name, resolved, type_arguments);
         }
 
         let ty = self
@@ -3308,26 +3255,27 @@ impl<'a, 'store> Checker<'a, 'store> {
             TSType::TSTypeReference(reference) => self
                 .get_expanded_type_alias_reference(program_id, reference, depth + 1)
                 .unwrap_or_else(|| self.get_type_from_ts_type_reference(program_id, reference)),
-            TSType::TSUnionType(union_type) => Ty::source_union(
-                self.arena(),
-                union_type.types.iter().map(|ty| match ty {
-                    TSType::TSTypeReference(reference) => self
-                        .get_expanded_type_alias_reference(program_id, reference, depth + 1)
-                        .filter(|expanded| {
-                            expanded.is_transparent_type_alias_union_constituent(self.arena())
-                        })
-                        .unwrap_or_else(|| {
-                            self.get_type_from_ts_type_reference(program_id, reference)
-                        }),
-                    TSType::TSParenthesizedType(parenthesized) => self
-                        .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
-                            program_id,
-                            &parenthesized.type_annotation,
-                            depth + 1,
-                        ),
-                    _ => self.get_type_from_ts_type(program_id, ty),
-                }),
-            ),
+            TSType::TSUnionType(union_type) => {
+                self.ty.source_union(union_type.types.iter().map(|ty| {
+                    match ty {
+                        TSType::TSTypeReference(reference) => self
+                            .get_expanded_type_alias_reference(program_id, reference, depth + 1)
+                            .filter(|expanded| {
+                                expanded.is_transparent_type_alias_union_constituent(self.arena())
+                            })
+                            .unwrap_or_else(|| {
+                                self.get_type_from_ts_type_reference(program_id, reference)
+                            }),
+                        TSType::TSParenthesizedType(parenthesized) => self
+                            .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
+                                program_id,
+                                &parenthesized.type_annotation,
+                                depth + 1,
+                            ),
+                        _ => self.get_type_from_ts_type(program_id, ty),
+                    }
+                }))
+            }
             TSType::TSParenthesizedType(parenthesized) => self
                 .get_type_from_ts_type_expanding_top_level_aliases_at_depth(
                     program_id,
@@ -3395,11 +3343,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     IndexedAccessResolution::Resolved(ty) => property_types.add(ty),
                     IndexedAccessResolution::Deferred => {
                         has_deferred = true;
-                        property_types.add(Ty::indexed_access(
-                            self.arena(),
-                            *object_type,
-                            index_type,
-                        ));
+                        property_types.add(self.ty.indexed_access(*object_type, index_type));
                     }
                     IndexedAccessResolution::Missing => {
                         return if self.is_generic_indexed_access(*object_type, index_type) {
@@ -3557,7 +3501,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     )
                 })
                 .collect::<Option<Vec<_>>>()
-                .map(|types| Ty::union(self.arena(), types)),
+                .map(|types| self.ty.union(types)),
             TyKind::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_index_signature_type_for_indexed_access(
                     program_id,
@@ -3571,7 +3515,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .into_iter()
                     .find(|key_type| self.is_assignable_to(index_type, *key_type))?;
                 let mapper = TypeMapper::single(
-                    Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                    self.ty.type_reference(mapped.key, std::iter::empty()),
                     key_type,
                 );
                 Some(self.instantiate_type(mapped.template, &mapper))
@@ -3636,7 +3580,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         match self.ty_kind(object_type) {
             TyKind::GlobalThis if !computed => {
                 if property_name == GLOBAL_THIS_IDENT.as_str() {
-                    Some(Ty::global_this())
+                    Some(self.ty.global_this())
                 } else {
                     self.global_symbols
                         .global_this_value_symbol(property_name)
@@ -3666,7 +3610,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         )
                     })
                     .collect::<Option<Vec<_>>>()?;
-                Some(Ty::union(self.arena(), property_types))
+                Some(self.ty.union(property_types))
             }
             TyKind::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_property_type_for_indexed_access_with_computed(
@@ -3724,7 +3668,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             properties
                 .into_iter()
                 .filter(|property| !property.computed)
-                .map(|property| Ty::string_literal(self.arena(), property.name))
+                .map(|property| self.ty.string_literal(property.name))
                 .collect::<Vec<_>>()
         } else {
             let constraint = self.expand_type(program_id, mapped.constraint, depth + 1);
@@ -3734,8 +3678,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     vec![constraint]
                 }
                 _ => {
-                    let key_type =
-                        Ty::string_literal(self.arena(), self.arena().str(property_name));
+                    let key_type = self.ty.string_literal(self.arena().str(property_name));
                     if !self.is_assignable_to(key_type, constraint) {
                         return None;
                     }
@@ -3747,7 +3690,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             let source_name = index_type_to_property_name(self.arena(), *key_type);
             let resolved_name = mapped.name_type.map_or(source_name, |name_type| {
                 let mapper = TypeMapper::single(
-                    Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                    self.ty.type_reference(mapped.key, std::iter::empty()),
                     *key_type,
                 );
                 let name_type =
@@ -3757,7 +3700,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             resolved_name == Some(property_name)
         })?;
         let mapper = TypeMapper::single(
-            Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+            self.ty.type_reference(mapped.key, std::iter::empty()),
             key_type,
         );
 
@@ -3882,22 +3825,20 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.expand_type(program_id, resolved, depth + 1)
                     }
                     IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
-                        Ty::indexed_access(self.arena(), object_type, index_type)
+                        self.ty.indexed_access(object_type, index_type)
                     }
                 }
             }
             TyKind::Mapped(mapped) => self
                 .expand_mapped_type(program_id, mapped, depth + 1)
                 .unwrap_or(ty),
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
                     .map(|ty| self.expand_type(program_id, *ty, depth + 1)),
             ),
-            TyKind::Intersection(intersection) => Ty::intersection(
-                self.arena(),
+            TyKind::Intersection(intersection) => self.ty.intersection(
                 intersection
                     .types
                     .iter()
@@ -3939,10 +3880,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.expand_type(program_id, ty, depth + 1)
                 }
             }
-            TyKind::Keyof(keyof) => Ty::keyof(
-                self.arena(),
-                self.expand_type(program_id, keyof.target, depth + 1),
-            ),
+            TyKind::Keyof(keyof) => {
+                self.arena()
+                    .keyof(self.expand_type(program_id, keyof.target, depth + 1))
+            }
             _ => ty,
         }
     }
@@ -4043,7 +3984,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.expand_type_for_index_lookup(program_id, resolved, depth + 1)
                     }
                     IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
-                        Ty::indexed_access(self.arena(), object_type, index_type)
+                        self.ty.indexed_access(object_type, index_type)
                     }
                 }
             }
@@ -4071,12 +4012,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.expand_type_for_index_lookup(program_id, ty, depth + 1)
                 }
             }
-            TyKind::Keyof(keyof) => Ty::keyof(
-                self.arena(),
-                self.expand_type_for_index_lookup(program_id, keyof.target, depth + 1),
-            ),
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
+            TyKind::Keyof(keyof) => self.ty.keyof(self.expand_type_for_index_lookup(
+                program_id,
+                keyof.target,
+                depth + 1,
+            )),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
@@ -4108,7 +4049,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
         }
         if changed {
-            Ty::intersection(self.arena(), types)
+            self.ty.intersection(types)
         } else {
             ty
         }
@@ -4133,9 +4074,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         let mut expanded = Vec::new();
 
         for property in properties {
-            let key_type = Ty::string_literal(self.arena(), property.name);
+            let key_type = self.ty.string_literal(property.name);
             let mapper = TypeMapper::single(
-                Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                self.ty.type_reference(mapped.key, std::iter::empty()),
                 key_type,
             );
             let property_name = if let Some(name_type) = mapped.name_type {
@@ -4162,7 +4103,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             });
         }
 
-        Some(Ty::object(self.arena(), expanded))
+        Some(self.ty.object(expanded))
     }
 
     fn materialize_homomorphic_mapped_type(
@@ -4184,13 +4125,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let element_type = self.instantiate_mapped_type_template(
                     program_id,
                     mapped,
-                    Ty::number(),
+                    self.ty.number(),
                     depth + 1,
                 );
                 Some(if self.mapped_readonly(mapped.readonly, array.readonly) {
-                    Ty::readonly_array(self.arena(), element_type)
+                    self.ty.readonly_array(element_type)
                 } else {
-                    Ty::array(self.arena(), element_type)
+                    self.ty.array(element_type)
                 })
             }
             TyKind::Tuple(tuple) => {
@@ -4199,12 +4140,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .enumerate()
                     .map(|(index, labeled)| {
                         let raw = self.arena().str(&index.to_string());
-                        let key_type = Ty::number_literal(
-                            self.arena(),
-                            index as f64,
-                            raw,
-                            NumberBase::Decimal,
-                        );
+                        let key_type =
+                            self.arena()
+                                .number_literal(index as f64, raw, NumberBase::Decimal);
                         let element_type = self.instantiate_mapped_type_template(
                             program_id,
                             mapped,
@@ -4221,8 +4159,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         )
                     })
                     .collect::<Vec<_>>();
-                Some(Ty::tuple_with_labels(
-                    self.arena(),
+                Some(self.ty.tuple_with_labels(
                     elements,
                     TupleReadonly::from_readonly(
                         self.mapped_readonly(mapped.readonly, tuple.readonly),
@@ -4241,7 +4178,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         depth: usize,
     ) -> Ty<'a> {
         let mapper = TypeMapper::single(
-            Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+            self.ty.type_reference(mapped.key, std::iter::empty()),
             key_type,
         );
         let template = self.instantiate_type(mapped.template, &mapper);
@@ -4288,7 +4225,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let key_types = index_signature_key_types(self.arena(), mapped.constraint)?;
         let index_infos = key_types.into_iter().map(|key_type| {
             let mapper = TypeMapper::single(
-                Ty::type_reference(self.arena(), mapped.key, std::iter::empty()),
+                self.ty.type_reference(mapped.key, std::iter::empty()),
                 key_type,
             );
             let ty = self.instantiate_type(mapped.template, &mapper);
@@ -4300,7 +4237,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             )
         });
 
-        Some(Ty::object_with_index_infos(self.arena(), [], index_infos))
+        Some(self.ty.object_with_index_infos([], index_infos))
     }
 
     fn properties_for_mapped_constraint(
@@ -4344,12 +4281,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let mut properties = symbols
                     .into_iter()
                     .map(|(name, symbol)| {
-                        Ty::property(self.arena().str(name), self.get_type_of_symbol(symbol))
+                        self.ty
+                            .property(self.arena().str(name), self.get_type_of_symbol(symbol))
                     })
                     .collect::<Vec<_>>();
-                properties.push(Ty::property(
+                properties.push(self.ty.property(
                     self.arena().str(GLOBAL_THIS_IDENT.as_str()),
-                    Ty::global_this(),
+                    self.ty.global_this(),
                 ));
                 Some(properties)
             }
@@ -4429,26 +4367,19 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.expand_type(expanded_program_id, expanded, depth + 1)
                 })
                 .unwrap_or(ty),
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
-                union.types.iter().map(|ty| {
-                    self.expand_type_alias_argument_for_foreign_declaration(
-                        program_id,
-                        *ty,
-                        depth + 1,
-                    )
-                }),
-            ),
-            TyKind::Intersection(intersection) => Ty::intersection(
-                self.arena(),
-                intersection.types.iter().map(|ty| {
-                    self.expand_type_alias_argument_for_foreign_declaration(
-                        program_id,
-                        *ty,
-                        depth + 1,
-                    )
-                }),
-            ),
+            TyKind::Union(union) => self.ty.union(union.types.iter().map(|ty| {
+                self.expand_type_alias_argument_for_foreign_declaration(program_id, *ty, depth + 1)
+            })),
+            TyKind::Intersection(intersection) => {
+                self.arena()
+                    .intersection(intersection.types.iter().map(|ty| {
+                        self.expand_type_alias_argument_for_foreign_declaration(
+                            program_id,
+                            *ty,
+                            depth + 1,
+                        )
+                    }))
+            }
             TyKind::IndexedAccess(_) => self.expand_type(program_id, ty, depth + 1),
             _ => ty,
         }
@@ -4485,10 +4416,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                                 )
                         });
                     if previously_overflowed {
-                        return Some(Ty::error(
-                            self.arena(),
-                            TypeErrorKind::TypeAliasResolutionDepthExceeded,
-                        ));
+                        return Some(
+                            self.arena()
+                                .error(TypeErrorKind::TypeAliasResolutionDepthExceeded),
+                        );
                     }
                 }
                 let key = TypeAliasResolution {
@@ -4502,10 +4433,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 {
                     let mut resolving_type_aliases = self.resolving_type_aliases.borrow_mut();
                     if resolving_type_aliases.len() >= TYPE_INSTANTIATION_MAX_DEPTH {
-                        let error = Ty::error(
-                            self.arena(),
-                            TypeErrorKind::TypeAliasResolutionDepthExceeded,
-                        );
+                        let error = self
+                            .arena()
+                            .error(TypeErrorKind::TypeAliasResolutionDepthExceeded);
                         let should_propagate =
                             resolving_type_aliases.first().is_some_and(|resolution| {
                                 resolution.type_arguments.iter().all(|type_id| {
@@ -4563,12 +4493,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                 };
                 let ty = self.instantiate_type(ty, &substitutions.to_mapper(self.arena()));
                 let ty = if self.type_instantiation_overflowed.get() {
-                    Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded)
+                    self.arena()
+                        .error(TypeErrorKind::TypeInstantiationDepthExceeded)
                 } else {
                     self.expand_type(program_id, ty, depth + 1)
                 };
                 let ty = if self.type_instantiation_overflowed.get() {
-                    Ty::error(self.arena(), TypeErrorKind::TypeInstantiationDepthExceeded)
+                    self.arena()
+                        .error(TypeErrorKind::TypeInstantiationDepthExceeded)
                 } else {
                     ty
                 };
@@ -4608,8 +4540,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         type_arguments: &[Ty<'a>],
     ) -> Ty<'a> {
         match self.ty_kind(ty) {
-            TyKind::Intersection(intersection) => Ty::intersection(
-                self.arena(),
+            TyKind::Intersection(intersection) => self.ty.intersection(
                 intersection
                     .types
                     .iter()
@@ -4640,17 +4571,16 @@ impl<'a, 'store> Checker<'a, 'store> {
             .skip(type_arguments.len())
             .copied();
 
-        Ty::function_with_type_predicate(
-            self.arena(),
+        self.ty.function_with_type_predicate(
             remaining_type_parameters,
             function.parameters.iter().map(|parameter| {
                 let ty = self.instantiate_type(parameter.ty, &mapper);
                 if parameter.rest {
-                    Ty::rest_parameter(parameter.name, ty)
+                    self.ty.rest_parameter(parameter.name, ty)
                 } else if parameter.optional {
-                    Ty::optional_parameter(parameter.name, ty)
+                    self.ty.optional_parameter(parameter.name, ty)
                 } else {
-                    Ty::parameter(parameter.name, ty)
+                    self.ty.parameter(parameter.name, ty)
                 }
             }),
             self.instantiate_type(function.return_type, &mapper),
@@ -4672,25 +4602,28 @@ impl<'a, 'store> Checker<'a, 'store> {
         let type_parameters = self
             .get_type_parameters_for_type(class_symbol.program_id, class_name)
             .unwrap_or_default();
-        let instance_type_arguments = type_parameters
-            .iter()
-            .enumerate()
-            .map(|(index, _)| type_arguments.get(index).copied().unwrap_or_else(Ty::any));
-        let prototype_type_arguments = type_parameters.iter().map(|_| Ty::any());
+        let instance_type_arguments = type_parameters.iter().enumerate().map(|(index, _)| {
+            type_arguments
+                .get(index)
+                .copied()
+                .unwrap_or_else(|| self.ty.any())
+        });
+        let prototype_type_arguments = type_parameters.iter().map(|_| self.ty.any());
 
-        Some(Ty::object(
-            self.arena(),
-            [
-                Ty::property(
+        Some(
+            self.ty.object([
+                self.ty.property(
                     "new ()",
-                    Ty::type_reference(self.arena(), class_name, instance_type_arguments),
+                    self.arena()
+                        .type_reference(class_name, instance_type_arguments),
                 ),
-                Ty::property(
+                self.ty.property(
                     "prototype",
-                    Ty::type_reference(self.arena(), class_name, prototype_type_arguments),
+                    self.arena()
+                        .type_reference(class_name, prototype_type_arguments),
                 ),
-            ],
-        ))
+            ]),
+        )
     }
 
     fn get_type_from_type_assertion(&self, program_id: ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
@@ -4765,7 +4698,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     alias.type_parameters.as_deref(),
                     type_arguments,
                 );
-                Some(substitutions.get(*type_parameter).unwrap_or_else(Ty::any))
+                Some(
+                    substitutions
+                        .get(*type_parameter)
+                        .unwrap_or_else(|| self.ty.any()),
+                )
             }
             AstKind::BindingIdentifier(_) => {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
@@ -4855,20 +4792,19 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map(|(symbol, _)| symbol)
             .or_else(|| self.get_enum_member_symbol_for_name(program_id, name));
         let ty = if let Some(target) = target {
-            Ty::type_reference_for_symbol(
-                self.arena(),
+            self.arena().type_reference_for_symbol(
                 name,
                 target,
                 type_arguments,
                 display_type_argument_count,
             )
         } else {
-            Ty::type_reference_with_display_type_argument_count(
-                self.arena(),
-                name,
-                type_arguments,
-                display_type_argument_count,
-            )
+            self.arena()
+                .type_reference_with_display_type_argument_count(
+                    name,
+                    type_arguments,
+                    display_type_argument_count,
+                )
         };
         self.register_type_alias_metadata(program_id, ty);
         ty
@@ -4976,13 +4912,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                     depth + 1,
                 );
                 if array.readonly {
-                    Ty::readonly_array(self.arena(), element_type)
+                    self.ty.readonly_array(element_type)
                 } else {
-                    Ty::array(self.arena(), element_type)
+                    self.ty.array(element_type)
                 }
             }
-            TyKind::Tuple(tuple) => Ty::tuple_with_labels(
-                self.arena(),
+            TyKind::Tuple(tuple) => self.ty.tuple_with_labels(
                 tuple.labeled_elements().map(|element| {
                     element.map_ty(|ty| {
                         self.apparent_type_for_conditional_match(program_id, ty, depth + 1)
@@ -4990,15 +4925,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }),
                 TupleReadonly::from_readonly(tuple.readonly),
             ),
-            TyKind::Union(union) => Ty::r#union(
-                self.arena(),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
                     .map(|ty| self.apparent_type_for_conditional_match(program_id, *ty, depth + 1)),
             ),
-            TyKind::Intersection(intersection) => Ty::intersection(
-                self.arena(),
+            TyKind::Intersection(intersection) => self.ty.intersection(
                 intersection
                     .types
                     .iter()
@@ -5111,7 +5044,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                             continue;
                         };
                         let ty = property.type_annotation.as_deref().map_or_else(
-                            Ty::any,
+                            || self.ty.any(),
                             |annotation| {
                                 self.get_type_from_ts_type(program_id, &annotation.type_annotation)
                             },
@@ -5192,11 +5125,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
         }
 
-        Some(Ty::object_with_signatures(
-            self.arena(),
-            properties,
-            signatures,
-        ))
+        Some(self.ty.object_with_signatures(properties, signatures))
     }
 
     /// Expand references to aliases whose underlying type is a `typeof` query.
@@ -5304,7 +5233,8 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> Option<Ty<'a>> {
         if let AstKind::Class(class) = self.node_kind(NodeRef::new(program_id, node_id)) {
             return class.id.as_ref().map(|identifier| {
-                Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
+                self.arena()
+                    .type_reference(identifier.name.as_str(), std::iter::empty())
             });
         }
 
@@ -5312,7 +5242,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             .ancestors(node_id)
             .find_map(|node| match node.kind() {
                 AstKind::Class(class) => class.id.as_ref().map(|identifier| {
-                    Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
+                    self.arena()
+                        .type_reference(identifier.name.as_str(), std::iter::empty())
                 }),
                 _ => None,
             })
@@ -5351,7 +5282,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .flat_map(|arguments| arguments.params.iter())
             .map(|argument| self.get_type_from_ts_type(program_id, argument));
 
-        Some(Ty::type_reference(self.arena(), query.name, type_arguments))
+        Some(self.ty.type_reference(query.name, type_arguments))
     }
 
     fn get_type_of_object_expression(
@@ -5432,7 +5363,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         return spread_type;
                     }
                     if self.is_invalid_object_spread_type(program_id, spread_type, 0) {
-                        return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+                        return self.ty.error(TypeErrorKind::UnsupportedType);
                     }
                     spread_index_infos.extend(
                         spread_type
@@ -5462,8 +5393,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
         }
 
-        Ty::object_literal_with_index_infos(
-            self.arena(),
+        self.ty.object_literal_with_index_infos(
             explicit_properties.into_iter().chain(spread_properties),
             spread_index_infos,
         )
@@ -5801,7 +5731,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.get_property_type_of_static_member_type(program_id, *ty, property_name)
                     })
                     .collect::<Vec<_>>();
-                (!property_types.is_empty()).then(|| Ty::intersection(self.arena(), property_types))
+                (!property_types.is_empty()).then(|| self.ty.intersection(property_types))
             }
             _ => {
                 self.get_property_type_of_static_member_type(program_id, object_type, property_name)
@@ -5832,7 +5762,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             if object_type.is_any_like(self.arena()) {
                 object_type
             } else {
-                Ty::error(self.arena(), TypeErrorKind::UnresolvedMember)
+                self.ty.error(TypeErrorKind::UnresolvedMember)
             }
         });
         let ty = if ty.is_function(self.arena()) {
@@ -5887,15 +5817,15 @@ impl<'a, 'store> Checker<'a, 'store> {
         let (class_name, is_static) = match self.ty_kind(object_type) {
             TyKind::TypeReference(reference) => (reference.name, false),
             TyKind::TypeQuery(query) => (query.name, true),
-            TyKind::Any => return Ty::any(),
+            TyKind::Any => return self.ty.any(),
             TyKind::Error(_) => return object_type,
-            _ => return Ty::error(self.arena(), TypeErrorKind::UnsupportedType),
+            _ => return self.ty.error(TypeErrorKind::UnsupportedType),
         };
         let Some(class_symbol) = self.get_class_symbol_for_type(program_id, class_name) else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
+            return self.ty.error(TypeErrorKind::UnresolvedType);
         };
         let Some((class_node_id, class)) = self.get_class_for_symbol(class_symbol) else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
+            return self.ty.error(TypeErrorKind::UnresolvedType);
         };
         let private_name = member.field.name.as_str();
         let ty = class.body.body.iter().find_map(|element| match element {
@@ -5929,7 +5859,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
             _ => None,
         });
-        let ty = ty.unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember));
+        let ty = ty.unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedMember));
         if member.optional {
             ty.or_undefined(self.arena())
         } else {
@@ -5961,7 +5891,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         }
                     })
                     .collect::<Vec<_>>();
-                (!property_types.is_empty()).then(|| Ty::union(self.arena(), property_types))
+                (!property_types.is_empty()).then(|| self.ty.union(property_types))
             }
             TyKind::TypeReference(_) => {
                 // Resolve type reference into its underlying type
@@ -5985,23 +5915,20 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .find(|property| property.name == property_name && !property.computed)
                 {
                     return Some(if property.optional {
-                        Ty::union(self.arena(), [property.ty, Ty::Undefined])
+                        self.ty.union([property.ty, Ty::Undefined])
                     } else {
                         property.ty
                     });
                 }
 
                 let property_name = self.arena().str(property_name);
-                let string_key = Ty::string_literal(self.arena(), property_name);
+                let string_key = self.ty.string_literal(property_name);
                 self.get_index_signature_type_for_indexed_access(program_id, ty, string_key, 0)
                     .or_else(|| {
                         let value = property_name.parse::<f64>().ok()?;
-                        let number_key = Ty::number_literal(
-                            self.arena(),
-                            value,
-                            property_name,
-                            NumberBase::Decimal,
-                        );
+                        let number_key =
+                            self.arena()
+                                .number_literal(value, property_name, NumberBase::Decimal);
                         self.get_index_signature_type_for_indexed_access(
                             program_id, ty, number_key, 0,
                         )
@@ -6012,7 +5939,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     // TODO(correctness): handle all readonly/optional cases
                     (property.name == property_name && !property.computed).then_some(
                         if property.optional {
-                            Ty::union(self.arena(), [property.ty, Ty::Undefined])
+                            self.ty.union([property.ty, Ty::Undefined])
                         } else {
                             property.ty
                         },
@@ -6044,7 +5971,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .iter()
                 .any(|element| matches!(element, TupleElement::Rest(_)))
             {
-                return Some(Ty::number());
+                return Some(self.ty.number());
             }
 
             let minimum_length = tuple
@@ -6052,13 +5979,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .iter()
                 .filter(|element| matches!(element, TupleElement::Regular(_)))
                 .count();
-            return Some(Ty::union(
-                self.arena(),
-                (minimum_length..=tuple.elements.len()).map(|length| {
-                    let raw = self.arena().str(&length.to_string());
-                    Ty::number_literal(self.arena(), length as f64, raw, NumberBase::Decimal)
-                }),
-            ));
+            return Some(
+                self.arena()
+                    .union((minimum_length..=tuple.elements.len()).map(|length| {
+                        let raw = self.arena().str(&length.to_string());
+                        self.arena()
+                            .number_literal(length as f64, raw, NumberBase::Decimal)
+                    })),
+            );
         }
 
         let index = property_name.parse::<usize>().ok()?;
@@ -6123,7 +6051,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         if matches!(indexed_access_resolution, IndexedAccessResolution::Deferred) {
-            return Ty::indexed_access(self.arena(), object_type, key_type);
+            return self.ty.indexed_access(object_type, key_type);
         }
 
         if object_type.is_error(self.arena()) {
@@ -6135,7 +6063,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         } else if key_type.is_any() {
             key_type
         } else {
-            Ty::error(self.arena(), TypeErrorKind::UnresolvedMember)
+            self.ty.error(TypeErrorKind::UnresolvedMember)
         }
     }
 
@@ -6163,7 +6091,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     })
                     .collect::<Option<Vec<_>>>();
                 return property_types.and_then(|property_types| {
-                    (!property_types.is_empty()).then(|| Ty::union(self.arena(), property_types))
+                    (!property_types.is_empty()).then(|| self.ty.union(property_types))
                 });
             }
             TyKind::Intersection(intersection) => {
@@ -6178,12 +6106,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                         )
                     })
                     .collect::<Vec<_>>();
-                return (!property_types.is_empty())
-                    .then(|| Ty::intersection(self.arena(), property_types));
+                return (!property_types.is_empty()).then(|| self.ty.intersection(property_types));
             }
             TyKind::GlobalThis => {
                 if property_name == GLOBAL_THIS_IDENT.as_str() {
-                    return Some(Ty::global_this());
+                    return Some(self.ty.global_this());
                 }
                 return self
                     .global_symbols
@@ -6197,15 +6124,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                 Some(self.get_global_array_type(program_id, array.element_type))
             }
             TyKind::Tuple(tuple) => {
-                let element_type = Ty::union(
-                    self.arena(),
-                    tuple.elements.iter().map(|element| match element {
-                        TupleElement::Regular(ty) | TupleElement::Optional(ty) => *ty,
-                        TupleElement::Rest(ty) => {
-                            ty.array_element_type(self.arena()).unwrap_or(*ty)
-                        }
-                    }),
-                );
+                let element_type =
+                    self.arena()
+                        .union(tuple.elements.iter().map(|element| match element {
+                            TupleElement::Regular(ty) | TupleElement::Optional(ty) => *ty,
+                            TupleElement::Rest(ty) => {
+                                ty.array_element_type(self.arena()).unwrap_or(*ty)
+                            }
+                        }));
                 if tuple.readonly {
                     Some(self.get_global_readonly_array_type(program_id, element_type))
                 } else {
@@ -6399,7 +6325,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return if callee_type.is_any_like(self.arena()) {
                 callee_type
             } else {
-                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                self.ty.error(TypeErrorKind::UnsupportedType)
             };
         }
 
@@ -6437,7 +6363,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if callee_type.is_any_like(self.arena()) {
                     callee_type
                 } else {
-                    Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                    self.ty.error(TypeErrorKind::UnsupportedType)
                 }
             })
     }
@@ -6460,7 +6386,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return if tag_type.is_any_like(self.arena()) {
                 tag_type
             } else {
-                Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                self.ty.error(TypeErrorKind::UnsupportedType)
             };
         }
 
@@ -6494,7 +6420,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if tag_type.is_any_like(self.arena()) {
                     tag_type
                 } else {
-                    Ty::error(self.arena(), TypeErrorKind::UnsupportedType)
+                    self.ty.error(TypeErrorKind::UnsupportedType)
                 }
             })
     }
@@ -6548,7 +6474,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         tagged_template: &'a TaggedTemplateExpression<'a>,
         node_id: Option<NodeId>,
     ) -> Vec<(usize, Ty<'a>)> {
-        let mut argument_types = vec![(0, Ty::any())];
+        let mut argument_types = vec![(0, self.ty.any())];
         argument_types.extend(tagged_template.quasi.expressions.iter().enumerate().map(
             |(index, expression)| {
                 let argument_index = index + 1;
@@ -6922,8 +6848,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         );
         self.hide_implicit_type_argument_display
             .set(previous_hide_implicit_type_argument_display);
-        let ty = Ty::function_with_type_predicate(
-            self.arena(),
+        let ty = self.ty.function_with_type_predicate(
             self.type_parameters_from_declaration(program_id, type_parameters),
             parameters,
             return_type,
@@ -7102,7 +7027,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         if flags.fill_unresolved_with_unknown() {
             for type_parameter in &function.type_parameters {
                 if !substitutions.contains(*type_parameter) {
-                    substitutions.insert(*type_parameter, Ty::unknown());
+                    substitutions.insert(*type_parameter, self.ty.unknown());
                 }
             }
         }
@@ -7164,7 +7089,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         flags: GetTypeFlags,
     ) -> Ty<'a> {
         let Expression::Identifier(identifier) = &new_expression.callee else {
-            return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+            return self.ty.error(TypeErrorKind::UnsupportedType);
         };
 
         let constructor_type = self
@@ -7219,7 +7144,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             return constructed_type;
         }
 
-        Ty::type_reference(self.arena(), identifier.name.as_str(), std::iter::empty())
+        self.arena()
+            .type_reference(identifier.name.as_str(), std::iter::empty())
     }
 
     fn resolve_construct_signature_return_type(
@@ -7401,7 +7327,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
         };
         if cycle_detected {
-            return Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedMember));
+            return Some(self.ty.error(TypeErrorKind::UnresolvedMember));
         }
 
         let declarations = self.interface_declarations_for_type_name(program_id, reference.name);
@@ -7483,14 +7409,12 @@ impl<'a, 'store> Checker<'a, 'store> {
             (self.resolved_property_key_name(program_id, &property.key) == Some(property_name))
                 .then_some(property)
         }) {
-            return Some(
-                property
-                    .type_annotation
-                    .as_deref()
-                    .map_or_else(Ty::any, |annotation| {
-                        self.get_type_from_property_signature_annotation(program_id, annotation)
-                    }),
-            );
+            return Some(property.type_annotation.as_deref().map_or_else(
+                || self.ty.any(),
+                |annotation| {
+                    self.get_type_from_property_signature_annotation(program_id, annotation)
+                },
+            ));
         }
 
         for accessor_kind in [TSMethodSignatureKind::Get, TSMethodSignatureKind::Set] {
@@ -7541,7 +7465,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         match signatures.as_slice() {
             [] => None,
             [signature] => Some(signature.ty),
-            _ => Some(Ty::object_with_signatures(self.arena(), [], signatures)),
+            _ => Some(self.ty.object_with_signatures([], signatures)),
         }
     }
 
@@ -7579,7 +7503,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.get_type_from_ts_type_annotation(program_id, method.return_type.as_deref()),
             ),
             TSMethodSignatureKind::Set => Some(method.params.items.first().map_or_else(
-                Ty::any,
+                || self.ty.any(),
                 |parameter| {
                     self.get_type_from_ts_type_annotation(
                         program_id,
@@ -7627,7 +7551,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 current_interface.type_parameters.as_deref(),
             )
             .into_iter()
-            .map(|type_parameter| Ty::type_reference(self.arena(), type_parameter.name, []))
+            .map(|type_parameter| self.ty.type_reference(type_parameter.name, []))
             .collect::<Vec<_>>();
 
         let declarations = self
@@ -7698,14 +7622,12 @@ impl<'a, 'store> Checker<'a, 'store> {
         type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
         reference: &TyTypeReference<'a>,
     ) -> TypeMapper<'a> {
-        let receiver = Ty::type_reference(
-            self.arena(),
-            reference.name,
-            reference.type_arguments.iter().copied(),
-        );
+        let receiver = self
+            .arena()
+            .type_reference(reference.name, reference.type_arguments.iter().copied());
         self.type_parameter_substitutions_for_reference(program_id, type_parameters, reference)
             .to_mapper(self.arena())
-            .with_prepend_mapping(self.arena(), Ty::this(), receiver)
+            .with_prepend_mapping(self.arena(), self.ty.this(), receiver)
     }
 
     fn type_parameter_substitutions_for_type_arguments(
@@ -7772,7 +7694,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let mut default_substitutions = substitutions.clone();
         for unresolved in type_parameters {
             if !default_substitutions.contains(*unresolved) {
-                default_substitutions.insert(*unresolved, Ty::any());
+                default_substitutions.insert(*unresolved, self.ty.any());
             }
         }
         let mapper = default_substitutions.to_mapper(self.arena());
@@ -7807,7 +7729,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         {
             let mut resolving_type_parameters = self.resolving_type_parameters.borrow_mut();
             if resolving_type_parameters.contains(&key) {
-                return Ty::type_parameter(parameter.name.name.as_str(), None, None);
+                return self
+                    .ty
+                    .type_parameter(parameter.name.name.as_str(), None, None);
             }
             resolving_type_parameters.push(key);
         }
@@ -7826,7 +7750,8 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         self.resolving_type_parameters.borrow_mut().pop();
 
-        Ty::type_parameter(parameter.name.name.as_str(), constraint, default)
+        self.ty
+            .type_parameter(parameter.name.name.as_str(), constraint, default)
     }
 
     pub fn get_class_symbol_for_type(
@@ -7979,7 +7904,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let type_arguments = self
             .type_parameters_from_declaration(program_id, interface.type_parameters.as_deref())
             .into_iter()
-            .map(|parameter| Ty::type_reference(self.arena(), parameter.name, []))
+            .map(|parameter| self.ty.type_reference(parameter.name, []))
             .collect::<Vec<_>>();
         self.type_reference_with_display_type_argument_count(
             program_id,
@@ -8006,7 +7931,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.symbol_has_non_namespace_value_meaning(*symbol)
                     || self.primary_symbol_declaration_is_namespace(*symbol)
             })
-            .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol))
+            .map_or_else(|| self.ty.any(), |symbol| self.get_type_of_symbol(symbol))
     }
 
     fn primary_symbol_declaration_is_namespace(&self, symbol: SymbolRef) -> bool {
@@ -8059,21 +7984,23 @@ impl<'a, 'store> Checker<'a, 'store> {
     }
 
     fn get_type_of_class_declaration(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
-        class.id.as_ref().map_or_else(Ty::any, |identifier| {
-            let resolved = self.get_type_of_class_constructor(
-                program_id,
-                class,
-                self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
-                false,
-                true,
-            );
-            Ty::type_query(
-                self.arena(),
-                identifier.name.as_str(),
-                resolved,
-                std::iter::empty(),
-            )
-        })
+        class.id.as_ref().map_or_else(
+            || self.ty.any(),
+            |identifier| {
+                let resolved = self.get_type_of_class_constructor(
+                    program_id,
+                    class,
+                    self.type_parameters_from_declaration(
+                        program_id,
+                        class.type_parameters.as_deref(),
+                    ),
+                    false,
+                    true,
+                );
+                self.arena()
+                    .type_query(identifier.name.as_str(), resolved, std::iter::empty())
+            },
+        )
     }
 
     fn get_type_of_duplicate_class_declaration(
@@ -8088,7 +8015,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let name = self
                     .arena()
                     .str(&type_argument.to_type_string(self.arena()));
-                Ty::type_parameter_with_display_default(name, None, None, true)
+                self.ty
+                    .type_parameter_with_display_default(name, None, None, true)
             });
         self.get_type_of_class_constructor(program_id, class, type_parameters, true, false)
     }
@@ -8102,9 +8030,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         include_value_properties: bool,
     ) -> Ty<'a> {
         let class_node_id = class.node_id.get();
-        let instance_type = Ty::object(
-            self.arena(),
-            class.body.body.iter().filter_map(|element| match element {
+        let instance_type = self
+            .arena()
+            .object(class.body.body.iter().filter_map(|element| match element {
                 ClassElement::MethodDefinition(method)
                     if !method.r#static && method.kind != MethodDefinitionKind::Constructor =>
                 {
@@ -8136,8 +8064,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     })
                 }
                 _ => None,
-            }),
-        );
+            }));
         let constructor_parameters = class.body.body.iter().find_map(|element| {
             let ClassElement::MethodDefinition(method) = element else {
                 return None;
@@ -8145,8 +8072,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             (method.kind == MethodDefinitionKind::Constructor)
                 .then(|| self.function_type_parameters(program_id, None, &method.value.params))
         });
-        let constructor_type = Ty::function_with_type_predicate_and_display(
-            self.arena(),
+        let constructor_type = self.ty.function_with_type_predicate_and_display(
             type_parameters,
             constructor_parameters.unwrap_or_default(),
             instance_type,
@@ -8154,19 +8080,18 @@ impl<'a, 'store> Checker<'a, 'store> {
             display_type_parameters_as_arguments,
         );
         let prototype_type = class.id.as_ref().map_or(instance_type, |identifier| {
-            Ty::type_reference(
-                self.arena(),
+            self.ty.type_reference(
                 identifier.name.as_str(),
                 class
                     .type_parameters
                     .as_ref()
                     .into_iter()
-                    .flat_map(|parameters| parameters.params.iter().map(|_| Ty::any())),
+                    .flat_map(|parameters| parameters.params.iter().map(|_| self.ty.any())),
             )
         });
         let properties = if include_value_properties {
             self.arena().alloc_slice_from_iter(
-                std::iter::once(Ty::property("prototype", prototype_type)).chain(
+                std::iter::once(self.ty.property("prototype", prototype_type)).chain(
                     class.body.body.iter().filter_map(|element| match element {
                         ClassElement::MethodDefinition(method)
                             if method.r#static
@@ -8214,7 +8139,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             .arena()
             .alloc_slice_from_iter([Signature::new(SignatureKind::Construct, constructor_type)]);
 
-        Ty::object_from_slices(self.arena(), properties, signatures, &[], false)
+        self.arena()
+            .object_from_slices(properties, signatures, &[], false)
     }
 
     fn class_base_type_arguments(
@@ -8274,7 +8200,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         {
             let mut resolving_class_members = self.resolving_class_members.borrow_mut();
             if resolving_class_members.contains(&resolution) {
-                return Some(Ty::error(self.arena(), TypeErrorKind::UnresolvedMember));
+                return Some(self.ty.error(TypeErrorKind::UnresolvedMember));
             }
             resolving_class_members.push(resolution);
         }
@@ -8375,14 +8301,17 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> Ty<'a> {
         property.type_annotation.as_deref().map_or_else(
             || {
-                property.value.as_ref().map_or_else(Ty::any, |value| {
-                    self.get_type_of_expression_with_node(
-                        program_id,
-                        value,
-                        node_id,
-                        GetTypeFlags::NONE,
-                    )
-                })
+                property.value.as_ref().map_or_else(
+                    || self.ty.any(),
+                    |value| {
+                        self.get_type_of_expression_with_node(
+                            program_id,
+                            value,
+                            node_id,
+                            GetTypeFlags::NONE,
+                        )
+                    },
+                )
             },
             |annotation| self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
         )
@@ -8565,24 +8494,22 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         match self.ty_kind(ty) {
             TyKind::TypeReference(_) => self.get_apparent_contextual_parameter_type(program_id, ty),
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
                     .map(|ty| self.get_apparent_type(program_id, *ty, depth + 1)),
             ),
-            TyKind::Function(function) => Ty::function_with_type_predicate_and_display(
-                self.arena(),
+            TyKind::Function(function) => self.ty.function_with_type_predicate_and_display(
                 function.type_parameters.iter().copied(),
                 function.parameters.iter().map(|parameter| {
                     let ty = self.get_apparent_type(program_id, parameter.ty, depth + 1);
                     if parameter.rest {
-                        Ty::rest_parameter(parameter.name, ty)
+                        self.ty.rest_parameter(parameter.name, ty)
                     } else if parameter.optional {
-                        Ty::optional_parameter(parameter.name, ty)
+                        self.ty.optional_parameter(parameter.name, ty)
                     } else {
-                        Ty::parameter(parameter.name, ty)
+                        self.ty.parameter(parameter.name, ty)
                     }
                 }),
                 self.get_apparent_type(program_id, function.return_type, depth + 1),
@@ -8861,9 +8788,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         object: &'a ObjectExpression<'a>,
         excluded_value_span: Span,
     ) -> Ty<'a> {
-        Ty::object(
-            self.arena(),
-            object.properties.iter().filter_map(|property| {
+        self.arena()
+            .object(object.properties.iter().filter_map(|property| {
                 let ObjectPropertyKind::ObjectProperty(property) = property else {
                     return None;
                 };
@@ -8886,8 +8812,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     method: property.method,
                     readonly: false,
                 })
-            }),
-        )
+            }))
     }
 
     fn get_contextual_type_of_array_element(
@@ -9078,7 +9003,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.get_contextual_type_of_array_element_at(program_id, *ty, element_index)
                     })
                     .collect::<Vec<_>>();
-                (!element_types.is_empty()).then(|| Ty::union(self.arena(), element_types))
+                (!element_types.is_empty()).then(|| self.ty.union(element_types))
             }
             _ => None,
         }
@@ -9196,8 +9121,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             ),
         };
 
-        Ty::function_with_type_predicate(
-            self.arena(),
+        self.ty.function_with_type_predicate(
             type_parameters,
             parameters,
             return_type,
@@ -9222,7 +9146,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         this_param
             .iter()
             .map(|parameter| {
-                Ty::parameter(
+                self.ty.parameter(
                     "this",
                     self.get_type_from_ts_type_annotation(
                         program_id,
@@ -9280,9 +9204,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         let ty =
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
         if parameter.optional {
-            Ty::optional_parameter(name, ty)
+            self.ty.optional_parameter(name, ty)
         } else {
-            Ty::parameter(name, ty)
+            self.ty.parameter(name, ty)
         }
     }
 
@@ -9297,13 +9221,14 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.pattern);
-        let ty = contextual_parameter.map_or_else(Ty::any, |parameter| {
-            self.get_apparent_contextual_parameter_type(program_id, parameter.ty)
-        });
+        let ty = contextual_parameter.map_or_else(
+            || self.ty.any(),
+            |parameter| self.get_apparent_contextual_parameter_type(program_id, parameter.ty),
+        );
         if parameter.optional {
-            Ty::optional_parameter(name, ty)
+            self.ty.optional_parameter(name, ty)
         } else {
-            Ty::parameter(name, ty)
+            self.ty.parameter(name, ty)
         }
     }
 
@@ -9313,7 +9238,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         parameter: &'a FormalParameterRest<'a>,
     ) -> TyParameter<'a> {
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.rest.argument);
-        Ty::rest_parameter(
+        self.ty.rest_parameter(
             name,
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref()),
         )
@@ -9337,10 +9262,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         match self.ty_kind(promise_type) {
             TyKind::TypeReference(reference) => {
                 let awaited_type = self.get_awaited_type(program_id, return_type);
-                Ty::type_reference(self.arena(), reference.name, [awaited_type])
+                self.ty.type_reference(reference.name, [awaited_type])
             }
             TyKind::Any | TyKind::Error(_) => promise_type,
-            _ => Ty::error(self.arena(), TypeErrorKind::MissingGlobalType),
+            _ => self.ty.error(TypeErrorKind::MissingGlobalType),
         }
     }
 
@@ -9376,7 +9301,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let source = reference.expression.value.as_str();
                 let Some(imported_program_id) = self.store.resolved_module(program_id, source)
                 else {
-                    return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
+                    return self.ty.error(TypeErrorKind::UnresolvedImport);
                 };
                 self.get_type_of_export_assignment(imported_program_id)
                     .unwrap_or_else(|| {
@@ -9390,7 +9315,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .symbol_for_identifier_reference(program_id, identifier)
                 .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))
                 .map_or_else(
-                    || Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
+                    || self.ty.error(TypeErrorKind::UnresolvedSymbol),
                     |symbol| self.get_type_of_symbol(symbol),
                 ),
             TSModuleReference::QualifiedName(qualified) => {
@@ -9409,14 +9334,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .symbol_for_identifier_reference(program_id, identifier)
                 .or_else(|| self.get_value_symbol_for_name(program_id, identifier.name.as_str()))
                 .map_or_else(
-                    || Ty::error(self.arena(), TypeErrorKind::UnresolvedSymbol),
+                    || self.ty.error(TypeErrorKind::UnresolvedSymbol),
                     |symbol| self.get_type_of_symbol(symbol),
                 ),
             TSTypeName::QualifiedName(left) => {
                 self.get_type_of_ts_import_equals_qualified_name(program_id, left)
             }
             TSTypeName::ThisExpression(_) => {
-                return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+                return self.ty.error(TypeErrorKind::UnsupportedType);
             }
         };
         self.get_property_type_of_static_member_type(
@@ -9424,7 +9349,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             object_type,
             qualified.right.name.as_str(),
         )
-        .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnresolvedMember))
+        .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedMember))
     }
 
     fn get_type_of_export_assignment(&self, program_id: ProgramId) -> Option<Ty<'a>> {
@@ -9528,7 +9453,7 @@ impl<'a, 'store> Checker<'a, 'store> {
 
     fn get_module_namespace_type(&self, program_id: ProgramId, namespace_name: &str) -> Ty<'a> {
         let Some(entry) = self.store.entry(program_id) else {
-            return Ty::error(self.arena(), TypeErrorKind::UnresolvedImport);
+            return self.ty.error(TypeErrorKind::UnresolvedImport);
         };
         let namespace_name = self.arena().str(namespace_name);
         let properties = entry
@@ -9559,14 +9484,17 @@ impl<'a, 'store> Checker<'a, 'store> {
                             Some(declaration.node_id()),
                             GetTypeFlags::PRESERVE_LITERALS,
                         );
-                        return Some(Ty::property(property_name, ty));
+                        return Some(self.ty.property(property_name, ty));
                     }
                     ExportLocalName::Null => return None,
                 };
                 let symbol = self.get_root_symbol(program_id, local_name)?;
-                Some(Ty::property(property_name, self.get_type_of_symbol(symbol)))
+                Some(
+                    self.ty
+                        .property(property_name, self.get_type_of_symbol(symbol)),
+                )
             });
-        Ty::module_namespace(self.arena(), namespace_name, properties)
+        self.ty.module_namespace(namespace_name, properties)
     }
 
     fn get_type_of_namespace_declaration(
@@ -9575,10 +9503,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         module: &'a TSModuleDeclaration<'a>,
     ) -> Ty<'a> {
         let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
-            return Ty::none();
+            return self.ty.none();
         };
         let namespace_type = identifier.symbol_id.get().map_or_else(
-            || Ty::module_namespace(self.arena(), identifier.name.as_str(), []),
+            || self.ty.module_namespace(identifier.name.as_str(), []),
             |symbol_id| {
                 self.get_namespace_symbol_type(
                     SymbolRef::new(program_id, symbol_id),
@@ -9586,12 +9514,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                 )
             },
         );
-        Ty::type_query(
-            self.arena(),
-            identifier.name.as_str(),
-            namespace_type,
-            std::iter::empty(),
-        )
+        self.arena()
+            .type_query(identifier.name.as_str(), namespace_type, std::iter::empty())
     }
 
     fn get_namespace_symbol_type(&self, symbol: SymbolRef, namespace_name: &'a str) -> Ty<'a> {
@@ -9623,7 +9547,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.get_type_of_symbol(SymbolRef::new(symbol.program_id, member_symbol_id));
                 let member_type =
                     self.qualify_namespace_member_type(namespace_name, name.as_str(), member_type);
-                let property = Ty::property(self.arena().str(name.as_str()), member_type);
+                let property = self
+                    .ty
+                    .property(self.arena().str(name.as_str()), member_type);
                 if let Some(existing) = properties
                     .iter_mut()
                     .find(|existing| existing.name == property.name)
@@ -9634,7 +9560,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
             }
         }
-        Ty::module_namespace(self.arena(), namespace_name, properties)
+        self.ty.module_namespace(namespace_name, properties)
     }
 
     fn qualify_namespace_member_type(
@@ -9650,16 +9576,14 @@ impl<'a, 'store> Checker<'a, 'store> {
             return member_type;
         };
         let qualified_name = self.arena().str(&format!("{namespace_name}.{member_name}"));
-        let resolved = Ty::module_namespace(
-            self.arena(),
+        let resolved = self.ty.module_namespace(
             qualified_name,
             namespace.properties.iter().map(|property| TyProperty {
                 ty: self.qualify_namespace_member_type(qualified_name, property.name, property.ty),
                 ..*property
             }),
         );
-        Ty::type_query(
-            self.arena(),
+        self.ty.type_query(
             qualified_name,
             resolved,
             query.type_arguments.iter().copied(),
@@ -9740,17 +9664,19 @@ impl<'a, 'store> Checker<'a, 'store> {
                 })
                 .collect();
             return if self.array_literal_context_produces_readonly_tuple(context) {
-                Ty::readonly_tuple(self.arena(), elements)
+                self.ty.readonly_tuple(elements)
             } else {
-                Ty::tuple(self.arena(), elements)
+                self.ty.tuple(elements)
             };
         }
 
         match array_expression.elements.len() {
-            0 => Ty::array(
-                self.arena(),
-                flow::empty_array_literal_element_type(self, program_id, array_expression, node_id),
-            ),
+            0 => self.ty.array(flow::empty_array_literal_element_type(
+                self,
+                program_id,
+                array_expression,
+                node_id,
+            )),
             // For 1 element: infer the type of the first element
             1 => {
                 let first_element = &array_expression.elements[0];
@@ -9764,7 +9690,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     node_id,
                     element_context,
                 );
-                Ty::array(self.arena(), element_type)
+                self.ty.array(element_type)
             }
             // For 2+ elements: try to create a union type if there are mixed types
             _ => {
@@ -9793,9 +9719,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     element_types[0]
                 } else {
                     self.get_common_enum_parent_type(&element_types)
-                        .unwrap_or_else(|| Ty::union(self.arena(), element_types))
+                        .unwrap_or_else(|| self.ty.union(element_types))
                 };
-                Ty::array(self.arena(), element_type)
+                self.ty.array(element_type)
             }
         }
     }
@@ -9834,7 +9760,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.contextual_type_for_array_literal_element(Some(*ty), index)
                     })
                     .collect::<Vec<_>>();
-                (!element_types.is_empty()).then(|| Ty::union(self.arena(), element_types))
+                (!element_types.is_empty()).then(|| self.ty.union(element_types))
             }
             _ => None,
         }
@@ -9889,9 +9815,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                         .is_any_like(self.arena())
                         .then_some(argument_type)
                 })
-                .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::UnsupportedType))
+                .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnsupportedType))
             }
-            ArrayExpressionElement::Elision(_) => Ty::any(),
+            ArrayExpressionElement::Elision(_) => self.ty.any(),
             _ => self.check_expression_with_context(
                 program_id,
                 AstKind::from_expression(element.to_expression()),
@@ -9960,8 +9886,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             // binder symbol merging. Keep the class-side type for now instead of treating invalid
             // class/function collisions as callable overload groups.
             // TODO(correctness): model the class value-side as a real constructor object type
-            // (`{ new(): Foo; prototype: Foo; …static members }`) instead of a `Ty::any` stub.
-            return Ty::type_query(self.arena(), function_name, Ty::any(), std::iter::empty());
+            // (`{ new(): Foo; prototype: Foo; …static members }`) instead of a `|| self.ty.any()` stub.
+            return self
+                .arena()
+                .type_query(function_name, self.ty.any(), std::iter::empty());
         }
 
         let signatures = callable_declarations.into_iter().map(
@@ -9977,7 +9905,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 Signature::new(SignatureKind::Call, ty)
             },
         );
-        let ty = Ty::object_with_signatures(self.arena(), [], signatures);
+        let ty = self.ty.object_with_signatures([], signatures);
         self.add_expando_properties_to_callable_type(
             program_id,
             node_id,
@@ -10250,7 +10178,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                             declaration,
                             parameter,
                         )
-                        .unwrap_or_else(Ty::any),
+                        .unwrap_or_else(|| self.ty.any()),
                 }),
             AstKind::FormalParameterRest(parameter) => binding_pattern
                 .and_then(|binding_pattern| {
@@ -10267,14 +10195,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                         parameter.type_annotation.as_deref(),
                     )
                 }),
-            AstKind::CatchParameter(parameter) => {
-                parameter
-                    .type_annotation
-                    .as_deref()
-                    .map_or_else(Ty::unknown, |annotation| {
-                        self.get_type_from_ts_type_annotation(symbol.program_id, Some(annotation))
-                    })
-            }
+            AstKind::CatchParameter(parameter) => parameter.type_annotation.as_deref().map_or_else(
+                || self.ty.unknown(),
+                |annotation| {
+                    self.get_type_from_ts_type_annotation(symbol.program_id, Some(annotation))
+                },
+            ),
             AstKind::PropertyDefinition(property) => {
                 self.get_type_of_property_definition(symbol.program_id, property, Some(declaration))
             }
@@ -10298,7 +10224,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             {
                 self.get_type_of_type_alias_declaration(symbol.program_id, alias)
             }
-            AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
+            AstKind::TSTypeAliasDeclaration(_) => self.ty.none(),
             AstKind::TSEnumDeclaration(declaration) => {
                 self.get_type_of_enum_declaration(symbol.program_id, declaration)
             }
@@ -10306,7 +10232,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 TSModuleDeclarationName::Identifier(_) => {
                     self.get_type_of_namespace_declaration(symbol.program_id, module)
                 }
-                TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
+                TSModuleDeclarationName::StringLiteral(_) => self.ty.none(),
             },
             AstKind::BindingIdentifier(_) => self
                 .get_type_of_binding_identifier_from_binding_pattern(
@@ -10328,8 +10254,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             // TODO
             AstKind::ImportSpecifier(_)
             | AstKind::ImportDefaultSpecifier(_)
-            | AstKind::ImportNamespaceSpecifier(_) => Ty::any(),
-            _ => Ty::none(),
+            | AstKind::ImportNamespaceSpecifier(_) => self.ty.any(),
+            _ => self.ty.none(),
         }
     }
 
@@ -10364,13 +10290,11 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         match self.ty_kind(ty) {
-            TyKind::Function(_) => Ty::object_with_signatures(
-                self.arena(),
+            TyKind::Function(_) => self.ty.object_with_signatures(
                 expando_properties,
                 [Signature::new(SignatureKind::Call, ty)],
             ),
-            TyKind::Object(object) => Ty::object_from_slices(
-                self.arena(),
+            TyKind::Object(object) => self.arena().object_from_slices(
                 self.arena().alloc_slice_from_iter(
                     object.properties.iter().copied().chain(expando_properties),
                 ),
@@ -10514,7 +10438,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             if matches!(self.ty_kind(ty), TyKind::UniqueSymbol(symbol) if symbol.name.is_none())
                 && let BindingPattern::BindingIdentifier(identifier) = &declarator.id
             {
-                Ty::unique_symbol(self.arena(), Some(identifier.name.as_str()))
+                self.ty.unique_symbol(Some(identifier.name.as_str()))
             } else {
                 ty
             }
@@ -10526,7 +10450,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
 
             let Some(expression) = declarator.init.as_ref() else {
-                return Ty::any();
+                return self.ty.any();
             };
             let flags = if declarator.kind == VariableDeclarationKind::Const
                 && !self.is_in_exported_declaration(program_id, declaration)
@@ -10545,7 +10469,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 && matches!(ty, Ty::Null | Ty::Undefined)
                 && self.is_null_or_undefined_initializer(expression)
             {
-                Ty::any()
+                self.ty.any()
             } else if expression.is_function() {
                 self.simple_binding_symbol(program_id, &declarator.id)
                     .map_or(ty, |symbol| {
@@ -10592,11 +10516,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     {
                         return Some(self.get_global_extract_type(
                             program_id,
-                            Ty::keyof(self.arena(), object_type),
-                            Ty::string(),
+                            self.ty.keyof(object_type),
+                            self.ty.string(),
                         ));
                     }
-                    return Some(Ty::string());
+                    return Some(self.ty.string());
                 }
                 AstKind::ForOfStatement(for_of)
                     if for_statement_left_contains_declarator(&for_of.left, declarator) =>
@@ -10636,7 +10560,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                             declaration_node_id,
                             parameter,
                         )
-                        .unwrap_or_else(Ty::any)
+                        .unwrap_or_else(|| self.ty.any())
                     },
                     |annotation| {
                         self.get_declared_type_of_formal_parameter(
@@ -10730,7 +10654,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         program_id,
                         &rest.argument,
                         symbol_id,
-                        Ty::any(),
+                        self.ty.any(),
                     )
                 })
             }
@@ -10743,7 +10667,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         TyKind::Tuple(tuple) => tuple.element_type_at_index(self.arena(), index),
                         _ => pattern_type
                             .array_element_type(self.arena())
-                            .unwrap_or_else(Ty::any),
+                            .unwrap_or_else(|| self.ty.any()),
                     };
                     if let Some(ty) = self.get_type_of_binding_pattern_symbol(
                         program_id,
@@ -10762,8 +10686,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                         symbol_id,
                         pattern_type
                             .array_element_type(self.arena())
-                            .map(|element_type| Ty::array(self.arena(), element_type))
-                            .unwrap_or_else(Ty::any),
+                            .map(|element_type| self.ty.array(element_type))
+                            .unwrap_or_else(|| self.ty.any()),
                     )
                 })
             }
@@ -10821,7 +10745,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         )
                     })
                     .collect::<Vec<_>>();
-                (!property_types.is_empty()).then(|| Ty::union(self.arena(), property_types))
+                (!property_types.is_empty()).then(|| self.ty.union(property_types))
             }
             TyKind::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_contextual_or_destructured_property_type_at_depth(
@@ -10844,7 +10768,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     return None;
                 }
 
-                let key_type = Ty::string_literal(self.arena(), self.arena().str(property_name));
+                let key_type = self.ty.string_literal(self.arena().str(property_name));
                 if !self.could_contain_type_variables(mapped.constraint)
                     && !self.is_assignable_to(key_type, mapped.constraint)
                 {
@@ -10985,7 +10909,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             self.get_parameter_type_from_ts_type_annotation(program_id, Some(annotation));
         let annotated_type = self.get_apparent_declared_parameter_type(program_id, annotated_type);
         let annotated_type = if let TyKind::Infer(infer) = self.ty_kind(annotated_type) {
-            Ty::type_reference(self.arena(), infer.type_parameter.name, [])
+            self.ty.type_reference(infer.type_parameter.name, [])
         } else {
             annotated_type
         };
@@ -11007,7 +10931,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             AstKind::FormalParameter(_) | AstKind::FormalParameterRest(_) => {
                 self.get_type_at_location(NodeRef::new(program_id, parent_id))
             }
-            _ => Ty::none(),
+            _ => self.ty.none(),
         }
     }
 
@@ -11039,9 +10963,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             if let Some(parameter) = parameters.iter().find(|parameter| parameter.name == name) {
                 return parameter.ty;
             }
-            return Ty::none();
+            return self.ty.none();
         }
-        Ty::none()
+        self.ty.none()
     }
 
     fn get_type_of_await_expression(
@@ -11072,7 +10996,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 _ => None,
             })
         else {
-            return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+            return self.ty.error(TypeErrorKind::UnsupportedType);
         };
         let resolver = if function.r#async {
             IterationResolverKind::Async
@@ -11082,7 +11006,7 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         if yield_expression.delegate {
             let Some(argument) = yield_expression.argument.as_ref() else {
-                return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+                return self.ty.error(TypeErrorKind::UnsupportedType);
             };
             let argument_type = self.get_type_of_expression_with_node(
                 program_id,
@@ -11100,23 +11024,22 @@ impl<'a, 'store> Checker<'a, 'store> {
                     &mut context,
                 )
                 .return_type
-                .unwrap_or_else(Ty::undefined);
+                .unwrap_or_else(|| self.ty.undefined());
         }
 
         let Some(annotation) = function.return_type.as_deref() else {
-            return Ty::any();
+            return self.ty.any();
         };
         let return_type = self.get_type_from_ts_type_annotation(program_id, Some(annotation));
         let mut context = IterationResolutionContext::default();
         self.get_iteration_types_of_iterator(program_id, return_type, resolver, 0, &mut context)
             .next_type
-            .unwrap_or_else(Ty::any)
+            .unwrap_or_else(|| self.ty.any())
     }
 
     fn get_awaited_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
@@ -11152,9 +11075,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             .collect::<Vec<_>>();
 
         Some(if awaited_types.is_empty() {
-            Ty::never()
+            self.ty.never()
         } else {
-            Ty::union(self.arena(), awaited_types)
+            self.ty.union(awaited_types)
         })
     }
 
@@ -11294,7 +11217,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return argument_type;
         };
 
-        let global_iterable_type_ref = self.get_global_iterable_type(program_id, Ty::any());
+        let global_iterable_type_ref = self.get_global_iterable_type(program_id, self.ty.any());
         let TyKind::TypeReference(global_iterable_reference) =
             self.ty_kind(global_iterable_type_ref)
         else {
@@ -11319,7 +11242,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return argument_type;
         };
 
-        Ty::type_reference(self.arena(), reference.name, [element_type])
+        self.ty.type_reference(reference.name, [element_type])
     }
 
     fn get_iteration_types_of_iterable(
@@ -11336,9 +11259,9 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         match self.ty_kind(iterable_type) {
             TyKind::Any => IterationTypes {
-                yield_type: Some(Ty::any()),
-                return_type: Some(Ty::any()),
-                next_type: Some(Ty::any()),
+                yield_type: Some(self.ty.any()),
+                return_type: Some(self.ty.any()),
+                next_type: Some(self.ty.any()),
             },
             TyKind::Error(_) => IterationTypes {
                 yield_type: Some(iterable_type),
@@ -11353,10 +11276,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                 ..IterationTypes::default()
             },
             TyKind::Tuple(tuple) if resolver == IterationResolverKind::Sync => IterationTypes {
-                yield_type: Some(Ty::union(
-                    self.arena(),
-                    tuple.elements.iter().map(super::types::TupleElement::ty),
-                )),
+                yield_type: Some(
+                    self.arena()
+                        .union(tuple.elements.iter().map(super::types::TupleElement::ty)),
+                ),
                 ..IterationTypes::default()
             },
             TyKind::TypeReference(reference) => {
@@ -11378,7 +11301,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 && resolver == IterationResolverKind::Sync =>
             {
                 IterationTypes {
-                    yield_type: Some(Ty::string()),
+                    yield_type: Some(self.ty.string()),
                     ..IterationTypes::default()
                 }
             }
@@ -11585,7 +11508,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             ));
         }
         let mut iteration_types = self.combine_iteration_types(result_types);
-        iteration_types.next_type = Some(next_types.try_build().unwrap_or_else(Ty::unknown));
+        iteration_types.next_type =
+            Some(next_types.try_build().unwrap_or_else(|| self.ty.unknown()));
         iteration_types
     }
 
@@ -11600,8 +11524,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
         match self.ty_kind(result_type) {
             TyKind::Any => IterationTypes {
-                yield_type: Some(Ty::any()),
-                return_type: Some(Ty::any()),
+                yield_type: Some(self.ty.any()),
+                return_type: Some(self.ty.any()),
                 next_type: None,
             },
             TyKind::Error(_) => IterationTypes {
@@ -11642,7 +11566,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let done_type = self.get_property_type_for_indexed_access(program_id, result_type, "done");
         let value_type = self
             .get_property_type_for_indexed_access(program_id, result_type, "value")
-            .unwrap_or_else(Ty::any);
+            .unwrap_or_else(|| self.ty.any());
         let states = done_type.map_or(
             IteratorResultStates {
                 can_yield: true,
@@ -11734,7 +11658,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         )
                     })
                     .collect::<Option<Vec<_>>>()?;
-                Some(Ty::union(self.arena(), property_types))
+                Some(self.ty.union(property_types))
             }
             TyKind::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
                 self.get_well_known_symbol_property_type(
@@ -11914,7 +11838,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                     Some((
                         symbol.program_id,
-                        Ty::type_reference(self.arena(), identifier.name.as_str(), type_arguments),
+                        self.arena()
+                            .type_reference(identifier.name.as_str(), type_arguments),
                     ))
                 })
             })
@@ -12457,9 +12382,7 @@ impl<'a> Checker<'a, '_> {
                     Some(node.node_id),
                     ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
                 ),
-            AstKind::Directive(directive) => {
-                Ty::string_literal(self.arena(), &directive.expression.value)
-            }
+            AstKind::Directive(directive) => self.ty.string_literal(&directive.expression.value),
             AstKind::BindingIdentifier(identifier) => {
                 if let AstKind::TSTypeAliasDeclaration(alias) =
                     self.nodes(node.program_id).parent_kind(node.node_id)
@@ -12510,17 +12433,17 @@ impl<'a> Checker<'a, '_> {
                 }
             }
             AstKind::TSPropertySignature(property) => {
-                let ty = property
-                    .type_annotation
-                    .as_deref()
-                    .map_or_else(Ty::any, |annotation| {
+                let ty = property.type_annotation.as_deref().map_or_else(
+                    || self.ty.any(),
+                    |annotation| {
                         self.get_type_from_property_signature_annotation(
                             node.program_id,
                             annotation,
                         )
-                    });
+                    },
+                );
                 let ty = if let TyKind::Infer(infer) = self.ty_kind(ty) {
-                    Ty::type_reference(self.arena(), infer.type_parameter.name, [])
+                    self.ty.type_reference(infer.type_parameter.name, [])
                 } else {
                     ty
                 };
@@ -12550,7 +12473,7 @@ impl<'a> Checker<'a, '_> {
                             node.node_id,
                             parameter,
                         )
-                        .unwrap_or_else(Ty::any)
+                        .unwrap_or_else(|| self.ty.any())
                     },
                     |annotation| {
                         self.get_declared_type_of_formal_parameter(
@@ -12585,7 +12508,7 @@ impl<'a> Checker<'a, '_> {
                     AstKind::TSImportType(_)
                 ) =>
             {
-                Ty::any()
+                self.ty.any()
             }
             AstKind::IdentifierName(identifier)
                 if matches!(
@@ -12606,7 +12529,7 @@ impl<'a> Checker<'a, '_> {
                     AstKind::TSImportTypeQualifiedName(_)
                 ) =>
             {
-                Ty::any()
+                self.ty.any()
             }
             AstKind::IdentifierName(identifier)
                 if matches!(
@@ -12632,7 +12555,7 @@ impl<'a> Checker<'a, '_> {
                 let AstKind::TSQualifiedName(qualified) =
                     self.nodes(node.program_id).parent_kind(node.node_id)
                 else {
-                    return Ty::error(self.arena(), TypeErrorKind::UnsupportedType);
+                    return self.ty.error(TypeErrorKind::UnsupportedType);
                 };
                 self.get_type_of_ts_import_equals_qualified_name(node.program_id, qualified)
             }
@@ -12682,7 +12605,7 @@ impl<'a> Checker<'a, '_> {
                 if let Some(AstKind::Class(class)) = class {
                     self.get_type_of_method_definition(node.program_id, method, class.node_id())
                 } else {
-                    Ty::none()
+                    self.ty.none()
                 }
             }
             AstKind::PropertyDefinition(property) => {
@@ -12690,7 +12613,7 @@ impl<'a> Checker<'a, '_> {
             }
             AstKind::TSTypeAliasDeclaration(alias) => {
                 let ty = self.get_type_of_type_alias_declaration(node.program_id, alias);
-                if ty.is_none() { Ty::any() } else { ty }
+                if ty.is_none() { self.ty.any() } else { ty }
             }
             AstKind::TSEnumDeclaration(declaration) => {
                 self.get_type_of_enum_declaration(node.program_id, declaration)
@@ -12708,21 +12631,24 @@ impl<'a> Checker<'a, '_> {
             AstKind::TSModuleDeclaration(module) => {
                 self.get_type_of_namespace_declaration(node.program_id, module)
             }
-            AstKind::TSTypeParameter(_) => Ty::any(),
-            AstKind::TSMappedType(_) => Ty::any(),
-            AstKind::TSClassImplements(_) => Ty::any(),
+            AstKind::TSTypeParameter(_) => self.ty.any(),
+            AstKind::TSMappedType(_) => self.ty.any(),
+            AstKind::TSClassImplements(_) => self.ty.any(),
             AstKind::TSInterfaceHeritage(heritage) => {
                 let Expression::Identifier(identifier) = &heritage.expression else {
-                    return Ty::any();
+                    return self.ty.any();
                 };
                 self.symbol_for_identifier_reference(node.program_id, identifier)
                     .or_else(|| {
                         self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
                     })
-                    .map_or_else(Ty::any, |symbol| {
-                        let ty = self.get_type_of_symbol(symbol);
-                        if ty.is_none() { Ty::any() } else { ty }
-                    })
+                    .map_or_else(
+                        || self.ty.any(),
+                        |symbol| {
+                            let ty = self.get_type_of_symbol(symbol);
+                            if ty.is_none() { self.ty.any() } else { ty }
+                        },
+                    )
             }
             AstKind::TSTypeReference(reference)
                 if matches!(reference.type_name, TSTypeName::QualifiedName(_)) =>
@@ -12732,8 +12658,8 @@ impl<'a> Checker<'a, '_> {
             AstKind::TSTypeReference(_) => {
                 let ty = self
                     .get_symbol_at_location(node)
-                    .map_or_else(Ty::any, |symbol| self.get_type_of_symbol(symbol));
-                if ty.is_none() { Ty::any() } else { ty }
+                    .map_or_else(|| self.ty.any(), |symbol| self.get_type_of_symbol(symbol));
+                if ty.is_none() { self.ty.any() } else { ty }
             }
             AstKind::TSIndexSignatureName(signature_name) => self.get_type_from_ts_type_annotation(
                 node.program_id,
@@ -12741,7 +12667,7 @@ impl<'a> Checker<'a, '_> {
             ),
             _ => self
                 .get_symbol_at_location(node)
-                .map_or_else(Ty::none, |sym| self.get_type_of_symbol(sym)),
+                .map_or_else(|| self.ty.none(), |sym| self.get_type_of_symbol(sym)),
         }
     }
 
@@ -12786,7 +12712,7 @@ impl<'a> Checker<'a, '_> {
         {
             let mut resolving_symbols = self.resolving_symbols.borrow_mut();
             if resolving_symbols.contains(&sym) {
-                return Ty::error(self.arena(), TypeErrorKind::UnresolvedType);
+                return self.ty.error(TypeErrorKind::UnresolvedType);
             }
             resolving_symbols.push(sym);
         }
@@ -12820,7 +12746,7 @@ impl<'a> Checker<'a, '_> {
                 }
                 AstKind::TSInterfaceDeclaration(_) => self
                     .get_type_of_merged_interface_value_symbol(sym)
-                    .unwrap_or_else(Ty::any),
+                    .unwrap_or_else(|| self.ty.any()),
                 AstKind::BindingIdentifier(identifier)
                     if matches!(
                         self.nodes(sym.program_id).parent_kind(identifier.node_id()),
@@ -12828,7 +12754,7 @@ impl<'a> Checker<'a, '_> {
                     ) =>
                 {
                     self.get_type_of_merged_interface_value_symbol(sym)
-                        .unwrap_or_else(Ty::any)
+                        .unwrap_or_else(|| self.ty.any())
                 }
                 _ => self.get_declared_type_of_symbol(sym),
             }

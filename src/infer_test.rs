@@ -62,7 +62,7 @@ fn resolves_dependent_default_when_only_dependent_parameter_is_read() {
     let type_parameter_u = Ty::type_parameter(
         "U",
         None,
-        Some(Ty::type_reference(arena, "T", std::iter::empty())),
+        Some(arena.type_reference("T", std::iter::empty())),
     );
     let mut context = InferenceContext::with_substitutions(
         [type_parameter_t, type_parameter_u],
@@ -86,7 +86,7 @@ fn resolving_type_parameter_fixes_it_before_dependent_default() {
     let type_parameter_u = Ty::type_parameter(
         "U",
         None,
-        Some(Ty::type_reference(arena, "T", std::iter::empty())),
+        Some(arena.type_reference("T", std::iter::empty())),
     );
     let mut context = InferenceContext::with_substitutions(
         [type_parameter_t, type_parameter_u],
@@ -120,7 +120,7 @@ fn contextual_mapper_resolves_dependent_default_on_read() {
     let type_parameter_u = Ty::type_parameter(
         "U",
         None,
-        Some(Ty::type_reference(arena, "T", std::iter::empty())),
+        Some(arena.type_reference("T", std::iter::empty())),
     );
     let context = InferenceContext::with_substitutions(
         [type_parameter_t, type_parameter_u],
@@ -133,7 +133,7 @@ fn contextual_mapper_resolves_dependent_default_on_read() {
     assert_eq!(
         resolution
             .mapper()
-            .map(arena, Ty::type_reference(arena, "U", std::iter::empty()),),
+            .map(arena, arena.type_reference("U", std::iter::empty()),),
         Ty::string(),
     );
 }
@@ -143,31 +143,27 @@ fn indexed_access_inference_simplifies_when_index_candidate_is_known() {
     let allocator = Allocator::default();
     test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter("T", None, None);
-    let type_parameter_k = Ty::type_parameter("K", Some(Ty::string_literal(arena, "value")), None);
+    let type_parameter_k = Ty::type_parameter("K", Some(arena.string_literal("value")), None);
     let mut context = InferenceContext::with_substitutions(
         [type_parameter_t, type_parameter_k],
         &TypeParameterSubstitutions::new(),
         arena,
     )
-    .with_return_type(Ty::type_reference(arena, "T", std::iter::empty()));
+    .with_return_type(arena.type_reference("T", std::iter::empty()));
     context.add_candidate(
         type_parameter_k,
-        Ty::string_literal(arena, "value"),
+        arena.string_literal("value"),
         InferencePriority::NakedTypeVariable,
         InferenceVariance::Covariant,
     );
 
     checker.infer_types(
-        Ty::indexed_access(
-            arena,
-            Ty::object(
-                arena,
-                [Ty::property(
-                    "value",
-                    Ty::type_reference(arena, "T", std::iter::empty()),
-                )],
-            ),
-            Ty::type_reference(arena, "K", std::iter::empty()),
+        arena.indexed_access(
+            arena.object([Ty::property(
+                "value",
+                arena.type_reference("T", std::iter::empty()),
+            )]),
+            arena.type_reference("K", std::iter::empty()),
         ),
         Ty::number(),
         &mut context,
@@ -184,25 +180,21 @@ fn indexed_access_inference_preserves_unresolved_shape_without_index_candidate()
     let allocator = Allocator::default();
     test_checker!(allocator, store, checker, arena);
     let type_parameter_t = Ty::type_parameter("T", None, None);
-    let type_parameter_k = Ty::type_parameter("K", Some(Ty::string_literal(arena, "value")), None);
+    let type_parameter_k = Ty::type_parameter("K", Some(arena.string_literal("value")), None);
     let mut context = InferenceContext::with_substitutions(
         [type_parameter_t, type_parameter_k],
         &TypeParameterSubstitutions::new(),
         arena,
     )
-    .with_return_type(Ty::type_reference(arena, "T", std::iter::empty()));
+    .with_return_type(arena.type_reference("T", std::iter::empty()));
 
     checker.infer_types(
-        Ty::indexed_access(
-            arena,
-            Ty::object(
-                arena,
-                [Ty::property(
-                    "value",
-                    Ty::type_reference(arena, "T", std::iter::empty()),
-                )],
-            ),
-            Ty::type_reference(arena, "K", std::iter::empty()),
+        arena.indexed_access(
+            arena.object([Ty::property(
+                "value",
+                arena.type_reference("T", std::iter::empty()),
+            )]),
+            arena.type_reference("K", std::iter::empty()),
         ),
         Ty::number(),
         &mut context,
@@ -221,16 +213,16 @@ fn covariant_candidates_use_common_supertype_without_combination_priority() {
         &TypeParameterSubstitutions::new(),
         arena,
     )
-    .with_return_type(Ty::type_reference(arena, "Result", std::iter::empty()));
+    .with_return_type(arena.type_reference("Result", std::iter::empty()));
     context.add_candidate(
         type_parameter,
-        Ty::string_literal(arena, "ready"),
+        arena.string_literal("ready"),
         InferencePriority::Low,
         InferenceVariance::Covariant,
     );
     context.add_candidate(
         type_parameter,
-        Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
+        arena.number_literal(1.0, "1", NumberBase::Decimal),
         InferencePriority::Low,
         InferenceVariance::Covariant,
     );
@@ -238,7 +230,7 @@ fn covariant_candidates_use_common_supertype_without_combination_priority() {
     assert_optional_type_eq(
         arena,
         context.get_inferred_type(0, &checker),
-        Some(Ty::string_literal(arena, "ready")),
+        Some(arena.string_literal("ready")),
     );
 }
 
@@ -254,13 +246,13 @@ fn covariant_candidates_combine_for_naked_type_variable_priority() {
     );
     context.add_candidate(
         type_parameter,
-        Ty::string_literal(arena, "ready"),
+        arena.string_literal("ready"),
         InferencePriority::NakedTypeVariable,
         InferenceVariance::Covariant,
     );
     context.add_candidate(
         type_parameter,
-        Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
+        arena.number_literal(1.0, "1", NumberBase::Decimal),
         InferencePriority::NakedTypeVariable,
         InferenceVariance::Covariant,
     );
@@ -268,13 +260,10 @@ fn covariant_candidates_combine_for_naked_type_variable_priority() {
     assert_optional_type_eq(
         arena,
         context.get_inferred_type(0, &checker),
-        Some(Ty::union(
-            arena,
-            [
-                Ty::string_literal(arena, "ready"),
-                Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
-            ],
-        )),
+        Some(arena.union([
+            arena.string_literal("ready"),
+            arena.number_literal(1.0, "1", NumberBase::Decimal),
+        ])),
     );
 }
 
@@ -288,16 +277,13 @@ fn top_level_literal_candidates_widen_when_not_top_level_in_return() {
         &TypeParameterSubstitutions::new(),
         arena,
     )
-    .with_return_type(Ty::object(
-        arena,
-        [Ty::property(
-            "value",
-            Ty::type_reference(arena, "T", std::iter::empty()),
-        )],
-    ));
+    .with_return_type(arena.object([Ty::property(
+        "value",
+        arena.type_reference("T", std::iter::empty()),
+    )]));
     context.add_candidate(
         type_parameter,
-        Ty::string_literal(arena, "ready"),
+        arena.string_literal("ready"),
         InferencePriority::NakedTypeVariable,
         InferenceVariance::Covariant,
     );
@@ -315,10 +301,10 @@ fn top_level_literal_candidates_are_preserved_for_top_level_return() {
         &TypeParameterSubstitutions::new(),
         arena,
     )
-    .with_return_type(Ty::type_reference(arena, "T", std::iter::empty()));
+    .with_return_type(arena.type_reference("T", std::iter::empty()));
     context.add_candidate(
         type_parameter,
-        Ty::string_literal(arena, "ready"),
+        arena.string_literal("ready"),
         InferencePriority::NakedTypeVariable,
         InferenceVariance::Covariant,
     );
@@ -326,7 +312,7 @@ fn top_level_literal_candidates_are_preserved_for_top_level_return() {
     assert_optional_type_eq(
         arena,
         context.get_inferred_type(0, &checker),
-        Some(Ty::string_literal(arena, "ready")),
+        Some(arena.string_literal("ready")),
     );
 }
 
@@ -337,7 +323,7 @@ fn forward_default_references_resolve_to_unknown() {
     let type_parameter_t = Ty::type_parameter(
         "T",
         None,
-        Some(Ty::type_reference(arena, "U", std::iter::empty())),
+        Some(arena.type_reference("U", std::iter::empty())),
     );
     let type_parameter_u = Ty::type_parameter("U", None, None);
     let mut context = InferenceContext::with_substitutions(

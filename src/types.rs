@@ -18,6 +18,7 @@ use std::{
     cell::{Cell, RefCell},
     marker::PhantomData,
     num::NonZeroU32,
+    ops::Deref,
 };
 
 const SYNTHETIC_INDEX_SIGNATURE_NAME: &str = "x";
@@ -39,6 +40,178 @@ pub struct CheckerArena<'a> {
     allocator: &'a Allocator,
     types: &'a RefCell<ArenaVec<'a, TyKind<'a>>>,
     interned_types: &'a InternedTypeCache<'a>,
+}
+
+/// Constructs types using a bound checker arena.
+///
+/// ```
+/// use oxc_allocator::Allocator;
+/// use oxc_checker::{CheckerArena, TypeBuilder};
+///
+/// let allocator = Allocator::default();
+/// let arena = CheckerArena::new(&allocator);
+/// let types = TypeBuilder::new(arena);
+///
+/// assert_eq!(types.string(), types.string());
+/// assert_eq!(types.string_literal("ready").string_value(arena), Some("ready"));
+/// ```
+#[derive(Clone, Copy)]
+pub struct TypeBuilder<'a> {
+    arena: CheckerArena<'a>,
+}
+
+impl<'a> TypeBuilder<'a> {
+    /// Binds type construction to a checker arena.
+    pub const fn new(arena: CheckerArena<'a>) -> Self {
+        Self { arena }
+    }
+
+    pub const fn none(self) -> Ty<'a> {
+        Ty::None
+    }
+
+    pub const fn number(self) -> Ty<'a> {
+        Ty::Number
+    }
+
+    pub const fn string(self) -> Ty<'a> {
+        Ty::String
+    }
+
+    pub const fn symbol(self) -> Ty<'a> {
+        Ty::Symbol
+    }
+
+    pub const fn boolean(self) -> Ty<'a> {
+        Ty::Boolean
+    }
+
+    pub const fn boolean_literal(self, value: bool) -> Ty<'a> {
+        if value {
+            Ty::BOOLEAN_TRUE
+        } else {
+            Ty::BOOLEAN_FALSE
+        }
+    }
+
+    pub const fn boolean_true(self) -> Ty<'a> {
+        Ty::BOOLEAN_TRUE
+    }
+
+    pub const fn boolean_false(self) -> Ty<'a> {
+        Ty::BOOLEAN_FALSE
+    }
+
+    pub const fn bigint(self) -> Ty<'a> {
+        Ty::Bigint
+    }
+
+    pub const fn undefined(self) -> Ty<'a> {
+        Ty::Undefined
+    }
+
+    pub const fn null(self) -> Ty<'a> {
+        Ty::Null
+    }
+
+    pub const fn any(self) -> Ty<'a> {
+        Ty::Any
+    }
+
+    pub const fn unknown(self) -> Ty<'a> {
+        Ty::Unknown
+    }
+
+    pub const fn void(self) -> Ty<'a> {
+        Ty::Void
+    }
+
+    pub const fn never(self) -> Ty<'a> {
+        Ty::Never
+    }
+
+    pub const fn primitive_object(self) -> Ty<'a> {
+        Ty::PrimitiveObject
+    }
+
+    pub const fn this(self) -> Ty<'a> {
+        Ty::This
+    }
+
+    pub const fn global_this(self) -> Ty<'a> {
+        Ty::GLOBAL_THIS
+    }
+
+    pub const fn property(self, name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
+        TyProperty {
+            name,
+            flags: TyPropertyFlags::NONE,
+            computed: false,
+            optional: false,
+            method: false,
+            readonly: false,
+            ty,
+        }
+    }
+
+    pub const fn parameter(self, name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+        TyParameter {
+            name,
+            ty,
+            optional: false,
+            rest: false,
+        }
+    }
+
+    pub const fn optional_parameter(self, name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+        TyParameter {
+            name,
+            ty,
+            optional: true,
+            rest: false,
+        }
+    }
+
+    pub const fn rest_parameter(self, name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+        TyParameter {
+            name,
+            ty,
+            optional: false,
+            rest: true,
+        }
+    }
+
+    pub const fn type_parameter(
+        self,
+        name: &'a str,
+        constraint_type: Option<Ty<'a>>,
+        default_type: Option<Ty<'a>>,
+    ) -> TyTypeParameter<'a> {
+        self.type_parameter_with_display_default(name, constraint_type, default_type, true)
+    }
+
+    pub const fn type_parameter_with_display_default(
+        self,
+        name: &'a str,
+        constraint_type: Option<Ty<'a>>,
+        default_type: Option<Ty<'a>>,
+        display_default: bool,
+    ) -> TyTypeParameter<'a> {
+        TyTypeParameter {
+            name,
+            constraint_type,
+            default_type,
+            display_default,
+        }
+    }
+}
+
+impl<'a> Deref for TypeBuilder<'a> {
+    type Target = CheckerArena<'a>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.arena
+    }
 }
 
 struct InternedTypeCache<'a> {
@@ -873,7 +1046,7 @@ impl<'a> TyTuple<'a> {
             }
         }
 
-        Ty::undefined()
+        Ty::Undefined
     }
 }
 
@@ -1448,187 +1621,83 @@ fn visit_type_at_depth<'a>(
 }
 
 impl<'a> Ty<'a> {
-    pub fn none() -> Self {
+    pub const fn none() -> Self {
         Self::None
     }
 
-    pub fn number() -> Self {
+    pub const fn number() -> Self {
         Self::Number
     }
 
-    pub fn number_literal(
-        arena: CheckerArena<'a>,
-        value: f64,
-        raw: &'a str,
-        base: NumberBase,
-    ) -> Self {
-        let key = canonical_number_literal_key(value);
-        if let Some(ty) = arena.interned_types.numbers.borrow().get(&key) {
-            return *ty;
-        }
-        let ty = arena.alloc_type(TyKind::NumberLiteral(arena.alloc(TyNumberLiteral {
-            value,
-            raw: Some(*arena.alloc(Str::from(raw))),
-            base,
-        })));
-        arena.interned_types.numbers.borrow_mut().insert(key, ty);
-        ty
-    }
-
-    pub fn number_literal_from_ast(
-        arena: CheckerArena<'a>,
-        lit: &'a oxc_ast::ast::NumericLiteral,
-        negated: bool,
-    ) -> Self {
-        // TODO: Do we need to store `-` in the raw string?
-        let value = if negated { -lit.value } else { lit.value };
-        let key = canonical_number_literal_key(value);
-        if let Some(ty) = arena.interned_types.numbers.borrow().get(&key) {
-            return *ty;
-        }
-        let ty = arena.alloc_type(TyKind::NumberLiteral(arena.alloc(TyNumberLiteral {
-            value,
-            raw: lit.raw,
-            base: lit.base,
-        })));
-        arena.interned_types.numbers.borrow_mut().insert(key, ty);
-        ty
-    }
-
-    pub fn string() -> Self {
+    pub const fn string() -> Self {
         Self::String
     }
 
-    pub fn symbol() -> Self {
+    pub const fn symbol() -> Self {
         Self::Symbol
     }
 
-    pub fn unique_symbol(arena: CheckerArena<'a>, name: Option<&'a str>) -> Self {
-        arena.alloc_type(TyKind::UniqueSymbol(arena.alloc(TyUniqueSymbol { name })))
-    }
-
-    /// General `boolean` type (true or false)
-    pub fn boolean() -> Self {
+    pub const fn boolean() -> Self {
         Self::Boolean
     }
 
-    /// Literal `boolean` type (`true` or `false`), subtype of `boolean`
-    pub fn boolean_literal(value: bool) -> Self {
+    pub const fn boolean_literal(value: bool) -> Self {
         if value {
-            Self::boolean_true()
+            Self::BOOLEAN_TRUE
         } else {
-            Self::boolean_false()
+            Self::BOOLEAN_FALSE
         }
     }
 
-    /// Literal `true` type (subtype of `boolean`)
-    pub fn boolean_true() -> Self {
+    pub const fn boolean_true() -> Self {
         Self::BOOLEAN_TRUE
     }
 
-    /// Literal `false` type (subtype of `boolean`)
-    pub fn boolean_false() -> Self {
+    pub const fn boolean_false() -> Self {
         Self::BOOLEAN_FALSE
     }
 
-    pub fn bigint() -> Self {
+    pub const fn bigint() -> Self {
         Self::Bigint
     }
 
-    pub fn bigint_literal(
-        arena: CheckerArena<'a>,
-        value: &'a str,
-        raw: Option<Str<'a>>,
-        base: BigintBase,
-    ) -> Self {
-        if let Some(ty) = arena.interned_types.bigints.borrow().get(value) {
-            return *ty;
-        }
-        let ty = arena.alloc_type(TyKind::BigIntLiteral(arena.alloc(TyBigIntLiteral {
-            value,
-            raw,
-            base,
-        })));
-        arena.interned_types.bigints.borrow_mut().insert(value, ty);
-        ty
-    }
-
-    pub fn template_literal(
-        arena: CheckerArena<'a>,
-        quasis: impl IntoIterator<Item = TemplateLiteralElement<'a>>,
-        expressions: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
-        let quasis = quasis.into_iter().collect::<Vec<_>>();
-        let expressions = expressions.into_iter().collect::<Vec<_>>();
-        let quasi_values = quasis.iter().map(|quasi| quasi.value).collect::<Vec<_>>();
-        let expression_ids = expressions.iter().map(|ty| ty.id()).collect::<Vec<_>>();
-        let key = TemplateLiteralKey {
-            quasis: &quasi_values,
-            expressions: &expression_ids,
-        };
-        if let Some(ty) = arena.interned_types.templates.borrow().get(&key) {
-            return *ty;
-        }
-        let ty = arena.alloc_type(TyKind::TemplateLiteral(arena.alloc(TyTemplateLiteral {
-            quasis: arena.vec_from_iter(quasis),
-            expressions: arena.vec_from_iter(expressions),
-        })));
-        arena.interned_types.templates.borrow_mut().insert(
-            TemplateLiteralKey {
-                quasis: arena.alloc_slice_copy(&quasi_values),
-                expressions: arena.alloc_slice_copy(&expression_ids),
-            },
-            ty,
-        );
-        ty
-    }
-
-    pub fn undefined() -> Self {
+    pub const fn undefined() -> Self {
         Self::Undefined
     }
 
-    pub fn null() -> Self {
+    pub const fn null() -> Self {
         Self::Null
     }
 
-    pub fn any() -> Self {
+    pub const fn any() -> Self {
         Self::Any
     }
 
-    pub fn error(arena: CheckerArena<'a>, kind: TypeErrorKind) -> Self {
-        if let Some(ty) = arena.interned_types.errors.borrow().get(&kind) {
-            return *ty;
-        }
-        let ty = arena.alloc_type(TyKind::Error(kind));
-        arena.interned_types.errors.borrow_mut().insert(kind, ty);
-        ty
-    }
-
-    pub fn unknown() -> Self {
+    pub const fn unknown() -> Self {
         Self::Unknown
     }
 
-    pub fn void() -> Self {
+    pub const fn void() -> Self {
         Self::Void
     }
 
-    pub fn never() -> Self {
+    pub const fn never() -> Self {
         Self::Never
     }
 
-    pub fn primitive_object() -> Self {
+    pub const fn primitive_object() -> Self {
         Self::PrimitiveObject
     }
 
-    pub fn this() -> Self {
+    pub const fn this() -> Self {
         Self::This
     }
 
-    pub fn global_this() -> Self {
+    pub const fn global_this() -> Self {
         Self::GLOBAL_THIS
     }
 
-    pub fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
+    pub const fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty {
             name,
             flags: TyPropertyFlags::NONE,
@@ -1640,7 +1709,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+    pub const fn parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
         TyParameter {
             name,
             ty,
@@ -1649,7 +1718,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub fn optional_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+    pub const fn optional_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
         TyParameter {
             name,
             ty,
@@ -1658,7 +1727,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub fn rest_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
+    pub const fn rest_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
         TyParameter {
             name,
             ty,
@@ -1667,7 +1736,7 @@ impl<'a> Ty<'a> {
         }
     }
 
-    pub fn type_parameter(
+    pub const fn type_parameter(
         name: &'a str,
         constraint_type: Option<Ty<'a>>,
         default_type: Option<Ty<'a>>,
@@ -1675,7 +1744,7 @@ impl<'a> Ty<'a> {
         Self::type_parameter_with_display_default(name, constraint_type, default_type, true)
     }
 
-    pub fn type_parameter_with_display_default(
+    pub const fn type_parameter_with_display_default(
         name: &'a str,
         constraint_type: Option<Ty<'a>>,
         default_type: Option<Ty<'a>>,
@@ -1688,26 +1757,118 @@ impl<'a> Ty<'a> {
             display_default,
         }
     }
+}
 
-    pub fn object(
-        arena: CheckerArena<'a>,
-        properties: impl IntoIterator<Item = TyProperty<'a>>,
-    ) -> Self {
-        Self::object_with_signatures_and_index_infos(
-            arena,
+impl<'a> CheckerArena<'a> {
+    pub fn number_literal(self, value: f64, raw: &'a str, base: NumberBase) -> Ty<'a> {
+        let key = canonical_number_literal_key(value);
+        if let Some(ty) = self.interned_types.numbers.borrow().get(&key) {
+            return *ty;
+        }
+        let ty = self.alloc_type(TyKind::NumberLiteral(self.alloc(TyNumberLiteral {
+            value,
+            raw: Some(*self.alloc(Str::from(raw))),
+            base,
+        })));
+        self.interned_types.numbers.borrow_mut().insert(key, ty);
+        ty
+    }
+
+    pub fn number_literal_from_ast(
+        self,
+        lit: &'a oxc_ast::ast::NumericLiteral,
+        negated: bool,
+    ) -> Ty<'a> {
+        // TODO: Do we need to store `-` in the raw string?
+        let value = if negated { -lit.value } else { lit.value };
+        let key = canonical_number_literal_key(value);
+        if let Some(ty) = self.interned_types.numbers.borrow().get(&key) {
+            return *ty;
+        }
+        let ty = self.alloc_type(TyKind::NumberLiteral(self.alloc(TyNumberLiteral {
+            value,
+            raw: lit.raw,
+            base: lit.base,
+        })));
+        self.interned_types.numbers.borrow_mut().insert(key, ty);
+        ty
+    }
+}
+
+impl<'a> CheckerArena<'a> {
+    pub fn unique_symbol(self, name: Option<&'a str>) -> Ty<'a> {
+        self.alloc_type(TyKind::UniqueSymbol(self.alloc(TyUniqueSymbol { name })))
+    }
+}
+
+impl<'a> CheckerArena<'a> {
+    pub fn bigint_literal(self, value: &'a str, raw: Option<Str<'a>>, base: BigintBase) -> Ty<'a> {
+        if let Some(ty) = self.interned_types.bigints.borrow().get(value) {
+            return *ty;
+        }
+        let ty = self.alloc_type(TyKind::BigIntLiteral(self.alloc(TyBigIntLiteral {
+            value,
+            raw,
+            base,
+        })));
+        self.interned_types.bigints.borrow_mut().insert(value, ty);
+        ty
+    }
+
+    pub fn template_literal(
+        self,
+        quasis: impl IntoIterator<Item = TemplateLiteralElement<'a>>,
+        expressions: impl IntoIterator<Item = Ty<'a>>,
+    ) -> Ty<'a> {
+        let quasis = quasis.into_iter().collect::<Vec<_>>();
+        let expressions = expressions.into_iter().collect::<Vec<_>>();
+        let quasi_values = quasis.iter().map(|quasi| quasi.value).collect::<Vec<_>>();
+        let expression_ids = expressions.iter().map(|ty| ty.id()).collect::<Vec<_>>();
+        let key = TemplateLiteralKey {
+            quasis: &quasi_values,
+            expressions: &expression_ids,
+        };
+        if let Some(ty) = self.interned_types.templates.borrow().get(&key) {
+            return *ty;
+        }
+        let ty = self.alloc_type(TyKind::TemplateLiteral(self.alloc(TyTemplateLiteral {
+            quasis: self.vec_from_iter(quasis),
+            expressions: self.vec_from_iter(expressions),
+        })));
+        self.interned_types.templates.borrow_mut().insert(
+            TemplateLiteralKey {
+                quasis: self.alloc_slice_copy(&quasi_values),
+                expressions: self.alloc_slice_copy(&expression_ids),
+            },
+            ty,
+        );
+        ty
+    }
+}
+
+impl<'a> CheckerArena<'a> {
+    pub fn error(self, kind: TypeErrorKind) -> Ty<'a> {
+        if let Some(ty) = self.interned_types.errors.borrow().get(&kind) {
+            return *ty;
+        }
+        let ty = self.alloc_type(TyKind::Error(kind));
+        self.interned_types.errors.borrow_mut().insert(kind, ty);
+        ty
+    }
+}
+
+impl<'a> CheckerArena<'a> {
+    pub fn object(self, properties: impl IntoIterator<Item = TyProperty<'a>>) -> Ty<'a> {
+        self.object_with_signatures_and_index_infos(
             properties,
             std::iter::empty(),
             std::iter::empty(),
         )
     }
 
-    pub fn object_literal(
-        arena: CheckerArena<'a>,
-        properties: impl IntoIterator<Item = TyProperty<'a>>,
-    ) -> Self {
-        let ty = Self::object(arena, properties);
-        arena
-            .interned_types
+    pub fn object_literal(self, properties: impl IntoIterator<Item = TyProperty<'a>>) -> Ty<'a> {
+        let ty = self.object(properties);
+        self.interned_types
             .fresh_object_literals
             .borrow_mut()
             .insert(ty.id());
@@ -1715,17 +1876,16 @@ impl<'a> Ty<'a> {
     }
 
     pub fn object_literal_with_index_infos(
-        arena: CheckerArena<'a>,
+        self,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
-    ) -> Self {
+    ) -> Ty<'a> {
         let index_infos = index_infos.into_iter().collect::<Vec<_>>();
         if index_infos.is_empty() {
-            return Self::object_literal(arena, properties);
+            return self.object_literal(properties);
         }
-        let ty = Self::object_with_index_infos(arena, properties, index_infos);
-        arena
-            .interned_types
+        let ty = self.object_with_index_infos(properties, index_infos);
+        self.interned_types
             .fresh_object_literals
             .borrow_mut()
             .insert(ty.id());
@@ -1733,70 +1893,53 @@ impl<'a> Ty<'a> {
     }
 
     pub fn object_with_signatures(
-        arena: CheckerArena<'a>,
+        self,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         signatures: impl IntoIterator<Item = Signature<'a>>,
-    ) -> Self {
-        Self::object_with_signatures_and_index_infos(
-            arena,
-            properties,
-            signatures,
-            std::iter::empty(),
-        )
+    ) -> Ty<'a> {
+        self.object_with_signatures_and_index_infos(properties, signatures, std::iter::empty())
     }
 
-    pub fn constructor_type(arena: CheckerArena<'a>, signature: Signature<'a>) -> Self {
-        Self::object_from_slices(
-            arena,
-            &[],
-            arena.alloc_slice_from_iter([signature]),
-            &[],
-            true,
-        )
+    pub fn constructor_type(self, signature: Signature<'a>) -> Ty<'a> {
+        self.object_from_slices(&[], self.alloc_slice_from_iter([signature]), &[], true)
     }
 
     pub fn object_with_index_infos(
-        arena: CheckerArena<'a>,
+        self,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
-    ) -> Self {
-        Self::object_with_signatures_and_index_infos(
-            arena,
-            properties,
-            std::iter::empty(),
-            index_infos,
-        )
+    ) -> Ty<'a> {
+        self.object_with_signatures_and_index_infos(properties, std::iter::empty(), index_infos)
     }
 
     pub fn object_with_signatures_and_index_infos(
-        arena: CheckerArena<'a>,
+        self,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
         signatures: impl IntoIterator<Item = Signature<'a>>,
         index_infos: impl IntoIterator<Item = IndexInfo<'a>>,
-    ) -> Self {
-        Self::object_from_slices(
-            arena,
-            arena.alloc_slice_from_iter(properties),
-            arena.alloc_slice_from_iter(signatures),
-            arena.alloc_slice_from_iter(index_infos),
+    ) -> Ty<'a> {
+        self.object_from_slices(
+            self.alloc_slice_from_iter(properties),
+            self.alloc_slice_from_iter(signatures),
+            self.alloc_slice_from_iter(index_infos),
             false,
         )
     }
 
     pub(crate) fn object_from_slices(
-        arena: CheckerArena<'a>,
+        self,
         properties: &'a [TyProperty<'a>],
         signatures: &'a [Signature<'a>],
         index_infos: &'a [IndexInfo<'a>],
         is_constructor_type: bool,
-    ) -> Self {
+    ) -> Ty<'a> {
         let members = (!signatures.is_empty() || !index_infos.is_empty()).then(|| {
-            arena.alloc(TyObjectMembers {
+            self.alloc(TyObjectMembers {
                 signatures,
                 index_infos,
             })
         });
-        arena.alloc_type(TyKind::Object(arena.alloc(TyObject {
+        self.alloc_type(TyKind::Object(self.alloc(TyObject {
             properties,
             members,
             is_constructor_type,
@@ -1804,35 +1947,34 @@ impl<'a> Ty<'a> {
     }
 
     pub fn module_namespace(
-        arena: CheckerArena<'a>,
+        self,
         name: &'a str,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
-    ) -> Self {
-        arena.alloc_type(TyKind::ModuleNamespace(arena.alloc(TyModuleNamespace {
+    ) -> Ty<'a> {
+        self.alloc_type(TyKind::ModuleNamespace(self.alloc(TyModuleNamespace {
             name,
-            properties: arena.vec_from_iter(properties),
+            properties: self.vec_from_iter(properties),
         })))
     }
 
     #[cfg(test)]
     pub fn function(
-        arena: CheckerArena<'a>,
+        self,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         parameters: impl IntoIterator<Item = TyParameter<'a>>,
         return_type: Ty<'a>,
-    ) -> Self {
-        Self::function_with_type_predicate(arena, type_parameters, parameters, return_type, None)
+    ) -> Ty<'a> {
+        self.function_with_type_predicate(type_parameters, parameters, return_type, None)
     }
 
     pub fn function_with_type_predicate(
-        arena: CheckerArena<'a>,
+        self,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         parameters: impl IntoIterator<Item = TyParameter<'a>>,
         return_type: Ty<'a>,
         type_predicate: Option<TyTypePredicate<'a>>,
-    ) -> Self {
-        Self::function_with_type_predicate_and_display(
-            arena,
+    ) -> Ty<'a> {
+        self.function_with_type_predicate_and_display(
             type_parameters,
             parameters,
             return_type,
@@ -1842,77 +1984,71 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn function_with_type_predicate_and_display(
-        arena: CheckerArena<'a>,
+        self,
         type_parameters: impl IntoIterator<Item = TyTypeParameter<'a>>,
         parameters: impl IntoIterator<Item = TyParameter<'a>>,
         return_type: Ty<'a>,
         type_predicate: Option<TyTypePredicate<'a>>,
         display_type_parameters_as_arguments: bool,
-    ) -> Self {
-        arena.alloc_type(TyKind::Function(arena.alloc(TyFunction {
-            type_parameters: arena.vec_from_iter(type_parameters),
+    ) -> Ty<'a> {
+        self.alloc_type(TyKind::Function(self.alloc(TyFunction {
+            type_parameters: self.vec_from_iter(type_parameters),
             display_type_parameters_as_arguments,
-            parameters: arena.vec_from_iter(parameters),
+            parameters: self.vec_from_iter(parameters),
             return_type,
-            type_predicate: type_predicate.map(|predicate| arena.alloc(predicate)),
+            type_predicate: type_predicate.map(|predicate| self.alloc(predicate)),
         })))
     }
 
     pub fn type_reference(
-        arena: CheckerArena<'a>,
+        self,
         name: &'a str,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
+    ) -> Ty<'a> {
         let type_arguments = type_arguments.into_iter().collect::<Vec<_>>();
         let display_type_argument_count = type_arguments.len();
-        Self::intern_named_type_reference(arena, name, type_arguments, display_type_argument_count)
+        self.intern_named_type_reference(name, type_arguments, display_type_argument_count)
     }
 
     pub(crate) fn type_reference_with_display_type_argument_count(
-        arena: CheckerArena<'a>,
+        self,
         name: &'a str,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
         display_type_argument_count: usize,
-    ) -> Self {
+    ) -> Ty<'a> {
         let type_arguments = type_arguments.into_iter().collect::<Vec<_>>();
         let display_type_argument_count = display_type_argument_count.min(type_arguments.len());
-        Self::intern_named_type_reference(arena, name, type_arguments, display_type_argument_count)
+        self.intern_named_type_reference(name, type_arguments, display_type_argument_count)
     }
 
     fn intern_named_type_reference(
-        arena: CheckerArena<'a>,
+        self,
         name: &'a str,
         type_arguments: Vec<Ty<'a>>,
         display_type_argument_count: usize,
-    ) -> Self {
+    ) -> Ty<'a> {
         let type_argument_ids = type_arguments.iter().map(|ty| ty.id()).collect::<Vec<_>>();
         let key = NamedTypeReferenceKey {
             name,
             type_arguments: &type_argument_ids,
             display_type_argument_count,
         };
-        if let Some(ty) = arena
-            .interned_types
-            .named_type_references
-            .borrow()
-            .get(&key)
-        {
+        if let Some(ty) = self.interned_types.named_type_references.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TyKind::TypeReference(arena.alloc(TyTypeReference {
+        let ty = self.alloc_type(TyKind::TypeReference(self.alloc(TyTypeReference {
             name,
             target: None,
-            type_arguments: arena.vec_from_iter(type_arguments),
+            type_arguments: self.vec_from_iter(type_arguments),
             display_type_argument_count,
         })));
-        arena
-            .interned_types
+        self.interned_types
             .named_type_references
             .borrow_mut()
             .insert(
                 NamedTypeReferenceKey {
                     name,
-                    type_arguments: arena.alloc_slice_copy(&type_argument_ids),
+                    type_arguments: self.alloc_slice_copy(&type_argument_ids),
                     display_type_argument_count,
                 },
                 ty,
@@ -1921,12 +2057,12 @@ impl<'a> Ty<'a> {
     }
 
     pub(crate) fn type_reference_for_symbol(
-        arena: CheckerArena<'a>,
+        self,
         name: &'a str,
         target: SymbolRef,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
         display_type_argument_count: usize,
-    ) -> Self {
+    ) -> Ty<'a> {
         let type_arguments = type_arguments.into_iter().collect::<Vec<_>>();
         let display_type_argument_count = display_type_argument_count.min(type_arguments.len());
         let type_argument_ids = type_arguments.iter().map(|ty| ty.id()).collect::<Vec<_>>();
@@ -1935,19 +2071,19 @@ impl<'a> Ty<'a> {
             type_arguments: &type_argument_ids,
             display_type_argument_count,
         };
-        if let Some(ty) = arena.interned_types.type_references.borrow().get(&key) {
+        if let Some(ty) = self.interned_types.type_references.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TyKind::TypeReference(arena.alloc(TyTypeReference {
+        let ty = self.alloc_type(TyKind::TypeReference(self.alloc(TyTypeReference {
             name,
             target: Some(target),
-            type_arguments: arena.vec_from_iter(type_arguments),
+            type_arguments: self.vec_from_iter(type_arguments),
             display_type_argument_count,
         })));
-        arena.interned_types.type_references.borrow_mut().insert(
+        self.interned_types.type_references.borrow_mut().insert(
             TypeReferenceKey {
                 target,
-                type_arguments: arena.alloc_slice_copy(&type_argument_ids),
+                type_arguments: self.alloc_slice_copy(&type_argument_ids),
                 display_type_argument_count,
             },
             ty,
@@ -1956,102 +2092,98 @@ impl<'a> Ty<'a> {
     }
 
     pub fn type_query(
-        arena: CheckerArena<'a>,
+        self,
         name: &'a str,
         resolved: Ty<'a>,
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
-        arena.alloc_type(TyKind::TypeQuery(arena.alloc(TyTypeQuery {
+    ) -> Ty<'a> {
+        self.alloc_type(TyKind::TypeQuery(self.alloc(TyTypeQuery {
             name,
             resolved,
-            type_arguments: arena.vec_from_iter(type_arguments),
+            type_arguments: self.vec_from_iter(type_arguments),
         })))
     }
 
-    pub fn string_literal(arena: CheckerArena<'a>, value: &'a str) -> Self {
-        if let Some(ty) = arena.interned_types.strings.borrow().get(value) {
+    pub fn string_literal(self, value: &'a str) -> Ty<'a> {
+        if let Some(ty) = self.interned_types.strings.borrow().get(value) {
             return *ty;
         }
-        let ty = arena.alloc_type(TyKind::StringLiteral(
-            arena.alloc(TyStringLiteral { value }),
-        ));
-        arena.interned_types.strings.borrow_mut().insert(value, ty);
+        let ty = self.alloc_type(TyKind::StringLiteral(self.alloc(TyStringLiteral { value })));
+        self.interned_types.strings.borrow_mut().insert(value, ty);
         ty
     }
 
-    pub fn array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
-        Self::intern_array(arena, element_type, false, false)
+    pub fn array(self, element_type: Ty<'a>) -> Ty<'a> {
+        self.intern_array(element_type, false, false)
     }
 
-    pub fn readonly_array(arena: CheckerArena<'a>, element_type: Ty<'a>) -> Self {
-        Self::intern_array(arena, element_type, true, false)
+    pub fn readonly_array(self, element_type: Ty<'a>) -> Ty<'a> {
+        self.intern_array(element_type, true, false)
     }
 
-    pub fn generic_array(arena: CheckerArena<'a>, element_type: Ty<'a>, readonly: bool) -> Self {
-        Self::intern_array(arena, element_type, readonly, true)
+    pub fn generic_array(self, element_type: Ty<'a>, readonly: bool) -> Ty<'a> {
+        self.intern_array(element_type, readonly, true)
     }
 
     fn intern_array(
-        arena: CheckerArena<'a>,
+        self,
         element_type: Ty<'a>,
         readonly: bool,
         display_as_generic: bool,
-    ) -> Self {
+    ) -> Ty<'a> {
         let key = ArrayTypeKey {
             element_type: element_type.id(),
             readonly,
             display_as_generic,
         };
-        if let Some(ty) = arena.interned_types.arrays.borrow().get(&key) {
+        if let Some(ty) = self.interned_types.arrays.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TyKind::Array(arena.alloc(TyArray {
+        let ty = self.alloc_type(TyKind::Array(self.alloc(TyArray {
             element_type,
             readonly,
             display_as_generic,
         })));
-        arena.interned_types.arrays.borrow_mut().insert(key, ty);
+        self.interned_types.arrays.borrow_mut().insert(key, ty);
         ty
     }
 
-    pub fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
-        Self::normalized_tuple(
-            arena,
+    pub fn tuple(self, elements: Vec<TupleElement<'a>>) -> Ty<'a> {
+        self.normalized_tuple(
             elements.into_iter().map(LabeledTupleElement::unlabeled),
             TupleReadonly::Mutable,
         )
     }
 
-    pub fn readonly_tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
-        Self::normalized_tuple(
-            arena,
+    pub fn readonly_tuple(self, elements: Vec<TupleElement<'a>>) -> Ty<'a> {
+        self.normalized_tuple(
             elements.into_iter().map(LabeledTupleElement::unlabeled),
             TupleReadonly::Readonly,
         )
     }
 
     pub fn tuple_with_labels(
-        arena: CheckerArena<'a>,
+        self,
         elements: impl IntoIterator<Item = LabeledTupleElement<'a>>,
         readonly: TupleReadonly,
-    ) -> Self {
-        Self::normalized_tuple(arena, elements, readonly)
+    ) -> Ty<'a> {
+        self.normalized_tuple(elements, readonly)
     }
 
     fn normalized_tuple(
-        arena: CheckerArena<'a>,
+        self,
         elements: impl IntoIterator<Item = LabeledTupleElement<'a>>,
         readonly: TupleReadonly,
-    ) -> Self {
+    ) -> Ty<'a> {
         let elements = elements.into_iter();
         let mut normalized = Vec::with_capacity(elements.size_hint().0);
         let mut normalized_labels: Option<Vec<Option<&'a str>>> = None;
         for LabeledTupleElement { element, label } in elements {
             if let TupleElement::Rest(ty) = element
-                && let TyKind::Tuple(tuple) = arena.ty_kind(ty)
+                && let TyKind::Tuple(tuple) = self.ty_kind(ty)
             {
                 if normalized.len() + tuple.elements.len() >= TUPLE_SPREAD_MAX_LENGTH {
-                    return Ty::error(arena, TypeErrorKind::TupleSizeExceeded);
+                    return self.error(TypeErrorKind::TupleSizeExceeded);
                 }
                 if let Some(tuple_labels) = tuple.labels() {
                     normalized_labels
@@ -2079,18 +2211,18 @@ impl<'a> Ty<'a> {
             labels: normalized_labels.as_deref(),
             readonly,
         };
-        if let Some(ty) = arena.interned_types.tuples.borrow().get(&key) {
+        if let Some(ty) = self.interned_types.tuples.borrow().get(&key) {
             return *ty;
         }
-        let elements = arena.vec_from_iter(normalized);
-        let labels = normalized_labels.map(|labels| arena.alloc_slice_from_iter(labels));
-        let tuple = arena.alloc(TyTuple {
+        let elements = self.vec_from_iter(normalized);
+        let labels = normalized_labels.map(|labels| self.alloc_slice_from_iter(labels));
+        let tuple = self.alloc(TyTuple {
             elements,
             labels,
             readonly,
         });
-        let ty = arena.alloc_type(TyKind::Tuple(tuple));
-        arena.interned_types.tuples.borrow_mut().insert(
+        let ty = self.alloc_type(TyKind::Tuple(tuple));
+        self.interned_types.tuples.borrow_mut().insert(
             TupleTypeKey {
                 elements: &tuple.elements,
                 labels: tuple.labels(),
@@ -2101,17 +2233,16 @@ impl<'a> Ty<'a> {
         ty
     }
 
-    pub fn r#union(arena: CheckerArena<'a>, types: impl IntoIterator<Item = Ty<'a>>) -> Self {
-        reduce_union_type(arena, types)
+    pub fn r#union(self, types: impl IntoIterator<Item = Ty<'a>>) -> Ty<'a> {
+        reduce_union_type(self, types)
     }
 
-    pub(crate) fn source_union(
-        arena: CheckerArena<'a>,
-        types: impl IntoIterator<Item = Ty<'a>>,
-    ) -> Self {
-        reduce_source_union_type(arena, types)
+    pub(crate) fn source_union(self, types: impl IntoIterator<Item = Ty<'a>>) -> Ty<'a> {
+        reduce_source_union_type(self, types)
     }
+}
 
+impl<'a> Ty<'a> {
     pub(crate) fn map_union(
         self,
         arena: CheckerArena<'a>,
@@ -2120,59 +2251,52 @@ impl<'a> Ty<'a> {
         let TyKind::Union(union) = arena.ty_kind(self) else {
             return self;
         };
-        Ty::union(arena, union.types.iter().copied().filter_map(map))
+        arena.union(union.types.iter().copied().filter_map(map))
     }
+}
 
+impl<'a> CheckerArena<'a> {
     /// Returns the constant union type of all possible `typeof` values.
     /// `"string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function"`
-    pub fn typeof_string_values(arena: CheckerArena<'a>) -> Self {
-        Self::r#union(
-            arena,
-            [
-                Self::string_literal(arena, "string"),
-                Self::string_literal(arena, "number"),
-                Self::string_literal(arena, "bigint"),
-                Self::string_literal(arena, "boolean"),
-                Self::string_literal(arena, "symbol"),
-                Self::string_literal(arena, "undefined"),
-                Self::string_literal(arena, "object"),
-                Self::string_literal(arena, "function"),
-            ],
-        )
+    pub fn typeof_string_values(self) -> Ty<'a> {
+        self.r#union([
+            self.string_literal("string"),
+            self.string_literal("number"),
+            self.string_literal("bigint"),
+            self.string_literal("boolean"),
+            self.string_literal("symbol"),
+            self.string_literal("undefined"),
+            self.string_literal("object"),
+            self.string_literal("function"),
+        ])
     }
 
-    pub fn intersection(arena: CheckerArena<'a>, types: impl IntoIterator<Item = Ty<'a>>) -> Self {
-        reduce_intersection_type(arena, types)
+    pub fn intersection(self, types: impl IntoIterator<Item = Ty<'a>>) -> Ty<'a> {
+        reduce_intersection_type(self, types)
     }
 
-    pub fn keyof(arena: CheckerArena<'a>, target: Ty<'a>) -> Self {
-        if let Some(ty) = arena.interned_types.keyofs.borrow().get(&target.id()) {
+    pub fn keyof(self, target: Ty<'a>) -> Ty<'a> {
+        if let Some(ty) = self.interned_types.keyofs.borrow().get(&target.id()) {
             return *ty;
         }
-        let ty = arena.alloc_type(TyKind::Keyof(arena.alloc(TyKeyof { target })));
-        arena
-            .interned_types
+        let ty = self.alloc_type(TyKind::Keyof(self.alloc(TyKeyof { target })));
+        self.interned_types
             .keyofs
             .borrow_mut()
             .insert(target.id(), ty);
         ty
     }
 
-    pub fn indexed_access(
-        arena: CheckerArena<'a>,
-        object_type: Ty<'a>,
-        index_type: Ty<'a>,
-    ) -> Self {
+    pub fn indexed_access(self, object_type: Ty<'a>, index_type: Ty<'a>) -> Ty<'a> {
         let key = (object_type.id(), index_type.id());
-        if let Some(ty) = arena.interned_types.indexed_accesses.borrow().get(&key) {
+        if let Some(ty) = self.interned_types.indexed_accesses.borrow().get(&key) {
             return *ty;
         }
-        let ty = arena.alloc_type(TyKind::IndexedAccess(arena.alloc(TyIndexedAccess {
+        let ty = self.alloc_type(TyKind::IndexedAccess(self.alloc(TyIndexedAccess {
             object_type,
             index_type,
         })));
-        arena
-            .interned_types
+        self.interned_types
             .indexed_accesses
             .borrow_mut()
             .insert(key, ty);
@@ -2180,14 +2304,14 @@ impl<'a> Ty<'a> {
     }
 
     pub fn conditional(
-        arena: CheckerArena<'a>,
+        self,
         check_type: Ty<'a>,
         extends_type: Ty<'a>,
         true_type: Ty<'a>,
         false_type: Ty<'a>,
         is_distributive: bool,
-    ) -> Self {
-        arena.intern_conditional(
+    ) -> Ty<'a> {
+        self.intern_conditional(
             check_type,
             extends_type,
             true_type,
@@ -2196,20 +2320,20 @@ impl<'a> Ty<'a> {
         )
     }
 
-    pub fn infer(arena: CheckerArena<'a>, type_parameter: TyTypeParameter<'a>) -> Self {
-        arena.alloc_type(TyKind::Infer(arena.alloc(TyInfer { type_parameter })))
+    pub fn infer(self, type_parameter: TyTypeParameter<'a>) -> Ty<'a> {
+        self.alloc_type(TyKind::Infer(self.alloc(TyInfer { type_parameter })))
     }
 
     pub fn mapped(
-        arena: CheckerArena<'a>,
+        self,
         key: &'a str,
         constraint: Ty<'a>,
         name_type: Option<Ty<'a>>,
         template: Ty<'a>,
         optional: MappedModifier,
         readonly: MappedModifier,
-    ) -> Self {
-        arena.alloc_type(TyKind::Mapped(arena.alloc(TyMapped {
+    ) -> Ty<'a> {
+        self.alloc_type(TyKind::Mapped(self.alloc(TyMapped {
             key,
             constraint,
             name_type,
@@ -2218,7 +2342,9 @@ impl<'a> Ty<'a> {
             readonly,
         })))
     }
+}
 
+impl<'a> Ty<'a> {
     /// Returns `true` if the type is `none`, indicating that we have no information about this type.
     /// This is normally a bug and should be investigated.
     pub fn is_none(&self) -> bool {
@@ -2921,8 +3047,7 @@ impl<'a> Ty<'a> {
         let TyKind::Object(object) = arena.ty_kind(self) else {
             return self;
         };
-        Self::object_from_slices(
-            arena,
+        arena.object_from_slices(
             object.properties,
             arena.alloc_slice_from_iter(signatures),
             object.index_infos(),
@@ -2938,8 +3063,7 @@ impl<'a> Ty<'a> {
         let TyKind::Object(object) = arena.ty_kind(self) else {
             return self;
         };
-        Self::object_from_slices(
-            arena,
+        arena.object_from_slices(
             object.properties,
             object.signatures(),
             arena.alloc_slice_from_iter(index_infos),
@@ -2954,8 +3078,7 @@ impl<'a> Ty<'a> {
         if object.is_constructor_type {
             return self;
         }
-        Self::object_from_slices(
-            arena,
+        arena.object_from_slices(
             object.properties,
             object.signatures(),
             object.index_infos(),
@@ -3008,7 +3131,7 @@ impl<'a> Ty<'a> {
         if *self == Ty::Undefined {
             *self
         } else {
-            Self::union(arena, [*self, Ty::Undefined])
+            arena.union([*self, Ty::Undefined])
         }
     }
 
@@ -3385,7 +3508,7 @@ pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(
     resolve_type_annotation: impl Fn(&'a TSTypeAnnotation<'a>) -> Ty<'a>,
 ) -> (Ty<'a>, Option<TyTypePredicate<'a>>) {
     let Some(return_type) = return_type else {
-        return (Ty::any(), None);
+        return (Ty::Any, None);
     };
     let TSType::TSTypePredicate(predicate) = &return_type.type_annotation else {
         return (resolve_type_annotation(return_type), None);
@@ -3401,7 +3524,7 @@ pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(
 }
 
 pub(crate) fn type_predicate_return_type<'a>(asserts: bool) -> Ty<'a> {
-    if asserts { Ty::void() } else { Ty::boolean() }
+    if asserts { Ty::Void } else { Ty::Boolean }
 }
 
 pub(crate) fn type_predicate_from_ts_type_predicate_with_target_type<'a>(

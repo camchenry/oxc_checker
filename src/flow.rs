@@ -113,9 +113,9 @@ pub(crate) fn empty_array_literal_element_type<'a>(
     node_id: Option<oxc_semantic::NodeId>,
 ) -> Ty<'a> {
     if is_direct_empty_array_variable_initializer(checker, program_id, array_expression, node_id) {
-        Ty::any()
+        checker.ty.any()
     } else {
-        Ty::never()
+        checker.ty.never()
     }
 }
 
@@ -136,7 +136,7 @@ fn evolving_array_flow_type<'a>(
         return None;
     }
     if is_evolving_array_operation_target(checker, node) {
-        return Some(Ty::array(checker.arena(), Ty::any()));
+        return Some(checker.ty.array(checker.ty.any()));
     }
 
     let empty_element_type = finalized_empty_element_type(checker, base_type);
@@ -154,14 +154,11 @@ fn evolving_array_flow_type<'a>(
     }
 
     let element_type = evolving_array_element_at_reference(checker, node, &changes_by_block)?;
-    Some(Ty::array(
-        checker.arena(),
-        if element_type.is_never() {
-            empty_element_type
-        } else {
-            element_type
-        },
-    ))
+    Some(checker.ty.array(if element_type.is_never() {
+        empty_element_type
+    } else {
+        element_type
+    }))
 }
 
 fn is_evolving_array_operation_target(checker: &Checker<'_, '_>, node: NodeRef) -> bool {
@@ -254,7 +251,7 @@ fn evolving_array_block_input<'a>(
     outputs: &FxHashMap<BlockNodeId, Ty<'a>>,
 ) -> Option<Ty<'a>> {
     if block == entry {
-        return Some(Ty::never());
+        return Some(checker.ty.never());
     }
     let mut predecessor_types = UnionAccumulator::new(checker.arena());
     predecessor_types.extend(
@@ -283,7 +280,7 @@ fn apply_evolving_array_change<'a>(
     change: EvolvingArrayChange<'a>,
 ) -> Ty<'a> {
     match change {
-        EvolvingArrayChange::Add(ty) => Ty::union(checker.arena(), [current, ty]),
+        EvolvingArrayChange::Add(ty) => checker.ty.union([current, ty]),
         EvolvingArrayChange::Reset(ty) => ty,
     }
 }
@@ -340,8 +337,7 @@ fn evolving_array_change<'a>(
             );
             match checker.ty_kind(assigned_type) {
                 TyKind::Array(array) => Some(EvolvingArrayChange::Reset(array.element_type)),
-                TyKind::Tuple(tuple) => Some(EvolvingArrayChange::Reset(Ty::union(
-                    checker.arena(),
+                TyKind::Tuple(tuple) => Some(EvolvingArrayChange::Reset(checker.ty.union(
                     tuple.elements.iter().map(|element| match element {
                         TupleElement::Regular(ty)
                         | TupleElement::Rest(ty)
@@ -380,9 +376,9 @@ fn expression_is_empty_array_literal(expression: &Expression<'_>) -> bool {
 
 fn finalized_empty_element_type<'a>(checker: &Checker<'a, '_>, base_type: Ty<'a>) -> Ty<'a> {
     match checker.ty_kind(base_type) {
-        TyKind::Array(array) if array.element_type.is_never() => Ty::any(),
+        TyKind::Array(array) if array.element_type.is_never() => checker.ty.any(),
         TyKind::Array(array) => array.element_type,
-        _ => Ty::any(),
+        _ => checker.ty.any(),
     }
 }
 
@@ -732,21 +728,22 @@ fn narrow_by_in_property<'a>(
         return ty;
     }
 
-    let property_key = Ty::string_literal(checker.arena(), property_name);
-    let property_record = checker.get_global_record_type(program_id, property_key, Ty::unknown());
+    let property_key = checker.ty.string_literal(property_name);
+    let property_record =
+        checker.get_global_record_type(program_id, property_key, checker.ty.unknown());
     match checker.ty_kind(ty) {
         TyKind::Unknown => property_record,
         TyKind::PrimitiveObject
         | TyKind::Function(_)
         | TyKind::TypeReference(_)
-        | TyKind::Object(_) => Ty::intersection(checker.arena(), [ty, property_record]),
+        | TyKind::Object(_) => checker.ty.intersection([ty, property_record]),
         _ => ty,
     }
 }
 
 fn remove_undefined_from_type<'a>(checker: &Checker<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
     if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
-        return non_undefined_constituent(checker, node, ty).unwrap_or_else(Ty::never);
+        return non_undefined_constituent(checker, node, ty).unwrap_or_else(|| checker.ty.never());
     }
     ty.map_union(checker.arena(), |ty| {
         non_undefined_constituent(checker, node, ty)
@@ -760,25 +757,21 @@ fn non_undefined_constituent<'a>(
 ) -> Option<Ty<'a>> {
     match ty {
         Ty::Undefined | Ty::Void => None,
-        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => {
-            Some(Ty::intersection(
-                checker.arena(),
-                [
-                    ty,
-                    Ty::union(
-                        checker.arena(),
-                        [Ty::object(checker.arena(), []), Ty::null()],
-                    ),
-                ],
-            ))
-        }
+        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => Some(
+            checker.ty.intersection([
+                ty,
+                checker
+                    .arena()
+                    .union([checker.ty.object([]), checker.ty.null()]),
+            ]),
+        ),
         _ => Some(ty),
     }
 }
 
 fn remove_null_from_type<'a>(checker: &Checker<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
     if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
-        return non_null_constituent(checker, node, ty).unwrap_or_else(Ty::never);
+        return non_null_constituent(checker, node, ty).unwrap_or_else(|| checker.ty.never());
     }
     ty.map_union(checker.arena(), |ty| {
         non_null_constituent(checker, node, ty)
@@ -792,18 +785,14 @@ fn non_null_constituent<'a>(
 ) -> Option<Ty<'a>> {
     match ty {
         Ty::Null => None,
-        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => {
-            Some(Ty::intersection(
-                checker.arena(),
-                [
-                    ty,
-                    Ty::union(
-                        checker.arena(),
-                        [Ty::object(checker.arena(), []), Ty::undefined()],
-                    ),
-                ],
-            ))
-        }
+        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => Some(
+            checker.ty.intersection([
+                ty,
+                checker
+                    .arena()
+                    .union([checker.ty.object([]), checker.ty.undefined()]),
+            ]),
+        ),
         _ => Some(ty),
     }
 }
@@ -903,14 +892,14 @@ fn narrow_by_typeof<'a>(
     if matches!(ty, Ty::Unknown) {
         return if assume_true {
             match witness {
-                TypeofWitness::String => Ty::string(),
-                TypeofWitness::Number => Ty::number(),
-                TypeofWitness::Boolean => Ty::boolean(),
-                TypeofWitness::Bigint => Ty::bigint(),
-                TypeofWitness::Undefined => Ty::undefined(),
-                TypeofWitness::Object => {
-                    Ty::union(checker.arena(), [Ty::primitive_object(), Ty::null()])
-                }
+                TypeofWitness::String => checker.ty.string(),
+                TypeofWitness::Number => checker.ty.number(),
+                TypeofWitness::Boolean => checker.ty.boolean(),
+                TypeofWitness::Bigint => checker.ty.bigint(),
+                TypeofWitness::Undefined => checker.ty.undefined(),
+                TypeofWitness::Object => checker
+                    .ty
+                    .union([checker.ty.primitive_object(), checker.ty.null()]),
                 TypeofWitness::Function => checker.get_global_function_type(program_id),
             }
         } else {
@@ -930,7 +919,7 @@ fn filter_type<'a>(
     keep: impl Fn(Ty<'a>) -> bool + Copy,
 ) -> Ty<'a> {
     if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
-        return if keep(ty) { ty } else { Ty::never() };
+        return if keep(ty) { ty } else { checker.ty.never() };
     }
     ty.map_union(checker.arena(), |ty| keep(ty).then_some(ty))
 }
@@ -1196,10 +1185,10 @@ fn loop_write_type<'a>(
                         Some(parent_id),
                         GetTypeFlags::CONTEXT_FREE,
                     );
-                    if checker.is_assignable_to(seed_type, Ty::number())
-                        && checker.is_assignable_to(right, Ty::number())
+                    if checker.is_assignable_to(seed_type, checker.ty.number())
+                        && checker.is_assignable_to(right, checker.ty.number())
                     {
-                        Some(Ty::number())
+                        Some(checker.ty.number())
                     } else {
                         None
                     }
@@ -1214,11 +1203,11 @@ fn loop_write_type<'a>(
                 | AssignmentOperator::ShiftRightZeroFill
                 | AssignmentOperator::BitwiseOR
                 | AssignmentOperator::BitwiseXOR
-                | AssignmentOperator::BitwiseAnd => Some(Ty::number()),
+                | AssignmentOperator::BitwiseAnd => Some(checker.ty.number()),
                 _ => None,
             }
         }
-        AstKind::UpdateExpression(_) => Some(Ty::number()),
+        AstKind::UpdateExpression(_) => Some(checker.ty.number()),
         _ => None,
     }
 }

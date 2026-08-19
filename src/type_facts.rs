@@ -1,6 +1,6 @@
 use bitflags::bitflags;
 
-use crate::types::{CheckerArena, Ty, TyKind};
+use crate::types::{CheckerArena, Ty, TyKind, TypeBuilder};
 
 bitflags! {
     /// Minimal facts about the possible runtime values of a type.
@@ -13,10 +13,11 @@ bitflags! {
 }
 
 pub(crate) fn get_logical_not_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Ty<'a> {
+    let types = TypeBuilder::new(arena);
     match get_type_facts(arena, ty, TypeFacts::TRUTHY | TypeFacts::FALSY) {
-        TypeFacts::TRUTHY => Ty::boolean_false(),
-        TypeFacts::FALSY => Ty::boolean_true(),
-        _ => Ty::boolean(),
+        TypeFacts::TRUTHY => types.boolean_false(),
+        TypeFacts::FALSY => types.boolean_true(),
+        _ => types.boolean(),
     }
 }
 

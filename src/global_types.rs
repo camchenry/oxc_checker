@@ -284,7 +284,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         {
             return None;
         }
-        Some(Ty::generic_array(self.arena(), *element_type, readonly))
+        Some(self.ty.generic_array(*element_type, readonly))
     }
 
     pub(crate) fn get_global_array_type(
@@ -437,11 +437,10 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> Option<Ty<'a>> {
         self.get_type_symbol_for_name(program_id, name)?;
 
-        Some(Ty::type_reference(
-            self.arena(),
-            self.arena().str(name),
-            type_arguments,
-        ))
+        Some(
+            self.arena()
+                .type_reference(self.arena().str(name), type_arguments),
+        )
     }
 
     /// Calls `get_global_type_reference` and returns an error type if the type is not found.
@@ -452,7 +451,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         type_arguments: impl IntoIterator<Item = Ty<'a>>,
     ) -> Ty<'a> {
         self.get_global_type_reference(program_id, name, type_arguments)
-            .unwrap_or_else(|| Ty::error(self.arena(), TypeErrorKind::MissingGlobalType))
+            .unwrap_or_else(|| self.ty.error(TypeErrorKind::MissingGlobalType))
     }
 
     pub(crate) fn is_global_lib_type_reference(

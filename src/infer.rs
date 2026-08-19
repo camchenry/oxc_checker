@@ -26,7 +26,7 @@ use crate::{
     types::{
         CheckerArena, LabeledTupleElement, MappedModifier, SignatureKind, TupleElement,
         TupleReadonly, Ty, TyFunction, TyInfer, TyKind, TyMapped, TyProperty, TyTypeParameter,
-        TypeErrorKind, function_parameter_type_at_call_index, visit_type,
+        TypeBuilder, TypeErrorKind, function_parameter_type_at_call_index, visit_type,
     },
 };
 
@@ -271,7 +271,7 @@ impl<'a> InferenceContext<'a> {
             .iter()
             .map(|inference| {
                 let source =
-                    Ty::type_reference(arena, inference.type_parameter.name, std::iter::empty());
+                    arena.type_reference(inference.type_parameter.name, std::iter::empty());
                 let fallback_target = substitutions
                     .get(inference.type_parameter)
                     .unwrap_or(source);
@@ -392,8 +392,8 @@ impl<'a> InferenceContext<'a> {
         }
 
         if inferred_type.is_none() && flags.fill_unresolved_with_unknown() {
-            self.inferences[index].inferred_type = Some(Ty::unknown());
-            inferred_type = Some(Ty::unknown());
+            self.inferences[index].inferred_type = Some(Ty::Unknown);
+            inferred_type = Some(Ty::Unknown);
         }
 
         if fix && inferred_type.is_some() {
@@ -426,7 +426,7 @@ impl<'a> InferenceContext<'a> {
             {
                 substitutions.insert(
                     self.inferences[dependency_index].type_parameter,
-                    Ty::unknown(),
+                    Ty::Unknown,
                 );
             }
         }
@@ -524,7 +524,7 @@ fn resolve_covariant_candidates<'a, 'store>(
     }
 
     if return_type.is_none() {
-        return Some(Ty::union(arena, inference.candidates.iter().copied()));
+        return Some(arena.union(inference.candidates.iter().copied()));
     }
 
     let candidates = if should_widen_literal_inference(arena, inference, return_type) {
@@ -538,7 +538,7 @@ fn resolve_covariant_candidates<'a, 'store>(
     };
 
     if inference_priority_implies_combination(inference.priority) {
-        Some(Ty::union(arena, candidates))
+        Some(arena.union(candidates))
     } else {
         Some(get_common_supertype(checker, &candidates))
     }
@@ -554,10 +554,7 @@ fn resolve_contravariant_candidates<'a, 'store>(
     }
 
     if inference_priority_implies_combination(inference.priority) {
-        Some(Ty::intersection(
-            arena,
-            inference.contra_candidates.iter().copied(),
-        ))
+        Some(arena.intersection(inference.contra_candidates.iter().copied()))
     } else {
         Some(get_common_subtype(checker, &inference.contra_candidates))
     }
@@ -656,12 +653,11 @@ fn is_type_parameter_at_top_level<'a>(
 
 fn get_widened_literal_type<'a>(arena: crate::types::CheckerArena<'a>, ty: Ty<'a>) -> Ty<'a> {
     match arena.ty_kind(ty) {
-        TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_) => Ty::string(),
-        TyKind::NumberLiteral(_) => Ty::number(),
-        TyKind::BigIntLiteral(_) => Ty::bigint(),
-        TyKind::BooleanLiteral(_) => Ty::boolean(),
-        TyKind::Union(union) => Ty::union(
-            arena,
+        TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_) => Ty::String,
+        TyKind::NumberLiteral(_) => Ty::Number,
+        TyKind::BigIntLiteral(_) => Ty::Bigint,
+        TyKind::BooleanLiteral(_) => Ty::Boolean,
+        TyKind::Union(union) => arena.union(
             union
                 .types
                 .iter()
@@ -680,7 +676,7 @@ fn get_common_supertype<'a, 'store>(
         return candidates[0];
     }
     if literal_types_with_same_base_type(arena, candidates) {
-        return Ty::union(arena, candidates.iter().copied());
+        return arena.union(candidates.iter().copied());
     }
 
     find_leftmost_type(checker, candidates)
@@ -782,10 +778,11 @@ impl<'a, 'store> Checker<'a, 'store> {
         if current >= CONDITIONAL_TYPE_MAX_DEPTH {
             if !self.resolving_type_aliases.borrow().is_empty() {
                 self.mark_type_instantiation_overflow();
-                return Ty::error(self.arena(), TypeErrorKind::ConditionalTypeDepthExceeded);
+                return self
+                    .arena()
+                    .error(TypeErrorKind::ConditionalTypeDepthExceeded);
             }
-            return Ty::conditional(
-                self.arena(),
+            return self.ty.conditional(
                 check_type,
                 extends_type,
                 true_type,
@@ -833,8 +830,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.instantiate_type(true_type, resolution.mapper())
                 }
                 ConditionalInferMatchResult::NoMatch => false_type,
-                ConditionalInferMatchResult::Deferred => Ty::conditional(
-                    self.arena(),
+                ConditionalInferMatchResult::Deferred => self.ty.conditional(
                     check_type,
                     extends_type,
                     true_type,
@@ -854,8 +850,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             };
         }
 
-        Ty::conditional(
-            self.arena(),
+        self.ty.conditional(
             check_type,
             extends_type,
             true_type,
@@ -1202,7 +1197,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         TypeMapper::from_type_parameters_and_arguments(
             self.arena(),
             source.type_parameters.iter().copied(),
-            source.type_parameters.iter().map(|_| Ty::unknown()),
+            source.type_parameters.iter().map(|_| Ty::Unknown),
         )
     }
 
@@ -1231,8 +1226,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 inferences,
                 depth + 1,
             );
-            let rest_tuple = Ty::tuple(
-                self.arena(),
+            let rest_tuple = self.ty.tuple(
                 source_elements
                     .iter()
                     .skip(rest_index)
@@ -1395,7 +1389,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
             };
             let Some(body) = body else {
-                return Ty::error(self.arena(), TypeErrorKind::MissingFunctionBody);
+                return self.ty.error(TypeErrorKind::MissingFunctionBody);
             };
             let expressions = ReturnExpressionVisitor::expressions_in_body(body);
             let has_implicit_return = matches!(function, FunctionKind::Function(function) if function.generator)
@@ -1404,15 +1398,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                 });
 
             let return_type = if expressions.return_expressions.is_empty() {
-                Ty::void()
+                Ty::Void
             } else {
                 let flags = if expressions.return_expressions.len() > 1 || has_implicit_return {
                     GetTypeFlags::PRESERVE_LITERALS
                 } else {
                     GetTypeFlags::NONE
                 };
-                Ty::union(
-                    self.arena(),
+                self.ty.union(
                     expressions
                         .return_expressions
                         .into_iter()
@@ -1421,31 +1414,29 @@ impl<'a, 'store> Checker<'a, 'store> {
                                 program_id, argument, node_id, flags,
                             )
                         })
-                        .chain(has_implicit_return.then_some(Ty::undefined())),
+                        .chain(has_implicit_return.then_some(Ty::Undefined)),
                 )
             };
 
             let yield_type = if expressions.yield_expressions.is_empty() {
-                Ty::never()
+                Ty::Never
             } else {
                 let flags = if expressions.yield_expressions.len() > 1 {
                     GetTypeFlags::PRESERVE_LITERALS
                 } else {
                     GetTypeFlags::NONE
                 };
-                Ty::union(
-                    self.arena(),
-                    expressions.yield_expressions.into_iter().map(|argument| {
+                self.arena()
+                    .union(expressions.yield_expressions.into_iter().map(|argument| {
                         self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
-                    }),
-                )
+                    }))
             };
 
             if let FunctionKind::Function(f) = function
                 && f.generator
             {
                 // TODO(completeness): Implement next type inference
-                let next_type = Ty::unknown();
+                let next_type = Ty::Unknown;
 
                 // function*: look for yield expressions and return expressions
                 if f.r#async {
@@ -1600,15 +1591,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     })
                     .unwrap_or(return_type)
             }
-            TyKind::Union(union) => Ty::union(
-                self.arena(),
+            TyKind::Union(union) => self.ty.union(
                 union
                     .types
                     .iter()
                     .map(|ty| self.inference_return_type_for_literal_widening(program_id, *ty)),
             ),
-            TyKind::Intersection(intersection) => Ty::intersection(
-                self.arena(),
+            TyKind::Intersection(intersection) => self.ty.intersection(
                 intersection
                     .types
                     .iter()
@@ -2010,7 +1999,7 @@ fn resolve_indexed_access_for_inference<'a>(
             .iter()
             .map(|index_type| resolve_indexed_access_for_inference(object_type, *index_type, arena))
             .collect::<Option<Vec<_>>>()?;
-        Some(Ty::union(arena, property_types))
+        Some(arena.union(property_types))
     } else {
         let property_name = index_type_to_property_name(arena, index_type)?;
         property_type_for_inference_index(object_type, property_name, arena)
@@ -2028,7 +2017,7 @@ fn property_type_for_inference_index<'a>(
                 return None;
             }
             Some(if property.optional {
-                Ty::union(arena, [property.ty, Ty::undefined()])
+                arena.union([property.ty, Ty::Undefined])
             } else {
                 property.ty
             })
@@ -2039,7 +2028,7 @@ fn property_type_for_inference_index<'a>(
                 .iter()
                 .map(|ty| property_type_for_inference_index(*ty, property_name, arena))
                 .collect::<Option<Vec<_>>>()?;
-            Some(Ty::union(arena, property_types))
+            Some(arena.union(property_types))
         }
         TyKind::Intersection(intersection) => intersection
             .types
@@ -2114,7 +2103,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.infer_reverse_mapped_source_type(
                     parameter_mapped,
                     parameter_target,
-                    Ty::object(arena, argument_object.properties.iter().copied()),
+                    arena.object(argument_object.properties.iter().copied()),
                     argument_object.properties.iter().copied(),
                     context,
                     variance,
@@ -2122,22 +2111,21 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
             TyKind::Array(argument_array) => {
                 let reverse_candidate = if argument_array.readonly {
-                    Ty::readonly_array(arena, argument_array.element_type)
+                    arena.readonly_array(argument_array.element_type)
                 } else {
-                    Ty::array(arena, argument_array.element_type)
+                    arena.array(argument_array.element_type)
                 };
                 self.infer_reverse_mapped_source_type(
                     parameter_mapped,
                     parameter_target,
                     reverse_candidate,
-                    [Ty::property("0", argument_array.element_type)],
+                    [TypeBuilder::new(arena).property("0", argument_array.element_type)],
                     context,
                     variance,
                 );
             }
             TyKind::Tuple(argument_tuple) => {
-                let reverse_candidate = Ty::tuple_with_labels(
-                    arena,
+                let reverse_candidate = arena.tuple_with_labels(
                     argument_tuple.labeled_elements().map(|element| {
                         LabeledTupleElement::new(
                             reverse_mapped_tuple_element(element.element, parameter_mapped, arena),
@@ -2152,7 +2140,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                         .iter()
                         .enumerate()
                         .map(|(index, element)| {
-                            Ty::property(arena.str(&index.to_string()), element.ty())
+                            TypeBuilder::new(arena)
+                                .property(arena.str(&index.to_string()), element.ty())
                         });
                 self.infer_reverse_mapped_source_type(
                     parameter_mapped,
@@ -2209,7 +2198,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
             }
             TyKind::TypeReference(reference) if reference.is_bare() => {
-                let key_type = Ty::keyof(arena, argument_type);
+                let key_type = arena.keyof(argument_type);
                 self.infer_types_with_variance(
                     constraint_type,
                     key_type,
@@ -2233,7 +2222,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 {
                     self.infer_types_with_variance(
                         parameter_mapped.template,
-                        Ty::union(arena, property_types),
+                        arena.union(property_types),
                         context,
                         variance,
                         priority.structural(),
@@ -2275,8 +2264,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                 continue;
             }
             let key_mapper = TypeMapper::single(
-                Ty::type_reference(arena, parameter_mapped.key, std::iter::empty()),
-                Ty::string_literal(arena, property.name),
+                arena.type_reference(parameter_mapped.key, std::iter::empty()),
+                arena.string_literal(property.name),
             );
             let template_at_key = substitute_type(parameter_mapped.template, &key_mapper, arena);
             self.infer_types_with_variance(
@@ -2336,8 +2325,7 @@ fn substitute_type<'a>(
             if mapped != ty {
                 mapped
             } else {
-                Ty::type_reference(
-                    arena,
+                arena.type_reference(
                     reference.name,
                     reference
                         .type_arguments
@@ -2346,31 +2334,25 @@ fn substitute_type<'a>(
                 )
             }
         }
-        TyKind::IndexedAccess(indexed_access) => Ty::indexed_access(
-            arena,
+        TyKind::IndexedAccess(indexed_access) => arena.indexed_access(
             substitute_type(indexed_access.object_type, mapper, arena),
             substitute_type(indexed_access.index_type, mapper, arena),
         ),
-        TyKind::Keyof(keyof) => Ty::keyof(arena, substitute_type(keyof.target, mapper, arena)),
-        TyKind::Array(array) => {
-            Ty::array(arena, substitute_type(array.element_type, mapper, arena))
-        }
-        TyKind::Tuple(tuple) => Ty::tuple_with_labels(
-            arena,
+        TyKind::Keyof(keyof) => arena.keyof(substitute_type(keyof.target, mapper, arena)),
+        TyKind::Array(array) => arena.array(substitute_type(array.element_type, mapper, arena)),
+        TyKind::Tuple(tuple) => arena.tuple_with_labels(
             tuple
                 .labeled_elements()
                 .map(|element| element.map_ty(|ty| substitute_type(ty, mapper, arena))),
             TupleReadonly::from_readonly(tuple.readonly),
         ),
-        TyKind::Union(union) => Ty::union(
-            arena,
+        TyKind::Union(union) => arena.union(
             union
                 .types
                 .iter()
                 .map(|ty| substitute_type(*ty, mapper, arena)),
         ),
-        TyKind::Intersection(intersection) => Ty::intersection(
-            arena,
+        TyKind::Intersection(intersection) => arena.intersection(
             intersection
                 .types
                 .iter()
@@ -2435,8 +2417,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     priority,
                 );
             }
-            let rest_tuple = Ty::tuple(
-                arena,
+            let rest_tuple = arena.tuple(
                 argument_elements
                     .iter()
                     .skip(rest_index)
@@ -2570,8 +2551,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             return;
         }
 
-        let argument_remainder = Ty::intersection(arena, argument_types);
-        let parameter_remainder = Ty::intersection(arena, unmatched_parameters);
+        let argument_remainder = arena.intersection(argument_types);
+        let parameter_remainder = arena.intersection(unmatched_parameters);
         self.infer_types_with_variance(
             parameter_remainder,
             argument_remainder,

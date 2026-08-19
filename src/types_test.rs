@@ -36,31 +36,25 @@ fn tuple_element_map_ty_preserves_kind() {
 fn tuple_labels_are_aligned_and_stored_only_when_present() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let unlabeled = Ty::tuple(
-        arena,
-        vec![
-            TupleElement::Regular(Ty::string()),
-            TupleElement::Optional(Ty::number()),
-        ],
-    );
-    let labeled = Ty::tuple_with_labels(
-        arena,
+    let unlabeled = arena.tuple(vec![
+        TupleElement::Regular(Ty::string()),
+        TupleElement::Optional(Ty::number()),
+    ]);
+    let labeled = arena.tuple_with_labels(
         [
             LabeledTupleElement::new(TupleElement::Regular(Ty::string()), Some("name")),
             LabeledTupleElement::unlabeled(TupleElement::Optional(Ty::number())),
         ],
         TupleReadonly::Mutable,
     );
-    let explicitly_unlabeled = Ty::tuple_with_labels(
-        arena,
+    let explicitly_unlabeled = arena.tuple_with_labels(
         [
             LabeledTupleElement::unlabeled(TupleElement::Regular(Ty::string())),
             LabeledTupleElement::unlabeled(TupleElement::Optional(Ty::number())),
         ],
         TupleReadonly::Mutable,
     );
-    let spread_labeled = Ty::tuple_with_labels(
-        arena,
+    let spread_labeled = arena.tuple_with_labels(
         [
             LabeledTupleElement::unlabeled(TupleElement::Regular(Ty::boolean())),
             LabeledTupleElement::unlabeled(TupleElement::Rest(labeled)),
@@ -100,10 +94,10 @@ fn tuple_labels_are_aligned_and_stored_only_when_present() {
 fn name_only_type_references_are_interned() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let first = Ty::type_reference(arena, "Result", [Ty::string()]);
-    let second = Ty::type_reference(arena, "Result", [Ty::string()]);
+    let first = arena.type_reference("Result", [Ty::string()]);
+    let second = arena.type_reference("Result", [Ty::string()]);
     let hidden_arguments =
-        Ty::type_reference_with_display_type_argument_count(arena, "Result", [Ty::string()], 0);
+        arena.type_reference_with_display_type_argument_count("Result", [Ty::string()], 0);
 
     assert_eq!(first, second);
     assert_ne!(first, hidden_arguments);
@@ -113,13 +107,10 @@ fn name_only_type_references_are_interned() {
 fn visit_type_visits_shared_types_once() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let mut ty = Ty::type_reference(arena, "T", []);
+    let mut ty = arena.type_reference("T", []);
     let mut unique_type_count = 1;
     for _ in 0..32 {
-        ty = Ty::tuple(
-            arena,
-            vec![TupleElement::Regular(ty), TupleElement::Regular(ty)],
-        );
+        ty = arena.tuple(vec![TupleElement::Regular(ty), TupleElement::Regular(ty)]);
         unique_type_count += 1;
     }
 
@@ -137,14 +128,13 @@ fn visit_type_visits_shared_types_once() {
 fn function_predicate_excludes_callable_objects() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let function = Ty::function(
-        arena,
+    let function = arena.function(
         std::iter::empty::<TyTypeParameter>(),
         std::iter::empty::<TyParameter>(),
         Ty::void(),
     );
     let callable_object =
-        Ty::object_with_signatures(arena, [], [Signature::new(SignatureKind::Call, function)]);
+        arena.object_with_signatures([], [Signature::new(SignatureKind::Call, function)]);
 
     assert!(function.is_function(arena));
     assert!(!callable_object.is_function(arena));
@@ -154,12 +144,11 @@ fn function_predicate_excludes_callable_objects() {
 fn object_signatures_render_calls_before_constructs() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let construct_string = Ty::function(arena, [], [], Ty::string());
-    let call_number = Ty::function(arena, [], [], Ty::number());
-    let construct_boolean = Ty::function(arena, [], [], Ty::boolean());
-    let call_bigint = Ty::function(arena, [], [], Ty::bigint());
-    let object = Ty::object_with_signatures(
-        arena,
+    let construct_string = arena.function([], [], Ty::string());
+    let call_number = arena.function([], [], Ty::number());
+    let construct_boolean = arena.function([], [], Ty::boolean());
+    let call_bigint = arena.function([], [], Ty::bigint());
+    let object = arena.object_with_signatures(
         [],
         [
             Signature::new(SignatureKind::Construct, construct_string),
@@ -179,7 +168,7 @@ fn object_signatures_render_calls_before_constructs() {
 fn empty_constructor_object_renders_as_empty_object() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let object = Ty::object_from_slices(arena, &[], &[], &[], true);
+    let object = arena.object_from_slices(&[], &[], &[], true);
 
     assert_eq!(object.to_type_string(arena), "{}");
 }
@@ -189,11 +178,10 @@ fn instantiated_function_renders_type_parameters_as_arguments() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
     let type_parameter = Ty::type_parameter("S", Some(Ty::number()), Some(Ty::string()));
-    let function = Ty::function_with_type_predicate_and_display(
-        arena,
+    let function = arena.function_with_type_predicate_and_display(
         [type_parameter],
         [],
-        Ty::type_reference(arena, "S", std::iter::empty()),
+        arena.type_reference("S", std::iter::empty()),
         None,
         true,
     );
@@ -206,18 +194,9 @@ fn instantiated_function_renders_type_parameters_as_arguments() {
 fn type_identity_is_recursive_and_distinct_from_handle_identity() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let first = Ty::array(
-        arena,
-        Ty::object(arena, [Ty::property("value", Ty::string())]),
-    );
-    let second = Ty::array(
-        arena,
-        Ty::object(arena, [Ty::property("value", Ty::string())]),
-    );
-    let different = Ty::array(
-        arena,
-        Ty::object(arena, [Ty::property("value", Ty::number())]),
-    );
+    let first = arena.array(arena.object([Ty::property("value", Ty::string())]));
+    let second = arena.array(arena.object([Ty::property("value", Ty::string())]));
+    let different = arena.array(arena.object([Ty::property("value", Ty::number())]));
 
     assert_ne!(first, second);
     assert!(arena.is_type_identical_to(first, second));
@@ -236,12 +215,12 @@ fn union_reduction_absorbs_any_and_unknown() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
 
-    assert_eq!(Ty::r#union(arena, [Ty::any(), Ty::undefined()]), Ty::any());
+    assert_eq!(arena.union([Ty::any(), Ty::undefined()]), Ty::any());
     assert_eq!(
-        Ty::r#union(arena, [Ty::unknown(), Ty::undefined(), Ty::string()]),
+        arena.union([Ty::unknown(), Ty::undefined(), Ty::string()]),
         Ty::unknown()
     );
-    assert_eq!(Ty::r#union(arena, [Ty::unknown(), Ty::any()]), Ty::any());
+    assert_eq!(arena.union([Ty::unknown(), Ty::any()]), Ty::any());
 }
 
 #[test]
@@ -249,29 +228,18 @@ fn literal_types_are_canonicalized() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
 
+    assert_eq!(arena.string_literal("ready"), arena.string_literal("ready"));
     assert_eq!(
-        Ty::string_literal(arena, "ready"),
-        Ty::string_literal(arena, "ready")
+        arena.number_literal(1.0, "1", NumberBase::Decimal),
+        arena.number_literal(1.0, "0x1", NumberBase::Hex)
     );
     assert_eq!(
-        Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
-        Ty::number_literal(arena, 1.0, "0x1", NumberBase::Hex)
+        arena.bigint_literal("1", None, BigintBase::Decimal),
+        arena.bigint_literal("1", None, BigintBase::Decimal)
     );
     assert_eq!(
-        Ty::bigint_literal(arena, "1", None, BigintBase::Decimal),
-        Ty::bigint_literal(arena, "1", None, BigintBase::Decimal)
-    );
-    assert_eq!(
-        Ty::template_literal(
-            arena,
-            [TemplateLiteralElement { value: "prefix" }],
-            [Ty::string()]
-        ),
-        Ty::template_literal(
-            arena,
-            [TemplateLiteralElement { value: "prefix" }],
-            [Ty::string()]
-        )
+        arena.template_literal([TemplateLiteralElement { value: "prefix" }], [Ty::string()]),
+        arena.template_literal([TemplateLiteralElement { value: "prefix" }], [Ty::string()])
     );
 }
 
@@ -280,30 +248,27 @@ fn derived_types_are_canonicalized() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
 
-    let union = Ty::r#union(arena, [Ty::string(), Ty::number()]);
+    let union = arena.union([Ty::string(), Ty::number()]);
     assert_eq!(
         union,
-        Ty::r#union(arena, [Ty::number(), Ty::string()]),
+        arena.union([Ty::number(), Ty::string()]),
         "union identity uses canonical constituent order"
     );
     assert_eq!(union.to_type_string(arena), "string | number");
 
     assert_eq!(
-        Ty::intersection(arena, [Ty::string(), Ty::primitive_object()]),
-        Ty::intersection(arena, [Ty::string(), Ty::primitive_object()])
+        arena.intersection([Ty::string(), Ty::primitive_object()]),
+        arena.intersection([Ty::string(), Ty::primitive_object()])
     );
+    assert_eq!(arena.array(Ty::string()), arena.array(Ty::string()));
     assert_eq!(
-        Ty::array(arena, Ty::string()),
-        Ty::array(arena, Ty::string())
+        arena.tuple(vec![TupleElement::Regular(Ty::string())]),
+        arena.tuple(vec![TupleElement::Regular(Ty::string())])
     );
+    assert_eq!(arena.keyof(union), arena.keyof(union));
     assert_eq!(
-        Ty::tuple(arena, vec![TupleElement::Regular(Ty::string())]),
-        Ty::tuple(arena, vec![TupleElement::Regular(Ty::string())])
-    );
-    assert_eq!(Ty::keyof(arena, union), Ty::keyof(arena, union));
-    assert_eq!(
-        Ty::indexed_access(arena, union, Ty::string()),
-        Ty::indexed_access(arena, union, Ty::string())
+        arena.indexed_access(union, Ty::string()),
+        arena.indexed_access(union, Ty::string())
     );
 }
 
@@ -311,10 +276,10 @@ fn derived_types_are_canonicalized() {
 fn union_preserves_distinct_anonymous_object_identities() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let first = Ty::object(arena, [Ty::property("value", Ty::string())]);
-    let second = Ty::object(arena, [Ty::property("value", Ty::string())]);
+    let first = arena.object([Ty::property("value", Ty::string())]);
+    let second = arena.object([Ty::property("value", Ty::string())]);
 
-    let union = Ty::r#union(arena, [first, second]);
+    let union = arena.union([first, second]);
     let TyKind::Union(union) = arena.ty_kind(union) else {
         panic!("distinct anonymous types should form a union")
     };
@@ -325,10 +290,10 @@ fn union_preserves_distinct_anonymous_object_identities() {
 fn union_regularizes_structurally_identical_fresh_object_literals() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let first = Ty::object_literal(arena, [Ty::property("value", Ty::string())]);
-    let second = Ty::object_literal(arena, [Ty::property("value", Ty::string())]);
+    let first = arena.object_literal([Ty::property("value", Ty::string())]);
+    let second = arena.object_literal([Ty::property("value", Ty::string())]);
 
-    assert_eq!(Ty::r#union(arena, [first, second]), first);
+    assert_eq!(arena.union([first, second]), first);
 }
 
 #[test]
@@ -337,31 +302,25 @@ fn union_reduction_collapses_literals_to_primitive_types() {
     let arena = arena(&allocator);
 
     assert_eq!(
-        Ty::r#union(
-            arena,
-            [
-                Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal),
-                Ty::number()
-            ]
-        ),
+        arena.union([
+            arena.number_literal(1.0, "1", NumberBase::Decimal),
+            Ty::number()
+        ]),
         Ty::number()
     );
     assert_eq!(
-        Ty::r#union(arena, [Ty::string_literal(arena, "ready"), Ty::string()]),
+        arena.union([arena.string_literal("ready"), Ty::string()]),
         Ty::string()
     );
     assert_eq!(
-        Ty::r#union(arena, [Ty::boolean_true(), Ty::boolean()]),
+        arena.union([Ty::boolean_true(), Ty::boolean()]),
         Ty::boolean()
     );
     assert_eq!(
-        Ty::r#union(
-            arena,
-            [
-                Ty::bigint_literal(arena, "1", None, BigintBase::Decimal),
-                Ty::bigint(),
-            ]
-        ),
+        arena.union([
+            arena.bigint_literal("1", None, BigintBase::Decimal),
+            Ty::bigint(),
+        ]),
         Ty::bigint()
     );
 }
@@ -370,28 +329,28 @@ fn union_reduction_collapses_literals_to_primitive_types() {
 fn intersection_reduction_collapses_primitive_to_literal_types() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let number_literal = Ty::number_literal(arena, 1.0, "1", NumberBase::Decimal);
-    let string_literal = Ty::string_literal(arena, "ready");
-    let bigint_literal = Ty::bigint_literal(arena, "1", None, BigintBase::Decimal);
+    let number_literal = arena.number_literal(1.0, "1", NumberBase::Decimal);
+    let string_literal = arena.string_literal("ready");
+    let bigint_literal = arena.bigint_literal("1", None, BigintBase::Decimal);
 
     assert_eq!(
-        Ty::intersection(arena, [Ty::boolean(), Ty::boolean_false()]),
+        arena.intersection([Ty::boolean(), Ty::boolean_false()]),
         Ty::boolean_false()
     );
     assert_eq!(
-        Ty::intersection(arena, [Ty::boolean_false(), Ty::boolean()]),
+        arena.intersection([Ty::boolean_false(), Ty::boolean()]),
         Ty::boolean_false()
     );
     assert_eq!(
-        Ty::intersection(arena, [Ty::number(), number_literal]),
+        arena.intersection([Ty::number(), number_literal]),
         number_literal
     );
     assert_eq!(
-        Ty::intersection(arena, [Ty::string(), string_literal]),
+        arena.intersection([Ty::string(), string_literal]),
         string_literal
     );
     assert_eq!(
-        Ty::intersection(arena, [Ty::bigint(), bigint_literal]),
+        arena.intersection([Ty::bigint(), bigint_literal]),
         bigint_literal
     );
 }
@@ -400,19 +359,13 @@ fn intersection_reduction_collapses_primitive_to_literal_types() {
 fn empty_object_intersection_removes_nullish_union_members() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let empty_object = Ty::object(arena, []);
-    let nullable = Ty::union(arena, [Ty::string(), Ty::null(), Ty::undefined()]);
+    let empty_object = arena.object([]);
+    let nullable = arena.union([Ty::string(), Ty::null(), Ty::undefined()]);
 
+    assert_eq!(arena.intersection([nullable, empty_object]), Ty::string());
+    assert_eq!(arena.intersection([Ty::never(), empty_object]), Ty::never());
     assert_eq!(
-        Ty::intersection(arena, [nullable, empty_object]),
-        Ty::string()
-    );
-    assert_eq!(
-        Ty::intersection(arena, [Ty::never(), empty_object]),
-        Ty::never()
-    );
-    assert_eq!(
-        Ty::intersection(arena, [Ty::unknown(), empty_object]),
+        arena.intersection([Ty::unknown(), empty_object]),
         empty_object
     );
 }
@@ -421,9 +374,9 @@ fn empty_object_intersection_removes_nullish_union_members() {
 fn empty_object_intersection_preserves_unresolved_type_parameters() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let type_parameter = Ty::type_reference(arena, "T", []);
-    let empty_object = Ty::object(arena, []);
-    let intersection = Ty::intersection(arena, [type_parameter, empty_object]);
+    let type_parameter = arena.type_reference("T", []);
+    let empty_object = arena.object([]);
+    let intersection = arena.intersection([type_parameter, empty_object]);
 
     assert!(matches!(
         arena.ty_kind(intersection),
@@ -435,14 +388,11 @@ fn empty_object_intersection_preserves_unresolved_type_parameters() {
 fn union_reduction_flattens_deduplicates_and_returns_singletons() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let nested = Ty::r#union(arena, [Ty::number(), Ty::string()]);
+    let nested = arena.union([Ty::number(), Ty::string()]);
 
-    let flattened = Ty::r#union(arena, [nested, Ty::number(), Ty::string()]);
+    let flattened = arena.union([nested, Ty::number(), Ty::string()]);
     assert!(arena.is_type_identical_to(flattened, nested));
-    assert_eq!(
-        Ty::r#union(arena, [Ty::number(), Ty::number()]),
-        Ty::number()
-    );
+    assert_eq!(arena.union([Ty::number(), Ty::number()]), Ty::number());
 }
 
 #[test]
@@ -482,7 +432,7 @@ fn union_accumulator_spills_seen_ids_without_changing_members() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
     let members = (0..20)
-        .map(|value| Ty::number_literal(arena, f64::from(value), "0", NumberBase::Decimal))
+        .map(|value| arena.number_literal(f64::from(value), "0", NumberBase::Decimal))
         .collect::<Vec<_>>();
 
     let mut accumulator = UnionAccumulator::new(arena);
@@ -502,11 +452,15 @@ fn union_reduction_preserves_distinct_non_redundant_types() {
     let arena = arena(&allocator);
 
     assert_eq!(
-        Ty::r#union(arena, [Ty::number(), Ty::undefined()]).to_type_string(arena),
+        arena
+            .union([Ty::number(), Ty::undefined()])
+            .to_type_string(arena),
         "number | undefined"
     );
     assert_eq!(
-        Ty::r#union(arena, [Ty::void(), Ty::undefined()]).to_type_string(arena),
+        arena
+            .union([Ty::void(), Ty::undefined()])
+            .to_type_string(arena),
         "void | undefined"
     );
 }
@@ -516,11 +470,8 @@ fn union_reduction_removes_never_from_multi_member_unions() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
 
-    assert_eq!(
-        Ty::r#union(arena, [Ty::never(), Ty::undefined()]),
-        Ty::undefined()
-    );
-    assert_eq!(Ty::r#union(arena, [Ty::never()]), Ty::never());
+    assert_eq!(arena.union([Ty::never(), Ty::undefined()]), Ty::undefined());
+    assert_eq!(arena.union([Ty::never()]), Ty::never());
 }
 
 #[test]
@@ -542,11 +493,14 @@ fn union_reduction_absorbs_literals_contained_by_template_literals() {
         })));
 
     assert_eq!(
-        Ty::r#union(arena, [literal_template, pattern_template]).to_type_string(arena),
+        arena
+            .union([literal_template, pattern_template])
+            .to_type_string(arena),
         "`test${string}`"
     );
     assert_eq!(
-        Ty::r#union(arena, [Ty::string_literal(arena, "test"), pattern_template])
+        arena
+            .union([arena.string_literal("test"), pattern_template])
             .to_type_string(arena),
         "`test${string}`"
     );
@@ -558,14 +512,12 @@ fn union_reduction_absorbs_literals_contained_by_template_literals() {
                 TemplateLiteralElement { value: "a" },
                 TemplateLiteralElement { value: "" },
             ]),
-            expressions: arena.vec_from_iter([Ty::string(), Ty::string_literal(arena, "b")]),
+            expressions: arena.vec_from_iter([Ty::string(), arena.string_literal("b")]),
         })));
     assert_eq!(
-        Ty::r#union(
-            arena,
-            [Ty::string_literal(arena, "aab"), backtracking_template]
-        )
-        .to_type_string(arena),
+        arena
+            .union([arena.string_literal("aab"), backtracking_template])
+            .to_type_string(arena),
         "`${string}a${\"b\"}`"
     );
 }
@@ -574,12 +526,14 @@ fn union_reduction_absorbs_literals_contained_by_template_literals() {
 fn union_display_parenthesizes_function_members() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let a1 = Ty::type_reference(arena, "A1", []);
-    let r = Ty::type_reference(arena, "R", []);
-    let function = Ty::function(arena, [], [Ty::parameter("arg1", a1)], r);
+    let a1 = arena.type_reference("A1", []);
+    let r = arena.type_reference("R", []);
+    let function = arena.function([], [Ty::parameter("arg1", a1)], r);
 
     assert_eq!(
-        Ty::r#union(arena, [function, Ty::null(), Ty::undefined()]).to_type_string(arena),
+        arena
+            .union([function, Ty::null(), Ty::undefined()])
+            .to_type_string(arena),
         "((arg1: A1) => R) | null | undefined"
     );
 }
@@ -588,26 +542,23 @@ fn union_display_parenthesizes_function_members() {
 fn conditional_display_parenthesizes_conditional_return_of_function_extends_type() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let conditional = Ty::conditional(
-        arena,
-        Ty::type_reference(arena, "T", []),
+    let conditional = arena.conditional(
+        arena.type_reference("T", []),
         Ty::string(),
         Ty::number(),
         Ty::boolean(),
         true,
     );
-    let function = Ty::function(arena, [], [], conditional);
-    let other_conditional = Ty::conditional(
-        arena,
-        Ty::type_reference(arena, "U", []),
+    let function = arena.function([], [], conditional);
+    let other_conditional = arena.conditional(
+        arena.type_reference("U", []),
         Ty::string(),
         Ty::number(),
         Ty::boolean(),
         true,
     );
-    let other_function = Ty::function(arena, [], [], other_conditional);
-    let outer_conditional = Ty::conditional(
-        arena,
+    let other_function = arena.function([], [], other_conditional);
+    let outer_conditional = arena.conditional(
         function,
         other_function,
         Ty::boolean_true(),
@@ -625,12 +576,11 @@ fn conditional_display_parenthesizes_conditional_return_of_function_extends_type
 fn object_method_display_uses_signature_syntax() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let abort_signal = Ty::type_reference(arena, "AbortSignal", []);
+    let abort_signal = arena.type_reference("AbortSignal", []);
     let abort = TyProperty {
         name: "abort",
         flags: TyPropertyFlags::NONE,
-        ty: Ty::function(
-            arena,
+        ty: arena.function(
             [],
             [Ty::optional_parameter("reason", Ty::any())],
             abort_signal,
@@ -642,7 +592,7 @@ fn object_method_display_uses_signature_syntax() {
     };
 
     assert_eq!(
-        Ty::object(arena, [abort]).to_type_string(arena),
+        arena.object([abort]).to_type_string(arena),
         "{ abort(reason?: any): AbortSignal; }"
     );
 }
@@ -662,7 +612,7 @@ fn object_readonly_property_display() {
     };
 
     assert_eq!(
-        Ty::object(arena, [readonly]).to_type_string(arena),
+        arena.object([readonly]).to_type_string(arena),
         "{ readonly x: string; }"
     );
 }
@@ -682,7 +632,7 @@ fn object_non_identifier_property_uses_single_quotes() {
     };
 
     assert_eq!(
-        Ty::object(arena, [property]).to_type_string(arena),
+        arena.object([property]).to_type_string(arena),
         "{ readonly '~types'?: string; }"
     );
 }
@@ -702,7 +652,7 @@ fn object_non_identifier_property_preserves_double_quotes() {
     };
 
     assert_eq!(
-        Ty::object(arena, [property]).to_type_string(arena),
+        arena.object([property]).to_type_string(arena),
         "{ \"data-id\": string; }"
     );
 }
@@ -714,7 +664,7 @@ fn object_property_type_preserves_single_quotes() {
     let property = TyProperty {
         name: "brand",
         flags: TyPropertyFlags::TYPE_SINGLE_QUOTED,
-        ty: Ty::string_literal(arena, "test-brand"),
+        ty: arena.string_literal("test-brand"),
         computed: false,
         optional: false,
         method: false,
@@ -722,7 +672,7 @@ fn object_property_type_preserves_single_quotes() {
     };
 
     assert_eq!(
-        Ty::object(arena, [property]).to_type_string(arena),
+        arena.object([property]).to_type_string(arena),
         "{ brand: 'test-brand'; }"
     );
 }
@@ -731,30 +681,24 @@ fn object_property_type_preserves_single_quotes() {
 fn nested_object_property_uses_default_double_quotes() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let nested = Ty::object(
-        arena,
-        [TyProperty {
-            name: "stage-0",
-            flags: TyPropertyFlags::SINGLE_QUOTED,
-            ty: Ty::string(),
-            computed: false,
-            optional: false,
-            method: false,
-            readonly: false,
-        }],
-    );
-    let outer = Ty::object(
-        arena,
-        [TyProperty {
-            name: "configs",
-            flags: TyPropertyFlags::NONE,
-            ty: nested,
-            computed: false,
-            optional: false,
-            method: false,
-            readonly: false,
-        }],
-    );
+    let nested = arena.object([TyProperty {
+        name: "stage-0",
+        flags: TyPropertyFlags::SINGLE_QUOTED,
+        ty: Ty::string(),
+        computed: false,
+        optional: false,
+        method: false,
+        readonly: false,
+    }]);
+    let outer = arena.object([TyProperty {
+        name: "configs",
+        flags: TyPropertyFlags::NONE,
+        ty: nested,
+        computed: false,
+        optional: false,
+        method: false,
+        readonly: false,
+    }]);
 
     assert_eq!(
         outer.to_type_string(arena),
@@ -766,7 +710,7 @@ fn nested_object_property_uses_default_double_quotes() {
 fn object_property_preserves_generic_array_declaration_syntax() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);
-    let array = Ty::generic_array(arena, Ty::string(), false);
+    let array = arena.generic_array(Ty::string(), false);
     let values = TyProperty {
         name: "values",
         flags: TyPropertyFlags::NONE,
@@ -779,7 +723,7 @@ fn object_property_preserves_generic_array_declaration_syntax() {
     let maybe_values = TyProperty {
         name: "maybeValues",
         flags: TyPropertyFlags::NONE,
-        ty: Ty::union(arena, [array, Ty::undefined()]),
+        ty: arena.union([array, Ty::undefined()]),
         computed: false,
         optional: false,
         method: false,
@@ -788,11 +732,11 @@ fn object_property_preserves_generic_array_declaration_syntax() {
 
     assert_eq!(array.to_type_string(arena), "string[]");
     assert_eq!(
-        Ty::object(arena, [values, maybe_values]).to_type_string(arena),
+        arena.object([values, maybe_values]).to_type_string(arena),
         "{ values?: Array<string>; maybeValues: Array<string> | undefined; }"
     );
     assert_eq!(
-        Ty::function(arena, [], [], array).to_type_string(arena),
+        arena.function([], [], array).to_type_string(arena),
         "() => Array<string>"
     );
 }
