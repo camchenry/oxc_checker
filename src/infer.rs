@@ -713,18 +713,16 @@ fn find_leftmost_type<'a, 'store>(
 }
 
 fn literal_types_with_same_base_type<'a>(arena: CheckerArena<'a>, candidates: &[Ty<'a>]) -> bool {
-    let mut common_base = None;
-    for candidate in candidates {
-        let Some(base) = literal_base_type(arena, *candidate) else {
-            return false;
-        };
-        if common_base.is_none() {
-            common_base = Some(base);
-        } else if common_base != Some(base) {
-            return false;
-        }
-    }
-    true
+    let Some(common_base) = candidates
+        .first()
+        .and_then(|candidate| literal_base_type(arena, *candidate))
+    else {
+        return candidates.is_empty();
+    };
+    candidates
+        .iter()
+        .skip(1)
+        .all(|candidate| literal_base_type(arena, *candidate) == Some(common_base))
 }
 
 fn literal_base_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<Ty<'static>> {
@@ -2503,27 +2501,7 @@ fn select_union_inference_candidates<'a>(
     argument_type: Ty<'a>,
     context: &InferenceContext<'a>,
 ) -> Vec<Ty<'a>> {
-    let structurally_matching =
-        select_matching_union_constituents(arena, parameter_types, argument_type);
-    if !structurally_matching.is_empty() {
-        return structurally_matching;
-    }
-
-    let naked_type_variables =
-        select_naked_type_variable_constituents(arena, parameter_types, context);
-    if !naked_type_variables.is_empty() {
-        return naked_type_variables;
-    }
-
-    parameter_types.to_vec()
-}
-
-fn select_matching_union_constituents<'a>(
-    arena: CheckerArena<'a>,
-    parameter_types: &[Ty<'a>],
-    argument_type: Ty<'a>,
-) -> Vec<Ty<'a>> {
-    match arena.ty_kind(argument_type) {
+    let structurally_matching = match arena.ty_kind(argument_type) {
         _ if argument_type.is_function(arena) => parameter_types
             .iter()
             .copied()
@@ -2547,21 +2525,23 @@ fn select_matching_union_constituents<'a>(
             .filter(|ty| matches!(arena.ty_kind(*ty), TyKind::Tuple(_)))
             .collect(),
         _ => Vec::new(),
+    };
+    if !structurally_matching.is_empty() {
+        return structurally_matching;
     }
-}
 
-fn select_naked_type_variable_constituents<'a>(
-    arena: CheckerArena<'a>,
-    parameter_types: &[Ty<'a>],
-    context: &InferenceContext<'a>,
-) -> Vec<Ty<'a>> {
-    parameter_types
+    let naked_type_variables = parameter_types
         .iter()
         .copied()
         .filter(|ty| {
             matches!(arena.ty_kind(*ty), TyKind::TypeReference(reference) if reference.is_bare() && context.contains_type_parameter_name(reference.name))
         })
-        .collect()
+        .collect::<Vec<_>>();
+    if !naked_type_variables.is_empty() {
+        return naked_type_variables;
+    }
+
+    parameter_types.to_vec()
 }
 
 impl<'a, 'store> CheckerReturn<'a, 'store> {
@@ -2575,21 +2555,32 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
     ) {
         let arena = self.arena();
         let parameter_types = parameter_types.into_iter().collect::<Vec<_>>();
-        let argument_types = match self.ty_kind(argument_type) {
+        let mut argument_types = match self.ty_kind(argument_type) {
             TyKind::Intersection(intersection) => {
                 intersection.types.iter().copied().collect::<Vec<_>>()
             }
             _ => vec![argument_type],
         };
 
-        let (unmatched_arguments, unmatched_parameters, removed_match) =
-            remove_matching_intersection_constituents(arena, argument_types, parameter_types);
+        let mut unmatched_parameters = Vec::new();
+        let mut removed_match = false;
+        for parameter in parameter_types {
+            if let Some(index) = argument_types
+                .iter()
+                .position(|argument| arena.is_type_identical_to(*argument, parameter))
+            {
+                argument_types.remove(index);
+                removed_match = true;
+            } else {
+                unmatched_parameters.push(parameter);
+            }
+        }
 
-        if !removed_match || unmatched_arguments.is_empty() || unmatched_parameters.is_empty() {
+        if !removed_match || argument_types.is_empty() || unmatched_parameters.is_empty() {
             return;
         }
 
-        let argument_remainder = Ty::intersection(arena, unmatched_arguments);
+        let argument_remainder = Ty::intersection(arena, argument_types);
         let parameter_remainder = Ty::intersection(arena, unmatched_parameters);
         self.infer_types_with_variance(
             parameter_remainder,
@@ -2599,29 +2590,6 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
             priority.structural(),
         );
     }
-}
-
-fn remove_matching_intersection_constituents<'a>(
-    arena: CheckerArena<'a>,
-    mut source_types: Vec<Ty<'a>>,
-    target_types: Vec<Ty<'a>>,
-) -> (Vec<Ty<'a>>, Vec<Ty<'a>>, bool) {
-    let mut unmatched_targets = Vec::new();
-    let mut removed_match = false;
-
-    for target in target_types {
-        if let Some(index) = source_types
-            .iter()
-            .position(|source| arena.is_type_identical_to(*source, target))
-        {
-            source_types.remove(index);
-            removed_match = true;
-        } else {
-            unmatched_targets.push(target);
-        }
-    }
-
-    (source_types, unmatched_targets, removed_match)
 }
 
 fn ts_signature_contains_infer(signature: &TSSignature<'_>) -> bool {
