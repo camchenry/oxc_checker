@@ -1814,11 +1814,13 @@ fn parse_fixture_program<'a>(
     {
         builder = builder.without_default_lib();
     } else if let Some(lib) = compiler_case.settings.get("lib") {
-        builder = builder.with_lib_names(parse_compiler_lib_names(lib));
+        let selection =
+            crate::StandardLibrarySelection::from_lib_names(parse_compiler_lib_names(lib))?;
+        builder = builder.with_standard_library(selection);
     } else if let Some(target) = compiler_case.settings.get("target") {
-        builder = builder.with_default_lib_target_name(target)?;
+        builder = builder.with_standard_library(target.parse::<crate::LibTarget>()?.into());
     } else {
-        builder = builder.with_default_lib_target_name("esnext")?;
+        builder = builder.with_standard_library(crate::LibTarget::EsNext.into());
     }
     for source_file in &compiler_case.files {
         if !is_compilable_fixture_file(Path::new(&source_file.name)) {

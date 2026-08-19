@@ -521,7 +521,7 @@ fn build_store<'a>(
     if options.no_default_lib {
         builder = builder.without_default_lib();
     } else if let Some(target) = &options.lib_target {
-        builder = builder.with_default_lib_target_name(target)?;
+        builder = builder.with_standard_library(target.parse::<oxc_checker::LibTarget>()?.into());
     }
     for root in &options.roots {
         builder = builder.add_root_file(root);

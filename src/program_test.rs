@@ -1,4 +1,5 @@
 use super::*;
+use crate::LibTarget;
 use crate::checker::{Checker, SymbolRef};
 use oxc_str::Ident;
 use rustc_hash::FxHashMap;
@@ -153,8 +154,7 @@ fn prepared_embedded_libraries_respect_each_store_selection() {
             .add_file("/first/main.ts", "const value: Promise<string> = null!;"),
     )
     .with_prepared_programs(&prepared)
-    .with_default_lib_target_name("es5")
-    .unwrap()
+    .with_standard_library(StandardLibrarySelection::for_target(LibTarget::Es5))
     .add_root_file("/first/main.ts")
     .build()
     .unwrap();
@@ -164,8 +164,7 @@ fn prepared_embedded_libraries_respect_each_store_selection() {
             .add_file("/second/main.ts", "const value: Promise<string> = null!;"),
     )
     .with_prepared_programs(&prepared)
-    .with_default_lib_target_name("es2015")
-    .unwrap()
+    .with_standard_library(StandardLibrarySelection::for_target(LibTarget::Es2015))
     .add_root_file("/second/main.ts")
     .build()
     .unwrap();

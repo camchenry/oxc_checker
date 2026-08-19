@@ -9,61 +9,189 @@
 //! concrete library files. We embed and load those concrete files directly, so
 //! target selection expands to the ordered concrete file list below.
 
+use std::{error::Error, fmt, str::FromStr};
+
+/// ECMAScript language level used to select the default standard libraries.
+///
+/// ```
+/// use oxc_checker::LibTarget;
+///
+/// assert_eq!("es2022".parse(), Ok(LibTarget::Es2022));
+/// assert_eq!("latest".parse(), Ok(LibTarget::EsNext));
+/// ```
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub(crate) enum LibTarget {
+pub enum LibTarget {
+    /// ECMAScript 5 (also used for the legacy `es3` target).
     Es5,
+    /// ECMAScript 2015 (`es6`).
     Es2015,
+    /// ECMAScript 2016 (`es7`).
     Es2016,
+    /// ECMAScript 2017.
     Es2017,
+    /// ECMAScript 2018.
     Es2018,
+    /// ECMAScript 2019.
     Es2019,
+    /// ECMAScript 2020.
     Es2020,
+    /// ECMAScript 2021.
     Es2021,
+    /// ECMAScript 2022.
     Es2022,
+    /// ECMAScript 2023.
     Es2023,
+    /// ECMAScript 2024.
     Es2024,
+    /// ECMAScript 2025.
     Es2025,
+    /// The latest embedded ECMAScript libraries.
     EsNext,
 }
 
-impl LibTarget {
-    pub(crate) fn parse(value: &str) -> Option<Self> {
-        let value = value
-            .split(',')
-            .next()
-            .unwrap_or(value)
-            .trim()
-            .to_ascii_lowercase();
+impl FromStr for LibTarget {
+    type Err = StandardLibrarySelectionError;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        let value = value.trim().to_ascii_lowercase();
         match value.as_str() {
-            "es3" | "es5" => Some(Self::Es5),
-            "es6" | "es2015" => Some(Self::Es2015),
-            "es7" | "es2016" => Some(Self::Es2016),
-            "es2017" => Some(Self::Es2017),
-            "es2018" => Some(Self::Es2018),
-            "es2019" => Some(Self::Es2019),
-            "es2020" => Some(Self::Es2020),
-            "es2021" => Some(Self::Es2021),
-            "es2022" => Some(Self::Es2022),
-            "es2023" => Some(Self::Es2023),
-            "es2024" => Some(Self::Es2024),
-            "es2025" => Some(Self::Es2025),
-            "esnext" | "latest" => Some(Self::EsNext),
-            _ => None,
+            "es3" | "es5" => Ok(Self::Es5),
+            "es6" | "es2015" => Ok(Self::Es2015),
+            "es7" | "es2016" => Ok(Self::Es2016),
+            "es2017" => Ok(Self::Es2017),
+            "es2018" => Ok(Self::Es2018),
+            "es2019" => Ok(Self::Es2019),
+            "es2020" => Ok(Self::Es2020),
+            "es2021" => Ok(Self::Es2021),
+            "es2022" => Ok(Self::Es2022),
+            "es2023" => Ok(Self::Es2023),
+            "es2024" => Ok(Self::Es2024),
+            "es2025" => Ok(Self::Es2025),
+            "esnext" | "latest" => Ok(Self::EsNext),
+            _ => Err(StandardLibrarySelectionError::UnsupportedTarget { target: value }),
         }
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub(crate) enum LibSelection {
-    DefaultTarget(LibTarget),
-    Explicit(Vec<String>),
+/// A validated selection of embedded TypeScript standard-library files.
+///
+/// Use [`Self::for_target`] for TypeScript's default target-based library set,
+/// or [`Self::from_lib_names`] for an explicit `lib` configuration.
+///
+/// ```
+/// use oxc_checker::{LibTarget, StandardLibrarySelection};
+///
+/// let defaults = StandardLibrarySelection::for_target(LibTarget::Es2022);
+/// let explicit = StandardLibrarySelection::from_lib_names(["es2022", "dom"])?;
+/// # Ok::<(), oxc_checker::StandardLibrarySelectionError>(())
+/// ```
+#[derive(Clone, Eq, PartialEq)]
+pub struct StandardLibrarySelection {
+    files: Vec<EmbeddedLibFile>,
 }
 
-impl Default for LibSelection {
-    fn default() -> Self {
-        Self::DefaultTarget(DEFAULT_LIB_TARGET)
+impl fmt::Debug for StandardLibrarySelection {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter
+            .debug_struct("StandardLibrarySelection")
+            .field(
+                "files",
+                &self
+                    .files
+                    .iter()
+                    .map(|file| file.virtual_path)
+                    .collect::<Vec<_>>(),
+            )
+            .finish()
     }
 }
+
+impl StandardLibrarySelection {
+    /// Select the default language and host libraries for `target`.
+    #[must_use]
+    pub fn for_target(target: LibTarget) -> Self {
+        let mut files = Vec::new();
+        append_target_files(&mut files, target);
+        append_default_host_files(&mut files);
+        Self { files }
+    }
+
+    /// Select an explicit list of TypeScript `lib` names.
+    ///
+    /// Names are case-insensitive and may use forms such as `dom`,
+    /// `lib.es2022.d.ts`, or `es2022.full`. An empty iterator selects no files.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`StandardLibrarySelectionError::UnsupportedLibrary`] when a
+    /// name does not identify an embedded standard library.
+    pub fn from_lib_names<I, S>(names: I) -> Result<Self, StandardLibrarySelectionError>
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<str>,
+    {
+        let mut files = Vec::new();
+        for name in names {
+            append_lib_name(&mut files, name.as_ref())?;
+        }
+        sort_by_catalog_order(&mut files);
+        Ok(Self { files })
+    }
+}
+
+impl Default for StandardLibrarySelection {
+    fn default() -> Self {
+        Self::for_target(DEFAULT_LIB_TARGET)
+    }
+}
+
+impl From<LibTarget> for StandardLibrarySelection {
+    fn from(target: LibTarget) -> Self {
+        Self::for_target(target)
+    }
+}
+
+/// An invalid standard-library target or explicit library name.
+///
+/// This error is returned while configuration is constructed, before a
+/// [`crate::program::ProgramStore`] build starts.
+///
+/// ```
+/// use oxc_checker::{StandardLibrarySelection, StandardLibrarySelectionError};
+///
+/// let error = StandardLibrarySelection::from_lib_names(["not-a-lib"]).unwrap_err();
+/// assert!(matches!(
+///     error,
+///     StandardLibrarySelectionError::UnsupportedLibrary { .. }
+/// ));
+/// ```
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[non_exhaustive]
+pub enum StandardLibrarySelectionError {
+    /// The target name is not recognized.
+    UnsupportedTarget {
+        /// The normalized target supplied by the caller.
+        target: String,
+    },
+    /// An explicit library name is not available in the embedded catalog.
+    UnsupportedLibrary {
+        /// The library name supplied by the caller.
+        name: String,
+    },
+}
+
+impl fmt::Display for StandardLibrarySelectionError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::UnsupportedTarget { target } => {
+                write!(formatter, "unsupported target `{target}`")
+            }
+            Self::UnsupportedLibrary { name } => write!(formatter, "unsupported lib `{name}`"),
+        }
+    }
+}
+
+impl Error for StandardLibrarySelectionError {}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct EmbeddedLibFile {
@@ -81,26 +209,12 @@ struct LibCatalogEntry {
 pub(crate) const DEFAULT_LIB_TARGET: LibTarget = LibTarget::Es2020;
 
 #[cfg(test)]
-#[expect(clippy::expect_used)]
 pub(crate) fn default_lib_files() -> Vec<EmbeddedLibFile> {
-    resolve_lib_files(&LibSelection::default()).expect("default lib selection should be valid")
+    StandardLibrarySelection::default().files
 }
 
-pub(crate) fn resolve_lib_files(selection: &LibSelection) -> Result<Vec<EmbeddedLibFile>, String> {
-    let mut files = Vec::new();
-    match selection {
-        LibSelection::DefaultTarget(target) => {
-            append_target_files(&mut files, *target);
-            append_default_host_files(&mut files);
-        }
-        LibSelection::Explicit(names) => {
-            for name in names {
-                append_lib_name(&mut files, name)?;
-            }
-            sort_by_catalog_order(&mut files);
-        }
-    }
-    Ok(files)
+pub(crate) fn resolve_lib_files(selection: &StandardLibrarySelection) -> &[EmbeddedLibFile] {
+    &selection.files
 }
 
 pub(crate) fn all_lib_files() -> impl Iterator<Item = EmbeddedLibFile> {
@@ -126,7 +240,10 @@ fn append_default_host_files(files: &mut Vec<EmbeddedLibFile>) {
     }
 }
 
-fn append_lib_name(files: &mut Vec<EmbeddedLibFile>, name: &str) -> Result<(), String> {
+fn append_lib_name(
+    files: &mut Vec<EmbeddedLibFile>,
+    name: &str,
+) -> Result<(), StandardLibrarySelectionError> {
     let normalized = normalize_lib_name(name);
     if let Some(target) = normalized
         .strip_suffix(".full")
@@ -142,12 +259,14 @@ fn append_lib_name(files: &mut Vec<EmbeddedLibFile>, name: &str) -> Result<(), S
     }
 
     let Some(virtual_path) = lib_name_to_virtual_path(&normalized) else {
-        return Err(format!("unsupported lib `{}`", name.trim()));
+        return Err(StandardLibrarySelectionError::UnsupportedLibrary {
+            name: name.trim().to_string(),
+        });
     };
     let Some(file) = file_by_virtual_path(virtual_path) else {
-        return Err(format!(
-            "embedded lib file `{virtual_path}` is not available"
-        ));
+        return Err(StandardLibrarySelectionError::UnsupportedLibrary {
+            name: name.trim().to_string(),
+        });
     };
     push_unique(files, file);
     Ok(())
@@ -745,8 +864,9 @@ mod tests {
 
     #[test]
     fn es2015_target_excludes_newer_libs() {
-        let files = resolve_lib_files(&LibSelection::DefaultTarget(LibTarget::Es2015)).unwrap();
-        let paths = paths(&files);
+        let selection = StandardLibrarySelection::for_target(LibTarget::Es2015);
+        let files = resolve_lib_files(&selection);
+        let paths = paths(files);
 
         assert!(paths.contains(&"lib.es5.d.ts"));
         assert!(paths.contains(&"lib.es2015.promise.d.ts"));
@@ -756,8 +876,9 @@ mod tests {
 
     #[test]
     fn es2022_target_includes_previous_years() {
-        let files = resolve_lib_files(&LibSelection::DefaultTarget(LibTarget::Es2022)).unwrap();
-        let paths = paths(&files);
+        let selection = StandardLibrarySelection::for_target(LibTarget::Es2022);
+        let files = resolve_lib_files(&selection);
+        let paths = paths(files);
 
         assert!(paths.contains(&"lib.es5.d.ts"));
         assert!(paths.contains(&"lib.es2015.promise.d.ts"));
@@ -769,8 +890,9 @@ mod tests {
 
     #[test]
     fn esnext_target_includes_latest_libs() {
-        let files = resolve_lib_files(&LibSelection::DefaultTarget(LibTarget::EsNext)).unwrap();
-        let paths = paths(&files);
+        let selection = StandardLibrarySelection::for_target(LibTarget::EsNext);
+        let files = resolve_lib_files(&selection);
+        let paths = paths(files);
 
         assert!(paths.contains(&"lib.es2025.iterator.d.ts"));
         assert!(paths.contains(&"lib.esnext.array.d.ts"));
@@ -787,13 +909,10 @@ mod tests {
 
     #[test]
     fn explicit_libs_do_not_include_target_defaults() {
-        let files = resolve_lib_files(&LibSelection::Explicit(vec![
-            "dom".to_string(),
-            "es5".to_string(),
-            "es2015.promise".to_string(),
-        ]))
-        .unwrap();
-        let paths = paths(&files);
+        let selection =
+            StandardLibrarySelection::from_lib_names(["dom", "es5", "es2015.promise"]).unwrap();
+        let files = resolve_lib_files(&selection);
+        let paths = paths(files);
 
         assert_eq!(
             paths,
@@ -809,9 +928,9 @@ mod tests {
 
     #[test]
     fn full_lib_includes_default_hosts() {
-        let files =
-            resolve_lib_files(&LibSelection::Explicit(vec!["es2025.full".to_string()])).unwrap();
-        let paths = paths(&files);
+        let selection = StandardLibrarySelection::from_lib_names(["es2025.full"]).unwrap();
+        let files = resolve_lib_files(&selection);
+        let paths = paths(files);
 
         assert!(paths.contains(&"lib.es2025.regexp.d.ts"));
         assert!(paths.contains(&"lib.dom.d.ts"));
@@ -822,20 +941,37 @@ mod tests {
 
     #[test]
     fn explicit_host_libs_are_supported() {
-        let files = resolve_lib_files(&LibSelection::Explicit(vec![
-            "webworker".to_string(),
-            "webworker.iterable".to_string(),
-            "webworker.asynciterable".to_string(),
-        ]))
+        let selection = StandardLibrarySelection::from_lib_names([
+            "webworker",
+            "webworker.iterable",
+            "webworker.asynciterable",
+        ])
         .unwrap();
+        let files = resolve_lib_files(&selection);
 
         assert_eq!(
-            paths(&files),
+            paths(files),
             vec![
                 "lib.webworker.d.ts",
                 "lib.webworker.iterable.d.ts",
                 "lib.webworker.asynciterable.d.ts"
             ]
+        );
+    }
+
+    #[test]
+    fn invalid_names_are_rejected_during_selection_construction() {
+        assert_eq!(
+            "es2099".parse::<LibTarget>(),
+            Err(StandardLibrarySelectionError::UnsupportedTarget {
+                target: "es2099".to_string()
+            })
+        );
+        assert_eq!(
+            StandardLibrarySelection::from_lib_names(["dom", "not-a-lib"]),
+            Err(StandardLibrarySelectionError::UnsupportedLibrary {
+                name: "not-a-lib".to_string()
+            })
         );
     }
 }

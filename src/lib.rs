@@ -21,6 +21,7 @@ mod type_facts;
 pub mod type_set;
 pub mod types;
 
+pub use global_lib::{LibTarget, StandardLibrarySelection, StandardLibrarySelectionError};
 pub use types::*;
 
 // TODO: Move all the utility functions to a separate module.

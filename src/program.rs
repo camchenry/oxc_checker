@@ -16,7 +16,9 @@ use oxc_span::{SourceType, Span};
 use oxc_syntax::module_record::ModuleRecord;
 use rustc_hash::FxHashMap;
 
-use crate::global_types::GlobalSymbolTable;
+use crate::{
+    StandardLibrarySelection, StandardLibrarySelectionError, global_types::GlobalSymbolTable,
+};
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct ProgramId(usize);
@@ -276,7 +278,7 @@ pub struct ProgramStoreBuilder<'a, H> {
     host: H,
     root_files: Vec<PathBuf>,
     load_default_lib: bool,
-    lib_selection: crate::global_lib::LibSelection,
+    lib_selection: StandardLibrarySelection,
     prepared_programs: Option<&'a PreparedProgramSet<'a>>,
 }
 
@@ -287,7 +289,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             host,
             root_files: Vec::new(),
             load_default_lib: true,
-            lib_selection: crate::global_lib::LibSelection::default(),
+            lib_selection: StandardLibrarySelection::default(),
             prepared_programs: None,
         }
     }
@@ -305,25 +307,23 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
         self
     }
 
-    pub fn with_default_lib_target_name(mut self, target: &str) -> ProgramStoreResult<Self> {
-        let Some(target) = crate::global_lib::LibTarget::parse(target) else {
-            return Err(ProgramStoreError::LibSelection {
-                message: format!("unsupported target `{}`", target.trim()),
-            });
-        };
-        self.lib_selection = crate::global_lib::LibSelection::DefaultTarget(target);
-        Ok(self)
-    }
-
+    /// Use a validated standard-library selection for this store.
+    ///
+    /// ```
+    /// use oxc_allocator::Allocator;
+    /// use oxc_checker::{LibTarget, StandardLibrarySelection};
+    /// use oxc_checker::program::{FsProgramHost, ProgramStoreBuilder};
+    ///
+    /// let allocator = Allocator::default();
+    /// let selection = StandardLibrarySelection::for_target(LibTarget::Es2022);
+    /// let store = ProgramStoreBuilder::new(&allocator, FsProgramHost::new())
+    ///     .with_standard_library(selection)
+    ///     .build()?;
+    /// # Ok::<(), oxc_checker::program::ProgramStoreError>(())
+    /// ```
     #[must_use]
-    pub fn with_lib_names<I, S>(mut self, lib_names: I) -> Self
-    where
-        I: IntoIterator<Item = S>,
-        S: Into<String>,
-    {
-        self.lib_selection = crate::global_lib::LibSelection::Explicit(
-            lib_names.into_iter().map(Into::into).collect(),
-        );
+    pub fn with_standard_library(mut self, selection: StandardLibrarySelection) -> Self {
+        self.lib_selection = selection;
         self
     }
 
@@ -356,8 +356,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     /// TODO(perf): these files are reparsed for every `ProgramStore`. Consider
     /// sharing or caching parsed lib programs across builds.
     fn inject_default_libs(&self, store: &mut ProgramStore<'a>) -> ProgramStoreResult<()> {
-        let lib_files = crate::global_lib::resolve_lib_files(&self.lib_selection)
-            .map_err(|message| ProgramStoreError::LibSelection { message })?;
+        let lib_files = crate::global_lib::resolve_lib_files(&self.lib_selection);
         for lib_file in lib_files {
             let path = PathBuf::from(lib_file.virtual_path);
             if let Some(program) = self
@@ -706,6 +705,14 @@ impl fmt::Display for ProgramStoreError {
                     messages.join("; ")
                 )
             }
+        }
+    }
+}
+
+impl From<StandardLibrarySelectionError> for ProgramStoreError {
+    fn from(error: StandardLibrarySelectionError) -> Self {
+        Self::LibSelection {
+            message: error.to_string(),
         }
     }
 }
