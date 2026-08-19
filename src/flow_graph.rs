@@ -12,7 +12,7 @@ use oxc_syntax::operator::LogicalOperator;
 use rustc_hash::{FxHashMap, FxHashSet};
 use smallvec::SmallVec;
 
-use crate::checker::{CheckerReturn, NodeRef};
+use crate::checker::{Checker, NodeRef};
 
 /// A condition outcome known to hold while evaluating a branch-local node.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -102,7 +102,7 @@ impl ProgramFlowGraph {
 
 /// Return enclosing branch effects in outermost-to-innermost evaluation order.
 pub(crate) fn branch_effects(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     node: NodeRef,
 ) -> SmallVec<[BranchEffect; 4]> {
     if let Some(effects) = checker
@@ -126,7 +126,7 @@ pub(crate) fn branch_effects(
 
 /// Return symbol writes in source order, collecting their CFG locations once per checker.
 pub(crate) fn symbol_writes(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: crate::program::ProgramId,
     symbol_id: SymbolId,
 ) -> SmallVec<[WriteEvent; 4]> {
@@ -185,7 +185,7 @@ pub(crate) fn symbol_writes(
 
 /// Return evolving-array mutations in source order, collecting their syntax once per checker.
 pub(crate) fn array_mutations(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: crate::program::ProgramId,
     symbol_id: SymbolId,
 ) -> SmallVec<[ArrayMutationEvent; 4]> {
@@ -217,7 +217,7 @@ pub(crate) fn array_mutations(
 }
 
 fn array_mutation_for_reference(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: crate::program::ProgramId,
     reference_id: NodeId,
 ) -> Option<ArrayMutationEvent> {
@@ -274,7 +274,7 @@ fn array_mutation_for_reference(
 
 /// Find the linear or loop-carried writes that can determine a reference's flow type.
 pub(crate) fn assignment_flow(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     node: NodeRef,
     symbol_id: SymbolId,
 ) -> Option<AssignmentFlow> {
@@ -330,7 +330,7 @@ pub(crate) fn assignment_flow(
 }
 
 fn dominating_blocks(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: crate::program::ProgramId,
     block: BlockNodeId,
 ) -> Option<FxHashSet<BlockNodeId>> {
@@ -377,7 +377,7 @@ pub(crate) fn flow_container_entry(
 }
 
 fn write_effect_span(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: crate::program::ProgramId,
     node_id: NodeId,
 ) -> Span {
@@ -392,10 +392,7 @@ fn write_effect_span(
     }
 }
 
-fn collect_branch_effects(
-    checker: &CheckerReturn<'_, '_>,
-    node: NodeRef,
-) -> SmallVec<[BranchEffect; 4]> {
+fn collect_branch_effects(checker: &Checker<'_, '_>, node: NodeRef) -> SmallVec<[BranchEffect; 4]> {
     let nodes = checker.nodes(node.program_id);
     let Some(cfg) = checker.semantic(node.program_id).cfg() else {
         return SmallVec::new();

@@ -29,7 +29,7 @@ use rustc_hash::FxHashMap;
 use terminal_size::{Width, terminal_size};
 
 use crate::{
-    checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef},
+    checker::{Checker, NodeRef},
     program::ProgramId,
 };
 
@@ -1556,7 +1556,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
         }
     };
     if let Some(parsed) = parsed {
-        let checker = CheckerBuilder::new().build(&parsed.store);
+        let checker = Checker::new(&parsed.store);
         for source_file in &compiler_case.files {
             let _file_settings = &source_file.settings;
             let Some(program_id) = parsed
@@ -1602,7 +1602,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
         else {
             continue;
         };
-        let checker = CheckerBuilder::new().build(&parsed.store);
+        let checker = Checker::new(&parsed.store);
         collection.records.extend(actual_identifier_records(
             &checker,
             program_id,
@@ -1871,7 +1871,7 @@ fn virtual_module_source_text(source_text: &str) -> String {
 }
 
 fn actual_identifier_records<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     path: &str,
     source_text: &str,
@@ -1929,7 +1929,7 @@ impl<'a> Visit<'a> for MetaPropertyCollector {
 }
 
 fn actual_meta_property_records<'a>(
-    checker: &impl Checker<'a>,
+    checker: &Checker<'a, '_>,
     arena: CheckerArena<'a>,
     existing_records: &[TypeRecord],
     entry: &program::ProgramEntry<'a>,
@@ -1975,7 +1975,7 @@ fn actual_meta_property_records<'a>(
 }
 
 fn actual_export_specifier_records<'a>(
-    checker: &impl Checker<'a>,
+    checker: &Checker<'a, '_>,
     arena: CheckerArena<'a>,
     existing_records: &[TypeRecord],
     entry: &program::ProgramEntry<'a>,
@@ -2045,7 +2045,7 @@ fn export_specifier_node_ref<'a>(
 }
 
 fn actual_identifier_record<'a>(
-    checker: &impl Checker<'a>,
+    checker: &Checker<'a, '_>,
     arena: CheckerArena<'a>,
     entry: &program::ProgramEntry<'a>,
     path: &Arc<str>,

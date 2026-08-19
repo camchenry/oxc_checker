@@ -16,7 +16,7 @@ use oxc_syntax::operator::{AssignmentOperator, BinaryOperator, LogicalOperator, 
 use rustc_hash::{FxHashMap, FxHashSet};
 
 use crate::{
-    checker::{CheckerReturn, NodeRef, SymbolRef},
+    checker::{Checker, NodeRef, SymbolRef},
     checker_impl::GetTypeFlags,
     flow_graph::{self, ArrayMutationKind, BranchEffect},
     program::ProgramId,
@@ -60,7 +60,7 @@ impl TypeofWitness {
 
 /// Return the type of a reference after applying currently supported flow facts.
 pub(crate) fn get_flow_type_of_reference<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     base_type: Ty<'a>,
@@ -107,7 +107,7 @@ pub(crate) fn get_flow_type_of_reference<'a>(
 
 /// Return the element type for an empty array literal in expression typing.
 pub(crate) fn empty_array_literal_element_type<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     array_expression: &'a ArrayExpression<'a>,
     node_id: Option<oxc_semantic::NodeId>,
@@ -120,7 +120,7 @@ pub(crate) fn empty_array_literal_element_type<'a>(
 }
 
 fn evolving_array_flow_type<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     base_type: Ty<'a>,
@@ -164,7 +164,7 @@ fn evolving_array_flow_type<'a>(
     ))
 }
 
-fn is_evolving_array_operation_target(checker: &CheckerReturn<'_, '_>, node: NodeRef) -> bool {
+fn is_evolving_array_operation_target(checker: &Checker<'_, '_>, node: NodeRef) -> bool {
     let nodes = checker.nodes(node.program_id);
     let reference_span = nodes.kind(node.node_id).span();
     let parent_id = nodes.parent_id(node.node_id);
@@ -190,7 +190,7 @@ fn is_evolving_array_operation_target(checker: &CheckerReturn<'_, '_>, node: Nod
 }
 
 fn evolving_array_element_at_reference<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     changes_by_block: &FxHashMap<BlockNodeId, Vec<(Span, EvolvingArrayChange<'a>)>>,
 ) -> Option<Ty<'a>> {
@@ -247,7 +247,7 @@ fn evolving_array_element_at_reference<'a>(
 }
 
 fn evolving_array_block_input<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     cfg: &oxc_cfg::ControlFlowGraph,
     entry: BlockNodeId,
     block: BlockNodeId,
@@ -278,7 +278,7 @@ fn follows_value_flow(edge: &EdgeType) -> bool {
 }
 
 fn apply_evolving_array_change<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     current: Ty<'a>,
     change: EvolvingArrayChange<'a>,
 ) -> Ty<'a> {
@@ -289,7 +289,7 @@ fn apply_evolving_array_change<'a>(
 }
 
 fn evolving_array_change<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     kind: ArrayMutationKind,
 ) -> Option<EvolvingArrayChange<'a>> {
@@ -355,7 +355,7 @@ fn evolving_array_change<'a>(
 }
 
 fn is_direct_empty_array_variable_initializer<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     array_expression: &'a ArrayExpression<'a>,
     node_id: Option<oxc_semantic::NodeId>,
@@ -378,7 +378,7 @@ fn expression_is_empty_array_literal(expression: &Expression<'_>) -> bool {
     matches!(expression, Expression::ArrayExpression(array) if array.elements.is_empty())
 }
 
-fn finalized_empty_element_type<'a>(checker: &CheckerReturn<'a, '_>, base_type: Ty<'a>) -> Ty<'a> {
+fn finalized_empty_element_type<'a>(checker: &Checker<'a, '_>, base_type: Ty<'a>) -> Ty<'a> {
     match checker.ty_kind(base_type) {
         TyKind::Array(array) if array.element_type.is_never() => Ty::any(),
         TyKind::Array(array) => array.element_type,
@@ -387,7 +387,7 @@ fn finalized_empty_element_type<'a>(checker: &CheckerReturn<'a, '_>, base_type: 
 }
 
 pub(crate) fn get_flow_type_of_static_member_reference<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     member: &StaticMemberExpression<'_>,
     base_type: Ty<'a>,
@@ -430,7 +430,7 @@ pub(crate) fn get_flow_type_of_static_member_reference<'a>(
 }
 
 fn branch_effect_condition<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     effect: BranchEffect,
 ) -> Option<&'a Expression<'a>> {
@@ -444,7 +444,7 @@ fn branch_effect_condition<'a>(
 
 /// Narrow a type based on one condition expression and an assumed condition outcome.
 fn narrow_by_condition<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     current_type: Ty<'a>,
@@ -539,7 +539,7 @@ fn narrow_by_condition<'a>(
 }
 
 fn optional_chain_base_matches_symbol(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: ProgramId,
     symbol: SymbolRef,
     expression: &Expression<'_>,
@@ -556,7 +556,7 @@ fn optional_chain_base_matches_symbol(
 }
 
 fn optional_chain_property_matches_symbol(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: ProgramId,
     symbol: SymbolRef,
     property_name: &str,
@@ -573,7 +573,7 @@ fn optional_chain_property_matches_symbol(
 }
 
 fn narrow_by_logical_condition<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     current_type: Ty<'a>,
@@ -596,7 +596,7 @@ fn narrow_by_logical_condition<'a>(
 }
 
 fn narrow_by_call_type_predicate<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     current_type: Ty<'a>,
@@ -645,7 +645,7 @@ enum NullishEqualityKind {
 }
 
 fn nullish_equality_guard(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: ProgramId,
     symbol: SymbolRef,
     binary: &oxc_ast::ast::BinaryExpression<'_>,
@@ -677,7 +677,7 @@ fn nullish_equality_guard(
 }
 
 fn narrow_by_undefined_equality<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     ty: Ty<'a>,
     assume_undefined: bool,
@@ -692,7 +692,7 @@ fn narrow_by_undefined_equality<'a>(
 }
 
 fn narrow_by_null_equality<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     ty: Ty<'a>,
     assume_null: bool,
@@ -717,7 +717,7 @@ fn in_guard<'a>(
 }
 
 fn narrow_by_in_property<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     ty: Ty<'a>,
     property_name: &'a str,
@@ -739,11 +739,7 @@ fn narrow_by_in_property<'a>(
     }
 }
 
-fn remove_undefined_from_type<'a>(
-    checker: &CheckerReturn<'a, '_>,
-    node: NodeRef,
-    ty: Ty<'a>,
-) -> Ty<'a> {
+fn remove_undefined_from_type<'a>(checker: &Checker<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
     if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
         return non_undefined_constituent(checker, node, ty).unwrap_or_else(Ty::never);
     }
@@ -753,7 +749,7 @@ fn remove_undefined_from_type<'a>(
 }
 
 fn non_undefined_constituent<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     ty: Ty<'a>,
 ) -> Option<Ty<'a>> {
@@ -775,7 +771,7 @@ fn non_undefined_constituent<'a>(
     }
 }
 
-fn remove_null_from_type<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
+fn remove_null_from_type<'a>(checker: &Checker<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
     if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
         return non_null_constituent(checker, node, ty).unwrap_or_else(Ty::never);
     }
@@ -785,7 +781,7 @@ fn remove_null_from_type<'a>(checker: &CheckerReturn<'a, '_>, node: NodeRef, ty:
 }
 
 fn non_null_constituent<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     ty: Ty<'a>,
 ) -> Option<Ty<'a>> {
@@ -861,7 +857,7 @@ fn skip_parentheses<'a>(expression: &'a Expression<'a>) -> &'a Expression<'a> {
 
 /// Check whether an expression is an identifier reference to the target symbol.
 fn expression_matches_symbol(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     program_id: ProgramId,
     symbol: SymbolRef,
     expression: &Expression<'_>,
@@ -879,11 +875,7 @@ fn expression_matches_symbol(
 }
 
 /// Apply the currently supported true-branch truthiness facts.
-fn narrow_by_truthiness<'a>(
-    checker: &CheckerReturn<'a, '_>,
-    ty: Ty<'a>,
-    assume_true: bool,
-) -> Ty<'a> {
+fn narrow_by_truthiness<'a>(checker: &Checker<'a, '_>, ty: Ty<'a>, assume_true: bool) -> Ty<'a> {
     if !assume_true || ty.is_any_like(checker.arena()) || ty.is_unknown() {
         return ty;
     }
@@ -893,7 +885,7 @@ fn narrow_by_truthiness<'a>(
 
 /// Apply a `typeof` witness or its negation to a type.
 fn narrow_by_typeof<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     ty: Ty<'a>,
     witness: TypeofWitness,
@@ -928,7 +920,7 @@ fn narrow_by_typeof<'a>(
 
 /// Filter a type, distributing over union constituents and reducing the result.
 fn filter_type<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     ty: Ty<'a>,
     keep: impl Fn(Ty<'a>) -> bool + Copy,
 ) -> Ty<'a> {
@@ -939,11 +931,7 @@ fn filter_type<'a>(
 }
 
 /// Return whether a type is definitely in the runtime domain named by a `typeof` witness.
-fn type_matches_typeof<'a>(
-    checker: &CheckerReturn<'a, '_>,
-    ty: Ty<'a>,
-    witness: TypeofWitness,
-) -> bool {
+fn type_matches_typeof<'a>(checker: &Checker<'a, '_>, ty: Ty<'a>, witness: TypeofWitness) -> bool {
     let data = checker.ty_kind(ty);
     match witness {
         TypeofWitness::String => ty.is_string_like(checker.arena()),
@@ -972,7 +960,7 @@ fn type_matches_typeof<'a>(
 }
 
 /// Return whether a constituent is currently known to be removed by a truthy check.
-fn is_definitely_falsy<'a>(checker: &CheckerReturn<'a, '_>, ty: Ty<'a>) -> bool {
+fn is_definitely_falsy<'a>(checker: &Checker<'a, '_>, ty: Ty<'a>) -> bool {
     match checker.ty_kind(ty) {
         TyKind::Undefined | TyKind::Null => true,
         TyKind::BooleanLiteral(value) => !value,
@@ -982,7 +970,7 @@ fn is_definitely_falsy<'a>(checker: &CheckerReturn<'a, '_>, ty: Ty<'a>) -> bool 
 
 /// Return whether an intervening write may escape the candidate narrowed type.
 fn intervening_write_invalidates<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     effect: BranchEffect,
@@ -1021,7 +1009,7 @@ fn intervening_write_invalidates<'a>(
 }
 
 fn assigned_type_for_write<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     write_node_id: oxc_semantic::NodeId,
 ) -> Option<Ty<'a>> {
@@ -1059,7 +1047,7 @@ fn assigned_type_for_write<'a>(
 }
 
 fn assignment_flow_type<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     node: NodeRef,
     symbol: SymbolRef,
     current_type: Ty<'a>,
@@ -1125,7 +1113,7 @@ fn assignment_flow_type<'a>(
 }
 
 fn is_for_in_expression_reference(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     node: NodeRef,
     symbol: SymbolRef,
 ) -> bool {
@@ -1151,7 +1139,7 @@ fn is_for_in_expression_reference(
 }
 
 fn is_in_self_referential_sequence_assignment(
-    checker: &CheckerReturn<'_, '_>,
+    checker: &Checker<'_, '_>,
     node: NodeRef,
     symbol: SymbolRef,
 ) -> bool {
@@ -1180,7 +1168,7 @@ fn is_in_self_referential_sequence_assignment(
 }
 
 fn loop_write_type<'a>(
-    checker: &CheckerReturn<'a, '_>,
+    checker: &Checker<'a, '_>,
     program_id: ProgramId,
     write_node_id: oxc_semantic::NodeId,
     seed_type: Ty<'a>,

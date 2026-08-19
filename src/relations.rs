@@ -1,13 +1,13 @@
 use crate::{
     TupleElement, TyProperty,
-    checker::{Checker, CheckerReturn},
+    checker::Checker,
     limits::ASSIGNABILITY_MAX_DEPTH,
     type_predicate_kinds_match,
     types::{Ty, TyKind},
 };
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
-    pub(crate) fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
+impl<'a, 'store> Checker<'a, 'store> {
+    pub fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
         self.is_assignable_to_at_depth(source, target, 0)
     }
 
@@ -394,7 +394,7 @@ mod tests {
     use std::path::{Path, PathBuf};
 
     use crate::{
-        checker::CheckerBuilder,
+        checker::Checker,
         program::{HostModuleResolution, ProgramHost, ProgramStore, ProgramStoreBuilder},
     };
 
@@ -428,7 +428,7 @@ mod tests {
     fn test_any_unknown_object_void_undefined_null_never_assignability() {
         let allocator = Allocator::default();
         let store = test_store(&allocator);
-        let checker = CheckerBuilder::new().build(&store);
+        let checker = Checker::new(&store);
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
         // All types are assignable to themselves.
@@ -497,7 +497,7 @@ mod tests {
     fn test_intersection_assignability() {
         let allocator = Allocator::default();
         let store = test_store(&allocator);
-        let checker = CheckerBuilder::new().build(&store);
+        let checker = Checker::new(&store);
         let arena = checker.arena;
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
@@ -548,7 +548,7 @@ mod tests {
     fn object_type_assignability() {
         let allocator = Allocator::default();
         let store = test_store(&allocator);
-        let checker = CheckerBuilder::new().build(&store);
+        let checker = Checker::new(&store);
         let arena = checker.arena;
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
@@ -593,7 +593,7 @@ mod tests {
     fn test_primitive_object_type_assignability() {
         let allocator = Allocator::default();
         let store = test_store(&allocator);
-        let checker = CheckerBuilder::new().build(&store);
+        let checker = Checker::new(&store);
         let arena = checker.arena;
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 

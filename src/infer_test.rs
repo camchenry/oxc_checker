@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 
 use super::*;
 use crate::{
-    checker::CheckerBuilder,
+    checker::Checker,
     program::{HostModuleResolution, ProgramHost, ProgramStore, ProgramStoreBuilder},
     types::CheckerArena,
 };
@@ -36,7 +36,7 @@ fn test_store<'a>(allocator: &'a Allocator) -> ProgramStore<'a> {
 macro_rules! test_checker {
     ($allocator:ident, $store:ident, $checker:ident, $arena:ident) => {
         let $store = test_store(&$allocator);
-        let $checker = CheckerBuilder::new().build(&$store);
+        let $checker = Checker::new(&$store);
         let $arena = $checker.arena;
     };
 }

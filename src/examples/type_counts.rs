@@ -2,7 +2,7 @@ use std::{collections::BTreeMap, env, error::Error, path::PathBuf, process};
 
 use oxc_allocator::Allocator;
 use oxc_checker::{
-    checker::{Checker, CheckerBuilder, NodeRef},
+    checker::{Checker, NodeRef},
     program::{FsProgramHost, ProgramStoreBuilder},
 };
 
@@ -34,7 +34,7 @@ fn run(path: PathBuf) -> Result<(), Box<dyn Error>> {
     let store = ProgramStoreBuilder::new(&allocator, FsProgramHost::new())
         .add_root_file(path)
         .build()?;
-    let checker = CheckerBuilder::new().build(&store);
+    let checker = Checker::new(&store);
     let mut counts = BTreeMap::new();
 
     for entry in store.entries().iter().filter(|entry| !entry.is_lib()) {
@@ -44,7 +44,7 @@ fn run(path: PathBuf) -> Result<(), Box<dyn Error>> {
                 continue;
             }
             *counts
-                .entry(ty.enum_variant_name(checker.arena))
+                .entry(ty.enum_variant_name(checker.arena()))
                 .or_insert(0usize) += 1;
         }
     }

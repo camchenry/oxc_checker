@@ -1,5 +1,5 @@
 use super::*;
-use crate::checker::{Checker, CheckerBuilder, SymbolRef};
+use crate::checker::{Checker, SymbolRef};
 use oxc_str::Ident;
 use rustc_hash::FxHashMap;
 
@@ -264,7 +264,7 @@ fn infers_type_from_imported_variable_initializer() {
         .build()
         .unwrap();
     let program_id = store.id_for_path(Path::new("/project/a.ts")).unwrap();
-    let checker = CheckerBuilder::new().build(&store);
+    let checker = Checker::new(&store);
     let symbol_id = store
         .entry(program_id)
         .unwrap()

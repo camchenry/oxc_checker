@@ -34,7 +34,7 @@ use rustc_hash::{FxHashMap, FxHashSet};
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
     checker::{
-        Checker, CheckerReturn, ClassMemberResolution, InstantiationCacheKey, NodeRef, SymbolRef,
+        Checker, ClassMemberResolution, InstantiationCacheKey, NodeRef, SymbolRef,
         TypeAliasMetadata, TypeAliasResolution, TypeParameterResolution, TypeStringCacheKey,
         TypeStringContext,
     },
@@ -387,7 +387,7 @@ impl SubstituteTypeFlags {
     }
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     #[inline]
     pub fn entry(&self, program_id: ProgramId) -> &program::ProgramEntry<'a> {
         &self.store[program_id]
@@ -12392,8 +12392,8 @@ fn type_contains_literal_type<'a>(arena: CheckerArena<'a>, ty: Ty<'a>, depth: us
     }
 }
 
-impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
-    fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef> {
+impl<'a> Checker<'a, '_> {
+    pub fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef> {
         match self.node_kind(node) {
             AstKind::BindingIdentifier(identifier) => identifier
                 .symbol_id
@@ -12429,7 +12429,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
     }
 
-    fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
+    pub fn get_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         match self.node_kind(node) {
             expression_kind @ (AstKind::IdentifierReference(_)
             | AstKind::ThisExpression(_)
@@ -12780,13 +12780,13 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
     }
 
-    fn get_constrained_type_at_location(&self, node: NodeRef) -> Ty<'a> {
+    pub fn get_constrained_type_at_location(&self, node: NodeRef) -> Ty<'a> {
         let ty = self.get_type_at_location(node);
         self.get_type_parameter_constraint(node.program_id, node.node_id, ty)
             .unwrap_or(ty)
     }
 
-    fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
+    pub fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
         if let Some(ty) = self.cached_symbol_type(&self.declared_type_cache, sym) {
             return ty;
         }
@@ -12813,7 +12813,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         ty
     }
 
-    fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
+    pub fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
         if let Some(ty) = self.cached_symbol_type(&self.value_type_cache, sym) {
             return ty;
         }
@@ -12875,21 +12875,21 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
     }
 
     // TODO(completeness): Implement this method
-    fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty<'a> {
+    pub fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty<'a> {
         self.get_type_at_location(node)
     }
 
     // TODO(completeness): Implement this method
-    fn get_properties_of_type(&self, _t: Ty<'a>) -> Vec<SymbolRef> {
+    pub fn get_properties_of_type(&self, _t: Ty<'a>) -> Vec<SymbolRef> {
         Vec::new()
     }
 
     // TODO(completeness): Implement this method
-    fn get_property_of_type(&self, _t: Ty<'a>, _name: &str) -> Option<SymbolRef> {
+    pub fn get_property_of_type(&self, _t: Ty<'a>, _name: &str) -> Option<SymbolRef> {
         None
     }
 
-    fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>> {
+    pub fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>> {
         match self.ty_kind(t) {
             TyKind::Function(_) if kind == SignatureKind::Call => {
                 vec![Signature::new(SignatureKind::Call, t)]
@@ -12923,7 +12923,7 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
     }
 
-    fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo<'a>> {
+    pub fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo<'a>> {
         match self.ty_kind(t) {
             TyKind::Object(object) => object.index_infos().to_vec(),
             TyKind::Intersection(intersection) => intersection
@@ -12940,15 +12940,11 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
     }
 
-    fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
-        CheckerReturn::is_assignable_to(self, source, target)
-    }
-
-    fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String {
+    pub fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String {
         self.type_to_string_with_context(t, self.type_string_context_at_location(location))
     }
 
-    fn symbol_to_string(&self, s: SymbolRef, _location: NodeRef) -> String {
+    pub fn symbol_to_string(&self, s: SymbolRef, _location: NodeRef) -> String {
         self.semantic(s.program_id)
             .scoping()
             .symbol_name(s.symbol_id)

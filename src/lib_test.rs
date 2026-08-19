@@ -1,5 +1,5 @@
 use super::*;
-use crate::checker::{Checker, CheckerBuilder, CheckerReturn, NodeRef, SymbolRef};
+use crate::checker::{Checker, NodeRef, SymbolRef};
 use crate::checker_impl::UNDEFINED_IDENT;
 use crate::mapper::TypeMapper;
 use crate::program::ProgramHost;
@@ -81,8 +81,8 @@ fn parse_and_check_source<'a>(allocator: &'a Allocator, source_text: &str) -> Pa
     }
 }
 
-fn checker<'a, 'store>(ret: &'store ParseAndCheck<'a>) -> CheckerReturn<'a, 'store> {
-    CheckerBuilder::new().build_with_arena(&ret.store, ret.arena)
+fn checker<'a, 'store>(ret: &'store ParseAndCheck<'a>) -> Checker<'a, 'store> {
+    Checker::with_arena(&ret.store, ret.arena)
 }
 
 fn get_global_symbol_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
@@ -949,7 +949,7 @@ fn without_default_lib_has_no_global_type_symbols() {
         .build()
         .unwrap();
     let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
-    let checker = CheckerBuilder::new().build(&store);
+    let checker = Checker::new(&store);
 
     assert_eq!(store.entries().len(), 1);
     assert!(
@@ -1007,7 +1007,7 @@ fn global_symbol_table_resolves_other_root_script_declarations() {
         .build()
         .unwrap();
     let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
-    let checker = CheckerBuilder::new().build(&store);
+    let checker = Checker::new(&store);
     let scoping = store.entry(program_id).unwrap().semantic().scoping();
     let value_symbol_id = scoping.get_root_binding(Ident::from("value")).unwrap();
 
@@ -2732,7 +2732,7 @@ fn array_type_references_without_default_lib_stay_type_references() {
         .build()
         .unwrap();
     let program_id = store.id_for_path(Path::new("/project/main.ts")).unwrap();
-    let checker = CheckerBuilder::new().build(&store);
+    let checker = Checker::new(&store);
     let symbol_id = store
         .entry(program_id)
         .unwrap()

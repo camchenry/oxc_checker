@@ -5,7 +5,7 @@ use rustc_hash::FxHashMap;
 
 use crate::{
     TyTypeReference,
-    checker::{CheckerReturn, SymbolRef},
+    checker::{Checker, SymbolRef},
     checker_impl::UNDEFINED_IDENT,
     program::{self, ProgramId},
     types::{Ty, TypeErrorKind},
@@ -124,7 +124,7 @@ impl GlobalSymbolTable {
     }
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     pub(crate) fn get_type_symbol_for_name(
         &self,
         program_id: ProgramId,

@@ -3,7 +3,7 @@ use std::{cell::RefCell, rc::Rc};
 use oxc_allocator::Vec as ArenaVec;
 use smallvec::{SmallVec, smallvec};
 
-use crate::types::{CheckerArena, Ty, TyTypeParameter, TyKind, TypeId};
+use crate::types::{CheckerArena, Ty, TyKind, TyTypeParameter, TypeId};
 
 type TypeParameterResolver<'a> = Rc<RefCell<dyn FnMut(&str) -> Option<Ty<'a>> + 'a>>;
 type MapperPairs<'a> = SmallVec<[(Ty<'a>, Ty<'a>); 4]>;

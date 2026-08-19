@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use crate::checker::{Checker, CheckerBuilder, NodeRef};
+use crate::checker::{Checker, NodeRef};
 
 use oxc_ast::AstKind;
 use oxc_semantic::NodeId;
@@ -98,7 +98,7 @@ pub fn check_program(store: &program::ProgramStore<'_>, program_id: program::Pro
 
 #[must_use]
 pub fn check_program_with_plan(store: &program::ProgramStore<'_>, plan: &CheckPlan) -> usize {
-    let checker = CheckerBuilder::new().build(store);
+    let checker = Checker::new(store);
     run_check_plan(&checker, plan)
 }
 
@@ -107,7 +107,7 @@ pub fn check_program_with_plan_stats(
     store: &program::ProgramStore<'_>,
     plan: &CheckPlan,
 ) -> CheckStats {
-    let checker = CheckerBuilder::new().build(store);
+    let checker = Checker::new(store);
     let checked_types = run_check_plan(&checker, plan);
     let mut type_kinds = BTreeMap::new();
     for ty in checker.types() {
@@ -127,7 +127,7 @@ pub fn check_program_with_plan_stats(
     }
 }
 
-fn run_check_plan(checker: &crate::checker::CheckerReturn<'_, '_>, plan: &CheckPlan) -> usize {
+fn run_check_plan(checker: &crate::checker::Checker<'_, '_>, plan: &CheckPlan) -> usize {
     let store = checker.store;
     let Some(entry) = store.entry(plan.program_id) else {
         return 0;

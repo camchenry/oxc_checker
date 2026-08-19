@@ -12,7 +12,7 @@ use crate::{
     global_types::GlobalSymbolTable,
     mapper::MapperCacheEntry,
     program::{ProgramId, ProgramStore},
-    types::{CheckerArena, IndexInfo, Signature, SignatureKind, Ty, TyTypeParameter, TypeId},
+    types::{CheckerArena, Ty, TyTypeParameter, TypeId},
 };
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -62,14 +62,14 @@ pub(crate) struct TypeStringCacheKey<'a> {
     pub(crate) context: TypeStringContext,
 }
 
-pub type SymbolTypeCache<'a> = Vec<Option<IndexVec<SymbolId, Option<Ty<'a>>>>>;
+pub(crate) type SymbolTypeCache<'a> = Vec<Option<IndexVec<SymbolId, Option<Ty<'a>>>>>;
 
-pub struct CheckerReturn<'a, 'store> {
-    pub store: &'store ProgramStore<'a>,
-    pub arena: CheckerArena<'a>,
-    pub global_symbols: &'store GlobalSymbolTable,
-    pub declared_type_cache: RefCell<SymbolTypeCache<'a>>,
-    pub value_type_cache: RefCell<SymbolTypeCache<'a>>,
+pub struct Checker<'a, 'store> {
+    pub(crate) store: &'store ProgramStore<'a>,
+    pub(crate) arena: CheckerArena<'a>,
+    pub(crate) global_symbols: &'store GlobalSymbolTable,
+    pub(crate) declared_type_cache: RefCell<SymbolTypeCache<'a>>,
+    pub(crate) value_type_cache: RefCell<SymbolTypeCache<'a>>,
     pub(crate) type_alias_metadata_by_type: RefCell<IndexVec<TypeId, Option<TypeAliasMetadata>>>,
     pub(crate) instantiation_cache: RefCell<FxHashMap<InstantiationCacheKey<'a>, Ty<'a>>>,
     pub(crate) type_alias_resolution_cache: RefCell<FxHashMap<TypeAliasResolution, Ty<'a>>>,
@@ -80,12 +80,12 @@ pub struct CheckerReturn<'a, 'store> {
     pub(crate) expando_assignments_by_container:
         RefCell<FxHashMap<ProgramId, FxHashMap<NodeId, Vec<&'a AssignmentExpression<'a>>>>>,
     pub(crate) flow_graph_cache: RefCell<FxHashMap<ProgramId, ProgramFlowGraph>>,
-    pub interface_declarations_cache:
+    pub(crate) interface_declarations_cache:
         RefCell<FxHashMap<String, &'a [(ProgramId, &'a TSInterfaceDeclaration<'a>)]>>,
-    pub resolving_symbols: RefCell<Vec<SymbolRef>>,
+    pub(crate) resolving_symbols: RefCell<Vec<SymbolRef>>,
     pub(crate) resolving_type_aliases: RefCell<Vec<TypeAliasResolution>>,
-    pub resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
-    pub resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
+    pub(crate) resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
+    pub(crate) resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
     pub(crate) interface_property_resolution_stack: RefCell<Vec<(usize, String, String)>>,
     pub(crate) ts_type_resolution_depth: Cell<usize>,
     pub(crate) hide_implicit_type_argument_display: Cell<bool>,
@@ -95,7 +95,65 @@ pub struct CheckerReturn<'a, 'store> {
     pub(crate) type_string_depth: Cell<usize>,
 }
 
-impl<'a> CheckerReturn<'a, '_> {
+impl<'a, 'store> Checker<'a, 'store> {
+    /// Creates a checker for a program store.
+    ///
+    /// ```
+    /// use oxc_allocator::Allocator;
+    /// use oxc_checker::{
+    ///     checker::Checker,
+    ///     program::{FsProgramHost, ProgramStoreBuilder},
+    /// };
+    ///
+    /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// let allocator = Allocator::default();
+    /// let store = ProgramStoreBuilder::new(&allocator, FsProgramHost::new())
+    ///     .without_default_lib()
+    ///     .build()?;
+    /// let checker = Checker::new(&store);
+    /// assert!(checker.type_count() > 0);
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn new(store: &'store ProgramStore<'a>) -> Self {
+        Self::with_arena(store, CheckerArena::new(store.allocator()))
+    }
+
+    pub(crate) fn with_arena(store: &'store ProgramStore<'a>, arena: CheckerArena<'a>) -> Self {
+        Self {
+            store,
+            arena,
+            global_symbols: store.global_symbols(),
+            declared_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),
+            value_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),
+            type_alias_metadata_by_type: RefCell::new(IndexVec::from_vec(vec![
+                None;
+                arena.type_count()
+            ])),
+            instantiation_cache: RefCell::new(FxHashMap::default()),
+            type_alias_resolution_cache: RefCell::new(FxHashMap::default()),
+            type_parameter_declaration_cache: RefCell::new(FxHashMap::default()),
+            overflowed_type_alias_resolutions: RefCell::new(Vec::new()),
+            type_string_cache: RefCell::new(FxHashMap::default()),
+            expando_assignments_by_container: RefCell::new(FxHashMap::default()),
+            flow_graph_cache: RefCell::new(FxHashMap::default()),
+            interface_declarations_cache: RefCell::new(FxHashMap::default()),
+            resolving_symbols: RefCell::new(Vec::new()),
+            resolving_type_aliases: RefCell::new(Vec::new()),
+            resolving_type_parameters: RefCell::new(Vec::new()),
+            resolving_class_members: RefCell::new(Vec::new()),
+            interface_property_resolution_stack: RefCell::new(Vec::new()),
+            ts_type_resolution_depth: Cell::new(0),
+            hide_implicit_type_argument_display: Cell::new(false),
+            type_instantiation_depth: Cell::new(0),
+            type_instantiation_overflowed: Cell::new(false),
+            conditional_type_depth: Cell::new(0),
+            type_string_depth: Cell::new(0),
+        }
+    }
+}
+
+impl<'a> Checker<'a, '_> {
     pub fn type_count(&self) -> usize {
         self.arena.type_count()
     }
@@ -220,79 +278,6 @@ type Checker interface {
 }
 
 */
-
-#[allow(dead_code)]
-pub trait Checker<'a> {
-    fn get_symbol_at_location(&self, node: NodeRef) -> Option<SymbolRef>;
-    fn get_type_at_location(&self, node: NodeRef) -> Ty<'a>;
-    fn get_constrained_type_at_location(&self, node: NodeRef) -> Ty<'a>;
-    // fn get_type_from_type_node(&self, type_node: NodeRef) -> Ty<'a>;
-    fn get_declared_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a>;
-    fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a>;
-    fn get_type_of_symbol_at_location(&self, node: NodeRef) -> Ty<'a>;
-    fn get_properties_of_type(&self, t: Ty<'a>) -> Vec<SymbolRef>;
-    fn get_property_of_type(&self, t: Ty<'a>, name: &str) -> Option<SymbolRef>;
-    fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>>;
-    fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo<'a>>;
-    fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool;
-    fn type_to_string(&self, t: Ty<'a>, location: NodeRef) -> String;
-    fn symbol_to_string(&self, s: SymbolRef, location: NodeRef) -> String;
-}
-
-pub struct CheckerBuilder {}
-
-impl CheckerBuilder {
-    pub fn new() -> Self {
-        Self {}
-    }
-
-    pub fn build<'a, 'store>(&self, store: &'store ProgramStore<'a>) -> CheckerReturn<'a, 'store> {
-        self.build_with_arena(store, CheckerArena::new(store.allocator()))
-    }
-
-    pub fn build_with_arena<'a, 'store>(
-        &self,
-        store: &'store ProgramStore<'a>,
-        arena: CheckerArena<'a>,
-    ) -> CheckerReturn<'a, 'store> {
-        CheckerReturn {
-            store,
-            arena,
-            global_symbols: store.global_symbols(),
-            declared_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),
-            value_type_cache: RefCell::new(store.entries().iter().map(|_| None).collect()),
-            type_alias_metadata_by_type: RefCell::new(IndexVec::from_vec(vec![
-                None;
-                arena.type_count()
-            ])),
-            instantiation_cache: RefCell::new(FxHashMap::default()),
-            type_alias_resolution_cache: RefCell::new(FxHashMap::default()),
-            type_parameter_declaration_cache: RefCell::new(FxHashMap::default()),
-            overflowed_type_alias_resolutions: RefCell::new(Vec::new()),
-            type_string_cache: RefCell::new(FxHashMap::default()),
-            expando_assignments_by_container: RefCell::new(FxHashMap::default()),
-            flow_graph_cache: RefCell::new(FxHashMap::default()),
-            interface_declarations_cache: RefCell::new(FxHashMap::default()),
-            resolving_symbols: RefCell::new(Vec::new()),
-            resolving_type_aliases: RefCell::new(Vec::new()),
-            resolving_type_parameters: RefCell::new(Vec::new()),
-            resolving_class_members: RefCell::new(Vec::new()),
-            interface_property_resolution_stack: RefCell::new(Vec::new()),
-            ts_type_resolution_depth: Cell::new(0),
-            hide_implicit_type_argument_display: Cell::new(false),
-            type_instantiation_depth: Cell::new(0),
-            type_instantiation_overflowed: Cell::new(false),
-            conditional_type_depth: Cell::new(0),
-            type_string_depth: Cell::new(0),
-        }
-    }
-}
-
-impl Default for CheckerBuilder {
-    fn default() -> Self {
-        Self::new()
-    }
-}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct NodeRef {

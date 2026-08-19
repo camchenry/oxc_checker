@@ -2,7 +2,7 @@ use std::{env, error::Error, path::PathBuf, process};
 
 use oxc_allocator::Allocator;
 use oxc_checker::{
-    checker::{Checker, CheckerBuilder, NodeRef},
+    checker::{Checker, NodeRef},
     program::{FsProgramHost, ProgramStoreBuilder},
 };
 
@@ -34,7 +34,7 @@ fn run(path: PathBuf) -> Result<(), Box<dyn Error>> {
     let store = ProgramStoreBuilder::new(&allocator, FsProgramHost::new())
         .add_root_file(path)
         .build()?;
-    let checker = CheckerBuilder::new().build(&store);
+    let checker = Checker::new(&store);
 
     for entry in store.entries().iter().filter(|entry| !entry.is_lib()) {
         for (node_id, _node) in entry.semantic().nodes().iter_enumerated() {

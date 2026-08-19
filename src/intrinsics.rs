@@ -1,8 +1,8 @@
 use crate::{
-    checker::CheckerReturn,
+    TemplateLiteralElement,
+    checker::Checker,
     limits::TYPE_EXPANSION_MAX_DEPTH,
     types::{Ty, TyKind},
-    TemplateLiteralElement,
 };
 
 fn capitalize_first_character(value: &str, uppercase: bool) -> String {
@@ -19,7 +19,7 @@ fn capitalize_first_character(value: &str, uppercase: bool) -> String {
     mapped
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     pub(super) fn get_type_from_intrinsic_alias(
         &self,
         program_id: crate::program::ProgramId,

@@ -17,7 +17,7 @@ use rustc_hash::FxHashSet;
 use std::cell::RefCell;
 
 use crate::{
-    checker::CheckerReturn,
+    checker::Checker,
     checker_impl::{FunctionKind, GetTypeFlags},
     index_type_to_property_name,
     limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
@@ -261,7 +261,7 @@ impl<'a> InferenceContext<'a> {
 
     fn resolve_with_contextual_mapper<'store>(
         mut self,
-        checker: &CheckerReturn<'a, 'store>,
+        checker: &Checker<'a, 'store>,
         flags: InferenceResolutionFlags,
     ) -> InferenceResolution<'a> {
         let arena = checker.arena();
@@ -297,7 +297,7 @@ impl<'a> InferenceContext<'a> {
 
     fn resolve_substitutions<'store>(
         &mut self,
-        checker: &CheckerReturn<'a, 'store>,
+        checker: &Checker<'a, 'store>,
         flags: InferenceResolutionFlags,
     ) -> TypeParameterSubstitutions<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
@@ -315,7 +315,7 @@ impl<'a> InferenceContext<'a> {
     fn resolve_type_parameter_by_name<'store>(
         &mut self,
         name: &str,
-        checker: &CheckerReturn<'a, 'store>,
+        checker: &Checker<'a, 'store>,
         flags: InferenceResolutionFlags,
     ) -> Option<Ty<'a>> {
         let index = self.inference_index_by_name(name)?;
@@ -325,7 +325,7 @@ impl<'a> InferenceContext<'a> {
     fn resolve_inference_at_index<'store>(
         &mut self,
         index: usize,
-        checker: &CheckerReturn<'a, 'store>,
+        checker: &Checker<'a, 'store>,
         flags: InferenceResolutionFlags,
         resolving: &mut Vec<usize>,
         fix: bool,
@@ -458,7 +458,7 @@ impl<'a> InferenceContext<'a> {
 
     fn candidate_substitutions<'store>(
         &mut self,
-        checker: &CheckerReturn<'a, 'store>,
+        checker: &Checker<'a, 'store>,
     ) -> TypeParameterSubstitutions<'a> {
         let mut substitutions = TypeParameterSubstitutions::new();
         for index in 0..self.inferences.len() {
@@ -472,7 +472,7 @@ impl<'a> InferenceContext<'a> {
     fn get_inferred_type<'store>(
         &mut self,
         index: usize,
-        checker: &CheckerReturn<'a, 'store>,
+        checker: &Checker<'a, 'store>,
     ) -> Option<Ty<'a>> {
         if self.inferences[index].inferred_type.is_none() {
             let inference = &self.inferences[index];
@@ -484,7 +484,7 @@ impl<'a> InferenceContext<'a> {
 }
 
 fn inferred_type_from_candidates<'a, 'store>(
-    checker: &CheckerReturn<'a, 'store>,
+    checker: &Checker<'a, 'store>,
     inference: &InferenceInfo<'a>,
     return_type: Option<Ty<'a>>,
 ) -> Option<Ty<'a>> {
@@ -514,7 +514,7 @@ fn inferred_type_from_candidates<'a, 'store>(
 }
 
 fn resolve_covariant_candidates<'a, 'store>(
-    checker: &CheckerReturn<'a, 'store>,
+    checker: &Checker<'a, 'store>,
     inference: &InferenceInfo<'a>,
     return_type: Option<Ty<'a>>,
 ) -> Option<Ty<'a>> {
@@ -545,7 +545,7 @@ fn resolve_covariant_candidates<'a, 'store>(
 }
 
 fn resolve_contravariant_candidates<'a, 'store>(
-    checker: &CheckerReturn<'a, 'store>,
+    checker: &Checker<'a, 'store>,
     inference: &InferenceInfo<'a>,
 ) -> Option<Ty<'a>> {
     let arena = checker.arena();
@@ -672,7 +672,7 @@ fn get_widened_literal_type<'a>(arena: crate::types::CheckerArena<'a>, ty: Ty<'a
 }
 
 fn get_common_supertype<'a, 'store>(
-    checker: &CheckerReturn<'a, 'store>,
+    checker: &Checker<'a, 'store>,
     candidates: &[Ty<'a>],
 ) -> Ty<'a> {
     let arena = checker.arena();
@@ -686,10 +686,7 @@ fn get_common_supertype<'a, 'store>(
     find_leftmost_type(checker, candidates)
 }
 
-fn get_common_subtype<'a, 'store>(
-    checker: &CheckerReturn<'a, 'store>,
-    candidates: &[Ty<'a>],
-) -> Ty<'a> {
+fn get_common_subtype<'a, 'store>(checker: &Checker<'a, 'store>, candidates: &[Ty<'a>]) -> Ty<'a> {
     let mut subtype = candidates[0];
     for candidate in candidates.iter().skip(1) {
         if checker.is_assignable_to(*candidate, subtype) {
@@ -699,10 +696,7 @@ fn get_common_subtype<'a, 'store>(
     subtype
 }
 
-fn find_leftmost_type<'a, 'store>(
-    checker: &CheckerReturn<'a, 'store>,
-    candidates: &[Ty<'a>],
-) -> Ty<'a> {
+fn find_leftmost_type<'a, 'store>(checker: &Checker<'a, 'store>, candidates: &[Ty<'a>]) -> Ty<'a> {
     let mut candidate = candidates[0];
     for ty in candidates.iter().skip(1) {
         if checker.is_assignable_to(candidate, *ty) {
@@ -750,7 +744,7 @@ impl InferenceVariance {
     }
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     pub(crate) fn infer_type_parameter_names(&self, ty: Ty<'a>) -> Vec<&'a str> {
         let mut names = Vec::new();
         self.collect_infer_type_parameter_names(ty, &mut names);
@@ -1701,7 +1695,7 @@ fn match_property_type_pairs<'a>(
     Some(pairs)
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     fn infer_type_pairs_with_variance(
         &self,
         pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
@@ -1957,7 +1951,7 @@ fn type_contains_inference_variable<'a>(
     contains
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     fn infer_to_mapped_type(
         &self,
         parameter_mapped: &TyMapped<'a>,
@@ -2055,7 +2049,7 @@ fn property_type_for_inference_index<'a>(
     }
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     fn infer_to_mapped_type_with_constraint(
         &self,
         parameter_mapped: &TyMapped<'a>,
@@ -2414,7 +2408,7 @@ fn same_shape_mapped_constraint_target<'a>(
     Some(keyof.target)
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     fn infer_tuple_elements(
         &self,
         parameter_elements: &[TupleElement<'a>],
@@ -2544,7 +2538,7 @@ fn select_union_inference_candidates<'a>(
     parameter_types.to_vec()
 }
 
-impl<'a, 'store> CheckerReturn<'a, 'store> {
+impl<'a, 'store> Checker<'a, 'store> {
     fn infer_type_parameter_from_intersection(
         &self,
         parameter_types: impl IntoIterator<Item = Ty<'a>>,
