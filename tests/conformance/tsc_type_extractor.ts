@@ -24,6 +24,8 @@ import {
 } from "typescript/unstable/ast";
 
 type CaseDiscovery = "compiler" | "all";
+type CompilerOptionValue = boolean | string | string[];
+type JsonCompilerOptions = Record<string, CompilerOptionValue>;
 
 interface CompilerDirective {
   key: string;
@@ -52,7 +54,7 @@ interface VirtualFile {
 }
 
 interface CompilerTask {
-  compilerOptions: Record<string, unknown>;
+  compilerOptions: JsonCompilerOptions;
   configFileName: string;
   virtualFiles: VirtualFile[];
 }
@@ -81,7 +83,7 @@ const DEFAULT_WORKERS = Math.max(
 );
 const VIRTUAL_MODULE_MARKER = "\nexport {};";
 // oxc_checker always enables the full strict family, so case directives cannot disable it.
-const STRICT_COMPILER_OPTIONS: Record<string, boolean> = {
+const STRICT_COMPILER_OPTIONS: JsonCompilerOptions = {
   alwaysStrict: true,
   noImplicitAny: true,
   noImplicitThis: true,
@@ -275,12 +277,8 @@ function recordPathForFile(compilerCase: CompilerCase, sourceFile: CompilerFile)
     : compilerCase.relativePath;
 }
 
-function optionEntries(settings: Map<string, string>): Array<{ key: string; value: string }> {
-  return Array.from(settings, ([key, value]) => ({ key, value }));
-}
-
-function createCompilerOptions(compilerCase: CompilerCase): Record<string, unknown> {
-  const options: Record<string, unknown> = {
+function createCompilerOptions(compilerCase: CompilerCase): JsonCompilerOptions {
+  const options: JsonCompilerOptions = {
     allowJs: true,
     checkJs: true,
     jsx: "preserve",
@@ -292,7 +290,7 @@ function createCompilerOptions(compilerCase: CompilerCase): Record<string, unkno
     ...STRICT_COMPILER_OPTIONS,
   };
 
-  for (const { key, value } of optionEntries(compilerCase.settings)) {
+  for (const { key, value } of Array.from(compilerCase.settings, ([key, value]) => ({ key, value }))) {
     const normalizedKey = key.toLowerCase();
     if (normalizedKey === "filename" || normalizedKey === "usecasesensitivefilenames") {
       continue;
@@ -305,7 +303,7 @@ function createCompilerOptions(compilerCase: CompilerCase): Record<string, unkno
   return options;
 }
 
-function parseCompilerOptionValue(key: string, value: string): boolean | string | string[] {
+function parseCompilerOptionValue(key: string, value: string): CompilerOptionValue {
   const trimmed = value.trim();
   if (/^(true|false)$/i.test(trimmed)) {
     return /^true$/i.test(trimmed);
