@@ -132752,7 +132752,7 @@ interface MathMLElementTagNameMap {
 >                ^^^^^^^^^^^^^: { new (): MathMLElement; prototype: MathMLElement; }   (TyObject) (IdentifierReference)
 
 type ElementTagNameMap = HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Exclude<keyof SVGElementTagNameMap, keyof HTMLElementTagNameMap>>;
->    ^^^^^^^^^^^^^^^^^: HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Exclude<keyof SVGElementTagNameMap, keyof HTMLElementTagNameMap>>   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: HTMLElementTagNameMap & Pick<SVGElementTagNameMap, keyof SVGElementTagNameMap>   (TyIntersection) (TSTypeAliasDeclaration)
               expected: HTMLElementTagNameMap & Pick<SVGElementTagNameMap, "animate" | "animateMotion" | "animateTransform" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feDropShadow" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "mpath" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "set" | "stop" | "svg" | "switch" | "symbol" | "text" | "textPath" | "tspan" | "use" | "view">
 
 type ElementTagNameMap = HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Exclude<keyof SVGElementTagNameMap, keyof HTMLElementTagNameMap>>;

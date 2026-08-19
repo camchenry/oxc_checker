@@ -340,11 +340,75 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .properties
                 .iter()
                 .any(|property| !property.computed && property.name == name),
+            TyKind::TypeReference(reference) => self
+                .expand_type_alias_for_relation(target, depth + 1)
+                .or_else(|| {
+                    reference.target.map(|symbol| {
+                        self.apparent_type_for_conditional_match(
+                            symbol.program_id,
+                            target,
+                            depth + 1,
+                        )
+                    })
+                })
+                .is_some_and(|expanded| {
+                    expanded != target
+                        && self.keyof_type_contains_property(expanded, name, depth + 1)
+                }),
+            TyKind::IndexedAccess(indexed_access) => self
+                .property_name_from_key_type(indexed_access.index_type)
+                .and_then(|property_name| {
+                    self.property_type_for_relation(
+                        indexed_access.object_type,
+                        property_name,
+                        depth + 1,
+                    )
+                })
+                .is_some_and(|property_type| {
+                    self.keyof_type_contains_property(property_type, name, depth + 1)
+                }),
             TyKind::Intersection(intersection) => intersection
                 .types
                 .iter()
                 .any(|ty| self.keyof_type_contains_property(*ty, name, depth + 1)),
             _ => false,
+        }
+    }
+
+    fn property_type_for_relation(
+        &self,
+        target: Ty<'a>,
+        name: &str,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= ASSIGNABILITY_MAX_DEPTH {
+            return None;
+        }
+
+        match self.ty_kind(target) {
+            TyKind::Object(object) => object
+                .properties
+                .iter()
+                .find(|property| !property.computed && property.name == name)
+                .map(|property| property.ty),
+            TyKind::TypeReference(reference) => self
+                .expand_type_alias_for_relation(target, depth + 1)
+                .or_else(|| {
+                    reference.target.map(|symbol| {
+                        self.apparent_type_for_conditional_match(
+                            symbol.program_id,
+                            target,
+                            depth + 1,
+                        )
+                    })
+                })
+                .filter(|expanded| *expanded != target)
+                .and_then(|expanded| self.property_type_for_relation(expanded, name, depth + 1)),
+            TyKind::Intersection(intersection) => intersection
+                .types
+                .iter()
+                .find_map(|ty| self.property_type_for_relation(*ty, name, depth + 1)),
+            _ => None,
         }
     }
 

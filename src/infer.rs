@@ -25,8 +25,9 @@ use crate::{
     program::ProgramId,
     types::{
         CheckerArena, LabeledTupleElement, MappedModifier, SignatureKind, TupleElement,
-        TupleReadonly, Ty, TyFunction, TyInfer, TyKind, TyMapped, TyProperty, TyTypeParameter,
-        TypeBuilder, TypeErrorKind, function_parameter_type_at_call_index, visit_type,
+        TupleReadonly, Ty, TyFunction, TyInfer, TyKind, TyMapped, TyProperty, TyTemplateLiteral,
+        TyTypeParameter, TypeBuilder, TypeErrorKind, function_parameter_type_at_call_index,
+        visit_type,
     },
 };
 
@@ -827,7 +828,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 ConditionalInferMatchResult::Matched => {
                     let resolution = inferences
                         .resolve_with_contextual_mapper(self, InferenceResolutionFlags::NONE);
-                    self.instantiate_type(true_type, resolution.mapper())
+                    let instantiated = self.instantiate_type(true_type, resolution.mapper());
+                    self.expand_type_alias_for_relation(instantiated, 0)
+                        .unwrap_or(instantiated)
                 }
                 ConditionalInferMatchResult::NoMatch => false_type,
                 ConditionalInferMatchResult::Deferred => self.ty.conditional(
@@ -840,8 +843,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             };
         }
 
-        if !self.could_contain_type_variables(check_type)
-            && !self.could_contain_type_variables(extends_type)
+        if !self.contains_unresolved_type_parameter(check_type)
+            && !self.contains_unresolved_type_parameter(extends_type)
         {
             return if self.is_assignable_to(check_type, extends_type) {
                 true_type
@@ -1010,6 +1013,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     inferences,
                     depth + 1,
                 ),
+            (TyKind::StringLiteral(source), TyKind::TemplateLiteral(target)) => self
+                .infer_conditional_from_string_literal_to_template(
+                    source.value,
+                    target,
+                    inferences,
+                    depth + 1,
+                ),
             (TyKind::Function(source), TyKind::Function(target)) => {
                 self.infer_conditional_from_function_types(source, target, inferences, depth + 1)
             }
@@ -1127,6 +1137,66 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
             }
         }
+    }
+
+    fn infer_conditional_from_string_literal_to_template(
+        &self,
+        source: &'a str,
+        target: &TyTemplateLiteral<'a>,
+        inferences: &mut InferenceContext<'a>,
+        depth: usize,
+    ) -> ConditionalInferMatchResult {
+        if target.quasis.len() != target.expressions.len() + 1 {
+            return ConditionalInferMatchResult::NoMatch;
+        }
+        let (Some(start), Some(end)) = (target.quasis.first(), target.quasis.last()) else {
+            return ConditionalInferMatchResult::NoMatch;
+        };
+        if source.len() < start.value.len() + end.value.len()
+            || !source.starts_with(start.value)
+            || !source.ends_with(end.value)
+        {
+            return ConditionalInferMatchResult::NoMatch;
+        }
+
+        let match_end = source.len() - end.value.len();
+        let mut offset = start.value.len();
+        let mut matches = Vec::with_capacity(target.expressions.len());
+        for delimiter in target
+            .quasis
+            .iter()
+            .skip(1)
+            .take(target.expressions.len().saturating_sub(1))
+        {
+            if delimiter.value.is_empty() {
+                let Some(character) = source[offset..match_end].chars().next() else {
+                    return ConditionalInferMatchResult::NoMatch;
+                };
+                let next_offset = offset + character.len_utf8();
+                matches.push(&source[offset..next_offset]);
+                offset = next_offset;
+            } else {
+                let Some(relative_index) = source[offset..match_end].find(delimiter.value) else {
+                    return ConditionalInferMatchResult::NoMatch;
+                };
+                let delimiter_index = offset + relative_index;
+                matches.push(&source[offset..delimiter_index]);
+                offset = delimiter_index + delimiter.value.len();
+            }
+        }
+        matches.push(&source[offset..match_end]);
+
+        target.expressions.iter().zip(matches).fold(
+            ConditionalInferMatchResult::Matched,
+            |result, (target, source)| {
+                result.and(self.infer_conditional_from_types(
+                    self.ty.string_literal(source),
+                    *target,
+                    inferences,
+                    depth + 1,
+                ))
+            },
+        )
     }
 
     fn infer_conditional_from_properties(

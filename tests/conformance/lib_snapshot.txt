@@ -63,7 +63,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       actual:   { new <T extends ValueType = ValueType>(descriptor: GlobalDescriptor<T>, v?: ValueTypeMap[T]): Global<T>; prototype: Global; }
   - src/lib/dom.generated.d.ts:43331 `ElementTagNameMap` type mismatch
       expected: HTMLElementTagNameMap & Pick<SVGElementTagNameMap, "animate" | "animateMotion" | "animateTransform" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feDropShadow" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "mpath" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "set" | "stop" | "svg" | "switch" | "symbol" | "text" | "textPath" | "tspan" | "use" | "view">
-      actual:   HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Exclude<keyof SVGElementTagNameMap, keyof HTMLElementTagNameMap>>
+      actual:   HTMLElementTagNameMap & Pick<SVGElementTagNameMap, keyof SVGElementTagNameMap>
   - src/lib/dom.generated.d.ts:43333 `Audio` type mismatch
       expected: new (src?: string) => HTMLAudioElement
       actual:   { new (src?: string): HTMLAudioElement; }

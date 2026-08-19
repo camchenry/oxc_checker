@@ -617,8 +617,7 @@ expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms ex
                 expected: never
 
 export type ReadonlyStoreApi<T> = Pick<
->           ^^^^^^^^^^^^^^^^: { [P in "getState" | "getInitialState" | "subscribe"]: StoreApi<T>[P]; }   (TyMapped) (TSTypeAliasDeclaration)
-                    expected: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }
+>           ^^^^^^^^^^^^^^^^: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }   (TyObject) (TSTypeAliasDeclaration)
 
 export type ReadonlyStoreApi<T> = Pick<
 >                            ^: any   (TyAny) (TSTypeParameter)

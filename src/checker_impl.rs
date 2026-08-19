@@ -791,9 +791,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                     infer_type_parameters.iter().copied(),
                 );
 
+                let mapped_check_type = mapper.map(self.arena(), conditional.check_type);
+                let distributive_check_type = self
+                    .expand_type_alias_for_relation(mapped_check_type, depth + 1)
+                    .unwrap_or(mapped_check_type);
                 if conditional.is_distributive
-                    && let TyKind::Union(union) =
-                        self.ty_kind(mapper.map(self.arena(), conditional.check_type))
+                    && let TyKind::Union(union) = self.ty_kind(distributive_check_type)
                 {
                     return self.ty.union(union.types.iter().map(|ty| {
                         let member_mapper =
@@ -832,8 +835,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                     depth + 1,
                 );
                 if infer_type_parameters.is_empty()
-                    && !self.could_contain_type_variables(check_type)
-                    && !self.could_contain_type_variables(extends_type)
+                    && !self.contains_unresolved_type_parameter(check_type)
+                    && !self.contains_unresolved_type_parameter(extends_type)
                 {
                     let selected = if self.is_assignable_to(check_type, extends_type) {
                         conditional.true_type
@@ -904,7 +907,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         contains
     }
 
-    fn contains_unresolved_type_parameter(&self, ty: Ty<'a>) -> bool {
+    pub(crate) fn contains_unresolved_type_parameter(&self, ty: Ty<'a>) -> bool {
         let mut contains = false;
         visit_type(
             self.arena(),
@@ -2358,7 +2361,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                     type_annotation => self.get_type_from_ts_type(program_id, type_annotation),
                 };
-                if self.is_active_unresolved_type_alias(ty) {
+                if self.is_active_unresolved_type_alias(ty)
+                    || (self.contains_unresolved_type_parameter(ty)
+                        && self.type_alias_metadata(ty).is_some())
+                {
                     TupleElement::Rest(ty)
                 } else {
                     TupleElement::Rest(
@@ -4065,6 +4071,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             return Some(ty);
         }
 
+        if let Some(ty) = self.materialize_finite_mapped_type(program_id, mapped, depth + 1) {
+            return Some(ty);
+        }
+
         if let Some(ty) = self.expand_index_signature_mapped_type(program_id, mapped, depth + 1) {
             return Some(ty);
         }
@@ -4104,6 +4114,82 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         Some(self.ty.object(expanded))
+    }
+
+    fn materialize_finite_mapped_type(
+        &self,
+        program_id: ProgramId,
+        mapped: &TyMapped<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        let constraint = self.expand_type(program_id, mapped.constraint, depth + 1);
+        let key_types = match self.ty_kind(constraint) {
+            TyKind::Never => Vec::new(),
+            TyKind::Union(union)
+                if union.types.iter().all(|ty| {
+                    matches!(
+                        self.ty_kind(*ty),
+                        TyKind::StringLiteral(_) | TyKind::NumberLiteral(_)
+                    )
+                }) =>
+            {
+                union.types.iter().copied().collect::<Vec<_>>()
+            }
+            TyKind::StringLiteral(_) | TyKind::NumberLiteral(_) => {
+                vec![constraint]
+            }
+            _ => return None,
+        };
+        let source_properties = match self.ty_kind(mapped.template) {
+            TyKind::IndexedAccess(indexed_access) => {
+                self.properties_for_keyof_type(program_id, indexed_access.object_type, depth + 1)
+            }
+            _ => None,
+        };
+
+        let mut properties = Vec::with_capacity(key_types.len());
+        for key_type in key_types {
+            let source_name = index_type_to_property_name(self.arena(), key_type)?;
+            let mapper = TypeMapper::single(
+                self.ty.type_reference(mapped.key, std::iter::empty()),
+                key_type,
+            );
+            let property_name = if let Some(name_type) = mapped.name_type {
+                let name_type =
+                    self.instantiate_mapped_name_type(program_id, name_type, &mapper, depth + 1);
+                if name_type.is_never() {
+                    continue;
+                }
+                index_type_to_property_name(self.arena(), name_type)?
+            } else {
+                source_name
+            };
+            let ty = self.instantiate_type(mapped.template, &mapper);
+            let ty = self.expand_type(program_id, ty, depth + 1);
+            let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
+            let source_property = source_properties.as_ref().and_then(|properties| {
+                properties
+                    .iter()
+                    .find(|property| property.name == source_name)
+            });
+            let source_optional = source_property.is_some_and(|property| property.optional);
+            let source_readonly = source_property.is_some_and(|property| property.readonly);
+            let mut property = source_property
+                .copied()
+                .unwrap_or_else(|| Ty::property(property_name, ty));
+            property.name = property_name;
+            property.ty = ty;
+            property.computed = false;
+            property.optional = match mapped.optional {
+                MappedModifier::None => source_optional,
+                MappedModifier::True | MappedModifier::Plus => true,
+                MappedModifier::Minus => false,
+            };
+            property.readonly = self.mapped_readonly(mapped.readonly, source_readonly);
+            properties.push(property);
+        }
+
+        Some(self.ty.object(properties))
     }
 
     fn materialize_homomorphic_mapped_type(

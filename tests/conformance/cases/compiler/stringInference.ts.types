@@ -17,8 +17,7 @@ type UserKeys = keyof User
 >                     ^^^^: any   (TyAny) (TSTypeReference)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->    ^^^^^^^^: T extends `${infer K}.${infer R}` ? [K, ...R extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [R]] : [T]   (TyConditional) (TSTypeAliasDeclaration)
-     expected: T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
+>    ^^^^^^^^: T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]   (TyConditional) (TSTypeAliasDeclaration)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
 >             ^: any   (TyAny) (TSTypeParameter)
@@ -45,36 +44,31 @@ type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tup
 >                                                                                            ^: any   (TyAny) (TSTypeReference)
 
 type Tuple1 = Tupleify<"test">
->    ^^^^^^: "test" extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : ["test"]   (TyConditional) (TSTypeAliasDeclaration)
-   expected: ["test"]
+>    ^^^^^^: ["test"]   (TyTuple) (TSTypeAliasDeclaration)
 
 type Tuple1 = Tupleify<"test">
 >             ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type Tuple2 = Tupleify<"test.property">
->    ^^^^^^: "test.property" extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : ["test.property"]   (TyConditional) (TSTypeAliasDeclaration)
-   expected: ["test", "property"]
+>    ^^^^^^: ["test", "property"]   (TyTuple) (TSTypeAliasDeclaration)
 
 type Tuple2 = Tupleify<"test.property">
 >             ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type Tuple3 = Tupleify<"test.property.another">
->    ^^^^^^: "test.property.another" extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : ["test.property.another"]   (TyConditional) (TSTypeAliasDeclaration)
-   expected: ["test", "property", "another"]
+>    ^^^^^^: ["test", "property", "another"]   (TyTuple) (TSTypeAliasDeclaration)
 
 type Tuple3 = Tupleify<"test.property.another">
 >             ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type Tuple4 = Tupleify<".property.another">
->    ^^^^^^: ".property.another" extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [".property.another"]   (TyConditional) (TSTypeAliasDeclaration)
-   expected: ["", "property", "another"]
+>    ^^^^^^: ["", "property", "another"]   (TyTuple) (TSTypeAliasDeclaration)
 
 type Tuple4 = Tupleify<".property.another">
 >             ^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type T0 = "user" extends `${infer K}` ? K : never
->    ^^: "user" extends `${infer K}` ? K : never   (TyConditional) (TSTypeAliasDeclaration)
-expected: "user"
+>    ^^: "user"   (TyStringLiteral) (TSTypeAliasDeclaration)
 
 type T0 = "user" extends `${infer K}` ? K : never
 >                                 ^: any   (TyAny) (TSTypeParameter)
@@ -83,8 +77,7 @@ type T0 = "user" extends `${infer K}` ? K : never
 >                                       ^: any   (TyAny) (TSTypeReference)
 
 type T1 = "user.name" extends `${infer K}.${infer R}` ? true : false
->    ^^: "user.name" extends `${infer K}.${infer R}` ? true : false   (TyConditional) (TSTypeAliasDeclaration)
-expected: true
+>    ^^: true   (TyBooleanLiteral) (TSTypeAliasDeclaration)
 
 type T1 = "user.name" extends `${infer K}.${infer R}` ? true : false
 >                                      ^: any   (TyAny) (TSTypeParameter)
@@ -93,8 +86,7 @@ type T1 = "user.name" extends `${infer K}.${infer R}` ? true : false
 >                                                 ^: any   (TyAny) (TSTypeParameter)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->    ^^: "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never   (TyConditional) (TSTypeAliasDeclaration)
-expected: { name: string; }
+>    ^^: { name: string; }   (TyObject) (TSTypeAliasDeclaration)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
 >                                      ^: any   (TyAny) (TSTypeParameter)
@@ -121,8 +113,7 @@ type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pic
 >                                                                                       ^: any   (TyAny) (TSTypeReference)
 
 type T3 = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
->    ^^: Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3] ? P2 extends UserKeys ? P3 extends keyof User[P2] ? Pick<User[P2], P3> : never : never : never   (TyConditional) (TSTypeAliasDeclaration)
-expected: { city: string; }
+>    ^^: { city: string; }   (TyObject) (TSTypeAliasDeclaration)
 
 type T3 = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
 >         ^^^^^^^^: any   (TyAny) (TSTypeReference)

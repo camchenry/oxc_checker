@@ -2885,6 +2885,81 @@ fn infer_types_resolve_when_concrete() {
 }
 
 #[test]
+fn conditional_infer_extracts_template_literal_segments() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    type Whole = "user" extends `${infer K}` ? K : never;
+    type Split = "user.name" extends `${infer K}.${infer R}` ? [K, R] : never;
+    type LeadingEmpty = ".property" extends `${infer K}.${infer R}` ? [K, R] : never;
+    type Adjacent = "abc" extends `${infer A}${infer B}` ? [A, B] : never;
+    type NoMatch = "user" extends `prefix.${infer R}` ? R : "no";
+    type User = { name: string; address: { city: string } };
+    type UserKeys = keyof User;
+    type NestedAlias = "user.name" extends `${infer K}.${infer R}`
+        ? R extends UserKeys ? Pick<User, R> : never
+        : never;
+    type Tupleify<T extends string> = T extends `${infer K}.${infer R}`
+        ? [K, ...Tupleify<R>]
+        : [T];
+    type TupleMatch = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
+        ? [P1, P2, P3]
+        : never;
+    type NestedTuple = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
+        ? P2 extends UserKeys
+            ? P3 extends keyof User[P2] ? "yes" : "p3-no"
+            : "p2-no"
+        : "tuple-no";
+    type KeyFormat = "jwk" | "pkcs8" | "raw" | "spki";
+    type ExcludeValue<T, U> = T extends U ? never : T;
+    type Formats = ExcludeValue<KeyFormat, "jwk">;
+    "#,
+    );
+
+    assert_eq!(
+        get_type_alias_type(&ret, "Whole").to_type_string(ret.arena),
+        "\"user\""
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "Split").to_type_string(ret.arena),
+        "[\"user\", \"name\"]"
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "LeadingEmpty").to_type_string(ret.arena),
+        "[\"\", \"property\"]"
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "Adjacent").to_type_string(ret.arena),
+        "[\"a\", \"bc\"]"
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "NoMatch").to_type_string(ret.arena),
+        "\"no\""
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "Tupleify").to_type_string(ret.arena),
+        "T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]"
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "TupleMatch").to_type_string(ret.arena),
+        "[\"user\", \"address\", \"city\"]"
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "NestedTuple").to_type_string(ret.arena),
+        "\"yes\""
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "NestedAlias").to_type_string(ret.arena),
+        "{ name: string; }"
+    );
+    assert_eq!(
+        get_type_alias_type(&ret, "Formats").to_type_string(ret.arena),
+        "\"pkcs8\" | \"raw\" | \"spki\""
+    );
+}
+
+#[test]
 fn conditional_infer_extracts_object_property_type() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
