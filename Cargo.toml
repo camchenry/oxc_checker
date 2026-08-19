@@ -125,6 +125,9 @@ path = "src/examples/type_check.rs"
 [profile.bench]
 debug = true
 
+[profile.test]
+opt-level = 1
+
 [profile.release-with-debug]
 inherits = "release"
 debug = true
