@@ -523,6 +523,11 @@ function typeToString(
   return checker.typeToString(type, node, (flags || 0) | conformanceTypeFormatFlags());
 }
 
+function isTypeScriptGoPanic(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("panic:");
+}
+
 function collectRecords(
   checker: Checker,
   sourceFile: TypeScriptSourceFile,
@@ -536,7 +541,15 @@ function collectRecords(
     if (!node) {
       continue;
     }
-    const record = recordForNode(checker, sourceFile, relativePath, node, byteOffsets);
+    let record: string | undefined;
+    try {
+      record = recordForNode(checker, sourceFile, relativePath, node, byteOffsets);
+    } catch (error) {
+      // TODO: Remove this and try to fix underlying issues in the API.
+      if (!isTypeScriptGoPanic(error)) {
+        throw error;
+      }
+    }
     if (record) {
       records.push(record);
     }
