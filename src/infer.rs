@@ -683,20 +683,6 @@ fn get_common_supertype<'a, 'store>(
         return Ty::union(arena, candidates.iter().copied());
     }
 
-    get_single_common_supertype(checker, candidates)
-}
-
-fn get_single_common_supertype<'a, 'store>(
-    checker: &CheckerReturn<'a, 'store>,
-    candidates: &[Ty<'a>],
-) -> Ty<'a> {
-    let arena = checker.arena();
-    let candidate = find_leftmost_type(checker, candidates);
-    if candidates.iter().all(|ty| {
-        arena.is_type_identical_to(*ty, candidate) || checker.is_assignable_to(*ty, candidate)
-    }) {
-        return candidate;
-    }
     find_leftmost_type(checker, candidates)
 }
 
@@ -1354,6 +1340,29 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         type_arguments: Option<&'a TSTypeParameterInstantiation<'a>>,
         argument_types: impl IntoIterator<Item = (usize, Ty<'a>)>,
     ) -> InferenceResolution<'a> {
+        let type_pairs = argument_types
+            .into_iter()
+            .filter_map(|(index, argument_type)| {
+                function_parameter_type_at_call_index(self.arena(), function, index)
+                    .map(|parameter_type| (parameter_type, argument_type))
+            });
+        self.infer_type_parameter_resolution_from_type_pairs(
+            program_id,
+            function,
+            type_arguments,
+            type_pairs,
+            InferenceResolutionFlags::NONE,
+        )
+    }
+
+    fn infer_type_parameter_resolution_from_type_pairs(
+        &self,
+        program_id: ProgramId,
+        function: &'a TyFunction<'a>,
+        type_arguments: Option<&'a TSTypeParameterInstantiation<'a>>,
+        type_pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
+        flags: InferenceResolutionFlags,
+    ) -> InferenceResolution<'a> {
         let (substitutions, _) =
             self.explicit_type_parameter_substitutions(program_id, function, type_arguments);
         let mut context = InferenceContext::with_substitutions(
@@ -1364,18 +1373,13 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         .with_return_type(
             self.inference_return_type_for_literal_widening(program_id, function.return_type),
         );
-        for (argument_index, argument_type) in argument_types {
-            let Some(parameter_type) =
-                function_parameter_type_at_call_index(self.arena(), function, argument_index)
-            else {
-                continue;
-            };
+        for (parameter_type, argument_type) in type_pairs {
             let argument_type =
                 self.get_inference_argument_type(program_id, parameter_type, argument_type);
             self.infer_types(parameter_type, argument_type, &mut context);
         }
 
-        context.resolve_with_contextual_mapper(self, InferenceResolutionFlags::NONE)
+        context.resolve_with_contextual_mapper(self, flags)
     }
 
     pub(crate) fn infer_function_return_type(
@@ -1535,47 +1539,33 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         function: &'a TyFunction<'a>,
         new_expression: &'a NewExpression<'a>,
     ) -> InferenceResolution<'a> {
-        let (substitutions, _) = self.explicit_type_parameter_substitutions(
-            program_id,
-            function,
-            new_expression.type_arguments.as_deref(),
-        );
-        let mut context = InferenceContext::with_substitutions(
-            function.type_parameters.iter().copied(),
-            &substitutions,
-            self.arena(),
-        )
-        .with_return_type(
-            self.inference_return_type_for_literal_widening(program_id, function.return_type),
-        );
-        for (argument, parameter) in new_expression
+        let type_pairs = new_expression
             .arguments
             .iter()
             .zip(function.parameters.iter())
-        {
-            let Some(argument) = argument.as_expression() else {
-                continue;
-            };
-            let flags = if self.could_contain_type_variables(parameter.ty) {
-                GetTypeFlags::PRESERVE_LITERALS
-            } else {
-                GetTypeFlags::NONE
-            };
-            let contextual_type = self.inference_contextual_parameter_type(function, parameter.ty);
-            let argument_type = self.get_type_of_call_argument_for_parameter(
-                program_id,
-                argument,
-                None,
-                contextual_type,
-                flags,
-            );
-            let argument_type =
-                self.get_inference_argument_type(program_id, parameter.ty, argument_type);
-            self.infer_types(parameter.ty, argument_type, &mut context);
-        }
-
-        context.resolve_with_contextual_mapper(
-            self,
+            .filter_map(|(argument, parameter)| {
+                let argument = argument.as_expression()?;
+                let flags = if self.could_contain_type_variables(parameter.ty) {
+                    GetTypeFlags::PRESERVE_LITERALS
+                } else {
+                    GetTypeFlags::NONE
+                };
+                let contextual_type =
+                    self.inference_contextual_parameter_type(function, parameter.ty);
+                let argument_type = self.get_type_of_call_argument_for_parameter(
+                    program_id,
+                    argument,
+                    None,
+                    contextual_type,
+                    flags,
+                );
+                Some((parameter.ty, argument_type))
+            });
+        self.infer_type_parameter_resolution_from_type_pairs(
+            program_id,
+            function,
+            new_expression.type_arguments.as_deref(),
+            type_pairs,
             InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
         )
     }

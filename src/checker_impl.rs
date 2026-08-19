@@ -10274,6 +10274,114 @@ impl<'a, 'store> CheckerReturn<'a, 'store> {
         }
     }
 
+    fn get_declared_type_of_declaration(&self, symbol: SymbolRef, declaration: NodeId) -> Ty<'a> {
+        let declaration_kind = self.nodes(symbol.program_id).kind(declaration);
+        let binding_pattern = BindingPatternKind::from_ast_kind(declaration_kind);
+        match declaration_kind {
+            AstKind::FormalParameter(parameter) => binding_pattern
+                .and_then(|binding_pattern| {
+                    self.get_type_of_binding_pattern(
+                        symbol.program_id,
+                        declaration,
+                        binding_pattern,
+                        symbol.symbol_id,
+                    )
+                })
+                .unwrap_or_else(|| match parameter.type_annotation.as_deref() {
+                    Some(annotation) => self.get_declared_type_of_formal_parameter(
+                        symbol.program_id,
+                        parameter,
+                        annotation,
+                    ),
+                    None => self
+                        .get_contextual_type_of_formal_parameter(
+                            symbol.program_id,
+                            declaration,
+                            parameter,
+                        )
+                        .unwrap_or_else(Ty::any),
+                }),
+            AstKind::FormalParameterRest(parameter) => binding_pattern
+                .and_then(|binding_pattern| {
+                    self.get_type_of_binding_pattern(
+                        symbol.program_id,
+                        declaration,
+                        binding_pattern,
+                        symbol.symbol_id,
+                    )
+                })
+                .unwrap_or_else(|| {
+                    self.get_type_from_ts_type_annotation(
+                        symbol.program_id,
+                        parameter.type_annotation.as_deref(),
+                    )
+                }),
+            AstKind::CatchParameter(parameter) => {
+                parameter
+                    .type_annotation
+                    .as_deref()
+                    .map_or_else(Ty::unknown, |annotation| {
+                        self.get_type_from_ts_type_annotation(symbol.program_id, Some(annotation))
+                    })
+            }
+            AstKind::PropertyDefinition(property) => {
+                self.get_type_of_property_definition(symbol.program_id, property, Some(declaration))
+            }
+            AstKind::Function(function) => self.get_type_of_function_declaration_group(
+                symbol.program_id,
+                function,
+                declaration,
+            ),
+            AstKind::ArrowFunctionExpression(arrow_func_expr) => self
+                .get_type_of_function_signature_with_node(
+                    symbol.program_id,
+                    FunctionKind::ArrowFunction(arrow_func_expr),
+                    Some(declaration),
+                ),
+            AstKind::AccessorProperty(property) => self.get_type_from_ts_type_annotation(
+                symbol.program_id,
+                property.type_annotation.as_deref(),
+            ),
+            AstKind::TSTypeAliasDeclaration(alias)
+                if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
+            {
+                self.get_type_of_type_alias_declaration(symbol.program_id, alias)
+            }
+            AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
+            AstKind::TSEnumDeclaration(declaration) => {
+                self.get_type_of_enum_declaration(symbol.program_id, declaration)
+            }
+            AstKind::TSModuleDeclaration(module) => match &module.id {
+                TSModuleDeclarationName::Identifier(_) => {
+                    self.get_type_of_namespace_declaration(symbol.program_id, module)
+                }
+                TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
+            },
+            AstKind::BindingIdentifier(_) => self
+                .get_type_of_binding_identifier_from_binding_pattern(
+                    symbol.program_id,
+                    declaration,
+                    symbol.symbol_id,
+                )
+                .unwrap_or_else(|| {
+                    let parent = self.nodes(symbol.program_id).parent_id(declaration);
+                    self.get_declared_type_of_declaration(symbol, parent)
+                }),
+            AstKind::Class(class) => self.get_type_of_class_declaration(symbol.program_id, class),
+            AstKind::TSInterfaceDeclaration(interface) => {
+                self.get_declared_type_of_interface(symbol.program_id, interface)
+            }
+            AstKind::TSImportEqualsDeclaration(declaration) => {
+                self.get_type_of_ts_import_equals_declaration(symbol.program_id, declaration)
+            }
+            // TODO
+            AstKind::ImportSpecifier(_)
+            | AstKind::ImportDefaultSpecifier(_)
+            | AstKind::ImportNamespaceSpecifier(_) => Ty::any(),
+            _ => Ty::none(),
+        }
+    }
+
     fn simple_binding_symbol(
         &self,
         program_id: ProgramId,
@@ -12701,188 +12809,21 @@ impl<'a> Checker<'a> for CheckerReturn<'a, '_> {
         }
 
         let ty = if let Some((declaration, declarator)) = self.variable_declarator_for_symbol(sym) {
-            return self
-                .get_type_of_binding_pattern(
-                    sym.program_id,
-                    declaration,
-                    BindingPatternKind::VariableDeclarator(declarator),
-                    sym.symbol_id,
-                )
-                .unwrap_or_else(|| {
-                    self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
-                });
+            self.get_type_of_binding_pattern(
+                sym.program_id,
+                declaration,
+                BindingPatternKind::VariableDeclarator(declarator),
+                sym.symbol_id,
+            )
+            .unwrap_or_else(|| {
+                self.get_type_of_variable_declarator(sym.program_id, declaration, declarator)
+            })
         } else {
             let declaration = self
                 .semantic(sym.program_id)
                 .scoping()
                 .symbol_declaration(sym.symbol_id);
-            let declaration_kind = self.nodes(sym.program_id).kind(declaration);
-            let binding_pattern = BindingPatternKind::from_ast_kind(declaration_kind);
-            match declaration_kind {
-                AstKind::VariableDeclarator(declarator) => binding_pattern
-                    .and_then(|binding_pattern| {
-                        self.get_type_of_binding_pattern(
-                            sym.program_id,
-                            declaration,
-                            binding_pattern,
-                            sym.symbol_id,
-                        )
-                    })
-                    .unwrap_or_else(|| {
-                        self.get_type_of_variable_declarator(
-                            sym.program_id,
-                            declaration,
-                            declarator,
-                        )
-                    }),
-                AstKind::FormalParameter(parameter) => binding_pattern
-                    .and_then(|binding_pattern| {
-                        self.get_type_of_binding_pattern(
-                            sym.program_id,
-                            declaration,
-                            binding_pattern,
-                            sym.symbol_id,
-                        )
-                    })
-                    .unwrap_or_else(|| match parameter.type_annotation.as_deref() {
-                        Some(annotation) => self.get_declared_type_of_formal_parameter(
-                            sym.program_id,
-                            parameter,
-                            annotation,
-                        ),
-                        None => self
-                            .get_contextual_type_of_formal_parameter(
-                                sym.program_id,
-                                declaration,
-                                parameter,
-                            )
-                            .unwrap_or_else(Ty::any),
-                    }),
-                AstKind::FormalParameterRest(parameter) => binding_pattern
-                    .and_then(|binding_pattern| {
-                        self.get_type_of_binding_pattern(
-                            sym.program_id,
-                            declaration,
-                            binding_pattern,
-                            sym.symbol_id,
-                        )
-                    })
-                    .unwrap_or_else(|| {
-                        self.get_type_from_ts_type_annotation(
-                            sym.program_id,
-                            parameter.type_annotation.as_deref(),
-                        )
-                    }),
-                AstKind::CatchParameter(parameter) => parameter
-                    .type_annotation
-                    .as_deref()
-                    .map_or_else(Ty::unknown, |annotation| {
-                        self.get_type_from_ts_type_annotation(sym.program_id, Some(annotation))
-                    }),
-                AstKind::PropertyDefinition(property) => self.get_type_of_property_definition(
-                    sym.program_id,
-                    property,
-                    Some(declaration),
-                ),
-                AstKind::Function(function) => self.get_type_of_function_declaration_group(
-                    sym.program_id,
-                    function,
-                    declaration,
-                ),
-                AstKind::ArrowFunctionExpression(arrow_func_expr) => self
-                    .get_type_of_function_signature_with_node(
-                        sym.program_id,
-                        FunctionKind::ArrowFunction(arrow_func_expr),
-                        Some(declaration),
-                    ),
-                AstKind::AccessorProperty(property) => self.get_type_from_ts_type_annotation(
-                    sym.program_id,
-                    property.type_annotation.as_deref(),
-                ),
-                AstKind::TSTypeAliasDeclaration(alias)
-                    if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
-                {
-                    self.get_type_of_type_alias_declaration(sym.program_id, alias)
-                }
-                AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
-                AstKind::TSEnumDeclaration(declaration) => {
-                    self.get_type_of_enum_declaration(sym.program_id, declaration)
-                }
-                AstKind::TSModuleDeclaration(module) => match &module.id {
-                    TSModuleDeclarationName::Identifier(_) => {
-                        self.get_type_of_namespace_declaration(sym.program_id, module)
-                    }
-                    TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
-                },
-                AstKind::BindingIdentifier(_) => {
-                    if let Some(ty) = self.get_type_of_binding_identifier_from_binding_pattern(
-                        sym.program_id,
-                        declaration,
-                        sym.symbol_id,
-                    ) {
-                        return ty;
-                    }
-
-                    match self.nodes(sym.program_id).parent_kind(declaration) {
-                        AstKind::TSInterfaceDeclaration(interface) => {
-                            self.get_declared_type_of_interface(sym.program_id, interface)
-                        }
-                        AstKind::Class(class) => {
-                            self.get_type_of_class_declaration(sym.program_id, class)
-                        }
-                        AstKind::Function(function) => self.get_type_of_function_declaration_group(
-                            sym.program_id,
-                            function,
-                            self.nodes(sym.program_id).parent_id(declaration),
-                        ),
-                        AstKind::VariableDeclarator(declarator) => self
-                            .get_type_of_variable_declarator(
-                                sym.program_id,
-                                self.nodes(sym.program_id).parent_id(declaration),
-                                declarator,
-                            ),
-                        AstKind::ArrowFunctionExpression(arrow_func_expr) => self
-                            .get_type_of_function_signature_with_node(
-                                sym.program_id,
-                                FunctionKind::ArrowFunction(arrow_func_expr),
-                                Some(declaration),
-                            ),
-                        AstKind::TSTypeAliasDeclaration(alias)
-                            if matches!(alias.type_annotation, TSType::TSTypeQuery(_)) =>
-                        {
-                            self.get_type_of_type_alias_declaration(sym.program_id, alias)
-                        }
-                        AstKind::TSTypeAliasDeclaration(_) => Ty::none(),
-                        AstKind::TSEnumDeclaration(declaration) => {
-                            self.get_type_of_enum_declaration(sym.program_id, declaration)
-                        }
-                        AstKind::TSModuleDeclaration(module) => match &module.id {
-                            TSModuleDeclarationName::Identifier(_) => {
-                                self.get_type_of_namespace_declaration(sym.program_id, module)
-                            }
-                            TSModuleDeclarationName::StringLiteral(_) => Ty::none(),
-                        },
-                        AstKind::TSImportEqualsDeclaration(import_equals) => self
-                            .get_type_of_ts_import_equals_declaration(
-                                sym.program_id,
-                                import_equals,
-                            ),
-                        _ => Ty::none(),
-                    }
-                }
-                AstKind::Class(class) => self.get_type_of_class_declaration(sym.program_id, class),
-                AstKind::TSInterfaceDeclaration(interface) => {
-                    self.get_declared_type_of_interface(sym.program_id, interface)
-                }
-                AstKind::TSImportEqualsDeclaration(declaration) => {
-                    self.get_type_of_ts_import_equals_declaration(sym.program_id, declaration)
-                }
-                // TODO
-                AstKind::ImportSpecifier(_)
-                | AstKind::ImportDefaultSpecifier(_)
-                | AstKind::ImportNamespaceSpecifier(_) => Ty::any(),
-                _ => Ty::none(),
-            }
+            self.get_declared_type_of_declaration(sym, declaration)
         };
 
         self.cache_symbol_type(&self.declared_type_cache, sym, ty);
