@@ -489,17 +489,18 @@ fn narrow_by_condition<'a>(
         return current_type;
     };
 
-    if let Some(mut effective_true) =
-        undefined_equality_guard(checker, node.program_id, symbol, binary)
+    if let Some((kind, mut effective_true)) =
+        nullish_equality_guard(checker, node.program_id, symbol, binary)
     {
         effective_true = effective_true == assume_true;
-        return narrow_by_undefined_equality(checker, node, current_type, effective_true);
-    }
-
-    if let Some(mut effective_true) = null_equality_guard(checker, node.program_id, symbol, binary)
-    {
-        effective_true = effective_true == assume_true;
-        return narrow_by_null_equality(checker, node, current_type, effective_true);
+        return match kind {
+            NullishEqualityKind::Null => {
+                narrow_by_null_equality(checker, node, current_type, effective_true)
+            }
+            NullishEqualityKind::Undefined => {
+                narrow_by_undefined_equality(checker, node, current_type, effective_true)
+            }
+        };
     }
 
     if let Some((target, property_name, mut effective_true)) = in_guard(binary) {
@@ -637,13 +638,18 @@ fn narrow_by_call_type_predicate<'a>(
     checker.with_implicit_type_arguments_visible(target_type)
 }
 
-/// Recognize `x === undefined` / `x !== undefined` and reversed-operand equivalents.
-fn undefined_equality_guard(
+#[derive(Clone, Copy)]
+enum NullishEqualityKind {
+    Null,
+    Undefined,
+}
+
+fn nullish_equality_guard(
     checker: &CheckerReturn<'_, '_>,
     program_id: ProgramId,
     symbol: SymbolRef,
     binary: &oxc_ast::ast::BinaryExpression<'_>,
-) -> Option<bool> {
+) -> Option<(NullishEqualityKind, bool)> {
     let equality = match binary.operator {
         BinaryOperator::Equality | BinaryOperator::StrictEquality => true,
         BinaryOperator::Inequality | BinaryOperator::StrictInequality => false,
@@ -652,17 +658,22 @@ fn undefined_equality_guard(
 
     let left = skip_parentheses(&binary.left);
     let right = skip_parentheses(&binary.right);
-    if expression_matches_symbol(checker, program_id, symbol, left)
-        && checker.is_global_undefined_expression(program_id, right)
-    {
-        return Some(equality);
+    let nullish_kind = |expression: &Expression<'_>| {
+        if checker.is_global_undefined_expression(program_id, expression) {
+            Some(NullishEqualityKind::Undefined)
+        } else if matches!(expression, Expression::NullLiteral(_)) {
+            Some(NullishEqualityKind::Null)
+        } else {
+            None
+        }
+    };
+    if expression_matches_symbol(checker, program_id, symbol, left) {
+        nullish_kind(right).map(|kind| (kind, equality))
+    } else if expression_matches_symbol(checker, program_id, symbol, right) {
+        nullish_kind(left).map(|kind| (kind, equality))
+    } else {
+        None
     }
-    if expression_matches_symbol(checker, program_id, symbol, right)
-        && checker.is_global_undefined_expression(program_id, left)
-    {
-        return Some(equality);
-    }
-    None
 }
 
 fn narrow_by_undefined_equality<'a>(
@@ -678,34 +689,6 @@ fn narrow_by_undefined_equality<'a>(
         return filter_type(checker, ty, |ty| matches!(ty, Ty::Undefined | Ty::Void));
     }
     remove_undefined_from_type(checker, node, ty)
-}
-
-/// Recognize `x === null` / `x !== null` and reversed-operand equivalents.
-fn null_equality_guard(
-    checker: &CheckerReturn<'_, '_>,
-    program_id: ProgramId,
-    symbol: SymbolRef,
-    binary: &oxc_ast::ast::BinaryExpression<'_>,
-) -> Option<bool> {
-    let equality = match binary.operator {
-        BinaryOperator::Equality | BinaryOperator::StrictEquality => true,
-        BinaryOperator::Inequality | BinaryOperator::StrictInequality => false,
-        _ => return None,
-    };
-
-    let left = skip_parentheses(&binary.left);
-    let right = skip_parentheses(&binary.right);
-    if expression_matches_symbol(checker, program_id, symbol, left)
-        && matches!(right, Expression::NullLiteral(_))
-    {
-        return Some(equality);
-    }
-    if expression_matches_symbol(checker, program_id, symbol, right)
-        && matches!(left, Expression::NullLiteral(_))
-    {
-        return Some(equality);
-    }
-    None
 }
 
 fn narrow_by_null_equality<'a>(

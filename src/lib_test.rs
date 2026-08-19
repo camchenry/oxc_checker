@@ -1708,6 +1708,31 @@ fn flow_narrows_undefined_equality_conditional_expression_arms() {
 }
 
 #[test]
+fn flow_narrows_reversed_null_equality_conditional_expression_arms() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+    declare const value: string | null;
+    const whenNull = null === value ? value : '';
+    const whenString = null !== value ? value : '';
+    ",
+    );
+    let arena = arena(&ret);
+
+    assert_type_eq(
+        arena,
+        &get_identifier_reference_types(&ret, "value"),
+        &vec![
+            Ty::union(arena, [Ty::string(), Ty::null()]),
+            Ty::null(),
+            Ty::union(arena, [Ty::string(), Ty::null()]),
+            Ty::string(),
+        ],
+    );
+}
+
+#[test]
 fn flow_write_invalidates_previous_narrowing() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

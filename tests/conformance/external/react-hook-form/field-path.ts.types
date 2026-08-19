@@ -71,8 +71,7 @@ export type ArrayKey = number
 >           ^^^^^^^^: number   (TyNumber) (TSTypeAliasDeclaration)
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
->           ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeAliasDeclaration)
-              expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+>           ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeAliasDeclaration)
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
 >                      ^^: any   (TyAny) (TSTypeParameter)
@@ -105,8 +104,7 @@ export type AnyIsEqual<T1, T2> = T1 extends T2
 >                                                              ^^: any   (TyAny) (TSTypeReference)
 
   AnyIsEqual,
-> ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (BindingIdentifier)
-    expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+> ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (BindingIdentifier)
 
   ArrayKey,
 > ^^^^^^^^: number   (TyNumber) (BindingIdentifier)
@@ -158,12 +156,10 @@ type PathImpl<K extends string | number, V, TraversedTypes> = V extends
 >      ^: any   (TyAny) (TSTypeReference)
 
   : true extends AnyIsEqual<TraversedTypes, V>
->                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeReference)
-                   expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+>                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeReference)
 
   : true extends AnyIsEqual<TraversedTypes, V>
->                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (IdentifierReference)
-                   expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+>                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (IdentifierReference)
 
   : true extends AnyIsEqual<TraversedTypes, V>
 >                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -518,12 +514,10 @@ type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 >                           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (IdentifierReference)
 
       : true extends AnyIsEqual<TraversedTypes, V>
->                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeReference)
-                       expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+>                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeReference)
 
       : true extends AnyIsEqual<TraversedTypes, V>
->                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (IdentifierReference)
-                       expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+>                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (IdentifierReference)
 
       : true extends AnyIsEqual<TraversedTypes, V>
 >                               ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -550,12 +544,10 @@ type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
 >                                                                ^: any   (TyAny) (TSTypeReference)
 
     : true extends AnyIsEqual<TraversedTypes, V>
->                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (TSTypeReference)
-                     expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+>                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeReference)
 
     : true extends AnyIsEqual<TraversedTypes, V>
->                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2 ? true : never : never   (TyConditional) (IdentifierReference)
-                     expected: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never
+>                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (IdentifierReference)
 
     : true extends AnyIsEqual<TraversedTypes, V>
 >                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)

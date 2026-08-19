@@ -520,6 +520,43 @@ fn union_display_parenthesizes_function_members() {
 }
 
 #[test]
+fn conditional_display_parenthesizes_conditional_return_of_function_extends_type() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+    let conditional = Ty::conditional(
+        arena,
+        Ty::type_reference(arena, "T", []),
+        Ty::string(),
+        Ty::number(),
+        Ty::boolean(),
+        true,
+    );
+    let function = Ty::function(arena, [], [], conditional);
+    let other_conditional = Ty::conditional(
+        arena,
+        Ty::type_reference(arena, "U", []),
+        Ty::string(),
+        Ty::number(),
+        Ty::boolean(),
+        true,
+    );
+    let other_function = Ty::function(arena, [], [], other_conditional);
+    let outer_conditional = Ty::conditional(
+        arena,
+        function,
+        other_function,
+        Ty::boolean_true(),
+        Ty::never(),
+        true,
+    );
+
+    assert_eq!(
+        outer_conditional.to_type_string(arena),
+        "(() => T extends string ? number : boolean) extends () => (U extends string ? number : boolean) ? true : never"
+    );
+}
+
+#[test]
 fn object_method_display_uses_signature_syntax() {
     let allocator = Allocator::default();
     let arena = arena(&allocator);

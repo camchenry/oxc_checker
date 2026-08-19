@@ -30,6 +30,7 @@ bitflags! {
         const WRITE_ARRAY_AS_GENERIC_TYPE = 1 << 0;
         const PRESERVE_PROPERTY_NAME_QUOTES = 1 << 1;
         const USE_SINGLE_QUOTES_FOR_STRING_LITERAL = 1 << 2;
+        const PARENTHESIZE_CONDITIONAL_RETURN = 1 << 3;
     }
 }
 
@@ -2628,7 +2629,12 @@ impl<'a> Ty<'a> {
                 let extends_type = conditional.extends_type.to_type_string_with_flags(
                     arena,
                     replace_type_reference,
-                    flags,
+                    flags
+                        | if conditional.extends_type.is_function(arena) {
+                            TypeFormatFlags::PARENTHESIZE_CONDITIONAL_RETURN
+                        } else {
+                            TypeFormatFlags::NONE
+                        },
                     depth,
                 );
                 let check_type = if conditional.check_type.display_needs_parentheses(arena) {
@@ -3027,7 +3033,7 @@ fn function_return_type_to_string<'a>(
     flags: TypeFormatFlags,
     depth: &Cell<usize>,
 ) -> String {
-    function.type_predicate.map_or_else(
+    let return_type = function.type_predicate.map_or_else(
         || {
             function.return_type.to_type_string_with_flags(
                 arena,
@@ -3039,7 +3045,15 @@ fn function_return_type_to_string<'a>(
         |predicate| {
             type_predicate_to_type_string(arena, predicate, replace_type_reference, flags, depth)
         },
-    )
+    );
+    if flags.contains(TypeFormatFlags::PARENTHESIZE_CONDITIONAL_RETURN)
+        && function.type_predicate.is_none()
+        && matches!(arena.ty_kind(function.return_type), TyKind::Conditional(_))
+    {
+        format!("({return_type})")
+    } else {
+        return_type
+    }
 }
 
 fn type_predicate_to_type_string<'a>(

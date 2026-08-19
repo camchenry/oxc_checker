@@ -5,8 +5,7 @@ export type Depth = 'flat' | 'deep'
 >           ^^^^^: "flat" | "deep"   (TyUnion) (TSTypeAliasDeclaration)
 
 export type Equals<A1 extends any, A2 extends any> =
->           ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional) (TSTypeAliasDeclaration)
-          expected: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0
+>           ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (TSTypeAliasDeclaration)
 
 export type Equals<A1 extends any, A2 extends any> =
 >                  ^^: any   (TyAny) (TSTypeParameter)
@@ -126,8 +125,7 @@ import type { PatchFlat } from './Patch'
 >             ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (TyMapped) (BindingIdentifier)
 
 import type { Equals } from '../Any/Equals'
->             ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional) (BindingIdentifier)
-            expected: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0
+>             ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (BindingIdentifier)
 
 export type OptionalFlat<O> = {
 >           ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped) (TSTypeAliasDeclaration)
@@ -271,12 +269,10 @@ export type Optional<
 >                                               ^: any   (TyAny) (TSTypeReference)
 
 }[Equals<Key, K>]
-> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional) (TSTypeReference)
-expected: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (TSTypeReference)
 
 }[Equals<Key, K>]
-> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => A extends A1 ? 1 : 0 ? 1 : 0   (TyConditional) (IdentifierReference)
-expected: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (IdentifierReference)
 
 }[Equals<Key, K>]
 >        ^^^: string | number | symbol   (TyUnion) (TSTypeReference)
