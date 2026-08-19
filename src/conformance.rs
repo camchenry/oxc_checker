@@ -19,7 +19,10 @@ use oxc_ast::{
     AstKind, AstType,
     ast::{BindingPattern, Expression, MethodDefinitionKind, PropertyKey, Statement},
 };
-use oxc_ast_visit::{Visit, walk::walk_object_pattern};
+use oxc_ast_visit::{
+    Visit,
+    walk::{walk_assignment_target_property_property, walk_object_pattern},
+};
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
@@ -1941,6 +1944,19 @@ impl<'a> Visit<'a> for BindingPropertyCollector {
                 .push((span, identifier.node_id.get(), text.to_string()));
         }
         walk_object_pattern(self, pattern);
+    }
+
+    fn visit_assignment_target_property_property(
+        &mut self,
+        property: &oxc_ast::ast::AssignmentTargetPropertyProperty<'a>,
+    ) {
+        if let Some((span, text)) = identifier_property_key_span_and_text(&property.name)
+            && let Some(identifier) = property.binding.identifier()
+        {
+            self.properties
+                .push((span, identifier.node_id.get(), text.to_string()));
+        }
+        walk_assignment_target_property_property(self, property);
     }
 }
 

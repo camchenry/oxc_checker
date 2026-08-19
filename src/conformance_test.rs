@@ -237,6 +237,25 @@ fn renamed_object_binding_keys_use_the_bound_property_type() {
 }
 
 #[test]
+fn renamed_object_assignment_keys_use_the_target_type() {
+    let source_text =
+        "let source: { value: string }; let renamed: string; ({ value: renamed } = source);";
+    let key_start = u32::try_from(source_text.find("value: renamed").unwrap()).unwrap();
+    let records = collect_oxc_records_from_source(
+        Path::new("tests/conformance/cases"),
+        Path::new("tests/conformance/cases/compiler/renamedAssignment.ts"),
+        source_text,
+    );
+    let key_records = records
+        .iter()
+        .filter(|record| record.start == key_start && record.text == "value")
+        .collect::<Vec<_>>();
+
+    assert_eq!(key_records.len(), 1);
+    assert_eq!(key_records[0].ty_repr, "string");
+}
+
+#[test]
 fn explicit_virtual_module_files_do_not_merge_same_named_interfaces() {
     let source_text = "// @filename: a.ts\ninterface MyThenable { then(onFulfilled: () => void): MyThenable; }\n// @filename: b.ts\ninterface MyThenable { then(onFulfilled: () => void): MyThenable; }";
 
