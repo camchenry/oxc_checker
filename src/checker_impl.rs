@@ -12700,6 +12700,10 @@ impl<'a> Checker<'a, '_> {
             AstKind::PropertyDefinition(property) => {
                 self.get_type_of_property_definition(node.program_id, property, Some(node.node_id))
             }
+            AstKind::AccessorProperty(property) => self.get_type_from_ts_type_annotation(
+                node.program_id,
+                property.type_annotation.as_deref(),
+            ),
             AstKind::TSTypeAliasDeclaration(alias) => {
                 let ty = self.get_type_of_type_alias_declaration(node.program_id, alias);
                 if ty.is_none() { self.ty.any() } else { ty }

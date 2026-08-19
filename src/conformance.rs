@@ -2246,6 +2246,14 @@ fn actual_identifier_record<'a>(
                 checker.get_type_at_location(node_ref),
             )
         }
+        AstKind::AccessorProperty(property) => {
+            let (span, text) = identifier_property_key_span_and_text(&property.key)?;
+            (
+                span,
+                Cow::Borrowed(text),
+                checker.get_type_at_location(node_ref),
+            )
+        }
         AstKind::TSTypeAliasDeclaration(alias) => (
             alias.id.span,
             Cow::Borrowed(alias.id.name.as_str()),
@@ -2386,6 +2394,7 @@ fn conformance_ast_type_name(ast_type: AstType) -> &'static str {
         AstType::ExportSpecifier => "ExportSpecifier",
         AstType::TSThisParameter => "TSThisParameter",
         AstType::PropertyDefinition => "PropertyDefinition",
+        AstType::AccessorProperty => "AccessorProperty",
         AstType::TSTypeAliasDeclaration => "TSTypeAliasDeclaration",
         AstType::TSImportEqualsDeclaration => "TSImportEqualsDeclaration",
         AstType::TSInterfaceDeclaration => "TSInterfaceDeclaration",
