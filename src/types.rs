@@ -75,7 +75,7 @@ struct ArrayTypeKey {
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 struct TupleTypeKey<'a> {
     elements: &'a [TupleElement<'a>],
-    labels: &'a [Option<&'a str>],
+    labels: Option<&'a [Option<&'a str>]>,
     readonly: bool,
 }
 
@@ -779,12 +779,29 @@ pub struct TyArray<'a> {
 #[derive(Debug, PartialEq, Eq)]
 pub struct TyTuple<'a> {
     pub elements: ArenaVec<'a, TupleElement<'a>>,
-    pub labels: ArenaVec<'a, Option<&'a str>>,
+    labels: Option<&'a [Option<&'a str>]>,
     /// `true` when produced from a `readonly` tuple literal.
     pub readonly: bool,
 }
 
 impl<'a> TyTuple<'a> {
+    /// Returns the labels sidecar when at least one tuple element is labeled.
+    pub fn labels(&self) -> Option<&[Option<&'a str>]> {
+        self.labels
+    }
+
+    /// Returns this tuple's elements paired with their labels.
+    pub fn labeled_elements(&self) -> impl Iterator<Item = LabeledTupleElement<'a>> + '_ {
+        self.elements
+            .iter()
+            .copied()
+            .enumerate()
+            .map(|(index, element)| LabeledTupleElement {
+                element,
+                label: self.labels.and_then(|labels| labels[index]),
+            })
+    }
+
     pub fn element_type_at_index(&self, arena: CheckerArena<'a>, index: usize) -> Ty<'a> {
         let mut current_index = 0;
         for element in &self.elements {
@@ -833,6 +850,56 @@ impl<'a> TupleElement<'a> {
             TupleElement::Rest(ty) => TupleElement::Rest(f(ty)),
             TupleElement::Optional(ty) => TupleElement::Optional(f(ty)),
         }
+    }
+}
+
+/// A tuple element paired with its optional source label.
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
+pub struct LabeledTupleElement<'a> {
+    /// The element's type and regular, optional, or rest kind.
+    pub element: TupleElement<'a>,
+    /// The source label, or `None` for an unlabeled element.
+    pub label: Option<&'a str>,
+}
+
+impl<'a> LabeledTupleElement<'a> {
+    /// Creates a tuple element record with an optional source label.
+    pub const fn new(element: TupleElement<'a>, label: Option<&'a str>) -> Self {
+        Self { element, label }
+    }
+
+    /// Creates an unlabeled tuple element record.
+    pub const fn unlabeled(element: TupleElement<'a>) -> Self {
+        Self::new(element, None)
+    }
+
+    /// Maps the type while preserving the element kind and label.
+    #[must_use]
+    pub fn map_ty(self, f: impl FnOnce(Ty<'a>) -> Ty<'a>) -> Self {
+        Self::new(self.element.map_ty(f), self.label)
+    }
+}
+
+/// Whether a tuple constructed with labels is mutable or readonly.
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub enum TupleReadonly {
+    /// A mutable tuple such as `[string]`.
+    Mutable,
+    /// A readonly tuple such as `readonly [string]`.
+    Readonly,
+}
+
+impl TupleReadonly {
+    pub(crate) const fn from_readonly(readonly: bool) -> Self {
+        if readonly {
+            Self::Readonly
+        } else {
+            Self::Mutable
+        }
+    }
+
+    const fn is_readonly(self) -> bool {
+        matches!(self, Self::Readonly)
     }
 }
 
@@ -1855,58 +1922,75 @@ impl<'a> Ty<'a> {
     }
 
     pub fn tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
-        let labels = vec![None; elements.len()];
-        Self::tuple_with_labels(arena, elements, labels, false)
+        Self::normalized_tuple(
+            arena,
+            elements.into_iter().map(LabeledTupleElement::unlabeled),
+            TupleReadonly::Mutable,
+        )
     }
 
     pub fn readonly_tuple(arena: CheckerArena<'a>, elements: Vec<TupleElement<'a>>) -> Self {
-        let labels = vec![None; elements.len()];
-        Self::tuple_with_labels(arena, elements, labels, true)
+        Self::normalized_tuple(
+            arena,
+            elements.into_iter().map(LabeledTupleElement::unlabeled),
+            TupleReadonly::Readonly,
+        )
     }
 
     pub fn tuple_with_labels(
         arena: CheckerArena<'a>,
-        elements: Vec<TupleElement<'a>>,
-        labels: Vec<Option<&'a str>>,
-        readonly: bool,
+        elements: impl IntoIterator<Item = LabeledTupleElement<'a>>,
+        readonly: TupleReadonly,
     ) -> Self {
-        Self::normalized_tuple(arena, elements, labels, readonly)
+        Self::normalized_tuple(arena, elements, readonly)
     }
 
     fn normalized_tuple(
         arena: CheckerArena<'a>,
-        elements: Vec<TupleElement<'a>>,
-        labels: Vec<Option<&'a str>>,
-        readonly: bool,
+        elements: impl IntoIterator<Item = LabeledTupleElement<'a>>,
+        readonly: TupleReadonly,
     ) -> Self {
-        debug_assert_eq!(elements.len(), labels.len());
-        let mut normalized = Vec::with_capacity(elements.len());
-        let mut normalized_labels = Vec::with_capacity(labels.len());
-        for (element, label) in elements.into_iter().zip(labels) {
+        let elements = elements.into_iter();
+        let mut normalized = Vec::with_capacity(elements.size_hint().0);
+        let mut normalized_labels: Option<Vec<Option<&'a str>>> = None;
+        for LabeledTupleElement { element, label } in elements {
             if let TupleElement::Rest(ty) = element
                 && let TyKind::Tuple(tuple) = arena.ty_kind(ty)
             {
                 if normalized.len() + tuple.elements.len() >= TUPLE_SPREAD_MAX_LENGTH {
                     return Ty::error(arena, TypeErrorKind::TupleSizeExceeded);
                 }
+                if let Some(tuple_labels) = tuple.labels() {
+                    normalized_labels
+                        .get_or_insert_with(|| vec![None; normalized.len()])
+                        .extend_from_slice(tuple_labels);
+                } else if let Some(labels) = &mut normalized_labels {
+                    labels.resize(labels.len() + tuple.elements.len(), None);
+                }
                 normalized.extend(tuple.elements.iter().copied());
-                normalized_labels.extend(tuple.labels.iter().copied());
             } else {
+                if label.is_some() {
+                    normalized_labels
+                        .get_or_insert_with(|| vec![None; normalized.len()])
+                        .push(label);
+                } else if let Some(labels) = &mut normalized_labels {
+                    labels.push(None);
+                }
                 normalized.push(element);
-                normalized_labels.push(label);
             }
         }
 
+        let readonly = readonly.is_readonly();
         let key = TupleTypeKey {
             elements: &normalized,
-            labels: &normalized_labels,
+            labels: normalized_labels.as_deref(),
             readonly,
         };
         if let Some(ty) = arena.interned_types.tuples.borrow().get(&key) {
             return *ty;
         }
         let elements = arena.vec_from_iter(normalized);
-        let labels = arena.vec_from_iter(normalized_labels);
+        let labels = normalized_labels.map(|labels| arena.alloc_slice_from_iter(labels));
         let tuple = arena.alloc(TyTuple {
             elements,
             labels,
@@ -1916,7 +2000,7 @@ impl<'a> Ty<'a> {
         arena.interned_types.tuples.borrow_mut().insert(
             TupleTypeKey {
                 elements: &tuple.elements,
-                labels: &tuple.labels,
+                labels: tuple.labels(),
                 readonly,
             },
             ty,
@@ -2492,7 +2576,7 @@ impl<'a> Ty<'a> {
                     .iter()
                     .enumerate()
                     .map(|(index, element)| {
-                        let label = tuple.labels.get(index).copied().flatten();
+                        let label = tuple.labels().and_then(|labels| labels[index]);
                         match (label, element) {
                             (Some(label), TupleElement::Regular(ty)) => format!(
                                 "{label}: {}",

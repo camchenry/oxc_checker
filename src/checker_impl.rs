@@ -50,13 +50,14 @@ use crate::{
     property_key_name_str, ts_type_name_to_str, ts_type_query_expr_name_to_str, type_facts,
     type_set::UnionAccumulator,
     types::{
-        CheckerArena, IndexInfo, MappedModifier, Signature, SignatureKind, TupleElement, Ty,
-        TyConditional, TyFunction, TyKind, TyMapped, TyObject, TyParameter, TyProperty,
-        TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference,
-        TypeErrorKind, TypeId, binding_pattern_to_parameter_name, function_maximum_argument_count,
-        function_minimum_argument_count, function_parameter_type_at_call_index,
-        property_name_flags, return_type_and_type_predicate_from_annotation_with_resolver,
-        type_predicate_return_type, visit_type,
+        CheckerArena, IndexInfo, LabeledTupleElement, MappedModifier, Signature, SignatureKind,
+        TupleElement, TupleReadonly, Ty, TyConditional, TyFunction, TyKind, TyMapped, TyObject,
+        TyParameter, TyProperty, TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeQuery,
+        TyTypeReference, TypeErrorKind, TypeId, binding_pattern_to_parameter_name,
+        function_maximum_argument_count, function_minimum_argument_count,
+        function_parameter_type_at_call_index, property_name_flags,
+        return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
+        visit_type,
     },
 };
 
@@ -755,21 +756,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     Ty::array(self.arena(), element_type)
                 }
             }
-            TyKind::Tuple(tuple) => {
-                let elements = tuple
-                    .elements
-                    .iter()
-                    .map(|element| {
-                        element.map_ty(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1))
-                    })
-                    .collect::<Vec<_>>();
-                Ty::tuple_with_labels(
-                    self.arena(),
-                    elements,
-                    tuple.labels.iter().copied().collect(),
-                    tuple.readonly,
-                )
-            }
+            TyKind::Tuple(tuple) => Ty::tuple_with_labels(
+                self.arena(),
+                tuple.labeled_elements().map(|element| {
+                    element.map_ty(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1))
+                }),
+                TupleReadonly::from_readonly(tuple.readonly),
+            ),
             TyKind::Union(union) => Ty::r#union(
                 self.arena(),
                 union
@@ -2296,21 +2289,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     Ty::array(self.arena(), element_type)
                 }
             }
-            TyKind::Tuple(tuple) => {
-                let elements = tuple
-                    .elements
-                    .iter()
-                    .map(|element| {
-                        element.map_ty(|ty| self.with_implicit_type_arguments_visible(ty))
-                    })
-                    .collect::<Vec<_>>();
-                Ty::tuple_with_labels(
-                    self.arena(),
-                    elements,
-                    tuple.labels.iter().copied().collect(),
-                    tuple.readonly,
-                )
-            }
+            TyKind::Tuple(tuple) => Ty::tuple_with_labels(
+                self.arena(),
+                tuple.labeled_elements().map(|element| {
+                    element.map_ty(|ty| self.with_implicit_type_arguments_visible(ty))
+                }),
+                TupleReadonly::from_readonly(tuple.readonly),
+            ),
             _ => ty,
         }
     }
@@ -2801,14 +2786,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 tuple_type
                     .element_types
                     .iter()
-                    .map(|element| self.get_type_from_ts_tuple_element(program_id, element))
-                    .collect(),
-                tuple_type
-                    .element_types
-                    .iter()
-                    .map(Self::get_ts_tuple_element_label)
-                    .collect(),
-                false,
+                    .map(|element| {
+                        LabeledTupleElement::new(
+                            self.get_type_from_ts_tuple_element(program_id, element),
+                            Self::get_ts_tuple_element_label(element),
+                        )
+                    }),
+                TupleReadonly::Mutable,
             ),
             TSType::TSTypeOperatorType(operator) => match operator.operator {
                 TSTypeOperatorOperator::Keyof => Ty::keyof(
@@ -2828,9 +2812,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                         }
                         TyKind::Tuple(tuple) => Ty::tuple_with_labels(
                             self.arena(),
-                            tuple.elements.iter().copied().collect(),
-                            tuple.labels.iter().copied().collect(),
-                            true,
+                            tuple.labeled_elements(),
+                            TupleReadonly::Readonly,
                         ),
                         _ => inner,
                     }
@@ -4225,10 +4208,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
             TyKind::Tuple(tuple) => {
                 let elements = tuple
-                    .elements
-                    .iter()
+                    .labeled_elements()
                     .enumerate()
-                    .map(|(index, element)| {
+                    .map(|(index, labeled)| {
                         let raw = self.arena().str(&index.to_string());
                         let key_type = Ty::number_literal(
                             self.arena(),
@@ -4242,18 +4224,22 @@ impl<'a, 'store> Checker<'a, 'store> {
                             key_type,
                             depth + 1,
                         );
-                        self.materialize_mapped_tuple_element(
-                            mapped.optional,
-                            *element,
-                            element_type,
+                        LabeledTupleElement::new(
+                            self.materialize_mapped_tuple_element(
+                                mapped.optional,
+                                labeled.element,
+                                element_type,
+                            ),
+                            labeled.label,
                         )
                     })
                     .collect::<Vec<_>>();
                 Some(Ty::tuple_with_labels(
                     self.arena(),
                     elements,
-                    tuple.labels.iter().copied().collect(),
-                    self.mapped_readonly(mapped.readonly, tuple.readonly),
+                    TupleReadonly::from_readonly(
+                        self.mapped_readonly(mapped.readonly, tuple.readonly),
+                    ),
                 ))
             }
             _ => None,
@@ -5008,23 +4994,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                     Ty::array(self.arena(), element_type)
                 }
             }
-            TyKind::Tuple(tuple) => {
-                let elements = tuple
-                    .elements
-                    .iter()
-                    .map(|element| {
-                        element.map_ty(|ty| {
-                            self.apparent_type_for_conditional_match(program_id, ty, depth + 1)
-                        })
+            TyKind::Tuple(tuple) => Ty::tuple_with_labels(
+                self.arena(),
+                tuple.labeled_elements().map(|element| {
+                    element.map_ty(|ty| {
+                        self.apparent_type_for_conditional_match(program_id, ty, depth + 1)
                     })
-                    .collect::<Vec<_>>();
-                Ty::tuple_with_labels(
-                    self.arena(),
-                    elements,
-                    tuple.labels.iter().copied().collect(),
-                    tuple.readonly,
-                )
-            }
+                }),
+                TupleReadonly::from_readonly(tuple.readonly),
+            ),
             TyKind::Union(union) => Ty::r#union(
                 self.arena(),
                 union

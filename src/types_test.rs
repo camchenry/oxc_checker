@@ -13,6 +13,7 @@ fn type_handles_are_compact() {
     assert_eq!(std::mem::size_of::<Option<Ty<'_>>>(), 4);
     assert_eq!(std::mem::size_of::<TypeId>(), 4);
     assert_eq!(std::mem::size_of::<TyObject<'_>>(), 32);
+    assert_eq!(std::mem::size_of::<TyTuple<'_>>(), 48);
 }
 
 #[test]
@@ -28,6 +29,70 @@ fn tuple_element_map_ty_preserves_kind() {
     assert_eq!(
         TupleElement::Optional(Ty::string()).map_ty(|_| Ty::number()),
         TupleElement::Optional(Ty::number())
+    );
+}
+
+#[test]
+fn tuple_labels_are_aligned_and_stored_only_when_present() {
+    let allocator = Allocator::default();
+    let arena = arena(&allocator);
+    let unlabeled = Ty::tuple(
+        arena,
+        vec![
+            TupleElement::Regular(Ty::string()),
+            TupleElement::Optional(Ty::number()),
+        ],
+    );
+    let labeled = Ty::tuple_with_labels(
+        arena,
+        [
+            LabeledTupleElement::new(TupleElement::Regular(Ty::string()), Some("name")),
+            LabeledTupleElement::unlabeled(TupleElement::Optional(Ty::number())),
+        ],
+        TupleReadonly::Mutable,
+    );
+    let explicitly_unlabeled = Ty::tuple_with_labels(
+        arena,
+        [
+            LabeledTupleElement::unlabeled(TupleElement::Regular(Ty::string())),
+            LabeledTupleElement::unlabeled(TupleElement::Optional(Ty::number())),
+        ],
+        TupleReadonly::Mutable,
+    );
+    let spread_labeled = Ty::tuple_with_labels(
+        arena,
+        [
+            LabeledTupleElement::unlabeled(TupleElement::Regular(Ty::boolean())),
+            LabeledTupleElement::unlabeled(TupleElement::Rest(labeled)),
+            LabeledTupleElement::unlabeled(TupleElement::Regular(Ty::bigint())),
+        ],
+        TupleReadonly::Mutable,
+    );
+
+    assert_eq!(unlabeled, explicitly_unlabeled);
+
+    let TyKind::Tuple(unlabeled) = arena.ty_kind(unlabeled) else {
+        panic!("expected tuple");
+    };
+    assert!(unlabeled.labels().is_none());
+
+    let TyKind::Tuple(labeled) = arena.ty_kind(labeled) else {
+        panic!("expected tuple");
+    };
+    assert_eq!(
+        labeled.labeled_elements().collect::<Vec<_>>(),
+        [
+            LabeledTupleElement::new(TupleElement::Regular(Ty::string()), Some("name")),
+            LabeledTupleElement::unlabeled(TupleElement::Optional(Ty::number())),
+        ]
+    );
+
+    let TyKind::Tuple(spread_labeled) = arena.ty_kind(spread_labeled) else {
+        panic!("expected tuple");
+    };
+    assert_eq!(
+        spread_labeled.labels(),
+        Some([None, Some("name"), None, None].as_slice())
     );
 }
 

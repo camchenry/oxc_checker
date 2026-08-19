@@ -24,9 +24,9 @@ use crate::{
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
     types::{
-        CheckerArena, MappedModifier, SignatureKind, TupleElement, Ty, TyFunction, TyInfer, TyKind,
-        TyMapped, TyProperty, TyTypeParameter, TypeErrorKind,
-        function_parameter_type_at_call_index, visit_type,
+        CheckerArena, LabeledTupleElement, MappedModifier, SignatureKind, TupleElement,
+        TupleReadonly, Ty, TyFunction, TyInfer, TyKind, TyMapped, TyProperty, TyTypeParameter,
+        TypeErrorKind, function_parameter_type_at_call_index, visit_type,
     },
 };
 
@@ -2136,16 +2136,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                 );
             }
             TyKind::Tuple(argument_tuple) => {
-                let elements = argument_tuple
-                    .elements
-                    .iter()
-                    .map(|element| reverse_mapped_tuple_element(*element, parameter_mapped, arena))
-                    .collect::<Vec<_>>();
                 let reverse_candidate = Ty::tuple_with_labels(
                     arena,
-                    elements,
-                    argument_tuple.labels.iter().copied().collect(),
-                    argument_tuple.readonly,
+                    argument_tuple.labeled_elements().map(|element| {
+                        LabeledTupleElement::new(
+                            reverse_mapped_tuple_element(element.element, parameter_mapped, arena),
+                            element.label,
+                        )
+                    }),
+                    TupleReadonly::from_readonly(argument_tuple.readonly),
                 );
                 let properties =
                     argument_tuple
@@ -2359,12 +2358,9 @@ fn substitute_type<'a>(
         TyKind::Tuple(tuple) => Ty::tuple_with_labels(
             arena,
             tuple
-                .elements
-                .iter()
-                .map(|element| element.map_ty(|ty| substitute_type(ty, mapper, arena)))
-                .collect(),
-            tuple.labels.iter().copied().collect(),
-            tuple.readonly,
+                .labeled_elements()
+                .map(|element| element.map_ty(|ty| substitute_type(ty, mapper, arena))),
+            TupleReadonly::from_readonly(tuple.readonly),
         ),
         TyKind::Union(union) => Ty::union(
             arena,
