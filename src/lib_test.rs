@@ -6232,6 +6232,10 @@ fn function_type_predicates_render_in_signatures() {
 declare function acceptsPredicate<T, S extends T>(
 predicate: (value: T) => value is S,
 assertion: (value: unknown) => asserts value is string,
+thisPredicate: (this: unknown) => this is { ready: true },
+thisAssertion: (this: unknown) => asserts this is { ready: true },
+bareAssertion: (value: unknown) => asserts value,
+bareThisAssertion: (this: unknown) => asserts this,
 ): void;
 "#,
     );
@@ -6243,6 +6247,22 @@ assertion: (value: unknown) => asserts value is string,
     assert_eq!(
         get_first_symbol_type(&ret, "assertion").to_type_string(ret.arena),
         "(value: unknown) => asserts value is string"
+    );
+    assert_eq!(
+        get_first_symbol_type(&ret, "thisPredicate").to_type_string(ret.arena),
+        "(this: unknown) => this is { ready: true; }"
+    );
+    assert_eq!(
+        get_first_symbol_type(&ret, "thisAssertion").to_type_string(ret.arena),
+        "(this: unknown) => asserts this is { ready: true; }"
+    );
+    assert_eq!(
+        get_first_symbol_type(&ret, "bareAssertion").to_type_string(ret.arena),
+        "(value: unknown) => asserts value"
+    );
+    assert_eq!(
+        get_first_symbol_type(&ret, "bareThisAssertion").to_type_string(ret.arena),
+        "(this: unknown) => asserts this"
     );
 }
 

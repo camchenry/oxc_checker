@@ -21,7 +21,7 @@ use crate::{
     flow_graph::{self, ArrayMutationKind, BranchEffect},
     program::ProgramId,
     type_set::UnionAccumulator,
-    types::{TupleElement, Ty, TyKind, TyTypePredicateKind},
+    types::{TupleElement, Ty, TyKind, TyTypePredicate},
 };
 
 #[derive(Clone, Copy)]
@@ -611,17 +611,22 @@ fn narrow_by_call_type_predicate<'a>(
     else {
         return current_type;
     };
-    if !matches!(
-        predicate.kind,
-        TyTypePredicateKind::Identifier | TyTypePredicateKind::AssertsIdentifier
-    ) {
-        return current_type;
-    }
-
-    let Some(target_type) = predicate.target_type else {
-        return current_type;
+    let (parameter_index, target_type) = match predicate {
+        TyTypePredicate::Identifier {
+            parameter_index,
+            target_type,
+            ..
+        } => (parameter_index, Some(target_type)),
+        TyTypePredicate::AssertsIdentifier {
+            parameter_index,
+            target_type,
+            ..
+        } => (parameter_index, target_type),
+        TyTypePredicate::This { .. } | TyTypePredicate::AssertsThis { .. } => {
+            return current_type;
+        }
     };
-    let Some(parameter_index) = predicate.parameter_index else {
+    let (Some(parameter_index), Some(target_type)) = (parameter_index, target_type) else {
         return current_type;
     };
     let Some(argument) = call

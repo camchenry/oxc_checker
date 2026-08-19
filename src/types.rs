@@ -513,26 +513,80 @@ pub struct TyFunction<'a> {
     pub type_predicate: Option<&'a TyTypePredicate<'a>>,
 }
 
+/// A function return type predicate with only the data valid for its syntax.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub enum TyTypePredicateKind {
-    This,
-    Identifier,
-    AssertsThis,
-    AssertsIdentifier,
+pub enum TyTypePredicate<'a> {
+    /// A `this is T` predicate.
+    This {
+        /// The type asserted for `this`.
+        target_type: Ty<'a>,
+    },
+    /// A `parameter is T` predicate.
+    Identifier {
+        /// The parameter name written in the predicate.
+        parameter_name: &'a str,
+        /// The matching function parameter index, when one exists.
+        parameter_index: Option<usize>,
+        /// The type asserted for the parameter.
+        target_type: Ty<'a>,
+    },
+    /// An `asserts this` predicate, optionally followed by `is T`.
+    AssertsThis {
+        /// The asserted type, or `None` for bare `asserts this`.
+        target_type: Option<Ty<'a>>,
+    },
+    /// An `asserts parameter` predicate, optionally followed by `is T`.
+    AssertsIdentifier {
+        /// The parameter name written in the predicate.
+        parameter_name: &'a str,
+        /// The matching function parameter index, when one exists.
+        parameter_index: Option<usize>,
+        /// The asserted type, or `None` for a bare assertion.
+        target_type: Option<Ty<'a>>,
+    },
 }
 
-impl TyTypePredicateKind {
-    fn is_asserts(self) -> bool {
-        matches!(self, Self::AssertsThis | Self::AssertsIdentifier)
+impl<'a> TyTypePredicate<'a> {
+    /// Returns the asserted type, if the predicate has one.
+    pub fn target_type(self) -> Option<Ty<'a>> {
+        match self {
+            Self::This { target_type } | Self::Identifier { target_type, .. } => Some(target_type),
+            Self::AssertsThis { target_type } | Self::AssertsIdentifier { target_type, .. } => {
+                target_type
+            }
+        }
     }
-}
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub struct TyTypePredicate<'a> {
-    pub kind: TyTypePredicateKind,
-    pub parameter_name: Option<&'a str>,
-    pub parameter_index: Option<usize>,
-    pub target_type: Option<Ty<'a>>,
+    /// Maps the asserted type while preserving the predicate variant and parameter identity.
+    #[must_use]
+    pub fn map_target_type(self, f: impl FnOnce(Ty<'a>) -> Ty<'a>) -> Self {
+        match self {
+            Self::This { target_type } => Self::This {
+                target_type: f(target_type),
+            },
+            Self::Identifier {
+                parameter_name,
+                parameter_index,
+                target_type,
+            } => Self::Identifier {
+                parameter_name,
+                parameter_index,
+                target_type: f(target_type),
+            },
+            Self::AssertsThis { target_type } => Self::AssertsThis {
+                target_type: target_type.map(f),
+            },
+            Self::AssertsIdentifier {
+                parameter_name,
+                parameter_index,
+                target_type,
+            } => Self::AssertsIdentifier {
+                parameter_name,
+                parameter_index,
+                target_type: target_type.map(f),
+            },
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -1207,10 +1261,49 @@ impl<'a> TypeIdentity<'a> {
         left: &TyTypePredicate<'a>,
         right: &TyTypePredicate<'a>,
     ) -> bool {
-        left.kind == right.kind
-            && left.parameter_name == right.parameter_name
-            && left.parameter_index == right.parameter_index
-            && self.optional_types_are_identical(left.target_type, right.target_type)
+        match (*left, *right) {
+            (
+                TyTypePredicate::This { target_type: left },
+                TyTypePredicate::This { target_type: right },
+            ) => self.compare(left, right),
+            (
+                TyTypePredicate::Identifier {
+                    parameter_name: left_name,
+                    parameter_index: left_index,
+                    target_type: left_type,
+                },
+                TyTypePredicate::Identifier {
+                    parameter_name: right_name,
+                    parameter_index: right_index,
+                    target_type: right_type,
+                },
+            ) => {
+                left_name == right_name
+                    && left_index == right_index
+                    && self.compare(left_type, right_type)
+            }
+            (
+                TyTypePredicate::AssertsThis { target_type: left },
+                TyTypePredicate::AssertsThis { target_type: right },
+            ) => self.optional_types_are_identical(left, right),
+            (
+                TyTypePredicate::AssertsIdentifier {
+                    parameter_name: left_name,
+                    parameter_index: left_index,
+                    target_type: left_type,
+                },
+                TyTypePredicate::AssertsIdentifier {
+                    parameter_name: right_name,
+                    parameter_index: right_index,
+                    target_type: right_type,
+                },
+            ) => {
+                left_name == right_name
+                    && left_index == right_index
+                    && self.optional_types_are_identical(left_type, right_type)
+            }
+            _ => false,
+        }
     }
 
     fn tuple_elements_are_identical(
@@ -1285,7 +1378,7 @@ fn visit_type_at_depth<'a>(
             visit_type_at_depth(arena, function.return_type, f, visited, next_depth);
             if let Some(target_type) = function
                 .type_predicate
-                .and_then(|predicate| predicate.target_type)
+                .and_then(|predicate| predicate.target_type())
             {
                 visit_type_at_depth(arena, target_type, f, visited, next_depth);
             }
@@ -3147,13 +3240,22 @@ fn type_predicate_to_type_string<'a>(
     flags: TypeFormatFlags,
     depth: &Cell<usize>,
 ) -> String {
-    let parameter_name = predicate.parameter_name.unwrap_or("this");
-    let mut type_string = String::new();
-    if predicate.kind.is_asserts() {
-        type_string.push_str("asserts ");
-    }
-    type_string.push_str(parameter_name);
-    if let Some(target_type) = predicate.target_type {
+    let (prefix, parameter_name, target_type) = match *predicate {
+        TyTypePredicate::This { target_type } => ("", "this", Some(target_type)),
+        TyTypePredicate::Identifier {
+            parameter_name,
+            target_type,
+            ..
+        } => ("", parameter_name, Some(target_type)),
+        TyTypePredicate::AssertsThis { target_type } => ("asserts ", "this", target_type),
+        TyTypePredicate::AssertsIdentifier {
+            parameter_name,
+            target_type,
+            ..
+        } => ("asserts ", parameter_name, target_type),
+    };
+    let mut type_string = format!("{prefix}{parameter_name}");
+    if let Some(target_type) = target_type {
         type_string.push_str(" is ");
         type_string.push_str(&target_type.to_type_string_with_flags(
             arena,
@@ -3294,11 +3396,7 @@ pub(crate) fn return_type_and_type_predicate_from_annotation_with_resolver<'a>(
         .map(resolve_type_annotation);
     (
         type_predicate_return_type(predicate.asserts),
-        Some(type_predicate_from_ts_type_predicate_with_target_type(
-            parameters,
-            predicate,
-            target_type,
-        )),
+        type_predicate_from_ts_type_predicate_with_target_type(parameters, predicate, target_type),
     )
 }
 
@@ -3310,33 +3408,35 @@ pub(crate) fn type_predicate_from_ts_type_predicate_with_target_type<'a>(
     parameters: &[TyParameter<'a>],
     predicate: &TSTypePredicate<'a>,
     target_type: Option<Ty<'a>>,
-) -> TyTypePredicate<'a> {
-    match &predicate.parameter_name {
-        TSTypePredicateName::Identifier(identifier) => {
+) -> Option<TyTypePredicate<'a>> {
+    match (&predicate.parameter_name, predicate.asserts, target_type) {
+        (TSTypePredicateName::Identifier(identifier), false, Some(target_type)) => {
             let parameter_name = identifier.name.as_str();
-            TyTypePredicate {
-                kind: if predicate.asserts {
-                    TyTypePredicateKind::AssertsIdentifier
-                } else {
-                    TyTypePredicateKind::Identifier
-                },
-                parameter_name: Some(parameter_name),
+            Some(TyTypePredicate::Identifier {
+                parameter_name,
                 parameter_index: parameters
                     .iter()
                     .position(|parameter| parameter.name == parameter_name),
                 target_type,
-            }
+            })
         }
-        TSTypePredicateName::This(_) => TyTypePredicate {
-            kind: if predicate.asserts {
-                TyTypePredicateKind::AssertsThis
-            } else {
-                TyTypePredicateKind::This
-            },
-            parameter_name: None,
-            parameter_index: None,
-            target_type,
-        },
+        (TSTypePredicateName::This(_), false, Some(target_type)) => {
+            Some(TyTypePredicate::This { target_type })
+        }
+        (TSTypePredicateName::Identifier(identifier), true, target_type) => {
+            let parameter_name = identifier.name.as_str();
+            Some(TyTypePredicate::AssertsIdentifier {
+                parameter_name,
+                parameter_index: parameters
+                    .iter()
+                    .position(|parameter| parameter.name == parameter_name),
+                target_type,
+            })
+        }
+        (TSTypePredicateName::This(_), true, target_type) => {
+            Some(TyTypePredicate::AssertsThis { target_type })
+        }
+        (_, false, None) => None,
     }
 }
 
@@ -3344,17 +3444,47 @@ pub(crate) fn type_predicate_kinds_match(
     source: &TyTypePredicate<'_>,
     target: &TyTypePredicate<'_>,
 ) -> bool {
-    source.kind == target.kind && type_predicate_parameters_match(source, target)
+    match (*source, *target) {
+        (TyTypePredicate::This { .. }, TyTypePredicate::This { .. })
+        | (TyTypePredicate::AssertsThis { .. }, TyTypePredicate::AssertsThis { .. }) => true,
+        (
+            TyTypePredicate::Identifier {
+                parameter_name: source_name,
+                parameter_index: source_index,
+                ..
+            },
+            TyTypePredicate::Identifier {
+                parameter_name: target_name,
+                parameter_index: target_index,
+                ..
+            },
+        )
+        | (
+            TyTypePredicate::AssertsIdentifier {
+                parameter_name: source_name,
+                parameter_index: source_index,
+                ..
+            },
+            TyTypePredicate::AssertsIdentifier {
+                parameter_name: target_name,
+                parameter_index: target_index,
+                ..
+            },
+        ) => type_predicate_parameters_match(source_name, source_index, target_name, target_index),
+        _ => false,
+    }
 }
 
 fn type_predicate_parameters_match(
-    source: &TyTypePredicate<'_>,
-    target: &TyTypePredicate<'_>,
+    source_name: &str,
+    source_index: Option<usize>,
+    target_name: &str,
+    target_index: Option<usize>,
 ) -> bool {
-    if source.parameter_index != target.parameter_index {
+    if source_index != target_index {
         return false;
     }
-    source.parameter_index.is_some() || source.parameter_name == target.parameter_name
+    source_index.is_some() || source_name == target_name
 }
 
 fn property_key_to_binding_pattern_string(key: &PropertyKey<'_>) -> Option<String> {

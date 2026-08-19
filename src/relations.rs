@@ -168,8 +168,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                             source.type_predicate.is_some_and(|source_predicate| {
                                 type_predicate_kinds_match(source_predicate, target_predicate)
                                     && match (
-                                        source_predicate.target_type,
-                                        target_predicate.target_type,
+                                        source_predicate.target_type(),
+                                        target_predicate.target_type(),
                                     ) {
                                         (Some(source_type), Some(target_type)) => self
                                             .is_assignable_to_at_depth(

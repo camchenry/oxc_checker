@@ -510,14 +510,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         mapper: &TypeMapper<'a>,
         depth: usize,
     ) -> TyTypePredicate<'a> {
-        TyTypePredicate {
-            kind: predicate.kind,
-            parameter_name: predicate.parameter_name,
-            parameter_index: predicate.parameter_index,
-            target_type: predicate
-                .target_type
-                .map(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1)),
-        }
+        predicate.map_target_type(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1))
     }
 
     fn instantiate_type_worker(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>, depth: usize) -> Ty<'a> {
@@ -669,21 +662,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .arena()
                     .is_type_identical_to(function.return_type, return_type);
                 let type_predicate = function.type_predicate.map(|predicate| {
-                    let target_type = predicate
-                        .target_type
-                        .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1));
+                    let instantiated =
+                        self.instantiate_type_predicate_at_depth(*predicate, &mapper, depth);
                     was_semantically_instantiated |= predicate
-                        .target_type
-                        .zip(target_type)
+                        .target_type()
+                        .zip(instantiated.target_type())
                         .is_some_and(|(original, instantiated)| {
                             !self.arena().is_type_identical_to(original, instantiated)
                         });
-                    TyTypePredicate {
-                        kind: predicate.kind,
-                        parameter_name: predicate.parameter_name,
-                        parameter_index: predicate.parameter_index,
-                        target_type,
-                    }
+                    instantiated
                 });
 
                 if !was_semantically_instantiated {
