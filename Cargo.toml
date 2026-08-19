@@ -62,10 +62,10 @@ unnecessary_wraps = "deny"
 
 [features]
 default = []
-bench = []
+bench = ["dep:criterion", "dep:libc", "dep:serde", "dep:serde_json"]
 allocation-stats = ["bench", "oxc_allocator/track_allocations"]
-conformance = []
-conformance-tsc = []
+conformance = ["dep:rayon", "dep:simdutf8", "dep:terminal_size"]
+conformance-tsc = ["dep:rayon", "dep:simdutf8", "dep:terminal_size"]
 
 [dependencies]
 oxc_ast = "0.142.0"
@@ -81,18 +81,16 @@ oxc_syntax = "0.142.0"
 oxc_index = "5.0.0"
 oxc_str = "0.142.0"
 bitflags = "2.12.1"
-simdutf8 = "0.1.5"
+criterion = { version = "0.5", features = ["html_reports"], optional = true }
+simdutf8 = { version = "0.1.5", optional = true }
 num-traits = "0.2.19"
-rayon = "1.11.0"
-terminal_size = "0.4.3"
-libc = "0.2.186"
-serde = { version = "=1.0.228", features = ["derive"] }
-serde_json = "=1.0.150"
+rayon = { version = "1.11.0", optional = true }
+terminal_size = { version = "0.4.3", optional = true }
+libc = { version = "0.2.186", optional = true }
+serde = { version = "=1.0.228", features = ["derive"], optional = true }
+serde_json = { version = "=1.0.150", optional = true }
 smallvec = "1.15.1"
 rustc-hash = "2.1.1"
-
-[dev-dependencies]
-criterion = { version = "0.5", features = ["html_reports"] }
 
 [[bench]]
 name = "check_es5_lib"
