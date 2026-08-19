@@ -1,5 +1,6 @@
 - Read the README, it's important
-- Run `cargo conformance` for full verification after making any changes
+- Use the `api-guidelines` skill when adding new functionality or designing, changing, or reviewing public and reusable internal APIs.
+- Run `cargo conformance` for full verification after making any changes to the checker (can skip for docs changes and such)
 - Use `typescript-go` codebase as an architectural and correctness reference.
 - If something should be addressed later, leave a TODO. for example:`TODO(perf)`, `TODO`, `TODO(correctness)`
 - Altitude: Make sure each change is implemented at the right depth, not as a fragile bandaid. Special cases layered on shared infrastructure are a sign the fix isn't deep enough — prefer generalizing the underlying mechanism over adding special cases or overfitting to the test data.
