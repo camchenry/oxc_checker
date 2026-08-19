@@ -10873,6 +10873,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::TypeReference(reference) => self
                 .get_property_type_of_structural_type(program_id, object_type, property_name)
                 .or_else(|| {
+                    self.get_property_type_of_named_type(program_id, &object_type, property_name)
+                })
+                .or_else(|| {
                     self.get_expanded_type_alias_reference_type(program_id, object_type, depth + 1)
                         .and_then(|(expanded_program_id, expanded)| {
                             self.get_contextual_or_destructured_property_type_at_depth(

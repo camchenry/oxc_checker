@@ -2339,6 +2339,25 @@ fn destructured_parameters_preserve_pattern_and_property_types() {
 }
 
 #[test]
+fn destructured_class_properties_preserve_property_types() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "
+            abstract class Base {
+                abstract value: string;
+
+                constructor() {
+                    const { value: renamed } = this;
+                }
+            }
+        ",
+    );
+
+    assert_eq!(get_first_symbol_type(&ret, "renamed"), Ty::string());
+}
+
+#[test]
 fn object_literal_call_argument_contextually_types_callback_property_parameters() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

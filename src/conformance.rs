@@ -17,9 +17,9 @@ use std::{
 use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind, AstType,
-    ast::{Expression, MethodDefinitionKind, PropertyKey, Statement},
+    ast::{BindingPattern, Expression, MethodDefinitionKind, PropertyKey, Statement},
 };
-use oxc_ast_visit::Visit;
+use oxc_ast_visit::{Visit, walk::walk_object_pattern};
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
@@ -1910,7 +1910,93 @@ fn actual_identifier_records<'a>(
         entry,
         &path,
     ));
+    records.extend(actual_binding_property_records(
+        checker,
+        checker.arena,
+        &records,
+        entry,
+        &path,
+    ));
     records
+}
+
+#[derive(Default)]
+struct BindingPropertyCollector {
+    properties: Vec<(Span, NodeId, String)>,
+}
+
+impl<'a> Visit<'a> for BindingPropertyCollector {
+    fn visit_object_pattern(&mut self, pattern: &oxc_ast::ast::ObjectPattern<'a>) {
+        for property in &pattern.properties {
+            if property.shorthand {
+                continue;
+            }
+            let Some((span, text)) = identifier_property_key_span_and_text(&property.key) else {
+                continue;
+            };
+            let Some(identifier) = binding_pattern_identifier(&property.value) else {
+                continue;
+            };
+            self.properties
+                .push((span, identifier.node_id.get(), text.to_string()));
+        }
+        walk_object_pattern(self, pattern);
+    }
+}
+
+fn binding_pattern_identifier<'a>(
+    pattern: &'a BindingPattern<'a>,
+) -> Option<&'a oxc_ast::ast::BindingIdentifier<'a>> {
+    match pattern {
+        BindingPattern::BindingIdentifier(identifier) => Some(identifier),
+        BindingPattern::AssignmentPattern(assignment) => {
+            binding_pattern_identifier(&assignment.left)
+        }
+        _ => None,
+    }
+}
+
+fn actual_binding_property_records<'a>(
+    checker: &Checker<'a, '_>,
+    arena: CheckerArena<'a>,
+    existing_records: &[TypeRecord],
+    entry: &program::ProgramEntry<'a>,
+    path: &Arc<str>,
+) -> Vec<TypeRecord> {
+    let existing_keys = existing_records
+        .iter()
+        .map(TypeRecord::key)
+        .collect::<BTreeSet<_>>();
+    let mut collector = BindingPropertyCollector::default();
+    collector.visit_program(entry.program());
+    collector
+        .properties
+        .into_iter()
+        .filter_map(|(span, node_id, text)| {
+            let key = TypeRecordKey {
+                start: span.start,
+                end: span.end,
+                text,
+            };
+            if existing_keys.contains(&key) {
+                return None;
+            }
+            let node_ref = NodeRef::new(entry.id(), node_id);
+            let ty = checker.get_type_at_location(node_ref);
+            if ty.is_none() {
+                return None;
+            }
+            Some(TypeRecord {
+                path: Arc::clone(path),
+                start: key.start,
+                end: key.end,
+                text: key.text,
+                ty_variant: Some(ty.enum_variant_name(arena)),
+                ast_kind: Some("BindingProperty"),
+                ty_repr: sanitize_owned(checker.type_to_string(ty, node_ref)),
+            })
+        })
+        .collect()
 }
 
 #[derive(Default)]
