@@ -2038,8 +2038,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         let arena = self.arena();
         let substitutions = context.candidate_substitutions(self);
         let mapper = substitutions.to_mapper(arena);
-        let object_type = substitute_type(object_type, &mapper, arena);
-        let index_type = substitute_type(index_type, &mapper, arena);
+        let object_type = self.instantiate_type(object_type, &mapper);
+        let index_type = self.instantiate_type(index_type, &mapper);
 
         resolve_indexed_access_for_inference(object_type, index_type, arena)
     }
@@ -2345,7 +2345,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 arena.type_reference(parameter_mapped.key, std::iter::empty()),
                 arena.string_literal(property.name),
             );
-            let template_at_key = substitute_type(parameter_mapped.template, &key_mapper, arena);
+            let template_at_key = self.instantiate_type(parameter_mapped.template, &key_mapper);
             self.infer_types_with_variance(
                 template_at_key,
                 property.ty,
@@ -2369,54 +2369,6 @@ fn inferable_property_types<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<V
         TyKind::Array(array) => Some(vec![array.element_type]),
         TyKind::Tuple(tuple) => Some(tuple.elements.iter().map(TupleElement::ty).collect()),
         _ => None,
-    }
-}
-
-fn substitute_type<'a>(
-    ty: Ty<'a>,
-    mapper: &TypeMapper<'a>,
-    arena: crate::types::CheckerArena<'a>,
-) -> Ty<'a> {
-    match arena.ty_kind(ty) {
-        TyKind::TypeReference(reference) => {
-            let mapped = mapper.map(arena, ty);
-            if mapped != ty {
-                mapped
-            } else {
-                arena.type_reference(
-                    reference.name,
-                    reference
-                        .type_arguments
-                        .iter()
-                        .map(|ty| substitute_type(*ty, mapper, arena)),
-                )
-            }
-        }
-        TyKind::IndexedAccess(indexed_access) => arena.indexed_access(
-            substitute_type(indexed_access.object_type, mapper, arena),
-            substitute_type(indexed_access.index_type, mapper, arena),
-        ),
-        TyKind::Keyof(keyof) => arena.keyof(substitute_type(keyof.target, mapper, arena)),
-        TyKind::Array(array) => arena.array(substitute_type(array.element_type, mapper, arena)),
-        TyKind::Tuple(tuple) => arena.tuple_with_labels(
-            tuple
-                .labeled_elements()
-                .map(|element| element.map_ty(|ty| substitute_type(ty, mapper, arena))),
-            TupleReadonly::from_readonly(tuple.readonly),
-        ),
-        TyKind::Union(union) => arena.union(
-            union
-                .types
-                .iter()
-                .map(|ty| substitute_type(*ty, mapper, arena)),
-        ),
-        TyKind::Intersection(intersection) => arena.intersection(
-            intersection
-                .types
-                .iter()
-                .map(|ty| substitute_type(*ty, mapper, arena)),
-        ),
-        _ => mapper.map(arena, ty),
     }
 }
 
