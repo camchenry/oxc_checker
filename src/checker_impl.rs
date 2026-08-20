@@ -6142,38 +6142,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             return indexed_type;
         }
 
-        // Try accessing like tuple with specific numeric key
-        if key_type.is_number_like(self.arena())
-            && let Expression::NumericLiteral(literal) = &member.expression
-            && let Some(index) = literal.value.to_usize()
-            && let TyKind::Tuple(tuple) = self.ty_kind(object_type)
-        {
-            return tuple.element_type_at_index(self.arena(), index);
-        };
-
-        // Try accessing as array with a generic numeric key
-        if key_type.is_number_like(self.arena())
-            && let Some(element_type) = self
-                .remove_null_or_undefined(object_type)
-                .array_element_type(self.arena())
-        {
-            return element_type;
-        }
-
-        // Try accessing as an object with an index signature
-        let object_type = self.remove_null_or_undefined(object_type);
         let (object_program_id, object_type) = self
             .get_expanded_type_alias_reference_preserving_arguments(program_id, object_type, 0)
             .unwrap_or((program_id, object_type));
         let object_type = self.expand_type(object_program_id, object_type, 0);
-        if let TyKind::Object(object) = self.ty_kind(object_type)
-            && let Some(index_info) = object
-                .index_infos()
-                .iter()
-                .find(|index_info| self.is_assignable_to(lookup_key_type, index_info.key_type))
-        {
-            return index_info.value_type;
-        }
 
         if matches!(indexed_access_resolution, IndexedAccessResolution::Deferred) {
             return self.ty.indexed_access(object_type, key_type);
