@@ -6011,14 +6011,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .collect::<Vec<_>>();
                 (!property_types.is_empty()).then(|| self.ty.union(property_types))
             }
-            TyKind::TypeReference(_) => {
-                // Resolve type reference into its underlying type
-                let resolved_type = self.expand_type(program_id, ty, 0);
-                if matches!(self.ty_kind(resolved_type), TyKind::TypeReference(_)) {
-                    return None;
-                }
-                self.get_property_type_of_structural_type(program_id, resolved_type, property_name)
-            }
             TyKind::TypeQuery(query) => {
                 self.get_property_type_of_structural_type(program_id, query.resolved, property_name)
             }
@@ -6067,7 +6059,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::Mapped(mapped) => {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
             }
-            TyKind::IndexedAccess(_) | TyKind::Conditional(_) => {
+            TyKind::TypeReference(_) | TyKind::IndexedAccess(_) | TyKind::Conditional(_) => {
                 let apparent = self.expand_type(program_id, ty, 0);
                 (!self.is_type_identical_to(apparent, ty)).then(|| {
                     self.get_property_type_of_structural_type(program_id, apparent, property_name)
