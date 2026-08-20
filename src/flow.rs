@@ -489,14 +489,7 @@ fn narrow_by_condition<'a>(
         nullish_equality_guard(checker, node.program_id, symbol, binary)
     {
         effective_true = effective_true == assume_true;
-        return match kind {
-            NullishEqualityKind::Null => {
-                narrow_by_null_equality(checker, node, current_type, effective_true)
-            }
-            NullishEqualityKind::Undefined => {
-                narrow_by_undefined_equality(checker, node, current_type, effective_true)
-            }
-        };
+        return narrow_by_nullish_equality(checker, node, current_type, kind, effective_true);
     }
 
     if let Some((target, property_name, mut effective_true)) = in_guard(binary) {
@@ -645,6 +638,22 @@ enum NullishEqualityKind {
     Undefined,
 }
 
+impl NullishEqualityKind {
+    fn matches(self, ty: Ty<'_>) -> bool {
+        match self {
+            Self::Null => matches!(ty, Ty::Null),
+            Self::Undefined => matches!(ty, Ty::Undefined | Ty::Void),
+        }
+    }
+
+    fn other<'a>(self, checker: &Checker<'a, '_>) -> Ty<'a> {
+        match self {
+            Self::Null => checker.ty.undefined(),
+            Self::Undefined => checker.ty.null(),
+        }
+    }
+}
+
 fn nullish_equality_guard(
     checker: &Checker<'_, '_>,
     program_id: ProgramId,
@@ -677,34 +686,20 @@ fn nullish_equality_guard(
     }
 }
 
-fn narrow_by_undefined_equality<'a>(
+fn narrow_by_nullish_equality<'a>(
     checker: &Checker<'a, '_>,
     node: NodeRef,
     ty: Ty<'a>,
-    assume_undefined: bool,
+    kind: NullishEqualityKind,
+    assume_nullish: bool,
 ) -> Ty<'a> {
     if ty.is_any_like(checker.arena()) || ty.is_unknown() {
         return ty;
     }
-    if assume_undefined {
-        return filter_type(checker, ty, |ty| matches!(ty, Ty::Undefined | Ty::Void));
+    if assume_nullish {
+        return filter_type(checker, ty, |ty| kind.matches(ty));
     }
-    remove_undefined_from_type(checker, node, ty)
-}
-
-fn narrow_by_null_equality<'a>(
-    checker: &Checker<'a, '_>,
-    node: NodeRef,
-    ty: Ty<'a>,
-    assume_null: bool,
-) -> Ty<'a> {
-    if ty.is_any_like(checker.arena()) || ty.is_unknown() {
-        return ty;
-    }
-    if assume_null {
-        return filter_type(checker, ty, |ty| matches!(ty, Ty::Null));
-    }
-    remove_null_from_type(checker, node, ty)
+    remove_nullish_from_type(checker, node, ty, kind)
 }
 
 fn in_guard<'a>(
@@ -741,59 +736,40 @@ fn narrow_by_in_property<'a>(
     }
 }
 
-fn remove_undefined_from_type<'a>(checker: &Checker<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
-    if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
-        return non_undefined_constituent(checker, node, ty).unwrap_or_else(|| checker.ty.never());
-    }
-    ty.map_union(checker.arena(), |ty| {
-        non_undefined_constituent(checker, node, ty)
-    })
-}
-
-fn non_undefined_constituent<'a>(
+fn remove_nullish_from_type<'a>(
     checker: &Checker<'a, '_>,
     node: NodeRef,
     ty: Ty<'a>,
+    kind: NullishEqualityKind,
+) -> Ty<'a> {
+    if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
+        return non_nullish_constituent(checker, node, ty, kind)
+            .unwrap_or_else(|| checker.ty.never());
+    }
+    ty.map_union(checker.arena(), |ty| {
+        non_nullish_constituent(checker, node, ty, kind)
+    })
+}
+
+fn non_nullish_constituent<'a>(
+    checker: &Checker<'a, '_>,
+    node: NodeRef,
+    ty: Ty<'a>,
+    kind: NullishEqualityKind,
 ) -> Option<Ty<'a>> {
-    match ty {
-        Ty::Undefined | Ty::Void => None,
-        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => Some(
+    if kind.matches(ty) {
+        None
+    } else if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) {
+        Some(
             checker.ty.intersection([
                 ty,
                 checker
                     .arena()
-                    .union([checker.ty.object([]), checker.ty.null()]),
+                    .union([checker.ty.object([]), kind.other(checker)]),
             ]),
-        ),
-        _ => Some(ty),
-    }
-}
-
-fn remove_null_from_type<'a>(checker: &Checker<'a, '_>, node: NodeRef, ty: Ty<'a>) -> Ty<'a> {
-    if !matches!(checker.ty_kind(ty), TyKind::Union(_)) {
-        return non_null_constituent(checker, node, ty).unwrap_or_else(|| checker.ty.never());
-    }
-    ty.map_union(checker.arena(), |ty| {
-        non_null_constituent(checker, node, ty)
-    })
-}
-
-fn non_null_constituent<'a>(
-    checker: &Checker<'a, '_>,
-    node: NodeRef,
-    ty: Ty<'a>,
-) -> Option<Ty<'a>> {
-    match ty {
-        Ty::Null => None,
-        _ if checker.is_scoped_type_parameter_reference(node.program_id, node.node_id, ty) => Some(
-            checker.ty.intersection([
-                ty,
-                checker
-                    .arena()
-                    .union([checker.ty.object([]), checker.ty.undefined()]),
-            ]),
-        ),
-        _ => Some(ty),
+        )
+    } else {
+        Some(ty)
     }
 }
 
