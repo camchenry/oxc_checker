@@ -2197,10 +2197,18 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::Tuple(argument_tuple) => {
                 let reverse_candidate = arena.tuple_with_labels(
                     argument_tuple.labeled_elements().map(|element| {
-                        LabeledTupleElement::new(
-                            reverse_mapped_tuple_element(element.element, parameter_mapped, arena),
-                            element.label,
-                        )
+                        let tuple_element = match element.element {
+                            TupleElement::Optional(ty)
+                                if matches!(
+                                    parameter_mapped.optional,
+                                    MappedModifier::True | MappedModifier::Plus
+                                ) =>
+                            {
+                                TupleElement::Regular(self.remove_undefined(ty))
+                            }
+                            _ => element.element,
+                        };
+                        LabeledTupleElement::new(tuple_element, element.label)
                     }),
                     TupleReadonly::from_readonly(argument_tuple.readonly),
                 );
@@ -2347,26 +2355,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             );
         }
     }
-}
-
-fn reverse_mapped_tuple_element<'a>(
-    element: TupleElement<'a>,
-    mapped: &TyMapped<'a>,
-    arena: crate::types::CheckerArena<'a>,
-) -> TupleElement<'a> {
-    match element {
-        TupleElement::Optional(ty)
-            if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) =>
-        {
-            TupleElement::Regular(remove_undefined_from_type(ty, arena))
-        }
-        _ => element,
-    }
-}
-
-// TODO(cleanup): use `remove_undefined` from checker
-fn remove_undefined_from_type<'a>(ty: Ty<'a>, arena: crate::types::CheckerArena<'a>) -> Ty<'a> {
-    ty.map_union(arena, |ty| (ty != Ty::Undefined).then_some(ty))
 }
 
 fn inferable_property_types<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<Vec<Ty<'a>>> {
