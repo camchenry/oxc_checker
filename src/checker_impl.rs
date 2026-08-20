@@ -3584,15 +3584,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         computed: bool,
     ) -> Option<Ty<'a>> {
         match self.ty_kind(object_type) {
-            TyKind::GlobalThis if !computed => {
-                if property_name == GLOBAL_THIS_IDENT.as_str() {
-                    Some(self.ty.global_this())
-                } else {
-                    self.global_symbols
-                        .global_this_value_symbol(property_name)
-                        .map(|symbol| self.get_type_of_symbol(symbol))
-                }
-            }
+            TyKind::GlobalThis if !computed => self.get_global_this_property_type(property_name),
             TyKind::Object(object) => object.properties.iter().find_map(|property| {
                 if property.computed != computed || property.name != property_name {
                     return None;
@@ -3654,6 +3646,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                 }),
             _ => None,
+        }
+    }
+
+    pub(crate) fn get_global_this_property_type(&self, property_name: &str) -> Option<Ty<'a>> {
+        if property_name == GLOBAL_THIS_IDENT.as_str() {
+            Some(self.ty.global_this())
+        } else {
+            self.global_symbols
+                .global_this_value_symbol(property_name)
+                .map(|symbol| self.get_type_of_symbol(symbol))
         }
     }
 
@@ -6206,13 +6208,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 return (!property_types.is_empty()).then(|| self.ty.intersection(property_types));
             }
             TyKind::GlobalThis => {
-                if property_name == GLOBAL_THIS_IDENT.as_str() {
-                    return Some(self.ty.global_this());
-                }
-                return self
-                    .global_symbols
-                    .global_this_value_symbol(property_name)
-                    .map(|symbol| self.get_type_of_symbol(symbol));
+                return self.get_global_this_property_type(property_name);
             }
             TyKind::Array(array) if array.readonly => {
                 Some(self.get_global_readonly_array_type(program_id, array.element_type))

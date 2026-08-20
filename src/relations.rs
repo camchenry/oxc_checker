@@ -21,19 +21,22 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         if matches!(self.ty_kind(source), TyKind::GlobalThis) {
             let property_type = |name| {
-                if name == "globalThis" {
-                    Some(self.ty.global_this())
-                } else {
-                    self.global_symbols
-                        .global_this_value_symbol(name)
-                        .map(|symbol| {
-                            self.apparent_type_for_conditional_match(
-                                symbol.program_id,
-                                self.get_type_of_symbol(symbol),
-                                depth + 1,
-                            )
-                        })
-                }
+                self.get_global_this_property_type(name).map(|source_type| {
+                    if source_type == self.ty.global_this() {
+                        source_type
+                    } else {
+                        self.global_symbols.global_this_value_symbol(name).map_or(
+                            source_type,
+                            |symbol| {
+                                self.apparent_type_for_conditional_match(
+                                    symbol.program_id,
+                                    source_type,
+                                    depth + 1,
+                                )
+                            },
+                        )
+                    }
+                })
             };
             match self.ty_kind(target) {
                 TyKind::PrimitiveObject => return true,
@@ -72,10 +75,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .all(|source| self.is_assignable_to_at_depth(*source, target, depth + 1)),
                 _ => self
                     .property_name_from_key_type(source)
-                    .is_some_and(|name| {
-                        name == "globalThis"
-                            || self.global_symbols.global_this_value_symbol(name).is_some()
-                    }),
+                    .is_some_and(|name| self.get_global_this_property_type(name).is_some()),
             };
         }
 
