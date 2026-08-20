@@ -2313,10 +2313,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         match self.ty_kind(ty) {
-            TyKind::TypeReference(reference)
-                if self.is_conditional_type_alias_reference(program_id, reference) =>
-            {
-                self.get_conditional_type_alias_reference_type(program_id, reference)
+            TyKind::TypeReference(reference) => {
+                let apparent = self
+                    .get_conditional_type_alias_reference_type(program_id, reference)
                     .map(|(expanded_program_id, expanded)| {
                         let expanded = if matches!(self.ty_kind(expanded), TyKind::Conditional(_)) {
                             self.apparent_type_for_conditional_match(
@@ -2336,8 +2335,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                                 depth + 1,
                             )
                         }
-                    })
-                    .unwrap_or(ty)
+                    });
+                apparent.unwrap_or(ty)
             }
             TyKind::Union(union) => {
                 self.ty.union(union.types.iter().map(|ty| {
@@ -8602,19 +8601,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             ),
             _ => ty,
         }
-    }
-
-    fn is_conditional_type_alias_reference(
-        &self,
-        program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
-    ) -> bool {
-        let Some((symbol, declaration)) =
-            self.get_type_reference_symbol_and_declaration(program_id, reference)
-        else {
-            return false;
-        };
-        self.is_conditional_type_alias_declaration(symbol.program_id, declaration)
     }
 
     fn is_conditional_type_alias_declaration(
