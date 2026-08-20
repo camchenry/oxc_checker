@@ -3,22 +3,22 @@ use num_traits::ToPrimitive;
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression, AssignmentExpression,
-        AssignmentTarget, AwaitExpression, BigintBase, BinaryExpression, BindingPattern,
-        CallExpression, ChainElement, Class, ClassElement, ComputedMemberExpression,
-        ConditionalExpression, ExportSpecifier, Expression, FormalParameter, FormalParameterRest,
-        FormalParameters, Function, IdentifierReference, ImportExpression, LogicalExpression,
-        MethodDefinition, MethodDefinitionKind, ModuleExportName, NewExpression, NumberBase,
-        ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
-        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportEqualsDeclaration,
-        TSImportType, TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType,
-        TSMethodSignature, TSMethodSignatureKind, TSModuleDeclaration, TSModuleDeclarationName,
-        TSModuleReference, TSNamedTupleMember, TSPropertySignature, TSQualifiedName, TSSignature,
-        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
-        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
-        YieldExpression,
+        Argument, ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression,
+        AssignmentExpression, AssignmentTarget, AwaitExpression, BigintBase, BinaryExpression,
+        BindingPattern, CallExpression, ChainElement, Class, ClassElement,
+        ComputedMemberExpression, ConditionalExpression, ExportSpecifier, Expression,
+        FormalParameter, FormalParameterRest, FormalParameters, Function, IdentifierReference,
+        ImportExpression, LogicalExpression, MethodDefinition, MethodDefinitionKind,
+        ModuleExportName, NewExpression, NumberBase, ObjectExpression, ObjectPropertyKind,
+        PrivateFieldExpression, PropertyDefinition, PropertyKey, SimpleAssignmentTarget,
+        StaticMemberExpression, TSImportEqualsDeclaration, TSImportType, TSImportTypeQualifier,
+        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature, TSMethodSignatureKind,
+        TSModuleDeclaration, TSModuleDeclarationName, TSModuleReference, TSNamedTupleMember,
+        TSPropertySignature, TSQualifiedName, TSSignature, TSThisParameter, TSTupleElement, TSType,
+        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
+        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
+        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
+        VariableDeclarator, YieldExpression,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -209,6 +209,13 @@ impl<'a> CallKind<'a> {
         match self {
             CallKind::Call(call_expression) => call_expression.type_arguments.as_deref(),
             CallKind::New(new_expression) => new_expression.type_arguments.as_deref(),
+        }
+    }
+
+    pub(crate) fn arguments(self) -> &'a [Argument<'a>] {
+        match self {
+            CallKind::Call(call_expression) => &call_expression.arguments,
+            CallKind::New(new_expression) => &new_expression.arguments,
         }
     }
 
@@ -6408,10 +6415,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         let applicable = candidates
             .iter()
             .filter_map(|signature| {
-                self.resolve_call_signature_candidate(
+                self.resolve_signature_candidate(
                     program_id,
                     *signature,
-                    call_expression,
+                    CallKind::Call(call_expression),
                     node_id,
                     true,
                     flags,
@@ -6424,10 +6431,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                 // TODO(overloads): mirror TypeScript Go's overload failure candidate diagnostics
                 // instead of falling back to the first signature return type.
                 candidates.first().and_then(|signature| {
-                    self.resolve_call_signature_candidate(
+                    self.resolve_signature_candidate(
                         program_id,
                         *signature,
-                        call_expression,
+                        CallKind::Call(call_expression),
                         node_id,
                         false,
                         flags,
@@ -6956,22 +6963,18 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.normalize_instantiated_signature_return_type(program_id, return_type, 0)
     }
 
-    fn resolve_call_signature_candidate(
+    fn resolve_signature_candidate(
         &self,
         program_id: ProgramId,
         signature: Signature<'a>,
-        call_expression: &'a CallExpression<'a>,
+        call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
         require_applicable: bool,
         flags: GetTypeFlags,
     ) -> Option<ResolvedSignatureCandidate<'a>> {
         let function = signature.function(self.arena());
-        let inference = self.infer_call_type_parameter_resolution(
-            program_id,
-            function,
-            call_expression,
-            node_id,
-            flags,
+        let inference = self.infer_call_kind_type_parameter_resolution(
+            program_id, function, call_kind, node_id, flags,
         );
         let instantiated = self.instantiate_signature_return_type(
             program_id,
@@ -6983,7 +6986,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             && !self.is_call_signature_applicable(
                 program_id,
                 function,
-                CallKind::Call(call_expression),
+                call_kind,
                 node_id,
                 inference.substitutions(),
                 flags,
@@ -7013,10 +7016,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_signatures_of_type(callee_type, SignatureKind::Call)
             .into_iter()
             .filter_map(|signature| {
-                self.resolve_call_signature_candidate(
+                self.resolve_signature_candidate(
                     program_id,
                     signature,
-                    call_expression,
+                    CallKind::Call(call_expression),
                     Some(call_expression.node_id.get()),
                     true,
                     GetTypeFlags::CONTEXT_FREE,
@@ -7238,11 +7241,13 @@ impl<'a, 'store> Checker<'a, 'store> {
         let applicable = candidates
             .iter()
             .filter_map(|signature| {
-                self.resolve_construct_signature_candidate(
+                self.resolve_signature_candidate(
                     program_id,
                     *signature,
-                    new_expression,
+                    CallKind::New(new_expression),
+                    None,
                     true,
+                    GetTypeFlags::NONE,
                 )
             })
             .collect::<Vec<_>>();
@@ -7250,51 +7255,17 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.choose_best_signature_candidate(applicable)
             .or_else(|| {
                 candidates.first().and_then(|signature| {
-                    self.resolve_construct_signature_candidate(
+                    self.resolve_signature_candidate(
                         program_id,
                         *signature,
-                        new_expression,
+                        CallKind::New(new_expression),
+                        None,
                         false,
+                        GetTypeFlags::NONE,
                     )
                 })
             })
             .map(ResolvedSignatureCandidate::into_return_type)
-    }
-
-    fn resolve_construct_signature_candidate(
-        &self,
-        program_id: ProgramId,
-        signature: Signature<'a>,
-        new_expression: &'a NewExpression<'a>,
-        require_applicable: bool,
-    ) -> Option<ResolvedSignatureCandidate<'a>> {
-        let function = signature.function(self.arena());
-        let inference =
-            self.infer_construct_type_parameter_resolution(program_id, function, new_expression);
-
-        if require_applicable
-            && !self.is_call_signature_applicable(
-                program_id,
-                function,
-                CallKind::New(new_expression),
-                None,
-                inference.substitutions(),
-                GetTypeFlags::NONE,
-            )
-        {
-            return None;
-        }
-
-        let instantiated = self.instantiate_signature_return_type(
-            program_id,
-            function.return_type,
-            inference.mapper(),
-        );
-        Some(ResolvedSignatureCandidate {
-            signature,
-            inference,
-            return_type: instantiated,
-        })
     }
 
     fn arguments_are_assignable_to_parameters(
@@ -11338,21 +11309,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 ),
                 ..IterationTypes::default()
             },
-            TyKind::TypeReference(reference) => {
-                let fast =
-                    self.get_global_iteration_types_fast(program_id, reference, resolver, true);
-                if fast.has_types() {
-                    fast
-                } else {
-                    self.get_iteration_types_of_iterable_slow(
-                        program_id,
-                        iterable_type,
-                        resolver,
-                        depth + 1,
-                        context,
-                    )
-                }
-            }
             _ if iterable_type.is_string_like(self.arena())
                 && resolver == IterationResolverKind::Sync =>
             {
@@ -11368,61 +11324,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 depth + 1,
                 context,
             ),
-        }
-    }
-
-    fn get_global_iteration_types_fast(
-        &self,
-        program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
-        resolver: IterationResolverKind,
-        require_iterable: bool,
-    ) -> IterationTypes<'a> {
-        if !self.is_global_lib_type_name(program_id, reference.name) {
-            return IterationTypes::default();
-        }
-
-        // TypeScript keeps this direct-target path as an optimization before
-        // falling back to the structural iteration protocol below.
-        let is_iteration_family = match (resolver, require_iterable) {
-            (IterationResolverKind::Sync, true) => matches!(
-                reference.name,
-                "Iterable" | "IterableIterator" | "IteratorObject" | "Generator"
-            ),
-            (IterationResolverKind::Sync, false) => matches!(
-                reference.name,
-                "Iterator" | "IterableIterator" | "IteratorObject" | "Generator"
-            ),
-            (IterationResolverKind::Async, true) => matches!(
-                reference.name,
-                "AsyncIterable"
-                    | "AsyncIterableIterator"
-                    | "AsyncIteratorObject"
-                    | "AsyncGenerator"
-            ),
-            (IterationResolverKind::Async, false) => matches!(
-                reference.name,
-                "AsyncIterator"
-                    | "AsyncIterableIterator"
-                    | "AsyncIteratorObject"
-                    | "AsyncGenerator"
-            ),
-        };
-        let is_builtin_iterator = matches!(
-            (resolver, reference.name),
-            (
-                IterationResolverKind::Sync,
-                "ArrayIterator" | "MapIterator" | "SetIterator" | "StringIterator"
-            ) | (IterationResolverKind::Async, "ReadableStreamAsyncIterator")
-        );
-        if !is_iteration_family && !is_builtin_iterator {
-            return IterationTypes::default();
-        }
-
-        IterationTypes {
-            yield_type: reference.type_arguments.first().copied(),
-            return_type: reference.type_arguments.get(1).copied(),
-            next_type: reference.type_arguments.get(2).copied(),
         }
     }
 
@@ -11472,12 +11373,6 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> IterationTypes<'a> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return IterationTypes::default();
-        }
-        if let TyKind::TypeReference(reference) = self.ty_kind(iterator_type) {
-            let fast = self.get_global_iteration_types_fast(program_id, reference, resolver, false);
-            if fast.has_types() {
-                return fast;
-            }
         }
 
         let active_interface = if let TyKind::TypeReference(reference) = self.ty_kind(iterator_type)

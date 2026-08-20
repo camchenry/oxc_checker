@@ -5991,6 +5991,25 @@ fn new_expression_fills_unresolved_construct_inference_with_unknown() {
 }
 
 #[test]
+fn new_expression_infers_from_tuple_rest_arguments() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    declare const Factory: { new <T>(...args: [label: string, value: T]): T };
+
+    const value = new Factory("answer", 42);
+    "#,
+    );
+
+    assert_type_eq(
+        ret.arena,
+        &get_global_symbol_type(&ret, "value"),
+        &arena(&ret).number_literal(42.0, "42", NumberBase::Decimal),
+    );
+}
+
+#[test]
 fn class_properties_are_available_on_instances_statics_and_this() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

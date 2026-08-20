@@ -2,9 +2,9 @@ use num_traits::ToPrimitive;
 use oxc_ast::{
     AstKind,
     ast::{
-        ArrowFunctionExpression, CallExpression, Expression, FormalParameters, Function,
-        FunctionBody, NewExpression, ReturnStatement, TSSignature, TSTupleElement, TSType,
-        TSTypeParameterInstantiation, YieldExpression,
+        ArrowFunctionExpression, Expression, FormalParameters, Function, FunctionBody,
+        ReturnStatement, TSSignature, TSTupleElement, TSType, TSTypeParameterInstantiation,
+        YieldExpression,
     },
 };
 use oxc_ast_visit::Visit;
@@ -18,7 +18,7 @@ use std::cell::RefCell;
 
 use crate::{
     checker::Checker,
-    checker_impl::{FunctionKind, GetTypeFlags},
+    checker_impl::{CallKind, FunctionKind, GetTypeFlags},
     index_type_to_property_name,
     limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
     mapper::{TypeMapper, TypeParameterSubstitutions},
@@ -1346,16 +1346,16 @@ impl<'a, 'store> Checker<'a, 'store> {
         });
     }
 
-    pub(crate) fn infer_call_type_parameter_resolution(
+    pub(crate) fn infer_call_kind_type_parameter_resolution(
         &self,
         program_id: ProgramId,
         function: &'a TyFunction<'a>,
-        call_expression: &'a CallExpression<'a>,
+        call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
         flags: GetTypeFlags,
     ) -> InferenceResolution<'a> {
-        let argument_types = call_expression
-            .arguments
+        let argument_types = call_kind
+            .arguments()
             .iter()
             .enumerate()
             .filter_map(|(index, argument)| {
@@ -1381,11 +1381,15 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
             .collect::<Vec<_>>();
 
-        self.infer_call_type_parameter_resolution_from_argument_types(
+        self.infer_call_type_parameter_resolution_from_argument_types_with_flags(
             program_id,
             function,
-            call_expression.type_arguments.as_deref(),
+            call_kind.type_arguments(),
             argument_types,
+            match call_kind {
+                CallKind::Call(_) => InferenceResolutionFlags::NONE,
+                CallKind::New(_) => InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
+            },
         )
     }
 
@@ -1395,6 +1399,23 @@ impl<'a, 'store> Checker<'a, 'store> {
         function: &'a TyFunction<'a>,
         type_arguments: Option<&'a TSTypeParameterInstantiation<'a>>,
         argument_types: impl IntoIterator<Item = (usize, Ty<'a>)>,
+    ) -> InferenceResolution<'a> {
+        self.infer_call_type_parameter_resolution_from_argument_types_with_flags(
+            program_id,
+            function,
+            type_arguments,
+            argument_types,
+            InferenceResolutionFlags::NONE,
+        )
+    }
+
+    fn infer_call_type_parameter_resolution_from_argument_types_with_flags(
+        &self,
+        program_id: ProgramId,
+        function: &'a TyFunction<'a>,
+        type_arguments: Option<&'a TSTypeParameterInstantiation<'a>>,
+        argument_types: impl IntoIterator<Item = (usize, Ty<'a>)>,
+        flags: InferenceResolutionFlags,
     ) -> InferenceResolution<'a> {
         let type_pairs = argument_types
             .into_iter()
@@ -1407,7 +1428,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             function,
             type_arguments,
             type_pairs,
-            InferenceResolutionFlags::NONE,
+            flags,
         )
     }
 
@@ -1584,43 +1605,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             );
         }
         false
-    }
-
-    pub(crate) fn infer_construct_type_parameter_resolution(
-        &self,
-        program_id: ProgramId,
-        function: &'a TyFunction<'a>,
-        new_expression: &'a NewExpression<'a>,
-    ) -> InferenceResolution<'a> {
-        let type_pairs = new_expression
-            .arguments
-            .iter()
-            .zip(function.parameters.iter())
-            .filter_map(|(argument, parameter)| {
-                let argument = argument.as_expression()?;
-                let flags = if self.could_contain_type_variables(parameter.ty) {
-                    GetTypeFlags::PRESERVE_LITERALS
-                } else {
-                    GetTypeFlags::NONE
-                };
-                let contextual_type =
-                    self.inference_contextual_parameter_type(function, parameter.ty);
-                let argument_type = self.get_type_of_call_argument_for_parameter(
-                    program_id,
-                    argument,
-                    None,
-                    contextual_type,
-                    flags,
-                );
-                Some((parameter.ty, argument_type))
-            });
-        self.infer_type_parameter_resolution_from_type_pairs(
-            program_id,
-            function,
-            new_expression.type_arguments.as_deref(),
-            type_pairs,
-            InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
-        )
     }
 
     pub(crate) fn inference_contextual_parameter_type(

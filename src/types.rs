@@ -869,6 +869,15 @@ fn rest_parameter_type_at_call_index<'a>(
     ty: Ty<'a>,
     index: usize,
 ) -> Option<Ty<'a>> {
+    if let TyKind::Union(union) = arena.ty_kind(ty) {
+        let types = union
+            .types
+            .iter()
+            .filter_map(|ty| rest_parameter_type_at_call_index(arena, *ty, index))
+            .collect::<Vec<_>>();
+        return (!types.is_empty()).then(|| arena.union(types));
+    }
+
     let TyKind::Tuple(tuple) = arena.ty_kind(ty) else {
         return Some(ty.array_element_type(arena).unwrap_or(ty));
     };
