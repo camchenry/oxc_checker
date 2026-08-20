@@ -3498,8 +3498,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 false,
             ),
         };
-        match self.ty_kind(object_type) {
-            TyKind::Object(object) => object.properties.iter().find_map(|property| {
+        let properties: Option<&[TyProperty<'a>]> = match self.ty_kind(object_type) {
+            TyKind::Object(object) => Some(object.properties),
+            TyKind::ModuleNamespace(namespace) => Some(&namespace.properties),
+            _ => None,
+        };
+        if let Some(properties) = properties {
+            return properties.iter().find_map(|property| {
                 (property.name == property_name && property.computed == computed).then(|| {
                     if property.optional {
                         property.ty.or_undefined(self.arena())
@@ -3507,7 +3512,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                         property.ty
                     }
                 })
-            }),
+            });
+        }
+
+        match self.ty_kind(object_type) {
             TyKind::Union(union) => union
                 .types
                 .iter()
@@ -3518,17 +3526,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .types
                 .iter()
                 .find_map(|ty| self.resolve_structural_indexed_access_type(*ty, index_type)),
-            TyKind::ModuleNamespace(namespace) => {
-                namespace.properties.iter().find_map(|property| {
-                    (property.name == property_name && property.computed == computed).then(|| {
-                        if property.optional {
-                            property.ty.or_undefined(self.arena())
-                        } else {
-                            property.ty
-                        }
-                    })
-                })
-            }
             _ => None,
         }
     }
@@ -6097,22 +6094,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.get_property_type_of_structural_type(program_id, *ty, property_name)
             }),
             TyKind::Tuple(tuple) => self.get_property_type_of_tuple(tuple, property_name),
-            TyKind::Object(object) => {
-                if let Some(property) = object
-                    .properties
-                    .iter()
-                    .find(|property| property.name == property_name && !property.computed)
-                {
-                    return Some(if property.optional {
-                        self.ty.union([property.ty, Ty::Undefined])
-                    } else {
-                        property.ty
-                    });
-                }
-
+            TyKind::Object(_) => {
                 let property_name = self.arena().str(property_name);
                 let string_key = self.ty.string_literal(property_name);
-                self.get_index_signature_type_for_indexed_access(program_id, ty, string_key, 0)
+                self.resolve_structural_indexed_access_type(ty, string_key)
+                    .or_else(|| {
+                        self.get_index_signature_type_for_indexed_access(
+                            program_id, ty, string_key, 0,
+                        )
+                    })
                     .or_else(|| {
                         let value = property_name.parse::<f64>().ok()?;
                         let number_key =
@@ -6123,18 +6113,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                         )
                     })
             }
-            TyKind::ModuleNamespace(namespace) => {
-                namespace.properties.iter().find_map(|property| {
-                    // TODO(correctness): handle all readonly/optional cases
-                    (property.name == property_name && !property.computed).then_some(
-                        if property.optional {
-                            self.ty.union([property.ty, Ty::Undefined])
-                        } else {
-                            property.ty
-                        },
-                    )
-                })
-            }
+            TyKind::ModuleNamespace(_) => self.resolve_structural_indexed_access_type(
+                ty,
+                self.ty.string_literal(self.arena().str(property_name)),
+            ),
             TyKind::Mapped(mapped) => {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
             }
