@@ -3188,6 +3188,25 @@ fn generic_instantiations_are_cached_by_target_and_mapper() {
 }
 
 #[test]
+fn type_instantiation_resolves_structural_indexed_accesses() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(&allocator, "const x = 1;");
+    let checker = checker(&ret);
+    let arena = arena(&ret);
+    let object_type = arena.object([Ty::property(
+        "value",
+        arena.type_reference("T", std::iter::empty()),
+    )]);
+    let indexed_access = arena.indexed_access(object_type, arena.string_literal("value"));
+    let mapper = TypeMapper::single(arena.type_reference("T", std::iter::empty()), Ty::string());
+
+    assert_eq!(
+        checker.instantiate_type(indexed_access, &mapper),
+        Ty::string()
+    );
+}
+
+#[test]
 fn recursive_type_instantiation_depth_produces_error_type() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

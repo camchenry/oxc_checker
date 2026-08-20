@@ -1,4 +1,3 @@
-use num_traits::ToPrimitive;
 use oxc_ast::{
     AstKind,
     ast::{
@@ -19,7 +18,6 @@ use std::cell::RefCell;
 use crate::{
     checker::Checker,
     checker_impl::{CallKind, FunctionKind, GetTypeFlags},
-    index_type_to_property_name,
     limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
@@ -2025,70 +2023,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let object_type = self.instantiate_type(object_type, &mapper);
         let index_type = self.instantiate_type(index_type, &mapper);
 
-        resolve_indexed_access_for_inference(object_type, index_type, arena)
-    }
-}
-
-fn resolve_indexed_access_for_inference<'a>(
-    object_type: Ty<'a>,
-    index_type: Ty<'a>,
-    arena: crate::types::CheckerArena<'a>,
-) -> Option<Ty<'a>> {
-    if let TyKind::Array(array) = arena.ty_kind(object_type)
-        && index_type.is_number_like(arena)
-    {
-        return Some(array.element_type);
-    }
-
-    if let TyKind::Tuple(tuple) = arena.ty_kind(object_type)
-        && let TyKind::NumberLiteral(literal) = arena.ty_kind(index_type)
-        && let Some(index) = literal.value.to_usize()
-    {
-        return tuple.elements.get(index).map(TupleElement::ty);
-    }
-
-    if let TyKind::Union(union) = arena.ty_kind(index_type) {
-        let property_types = union
-            .types
-            .iter()
-            .map(|index_type| resolve_indexed_access_for_inference(object_type, *index_type, arena))
-            .collect::<Option<Vec<_>>>()?;
-        Some(arena.union(property_types))
-    } else {
-        let property_name = index_type_to_property_name(arena, index_type)?;
-        property_type_for_inference_index(object_type, property_name, arena)
-    }
-}
-
-fn property_type_for_inference_index<'a>(
-    object_type: Ty<'a>,
-    property_name: &str,
-    arena: crate::types::CheckerArena<'a>,
-) -> Option<Ty<'a>> {
-    match arena.ty_kind(object_type) {
-        TyKind::Object(object) => object.properties.iter().find_map(|property| {
-            if property.computed || property.name != property_name {
-                return None;
-            }
-            Some(if property.optional {
-                arena.union([property.ty, Ty::Undefined])
-            } else {
-                property.ty
-            })
-        }),
-        TyKind::Union(union) => {
-            let property_types = union
-                .types
-                .iter()
-                .map(|ty| property_type_for_inference_index(*ty, property_name, arena))
-                .collect::<Option<Vec<_>>>()?;
-            Some(arena.union(property_types))
-        }
-        TyKind::Intersection(intersection) => intersection
-            .types
-            .iter()
-            .find_map(|ty| property_type_for_inference_index(*ty, property_name, arena)),
-        _ => None,
+        self.resolve_structural_indexed_access_type(object_type, index_type)
     }
 }
 

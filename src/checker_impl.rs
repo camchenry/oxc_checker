@@ -780,15 +780,17 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.instantiate_type_at_depth(indexed_access.object_type, mapper, depth + 1);
                 let index_type =
                     self.instantiate_type_at_depth(indexed_access.index_type, mapper, depth + 1);
-                if let (TyKind::Tuple(tuple), TyKind::StringLiteral(property)) =
-                    (self.ty_kind(object_type), self.ty_kind(index_type))
-                    && property.value == "length"
-                {
-                    self.get_property_type_of_tuple(tuple, property.value)
-                        .unwrap_or_else(|| self.ty.indexed_access(object_type, index_type))
+                let resolved = if let TyKind::Tuple(tuple) = self.ty_kind(object_type) {
+                    match self.ty_kind(index_type) {
+                        TyKind::StringLiteral(property) if property.value == "length" => {
+                            self.get_property_type_of_tuple(tuple, property.value)
+                        }
+                        _ => None,
+                    }
                 } else {
-                    self.ty.indexed_access(object_type, index_type)
-                }
+                    self.resolve_structural_indexed_access_type(object_type, index_type)
+                };
+                resolved.unwrap_or_else(|| self.ty.indexed_access(object_type, index_type))
             }
             TyKind::Conditional(conditional) => {
                 let infer_type_parameters =
@@ -3342,6 +3344,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             return IndexedAccessResolution::Deferred;
         }
 
+        if let Some(resolved) = self.resolve_structural_indexed_access_type(object_type, index_type)
+        {
+            return IndexedAccessResolution::Resolved(resolved);
+        }
+
         if let TyKind::Union(union) = self.ty_kind(object_type) {
             let mut property_types = UnionAccumulator::new(self.arena());
             let mut has_deferred = false;
@@ -3371,12 +3378,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             } else {
                 IndexedAccessResolution::Missing
             };
-        }
-
-        if let TyKind::Array(array) = self.ty_kind(object_type)
-            && index_type.is_number_like(self.arena())
-        {
-            return IndexedAccessResolution::Resolved(array.element_type);
         }
 
         if let TyKind::Tuple(tuple) = self.ty_kind(object_type)
@@ -3458,6 +3459,77 @@ impl<'a, 'store> Checker<'a, 'store> {
                     IndexedAccessResolution::Missing
                 }
             }
+        }
+    }
+
+    pub(super) fn resolve_structural_indexed_access_type(
+        &self,
+        object_type: Ty<'a>,
+        index_type: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        if let TyKind::Union(union) = self.ty_kind(index_type) {
+            return union
+                .types
+                .iter()
+                .map(|index_type| {
+                    self.resolve_structural_indexed_access_type(object_type, *index_type)
+                })
+                .collect::<Option<Vec<_>>>()
+                .map(|types| self.ty.union(types));
+        }
+
+        if let TyKind::Array(array) = self.ty_kind(object_type)
+            && index_type.is_number_like(self.arena())
+        {
+            return Some(array.element_type);
+        }
+
+        if let TyKind::Tuple(tuple) = self.ty_kind(object_type)
+            && let TyKind::NumberLiteral(literal) = self.ty_kind(index_type)
+            && let Some(index) = literal.value.to_usize()
+        {
+            return tuple.elements.get(index).map(TupleElement::ty);
+        }
+
+        let (property_name, computed) = match self.ty_kind(index_type) {
+            TyKind::UniqueSymbol(symbol) => (symbol.name?, true),
+            _ => (
+                index_type_to_property_name(self.arena(), index_type)?,
+                false,
+            ),
+        };
+        match self.ty_kind(object_type) {
+            TyKind::Object(object) => object.properties.iter().find_map(|property| {
+                (property.name == property_name && property.computed == computed).then(|| {
+                    if property.optional {
+                        property.ty.or_undefined(self.arena())
+                    } else {
+                        property.ty
+                    }
+                })
+            }),
+            TyKind::Union(union) => union
+                .types
+                .iter()
+                .map(|ty| self.resolve_structural_indexed_access_type(*ty, index_type))
+                .collect::<Option<Vec<_>>>()
+                .map(|types| self.ty.union(types)),
+            TyKind::Intersection(intersection) => intersection
+                .types
+                .iter()
+                .find_map(|ty| self.resolve_structural_indexed_access_type(*ty, index_type)),
+            TyKind::ModuleNamespace(namespace) => {
+                namespace.properties.iter().find_map(|property| {
+                    (property.name == property_name && property.computed == computed).then(|| {
+                        if property.optional {
+                            property.ty.or_undefined(self.arena())
+                        } else {
+                            property.ty
+                        }
+                    })
+                })
+            }
+            _ => None,
         }
     }
 

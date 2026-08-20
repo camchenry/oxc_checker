@@ -836,7 +836,7 @@ type ContactField = FieldPath<ContactForm>
 >                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type ContactArrayField = FieldArrayPath<ContactForm>
->    ^^^^^^^^^^^^^^^^^: { user: `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; tags: `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; friends: `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: { user: `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; tags: never; friends: `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
               expected: "friends" | `friends.${number}.socials`
 
 type ContactArrayField = FieldArrayPath<ContactForm>
@@ -849,7 +849,7 @@ type ContactArrayField = FieldArrayPath<ContactForm>
 >                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
->    ^^^^^^^^^: "address.city" extends { name: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; address: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }["user"]] ? "city" extends { city: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; zip: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }["user"]["address"]] ? never : never : never   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: "address.city" extends { name: `${K}`; address: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { name: string; address: { city: string; zip?: number; }; }] ? "city" extends { city: `${K}`; zip: `${K}`; }[keyof { city: string; zip?: number; }] ? string : never : never   (TyConditional) (TSTypeAliasDeclaration)
       expected: string
 
 type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
@@ -874,7 +874,7 @@ type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
 >                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
->    ^^^^^^^^^^^: "0.socials.1.value" extends (`${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`)[][keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }["friends"]] ? never : never   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: "0.socials.1.value" extends { [K in TupleKeys<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>]-?: PathImpl<K & string, { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[][K], { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>; }[TupleKeys<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>] ? never : never   (TyConditional) (TSTypeAliasDeclaration)
         expected: number
 
 type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
