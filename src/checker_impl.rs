@@ -5911,15 +5911,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         object_type: Ty<'a>,
         property_name: &str,
     ) -> Option<Ty<'a>> {
-        let apparent_object_type = self.get_apparent_type(program_id, object_type, 0);
         self.get_property_type_of_structural_type(program_id, object_type, property_name)
-            .or_else(|| {
-                self.get_property_type_of_structural_type(
-                    program_id,
-                    apparent_object_type,
-                    property_name,
-                )
-            })
             .or_else(|| {
                 self.get_property_type_of_global_interface_type(
                     program_id,
