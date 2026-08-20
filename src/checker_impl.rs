@@ -8464,7 +8464,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         expand_concrete_arguments: bool,
     ) -> Ty<'a> {
         if let TyKind::TypeReference(reference) = self.ty_kind(ty)
-            && self.is_conditional_type_alias_reference(program_id, reference)
             && let Some((expanded_program_id, expanded)) = if expand_concrete_arguments {
                 self.get_concrete_conditional_type_alias_reference_type(program_id, reference)
             } else {
