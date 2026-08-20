@@ -11122,7 +11122,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         ty: Ty<'a>,
     ) -> Option<Ty<'a>> {
-        let then_type = self.get_then_property_type(program_id, ty)?;
+        let then_type = self.get_property_type_of_static_member_type(program_id, ty, "then")?;
         let then_signatures =
             self.get_signatures_of_type_in_program(program_id, then_type, SignatureKind::Call);
         if then_signatures.is_empty() {
@@ -11144,15 +11144,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         } else {
             self.ty.union(awaited_types)
         })
-    }
-
-    fn get_then_property_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Option<Ty<'a>> {
-        match self.ty_kind(ty) {
-            TyKind::TypeReference(_) | TyKind::TypeQuery(_) => {
-                self.get_property_type_of_named_type(program_id, &ty, "then")
-            }
-            _ => self.get_property_type_for_indexed_access(program_id, ty, "then"),
-        }
     }
 
     fn get_fulfilled_value_types(
