@@ -930,19 +930,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             || self.contains_unresolved_type_parameter(index_type)
     }
 
-    // TODO(inline)
-    fn concrete_index_type_constraint(
-        &self,
-        program_id: ProgramId,
-        node_id: Option<NodeId>,
-        index_type: Ty<'a>,
-    ) -> Option<Ty<'a>> {
-        let node_id = node_id?;
-        let constraint = self.get_type_parameter_constraint(program_id, node_id, index_type)?;
-        let constraint = self.expand_type_for_index_lookup(program_id, constraint, 0);
-        (!self.contains_unresolved_type_parameter(constraint)).then_some(constraint)
-    }
-
     pub(crate) fn is_active_unresolved_type_alias(&self, ty: Ty<'a>) -> bool {
         self.could_contain_type_variables(ty)
             && self.type_alias_metadata(ty).is_some_and(|metadata| {
@@ -3336,8 +3323,13 @@ impl<'a, 'store> Checker<'a, 'store> {
         object_type: Ty<'a>,
         index_type: Ty<'a>,
     ) -> IndexedAccessResolution<'a> {
-        if let Some(constraint) =
-            self.concrete_index_type_constraint(program_id, node_id, index_type)
+        if let Some(node_id) = node_id
+            && let Some(constraint) =
+                self.get_type_parameter_constraint(program_id, node_id, index_type)
+            && let Some(constraint) = {
+                let constraint = self.expand_type_for_index_lookup(program_id, constraint, 0);
+                (!self.contains_unresolved_type_parameter(constraint)).then_some(constraint)
+            }
         {
             let constrained =
                 self.resolve_indexed_access_type(program_id, None, object_type, constraint);
