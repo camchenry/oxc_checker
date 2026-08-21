@@ -1797,14 +1797,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
                 );
                 // TODO: Just use `template_substitution_static_value` directly here?
-                value.push_str({
-                    match self.ty_kind(expression_type) {
-                        TyKind::StringLiteral(_) | TyKind::NumberLiteral(_) => {
-                            self.template_substitution_static_value(program_id, expression_type)
-                        }
-                        _ => None,
-                    }
-                }?);
+                value.push_str(
+                    self.template_substitution_static_value(program_id, expression_type)?,
+                );
             }
         }
         Some(self.arena().str(&value))

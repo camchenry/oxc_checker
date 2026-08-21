@@ -65,7 +65,8 @@ const arg = true;
 >     ^^^: true   (TyBooleanLiteral) (BindingIdentifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: "arg = true"   (TyStringLiteral) (BindingIdentifier)
+  expected: string
 
 const msg1 = `arg = ${arg}`;
 >                     ^^^: true   (TyBooleanLiteral) (IdentifierReference)
