@@ -442,12 +442,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         depth.set(current + 1);
-        let instantiated = self.instantiate_type_cached(ty, mapper);
-        depth.set(current);
-        instantiated
-    }
-
-    fn instantiate_type_cached(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>) -> Ty<'a> {
         let Some(mapper_key) = mapper.cache_entries(self.arena()) else {
             return self.instantiate_type_at_depth(ty, mapper, 0);
         };
@@ -462,6 +456,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.instantiation_cache
             .borrow_mut()
             .insert(key, instantiated);
+        depth.set(current);
         instantiated
     }
 
@@ -480,51 +475,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             return ty;
         }
 
-        self.instantiate_type_worker(ty, mapper, depth + 1)
-    }
-
-    #[inline]
-    pub(crate) fn instantiate_signature(
-        &self,
-        signature: Signature<'a>,
-        mapper: &TypeMapper<'a>,
-    ) -> Signature<'a> {
-        self.instantiate_signature_at_depth(signature, mapper, 0)
-    }
-
-    fn instantiate_signature_at_depth(
-        &self,
-        signature: Signature<'a>,
-        mapper: &TypeMapper<'a>,
-        depth: usize,
-    ) -> Signature<'a> {
-        let ty = self.instantiate_type_at_depth(signature.ty, mapper, depth);
-        if signature.is_abstract {
-            Signature::abstract_construct(ty)
-        } else {
-            Signature::new(signature.kind, ty)
-        }
-    }
-
-    #[inline]
-    pub(crate) fn instantiate_type_predicate(
-        &self,
-        predicate: TyTypePredicate<'a>,
-        mapper: &TypeMapper<'a>,
-    ) -> TyTypePredicate<'a> {
-        self.instantiate_type_predicate_at_depth(predicate, mapper, 0)
-    }
-
-    fn instantiate_type_predicate_at_depth(
-        &self,
-        predicate: TyTypePredicate<'a>,
-        mapper: &TypeMapper<'a>,
-        depth: usize,
-    ) -> TyTypePredicate<'a> {
-        predicate.map_target_type(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1))
-    }
-
-    fn instantiate_type_worker(&self, ty: Ty<'a>, mapper: &TypeMapper<'a>, depth: usize) -> Ty<'a> {
         // Recursively apply the mapper to structured types. When the mapped structure is
         // semantically unchanged, return the original handle: checker arena allocations are
         // append-only, so rebuilding an equivalent type would retain duplicate data permanently.
@@ -720,7 +670,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                             reference.display_type_argument_count,
                         );
                     // Conditional aliases are deferred until their arguments become concrete.
-                    // Reduce them at mapper application so this works in any enclosing type.
+                    // Reduce them at mapper application so self works in any enclosing type.
                     if let Some(metadata) = self.type_alias_metadata(instantiated)
                         && has_concrete_type_arguments
                         && self.is_conditional_type_alias_declaration(
@@ -902,6 +852,47 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    #[inline]
+    pub(crate) fn instantiate_signature(
+        &self,
+        signature: Signature<'a>,
+        mapper: &TypeMapper<'a>,
+    ) -> Signature<'a> {
+        self.instantiate_signature_at_depth(signature, mapper, 0)
+    }
+
+    fn instantiate_signature_at_depth(
+        &self,
+        signature: Signature<'a>,
+        mapper: &TypeMapper<'a>,
+        depth: usize,
+    ) -> Signature<'a> {
+        let ty = self.instantiate_type_at_depth(signature.ty, mapper, depth);
+        if signature.is_abstract {
+            Signature::abstract_construct(ty)
+        } else {
+            Signature::new(signature.kind, ty)
+        }
+    }
+
+    #[inline]
+    pub(crate) fn instantiate_type_predicate(
+        &self,
+        predicate: TyTypePredicate<'a>,
+        mapper: &TypeMapper<'a>,
+    ) -> TyTypePredicate<'a> {
+        self.instantiate_type_predicate_at_depth(predicate, mapper, 0)
+    }
+
+    fn instantiate_type_predicate_at_depth(
+        &self,
+        predicate: TyTypePredicate<'a>,
+        mapper: &TypeMapper<'a>,
+        depth: usize,
+    ) -> TyTypePredicate<'a> {
+        predicate.map_target_type(|ty| self.instantiate_type_at_depth(ty, mapper, depth + 1))
+    }
+
     pub(crate) fn could_contain_type_variables(&self, ty: Ty<'a>) -> bool {
         let mut contains = false;
         visit_type(self.arena(), ty, &mut |ty| match self.ty_kind(ty) {
@@ -939,6 +930,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             || self.contains_unresolved_type_parameter(index_type)
     }
 
+    // TODO(inline)
     fn concrete_index_type_constraint(
         &self,
         program_id: ProgramId,
@@ -1461,6 +1453,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         })
     }
 
+    // TODO(inline)
     fn get_type_symbol_for_export_specifier_local(
         &self,
         program_id: ProgramId,
@@ -1480,6 +1473,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_type_symbol_in_program(program_id, identifier.name.as_str())
     }
 
+    // TODO: refactor away the export specifier part?
     fn get_type_of_export_specifier_local(
         &self,
         program_id: ProgramId,
@@ -1664,6 +1658,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let left = self.get_type_of_expression_with_node(program_id, &logical.left, node_id, flags);
         let right =
             self.get_type_of_expression_with_node(program_id, &logical.right, node_id, flags);
+        // TODO: Move ty.union to outside of match
         match logical.operator {
             LogicalOperator::Or => self.ty.union([self.get_truthy_type(left), right]),
             LogicalOperator::And => self.ty.union([self.get_falsy_type(left), right]),
@@ -1673,6 +1668,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn get_type_of_assignment_target(
         &self,
         program_id: ProgramId,
@@ -1680,6 +1676,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         node_id: Option<NodeId>,
         flags: GetTypeFlags,
     ) -> Ty<'a> {
+        // TODO: Avoid erroring here and just only handle simple assignment targets in the first place
         if let Some(target) = target.as_simple_assignment_target() {
             return self.get_type_of_simple_assignment_target(program_id, target, node_id, flags);
         }
@@ -1750,6 +1747,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): move to type_facts module
     fn get_truthy_type(&self, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
             TyKind::Union(union) => self
@@ -1774,6 +1772,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): move to type_facts module
     fn get_falsy_type(&self, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
             TyKind::Union(union) => self
@@ -1810,6 +1809,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         literal: &'a TemplateLiteral<'a>,
         node_id: Option<NodeId>,
     ) -> Option<&'a str> {
+        // TODO(perf): Pre-allocate string
         let mut value = String::new();
         for (index, quasi) in literal.quasis.iter().enumerate() {
             value.push_str(quasi.value.cooked.as_ref()?.as_str());
@@ -1827,6 +1827,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(self.arena().str(&value))
     }
 
+    // TODO(inline)
     fn template_expression_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {
         match self.ty_kind(ty) {
             TyKind::StringLiteral(_) | TyKind::NumberLiteral(_) => {
@@ -1872,6 +1873,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn get_enum_literal_union_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Option<Ty<'a>> {
         let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
             return None;
@@ -1917,6 +1919,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn get_enum_member_symbol_for_name(
         &self,
         program_id: ProgramId,
@@ -2103,6 +2106,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO: Is this necessary? Feels like enums are kind of a pain to deal with and maybe we need a better abstraction
     fn get_common_enum_parent_type(&self, types: &[Ty<'a>]) -> Option<Ty<'a>> {
         let mut parent = None;
         for ty in types {
@@ -2176,6 +2180,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.ty.template_literal(quasis, expressions)
     }
 
+    // TODO(correctness): Maybe we should resolve the conditional right here if possible, instead of returning both
+    // types all the time. For example, a static conditional like `false ? 1 : 2` could be resolved to `2` here.
     fn get_type_of_conditional_expression(
         &self,
         program_id: ProgramId,
@@ -2218,6 +2224,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     }
 
     pub(crate) fn with_implicit_type_arguments_visible(&self, ty: Ty<'a>) -> Ty<'a> {
+        // TODO(refactor): this type of mapping might be a good type helper method
         match self.ty_kind(ty) {
             TyKind::TypeReference(reference) => {
                 let display_type_argument_count = if reference.display_type_argument_count == 0 {
@@ -2446,6 +2453,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(correctness): these quotes are still not correctly handled, need to check more cases
     fn property_signature_flags(property: &TSPropertySignature<'_>) -> TyPropertyFlags {
         let type_single_quoted = property.type_annotation.as_deref().is_some_and(|annotation| {
             matches!(
@@ -2482,6 +2490,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         result
     }
 
+    // TODO(inline)
     fn get_type_from_ts_type_inner(&self, program_id: ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
         match ty {
             TSType::TSNumberKeyword(_) => self.ty.number(),
@@ -3724,6 +3733,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): move to global types module
     pub(crate) fn get_global_this_property_type(&self, property_name: &str) -> Option<Ty<'a>> {
         if property_name == GLOBAL_THIS_IDENT.as_str() {
             Some(self.ty.global_this())
@@ -4110,6 +4120,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): move to types module
     fn normalize_index_access_index_type_for_display(&self, ty: Ty<'a>) -> Ty<'a> {
         let TyKind::Intersection(intersection) = self.ty_kind(ty) else {
             return ty;
@@ -4193,6 +4204,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(self.ty.object(expanded))
     }
 
+    // TODO(refactor): this has a good chunk of shared logic with expand_mapped_type
     fn materialize_finite_mapped_type(
         &self,
         program_id: ProgramId,
@@ -4348,6 +4360,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.expand_type(program_id, template, depth + 1)
     }
 
+    // TODO(refactor): make a helper `impl` for `TupleElement` that handles this logic
     fn materialize_mapped_tuple_element(
         &self,
         optional: MappedModifier,
@@ -4367,6 +4380,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): make a helper `impl` for MappedModifier that handles this logic
     fn mapped_readonly(&self, modifier: MappedModifier, source_readonly: bool) -> bool {
         match modifier {
             MappedModifier::None => source_readonly,
@@ -4375,6 +4389,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): again, shares quite a few similarities to `expand_mapped_type`
     fn expand_index_signature_mapped_type(
         &self,
         program_id: ProgramId,
@@ -4403,6 +4418,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(self.ty.object_with_index_infos([], index_infos))
     }
 
+    // TODO(refactor): make this a helper `impl` for `TyMapped`
     fn properties_for_mapped_constraint(
         &self,
         program_id: ProgramId,
@@ -4895,6 +4911,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): move to types module and make a helper `impl` of `Ty`
     pub(crate) fn is_empty_object_intersection_alias_reference(
         &self,
         program_id: ProgramId,
@@ -5291,6 +5308,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(self.ty.object_with_signatures(properties, signatures))
     }
 
+    // TODO(inline)
     /// Expand references to aliases whose underlying type is a `typeof` query.
     fn get_expanded_type_query_alias_reference(
         &self,
@@ -5460,6 +5478,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             spread_flags.remove(GetTypeFlags::PRESERVE_LITERALS);
         }
 
+        // TODO(perf): pre-allocate
         let mut explicit_properties: Vec<TyProperty<'a>> = Vec::new();
         let mut spread_properties: Vec<TyProperty<'a>> = Vec::new();
         let mut spread_index_infos: Vec<IndexInfo<'a>> = Vec::new();
@@ -5562,6 +5581,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(refactor): move to types module and make a helper `impl` of `Ty`
     fn is_invalid_object_spread_type(
         &self,
         program_id: ProgramId,
@@ -5788,6 +5808,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         properties
     }
 
+    // TODO(inline)
     fn interface_declarations_for_type_name(
         &self,
         program_id: ProgramId,
@@ -6343,6 +6364,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn get_property_type_of_global_function_augmented_object_type(
         &self,
         program_id: ProgramId,
@@ -6416,6 +6438,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_property_type_of_interface_type(program_id, reference, property_name)
     }
 
+    // TODO(inline): try keeping track of this in the checker state instead of traversing ancestors every time.
     fn is_in_contextually_typed_initializer(&self, program_id: ProgramId, node_id: NodeId) -> bool {
         self.nodes(program_id)
             .ancestors(node_id)
@@ -6426,6 +6449,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
     }
 
+    // TODO(inline): also, is this necessary? maybe there's a simpler way to use the context mode / checker state to just
+    // keep track of this automatically.
     fn is_in_const_context(&self, program_id: ProgramId, node_id: NodeId) -> bool {
         for ancestor in self.nodes(program_id).ancestors(node_id) {
             match ancestor.kind() {
@@ -6685,6 +6710,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(candidates.swap_remove(best_index))
     }
 
+    // TODO(refactor): make this an impl method of ResolvedSignatureCandidate
     fn signature_candidate_is_more_specific(
         &self,
         left: &ResolvedSignatureCandidate<'a>,
@@ -6742,6 +6768,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             || matches!(self.ty_kind(ty), TyKind::Object(object) if object.is_empty())
     }
 
+    // TODO(refactor): make this an impl method of ResolvedSignatureCandidate
     fn candidate_has_complete_inference(&self, candidate: &ResolvedSignatureCandidate<'a>) -> bool {
         candidate
             .signature
@@ -6757,6 +6784,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
     }
 
+    // TODO(refactor): make this an impl method of ResolvedSignatureCandidate
     fn candidate_parameter_type_at(
         &self,
         candidate: &ResolvedSignatureCandidate<'a>,
@@ -6766,6 +6794,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map(|ty| self.instantiate_type(ty, candidate.inference.mapper()))
     }
 
+    // TODO(inline)
     fn get_signatures_of_type_in_program(
         &self,
         program_id: ProgramId,
@@ -6948,6 +6977,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn signature_from_function_parts(
         &self,
         program_id: ProgramId,
@@ -6966,6 +6996,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(refactor): this accepts a lot of parameters and we have like several other variants of this
     fn signature_from_function_parts_with_this(
         &self,
         program_id: ProgramId,
@@ -7007,6 +7038,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn instantiate_signature_return_type(
         &self,
         program_id: ProgramId,
@@ -7135,6 +7167,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         (substitutions, explicit_type_parameters)
     }
 
+    // TODO(inline): or just add this to explicit_type_parameter_substitutions so we don't need to have a mut param
     pub(crate) fn add_type_parameter_fallback_substitutions(
         &self,
         function: &TyFunction<'a>,
@@ -7207,6 +7240,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn get_call_parameter_type_at(
         &self,
         function: &TyFunction<'a>,
@@ -7562,6 +7596,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .collect()
     }
 
+    // TODO(refactor): move to type impl method
     fn type_from_method_signatures(&self, signatures: Vec<Signature<'a>>) -> Option<Ty<'a>> {
         match signatures.as_slice() {
             [] => None,
@@ -7765,6 +7800,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         substitutions
     }
 
+    // TODO(inline): maybe just fold into `explicit_type_argument_substitutions` so we don't need to have a mut param
     fn add_default_type_argument_substitutions(
         &self,
         type_parameters: &[TyTypeParameter<'a>],
@@ -7786,6 +7822,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn instantiate_type_parameter_default(
         &self,
         default_type: Ty<'a>,
@@ -7877,7 +7914,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map(|symbol_id| SymbolRef::new(program_id, symbol_id))
     }
 
-    #[inline]
     pub(crate) fn symbol_for_identifier_reference(
         &self,
         program_id: ProgramId,
@@ -7937,6 +7973,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         declarations
     }
 
+    // TODO(inline)
     fn get_type_parameters_for_type(
         &self,
         program_id: ProgramId,
@@ -8035,6 +8072,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map_or_else(|| self.ty.any(), |symbol| self.get_type_of_symbol(symbol))
     }
 
+    // TODO(inline)
     fn primary_symbol_declaration_is_namespace(&self, symbol: SymbolRef) -> bool {
         let declaration = self
             .semantic(symbol.program_id)
@@ -8074,6 +8112,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn get_type_of_class_expression(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
         self.get_type_of_class_constructor(
             program_id,
@@ -8104,6 +8143,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn get_type_of_duplicate_class_declaration(
         &self,
         program_id: ProgramId,
@@ -8244,6 +8284,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .object_from_slices(properties, signatures, &[], false)
     }
 
+    // TODO(refactor): move to impl on class
     fn class_base_type_arguments(
         &self,
         program_id: ProgramId,
@@ -8462,17 +8503,17 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map(|parameter| self.get_apparent_type(program_id, parameter.ty, 0))
     }
 
-    // TODO(cleanup): inline this into get_apparent_type?
+    // TODO(inline): inline this into get_apparent_type?
     fn get_apparent_contextual_parameter_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         self.get_apparent_conditional_type_at_use(program_id, ty, false)
     }
 
-    // TODO(cleanup): inline this into get_apparent_type?
+    // TODO(inline): inline this into get_apparent_type?
     fn get_apparent_declared_parameter_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         self.get_apparent_conditional_type_at_use(program_id, ty, true)
     }
 
-    // TODO(cleanup): inline this into get_apparent_type?
+    // TODO(inline): inline this into get_apparent_type?
     fn get_apparent_conditional_type_at_use(
         &self,
         program_id: ProgramId,
@@ -8501,6 +8542,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         ty
     }
 
+    // TODO(inline)
     fn get_conditional_type_alias_reference_type(
         &self,
         program_id: ProgramId,
@@ -8848,6 +8890,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         None
     }
 
+    // TODO(inline)
     fn get_contextual_type_of_object_property_value_from_intra_expression(
         &self,
         program_id: ProgramId,
@@ -8869,6 +8912,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn get_type_of_object_expression_excluding_property_value(
         &self,
         program_id: ProgramId,
@@ -8936,6 +8980,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         })
     }
 
+    // TODO(inline)
     fn get_contextual_type_of_array_element_from_intra_expression(
         &self,
         program_id: ProgramId,
@@ -9216,6 +9261,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn function_signature_parameters(
         &self,
         program_id: ProgramId,
@@ -9290,6 +9336,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.pattern);
         let ty =
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
+        // TODO(refactor): allow chaining on `TyParameter` so we can do something like this instead:
+        // `self.ty.parameter(name, ty).optional(parameter.optional)`
         if parameter.optional {
             self.ty.optional_parameter(name, ty)
         } else {
@@ -9297,6 +9345,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn function_signature_parameter_with_context(
         &self,
         program_id: ProgramId,
@@ -9340,6 +9389,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_apparent_type(program_id, ty, 0)
     }
 
+    // TODO(inline)
     pub(crate) fn get_async_function_return_type(
         &self,
         program_id: ProgramId,
@@ -9439,6 +9489,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedMember))
     }
 
+    // TODO(inline)
     fn get_type_of_export_assignment(&self, program_id: ProgramId) -> Option<Ty<'a>> {
         self.nodes(program_id)
             .iter_enumerated()
@@ -9813,6 +9864,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn array_literal_context_produces_tuple(&self, context: ExpressionCheckContext<'a>) -> bool {
         context.check_mode.force_tuple()
             || context
@@ -9820,6 +9872,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .is_some_and(|ty| matches!(self.ty_kind(ty), TyKind::Tuple(_)))
     }
 
+    // TODO(inline)
     fn array_literal_context_produces_readonly_tuple(
         &self,
         context: ExpressionCheckContext<'a>,
@@ -10046,6 +10099,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         None
     }
 
+    // TODO(inline): use existing methods, looks very similar to existing code
     fn has_class_declaration_named(&self, program_id: ProgramId, name: &str) -> bool {
         self.semantic(program_id)
             .scoping()
@@ -10160,6 +10214,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         None
     }
 
+    // TODO(inline)
     fn namespace_path_for_module(
         &self,
         program_id: ProgramId,
@@ -10222,6 +10277,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .find_map(|declaration| self.variable_declarator_at(symbol.program_id, declaration))
     }
 
+    // TODO(inline)
     fn variable_declarator_at(
         &self,
         program_id: ProgramId,
@@ -10573,6 +10629,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn is_null_or_undefined_initializer(&self, expression: &Expression<'a>) -> bool {
         match expression {
             Expression::NullLiteral(_) => true,
@@ -10677,6 +10734,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn get_type_of_binding_identifier_from_binding_pattern(
         &self,
         program_id: ProgramId,
@@ -11011,6 +11069,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         annotated_type
     }
 
+    // TODO(inline)
     fn get_type_of_binding_identifier_without_symbol(
         &self,
         program_id: ProgramId,
@@ -11025,6 +11084,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn get_type_of_type_predicate_identifier(
         &self,
         program_id: ProgramId,
@@ -11058,6 +11118,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.ty.none()
     }
 
+    // TODO(inline)
     fn get_type_of_await_expression(
         &self,
         program_id: ProgramId,
@@ -11142,6 +11203,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     }
 
     // TODO: Should we be looking at thenable specifically?
+    // TODO(inline)
     fn get_structural_thenable_awaited_type(
         &self,
         program_id: ProgramId,
@@ -11192,6 +11254,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor)
     fn resolved_property_key_name(
         &self,
         program_id: ProgramId,
@@ -11228,6 +11291,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(member.property.name.as_str())
     }
 
+    // TODO(refactor)
     fn well_known_symbol_property_name(
         &self,
         program_id: ProgramId,
@@ -11240,6 +11304,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): I think all of the this iteration resolution code needs a refactor. It seems a bit too
+    // specific/complex compared to what it could be.
     fn get_iteration_element_type(
         &self,
         program_id: ProgramId,
@@ -11961,6 +12027,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
     }
 
+    // TODO(inline)
     fn is_in_chain_expression(&self, program_id: ProgramId, node_id: Option<NodeId>) -> bool {
         if let Some(node_id) = node_id {
             matches!(
@@ -12022,6 +12089,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.resolve_imported_type_alias_symbol(symbol).is_some()
     }
 
+    // TODO(refactor): move to types module
     fn type_string_context_at_location(&self, location: NodeRef) -> TypeStringContext {
         let in_type_alias = self.is_type_alias_display_location(location);
         TypeStringContext {
@@ -12031,6 +12099,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(refactor): move to types module
     fn type_to_string_with_context(&self, t: Ty<'a>, context: TypeStringContext) -> String {
         let cache_key = TypeStringCacheKey { ty: t, context };
         if let Some(cached) = self.type_string_cache.borrow().get(&cache_key) {
@@ -12053,6 +12122,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         type_string
     }
 
+    // TODO(inline)
     fn location_expands_transparent_type_aliases(&self, location: NodeRef) -> bool {
         match self.node_kind(location) {
             AstKind::TSPropertySignature(_)
@@ -12141,6 +12211,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         .then_some(target)
     }
 
+    // TODO(inline)
     fn location_expands_named_type_alias_chains(&self, location: NodeRef) -> bool {
         matches!(
             self.node_kind(location),
@@ -12148,6 +12219,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    // TODO(inline)
     fn type_alias_chain_display_replacements(
         &self,
         ty: Ty<'a>,
@@ -12185,6 +12257,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    // TODO(inline)
     fn insert_type_alias_chain_display_replacements(
         &self,
         ty: Ty<'a>,
