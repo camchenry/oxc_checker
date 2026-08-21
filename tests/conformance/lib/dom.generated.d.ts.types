@@ -42383,7 +42383,8 @@ interface GlobalEventHandlers {
 >                       ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     onprogress: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null;
->                                            ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                            ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                                       expected: ProgressEvent<EventTarget>
 
     onprogress: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null;
 >                                                ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -63635,7 +63636,8 @@ interface LockManager {
 >                    ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
 
     request<T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>;
->   ^^^^^^^: { <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { <T>(name: string, callback: LockGrantedCallback<T>): Promise<any>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<any>; <T>(name: string, callback: LockGrantedCallback<T>): Promise<any>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<any>; }   (TyObject) (TSMethodSignature)
+   expected: { <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; }
 
     request<T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>;
 >           ^: any   (TyAny) (TSTypeParameter)
@@ -63671,7 +63673,8 @@ interface LockManager {
 >                                                                               ^: any   (TyAny) (TSTypeReference)
 
     request<T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>;
->   ^^^^^^^: { <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { <T>(name: string, callback: LockGrantedCallback<T>): Promise<any>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<any>; <T>(name: string, callback: LockGrantedCallback<T>): Promise<any>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<any>; }   (TyObject) (TSMethodSignature)
+   expected: { <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; <T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>; }
 
     request<T>(name: string, options: LockOptions, callback: LockGrantedCallback<T>): Promise<Awaited<T>>;
 >           ^: any   (TyAny) (TSTypeParameter)
@@ -77291,7 +77294,8 @@ declare var ProgressEvent: {
 >           ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (BindingIdentifier)
 
     prototype: ProgressEvent;
->   ^^^^^^^^^: ProgressEvent<EventTarget>   (TyTypeReference) (TSPropertySignature)
+>   ^^^^^^^^^: ProgressEvent<any>   (TyTypeReference) (TSPropertySignature)
+     expected: ProgressEvent<EventTarget>
 
     prototype: ProgressEvent;
 >              ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -105338,7 +105342,8 @@ interface SubtleCrypto {
 >   ^^^^^^^^^: { (format: "jwk", key: CryptoKey): Promise<JsonWebKey>; (format: Exclude<KeyFormat, "jwk">, key: CryptoKey): Promise<ArrayBuffer>; (format: KeyFormat, key: CryptoKey): Promise<ArrayBuffer | JsonWebKey>; (format: "jwk", key: CryptoKey): Promise<JsonWebKey>; (format: Exclude<KeyFormat, "jwk">, key: CryptoKey): Promise<ArrayBuffer>; (format: KeyFormat, key: CryptoKey): Promise<ArrayBuffer | JsonWebKey>; }   (TyObject) (TSMethodSignature)
 
     exportKey(format: Exclude<KeyFormat, "jwk">, key: CryptoKey): Promise<ArrayBuffer>;
->             ^^^^^^: "pkcs8" | "raw" | "spki"   (TyUnion) (BindingIdentifier)
+>             ^^^^^^: any   (TyError) (BindingIdentifier)
+            expected: "pkcs8" | "raw" | "spki"
 
     exportKey(format: Exclude<KeyFormat, "jwk">, key: CryptoKey): Promise<ArrayBuffer>;
 >                     ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -105680,7 +105685,8 @@ interface SubtleCrypto {
 >   ^^^^^^^^^: { (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>; (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>; (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>; (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>; }   (TyObject) (TSMethodSignature)
 
     importKey(format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
->             ^^^^^^: "pkcs8" | "raw" | "spki"   (TyUnion) (BindingIdentifier)
+>             ^^^^^^: any   (TyError) (BindingIdentifier)
+            expected: "pkcs8" | "raw" | "spki"
 
     importKey(format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
 >                     ^^^^^^^: any   (TyAny) (TSTypeReference)
@@ -108872,7 +108878,8 @@ declare var URLSearchParams: {
 >              ^^^^^^^^^^^^^^^: { new (init?: string[][] | Record<string, string> | string | URLSearchParams): URLSearchParams; prototype: URLSearchParams; }   (TyObject) (IdentifierReference)
 
     new(init?: string[][] | Record<string, string> | string | URLSearchParams): URLSearchParams;
->       ^^^^: string[][] | Record<string, string> | string | URLSearchParams | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^: string[][] | any | string | URLSearchParams | undefined   (TyUnion) (BindingIdentifier)
+    expected: string | string[][] | Record<string, string> | URLSearchParams | undefined
 
     new(init?: string[][] | Record<string, string> | string | URLSearchParams): URLSearchParams;
 >                           ^^^^^^: any   (TyAny) (TSTypeReference)
@@ -127472,7 +127479,8 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                    ^^^^^^^^^^^^^^: { new (): XMLHttpRequest; prototype: XMLHttpRequest; readonly UNSENT: 0; readonly OPENED: 1; readonly HEADERS_RECEIVED: 2; readonly LOADING: 3; readonly DONE: 4; }   (TyObject) (IdentifierReference)
 
     onabort: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->                                    ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                    ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                               expected: ProgressEvent<EventTarget>
 
     onabort: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                                        ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -127493,7 +127501,8 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                    ^^^^^^^^^^^^^^: { new (): XMLHttpRequest; prototype: XMLHttpRequest; readonly UNSENT: 0; readonly OPENED: 1; readonly HEADERS_RECEIVED: 2; readonly LOADING: 3; readonly DONE: 4; }   (TyObject) (IdentifierReference)
 
     onerror: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->                                    ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                    ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                               expected: ProgressEvent<EventTarget>
 
     onerror: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                                        ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -127514,7 +127523,8 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                   ^^^^^^^^^^^^^^: { new (): XMLHttpRequest; prototype: XMLHttpRequest; readonly UNSENT: 0; readonly OPENED: 1; readonly HEADERS_RECEIVED: 2; readonly LOADING: 3; readonly DONE: 4; }   (TyObject) (IdentifierReference)
 
     onload: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->                                   ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                   ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                              expected: ProgressEvent<EventTarget>
 
     onload: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                                       ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -127535,7 +127545,8 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                      ^^^^^^^^^^^^^^: { new (): XMLHttpRequest; prototype: XMLHttpRequest; readonly UNSENT: 0; readonly OPENED: 1; readonly HEADERS_RECEIVED: 2; readonly LOADING: 3; readonly DONE: 4; }   (TyObject) (IdentifierReference)
 
     onloadend: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->                                      ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                      ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                                 expected: ProgressEvent<EventTarget>
 
     onloadend: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                                          ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -127556,7 +127567,8 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                        ^^^^^^^^^^^^^^: { new (): XMLHttpRequest; prototype: XMLHttpRequest; readonly UNSENT: 0; readonly OPENED: 1; readonly HEADERS_RECEIVED: 2; readonly LOADING: 3; readonly DONE: 4; }   (TyObject) (IdentifierReference)
 
     onloadstart: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->                                        ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                        ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                                   expected: ProgressEvent<EventTarget>
 
     onloadstart: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                                            ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -127577,7 +127589,8 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                       ^^^^^^^^^^^^^^: { new (): XMLHttpRequest; prototype: XMLHttpRequest; readonly UNSENT: 0; readonly OPENED: 1; readonly HEADERS_RECEIVED: 2; readonly LOADING: 3; readonly DONE: 4; }   (TyObject) (IdentifierReference)
 
     onprogress: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->                                       ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                       ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                                  expected: ProgressEvent<EventTarget>
 
     onprogress: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                                           ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -127598,7 +127611,8 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                      ^^^^^^^^^^^^^^: { new (): XMLHttpRequest; prototype: XMLHttpRequest; readonly UNSENT: 0; readonly OPENED: 1; readonly HEADERS_RECEIVED: 2; readonly LOADING: 3; readonly DONE: 4; }   (TyObject) (IdentifierReference)
 
     ontimeout: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
->                                      ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                      ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                                 expected: ProgressEvent<EventTarget>
 
     ontimeout: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null;
 >                                          ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -130073,7 +130087,8 @@ declare namespace WebAssembly {
 >                                                   ^^^^^: { new (descriptor: TableDescriptor, value?: any): Table; prototype: Table; }   (TyObject) (IdentifierReference)
 
     type Exports = Record<string, ExportValue>;
->        ^^^^^^^: { [x: string]: ExportValue; }   (TyObject) (TSTypeAliasDeclaration)
+>        ^^^^^^^: any   (TyError) (TSTypeAliasDeclaration)
+        expected: { [x: string]: ExportValue; }
 
     type Exports = Record<string, ExportValue>;
 >                  ^^^^^^: any   (TyAny) (TSTypeReference)
@@ -130091,7 +130106,8 @@ declare namespace WebAssembly {
 >                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     type Imports = Record<string, ModuleImports>;
->        ^^^^^^^: { [x: string]: ModuleImports; }   (TyObject) (TSTypeAliasDeclaration)
+>        ^^^^^^^: any   (TyError) (TSTypeAliasDeclaration)
+        expected: { [x: string]: ModuleImports; }
 
     type Imports = Record<string, ModuleImports>;
 >                  ^^^^^^: any   (TyAny) (TSTypeReference)
@@ -130103,7 +130119,8 @@ declare namespace WebAssembly {
 >                                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
     type ModuleImports = Record<string, ImportValue>;
->        ^^^^^^^^^^^^^: { [x: string]: ImportValue; }   (TyObject) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^: any   (TyError) (TSTypeAliasDeclaration)
+              expected: { [x: string]: ImportValue; }
 
     type ModuleImports = Record<string, ImportValue>;
 >                        ^^^^^^: any   (TyAny) (TSTypeReference)
@@ -132752,7 +132769,7 @@ interface MathMLElementTagNameMap {
 >                ^^^^^^^^^^^^^: { new (): MathMLElement; prototype: MathMLElement; }   (TyObject) (IdentifierReference)
 
 type ElementTagNameMap = HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Exclude<keyof SVGElementTagNameMap, keyof HTMLElementTagNameMap>>;
->    ^^^^^^^^^^^^^^^^^: HTMLElementTagNameMap & Pick<SVGElementTagNameMap, keyof SVGElementTagNameMap>   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: HTMLElementTagNameMap & any   (TyIntersection) (TSTypeAliasDeclaration)
               expected: HTMLElementTagNameMap & Pick<SVGElementTagNameMap, "animate" | "animateMotion" | "animateTransform" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feDropShadow" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "mpath" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "set" | "stop" | "svg" | "switch" | "symbol" | "text" | "textPath" | "tspan" | "use" | "view">
 
 type ElementTagNameMap = HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Exclude<keyof SVGElementTagNameMap, keyof HTMLElementTagNameMap>>;
@@ -134963,7 +134980,8 @@ declare var onprogress: ((this: Window, ev: ProgressEvent) => any) | null;
 >                               ^^^^^^: { new (): Window; prototype: Window; }   (TyObject) (IdentifierReference)
 
 declare var onprogress: ((this: Window, ev: ProgressEvent) => any) | null;
->                                       ^^: ProgressEvent<EventTarget>   (TyTypeReference) (BindingIdentifier)
+>                                       ^^: ProgressEvent<any>   (TyTypeReference) (BindingIdentifier)
+                                  expected: ProgressEvent<EventTarget>
 
 declare var onprogress: ((this: Window, ev: ProgressEvent) => any) | null;
 >                                           ^^^^^^^^^^^^^: { new (type: string, eventInitDict?: ProgressEventInit): ProgressEvent; prototype: ProgressEvent; }   (TyObject) (TSTypeReference)
@@ -137120,7 +137138,8 @@ type HashAlgorithmIdentifier = AlgorithmIdentifier;
 >                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
 
 type HeadersInit = [string, string][] | Record<string, string> | Headers;
->    ^^^^^^^^^^^: [string, string][] | Record<string, string> | Headers   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: any   (TyError) (TSTypeAliasDeclaration)
+        expected: [string, string][] | Headers | Record<string, string>
 
 type HeadersInit = [string, string][] | Record<string, string> | Headers;
 >                                       ^^^^^^: any   (TyAny) (TSTypeReference)
@@ -137342,7 +137361,8 @@ type PerformanceEntryList = PerformanceEntry[];
 >                           ^^^^^^^^^^^^^^^^: { new (): PerformanceEntry; prototype: PerformanceEntry; }   (TyObject) (IdentifierReference)
 
 type PublicKeyCredentialClientCapabilities = Record<string, boolean>;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { [x: string]: boolean; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (TSTypeAliasDeclaration)
+                                  expected: { [x: string]: boolean; }
 
 type PublicKeyCredentialClientCapabilities = Record<string, boolean>;
 >                                            ^^^^^^: any   (TyAny) (TSTypeReference)
@@ -141065,7 +141085,8 @@ interface SubtleCrypto {
 >   ^^^^^^^^^: { (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>; (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>; (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>; (format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: ReadonlyArray<KeyUsage>): Promise<CryptoKey>; (format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>; }   (TyObject) (TSMethodSignature)
 
     importKey(format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>;
->             ^^^^^^: "pkcs8" | "raw" | "spki"   (TyUnion) (BindingIdentifier)
+>             ^^^^^^: any   (TyError) (BindingIdentifier)
+            expected: "pkcs8" | "raw" | "spki"
 
     importKey(format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: Iterable<KeyUsage>): Promise<CryptoKey>;
 >                     ^^^^^^^: any   (TyAny) (TSTypeReference)
