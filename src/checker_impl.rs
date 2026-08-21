@@ -1796,39 +1796,17 @@ impl<'a, 'store> Checker<'a, 'store> {
                     node_id,
                     GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
                 );
-                value
-                    .push_str(self.template_expression_substitution_static_value(expression_type)?);
+                value.push_str({
+                    match self.ty_kind(expression_type) {
+                        TyKind::StringLiteral(_) | TyKind::NumberLiteral(_) => {
+                            expression_type.template_substitution_static_value(self.arena())
+                        }
+                        _ => None,
+                    }
+                }?);
             }
         }
         Some(self.arena().str(&value))
-    }
-
-    // TODO(inline)
-    fn template_expression_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {
-        match self.ty_kind(ty) {
-            TyKind::StringLiteral(_) | TyKind::NumberLiteral(_) => {
-                self.template_substitution_static_value(ty)
-            }
-            _ => None,
-        }
-    }
-
-    fn template_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {
-        match self.ty_kind(ty) {
-            TyKind::StringLiteral(literal) => Some(literal.value),
-            TyKind::NumberLiteral(literal) => Some(if literal.value == 0.0 {
-                "0"
-            } else {
-                self.arena().str(&literal.value.to_string())
-            }),
-            TyKind::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
-            TyKind::Null => Some("null"),
-            TyKind::Undefined | TyKind::Void => Some("undefined"),
-            TyKind::TemplateLiteral(template) if template.expressions.is_empty() => {
-                Some(template.quasis[0].value)
-            }
-            _ => None,
-        }
     }
 
     fn template_substitution_static_values(
@@ -1845,7 +1823,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 values.extend(self.template_substitution_static_values(program_id, *ty)?);
                 Some(values)
             }),
-            _ => Some(vec![self.template_substitution_static_value(ty)?]),
+            _ => Some(vec![ty.template_substitution_static_value(self.arena())?]),
         }
     }
 
